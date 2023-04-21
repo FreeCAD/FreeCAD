@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "MeshTexture.h"
+
 
 using namespace Mesh;
 
@@ -85,7 +83,7 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, cons
         if (binding == MeshCore::MeshIO::PER_VERTEX) {
             diffuseColor.reserve(points.size());
             for (size_t index=0; index<points.size(); index++) {
-                unsigned long pos = findIndex(points[index], max_dist);
+                PointIndex pos = findIndex(points[index], max_dist);
                 if (pos < countPointsRefMesh) {
                     diffuseColor.push_back(textureColor[pos]);
                 }
@@ -101,27 +99,29 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, cons
         }
         else if (binding == MeshCore::MeshIO::PER_FACE) {
             // the values of the map give the point indices of the original mesh
-            std::vector<unsigned long> pointMap;
+            std::vector<PointIndex> pointMap;
             pointMap.reserve(points.size());
             for (size_t index=0; index<points.size(); index++) {
-                unsigned long pos = findIndex(points[index], max_dist);
+                PointIndex pos = findIndex(points[index], max_dist);
                 if (pos < countPointsRefMesh) {
                     pointMap.push_back(pos);
                 }
                 else if (addDefaultColor) {
-                    pointMap.push_back(ULONG_MAX);
+                    pointMap.push_back(MeshCore::POINT_INDEX_MAX);
                 }
             }
 
             // now determine the facet indices of the original mesh
             if (pointMap.size() == points.size()) {
                 diffuseColor.reserve(facets.size());
-                for (auto it : facets) {
-                    unsigned long index1 = pointMap[it._aulPoints[0]];
-                    unsigned long index2 = pointMap[it._aulPoints[1]];
-                    unsigned long index3 = pointMap[it._aulPoints[2]];
-                    if (index1 != ULONG_MAX && index2 != ULONG_MAX && index3 != ULONG_MAX) {
-                        std::vector<unsigned long> found = refPnt2Fac->GetIndices(index1, index2, index3);
+                for (const auto& it : facets) {
+                    PointIndex index1 = pointMap[it._aulPoints[0]];
+                    PointIndex index2 = pointMap[it._aulPoints[1]];
+                    PointIndex index3 = pointMap[it._aulPoints[2]];
+                    if (index1 != MeshCore::POINT_INDEX_MAX &&
+                        index2 != MeshCore::POINT_INDEX_MAX &&
+                        index3 != MeshCore::POINT_INDEX_MAX) {
+                        std::vector<FacetIndex> found = refPnt2Fac->GetIndices(index1, index2, index3);
                         if (found.size() == 1) {
                             diffuseColor.push_back(textureColor[found.front()]);
                         }

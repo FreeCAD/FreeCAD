@@ -20,32 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QCoreApplication>
 #endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Application.h>
-#include <Gui/Action.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ToolBoxManager.h>
-#include <Gui/MainWindow.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
+#include <Gui/DockWindowManager.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <Gui/ToolBarManager.h>
 
-#include <Mod/Start/App/StartConfiguration.h>
+#include "Workbench.h"
+
 
 using namespace StartGui;
 
@@ -74,47 +65,50 @@ void StartGui::Workbench::loadStartPage()
     // Ensure that we don't open the Start page multiple times
     QString title = QCoreApplication::translate("Workbench", "Start page");
     QList<QWidget*> ch = Gui::getMainWindow()->windows();
-    for (QList<QWidget*>::const_iterator c = ch.begin(); c != ch.end(); ++c) {
-        if ((*c)->windowTitle() == title)
+    for (QList<QWidget*>::const_iterator c = ch.cbegin(); c != ch.cend(); ++c) {
+        if ((*c)->windowTitle() == title) {
+            Gui::MDIView* mdi = qobject_cast<Gui::MDIView*>((*c));
+            if (mdi)
+                Gui::getMainWindow()->setActiveWindow(mdi);
             return;
+        }
     }
 
     try {
         QByteArray utf8Title = title.toUtf8();
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
         std::stringstream str;
-        str << "import WebGui,sys,Start" << std::endl;
-        str << "from StartPage import StartPage" << std::endl;
-        str << std::endl;
-        str << "class WebPage(object):" << std::endl;
-        str << "    def __init__(self):" << std::endl;
-        str << "        self.browser=WebGui.openBrowserWindow(u\"" << escapedstr.c_str() << "\")" << std::endl;
+        str << "import WebGui,sys,Start\n"
+            << "from StartPage import StartPage\n\n"
+            << "class WebPage(object):\n"
+            << "    def __init__(self):\n"
+            << "        self.browser=WebGui.openBrowserWindow(u\"" << escapedstr.c_str() << "\")\n"
 #if defined(FC_OS_WIN32)
-        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+            << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n"
 #else
-        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+            << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n"
 #endif
-        str << "    def onChange(self, par, reason):" << std::endl;
-        str << "        if reason == 'RecentFiles':" << std::endl;
+            << "    def onChange(self, par, reason):\n"
+            << "        try:\n"
+            << "            if reason == 'RecentFiles':\n"
 #if defined(FC_OS_WIN32)
-        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+            << "                self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
 #else
-        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+            << "                self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
 #endif
-        str << std::endl;
-        str << "class WebView(object):" << std::endl;
-        str << "    def __init__(self):" << std::endl;
-        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << std::endl;
-        str << "        self.webPage = WebPage()" << std::endl;
-        str << "        self.pargrp.Attach(self.webPage)" << std::endl;
-        str << "    def __del__(self):" << std::endl;
-        str << "        self.pargrp.Detach(self.webPage)" << std::endl;
-        str << std::endl;
-        str << "webView=WebView()" << std::endl;
-        str << "StartPage.checkPostOpenStartPage()" << std::endl;
+            << "        except RuntimeError as e:\n"
+            << "            pass\n"
+            << "class WebView(object):\n"
+            << "    def __init__(self):\n"
+            << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')\n"
+            << "        self.webPage = WebPage()\n"
+            << "        self.pargrp.Attach(self.webPage)\n"
+            << "    def __del__(self):\n"
+            << "        self.pargrp.Detach(self.webPage)\n\n"
+            << "webView = WebView()\n"
+            << "StartPage.checkPostOpenStartPage()\n";
 
         Base::Interpreter().runString(str.str().c_str());
-        // Gui::Command::runCommand(Gui::Command::Gui, cmd);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());

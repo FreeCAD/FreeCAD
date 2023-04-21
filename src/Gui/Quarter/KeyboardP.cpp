@@ -30,10 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "KeyboardP.h"
-#include <Quarter/devices/Keyboard.h>
-#include <QtCore/QMap>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "KeyboardP.h"
+#include "devices/Keyboard.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -44,7 +45,7 @@ KeyboardP::KeyboardP(Keyboard * publ)
   PUBLIC(this) = publ;
   this->keyboard = new SoKeyboardEvent;
 
-  if (keyboardmap == NULL) {
+  if (!keyboardmap) {
     keyboardmap = new KeyMap;
     keypadmap = new KeyMap;
     this->initKeyMap();
@@ -57,7 +58,7 @@ KeyboardP::~KeyboardP()
 }
 
 bool
-KeyboardP::debugKeyEvents(void)
+KeyboardP::debugKeyEvents()
 {
   const char * env = coin_getenv("QUARTER_DEBUG_KEYEVENTS");
   return env && (atoi(env) > 0);
@@ -103,11 +104,11 @@ KeyboardP::keyEvent(QKeyEvent * qevent)
   return this->keyboard;
 }
 
-KeyboardP::KeyMap * KeyboardP::keyboardmap = NULL;
-KeyboardP::KeyMap * KeyboardP::keypadmap = NULL;
+KeyboardP::KeyMap * KeyboardP::keyboardmap = nullptr;
+KeyboardP::KeyMap * KeyboardP::keypadmap = nullptr;
 
 void
-KeyboardP::initKeyMap(void)
+KeyboardP::initKeyMap()
 {
   // keyboard
   keyboardmap->insert(Qt::Key_Shift,   SoKeyboardEvent::LEFT_SHIFT);
@@ -234,15 +235,6 @@ KeyboardP::initKeyMap(void)
   keypadmap->insert(Qt::Key_Delete,   SoKeyboardEvent::PAD_DELETE);
   keypadmap->insert(Qt::Key_Period,   SoKeyboardEvent::PAD_PERIOD);
 
-
-#if 0 // FIXME: don't know what to do with these (20070306 frodo)
-  keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_SHIFT);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_CONTROL);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_ALT);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::PRIOR);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::NEXT);
-  keyboardmap->insert(Qt::, SoKeyboardEvent::SHIFT_LOCK);
-#endif
 }
 
 #undef PUBLIC

@@ -24,24 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QMenu>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "Utils.h"
-#include "ViewProviderPipe.h"
-//#include "TaskPipeParameters.h"
-#include "TaskPipeParameters.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
+#include "ViewProviderPipe.h"
+#include "TaskPipeParameters.h"
 
 using namespace PartDesignGui;
 
@@ -55,27 +47,27 @@ ViewProviderPipe::~ViewProviderPipe()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
 
     App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
-    if (sketch != NULL)
+    if (sketch)
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
             temp.push_back(obj);
     }
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (spine && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
     App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
-    if (auxspine != NULL && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (auxspine && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
     return temp;
@@ -83,15 +75,8 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
 
 void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit pipe"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit pipe"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderPipe::doubleClicked(void)
-{
-    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {
@@ -160,34 +145,25 @@ void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, boo
     }
 }
 
-void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on) {
+void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on)
+{
+    if (!base)
+        return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (svp == nullptr)
+    if (!svp)
         return;
 
     std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
-         if (edgeColors.empty()) {
-            TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+        if (edgeColors.empty()) {
             edgeColors = svp->LineColorArray.getValues();
             std::vector<App::Color> colors = edgeColors;
-            colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-            if (!edges.empty()) {
-                for (std::string e : edges) {
-                    int idx = std::stoi(e.substr(4)) - 1;
-                    assert ( idx >= 0 );
-                    if ( idx < (ssize_t) colors.size() )
-                        colors[idx] = App::Color(1.0f,0.0f,1.0f); // magenta
-                }
-            }
-            else {
-                std::fill(colors.begin(), colors.end(), App::Color(0.6f,0.0f,1.0f)); // purple
-            }
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
+            highlighter.getEdgeColors(edges, colors);
             svp->LineColorArray.setValues(colors);
         }
     } else {
@@ -198,7 +174,7 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderPipe::getIcon(void) const {
+QIcon ViewProviderPipe::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Pipe*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

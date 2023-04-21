@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_WireVertexPy"
+      PythonName="Part.ShapeFix.WireVertex"
+      Twin="ShapeFix_WireVertex"
+      TwinPointer="ShapeFix_WireVertex"
+      Include="ShapeFix_WireVertex.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Fixing disconnected edges in the wire</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Loads the wire, ininializes internal analyzer with the given precision</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="wire">
+      <Documentation>
+        <UserDocu>Returns resulting wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSame">
+      <Documentation>
+        <UserDocu>Returns the count of fixed vertices, 0 if none</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fix">
+      <Documentation>
+        <UserDocu>Fixes all statuses except Disjoined, i.e. the cases in which a
+common value has been set, with or without changing parameters
+Returns the count of fixed vertices, 0 if none</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

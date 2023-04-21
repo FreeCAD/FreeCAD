@@ -8,6 +8,7 @@ set(Part_Scripts
     Init.py
     JoinFeatures.py
     MakeBottle.py
+    PartEnums.py
     TestPartApp.py
 )
 
@@ -29,10 +30,12 @@ set(AttachmentEditor_Scripts
 set(BasicShapes_Scripts
     BasicShapes/__init__.py
     BasicShapes/Shapes.py
+    BasicShapes/Utils.py
 )
 
 if(BUILD_GUI)
     list (APPEND BasicShapes_Scripts
+          BasicShapes/ShapeContent.py
           BasicShapes/CommandShapes.py
           BasicShapes/ViewProviderShapes.py
           BasicShapes/TaskTube.ui
@@ -62,6 +65,7 @@ set(Part_tests
     parttests/__init__.py
     parttests/part_test_objects.py
     parttests/regression_tests.py
+    parttests/TopoShapeListTest.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

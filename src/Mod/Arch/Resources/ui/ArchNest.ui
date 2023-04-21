@@ -76,24 +76,10 @@
       <string>Nesting parameters</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Rotations</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Tolerance</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Arcs subdivisions</string>
         </property>
        </widget>
       </item>
@@ -107,6 +93,13 @@
         </property>
         <property name="value">
          <double>0.000100000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Arcs subdivisions</string>
         </property>
        </widget>
       </item>
@@ -126,13 +119,20 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Rotations</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="Rotations">
         <property name="toolTip">
          <string>A comma-separated list of angles to try and rotate the shapes</string>
         </property>
         <property name="text">
-         <string>0,90,180,270</string>
+         <string notr="true">0,90,180,270</string>
         </property>
        </widget>
       </item>

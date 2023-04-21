@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_TOOLS_H
 #define MESH_TOOLS_H
 
@@ -28,11 +27,11 @@
 
 #include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Triangle3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Triangle3.h>
 
-#include "MeshKernel.h"
 #include "Algorithm.h"
 #include "Iterator.h"
+#include "MeshKernel.h"
+
 
 namespace MeshCore {
 
@@ -40,36 +39,36 @@ namespace MeshCore {
  * The MeshSearchNeighbours class provides methods to get all points
  * in the neighbourhood of a given facet.
  */
-class MeshSearchNeighbours 
+class MeshSearchNeighbours
 {
 public:
-  MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
+  explicit MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
   virtual ~MeshSearchNeighbours () {}
   /** Re-initilaizes internal structures. */
   void Reinit (float fSampleDistance);
   /** Collects all neighbour points from the facet (by index), the result are the points of the facets lying
-   * inside a sphere of radius \a fDistance, center \a center of the original facet. This method uses the 
+   * inside a sphere of radius \a fDistance, center \a center of the original facet. This method uses the
    * MARKED flags.
    */
-  unsigned long  NeighboursFromFacet (unsigned long ulFacetIdx, float fDistance, unsigned long ulMinPoints, std::vector<Base::Vector3f> &raclResultPoints);
+  unsigned long  NeighboursFromFacet (FacetIndex ulFacetIdx, float fDistance, unsigned long ulMinPoints, std::vector<Base::Vector3f> &raclResultPoints);
   /** Searches for facets from the start facet, sample the neighbour facets and accumulates the points. */
-  unsigned long  NeighboursFromSampledFacets (unsigned long ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints);
+  unsigned long  NeighboursFromSampledFacets (FacetIndex ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints);
   /** Searches for facets from the start facet. */
-  unsigned long  NeighboursFacetFromFacet (unsigned long ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints,
-                                           std::vector<unsigned long> &raclResultFacets);
+  unsigned long  NeighboursFacetFromFacet (FacetIndex ulFacetIdx, float fDistance, std::vector<Base::Vector3f> &raclResultPoints,
+                                           std::vector<FacetIndex> &raclResultFacets);
 
 protected:
   /** Subsamples the mesh. */
-  void SampleAllFacets (void);
+  void SampleAllFacets ();
   inline bool CheckDistToFacet (const MeshFacet &rclF);     // check distance to facet, add points inner radius
-  bool AccumulateNeighbours (const MeshFacet &rclF, unsigned long ulFIdx); // accumulate the sample neighbours facet
+  bool AccumulateNeighbours (const MeshFacet &rclF, FacetIndex ulFIdx); // accumulate the sample neighbours facet
   inline bool InnerPoint (const Base::Vector3f &rclPt) const;
   inline bool TriangleCutsSphere (const MeshFacet &rclF) const;
   bool ExpandRadius (unsigned long ulMinPoints);
 
   struct CDistRad
   {
-    CDistRad (const Base::Vector3f clCenter) : _clCenter(clCenter) {}
+    explicit CDistRad (const Base::Vector3f clCenter) : _clCenter(clCenter) {}
     bool operator()(const Base::Vector3f &rclPt1, const Base::Vector3f &rclPt2) { return Base::DistanceP2(_clCenter, rclPt1) < Base::DistanceP2(_clCenter, rclPt2); }
     Base::Vector3f  _clCenter;
   };
@@ -79,15 +78,15 @@ protected:
   const MeshFacetArray &_rclFAry;
   const MeshPointArray &_rclPAry;
   MeshRefPointToFacets _clPt2Fa;
-  float _fMaxDistanceP2;   // square distance 
+  float _fMaxDistanceP2;   // square distance
   Base::Vector3f _clCenter;         // center points of start facet
-  std::set<unsigned long> _aclResult;        // result container (point indices)
-  std::set<unsigned long> _aclOuter;         // next searching points
+  std::set<PointIndex> _aclResult;        // result container (point indices)
+  std::set<PointIndex> _aclOuter;         // next searching points
   std::vector<Base::Vector3f> _aclPointsResult;  // result as vertex
   std::vector<std::vector<Base::Vector3f> > _aclSampledFacets; // sample points from each facet
   float _fSampleDistance;  // distance between two sampled points
   Wm4::Sphere3<float> _akSphere;
-  bool _bTooFewPoints;    
+  bool _bTooFewPoints;
 
 private:
   MeshSearchNeighbours (const MeshSearchNeighbours&);
@@ -100,8 +99,8 @@ inline bool MeshSearchNeighbours::CheckDistToFacet (const MeshFacet &rclF)
 
   for (int i = 0; i < 3; i++)
   {
-    unsigned long ulPIdx = rclF._aulPoints[i];
-    if (_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED) == false)
+    PointIndex ulPIdx = rclF._aulPoints[i];
+    if (!_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED))
     {
       if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2)
       {
@@ -144,9 +143,9 @@ inline bool MeshSearchNeighbours::TriangleCutsSphere (const MeshFacet &rclF) con
 class MeshFaceIterator
 {
 public:
-    MeshFaceIterator(const MeshKernel& mesh)
+    explicit MeshFaceIterator(const MeshKernel& mesh)
         : it(mesh) {}
-    Base::Vector3f operator() (unsigned long index)
+    Base::Vector3f operator() (FacetIndex index)
     {
         it.Set(index);
         return it->GetGravityPoint();
@@ -159,9 +158,9 @@ private:
 class MeshVertexIterator
 {
 public:
-    MeshVertexIterator(const MeshKernel& mesh)
+    explicit MeshVertexIterator(const MeshKernel& mesh)
         : it(mesh) {}
-    Base::Vector3f operator() (unsigned long index)
+    Base::Vector3f operator() (PointIndex index)
     {
         it.Set(index);
         return *it;
@@ -175,9 +174,10 @@ template <class T>
 class MeshNearestIndexToPlane
 {
 public:
+    using Index = typename T::Index;
     MeshNearestIndexToPlane(const MeshKernel& mesh, const Base::Vector3f& b, const Base::Vector3f& n)
-        : nearest_index(ULONG_MAX),nearest_dist(FLOAT_MAX), it(mesh), base(b), normal(n) {}
-    void operator() (unsigned long index)
+        : nearest_index(-1),nearest_dist(FLOAT_MAX), it(mesh), base(b), normal(n) {}
+    void operator() (Index index)
     {
         float dist = (float)fabs(it(index).DistanceToPlane(base, normal));
         if (dist < nearest_dist) {
@@ -186,7 +186,7 @@ public:
         }
     }
 
-    unsigned long nearest_index;
+    Index nearest_index;
     float nearest_dist;
 
 private:

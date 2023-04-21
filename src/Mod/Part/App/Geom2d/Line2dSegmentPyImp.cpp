@@ -20,32 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp.hxx>
-# include <gp_Lin2d.hxx>
+# include <GCE2d_MakeSegment.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
-# include <GCE2d_MakeLine.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Precision.hxx>
+# include <gp_Lin2d.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Line2dPy.h>
-#include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
-#include <Mod/Part/App/Geom2d/Line2dSegmentPy.cpp>
+#include "Geom2d/Line2dSegmentPy.h"
+#include "Geom2d/Line2dSegmentPy.cpp"
+#include "Geom2d/Line2dPy.h"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string Line2dSegmentPy::representation(void) const
+std::string Line2dSegmentPy::representation() const
 {
     return "<Line2dSegment object>";
 }
@@ -157,7 +153,7 @@ int Line2dSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -180,7 +176,7 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject *args)
 {
     double first, last;
     if (!PyArg_ParseTuple(args, "dd", &first, &last))
-        return NULL;
+        return nullptr;
 
     try {
         Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
@@ -190,24 +186,18 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return NULL;
+        return nullptr;
     }
 
-    Py_Return; 
+    Py_Return;
 }
 
-Py::Object Line2dSegmentPy::getStartPoint(void) const
+Py::Object Line2dSegmentPy::getStartPoint() const
 {
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->StartPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dSegmentPy::setStartPoint(Py::Object arg)
@@ -256,18 +246,12 @@ void Line2dSegmentPy::setStartPoint(Py::Object arg)
     }
 }
 
-Py::Object Line2dSegmentPy::getEndPoint(void) const
+Py::Object Line2dSegmentPy::getEndPoint() const
 {
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->EndPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dSegmentPy::setEndPoint(Py::Object arg)
@@ -318,10 +302,10 @@ void Line2dSegmentPy::setEndPoint(Py::Object arg)
 
 PyObject *Line2dSegmentPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Line2dSegmentPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

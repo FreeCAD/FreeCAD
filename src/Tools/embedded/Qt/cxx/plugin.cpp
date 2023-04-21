@@ -32,7 +32,7 @@ PyMODINIT_FUNC FreeCAD_init()
 
     Gui::MainWindow* mw = new Gui::MainWindow(qApp->activeWindow());
     mw->show();
-    
+
     app->initOpenInventor();
     app->runInitGuiScript();
 }

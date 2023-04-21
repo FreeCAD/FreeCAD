@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Hypr2d.hxx>
-# include <Geom2d_Hyperbola.hxx>
 # include <GCE2d_MakeArcOfHyperbola.hxx>
-# include <GCE2d_MakeHyperbola.hxx>
+# include <Geom2d_Hyperbola.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Hypr2d.hxx>
 #endif
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include "Geom2d/ArcOfHyperbola2dPy.h"
+#include "Geom2d/ArcOfHyperbola2dPy.cpp"
+#include "Geom2d/Hyperbola2dPy.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 
@@ -64,7 +60,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast
                 (static_cast<Hyperbola2dPy*>(o)->getGeom2dHyperbolaPtr()->handle());
-            GCE2d_MakeArcOfHyperbola arc(hyperbola->Hypr2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GCE2d_MakeArcOfHyperbola arc(hyperbola->Hypr2d(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -74,7 +70,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -83,7 +79,7 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfHyperbola constructor expects an hyperbola curve and a parameter range");
@@ -120,10 +116,10 @@ Py::Object ArcOfHyperbola2dPy::getHyperbola(void) const
 
 PyObject *ArcOfHyperbola2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfHyperbola2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

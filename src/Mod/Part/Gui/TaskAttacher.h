@@ -30,7 +30,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/App/Attacher.h>
-#include <boost/function.hpp>
+#include <functional>
 
 
 class Ui_TaskAttacher;
@@ -44,7 +44,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartGui { 
+namespace PartGui {
 
 class Ui_TaskAttacher;
 
@@ -53,13 +53,13 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
     Q_OBJECT
 
 public:
-    typedef boost::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
-                                  App::DocumentObject *, const std::string&)>  VisibilityFunction;
+    using VisibilityFunction =  std::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
+                                App::DocumentObject *, const std::string&)>;
 
-    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
+    explicit TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = nullptr,
                  QString picture = QString(),
                  QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
-    ~TaskAttacher();
+    ~TaskAttacher() override;
 
     bool   getFlip(void) const;
 
@@ -118,7 +118,7 @@ private:
      * current set of references. Maintains selection when possible.
      */
     void updateListOfModes();
-    
+
     /**
      * @brief selectMapMode Select the given mode in the list widget
      */
@@ -140,7 +140,7 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
 };
@@ -151,8 +151,8 @@ class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
-    ~TaskDlgAttacher();
+    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
+    ~TaskDlgAttacher() override;
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
     { return ViewProvider; }
@@ -160,19 +160,19 @@ public:
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button 
-    virtual bool isAllowedAlterDocument(void) const
+    bool reject() override;
+    /// is called by the framework if the user presses the help button
+    bool isAllowedAlterDocument(void) const override
     { return false; }
 
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    /// returns for Close and Help button
+    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

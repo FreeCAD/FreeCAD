@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#ifndef _DrawPage_h_
-#define _DrawPage_h_
+#ifndef DrawPage_h_
+#define DrawPage_h_
 
 #include <boost_signals2.hpp>
 
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include "DrawViewPart.h"
+
 
 namespace TechDraw
 {
@@ -41,39 +40,37 @@ class TechDrawExport DrawPage: public App::DocumentObject
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawPage);
 
 public:
-    DrawPage(void);
-    virtual ~DrawPage();
+    DrawPage();
+    ~DrawPage() override;
 
     App::PropertyLinkList Views;
     App::PropertyLink Template;
     App::PropertyBool KeepUpdated;
 
     App::PropertyFloatConstraint Scale;
-    App::PropertyEnumeration ProjectionType; // First or Third Angle
-    
-    App::PropertyInteger  NextBalloonIndex;
+    App::PropertyEnumeration ProjectionType;// First or Third Angle
+
+    App::PropertyInteger NextBalloonIndex;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn* execute() override;
     //@}
-    virtual void handleChangedPropertyType(
-            Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop) override;
 
-    int addView(App::DocumentObject *docObj);
+    int addView(App::DocumentObject* docObj);
     int removeView(App::DocumentObject* docObj);
     short mustExecute() const override;
-    boost::signals2::signal<void (const DrawPage*)> signalGuiPaint;
+    boost::signals2::signal<void(const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
-        return "TechDrawGui::ViewProviderPage";
-    }
+    const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderPage"; }
 
-    PyObject *getPyObject(void) override;
+    PyObject* getPyObject() override;
 
-//App::DocumentObjectExecReturn * recompute(void);
+    //App::DocumentObjectExecReturn * recompute(void);
 
     /// Check whether we've got a valid template
     /*!
@@ -91,26 +88,29 @@ public:
      */
     double getPageHeight() const;
     const char* getPageOrientation() const;
-    bool isUnsetting(void) { return nowUnsetting; }
-    void requestPaint(void);
-    std::vector<App::DocumentObject*> getAllViews(void) ;
-    bool balloonPlacing;
-    DrawViewPart *balloonParent;    //could be many balloons on page? 
-    
-    int getNextBalloonIndex(void);
-    
-    void updateAllViews(void);
-    static bool GlobalUpdateDrawings(void);
-    static bool AllowPageOverride(void);
+    int getOrientation() const;
+    bool isUnsetting() { return nowUnsetting; }
+    void requestPaint();
+    std::vector<App::DocumentObject*> getAllViews();
+
+    int getNextBalloonIndex();
+
+    void updateAllViews();
+    static bool GlobalUpdateDrawings();
+    static bool AllowPageOverride();
     void forceRedraw(bool b) { m_forceRedraw = b; }
-    bool forceRedraw(void)   { return m_forceRedraw; }
+    bool forceRedraw() { return m_forceRedraw; }
     void redrawCommand();
+
+    bool canUpdate() const;
+
+    bool hasObject(App::DocumentObject* obj);
 
 protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
-    virtual void unsetupObject() override;
+    void onDocumentRestored() override;
+    void unsetupObject() override;
 
     bool m_forceRedraw;
 
@@ -118,13 +118,11 @@ private:
     static const char* ProjectionTypeEnums[];
     bool nowUnsetting;
     static App::PropertyFloatConstraint::Constraints scaleRange;
-
 };
 
-typedef App::FeaturePythonT<DrawPage> DrawPagePython;
+using DrawPagePython = App::FeaturePythonT<DrawPage>;
 
-} //namespace TechDraw
+}//namespace TechDraw
 
 
 #endif
-

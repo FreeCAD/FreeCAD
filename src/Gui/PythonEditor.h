@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PYTHONEDITOR_H
 #define GUI_PYTHONEDITOR_H
 
-#include "Window.h"
-#include "TextEdit.h"
 #include "SyntaxHighlighter.h"
+#include "TextEdit.h"
+
 
 namespace Gui {
 
@@ -42,8 +41,8 @@ class GuiExport PythonEditor : public TextEditor
     Q_OBJECT
 
 public:
-    PythonEditor(QWidget *parent = 0);
-    ~PythonEditor();
+    explicit PythonEditor(QWidget *parent = nullptr);
+    ~PythonEditor() override;
 
     void toggleBreakpoint();
     void showDebugMarker(int line);
@@ -65,8 +64,8 @@ public Q_SLOTS:
 
 protected:
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e );
-    void drawMarker(int line, int x, int y, QPainter*);
+    void contextMenuEvent ( QContextMenuEvent* e ) override;
+    void drawMarker(int line, int x, int y, QPainter*) override;
 
 private:
     //PythonSyntaxHighlighter* pythonSyntax;
@@ -80,7 +79,7 @@ private:
 class GuiExport PythonSyntaxHighlighter : public SyntaxHighlighter
 {
 public:
-    PythonSyntaxHighlighter(QObject* parent);
+    explicit PythonSyntaxHighlighter(QObject* parent);
     virtual ~PythonSyntaxHighlighter();
 
     void highlightBlock (const QString & text);

@@ -26,10 +26,11 @@
 
 #include <Base/Parameter.h>
 
-#include <QTreeWidgetItem>
-#include <QTreeWidget>
 #include <QDialog>
 #include <QPointer>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+
 
 namespace Gui {
 namespace Dialog {
@@ -46,28 +47,29 @@ class GuiExport DlgParameterImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
-    ~DlgParameterImp();
+    explicit DlgParameterImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+    ~DlgParameterImp() override;
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
     void activateParameterSet(const char*);
 
-protected Q_SLOTS:
+protected:
+    void setupConnections();
     void onChangeParameterSet(int);
-    void on_buttonFind_clicked();
-    void on_findGroupLE_textChanged(const QString &SearchStr);
-    void on_buttonSaveToDisk_clicked();
+    void onButtonFindClicked();
+    void onFindGroupTtextChanged(const QString &SearchStr);
+    void onButtonSaveToDiskClicked();
 
     void onGroupSelected(QTreeWidgetItem *);
-    void on_closeButton_clicked();
-    void on_checkSort_toggled(bool);
+    void onCloseButtonClicked();
+    void onCheckSortToggled(bool);
 
 protected:
-    void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
-    void closeEvent(QCloseEvent*);
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent*) override;
+    void closeEvent(QCloseEvent*) override;
 
 protected:
     QTreeWidget* paramGroup;
@@ -94,14 +96,14 @@ class ParameterGroup : public QTreeWidget
     Q_OBJECT
 
 public:
-    ParameterGroup( QWidget * parent = 0 );
-    virtual ~ParameterGroup();
+    explicit ParameterGroup( QWidget * parent = nullptr );
+    ~ParameterGroup() override;
 
 protected:
     /** Shows the context menu. */
-    void contextMenuEvent ( QContextMenuEvent* event );
+    void contextMenuEvent ( QContextMenuEvent* event ) override;
     /** Triggers the "Del" key. */
-    void keyPressEvent (QKeyEvent* event);
+    void keyPressEvent (QKeyEvent* event) override;
 
 protected Q_SLOTS:
     /** Removes the underlying parameter group and its sub-groups from the
@@ -122,7 +124,7 @@ protected Q_SLOTS:
     void onRenameSelectedItem();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     QMenu* menuEdit;
@@ -146,8 +148,8 @@ class ParameterValue : public QTreeWidget
     Q_OBJECT
 
 public:
-    ParameterValue( QWidget * parent = 0 );
-    virtual ~ParameterValue();
+    explicit ParameterValue( QWidget * parent = nullptr );
+    ~ParameterValue() override;
 
     /** Sets the current parameter group that is displayed. */
     void setCurrentGroup( const Base::Reference<ParameterGrp>& _hcGrp );
@@ -156,10 +158,10 @@ public:
 
 protected:
     /** Shows the context menu. */
-    void contextMenuEvent ( QContextMenuEvent* event );
+    void contextMenuEvent ( QContextMenuEvent* event ) override;
     /** Invokes onDeleteSelectedItem() if the "Del" key was pressed. */
-    void keyPressEvent (QKeyEvent* event);
-    void resizeEvent(QResizeEvent*);
+    void keyPressEvent (QKeyEvent* event) override;
+    void resizeEvent(QResizeEvent*) override;
 
 protected Q_SLOTS:
     /** Changes the value of the leaf of the selected item. */
@@ -185,7 +187,7 @@ protected Q_SLOTS:
      * @note We need to reimplement this method as QTreeWidgetItem::flags()
      * doesn't have an int parameter.
      */
-    bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
+    bool edit ( const QModelIndex & index, QAbstractItemView::EditTrigger trigger, QEvent * event ) override;
 
 private:
     QMenu* menuEdit;
@@ -214,12 +216,12 @@ public:
     /// Constructor
     ParameterGroupItem( ParameterGroupItem * parent, const Base::Reference<ParameterGrp> &hcGrp );
     ParameterGroupItem( QTreeWidget* parent, const Base::Reference<ParameterGrp> &hcGrp);
-    ~ParameterGroupItem();
+    ~ParameterGroupItem() override;
 
-    void setData ( int column, int role, const QVariant & value );
-    QVariant data ( int column, int role ) const;
+    void setData ( int column, int role, const QVariant & value ) override;
+    QVariant data ( int column, int role ) const override;
 
-    void fillUp(void);
+    void fillUp();
     Base::Reference<ParameterGrp> _hcGrp;
 };
 
@@ -237,10 +239,10 @@ class ParameterValueItem : public QTreeWidgetItem
 public:
     /// Constructor
     ParameterValueItem ( QTreeWidget* parent, const Base::Reference<ParameterGrp> &hcGrp);
-    virtual ~ParameterValueItem();
+    ~ParameterValueItem() override;
 
     /** If the name of the item has changed replace() is invoked. */
-    virtual void setData ( int column, int role, const QVariant & value );
+    void setData ( int column, int role, const QVariant & value ) override;
     /** Opens an input dialog to change the value. */
     virtual void changeValue() = 0;
     /** Append this item as leaf to the parameter group. */
@@ -265,14 +267,14 @@ class ParameterText : public ParameterValueItem
 public:
     /// Constructor
     ParameterText ( QTreeWidget * parent, QString label1, const char* value, const Base::Reference<ParameterGrp> &hcGrp);
-    ~ParameterText();
+    ~ParameterText() override;
 
-    void changeValue();
-    void appendToGroup();
-    void removeFromGroup();
+    void changeValue() override;
+    void appendToGroup() override;
+    void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName );
+    void replace( const QString& oldName, const QString& newName ) override;
 };
 
 /**
@@ -284,14 +286,14 @@ class ParameterInt : public ParameterValueItem
 public:
     /// Constructor
     ParameterInt ( QTreeWidget * parent, QString label1, long value, const Base::Reference<ParameterGrp> &hcGrp);
-    ~ParameterInt();
+    ~ParameterInt() override;
 
-    void changeValue();
-    void appendToGroup();
-    void removeFromGroup();
+    void changeValue() override;
+    void appendToGroup() override;
+    void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName );
+    void replace( const QString& oldName, const QString& newName ) override;
 };
 
 /**
@@ -303,14 +305,14 @@ class ParameterUInt : public ParameterValueItem
 public:
     /// Constructor
     ParameterUInt ( QTreeWidget * parent, QString label1, unsigned long value, const Base::Reference<ParameterGrp> &hcGrp);
-    ~ParameterUInt();
+    ~ParameterUInt() override;
 
-    void changeValue();
-    void appendToGroup();
-    void removeFromGroup();
+    void changeValue() override;
+    void appendToGroup() override;
+    void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName );
+    void replace( const QString& oldName, const QString& newName ) override;
 };
 
 /**
@@ -322,14 +324,14 @@ class ParameterFloat : public ParameterValueItem
 public:
     /// Constructor
     ParameterFloat ( QTreeWidget * parent, QString label1, double value, const Base::Reference<ParameterGrp> &hcGrp);
-    ~ParameterFloat();
+    ~ParameterFloat() override;
 
-    void changeValue();
-    void appendToGroup();
-    void removeFromGroup();
+    void changeValue() override;
+    void appendToGroup() override;
+    void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName );
+    void replace( const QString& oldName, const QString& newName ) override;
 };
 
 /**
@@ -341,14 +343,14 @@ class ParameterBool : public ParameterValueItem
 public:
     /// Constructor
     ParameterBool ( QTreeWidget * parent, QString label1, bool value, const Base::Reference<ParameterGrp> &hcGrp);
-    ~ParameterBool();
+    ~ParameterBool() override;
 
-    void changeValue();
-    void appendToGroup();
-    void removeFromGroup();
+    void changeValue() override;
+    void appendToGroup() override;
+    void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName );
+    void replace( const QString& oldName, const QString& newName ) override;
 };
 
 } // namespace Dialog

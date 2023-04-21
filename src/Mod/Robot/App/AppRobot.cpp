@@ -20,31 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include "Edge2TracObject.h"
+#include "PropertyTrajectory.h"
 #include "Robot6AxisPy.h"
 #include "Robot6Axis.h"
-#include "Simulation.h"
-#include "TrajectoryPy.h"
-#include "Trajectory.h"
-#include "PropertyTrajectory.h"
-#include "WaypointPy.h"
-#include "Waypoint.h"
 #include "RobotObject.h"
-#include "TrajectoryObject.h"
-#include "Edge2TracObject.h"
+#include "Simulation.h"
+#include "Trajectory.h"
 #include "TrajectoryCompound.h"
 #include "TrajectoryDressUpObject.h"
+#include "TrajectoryObject.h"
+#include "TrajectoryPy.h"
+#include "WaypointPy.h"
+#include "Waypoint.h"
+
 
 namespace Robot {
 class Module : public Py::ExtensionModule<Module>
@@ -58,7 +52,7 @@ public:
         initialize("This module is the Robot module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object simulateToFile(const Py::Tuple& args)
@@ -88,7 +82,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Robot
@@ -103,10 +97,10 @@ PyMOD_INIT_FUNC(Robot)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
-    PyObject* robotModule = (new Robot::Module())->module().ptr();
+    PyObject* robotModule = Robot::initModule();
     Base::Console().Log("Loading Robot module... done\n");
 
     // Add Types to module

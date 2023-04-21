@@ -27,7 +27,7 @@
 #include <vector>
 
 #include "MeshKernel.h"
-#include <Base/Vector3D.h>
+
 
 namespace Base {
 class SequencerLauncher;
@@ -41,7 +41,7 @@ class MeshGeomFacet;
 
 /**
  * Class for creating the mesh structure by adding facets. Building the structure needs 3 steps:
- * 1. initializing  
+ * 1. initializing
  * 2. adding the facets
  * 3. finishing
  * \code
@@ -64,9 +64,11 @@ private:
     class Edge
     {
         public:
-        unsigned long	pt1, pt2, facetIdx;
+        PointIndex pt1;
+        PointIndex pt2;
+        FacetIndex facetIdx;
 
-        Edge (unsigned long p1, unsigned long p2, unsigned long idx)
+        Edge (PointIndex p1, PointIndex p2, FacetIndex idx)
         {
             facetIdx = idx;
             if (p1 > p2)
@@ -103,25 +105,25 @@ private:
     Base::SequencerLauncher* _seq;
 
     // keep an array of iterators pointing to the vertex inside the set to save memory
-    typedef std::pair<std::set<MeshPoint>::iterator, bool> MeshPointIterator;
+    using MeshPointIterator = std::pair<std::set<MeshPoint>::iterator, bool>;
     std::vector<MeshPointIterator> _pointsIterator;
     size_t _ptIdx;
 
     void SetNeighbourhood  ();
-    // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them 
+    // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them
     void RemoveUnreferencedPoints();
 
 public:
-    MeshBuilder(MeshKernel &rclM);
-    ~MeshBuilder(void);
+    explicit MeshBuilder(MeshKernel &rclM);
+    ~MeshBuilder();
 
     /**
      * Set the tolerance for the comparison of points. Normally you don't need to set the tolerance.
      */
     void SetTolerance(float);
 
-    /** Initializes the class. Must be done before adding facets 
-     * @param ctFacets count of facets. 
+    /** Initializes the class. Must be done before adding facets
+     * @param ctFacets count of facets.
      * @param deletion if true (default) the mesh-kernel will be cleared
      *     otherwise you can add new facets on an existing mesh-kernel
      * @remarks To be efficient you should add exactly \a ctFacets with
@@ -166,7 +168,7 @@ private:
 
 /**
  * Class for creating the mesh structure by adding facets. Building the structure needs 3 steps:
- * 1. initializing  
+ * 1. initializing
  * 2. adding the facets
  * 3. finishing
  * \code
@@ -187,11 +189,11 @@ private:
     MeshKernel& _meshKernel;
 
 public:
-    typedef int size_type;
-    MeshFastBuilder(MeshKernel &rclM);
-    ~MeshFastBuilder(void);
+    using size_type = int;
+    explicit MeshFastBuilder(MeshKernel &rclM);
+    ~MeshFastBuilder();
 
-    /** Initializes the class. Must be done before adding facets 
+    /** Initializes the class. Must be done before adding facets
      * @param ctFacets count of facets.
      */
     void Initialize (size_type ctFacets);
@@ -213,4 +215,4 @@ private:
 
 } // namespace MeshCore
 
-#endif 
+#endif

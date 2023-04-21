@@ -20,30 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 #endif
 
-#include <Base/Sequencer.h>
 #include <Base/Exception.h>
+#include <Base/Sequencer.h>
 
 #include "Builder.h"
-#include "MeshKernel.h"
 #include "Functional.h"
+#include "MeshKernel.h"
 #include <QVector>
+
 
 using namespace MeshCore;
 
 
-MeshBuilder::MeshBuilder (MeshKernel& kernel) : _meshKernel(kernel), _seq(0), _ptIdx(0)
+MeshBuilder::MeshBuilder (MeshKernel& kernel) : _meshKernel(kernel), _seq(nullptr), _ptIdx(0)
 {
     _fSaveTolerance = MeshDefinitions::_fMinPointDistanceD1;
 }
 
-MeshBuilder::~MeshBuilder (void)
+MeshBuilder::~MeshBuilder ()
 {
     MeshDefinitions::_fMinPointDistanceD1 = _fSaveTolerance;
     delete this->_seq;
@@ -60,11 +60,11 @@ void MeshBuilder::Initialize (size_t ctFacets, bool deletion)
     {
         // Clear the mesh structure and free all memory
         _meshKernel.Clear();
-    
+
         // Allocate new memory that is needed later on. If AddFacet() gets called exactly ctFacets times there is no wastage of memory
         // otherwise the vector reallocates ~50% of its future memory usage.
         // Note: A feature of the std::vector implementation is that it can hold more memory (capacity) than it actually needs (size).
-        //       This usually happens if its elements are added without specifying its final size. Later on it's a bit tricky to free the wasted 
+        //       This usually happens if its elements are added without specifying its final size. Later on it's a bit tricky to free the wasted
         //       memory. So we're strived to avoid the wastage of memory.
         _meshKernel._aclFacetArray.reserve(ctFacets);
 
@@ -156,7 +156,7 @@ void MeshBuilder::AddFacet (Base::Vector3f* facetPoints, unsigned char flag, uns
 void MeshBuilder::SetNeighbourhood ()
 {
     std::set<Edge> edges;
-    unsigned long facetIdx = 0;
+    FacetIndex facetIdx = 0;
 
     for (MeshFacetArray::_TIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); ++it)
     {
@@ -218,7 +218,7 @@ void MeshBuilder::RemoveUnreferencedPoints()
 void MeshBuilder::Finish (bool freeMemory)
 {
     // now we can resize the vertex array to the exact size and copy the vertices with their correct positions in the array
-    unsigned long i=0;
+    PointIndex i=0;
     _meshKernel._aclPointArray.resize(_pointsIterator.size());
     for ( std::vector<MeshPointIterator>::iterator it = _pointsIterator.begin(); it != _pointsIterator.end(); ++it)
         _meshKernel._aclPointArray[i++] = *(it->first);
@@ -244,7 +244,7 @@ void MeshBuilder::Finish (bool freeMemory)
         if ( cap > siz+siz/20 )
         {
             try {
-                unsigned long i=0;
+                FacetIndex i=0;
                 MeshFacetArray faces(siz);
                 for ( MeshFacetArray::_TIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); ++it )
                     faces[i++]=*it;
@@ -275,10 +275,14 @@ struct MeshFastBuilder::Private {
         }
         bool operator<(const Vertex& rhs) const
         {
-            if      (x != rhs.x)    return x < rhs.x;
-            else if (y != rhs.y)    return y < rhs.y;
-            else if (z != rhs.z)    return z < rhs.z;
-            else                    return false;
+            if (x != rhs.x)
+                return x < rhs.x;
+            else if (y != rhs.y)
+                return y < rhs.y;
+            else if (z != rhs.z)
+                return z < rhs.z;
+            else
+                return false;
         }
     };
 
@@ -290,7 +294,7 @@ MeshFastBuilder::MeshFastBuilder(MeshKernel &rclM) : _meshKernel(rclM), p(new Pr
 {
 }
 
-MeshFastBuilder::~MeshFastBuilder(void)
+MeshFastBuilder::~MeshFastBuilder()
 {
     delete p;
 }
@@ -324,7 +328,7 @@ void MeshFastBuilder::AddFacet (const MeshGeomFacet& facetPoints)
 
 void MeshFastBuilder::Finish ()
 {
-    typedef QVector<Private::Vertex>::size_type size_type;
+    using size_type = QVector<Private::Vertex>::size_type;
     QVector<Private::Vertex>& verts = p->verts;
     size_type ulCtPts = verts.size();
     for (size_type i=0; i < ulCtPts; ++i) {
@@ -332,21 +336,21 @@ void MeshFastBuilder::Finish ()
     }
 
     //std::sort(verts.begin(), verts.end());
-    int threads = std::max(1, QThread::idealThreadCount());
+    int threads = QThread::idealThreadCount();
     MeshCore::parallel_sort(verts.begin(), verts.end(), std::less<Private::Vertex>(), threads);
 
-    QVector<unsigned long> indices(ulCtPts);
+    QVector<FacetIndex> indices(ulCtPts);
 
     size_type vertex_count = 0;
     for (QVector<Private::Vertex>::iterator v = verts.begin(); v != verts.end(); ++v) {
         if (!vertex_count || *v != verts[vertex_count-1])
             verts[vertex_count++] = *v;
 
-        indices[v->i] = static_cast<unsigned long>(vertex_count - 1);
+        indices[v->i] = static_cast<FacetIndex>(vertex_count - 1);
     }
 
     size_type ulCt = verts.size()/3;
-    MeshFacetArray rFacets(static_cast<unsigned long>(ulCt));
+    MeshFacetArray rFacets(static_cast<FacetIndex>(ulCt));
     for (size_type i=0; i < ulCt; ++i) {
         rFacets[static_cast<size_t>(i)]._aulPoints[0] = indices[3*i];
         rFacets[static_cast<size_t>(i)]._aulPoints[1] = indices[3*i + 1];

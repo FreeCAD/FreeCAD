@@ -20,18 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QEvent>
 # include <QGridLayout>
-# include <QSizePolicy>
 # include <QPushButton>
+# include <QSizePolicy>
 #endif
 
 #include "DlgCustomizeImp.h"
 #include "MainWindow.h"
 #include "WidgetFactory.h"
+
 
 using namespace Gui::Dialog;
 
@@ -58,17 +59,17 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     customLayout = new QGridLayout( this );
     customLayout->setSpacing( 6 );
-    customLayout->setMargin( 11 );
+    customLayout->setContentsMargins( 11, 11, 11, 11 );
 
     layout = new QHBoxLayout;
     layout->setSpacing( 6 );
-    layout->setMargin( 0 );
+    layout->setContentsMargins( 0, 0, 0, 0 );
 
     buttonHelp = new QPushButton( this );
     buttonHelp->setText(tr("&Help"));
     layout->addWidget( buttonHelp );
 
-    QSpacerItem* spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    auto spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
     layout->addItem(spacer);
 
     buttonClose = new QPushButton( this );
@@ -96,8 +97,8 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     // connections
     //
-    connect(buttonHelp,  SIGNAL (clicked()), getMainWindow(), SLOT (whatsThis()));
-    connect(buttonClose, SIGNAL (clicked()), this, SLOT (close()));
+    connect(buttonHelp,  &QPushButton::clicked, getMainWindow(), &MainWindow::whatsThis);
+    connect(buttonClose, &QPushButton::clicked, this, &QDialog::close);
 }
 
 /**

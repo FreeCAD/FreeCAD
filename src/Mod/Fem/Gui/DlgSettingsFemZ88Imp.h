@@ -22,12 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMZ88IMP_H
 #define FEMGUI_DLGSETTINGSFEMZ88IMP_H
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+#include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 class Ui_DlgSettingsFemZ88Imp;
@@ -37,13 +37,16 @@ class DlgSettingsFemZ88Imp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemZ88Imp( QWidget* parent = 0 );
-    ~DlgSettingsFemZ88Imp();
+    explicit DlgSettingsFemZ88Imp( QWidget* parent = nullptr );
+    ~DlgSettingsFemZ88Imp() override;
+
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemZ88Imp> ui;

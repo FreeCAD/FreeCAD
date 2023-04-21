@@ -25,7 +25,7 @@
 See also the `downgrade` function.
 """
 ## @package downgrade
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to upgrade objects by different methods.
 
 import re
@@ -51,7 +51,7 @@ Arch = lz.LazyLoader("Arch", globals(), "Arch")
 
 _DEBUG = False
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 
@@ -161,7 +161,7 @@ def upgrade(objects, delete=False, force=None):
             return None
         if len(obj.Shape.Edges) == 1:
             return None
-        if is_straight_line(obj.Shape) == True:
+        if is_straight_line(obj.Shape):
             return None
         if utils.get_type(obj) == "Wire":
             obj.Closed = True
@@ -273,8 +273,8 @@ def upgrade(objects, delete=False, force=None):
         if not checked:
             coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
         if not coplanarity:
-             _err(translate("draft","Faces must be coplanar to be refined"))
-             return None
+            _err(translate("draft","Faces must be coplanar to be refined"))
+            return None
 
         # fuse faces
         fuse_face = faces.pop(0)
@@ -352,6 +352,9 @@ def upgrade(objects, delete=False, force=None):
         except Part.OCCError:
             return None
         else:
+            if (len(objectslist) > 1) and (len(wires) == len(objectslist)):
+                # we still have the same number of objects, we actually didn't join anything!
+                return makeCompound(objectslist)
             for wire in wires:
                 newobj = doc.addObject("Part::Feature", "Wire")
                 newobj.Shape = wire
@@ -483,6 +486,7 @@ def upgrade(objects, delete=False, force=None):
                   and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = ext_draftify.draftify(objects[0])
                 if result:
+                    add_list.append(result)
                     _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
 
         # in the following cases there are no faces
@@ -505,6 +509,8 @@ def upgrade(objects, delete=False, force=None):
                 result = makeWires(objects)
                 if result:
                     _msg(translate("draft","Found several wires or edges: wiring them"))
+                else:
+                    _msg(translate("draft","Found several non-treatable objects: creating compound"))
             # special case, we have only one open wire. We close it,
             # unless it has only 1 edge!
             elif len(objects) == 1 and len(openwires) == 1:
@@ -528,6 +534,7 @@ def upgrade(objects, delete=False, force=None):
                 if edge_type in ("Line", "Circle"):
                     result = ext_draftify.draftify(objects[0])
                     if result:
+                        add_list.append(result)
                         _msg(translate("draft","Found 1 object: draftifying it"))
             # only points, no edges
             elif not edges and len(objects) > 1:

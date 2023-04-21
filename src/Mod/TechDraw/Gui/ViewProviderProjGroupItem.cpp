@@ -26,21 +26,8 @@
  #include <QTextStream>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -64,57 +51,39 @@ ViewProviderProjGroupItem::~ViewProviderProjGroupItem()
 {
 }
 
-void ViewProviderProjGroupItem::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderViewPart::attach(pcFeat);
-}
-
-void ViewProviderProjGroupItem::setDisplayMode(const char* ModeName)
-{
-    ViewProviderViewPart::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderProjGroupItem::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderViewPart::getDisplayModes();
-    StrList.push_back("Drawing");
-    return StrList;
-}
-
 void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
     TechDraw::DrawProjGroupItem* proj = getObject();
+    if(!proj) {
+        return;
+    }
 
-    if(proj) {
-        // Set the icon pixmap depending on the orientation
-        std::string projType = proj->Type.getValueAsString();
+    // Set the icon pixmap depending on the orientation
+    std::string projType = proj->Type.getValueAsString();
 
-        //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
+    //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
 
-        if(strcmp(projType.c_str(), "Front") == 0) {
-            sPixmap = "TechDraw_ProjFront";
-        } else if(strcmp(projType.c_str(), "Rear") == 0) {
-            sPixmap = "TechDraw_ProjRear";
-        } else if(strcmp(projType.c_str(), "Right") == 0) {
-            sPixmap = "TechDraw_ProjRight";
-        } else if(strcmp(projType.c_str(), "Left") == 0) {
-           sPixmap = "TechDraw_ProjLeft";
-        } else if(strcmp(projType.c_str(), "Top") == 0) {
-           sPixmap = "TechDraw_ProjTop";
-        } else if(strcmp(projType.c_str(), "Bottom") == 0) {
-           sPixmap = "TechDraw_ProjBottom";
-        } else if(strcmp(projType.c_str(), "FrontTopLeft") == 0) {
-           sPixmap = "TechDraw_ProjFrontTopLeft";
-        } else if(strcmp(projType.c_str(), "FrontTopRight") == 0) {
-           sPixmap = "TechDraw_ProjFrontTopRight";
-        } else if(strcmp(projType.c_str(), "FrontBottomRight") == 0) {
-           sPixmap = "TechDraw_ProjFrontBottomRight";
-        } else if(strcmp(projType.c_str(), "FrontBottomLeft") == 0) {
-           sPixmap = "TechDraw_ProjFrontBottomLeft";
-        }
+    if(strcmp(projType.c_str(), "Front") == 0) {
+        sPixmap = "TechDraw_ProjFront";
+    } else if(strcmp(projType.c_str(), "Rear") == 0) {
+        sPixmap = "TechDraw_ProjRear";
+    } else if(strcmp(projType.c_str(), "Right") == 0) {
+        sPixmap = "TechDraw_ProjRight";
+    } else if(strcmp(projType.c_str(), "Left") == 0) {
+        sPixmap = "TechDraw_ProjLeft";
+    } else if(strcmp(projType.c_str(), "Top") == 0) {
+        sPixmap = "TechDraw_ProjTop";
+    } else if(strcmp(projType.c_str(), "Bottom") == 0) {
+        sPixmap = "TechDraw_ProjBottom";
+    } else if(strcmp(projType.c_str(), "FrontTopLeft") == 0) {
+        sPixmap = "TechDraw_ProjFrontTopLeft";
+    } else if(strcmp(projType.c_str(), "FrontTopRight") == 0) {
+        sPixmap = "TechDraw_ProjFrontTopRight";
+    } else if(strcmp(projType.c_str(), "FrontBottomRight") == 0) {
+        sPixmap = "TechDraw_ProjFrontBottomRight";
+    } else if(strcmp(projType.c_str(), "FrontBottomLeft") == 0) {
+        sPixmap = "TechDraw_ProjFrontBottomLeft";
     }
  }
 
@@ -141,7 +110,7 @@ void ViewProviderProjGroupItem::unsetEdit(int ModNum)
     Gui::Control().closeDialog();
 }
 
-bool ViewProviderProjGroupItem::doubleClicked(void)
+bool ViewProviderProjGroupItem::doubleClicked()
 {
     return true;
 }
@@ -161,7 +130,7 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
     // get the projection
     TechDraw::DrawProjGroupItem* proj = getObject();
     // check if it is the anchor projection
-    if ((dpg != nullptr) && (dpg->hasProjection(proj->Type.getValueAsString()))
+    if (dpg && (dpg->hasProjection(proj->Type.getValueAsString()))
         && (dpg->getAnchor() == dpgi))
         isAnchor = true;
 

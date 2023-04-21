@@ -81,6 +81,13 @@ view each time a command is started</string>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Offset</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="Gui::InputField" name="fieldOffset">
        <property name="toolTip">
@@ -90,13 +97,6 @@ of the buttons above</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Offset</string>
        </property>
       </widget>
      </item>
@@ -171,7 +171,7 @@ will be moved to the center of the view</string>
         <string>The spacing between the smaller grid lines</string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true"/>
+        <string notr="true">mm</string>
        </property>
       </widget>
      </item>
@@ -189,27 +189,6 @@ will be moved to the center of the view</string>
       <widget class="QSpinBox" name="fieldGridMainLine">
        <property name="toolTip">
         <string>The number of squares between each main line of the grid</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QSpinBox" name="fieldSnapRadius">
-       <property name="toolTip">
-        <string>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="toolTip">
-        <string>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</string>
-       </property>
-       <property name="text">
-        <string>Snapping radius</string>
        </property>
       </widget>
      </item>
@@ -233,7 +212,28 @@ value by using the [ and ] keys while drawing</string>
        </property>
       </widget>
      </item>
-    </layout>
+    <item row="4" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="toolTip">
+        <string>The distance at which a point can be snapped to
+when approaching the mouse. You can also change this
+value by using the [ and ] keys while drawing</string>
+       </property>
+       <property name="text">
+        <string>Snapping radius</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="fieldSnapRadius">
+       <property name="toolTip">
+        <string>The distance at which a point can be snapped to
+when approaching the mouse. You can also change this
+value by using the [ and ] keys while drawing</string>
+       </property>
+      </widget>
+     </item>
+     </layout>
    </item>
    <item>
     <widget class="QPushButton" name="buttonCenter">

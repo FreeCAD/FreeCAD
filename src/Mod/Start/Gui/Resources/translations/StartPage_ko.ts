@@ -31,7 +31,7 @@
     <message>
       <location filename="TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation>도움말</translation>
+      <translation>팁</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="48"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation>예제</translation>
+      <translation>예시</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="50"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation>사용자 센터</translation>
+      <translation>사용자 허브</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="52"/>
@@ -61,22 +61,22 @@
     <message>
       <location filename="TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation>고급 사용자 센터</translation>
+      <translation>고급 사용자 허브</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>이 섹션에서는 고급 사용자와 Python 스크립트 작성에 관심이있는 사람들을 위한 문서를 수집합니다. 또한 매크로 저장소, 설치 및 사용 방법에 대한 지침, 특정 요구 사항에 맞게 FreeCAD를 사용자 정의하는 방법에 대한 자세한 정보를 찾을 수 있습니다.</translation>
+      <translation>이 섹션에서는 고급 사용자와 Python 스크립트 작성에 관심이 있는 사람들을 위한 문서를 수집합니다. 또한 매크로 저장소, 매크로 설치 및 사용 방법에 대한 지침, FreeCAD를 특정 요구 사항에 맞게 사용자 지정하는 방법에 대한 추가 정보를 찾을 수 있습니다.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation>개발자 센터</translation>
+      <translation>개발자 허브</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>이 섹션에는 개발자를 위한 자료가 포함되어 있습니다: FreeCAD를 직접 컴파일하는 방법, FreeCAD 소스 코드가 어떻게 구성되어 있는지, 탐색 방법, 새로운 작업 벤치 개발 방법 및 / 또는 자신의 응용 프로그램에 FreeCAD를 임베드하는 방법.</translation>
+      <translation>이 섹션에는 개발자를 위한 자료가 포함되어 있습니다: FreeCAD를 직접 컴파일하는 방법, FreeCAD 소스 코드의 구조화 방법 + 탐색 방법, 새로운 워크벤치 개발 방법 및/또는 자체 응용 프로그램에 FreeCAD를 내장하는 방법을 알아봅니다.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation>사용 가능한 추가 기능</translation>
+      <translation>사용 가능한 애드온</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>다음은 FreeCAD 설치에 추가할 수 있는 워크 벤치 목록입니다. 메뉴 도구 -&gt; 추가 기능 관리에서 찾아보고 설치하십시오. 아래 링크를 클릭하면 해당 항목에 대해 자세히 알아볼 수 있습니다.</translation>
+      <translation>다음은 FreeCAD 설치에 추가할 수 있는 사용 가능한 추가 워크벤치 목록입니다. 메뉴 도구 -&gt; 애드온 관리자에서 찾아보고 설치합니다. 아래 링크를 클릭하면 이들 중 하나에 대해 자세히 알아볼 수 있습니다.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="TranslationTexts.py" line="83"/>
       <source>Open start page preferences</source>
-      <translation type="unfinished">Open start page preferences</translation>
+      <translation>시작 페이지 환경 설정 열기</translation>
     </message>
   </context>
   <context>
@@ -291,8 +291,8 @@
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>첫 페이지 하단에 표시할 선택적 사용자 지정 폴더입니다.
+사용하여 ";;" 경로를 분리하려면 여기에 여러 폴더를 추가할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -302,17 +302,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>파일 축소판 옆에 메모장을 표시하여 세션 간에 메모를 보관할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>팁 표시</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>워크벤치 시작 문서 탭에 도움말 팁을 표시합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -342,7 +342,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>배경색 다운 그라디언트</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>이 항목이 선택되어 있고 일반 기본 설정에서 스타일 시트가 지정되어 있으면 이 스타일 시트가 사용되어 아래 색상을 무시합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>이 옵션을 선택하면 '새 파일' 아이콘에 일반 아이콘 대신 그라데이션 아이콘이 표시됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,12 +467,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>프로그램 실행 후 전환할 워크벤치 선택</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>선택하면 FreeCAD가 시작될 때 시작 페이지가 자동으로 닫힙니다.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
@@ -487,12 +487,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>파일을 닫고 켜기</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>파일을 열어 응용 프로그램을 시작한 경우 위의 두 가지 설정을 적용하십시오.</translation>
     </message>
   </context>
 </TS>

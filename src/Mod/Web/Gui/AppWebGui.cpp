@@ -20,28 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
-# include <QMdiArea>
-# include <QMdiSubWindow>
+# include <string>
+# include <QIcon>
 # include <QUrl>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
-#include <Gui/WorkbenchManager.h>
 #include <Gui/Language/Translator.h>
+
 #include "BrowserView.h"
 #include "Workbench.h"
 
 
-
 // use a different name to CreateCommand()
-void CreateWebCommands(void);
+void CreateWebCommands();
 
 void loadWebResource()
 {
@@ -63,7 +61,7 @@ public:
         add_varargs_method("openBrowserWindow",&Module::openBrowserWindow
         );
         add_varargs_method("open",&Module::openBrowser,
-            "open(string)\n"
+            "open(htmlcode,baseurl,[title,iconpath])\n"
             "Load a local (X)HTML file."
         );
         add_varargs_method("insert",&Module::openBrowser,
@@ -73,7 +71,7 @@ public:
         initialize("This module is the WebGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object openBrowser(const Py::Tuple& args)
@@ -99,8 +97,9 @@ private:
     {
         const char* HtmlCode;
         const char* BaseUrl;
+        const char* IconPath;
         char* TabName = nullptr;
-        if (! PyArg_ParseTuple(args.ptr(), "ss|et", &HtmlCode, &BaseUrl, "utf-8", &TabName))
+        if (! PyArg_ParseTuple(args.ptr(), "ss|ets", &HtmlCode, &BaseUrl, "utf-8", &TabName, &IconPath))
             throw Py::Exception();
 
         std::string EncodedName = "Browser";
@@ -109,11 +108,13 @@ private:
             PyMem_Free(TabName);
         }
 
-        WebGui::BrowserView* pcBrowserView = 0;
+        WebGui::BrowserView* pcBrowserView = nullptr;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
         pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
         pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
+        if (IconPath)
+            pcBrowserView->setWindowIcon(QIcon(QString::fromUtf8(IconPath)));
         Gui::getMainWindow()->addWindow(pcBrowserView);
         if (!Gui::getMainWindow()->activeWindow())
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);
@@ -133,7 +134,7 @@ private:
             PyMem_Free(TabName);
         }
 
-        WebGui::BrowserView* pcBrowserView = 0;
+        WebGui::BrowserView* pcBrowserView = nullptr;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
         pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
@@ -147,7 +148,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace WebGui
@@ -158,7 +159,7 @@ PyMOD_INIT_FUNC(WebGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = WebGui::initModule();
@@ -166,6 +167,7 @@ PyMOD_INIT_FUNC(WebGui)
 
     // instantiating the commands
     CreateWebCommands();
+    WebGui::BrowserView::init();
     WebGui::Workbench::init();
 
      // add resources and reloads the translators

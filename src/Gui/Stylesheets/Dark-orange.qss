@@ -148,12 +148,20 @@ QMenu::right-arrow:selected {
 }
 
 QMenu::item {
-    padding: 2px 16px 2px 26px; /* make room for icon at left */
+    padding: 2px 4px; /* make room for icon at left */
     border: 1px solid transparent; /* reserve space for selection border */
 }
 
 QMenu::icon {
-    margin-left: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+QMenu::icon:checked { /* appearance of a 'checked' icon */
+    background: #daa116;
+    border: 2px #daa116;
+    position: absolute;
+    border-radius: 2px;
 }
 
 QMenu::separator {
@@ -793,8 +801,8 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: black;
-	background-color: #e3d8b9;
+    color: black;
+    background-color: #e3d8b9;
 }
 
 /* hack to disable margin inside Property values to following elements */
@@ -1497,13 +1505,19 @@ Gui--ColorButton:pressed {
 }
 
 /* Pushbutton style for "..." inside Placement cell which launches Placement tool */
-Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton {
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
     background-color: #6e6e6e;
     border: 1px solid #5a5a5a;
     min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
     border-radius: 0px;
     margin: 0px; /* reset */
     padding: 0px; /* reset */
+}
+
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
+    text-align:left;
+    padding-left: 2px;
 }
 
 /* Fix for Expressions description QFrame that is "broken" with initial reset */
@@ -1599,6 +1613,31 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #d0970c, stop:1 #daa116);
+}
+
+/* QToolButtons with a menu found in Sketcher task panel*/
+QSint--ActionGroup QToolButton::menu-button {
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 2px;
+    width: 16px; /* 16px width + 4px for border = 20px allocated above */
+    outline: none;
+    background-color: transparent;
+}
+
+QSint--ActionGroup QToolButton#settingsButton,
+QSint--ActionGroup QToolButton#filterButton,
+QSint--ActionGroup QToolButton#manualUpdate {
+    padding-right: 20px; /* make way for the popup button */
+}
+
+/* to give widget inside the menu same look as regular menu */
+QSint--ActionGroup QToolButton#filterButton QListWidget {
+    color: #e0e0e0;
+    background-color: #5a5a5a;
+    padding: 0px;
+    margin: 0px;
 }
 
 
@@ -1709,7 +1748,7 @@ QCheckBox:focus {
 
 
 /*==================================================================================================
-Checkboxs inside QListWidget and QTreeView
+Checkboxes inside QListWidget and QTreeView
 ==================================================================================================*/
 QListWidget::indicator,
 QTreeView::indicator {
@@ -2242,4 +2281,39 @@ QDialog QGroupBox QFrame {
 QPushButton#NavigationIndicator::menu-indicator {
     image: none;
     width: 0px;
+}
+
+/*==================================================================================================
+SKETCHER
+==================================================================================================*/
+
+Gui--StatefulLabel[state="empty_sketch"] {
+    color : rgba(255,255,255,127); /* 50% opacity white */
+}
+Gui--StatefulLabel[state="under_constrained"] {
+    color : rgba(255,255,255,255); /* White */
+}
+Gui--StatefulLabel[state="conflicting_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="malformed_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="redundant_constraints"] {
+    color : rgba(255,69,0,255); /* Orange red */
+}
+Gui--StatefulLabel[state="partially_redundant_constraints"] {
+    color : rgba(65,105,225,255); /* Royal blue */
+}
+Gui--StatefulLabel[state="solver_failed"] {
+    color : rgba(255,0,0,255); /* Red */
+    font-weight: bold;
+}
+Gui--StatefulLabel[state="fully_constrained"] {
+    color : rgba(0,255,0,255); /* Green */
+    font-weight: bold;
+}
+Gui--UrlLabel {
+    color : rgba(0,91,255,255); /* Deep sky blue */
+    text-decoration : underline;
 }

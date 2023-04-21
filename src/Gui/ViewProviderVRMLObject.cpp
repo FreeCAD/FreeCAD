@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 # include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
 # include <Inventor/SoFullPath.h>
+# include <Inventor/SoInput.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
@@ -34,24 +34,23 @@
 # include <QFileInfo>
 #endif
 
-#include <Inventor/nodes/SoFile.h>
-#include <Inventor/VRMLnodes/SoVRMLInline.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
+#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+#include <Inventor/VRMLnodes/SoVRMLBackground.h>
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+#include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include <Inventor/VRMLnodes/SoVRMLMovieTexture.h>
 #include <Inventor/VRMLnodes/SoVRMLScript.h>
-#include <Inventor/VRMLnodes/SoVRMLBackground.h>
-#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
-#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
-#include <Inventor/lists/SbStringList.h>
+
+#include <App/Document.h>
+#include <App/VRMLObject.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
 
 #include "ViewProviderVRMLObject.h"
 #include "SoFCSelection.h"
-#include <App/VRMLObject.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <sstream>
+
 
 using namespace Gui;
 
@@ -87,10 +86,10 @@ void ViewProviderVRMLObject::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderVRMLObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderVRMLObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("VRML");
+    StrList.emplace_back("VRML");
     return StrList;
 }
 
@@ -104,7 +103,7 @@ void ViewProviderVRMLObject::getResourceFile(SoNode* node, std::list<std::string
     sa.apply(node);
     const SoPathList & pathlist = sa.getPaths();
     for (int i = 0; i < pathlist.getLength(); i++ ) {
-        SoFullPath * path = static_cast<SoFullPath *>(pathlist[i]);
+        auto path = static_cast<SoFullPath *>(pathlist[i]);
         if (path->getTail()->isOfType(T::getClassTypeId())) {
             T * tex = static_cast<T*>(path->getTail());
             for (int j = 0; j < tex->url.getNum(); j++) {
@@ -126,9 +125,9 @@ void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(SoNode* node, std
     sa.apply(node);
     const SoPathList & pathlist = sa.getPaths();
     for (int i = 0; i < pathlist.getLength(); i++ ) {
-        SoFullPath * path = static_cast<SoFullPath *>(pathlist[i]);
+        auto path = static_cast<SoFullPath *>(pathlist[i]);
         if (path->getTail()->isOfType(SoVRMLBackground::getClassTypeId())) {
-            SoVRMLBackground * vrml = static_cast<SoVRMLBackground*>(path->getTail());
+            auto vrml = static_cast<SoVRMLBackground*>(path->getTail());
             // backUrl
             for (int j = 0; j < vrml->backUrl.getNum(); j++) {
                 addResource(vrml->backUrl[j], resources);
@@ -166,7 +165,7 @@ void ViewProviderVRMLObject::addResource(const SbString& url, std::list<std::str
     if (fi.exists()) {
         // add the resource file if not yet listed
         if (std::find(resources.begin(), resources.end(), found.getString()) == resources.end()) {
-            resources.push_back(found.getString());
+            resources.emplace_back(found.getString());
         }
     }
 }
@@ -183,12 +182,12 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
     const SoPathList & pathlist = sa.getPaths();
     for (int i = 0; i < pathlist.getLength(); i++ ) {
         SoPath * path = pathlist[i];
-        SoVRMLInline * vrml = static_cast<SoVRMLInline*>(path->getTail());
+        auto vrml = static_cast<SoVRMLInline*>(path->getTail());
         const SbString& url = vrml->getFullURLName();
         if (url.getLength() > 0) {
             // add the resource file if not yet listed
             if (std::find(resources.begin(), resources.end(), url.getString()) == resources.end()) {
-                resources.push_back(url.getString());
+                resources.emplace_back(url.getString());
             }
 
             // if the resource file could be loaded check if it references further resources
@@ -209,7 +208,7 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
 
 void ViewProviderVRMLObject::updateData(const App::Property* prop)
 {
-    App::VRMLObject* ivObj = static_cast<App::VRMLObject*>(pcObject);
+    auto ivObj = static_cast<App::VRMLObject*>(pcObject);
     if (prop == &ivObj->VrmlFile) {
         // read also from file
         const char* filename = ivObj->VrmlFile.getValue();
@@ -261,13 +260,13 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
         //    <==> (I-R) * c = 0 ==> c = 0
         // This means that the center point must be the origin!
         Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-        float q0 = (float)p.getRotation().getValue()[0];
-        float q1 = (float)p.getRotation().getValue()[1];
-        float q2 = (float)p.getRotation().getValue()[2];
-        float q3 = (float)p.getRotation().getValue()[3];
-        float px = (float)p.getPosition().x;
-        float py = (float)p.getPosition().y;
-        float pz = (float)p.getPosition().z;
+        auto q0 = (float)p.getRotation().getValue()[0];
+        auto q1 = (float)p.getRotation().getValue()[1];
+        auto q2 = (float)p.getRotation().getValue()[2];
+        auto q3 = (float)p.getRotation().getValue()[3];
+        auto px = (float)p.getPosition().x;
+        auto py = (float)p.getPosition().y;
+        auto pz = (float)p.getPosition().z;
         pcTransform->rotation.setValue(q0,q1,q2,q3);
         pcTransform->translation.setValue(px,py,pz);
         pcTransform->center.setValue(0.0f,0.0f,0.0f);

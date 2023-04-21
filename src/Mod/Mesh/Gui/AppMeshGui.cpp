@@ -20,48 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
+# include <Inventor/nodes/SoSeparator.h>
+
+# include <QApplication>
 #endif
 
-#include <Base/Interpreter.h>
 #include <Base/Console.h>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
-#include <Mod/Mesh/App/MeshProperties.h>
-
-#include "images.h"
 #include "DlgEvaluateMeshImp.h"
-#include "PropertyEditorMesh.h"
-#include "DlgSettingsMeshView.h"
 #include "DlgSettingsImportExportImp.h"
-#include "SoFCMeshObject.h"
+#include "DlgSettingsMeshView.h"
+#include "images.h"
+#include "PropertyEditorMesh.h"
 #include "SoFCIndexedFaceSet.h"
+#include "SoFCMeshObject.h"
 #include "SoPolygon.h"
+#include "ThumbnailExtension.h"
 #include "ViewProvider.h"
-#include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
+#include "ViewProviderDefects.h"
+#include "ViewProviderMeshFaceSet.h"
+#include "ViewProviderPython.h"
 #include "ViewProviderTransform.h"
 #include "ViewProviderTransformDemolding.h"
-#include "ViewProviderDefects.h"
-#include "ViewProviderPython.h"
 #include "Workbench.h"
 
 
 // use a different name to CreateCommand()
-void CreateMeshCommands(void);
+void CreateMeshCommands();
 
 void loadMeshResource()
 {
@@ -82,7 +79,7 @@ public:
         initialize("This module is the MeshGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object convertToSTL(const Py::Tuple& args)
@@ -117,7 +114,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace MeshGui
@@ -127,7 +124,7 @@ PyMOD_INIT_FUNC(MeshGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     // load dependent module
@@ -136,7 +133,7 @@ PyMOD_INIT_FUNC(MeshGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = MeshGui::initModule();
     Base::Console().Log("Loading GUI of Mesh module... done\n");
@@ -146,8 +143,10 @@ PyMOD_INIT_FUNC(MeshGui)
 
     // instantiating the commands
     CreateMeshCommands();
-    (void)new MeshGui::CleanupHandler;
-    
+    if (qApp) {
+        (void)new MeshGui::CleanupHandler;
+    }
+
     // try to instantiate flat-mesh commands
     try{
         Base::Interpreter().runString("import MeshFlatteningCommand");
@@ -158,6 +157,8 @@ PyMOD_INIT_FUNC(MeshGui)
     // register preferences pages
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>     ( QT_TRANSLATE_NOOP("QObject", "Import-Export") );
+
+    Mesh::Extension3MFFactory::addProducer(new MeshGui::ThumbnailExtensionProducer);
 
     MeshGui::SoFCMeshObjectElement              ::initClass();
     MeshGui::SoSFMeshObject                     ::initClass();

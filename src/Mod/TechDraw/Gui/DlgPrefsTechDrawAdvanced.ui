@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>333</height>
+    <width>444</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,271 +39,8 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1">
-        <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbShowLoose">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Include 2D Objects in projection</string>
-          </property>
-          <property name="text">
-           <string>Show Loose 2D Geom</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShowLoose2d</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbCrazyEdges">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Include edges with unexpected geometry (zero length etc.) in results</string>
-          </property>
-          <property name="text">
-           <string>Allow Crazy Edges</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>allowCrazyEdge</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/debug</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Edge Fuzz</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefLineEdit" name="leFormatSpec">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Override automatic dimension format</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>formatSpec</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="Gui::PrefComboBox" name="cbEndCap">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>false</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Shape of line end caps.
-Only change unless you know what you are doing!</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>EdgeCapStyle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>Round</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Square</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Flat</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefCheckBox" name="cbFuseBeforeSection">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Perform a fuse operation on input shape(s) before Section view processing</string>
-          </property>
-          <property name="text">
-           <string>Fuse Before Section</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SectionFuseFirst</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Dimension Format</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Line End Cap Shape</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="2">
-         <widget class="Gui::PrefCheckBox" name="cbDebugDetail">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Dump intermediate results during Detail view processing</string>
-          </property>
-          <property name="text">
-           <string>Debug Detail</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>debugDetail</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/debugDetail</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefCheckBox" name="cbShowSectionEdges">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Highlights border of section cut in section views</string>
-          </property>
-          <property name="text">
-           <string>Show Section Edges</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShowSectionEdges</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="2">
+       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
+        <item row="11" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="minimumSize">
            <size>
@@ -339,21 +76,103 @@ Then you need to increase the tile limit.</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label">
+        <item row="2" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbFuseBeforeSection">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Perform a fuse operation on input shape(s) before Section view processing</string>
+          </property>
           <property name="text">
-           <string>Max SVG Hatch Tiles</string>
+           <string>Fuse Before Section</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionFuseFirst</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="label_2">
+        <item row="1" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbAutoCorrectRefs">
+          <property name="toolTip">
+           <string>If checked, system will attempt to automatically correct dimension references when the model changes.</string>
+          </property>
+          <property name="statusTip">
+           <string/>
+          </property>
           <property name="text">
-           <string>Max PAT Hatch Segments</string>
+           <string>Auto Correct Dimension Refs</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AutoCorrectRefs</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
         <item row="9" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbMarkFuzz">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>174</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Selection area around center marks
+Each unit is approx. 0.1 mm wide</string>
+          </property>
+          <property name="statusTip">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MarkFuzz</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxPat">
           <property name="minimumSize">
            <size>
@@ -388,7 +207,230 @@ when hatching a face with a PAT pattern</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="11" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Max SVG Hatch Tiles</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbReportProgress">
+          <property name="toolTip">
+           <string>Issue progress messages while building View geometry</string>
+          </property>
+          <property name="text">
+           <string>Report Progress</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ReportProgress</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbEdgeFuzz">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>174</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of selection area around edges
+Each unit is approx. 0.1 mm wide</string>
+          </property>
+          <property name="statusTip">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>EdgeFuzz</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbDebugDetail">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Dump intermediate results during Detail view processing</string>
+          </property>
+          <property name="text">
+           <string>Debug Detail</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>debugDetail</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/debug</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Line End Cap Shape</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Mark Fuzz</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Max PAT Hatch Segments</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbCrazyEdges">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Include edges with unexpected geometry (zero length etc.) in results</string>
+          </property>
+          <property name="text">
+           <string>Allow Crazy Edges</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>allowCrazyEdge</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/debug</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbShowSectionEdges">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Highlights border of section cut in section views</string>
+          </property>
+          <property name="text">
+           <string>Show Section Edges</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowSectionEdges</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="2">
+         <widget class="Gui::PrefComboBox" name="cbEndCap">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>false</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Shape of line end caps.
+Only change unless you know what you are doing!</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>EdgeCapStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Round</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Square</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Flat</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="cbDebugSection">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -438,71 +480,36 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_4">
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbShowLoose">
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Mark Fuzz</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbEdgeFuzz">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>174</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
+            <height>20</height>
            </size>
           </property>
           <property name="toolTip">
-           <string>Size of selection area around edges
-Each unit is approx. 0.1 mm wide</string>
+           <string>Include 2D Objects in projection</string>
           </property>
-          <property name="statusTip">
-           <string/>
+          <property name="text">
+           <string>Show Loose 2D Geom</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>10.000000000000000</double>
+          <property name="checked">
+           <bool>false</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>EdgeFuzz</cstring>
+           <cstring>ShowLoose2d</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbMarkFuzz">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_5">
           <property name="minimumSize">
            <size>
-            <width>174</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -512,21 +519,71 @@ Each unit is approx. 0.1 mm wide</string>
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip">
-           <string>Selection area around center marks
-Each unit is approx. 0.1 mm wide</string>
+          <property name="text">
+           <string>Edge Fuzz</string>
           </property>
-          <property name="statusTip">
-           <string/>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbNewFaceFinder">
+          <property name="toolTip">
+           <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</string>
+          </property>
+          <property name="text">
+           <string>Use New Face Finder Algorithm</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>NewFaceFinder</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Overlap Edges Scrub Passes</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefSpinBox" name="sbScrubCount">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="value">
-           <double>5.000000000000000</double>
+          <property name="suffix">
+           <string/>
+          </property>
+          <property name="prefix">
+           <string/>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>MarkFuzz</cstring>
+           <cstring>ScrubCount</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
@@ -547,7 +604,7 @@ Each unit is approx. 0.1 mm wide</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -589,18 +646,11 @@ Each unit is approx. 0.1 mm wide</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

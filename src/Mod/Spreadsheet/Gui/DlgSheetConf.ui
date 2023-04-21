@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgSheetConf</class>
+ <widget class="QDialog" name="DlgSheetConf">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>366</width>
+    <height>146</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Setup Configuration Table</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Cell range:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEditStart">
+     <property name="toolTip">
+      <string>Starting cell address.
+
+The first column of the range is assumed to contain a list of configuration
+names, which will be used to generate a string list and bind to the given
+property for user to dynamically switch configuration.
+
+The first row of the range will be bound to whatever row (indirectly) selected
+by that property.
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="lineEditEnd">
+     <property name="toolTip">
+      <string>Ending cell address.
+
+The first column of the range is assumed to contain a list of configuration
+names, which will be used to generate a string list and bind to the given
+property for user to dynamically switch configuration.
+
+The first row of the range will be bound to whatever row (indirectly) selected
+by that property.
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Property:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="Gui::ExpressionLineEdit" name="lineEditProp">
+     <property name="toolTip">
+      <string>Type in an expression to specify the object and property name to dynamically
+switch the design configuration. The property will be created if not exist.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Group:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QLineEdit" name="lineEditGroup">
+     <property name="toolTip">
+      <string>Optional property group name.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btnDiscard">
+       <property name="text">
+        <string>Unsetup</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bthCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnOk">
+       <property name="text">
+        <string>OK</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ExpressionLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/ExpressionCompleter.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btnOk</sender>
+   <signal>clicked()</signal>
+   <receiver>DlgSheetConf</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bthCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>DlgSheetConf</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>222</x>
+     <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

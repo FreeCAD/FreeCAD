@@ -21,15 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyStandard.h>
-#include <Gui/ViewProviderFeature.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <App/PropertyStandard.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
+namespace App {
+    class DocumentObject;
+}
 
 namespace TechDraw{
     class DrawGeomHatch;
@@ -46,23 +48,19 @@ public:
     /// constructor
     ViewProviderGeomHatch();
     /// destructor
-    virtual ~ViewProviderGeomHatch();
+    ~ViewProviderGeomHatch() override;
 
     App::PropertyFloat       WeightPattern;
     App::PropertyColor       ColorPattern;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void updateData(const App::Property*) override;
-    virtual void onChanged(const App::Property *prop) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
-    virtual bool doubleClicked(void) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
-    virtual void setDisplayMode(const char* ModeName) override;
-    virtual std::vector<std::string> getDisplayModes(void) const override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked(void) override;
+    bool useNewSelectionModel(void) const override {return false;}
     void updateGraphic(void);
     void getParameters(void);
-    virtual bool canDelete(App::DocumentObject* obj) const override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawGeomHatch* getViewObject() const;
 

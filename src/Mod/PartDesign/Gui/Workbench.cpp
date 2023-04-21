@@ -23,42 +23,43 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-# include <QMessageBox>
-#endif
-
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MDIView.h>
-#include <Gui/MenuManager.h>
-
 #include <Mod/Sketcher/Gui/Workbench.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 #include "Utils.h"
-
 #include "Workbench.h"
-
 #include "WorkflowManager.h"
 
 using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "&Part Design");
     qApp->translate("Workbench", "&Sketch");
+    //
+    qApp->translate("Workbench", "&Part Design");
     qApp->translate("Workbench", "Create a datum");
     qApp->translate("Workbench", "Create an additive feature");
     qApp->translate("Workbench", "Create a subtractive feature");
     qApp->translate("Workbench", "Apply a pattern");
     qApp->translate("Workbench", "Apply a dress-up feature");
+    qApp->translate("Workbench", "Sprocket...");
+    qApp->translate("Workbench", "Involute gear...");
+    qApp->translate("Workbench", "Shaft design wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    //
+    qApp->translate("Workbench", "Measure");
+    qApp->translate("Workbench", "Refresh");
+    qApp->translate("Workbench", "Toggle 3D");
+    qApp->translate("Workbench", "Part Design Helper");
+    qApp->translate("Workbench", "Part Design Modeling");
 #endif
 
 /// @namespace PartDesignGui @class Workbench
@@ -168,7 +169,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 {
     auto selection = Gui::Selection().getSelection();
     // Add move Tip Command
-    if ( selection.size () >= 1 ) {
+    if ( !selection.empty() ) {
         App::DocumentObject *feature = selection.front().pObject;
         PartDesign::Body *body = nullptr;
 
@@ -193,7 +194,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-            if ( selection.size () > 0 && activeView ) {
+            if ( !selection.empty() && activeView ) {
                 bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
                                         PartDesign::Body::getClassTypeId () ) > 0;
 
@@ -263,7 +264,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
         Vertex,
@@ -278,7 +279,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
         Edge,
@@ -296,7 +297,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
         Face,
@@ -306,7 +307,7 @@ void Workbench::activated()
 
     const char* Body[] = {
         "PartDesign_NewSketch",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1",
         Body,
@@ -316,7 +317,7 @@ void Workbench::activated()
 
     const char* Body2[] = {
         "PartDesign_Boolean",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1..",
         Body2,
@@ -330,7 +331,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Point",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
         Plane1,
@@ -343,7 +344,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
         Plane2,
@@ -355,7 +356,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
         Line,
@@ -368,7 +369,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",
         Point,
@@ -378,7 +379,7 @@ void Workbench::activated()
 
     const char* NoSel[] = {
         "PartDesign_Body",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
         "Start Part",
@@ -390,7 +391,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
         Faces,
@@ -411,7 +412,7 @@ void Workbench::activated()
         "PartDesign_SubtractiveLoft",
         "PartDesign_AdditiveHelix",
         "PartDesign_SubtractiveHelix",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
         Sketch,
@@ -425,7 +426,7 @@ void Workbench::activated()
         "PartDesign_PolarPattern",
 //        "PartDesign_Scaled",
         "PartDesign_MultiTransform",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::SketchBased",
         Transformed,
@@ -442,22 +443,19 @@ void Workbench::activated()
         Gui::Control().showTaskView();
 
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
-    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
-    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
-    // Watch out for objects being added to the active document, so that we can add them to the body
-    //App::GetApplication().signalNewObject.connect(boost::bind(&Workbench::slotNewObject, this, bp::_1));
+    activeDoc = Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
+    createDoc = App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
+    finishDoc = App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
+    deleteDoc = App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
 }
 
 void Workbench::deactivated()
 {
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
-    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
-    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
-    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
-    //App::GetApplication().signalNewObject.disconnect(boost::bind(&Workbench::slotNewObject, this, bp::_1));
+    activeDoc.disconnect();
+    createDoc.disconnect();
+    finishDoc.disconnect();
+    deleteDoc.disconnect();
 
     removeTaskWatcher();
     // reset the active Body
@@ -478,11 +476,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     sketch->setCommand("&Sketch");
 
     *sketch << "PartDesign_NewSketch"
-            << "Sketcher_LeaveSketch"
-            << "Sketcher_ViewSketch"
+            << "Sketcher_EditSketch"
             << "Sketcher_MapSketch"
             << "Sketcher_ReorientSketch"
-            << "Sketcher_ValidateSketch";
+            << "Sketcher_ValidateSketch"
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
@@ -557,8 +556,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Boolean"
           << "Separator"
           << "PartDesign_Migrate"
-          << "PartDesign_Sprocket"
-          << "PartDesign_InvoluteGear";
+          << "PartDesign_Sprocket";
+
+    // For 0.13 a couple of python packages like numpy, matplotlib and others
+    // are not deployed with the installer on Windows. Thus, the WizardShaft is
+    // not deployed either hence the check for the existence of the command.
+    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_InvoluteGear")) {
+        *part << "PartDesign_InvoluteGear";
+    }
+    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
+        *part << "Separator" << "PartDesign_WizardShaft";
+    }
 
     // use Part's measure features also for PartDesign
     Gui::MenuItem* measure = new Gui::MenuItem;
@@ -574,14 +582,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
-    // For 0.13 a couple of python packages like numpy, matplotlib and others
-    // are not deployed with the installer on Windows. Thus, the WizardShaft is
-    // not deployed either hence the check for the existence of the command.
-    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_InvoluteGear")) {
-        *part << "PartDesign_InvoluteGear";
-    }
-    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
-        *part << "Separator" << "PartDesign_WizardShaft";
+    Gui::MenuItem* view = root->findItem("&View");
+    if (view) {
+        Gui::MenuItem* appr = view->findItem("Std_RandomColor");
+        appr = view->afterItem(appr);
+        Gui::MenuItem* face = new Gui::MenuItem();
+        face->setCommand("Part_ColorPerFace");
+        view->insertItem(appr, face);
     }
 
     // Replace the "Duplicate selection" menu item with a replacement that is compatible with Body
@@ -602,6 +609,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
           << "Sketcher_MapSketch"
+          << "Sketcher_ValidateSketch"
           << "Separator"
           << "PartDesign_Point"
           << "PartDesign_Line"

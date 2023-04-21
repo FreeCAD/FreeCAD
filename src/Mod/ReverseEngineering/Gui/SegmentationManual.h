@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 #define REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 
+#include <memory>
+
 #include <QDialog>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Mesh/Gui/MeshSelection.h>
-#include <memory>
+
 
 namespace ReverseEngineeringGui {
 class Ui_SegmentationManual;
@@ -43,26 +45,27 @@ class SegmentationManual : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationManual(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SegmentationManual();
+    explicit SegmentationManual(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~SegmentationManual() override;
     void reject();
     void createSegment();
 
-public Q_SLOTS:
-    void on_selectRegion_clicked();
-    void on_selectAll_clicked();
-    void on_selectComponents_clicked();
-    void on_selectTriangle_clicked();
-    void on_deselectAll_clicked();
-    void on_visibleTriangles_toggled(bool);
-    void on_screenTriangles_toggled(bool);
-    void on_cbSelectComp_toggled(bool);
-    void on_planeDetect_clicked();
-    void on_cylinderDetect_clicked();
-    void on_sphereDetect_clicked();
+public:
+    void setupConnections();
+    void onSelectRegionClicked();
+    void onSelectAllClicked();
+    void onSelectComponentsClicked();
+    void onSelectTriangleClicked();
+    void onDeselectAllClicked();
+    void onVisibleTrianglesToggled(bool);
+    void onScreenTrianglesToggled(bool);
+    void onSelectCompToggled(bool);
+    void onPlaneDetectClicked();
+    void onCylinderDetectClicked();
+    void onSphereDetectClicked();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -81,17 +84,17 @@ class TaskSegmentationManual : public Gui::TaskView::TaskDialog
 
 public:
     TaskSegmentationManual();
-    ~TaskSegmentationManual();
+    ~TaskSegmentationManual() override;
 
 public:
-    bool accept();
-    void clicked(int);
+    bool accept() override;
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument(void) const override
     { return true; }
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
     SegmentationManual* widget;

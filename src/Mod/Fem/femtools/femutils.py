@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -27,14 +28,13 @@ This module contains function for extracting relevant parts of geometry and
 a few unrelated function useful at various places in the Fem module.
 """
 
-
 __title__ = "FEM Utilities"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
-
 import os
-import sys
+import subprocess
+from platform import system
 
 import FreeCAD
 if FreeCAD.GuiUp:
@@ -98,7 +98,7 @@ def is_of_type(obj, ty):
 
 
 def is_derived_from(obj, t):
-    """ Check if *obj* is derived from *t* honoring Fems typesytem.
+    """ Check if *obj* is derived from *t* honoring Fems typesystem.
 
     Essentially just call ``obj.isDerivedFrom(t)`` and return it's value. For
     objects using Fems typesystem (see :py:func:`type_of_obj`) return always
@@ -363,25 +363,47 @@ def get_refshape_type(fem_doc_object):
         first_ref_obj = fem_doc_object.References[0]
         first_ref_shape = get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
-        FreeCAD.Console.PrintMessage(
-            "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)
+        FreeCAD.Console.PrintLog(
+            "References: {} in {}, {}\n"
+            . format(st, fem_doc_object.Name, fem_doc_object.Label)
         )
         return st
     else:
-        FreeCAD.Console.PrintMessage(
-            "References: empty in {}, {}\n". format(fem_doc_object.Name, fem_doc_object.Label)
+        FreeCAD.Console.PrintLog(
+            "References: empty in {}, {}\n"
+            . format(fem_doc_object.Name, fem_doc_object.Label)
         )
         return ""
 
 
 def pydecode(bytestring):
-    """ Return *bytestring* as a unicode string for python 2 and 3.
+    """ Return *bytestring* as a unicode string """
+    return bytestring.decode("utf-8")
 
-    For python 2 *bytestring* is converted to a string of type ``unicode``. For
-    python 3 it is returned as is because it uses unicode for it's ``str`` type
-    already.
-    """
-    if sys.version_info.major < 3:
-        return bytestring
-    else:
-        return bytestring.decode("utf-8")
+
+def startProgramInfo(code):
+    """ starts a program under Windows minimized, hidden or normal """
+    if system() == "Windows":
+        info = subprocess.STARTUPINFO()
+        if code == "hide":
+            SW_HIDE = 0
+            info.wShowWindow = SW_HIDE
+        elif code == "minimize":
+            SW_MINIMIZE = 6
+            info.wShowWindow = SW_MINIMIZE
+        elif code == "normal":
+            SW_DEFAULT = 10
+            info.wShowWindow = SW_DEFAULT
+        info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+        return info
+
+
+def expandParentObject():
+    """ expands parent and selected obj in tree view """
+    trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
+    for tree in trees:
+        items = tree.selectedItems()
+        if items == []:
+            continue
+        for item in items:
+            tree.expandItem(item)

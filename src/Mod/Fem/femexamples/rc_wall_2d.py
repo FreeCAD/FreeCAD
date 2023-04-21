@@ -22,53 +22,59 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.rc_wall_2d import setup
-setup()
-
-"""
-
-# example from Harry's epic topic: Concrete branch ready for testing
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=80#p296469
-
 import FreeCAD
 from FreeCAD import Vector as vec
 
-import Fem
-import ObjectsFem
 import Part
 from Part import makeLine as ln
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+import Fem
+import ObjectsFem
 
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "RC Wall 2D",
-            "meshtype": "solid",
-            "meshelement": "Tria6",
-            "constraints": ["fixed", "force", "displacement"],
-            "solvers": ["calculix"],
-            "material": "reinforced",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "RC Wall 2D",
+        "meshtype": "face",
+        "meshelement": "Tria6",
+        "constraints": ["fixed", "force", "displacement"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "reinforced",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.rc_wall_2d import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=80#p296469
+
+example from Harry's epic topic: Concrete branch ready for testing
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup reinfoced wall in 2D
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geom objects
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
+    # geometric object
     v1 = vec(0, -2000, 0)
     v2 = vec(500, -2000, 0)
     v3 = vec(500, 0, 0)
@@ -88,7 +94,6 @@ def setup(doc=None, solvertype="ccxtools"):
     geom_obj = doc.addObject("Part::Feature", "FIB_Wall")
     geom_obj.Shape = Part.Face(Part.Wire([l1, l2, l3, l4, l5, l6, l7, l8]))
     doc.recompute()
-
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -98,32 +103,27 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver.SplitInputWriter = False
-        solver.AnalysisType = "static"
-        solver.GeometricalNonlinearity = "linear"
-        solver.ThermoMechSteadyState = False
-        solver.MatrixSolverType = "default"
-        solver.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # shell thickness
-    thickness = analysis.addObject(
-        ObjectsFem.makeElementGeometry2D(doc, 0, "ShellThickness")
-    )[0]
-    thickness.Thickness = 150.0
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 150.0, "ShellThickness")
+    analysis.addObject(thickness_obj)
 
     # material
     matrixprop = {}
@@ -133,39 +133,35 @@ def setup(doc=None, solvertype="ccxtools"):
     matrixprop["CompressiveStrength"] = "15.75 MPa"
     # make some hint on the possible angle units in material system
     matrixprop["AngleOfFriction"] = "30 deg"
-    matrixprop["Density"] = "2500 kg/m^3"
     reinfoprop = {}
     reinfoprop["Name"] = "Reinforcement-FIB-B500"
     reinfoprop["YieldStrength"] = "315 MPa"
     # not an official FreeCAD material property
     reinfoprop["ReinforcementRatio"] = "0.0"
-    material_reinforced = analysis.addObject(
-        ObjectsFem.makeMaterialReinforced(doc, "MaterialReinforced")
-    )[0]
+    material_reinforced = ObjectsFem.makeMaterialReinforced(doc, "MaterialReinforced")
     material_reinforced.Material = matrixprop
     material_reinforced.Reinforcement = reinfoprop
+    analysis.addObject(material_reinforced)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Edge1"), (geom_obj, "Edge5")]
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(geom_obj, "Edge1"), (geom_obj, "Edge5")]
+    analysis.addObject(con_fixed)
 
-    # force constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    force_constraint.References = [(geom_obj, "Edge7")]
-    force_constraint.Force = 1000000.0
-    force_constraint.Direction = (geom_obj, ["Edge8"])
-    force_constraint.Reversed = False
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [(geom_obj, "Edge7")]
+    con_force.Force = 1000000.0
+    con_force.Direction = (geom_obj, ["Edge8"])
+    con_force.Reversed = False
+    analysis.addObject(con_force)
 
-    # displacement_constraint
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    )[0]
-    displacement_constraint.References = [(geom_obj, "Face1")]
-    displacement_constraint.zFix = True
+    # constraint displacement
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacmentPrescribed")
+    con_disp.References = [(geom_obj, "Face1")]
+    con_disp.zFree = False
+    con_disp.zFix = True
+    analysis.addObject(con_disp)
 
     # mesh
     from .meshes.mesh_rc_wall_2d_tria6 import create_nodes, create_elements
@@ -176,9 +172,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

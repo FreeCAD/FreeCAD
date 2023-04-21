@@ -20,32 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_OffsetSurface.hxx>
 # include <memory>
 #endif
 
-#include <Base/VectorPy.h>
-#include <Base/Vector3D.h>
-
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/OffsetSurfacePy.h>
-#include <Mod/Part/App/OffsetSurfacePy.cpp>
+#include "OffsetSurfacePy.h"
+#include "OffsetSurfacePy.cpp"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string OffsetSurfacePy::representation(void) const
+std::string OffsetSurfacePy::representation() const
 {
     return "<OffsetSurface object>";
 }
 
 PyObject *OffsetSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of OffsetSurfacePy and the Twin object 
+    // create a new instance of OffsetSurfacePy and the Twin object
     return new OffsetSurfacePy(new GeomOffsetSurface);
 }
 
@@ -54,8 +50,8 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* pGeom;
     double offset;
-    if (!PyArg_ParseTuple(args, "O!d", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!d",
+                            &(GeometryPy::Type), &pGeom,
                             &offset))
         return -1;
 
@@ -79,7 +75,7 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Float OffsetSurfacePy::getOffsetValue(void) const
+Py::Float OffsetSurfacePy::getOffsetValue() const
 {
     Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Float(surf->Offset());
@@ -91,7 +87,7 @@ void  OffsetSurfacePy::setOffsetValue(Py::Float arg)
     surf->SetOffsetValue((double)arg);
 }
 
-Py::Object OffsetSurfacePy::getBasisSurface(void) const
+Py::Object OffsetSurfacePy::getBasisSurface() const
 {
     Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast
         (getGeometryPtr()->handle());
@@ -127,10 +123,10 @@ void  OffsetSurfacePy::setBasisSurface(Py::Object arg)
 
 PyObject *OffsetSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int OffsetSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

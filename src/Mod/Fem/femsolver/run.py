@@ -95,18 +95,19 @@ def run_fem_solver(solver, working_dir=None):
 
     :note:
         There is some legacy code to execute the old Calculix solver
-        (pre-framework) which behaives differently because it doesn't use a
-        :class:`Machine`.
+        (pre-framework) which behaives differently because it does not
+        use a :class:`Machine`.
     """
 
     if solver.Proxy.Type == "Fem::SolverCcxTools":
-        App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
         from femtools.ccxtools import CcxTools as ccx
+        App.Console.PrintMessage("Run of CalxuliX ccx tools solver started.\n")
         fea = ccx(solver)
         fea.reset_mesh_purge_results_checked()
         if working_dir is None:
-            fea.run()
+            fea.run()  # standard, no working dir is given in solver
         else:
+            # not the standard way
             fea.update_objects()
             fea.setup_working_dir(working_dir)
             fea.setup_ccx()
@@ -116,7 +117,8 @@ def run_fem_solver(solver, working_dir=None):
                 fea.ccx_run()
                 fea.load_results()
             else:
-                App.Console.PrintError("Houston, we have a problem ...!\n{}\n".format(message))
+                App.Console.PrintError("Houston, we have a problem...!\n{}\n".format(message))
+        App.Console.PrintMessage("Run of CalxuliX ccx tools solver finished.\n")
     else:
         # App.Console.PrintMessage("Frame work solver!\n")
         try:
@@ -416,9 +418,11 @@ class Machine(BaseTask):
 
 class Check(BaseTask):
 
-    def checkMesh(self):
-        meshes = membertools.get_member(
-            self.analysis, "Fem::FemMeshObject")
+    def get_several_member(self, t):
+        return membertools.get_several_member(self.analysis, t)
+
+    def check_mesh_exists(self):
+        meshes = self.get_several_member("Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
             self.fail()
@@ -426,18 +430,71 @@ class Check(BaseTask):
         elif len(meshes) > 1:
             self.report.error(
                 "Too many meshes. "
-                "More than one mesh is not supported.")
+                "More than one mesh is not supported."
+            )
             self.fail()
             return False
         return True
 
-    def checkMaterial(self):
-        matObjs = membertools.get_member(
-            self.analysis, "App::MaterialObjectPython")
-        if len(matObjs) == 0:
+    def check_material_exists(self):
+        objs = self.get_several_member("App::MaterialObjectPython")
+        if len(objs) == 0:
             self.report.error(
-                "No material object found. "
-                "At least one material is required.")
+                "Missing a material object. "
+                "At least one material is required."
+            )
+            self.fail()
+            return False
+        return True
+
+    def check_material_single(self):
+        objs = self.get_several_member("App::MaterialObjectPython")
+        if len(objs) > 1:
+            self.report.error("Only one Material is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_no(self):
+        objs = self.get_several_member("Fem::ElementGeometry1D")
+        if len(objs) > 0:
+            self.report.error("Beamsections are not supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_single(self):
+        objs = self.get_several_member("Fem::ElementGeometry1D")
+        if len(objs) > 1:
+            self.report.error("Only one beamsection is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_shellthickness_no(self):
+        objs = self.get_several_member("Fem::ElementGeometry2D")
+        if len(objs) > 0:
+            self.report.error("Shellsections are not supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_shellthickness_single(self):
+        objs = self.get_several_member("Fem::ElementGeometry2D")
+        if len(objs) > 1:
+            self.report.error("Only one shellthickness is supported for this solver.")
+            self.fail()
+            return False
+        return True
+
+    def check_geos_beamsection_and_shellthickness(self):
+        beamsec_obj = self.get_several_member("Fem::ElementGeometry1D")
+        shellth_obj = self.get_several_member("Fem::ElementGeometry2D")
+        if len(beamsec_obj) > 0 and len(shellth_obj) > 0:
+            self.report.error(
+                "Either beamsection or shellthickness objects are "
+                "supported for this solver, but not both in one analysis."
+            )
             self.fail()
             return False
         return True
@@ -451,7 +508,9 @@ class Check(BaseTask):
                         supported = True
                 if not supported:
                     self.report.warning(
-                        "Ignored unsupported constraint: %s" % m.Label)
+                        "Ignored unsupported constraint: {}"
+                        .format(m.Label)
+                    )
         return True
 
 

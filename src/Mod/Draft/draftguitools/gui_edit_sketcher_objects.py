@@ -49,8 +49,11 @@ class SketcherSketchObjectGuiTools(GuiTools):
         0 : startpoint
         1 : endpoint
         """
+        import Part
         editpoints = []
-        if obj.GeometryCount == 1:
+        if (obj.ConstraintCount == 0
+                and obj.GeometryCount == 1
+                and type(obj.Geometry[0]) == Part.LineSegment):
             editpoints.append(obj.getPoint(0,1))
             editpoints.append(obj.getPoint(0,2))
             return editpoints
@@ -60,7 +63,6 @@ class SketcherSketchObjectGuiTools(GuiTools):
             App.Console.PrintWarning(_wrn + "\n")
             return None
 
-
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
         """Move a single line sketch vertex a certain displacement.
 
@@ -69,11 +71,12 @@ class SketcherSketchObjectGuiTools(GuiTools):
         0 : startpoint
         1 : endpoint
         """
-        import Sketcher
+        line = obj.Geometry[0]
         if node_idx == 0:
-            obj.movePoint(0, 1, v)
+            line.StartPoint = v
         elif node_idx == 1:
-            obj.movePoint(0, 2, v)
+            line.EndPoint = v
+        obj.Geometry = [line]
         obj.recompute()
 
 ## @}

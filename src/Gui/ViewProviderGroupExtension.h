@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
 #define GUI_VIEWPROVIDERGROUPEXTENSION_H
 
-#include <App/Extension.h>
-#include "ViewProviderExtension.h"
+#include "ViewProviderExtensionPython.h"
+
 
 namespace Gui
 {
@@ -36,28 +35,28 @@ class GuiExport ViewProviderGroupExtension : public ViewProviderExtension
 
 public:
     /// Constructor
-    ViewProviderGroupExtension(void);
-    virtual ~ViewProviderGroupExtension();
+    ViewProviderGroupExtension();
+    ~ViewProviderGroupExtension() override;
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
-    virtual bool extensionCanDragObjects() const override;
-    virtual bool extensionCanDragObject(App::DocumentObject*) const override;
-    virtual void extensionDragObject(App::DocumentObject*) override;
-    virtual bool extensionCanDropObjects() const override;
-    virtual bool extensionCanDropObject(App::DocumentObject*) const override;
-    virtual void extensionDropObject(App::DocumentObject*) override;
+    std::vector<App::DocumentObject*> extensionClaimChildren()const override;
+    bool extensionCanDragObjects() const override;
+    bool extensionCanDragObject(App::DocumentObject*) const override;
+    void extensionDragObject(App::DocumentObject*) override;
+    bool extensionCanDropObjects() const override;
+    bool extensionCanDropObject(App::DocumentObject*) const override;
+    void extensionDropObject(App::DocumentObject*) override;
 
-    virtual void extensionHide(void) override;
-    virtual void extensionShow(void) override;
+    void extensionHide() override;
+    void extensionShow() override;
 
-    virtual bool extensionOnDelete(const std::vector<std::string> &) override;
+    bool extensionOnDelete(const std::vector<std::string> &) override;
 
 private:
     bool guard;
     std::vector<ViewProvider*> nodes;
 };
 
-typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;
+using ViewProviderGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension>;
 
 } //namespace Gui
 

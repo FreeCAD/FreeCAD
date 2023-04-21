@@ -20,32 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <gp_Pln.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <gp_Pln.hxx>
 #endif
-
-#include <Base/Placement.h>
 
 #include "FeatureFace.h"
 #include "FaceMaker.h"
-#include <Mod/Part/App/Part2DObject.h>
 
 
 using namespace Part;
@@ -55,7 +37,7 @@ PROPERTY_SOURCE(Part::Face, Part::Feature)
 
 Face::Face()
 {
-    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(Sources,(nullptr));
     ADD_PROPERTY(FaceMakerClass,("Part::FaceMakerCheese"));//default value here is for legacy documents. Default for new objects is set in setupObject.
     Sources.setSize(0);
 }
@@ -75,7 +57,7 @@ void Face::setupObject()
     Feature::setupObject();
 }
 
-App::DocumentObjectExecReturn *Face::execute(void)
+App::DocumentObjectExecReturn *Face::execute()
 {
     std::vector<App::DocumentObject*> links = Sources.getValues();
     if (links.empty())

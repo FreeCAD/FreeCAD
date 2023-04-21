@@ -20,22 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _FeatureViewAnnotation_h_
 #define _FeatureViewAnnotation_h_
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+
+#include "FeatureView.h"
 
 
 namespace Drawing
 {
-
 
 /** Base class of all View Features in the drawing module
  */
@@ -64,7 +60,7 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<FeatureViewAnnotation> FeatureViewAnnotationPython;
+using FeatureViewAnnotationPython = App::FeaturePythonT<FeatureViewAnnotation>;
 
 
 } //namespace Drawing

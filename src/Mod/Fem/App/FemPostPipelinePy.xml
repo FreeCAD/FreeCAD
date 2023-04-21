@@ -18,9 +18,19 @@
                 <UserDocu>Read in vtk file</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="scale">
+            <Documentation>
+                <UserDocu>scale the points of a loaded vtk file</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="load">
             <Documentation>
                 <UserDocu>Load a result object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="recomputeChildren">
+            <Documentation>
+                <UserDocu>Recomputes all children of the pipeline</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getLastPostObject">

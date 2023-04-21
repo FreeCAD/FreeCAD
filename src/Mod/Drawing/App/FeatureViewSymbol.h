@@ -20,22 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _FeatureViewSymbol_h_
 #define _FeatureViewSymbol_h_
 
-
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
 #include <App/FeaturePython.h>
+#include <App/PropertyStandard.h>
+
+#include "FeatureView.h"
 
 
 namespace Drawing
 {
-
 
 /** Base class of all View Features in the drawing module
  */
@@ -66,7 +62,7 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
-typedef App::FeaturePythonT<FeatureViewSymbol> FeatureViewSymbolPython;
+using FeatureViewSymbolPython = App::FeaturePythonT<FeatureViewSymbol>;
 
 
 } //namespace Drawing

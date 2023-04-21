@@ -26,18 +26,20 @@
 # include <QPixmapCache>
 # include <QStyle>
 #endif
-#include "ExpressionBinding.h"
-#include "QuantitySpinBox_p.h"
+
 #include "BitmapFactory.h"
 #include "Command.h"
-#include <App/Expression.h>
-#include <App/DocumentObject.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <App/ObjectIdentifier.h>
-#include <App/Document.h>
+#include "ExpressionBinding.h"
+#include "QuantitySpinBox_p.h"
+
 #include <App/Application.h>
-#include <boost_bind_bind.hpp>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Expression.h>
+#include <App/ObjectIdentifier.h>
+#include <App/PropertyGeo.h>
+#include <Base/Tools.h>
+
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 
@@ -46,9 +48,7 @@ using namespace App;
 namespace bp = boost::placeholders;
 
 ExpressionBinding::ExpressionBinding()
-    : iconLabel(0)
-    , iconHeight(-1)
-    , m_autoApply(false)
+    : m_autoApply(false)
 {
 }
 
@@ -59,7 +59,7 @@ ExpressionBinding::~ExpressionBinding()
 
 bool ExpressionBinding::isBound() const
 {
-    return path.getDocumentObject() != 0;
+    return path.getDocumentObject() != nullptr;
 }
 
 void ExpressionBinding::unbind()
@@ -76,7 +76,7 @@ void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
     if (expr) {
         const std::string error = docObj->ExpressionEngine.validateExpression(path, expr);
 
-        if (error.size())
+        if (!error.empty())
             throw Base::RuntimeError(error.c_str());
 
     }
@@ -104,7 +104,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
 {
     const Property * prop = _path.getProperty();
 
-    Q_ASSERT(prop != 0);
+    Q_ASSERT(prop != nullptr);
 
     path = prop->canonicalPath(_path);
 
@@ -124,14 +124,14 @@ void ExpressionBinding::bind(const Property &prop)
 
 bool ExpressionBinding::hasExpression() const
 {
-    return isBound() && getExpression() != 0;
+    return isBound() && getExpression() != nullptr;
 }
 
 std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject * docObj = path.getDocumentObject();
 
-    Q_ASSERT(isBound() && docObj != 0);
+    Q_ASSERT(isBound() && docObj != nullptr);
 
     return docObj->getExpression(path).expression;
 }
@@ -166,20 +166,26 @@ std::string ExpressionBinding::getEscapedExpressionString() const
     return Base::Tools::escapedUnicodeFromUtf8(getExpressionString(false).c_str());
 }
 
-QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
+bool ExpressionBinding::assignToProperty(const std::string & propName, double value)
 {
-    QString key = QString::fromLatin1("%1_%2x%3")
-        .arg(QString::fromLatin1(name))
-        .arg(size.width())
-        .arg(size.height());
-    QPixmap icon;
-    if (QPixmapCache::find(key, &icon))
-        return icon;
+    if (isBound()) {
+        const App::ObjectIdentifier & path = getPath();
+        const Property * prop = path.getProperty();
 
-    icon = BitmapFactory().pixmapFromSvg(name, size);
-    if (!icon.isNull())
-        QPixmapCache::insert(key, icon);
-    return icon;
+        /* Skip update if property is bound and we know it is read-only */
+        if (prop && prop->isReadOnly())
+            return true;
+
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+            std::string p = path.getSubPathStr();
+            if (p == ".Rotation.Angle") {
+                value = Base::toRadians(value);
+            }
+        }
+    }
+
+    Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value);
+    return true;
 }
 
 bool ExpressionBinding::apply(const std::string & propName)
@@ -237,7 +243,7 @@ bool ExpressionBinding::apply()
 {
     Property * prop(path.getProperty());
 
-    assert(prop != 0);
+    assert(prop);
     Q_UNUSED(prop);
 
     DocumentObject * docObj(path.getDocumentObject());
@@ -270,7 +276,32 @@ void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
     }
 }
 
-void ExpressionBinding::makeLabel(QLineEdit* le)
+// ----------------------------------------------------------------------------
+
+ExpressionWidget::ExpressionWidget()
+    : iconLabel(nullptr)
+    , iconHeight(-1)
+{
+
+}
+
+QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
+{
+    QString key = QString::fromLatin1("%1_%2x%3")
+        .arg(QString::fromLatin1(name))
+        .arg(size.width())
+        .arg(size.height());
+    QPixmap icon;
+    if (QPixmapCache::find(key, &icon))
+        return icon;
+
+    icon = BitmapFactory().pixmapFromSvg(name, size);
+    if (!icon.isNull())
+        QPixmapCache::insert(key, icon);
+    return icon;
+}
+
+void ExpressionWidget::makeLabel(QLineEdit* le)
 {
     defaultPalette = le->palette();
 

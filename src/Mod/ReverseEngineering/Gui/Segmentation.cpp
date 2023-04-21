@@ -20,37 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Geom_Plane.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Wire.hxx>
 #endif
 
-#include "Segmentation.h"
-#include "ui_Segmentation.h"
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <Base/Console.h>
 #include <Gui/WaitCursor.h>
-
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/Core/Curvature.h>
+#include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/Core/Smoothing.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "Segmentation.h"
+#include "ui_Segmentation.h"
+
 
 using namespace ReverseEngineeringGui;
 
@@ -111,7 +110,7 @@ void Segmentation::accept()
         // For each planar segment compute a plane and use this then for a more accurate 2nd segmentation
         if (strcmp((*it)->GetType(), "Plane") == 0) {
             for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
-                std::vector<unsigned long> indexes = kernel.GetFacetPoints(*jt);
+                std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(*jt);
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(kernel.GetPoints(indexes));
                 if (fit.Fit() < FLOAT_MAX) {
@@ -213,7 +212,7 @@ void Segmentation::accept()
 
     if (createUnused) {
         // collect all facets that don't have set the flag TMP0
-        std::vector<unsigned long> unusedFacets;
+        std::vector<MeshCore::FacetIndex> unusedFacets;
         algo.GetFacetsFlag(unusedFacets, MeshCore::MeshFacet::TMP0);
 
         if (!unusedFacets.empty()) {
@@ -256,7 +255,7 @@ TaskSegmentation::TaskSegmentation(Mesh::Feature* mesh)
 {
     widget = new Segmentation(mesh);
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

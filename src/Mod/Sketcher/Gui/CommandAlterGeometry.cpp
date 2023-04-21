@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
@@ -28,19 +27,17 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
 #include <Gui/CommandT.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
-
-#include <Mod/Part/App/Geometry.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ViewProviderSketch.h"
 #include "GeometryCreationMode.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace std;
 using namespace SketcherGui;
@@ -70,25 +67,46 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     :Command("Sketcher_ToggleConstruction")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Toggle construction geometry");
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ToggleConstruction";
-    sAccel          = "C,M";
+    sAccel          = "G, N";
     eType           = ForEdit;
 
     // list of toggle construction commands
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateLine");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle_Center");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOblong");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseByCenter");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseBy3Points");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfEllipse");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfHyperbola");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfParabola");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateConic");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointCircle");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateTriangle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSquare");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePentagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateHexagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateHeptagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOctagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRegularPolygon");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRegularPolygon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateBSpline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
 }
@@ -114,7 +132,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     {
         // get the selection
         std::vector<Gui::SelectionObject> selection;
-        selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+        selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
         Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
@@ -170,14 +188,14 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     }
 }
 
-bool CmdSketcherToggleConstruction::isActive(void)
+bool CmdSketcherToggleConstruction::isActive()
 {
     return isAlterGeoActive( getActiveGuiDocument() );
 }
 
 }
 
-void CreateSketcherCommandsAlterGeo(void)
+void CreateSketcherCommandsAlterGeo()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

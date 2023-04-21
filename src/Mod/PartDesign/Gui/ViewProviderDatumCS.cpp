@@ -24,21 +24,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoText2.h>
+# include <Inventor/details/SoLineDetail.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif
 
 #include <App/Application.h>
 #include <Gui/Inventor/SoAutoZoomTranslation.h>
-#include "TaskDatumParameters.h"
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 
 #include "ViewProviderDatumCS.h"
@@ -85,7 +83,7 @@ ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
     autoZoom = new Gui::SoAutoZoomTranslation;
     autoZoom->ref();
 
-    labelSwitch = 0;
+    labelSwitch = nullptr;
 }
 
 ViewProviderDatumCoordinateSystem::~ViewProviderDatumCoordinateSystem()
@@ -192,7 +190,7 @@ void ViewProviderDatumCoordinateSystem::setupLabels() {
 
 void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 {
-    if (strcmp(prop->getName(),"Placement") == 0) 
+    if (strcmp(prop->getName(),"Placement") == 0)
         updateExtents ();
 
     ViewProviderDatum::updateData(prop);
@@ -205,7 +203,7 @@ void ViewProviderDatumCoordinateSystem::onChanged(const App::Property *prop) {
         else if(prop == &Zoom) {
             autoZoom->scaleFactor.setValue(Zoom.getValue());
             updateExtents ();
-        } else if(prop == &FontSize) 
+        } else if(prop == &FontSize)
             font->size = FontSize.getValue();
     }
     ViewProviderDatum::onChanged(prop);
@@ -214,7 +212,7 @@ void ViewProviderDatumCoordinateSystem::onChanged(const App::Property *prop) {
 void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
     // Axis length of the CS is 1/3 of maximum bbox dimension, any smarter sizing will make it only worse
     double axisLength;
-    
+
     if(Zoom.getValue()) {
         axisLength = 6 * Zoom.getValue();
     }else{
@@ -268,6 +266,6 @@ SoDetail* ViewProviderDatumCoordinateSystem::getDetail(const char* subelement) c
          detail->setLineIndex(2);
          return detail;
     }
-    return NULL;
+    return nullptr;
 }
 

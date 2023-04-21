@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
-
+#include <Mod/Sketcher/App/Constraint.h>
+#include "Utils.h"
 #include "Workbench.h"
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 
 using namespace SketcherGui;
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "Sketcher");
+    qApp->translate("Workbench","P&rofiles");
+    qApp->translate("Workbench","S&ketch");
     qApp->translate("Workbench", "Sketcher");
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
@@ -93,6 +93,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, sketch);
     sketch->setCommand("S&ketch");
     addSketcherWorkbenchSketchActions(*sketch);
+    addSketcherWorkbenchSketchEditModeActions(*sketch);
     *sketch << geom
             << cons
             << consaccel
@@ -110,23 +111,27 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     sketcher->setCommand("Sketcher");
     addSketcherWorkbenchSketchActions(*sketcher);
 
-    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* sketcherEditMode = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+    sketcherEditMode->setCommand("Sketcher Edit Mode");
+    addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
+
+    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     geom->setCommand("Sketcher geometries");
     addSketcherWorkbenchGeometries(*geom);
 
-    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     cons->setCommand("Sketcher constraints");
     addSketcherWorkbenchConstraints(*cons);
 
-    Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools(*consaccel);
 
-    Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bspline);
 
-    Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
@@ -140,45 +145,102 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     return root;
 }
 
+void Workbench::activated()
+{
+    Gui::Document *doc = Gui::Application::Instance->activeDocument();
+    if (isSketchInEdit(doc)) {
+        enterEditMode();
+    }
+}
+
+namespace
+{
+    inline const QStringList editModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Sketcher Edit Mode"),
+                            QString::fromLatin1("Sketcher geometries"),
+                            QString::fromLatin1("Sketcher constraints"),
+                            QString::fromLatin1("Sketcher tools"),
+                            QString::fromLatin1("Sketcher B-spline tools"),
+                            QString::fromLatin1("Sketcher virtual space") };
+    }
+
+    inline const QStringList nonEditModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Structure"),
+                            QString::fromLatin1("Sketcher") };
+    }
+}
+
+void Workbench::enterEditMode()
+{
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+}
+
+void Workbench::leaveEditMode()
+{
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+}
 
 namespace SketcherGui {
 
 template <typename T>
-inline void SketcherAddWorkspaceSketchExtra(T& /*sketch*/) { }
-
-template <>
-inline void SketcherAddWorkspaceSketchExtra<Gui::MenuItem>(Gui::MenuItem& sketch)
-{
-    sketch  << "Sketcher_ReorientSketch"
-            << "Sketcher_ValidateSketch"
-            << "Sketcher_MergeSketches"
-            << "Sketcher_MirrorSketch"
-            << "Sketcher_StopOperation";
-}
-
-template <>
-inline void SketcherAddWorkspaceSketchExtra<Gui::ToolBarItem>(Gui::ToolBarItem& sketch)
-{
-    sketch  << "Sketcher_ReorientSketch"
-            << "Sketcher_ValidateSketch"
-            << "Sketcher_MergeSketches"
-            << "Sketcher_MirrorSketch"
-            << "Sketcher_StopOperation";
-}
-
-template <typename T>
 void SketcherAddWorkbenchSketchActions(T& sketch);
 
-template <typename T>
-inline void SketcherAddWorkbenchSketchActions(T& sketch)
+template <>
+inline void SketcherAddWorkbenchSketchActions(Gui::MenuItem& sketch)
 {
     sketch  << "Sketcher_NewSketch"
             << "Sketcher_EditSketch"
-            << "Sketcher_LeaveSketch"
+            << "Sketcher_MapSketch"
+            << "Sketcher_ReorientSketch"
+            << "Sketcher_ValidateSketch"
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
+}
+template <>
+inline void SketcherAddWorkbenchSketchActions(Gui::ToolBarItem& sketch)
+{
+    sketch  << "Sketcher_NewSketch"
+            << "Sketcher_EditSketch"
+            << "Sketcher_MapSketch"
+            << "Sketcher_ReorientSketch"
+            << "Sketcher_ValidateSketch"
+            << "Sketcher_MergeSketches"
+            << "Sketcher_MirrorSketch";
+}
+
+template <typename T>
+void SketcherAddWorkbenchSketchEditModeActions(T& sketch);
+
+template <>
+inline void SketcherAddWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
+{
+    sketch  << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
             << "Sketcher_ViewSection"
-            << "Sketcher_MapSketch";
-    SketcherAddWorkspaceSketchExtra(sketch);
+            << "Sketcher_StopOperation";
+}
+template <>
+inline void SketcherAddWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
+{
+    sketch  << "Sketcher_LeaveSketch"
+            << "Sketcher_ViewSketch"
+            << "Sketcher_ViewSection"
+            << "Sketcher_Grid"
+            << "Sketcher_Snap";
 }
 
 template <typename T>
@@ -200,7 +262,9 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom)
             << "Sketcher_CreateArcOfHyperbola"
             << "Sketcher_CreateArcOfParabola"
             << "Sketcher_CreateBSpline"
-            << "Sketcher_CreatePeriodicBSpline";
+            << "Sketcher_CreatePeriodicBSpline"
+            << "Sketcher_CreateBSplineByInterpolation"
+            << "Sketcher_CreatePeriodicBSplineByInterpolation";
 }
 
 template <>
@@ -233,6 +297,22 @@ inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarIte
     geom    << "Sketcher_CompCreateRegularPolygon";
 }
 
+template <typename T>
+void SketcherAddWorkspaceRectangles(T& geom);
+
+template <>
+inline void SketcherAddWorkspaceRectangles<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom    << "Sketcher_CreateRectangle"
+            << "Sketcher_CreateRectangle_Center"
+            << "Sketcher_CreateOblong";
+}
+
+template <>
+inline void SketcherAddWorkspaceRectangles<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompCreateRectangles";
+}
 
 template <typename T>
 void SketcherAddWorkspaceFillets(T& geom);
@@ -257,8 +337,8 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             << "Sketcher_CreateLine";
     SketcherAddWorkspaceArcs(geom);
     geom    << "Separator"
-            << "Sketcher_CreatePolyline"
-            << "Sketcher_CreateRectangle";
+            << "Sketcher_CreatePolyline";
+    SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     geom    << "Sketcher_CreateSlot"
             << "Separator";
@@ -272,9 +352,6 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }
-
-//template <typename T>
-//void SketcherAddWorkbenchConstraints(T& cons);
 
 template <typename T>
 inline void SketcherAddWorkbenchConstraints(T& cons);
@@ -302,7 +379,6 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
             << "Sketcher_ConstrainRadiam"
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
-            << "Sketcher_ConstrainInternalAlignment"
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
             << "Sketcher_ToggleActiveConstraint";
@@ -328,8 +404,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainDistance"
             << "Sketcher_CompConstrainRadDia"
             << "Sketcher_ConstrainAngle"
-            << "Sketcher_ConstrainSnellsLaw"
-            // << "Sketcher_ConstrainInternalAlignment" // This constrain is never used by the user - Do not use precious toolbar space
+            // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
             << "Sketcher_ToggleActiveConstraint";
@@ -342,8 +417,6 @@ template <>
 inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 {
     consaccel   << "Sketcher_SelectElementsWithDoFs"
-                << "Sketcher_CloseShape"
-                << "Sketcher_ConnectLines"
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectElementsAssociatedWithConstraints"
                 << "Sketcher_SelectRedundantConstraints"
@@ -359,6 +432,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
                 << "Sketcher_Copy"
                 << "Sketcher_Move"
                 << "Sketcher_RectangularArray"
+                << "Sketcher_RemoveAxesAlignment"
                 << "Separator"
                 << "Sketcher_DeleteAllGeometry"
                 << "Sketcher_DeleteAllConstraints";
@@ -367,17 +441,16 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel   << "Sketcher_SelectElementsWithDoFs"
-                << "Sketcher_CloseShape"
-                << "Sketcher_ConnectLines"
+    consaccel   //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by solver message.
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectElementsAssociatedWithConstraints"
-                << "Sketcher_SelectRedundantConstraints"
-                << "Sketcher_SelectConflictingConstraints"
+                //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver message.
+                //<< "Sketcher_SelectConflictingConstraints"
                 << "Sketcher_RestoreInternalAlignmentGeometry"
                 << "Sketcher_Symmetry"
                 << "Sketcher_CompCopy"
                 << "Sketcher_RectangularArray"
+                << "Sketcher_RemoveAxesAlignment"
                 << "Sketcher_DeleteAllConstraints";
 }
 
@@ -392,21 +465,25 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
             << "Sketcher_BSplineComb"
             << "Sketcher_BSplineKnotMultiplicity"
             << "Sketcher_BSplinePoleWeight"
-            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_BSplineIncreaseKnotMultiplicity"
-            << "Sketcher_BSplineDecreaseKnotMultiplicity";
+            << "Sketcher_BSplineDecreaseKnotMultiplicity"
+            << "Sketcher_BSplineInsertKnot"
+            << "Sketcher_JoinCurves";
 }
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
 {
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
-            << "Sketcher_CompModifyKnotMultiplicity";
+            << "Sketcher_CompModifyKnotMultiplicity"
+            << "Sketcher_BSplineInsertKnot"
+            << "Sketcher_JoinCurves";
 }
 
 template <typename T>
@@ -427,6 +504,11 @@ inline void SketcherAddWorkbenchVirtualSpace<Gui::ToolBarItem>(Gui::ToolBarItem&
 void addSketcherWorkbenchSketchActions(Gui::MenuItem& sketch)
 {
     SketcherAddWorkbenchSketchActions(sketch);
+}
+
+void addSketcherWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
+{
+    SketcherAddWorkbenchSketchEditModeActions(sketch);
 }
 
 void addSketcherWorkbenchGeometries(Gui::MenuItem& geom)
@@ -457,6 +539,11 @@ void addSketcherWorkbenchVirtualSpace(Gui::MenuItem& virtualspace)
 void addSketcherWorkbenchSketchActions(Gui::ToolBarItem& sketch)
 {
     SketcherAddWorkbenchSketchActions(sketch);
+}
+
+void addSketcherWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
+{
+    SketcherAddWorkbenchSketchEditModeActions(sketch);
 }
 
 void addSketcherWorkbenchGeometries(Gui::ToolBarItem& geom)

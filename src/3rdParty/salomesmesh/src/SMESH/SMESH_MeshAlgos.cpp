@@ -38,10 +38,13 @@
 #include <GC_MakeSegment.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <Geom_Line.hxx>
-#include <IntAna_IntConicQuad.hxx>
-#include <IntAna_Quadric.hxx>
+#include <gp_Cone.hxx>
+#include <gp_Cylinder.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
+#include <gp_Sphere.hxx>
+#include <IntAna_IntConicQuad.hxx>
+#include <IntAna_Quadric.hxx>
 
 #include <limits>
 #include <numeric>

@@ -159,14 +159,14 @@ class TestDeleteMenuCmd:
 class TestInsertFeatureCmd:
     "Base test commando object"
     def Activated(self):
-        if FreeCAD.activeDocument() != None:
+        if FreeCAD.activeDocument() is not None:
             FreeCAD.activeDocument().addObject("App::FeatureTest")
         else:
             FreeCAD.PrintMessage("No active document.\n")
 
     def GetResources(self):
         return {'Pixmap'  : 'Std_Tool1',
-                'MenuText': 'Insert a TestFeauture',
+                'MenuText': 'Insert a TestFeature',
                 'ToolTip' : 'Insert a TestFeature in the active Document'}
 
 #---------------------------------------------------------------------------

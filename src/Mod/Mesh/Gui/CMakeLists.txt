@@ -94,13 +94,7 @@ SET(Inventor_SRCS
 )
 SOURCE_GROUP("Inventor" FILES ${Inventor_SRCS})
 
-if (BUILD_QT5)
-    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-    qt5_add_resources(resource_SRCS Resources/Mesh.qrc)
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-    qt4_add_resources(resource_SRCS Resources/Mesh.qrc)
-endif()
+qt_add_resources(resource_SRCS Resources/Mesh.qrc)
 
 SET(resource_SRCS
     ${resource_SRCS}
@@ -144,9 +138,17 @@ SET(MeshGui_SRCS
     MeshSelection.h
     PropertyEditorMesh.cpp
     PropertyEditorMesh.h
+    ThumbnailExtension.cpp
+    ThumbnailExtension.h
     Workbench.cpp
     Workbench.h
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(MeshGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg

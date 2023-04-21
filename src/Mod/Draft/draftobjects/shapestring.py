@@ -27,7 +27,6 @@
 
 ## \addtogroup draftobjects
 # @{
-import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -59,19 +58,18 @@ class ShapeString(DraftObject):
         obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
         # import OpenSCAD2Dgeom
-        import os
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
-            ff8 = obj.FontFile.encode('utf8')                  # 1947 accents in filepath
-                                                               # TODO: change for Py3?? bytes?
-                                                               # Part.makeWireString uses FontFile as char* string
-            if sys.version_info.major < 3:
-                CharList = Part.makeWireString(obj.String,ff8,obj.Size,obj.Tracking)
-            else:
-                CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
+
+            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
             if len(CharList) == 0:
                 App.Console.PrintWarning(translate("draft","ShapeString: string has no wires")+"\n")
                 return
@@ -79,10 +77,7 @@ class ShapeString(DraftObject):
 
             # test a simple letter to know if we have a sticky font or not
             sticky = False
-            if sys.version_info.major < 3:
-                testWire = Part.makeWireString("L",ff8,obj.Size,obj.Tracking)[0][0]
-            else:
-                testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
             if testWire.isClosed:
                 try:
                     testFace = Part.Face(testWire)
@@ -119,6 +114,10 @@ class ShapeString(DraftObject):
             if plm:
                 obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
     def makeFaces(self, wireChar):
         import Part
@@ -168,7 +167,7 @@ class ShapeString(DraftObject):
         ''' remove cuts, fuse overlapping contours, retain islands '''
         import Part
         if len(facelist) == 1:
-            return(facelist[0])
+            return facelist[0]
 
         sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
 

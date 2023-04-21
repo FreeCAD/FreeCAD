@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 
+#include <cassert>
 #include "DualQuaternion.h"
 
-#include "cassert"
 
 Base::DualQuat Base::operator+(Base::DualQuat a, Base::DualQuat b)
 {

@@ -34,7 +34,7 @@ from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from pivy import coin
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -51,7 +51,7 @@ else:
 #
 #  This module provides tools to build Section plane objects.
 #  It also contains functionality to produce SVG rendering of
-#  section planes, to be used in TechDraw and Drawing modules
+#  section planes, to be used in the TechDraw module
 
 ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
 
@@ -83,28 +83,6 @@ def makeSectionPlane(objectslist=None,name="Section"):
     return obj
 
 
-def makeSectionView(section,name="View"):
-
-    """makeSectionView(section) : Creates a Drawing view of the given Section Plane
-    in the active Page object (a new page will be created if none exists"""
-
-    page = None
-    for o in FreeCAD.ActiveDocument.Objects:
-        if o.isDerivedFrom("Drawing::FeaturePage"):
-            page = o
-            break
-    if not page:
-        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage","Page")
-        page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
-
-    view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
-    page.addObject(view)
-    _ArchDrawingView(view)
-    view.Source = section
-    view.Label = translate("Arch","View of")+" "+section.Name
-    return view
-
-
 def getSectionData(source):
 
     """Returns some common data from section planes and building parts"""
@@ -132,21 +110,6 @@ def getSectionData(source):
     if objs:
         objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
     return objs,cutplane,onlySolids,clip,direction
-
-
-def looksLikeDraft(o):
-
-    """Does this object look like a Draft shape? (flat, no solid, etc)"""
-
-    # If there is no shape at all ignore it
-    if not hasattr(o, 'Shape') or o.Shape.isNull():
-        return False
-    # If there are solids in the object, it will be handled later
-    # by getCutShapes
-    if len(o.Shape.Solids) > 0:
-        return False
-    # If we have a shape, but no volume, it looks like a flat 2D object
-    return o.Shape.Volume < 0.0000001 # add a little tolerance...
 
 
 def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False):
@@ -212,29 +175,26 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
     for o, shapeList in objectShapes:
         tmpSshapes = []
         for sh in shapeList:
-            for sol in sh.Solids:
+            for sub in (sh.SubShapes if sh.ShapeType == "Compound" else [sh]):
                 if cutvolume:
-                    if sol.Volume < 0:
-                        sol.reverse()
-                    c = sol.cut(cutvolume)
-                    s = sol.section(cutface)
+                    if sub.Volume < 0:
+                        sub = sub.reversed() # Use reversed as sub is immutable.
+                    c = sub.cut(cutvolume)
+                    s = sub.section(cutface)
                     try:
                         wires = DraftGeomUtils.findWires(s.Edges)
                         for w in wires:
                             f = Part.Face(w)
                             tmpSshapes.append(f)
-                        #s = Part.Wire(s.Edges)
-                        #s = Part.Face(s)
                     except Part.OCCError:
-                        #print "ArchDrawingView: unable to get a face"
+                        #print "ArchView: unable to get a face"
                         tmpSshapes.append(s)
-                    shapes.extend(c.Solids)
-                    #sshapes.append(s)
+                    shapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                     if showHidden:
-                        c = sol.cut(invcutvolume)
-                        hshapes.append(c)
+                        c = sub.cut(invcutvolume)
+                        hshapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                 else:
-                    shapes.extend(sol.Solids)
+                    shapes.append(sub)
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)
@@ -364,22 +324,18 @@ def getSVG(source,
     # separate spaces and Draft objects
     spaces = []
     nonspaces = []
-    drafts = []
+    drafts = [] # Only used for annotations.
     windows = []
     cutface = None
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text", "DraftText"]:
+        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text","DraftText"]:
             if isOriented(o,cutplane):
                 drafts.append(o)
-        elif o.isDerivedFrom("Part::Part2DObject"):
-            drafts.append(o)
         elif o.isDerivedFrom("App::DocumentObjectGroup"):
             # These will have been expanded by getSectionData already
             pass
-        elif looksLikeDraft(o):
-            drafts.append(o)
         else:
             nonspaces.append(o)
         if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
@@ -469,8 +425,8 @@ def getSVG(source,
             hshapes = source.Proxy.shapecache[1]
             sshapes = source.Proxy.shapecache[2]
             cutface = source.Proxy.shapecache[3]
-            cutvolume = source.Proxy.shapecache[4]
-            invcutvolume = source.Proxy.shapecache[5]
+            # cutvolume = source.Proxy.shapecache[4] # Unused
+            # invcutvolume = source.Proxy.shapecache[5] # Unused
             objectSshapes = source.Proxy.shapecache[6]
         else:
             if showFill:
@@ -482,13 +438,13 @@ def getSVG(source,
 
         if should_update_svg_cache:
             svgcache = ""
-            # render using the Drawing module
-            import Drawing, Part
+            # render using the TechDraw module
+            import TechDraw, Part
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",
                          'stroke-width': "SVGLINEWIDTH"}
-                svgcache += Drawing.projectToSVG(
+                svgcache += TechDraw.projectToSVG(
                     baseshape, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
@@ -497,7 +453,7 @@ def getSVG(source,
                 style = {'stroke':           "SVGLINECOLOR",
                          'stroke-width':     "SVGLINEWIDTH",
                          'stroke-dasharray': "SVGHIDDENPATTERN"}
-                svgcache += Drawing.projectToSVG(
+                svgcache += TechDraw.projectToSVG(
                     hshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
@@ -524,7 +480,7 @@ def getSVG(source,
                 sshapes = Part.makeCompound(sshapes)
                 style = {'stroke':       "SVGLINECOLOR",
                          'stroke-width': "SVGCUTLINEWIDTH"}
-                svgcache += Drawing.projectToSVG(
+                svgcache += TechDraw.projectToSVG(
                     sshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
@@ -583,20 +539,15 @@ def getSVG(source,
     if windows:
         sh = []
         for w in windows:
-            wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
-            if not hasattr(wlo.Proxy,"sshapes"):
-                wlo.Proxy.execute(wlo)
-            if hasattr(wlo.Proxy,"sshapes"):
-                if wlo.Proxy.sshapes and (w.Name in cutwindows):
-                    c = Part.makeCompound(wlo.Proxy.sshapes)
-                    c.Placement = w.Placement
-                    sh.append(c)
-            # buggy for now...
-            #if hasattr(w.Proxy,"vshapes"):
-            #    if w.Proxy.vshapes:
-            #        c = Part.makeCompound(w.Proxy.vshapes)
-            #        c.Placement = w.Placement
-            #        sh.append(c)
+            if w.Name in cutwindows:
+                wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
+                if hasattr(wlo, "SymbolPlan") and wlo.SymbolPlan:
+                    if not hasattr(wlo.Proxy, "sshapes"):
+                        wlo.Proxy.execute(wlo)
+                    if hasattr(wlo.Proxy, "sshapes") and wlo.Proxy.sshapes:
+                        c = Part.makeCompound(wlo.Proxy.sshapes)
+                        c.Placement = w.Placement
+                        sh.append(c)
         if sh:
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
@@ -617,19 +568,11 @@ def getSVG(source,
 
 
 def getDXF(obj):
-    """Return a DXF representation from a TechDraw/Drawing view."""
-    allOn = True
-    if hasattr(obj,"AllOn"):
-        allOn = obj.AllOn
-    elif hasattr(obj,"AlwaysOn"):
-        allOn = obj.AlwaysOn
-    showHidden = False
-    if hasattr(obj,"showCut"):
-        showHidden = obj.showCut
-    elif hasattr(obj,"showHidden"):
-        showHidden = obj.showHidden
+    """Return a DXF representation from a TechDraw view."""
+    allOn = getattr(obj, "AllOn", True)
+    showHidden = getattr(obj, "ShowHidden", False)
     result = []
-    import Drawing,Part
+    import TechDraw, Part
     if not obj.Source:
         return result
     source = obj.Source
@@ -638,18 +581,14 @@ def getDXF(obj):
         return result
     if not allOn:
             objs = Draft.removeHidden(objs)
-    # separate spaces and Draft objects
-    spaces = []
-    nonspaces = []
-    drafts = []
     objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
     vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
     if vshapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(vshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(vshapes),direction))
     if sshapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(sshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(sshapes),direction))
     if hshapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(hshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(hshapes),direction))
     return result
 
 
@@ -898,8 +837,6 @@ class _CommandSectionPlane:
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
-        #FreeCADGui.doCommand("section.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
-        #FreeCADGui.doCommand("Arch.makeSectionView(section)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -929,6 +866,8 @@ class _SectionPlane:
         if not "UseMaterialColorForFill" in pl:
             obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
             obj.UseMaterialColorForFill = False
+        if not "Depth" in pl:
+            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):
@@ -954,13 +893,8 @@ class _SectionPlane:
             p.reverse()
         p.Placement = obj.Placement
         obj.Shape = p
-
-    def onChanged(self,obj,prop):
-
-        # clean svg cache if needed
-        if prop in ["Placement","Objects","OnlySolids","UseMaterialColorForFill","Clip"]:
-            self.svgcache = None
-            self.shapecache = None
+        self.svgcache = None
+        self.shapecache = None
 
     def getNormal(self,obj):
 
@@ -1060,6 +994,7 @@ class _ViewProviderSectionPlane:
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
+        import PartGui # Required for "SoBrepEdgeSet" (because a SectionPlane is not a Part::FeaturePython object).
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
         self.txtcoords = coin.SoTransform()
@@ -1165,7 +1100,9 @@ class _ViewProviderSectionPlane:
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView","CutMargin"]:
-            if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
+            if hasattr(vobj, "CutView") \
+                    and FreeCADGui.ActiveDocument.ActiveView \
+                    and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
                 sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
                 if vobj.CutView:
                     if self.clip:
@@ -1221,7 +1158,9 @@ class _ViewProviderSectionPlane:
 
         return None
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         taskd = SectionPlaneTaskPanel()
         taskd.obj = vobj.Object
@@ -1229,110 +1168,35 @@ class _ViewProviderSectionPlane:
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
+        self.edit()
 
-        self.setEdit(vobj,None)
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
 
-    def setupContextMenu(self,vobj,menu):
-        """CONTEXT MENU setup"""
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Toggle Cutview",menu)
-        action1.triggered.connect(lambda f=self.contextCutview, arg=vobj:f(arg))
-        menu.addAction(action1)
+        actionToggleCutview = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),
+                                            translate("Arch", "Toggle Cutview"),
+                                            menu)
+        actionToggleCutview.triggered.connect(lambda f=self.toggleCutview, arg=vobj: f(arg))
+        menu.addAction(actionToggleCutview)
 
-    def contextCutview(self,vobj):
-        """CONTEXT MENU command to toggle CutView property on and off"""
-        if vobj.CutView:
-            vobj.CutView = False
-        else: vobj.CutView = True
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
-
-class _ArchDrawingView:
-
-    def __init__(self, obj):
-
-        obj.Proxy = self
-        self.setProperties(obj)
-
-    def setProperties(self,obj):
-
-        pl = obj.PropertiesList
-        if not "Source" in pl:
-            obj.addProperty("App::PropertyLink", "Source", "Base", QT_TRANSLATE_NOOP("App::Property","The linked object"))
-        if not "RenderingMode" in pl:
-            obj.addProperty("App::PropertyEnumeration", "RenderingMode", "Drawing view", QT_TRANSLATE_NOOP("App::Property","The rendering mode to use"))
-            obj.RenderingMode = ["Solid","Wireframe"]
-            obj.RenderingMode = "Wireframe"
-        if not "ShowCut" in pl:
-            obj.addProperty("App::PropertyBool", "ShowCut", "Drawing view", QT_TRANSLATE_NOOP("App::Property","If cut geometry is shown or not"))
-        if not "ShowFill" in pl:
-            obj.addProperty("App::PropertyBool", "ShowFill", "Drawing view", QT_TRANSLATE_NOOP("App::Property","If cut geometry is filled or not"))
-        if not "LineWidth" in pl:
-            obj.addProperty("App::PropertyFloat", "LineWidth", "Drawing view", QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
-            obj.LineWidth = 0.35
-        if not "FontSize" in pl:
-            obj.addProperty("App::PropertyLength", "FontSize", "Drawing view", QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
-            obj.FontSize = 12
-        if not "AlwaysOn" in pl:
-            obj.addProperty("App::PropertyBool", "AlwaysOn", "Drawing view", QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
-        if not "LineColor" in pl:
-            obj.addProperty("App::PropertyColor", "LineColor", "Drawing view",QT_TRANSLATE_NOOP("App::Property","The line color of the projected objects"))
-        if not "FillColor" in pl:
-            obj.addProperty("App::PropertyColor", "FillColor", "Drawing view",QT_TRANSLATE_NOOP("App::Property","The color of the cut faces (if turned on)"))
-            obj.FillColor = (0.8, 0.8, 0.8)
-        self.Type = "ArchSectionView"
-
-    def onDocumentRestored(self, obj):
-
-        self.setProperties(obj)
-
-    def execute(self, obj):
-
-        if hasattr(obj,"Source"):
-            if obj.Source:
-                svgbody = getSVG(source=obj.Source,
-                                 renderMode=obj.RenderingMode,
-                                 allOn=getattr(obj, 'AlwaysOn', False),
-                                 showHidden=obj.ShowCut,
-                                 scale=obj.Scale,
-                                 linewidth=obj.LineWidth,
-                                 lineColor=obj.LineColor,
-                                 fontsize=obj.FontSize,
-                                 showFill=obj.ShowFill,
-                                 fillColor=obj.FillColor)
-                if svgbody:
-                    result = '<g id="' + obj.Name + '"'
-                    result += ' transform="'
-                    result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-                    result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-                    result += 'scale('+str(obj.Scale)+','+str(obj.Scale)+')'
-                    result += '">\n'
-                    result += svgbody
-                    result += '</g>\n'
-                    obj.ViewResult = result
-
-    def __getstate__(self):
-
-        return self.Type
-
-    def __setstate__(self,state):
-
-        if state:
-            self.Type = state
-
-    def getDisplayModes(self,vobj):
-
-        modes=["Default"]
-        return modes
-
-    def setDisplayMode(self,mode):
-
-        return mode
+    def toggleCutview(self, vobj):
+        vobj.CutView = not vobj.CutView
 
 
 class SectionPlaneTaskPanel:

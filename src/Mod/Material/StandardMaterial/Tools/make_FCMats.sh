@@ -26,7 +26,7 @@ function get_xy() {
 }
 
 # Determine number of columns and rows in the Materials.csv file
-NUMBER_OF_COLUMNS=$(cat $MATERIALS_FILE.csv | awk --field-separator="|" "NR==1 { print NF }")
+NUMBER_OF_COLUMNS=$(awk -F "|" "NR==1 { print NF }" $MATERIALS_FILE.csv )
 NUMBER_OF_ROWS=$(cat $MATERIALS_FILE.csv | wc -l)
 
 echo "Setting output directory:" $FCMAT_OUTPUT_DIR

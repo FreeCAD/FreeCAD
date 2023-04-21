@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+
+__Title__ = 'Do Nothing'
+__Author__ = 'Chris Hennes'
+__Version__ = '1.0'
+__Date__ = '2022-02-28'
+__Comment__ = 'Do absolutely nothing. For Addon Manager integration tests.'
+__Web__ = 'https://github.com/FreeCAD/FreeCAD'
+__Wiki__ = ''
+__Icon__ = 'not_real.png'
+__Help__ = 'Not much to help with'
+__Status__ = 'Very Stable'
+__Requires__ = ''
+__Communication__ = 'Shout into the void'
+__Files__ = 'file1.py, file2.py, file3.py'
+__Xpm__ = """/* XPM */
+static char * blarg_xpm[] = {
+"16 7 2 1",
+"* c #000000",
+". c #ffffff",
+"**..*...........",
+"*.*.*...........",
+"**..*..**.**..**",
+"*.*.*.*.*.*..*.*",
+"**..*..**.*...**",
+"...............*",
+".............**."
+};"""
+
+print("Well, not quite *nothing*... it does print this line out.")

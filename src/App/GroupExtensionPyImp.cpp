@@ -23,64 +23,63 @@
 
 #include "PreCompiled.h"
 
-#include "DocumentObjectGroup.h"
-#include "Document.h"
-#include <CXX/Objects.hxx>
+#include "DocumentObject.h"
 
 // inclusion of the generated files (generated out of GroupExtensionPy.xml)
 #include "GroupExtensionPy.h"
 #include "GroupExtensionPy.cpp"
 #include "DocumentObjectPy.h"
 
+
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string GroupExtensionPy::representation(void) const
+std::string GroupExtensionPy::representation() const
 {
     return std::string("<group extension object>");
 }
 
 PyObject*  GroupExtensionPy::newObject(PyObject *args)
 {
-    char *sType,*sName=0;
-    if (!PyArg_ParseTuple(args, "s|s", &sType,&sName))     // convert args: Python->C
-        return NULL;
+    char *sType,*sName=nullptr;
+    if (!PyArg_ParseTuple(args, "s|s", &sType,&sName))
+        return nullptr;
 
     DocumentObject *object = getGroupExtensionPtr()->addObject(sType, sName);
     if ( object ) {
         return object->getPyObject();
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot create object of type '%s'", sType);
-        return NULL;
+        PyErr_Format(PyExc_TypeError, "Cannot create object of type '%s'", sType);
+        return nullptr;
     }
 }
 
 PyObject*  GroupExtensionPy::addObject(PyObject *args)
 {
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))
+        return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add an invalid object");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
+        return nullptr;
     }
     
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add an object from another document to this group");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an object from another document to this group");
+        return nullptr;
     }
     if (docObj->getDocumentObjectPtr() == this->getGroupExtensionPtr()->getExtendedObject()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add a group object to itself");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add a group object to itself");
+        return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->hasExtension(GroupExtension::getExtensionClassTypeId())) {
         App::GroupExtension* docGrp = docObj->getDocumentObjectPtr()->getExtensionByType<GroupExtension>();
         if (docGrp->hasObject(getGroupExtensionPtr()->getExtendedObject())) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add a group object to a child group");
-            return NULL;
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add a group object to a child group");
+            return nullptr;
         }
     }
 
@@ -97,8 +96,8 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
 PyObject* GroupExtensionPy::addObjects(PyObject *args) {
     
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O", &object))
+        return nullptr;
         
     if (PyTuple_Check(object) || PyList_Check(object)) {
         Py::Sequence list(object);
@@ -134,8 +133,8 @@ PyObject* GroupExtensionPy::addObjects(PyObject *args) {
 PyObject* GroupExtensionPy::setObjects(PyObject *args) {
 
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O", &object))
+        return nullptr;
 
     if (PyTuple_Check(object) || PyList_Check(object)) {
         Py::Sequence list(object);
@@ -171,17 +170,17 @@ PyObject* GroupExtensionPy::setObjects(PyObject *args) {
 PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 {
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))
+        return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot remove an invalid object");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
+        return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot remove an object from another document from this group");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an object from another document from this group");
+        return nullptr;
     }
 
     GroupExtension* grp = getGroupExtensionPtr();
@@ -197,8 +196,8 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 PyObject* GroupExtensionPy::removeObjects(PyObject *args) {
 
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O", &object))
+        return nullptr;
         
     if (PyTuple_Check(object) || PyList_Check(object)) {
         Py::Sequence list(object);
@@ -233,8 +232,8 @@ PyObject* GroupExtensionPy::removeObjects(PyObject *args) {
 
 PyObject*  GroupExtensionPy::removeObjectsFromDocument(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
     getGroupExtensionPtr()->removeObjectsFromDocument();
     Py_Return;
@@ -243,8 +242,8 @@ PyObject*  GroupExtensionPy::removeObjectsFromDocument(PyObject *args)
 PyObject*  GroupExtensionPy::getObject(PyObject *args)
 {
     char* pcName;
-    if (!PyArg_ParseTuple(args, "s", &pcName))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pcName))
+        return nullptr;
 
     DocumentObject* obj = getGroupExtensionPtr()->getObject(pcName);
     if ( obj ) {
@@ -257,27 +256,19 @@ PyObject*  GroupExtensionPy::getObject(PyObject *args)
 PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 {
     PyObject *object;
-    PyObject *recursivePy = 0;
-    int recursive = 0;
-    if (!PyArg_ParseTuple(args, "O!|O", &(DocumentObjectPy::Type), &object, &recursivePy))
-        return NULL;                             // NULL triggers exception
+    PyObject *recursivePy = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!", &(DocumentObjectPy::Type), &object, &PyBool_Type, &recursivePy))
+        return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
+    bool recursive = Base::asBoolean(recursivePy);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check an invalid object");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");
+        return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check an object from another document with this group");
-        return NULL;
-    }
-    if (recursivePy) {
-        recursive = PyObject_IsTrue(recursivePy);
-        if ( recursive == -1) {
-            // Note: shouldn't happen
-            PyErr_SetString(PyExc_ValueError, "The recursive parameter should be of boolean type");
-            return 0;
-        }
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an object from another document with this group");
+        return nullptr;
     }
 
     bool v = getGroupExtensionPtr()->hasObject(docObj->getDocumentObjectPtr(), recursive);
@@ -286,7 +277,7 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 
 PyObject *GroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -23,11 +23,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "InventorObject.h"
 #include "DocumentObjectPy.h"
+
 
 using namespace App;
 
@@ -40,11 +38,9 @@ InventorObject::InventorObject()
     ADD_PROPERTY_TYPE(FileName,(""),"",Prop_None,"Path to an Inventor file");
 }
 
-InventorObject::~InventorObject()
-{
-}
+InventorObject::~InventorObject() = default;
 
-short InventorObject::mustExecute(void) const
+short InventorObject::mustExecute() const
 {
     return 0;
 }

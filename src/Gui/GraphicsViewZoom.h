@@ -37,7 +37,6 @@
 #include <QPointF>
 
 
-
 /*!
  * This class adds ability to zoom QGraphicsView using mouse wheel. The point under cursor
  * remains motionless while it's possible.
@@ -88,7 +87,7 @@ private:
   double _zoom_factor_base;
   bool m_invert_zoom;
   QPointF target_scene_pos, target_viewport_pos;
-  bool eventFilter(QObject* object, QEvent* event);
+  bool eventFilter(QObject* object, QEvent* event) override;
 };
 
 #endif // GRAPHICSVIEWZOOM_H

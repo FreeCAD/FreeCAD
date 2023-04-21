@@ -24,8 +24,8 @@
 #ifndef PARTDESIGN_FeatureBoolean_H
 #define PARTDESIGN_FeatureBoolean_H
 
-#include <App/PropertyStandard.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/PropertyStandard.h>
 #include "Feature.h"
 
 
@@ -51,13 +51,13 @@ public:
    /** @name methods override feature */
     //@{
     /// Recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderBoolean";
     }
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     //@}
 
 protected:

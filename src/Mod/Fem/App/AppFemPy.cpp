@@ -20,46 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
-# include <memory>
 # include <cstdlib>
-# include <SMESH_Gen.hxx>
-# include <SMESH_Group.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDS_MeshNode.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_AutomaticLength.hxx>
-# include <StdMeshers_MEFISTO_2D.hxx>
-# include <StdMeshers_Deflection1D.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_LengthFromEdges.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
-# include <StdMeshers_Arithmetic1D.hxx>
-# include <Standard_Real.hxx>
+# include <memory>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/PlacementPy.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-//#include <Mod/Mesh/App/Core/MeshKernel.h>
-//#include <Mod/Mesh/App/Core/Evaluation.h>
-//#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Base/Interpreter.h>
+#include <Base/PlacementPy.h>
+#include <Mod/Part/App/OCCError.h>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -69,8 +42,6 @@
 #include "FemVTKTools.h"
 #endif
 
-#include <Base/Vector3D.h>
-#include <Mod/Part/App/OCCError.h>
 
 namespace Fem {
 class Module : public Py::ExtensionModule<Module>
@@ -104,10 +75,10 @@ public:
         initialize("This module is the Fem module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -141,7 +112,7 @@ private:
         mesh->read(EncodedName.c_str());
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
-        App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+        App::Document *pcDoc = App::GetApplication().newDocument();
         FemMeshObject *pcFeature = static_cast<FemMeshObject *>
             (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
         pcFeature->Label.setValue(file.fileNamePure().c_str());
@@ -153,14 +124,14 @@ private:
     Py::Object insert(const Py::Tuple& args)
     {
         char* Name;
-        const char* DocName = 0;
+        const char* DocName = nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
 
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        App::Document *pcDoc = 0;
+        App::Document *pcDoc = nullptr;
         if (DocName)
             pcDoc = App::GetApplication().getDocument(DocName);
         else
@@ -222,12 +193,12 @@ private:
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
                     static_cast<FemMeshObject*>(obj)->FemMesh.getValue().write(EncodedName.c_str());
-                    break;
+                    return Py::None();
                 }
             }
         }
 
-        return Py::None();
+        throw Py::RuntimeError("No FEM mesh for export selected");
     }
     Py::Object read(const Py::Tuple& args)
     {
@@ -246,8 +217,8 @@ private:
 #ifdef FC_USE_VTK
     Py::Object readResult(const Py::Tuple& args)
     {
-        char* fileName = NULL;
-        char* objName = NULL;
+        char* fileName = nullptr;
+        char* objName = nullptr;
 
         if (!PyArg_ParseTuple(args.ptr(), "et|et","utf-8", &fileName, "utf-8", &objName))
             throw Py::Exception();
@@ -270,8 +241,8 @@ private:
 
     Py::Object writeResult(const Py::Tuple& args)
     {
-        char* fileName = NULL;
-        PyObject *pcObj = NULL;
+        char* fileName = nullptr;
+        PyObject *pcObj = nullptr;
 
         if (!PyArg_ParseTuple(args.ptr(), "et|O!","utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj))
             throw Py::Exception();
@@ -317,7 +288,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Fem

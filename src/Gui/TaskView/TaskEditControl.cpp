@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
-#include "TaskEditControl.h"
 
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
+
+#include "TaskEditControl.h"
+
 
 using namespace Gui::TaskView;
 

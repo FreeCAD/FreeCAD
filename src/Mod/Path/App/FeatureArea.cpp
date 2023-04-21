@@ -21,42 +21,43 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
+# include <Precision.hxx>
 # include <TopoDS_Compound.hxx>
 #endif
 
+#include <Base/Console.h> // for FC_LOG_LEVEL_INIT
+#include <Base/Placement.h>
+
 #include "FeatureArea.h"
 #include "FeatureAreaPy.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
 
-FC_LOG_LEVEL_INIT("Path.Area",true,true)
+
+FC_LOG_LEVEL_INIT("Path.Area", true, true)
 
 using namespace Path;
 
 PROPERTY_SOURCE(Path::FeatureArea, Part::Feature)
 
-PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_ALL)
+PARAM_ENUM_STRING_DECLARE(static const char* Enums, AREA_PARAMS_ALL)
 
 FeatureArea::FeatureArea()
     :myInited(false)
 {
-    ADD_PROPERTY(Sources,(0));
-    ADD_PROPERTY(WorkPlane,(TopoDS_Shape()));
+    ADD_PROPERTY(Sources, (nullptr));
+    ADD_PROPERTY(WorkPlane, (TopoDS_Shape()));
 
-    PARAM_PROP_ADD("Area",AREA_PARAMS_OPCODE);
-    PARAM_PROP_ADD("Area",AREA_PARAMS_BASE);
-    PARAM_PROP_ADD("Offset",AREA_PARAMS_OFFSET);
+    PARAM_PROP_ADD("Area", AREA_PARAMS_OPCODE);
+    PARAM_PROP_ADD("Area", AREA_PARAMS_BASE);
+    PARAM_PROP_ADD("Offset", AREA_PARAMS_OFFSET);
     PARAM_PROP_ADD("Offset", AREA_PARAMS_OFFSET_CONF);
-    PARAM_PROP_ADD("Pocket",AREA_PARAMS_POCKET);
-    PARAM_PROP_ADD("Pocket",AREA_PARAMS_POCKET_CONF);
-    PARAM_PROP_ADD("Section",AREA_PARAMS_SECTION);
-    PARAM_PROP_ADD("libarea",AREA_PARAMS_CAREA);
+    PARAM_PROP_ADD("Pocket", AREA_PARAMS_POCKET);
+    PARAM_PROP_ADD("Pocket", AREA_PARAMS_POCKET_CONF);
+    PARAM_PROP_ADD("Section", AREA_PARAMS_SECTION);
+    PARAM_PROP_ADD("libarea", AREA_PARAMS_CAREA);
 
-    PARAM_PROP_SET_ENUM(Enums,AREA_PARAMS_ALL);
+    PARAM_PROP_SET_ENUM(Enums, AREA_PARAMS_ALL);
     PocketMode.setValue((long)0);
 }
 
@@ -69,7 +70,7 @@ Area &FeatureArea::getArea() {
     return myArea;
 }
 
-App::DocumentObjectExecReturn *FeatureArea::execute(void)
+App::DocumentObjectExecReturn *FeatureArea::execute()
 {
     myInited = true;
 
@@ -143,7 +144,7 @@ const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
     return myShapes;
 }
 
-short FeatureArea::mustExecute(void) const
+short FeatureArea::mustExecute() const
 {
     if(myInited && !myArea.isBuilt())
         return 1;
@@ -166,7 +167,7 @@ PROPERTY_SOURCE(Path::FeatureAreaView, Part::Feature)
 
 FeatureAreaView::FeatureAreaView()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY_TYPE(SectionIndex,(0),"Section",App::Prop_None,"The start index of the section to show, negative value for reverse index from bottom");
     ADD_PROPERTY_TYPE(SectionCount,(1),"Section",App::Prop_None,"Number of sections to show, 0 to show all section starting from SectionIndex");
 }
@@ -174,7 +175,8 @@ FeatureAreaView::FeatureAreaView()
 std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     std::list<TopoDS_Shape> shapes;
     App::DocumentObject* pObj = Source.getValue();
-    if (!pObj) return shapes;
+    if (!pObj)
+        return shapes;
     if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
         return shapes;
 
@@ -186,7 +188,8 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     int index=SectionIndex.getValue(),count=SectionCount.getValue();
     if(index<0) {
         index += ((int)all_shapes.size());
-        if(index<0) return shapes;
+        if(index<0)
+            return shapes;
         if(count<=0 || index+1-count<0) {
             count = index+1;
             index = 0;
@@ -204,7 +207,7 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     return shapes;
 }
 
-App::DocumentObjectExecReturn *FeatureAreaView::execute(void)
+App::DocumentObjectExecReturn *FeatureAreaView::execute()
 {
     App::DocumentObject* pObj = Source.getValue();
     if (!pObj)
@@ -242,10 +245,10 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureAreaPython, Path::FeatureArea)
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureAreaViewPython, Path::FeatureAreaView)
 
-template<> const char* Path::FeatureAreaPython::getViewProviderName(void) const {
+template<> const char* Path::FeatureAreaPython::getViewProviderName() const {
     return "PathGui::ViewProviderAreaPython";
 }
-template<> const char* Path::FeatureAreaViewPython::getViewProviderName(void) const {
+template<> const char* Path::FeatureAreaViewPython::getViewProviderName() const {
     return "PathGui::ViewProviderAreaViewPython";
 }
 /// @endcond

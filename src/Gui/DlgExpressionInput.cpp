@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QApplication>
-#include <QPainter>
-#include <QDesktopWidget>
 #include <QMenu>
 #include <QMouseEvent>
+#endif
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
+#include <Base/Tools.h>
 
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
-#include "ExpressionCompleter.h"
 #include "Tools.h"
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
-#include <App/DocumentObject.h>
+
 
 using namespace App;
 using namespace Gui::Dialog;
@@ -45,27 +45,29 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
   : QDialog(parent)
   , ui(new Ui::DlgExpressionInput)
-  , expression(_expression ? _expression->copy() : 0)
+  , expression(_expression ? _expression->copy() : nullptr)
   , path(_path)
   , discarded(false)
   , impliedUnit(_impliedUnit)
   , minimumWidth(10)
 {
-    assert(path.getDocumentObject() != 0);
+    assert(path.getDocumentObject());
 
     // Setup UI
     ui->setupUi(this);
 
     // Connect signal(s)
-    connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-    connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+    connect(ui->expression, &ExpressionLineEdit::textChanged,
+        this, &DlgExpressionInput::textChanged);
+    connect(ui->discardBtn, &QPushButton::clicked,
+        this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
-        if (text.canConvert(QMetaType::QString)) {
+        if (text.canConvert<QString>()) {
             ui->expression->setText(text.toString());
         }
     }
@@ -111,6 +113,45 @@ DlgExpressionInput::~DlgExpressionInput()
     delete ui;
 }
 
+void NumberRange::setRange(double min, double max)
+{
+    minimum = min;
+    maximum = max;
+    defined = true;
+}
+
+void NumberRange::clearRange()
+{
+    defined = false;
+}
+
+void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
+{
+    if (!defined)
+        return;
+
+    if (value.getValue() < minimum || value.getValue() > maximum) {
+        Base::Quantity minVal(minimum, value.getUnit());
+        Base::Quantity maxVal(maximum, value.getUnit());
+        QString valStr = value.getUserString();
+        QString minStr = minVal.getUserString();
+        QString maxStr = maxVal.getUserString();
+        QString error = QString::fromLatin1("Value out of range (%1 out of [%2, %3])").arg(valStr, minStr, maxStr);
+
+        throw Base::ValueError(error.toStdString());
+    }
+}
+
+void DlgExpressionInput::setRange(double minimum, double maximum)
+{
+    numberRange.setRange(minimum, maximum);
+}
+
+void DlgExpressionInput::clearRange()
+{
+    numberRange.clearRange();
+}
+
 QPoint DlgExpressionInput::expressionPosition() const
 {
     return ui->expression->pos();
@@ -118,6 +159,14 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 void DlgExpressionInput::textChanged(const QString &text)
 {
+    if (text.isEmpty()) {
+        ui->okBtn->setDisabled(true);
+        ui->discardBtn->setDefault(true);
+        return;
+    }
+
+    ui->okBtn->setDefault(true);
+
     try {
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
@@ -136,7 +185,7 @@ void DlgExpressionInput::textChanged(const QString &text)
         if (expr) {
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
 
-            if (error.size() > 0)
+            if (!error.empty())
                 throw Base::RuntimeError(error.c_str());
 
             std::unique_ptr<Expression> result(expr->eval());
@@ -148,7 +197,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
 
-            NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
+            auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();
@@ -171,10 +220,13 @@ void DlgExpressionInput::textChanged(const QString &text)
                     ui->msg->setPalette(p);
                 }
 
+                numberRange.throwIfOutOfRange(value);
+
                 ui->msg->setText(msg);
             }
-            else
+            else {
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+            }
 
         }
     }
@@ -206,53 +258,13 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
 
 void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
-    if (QWidget::mouseGrabber() == this) {
-        QList<QWidget*> childs = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
-            if ((*it)->rect().contains(pos)) {
-                // Create new mouse event with the correct local position
-                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
-                QObject* obj = *it;
-                obj->event(&me);
-                if (me.isAccepted()) {
-                    break;
-                }
-            }
-        }
-    }
-#else
     Q_UNUSED(ev);
-#endif
 }
 
 void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
-    bool handled = false;
-    if (QWidget::mouseGrabber() == this) {
-        QList<QWidget*> childs = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
-            if ((*it)->rect().contains(pos)) {
-                // Create new mouse event with the correct local position
-                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
-                QObject* obj = *it;
-                obj->event(&me);
-                if (me.isAccepted()) {
-                    handled = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    if (handled)
-        return;
-#else
     Q_UNUSED(ev);
-#endif
+
     // The 'FramelessWindowHint' is also set when the background is transparent.
     if (windowFlags() & Qt::FramelessWindowHint) {
         //we need to reject the dialog when clicked on the background. As the background is transparent
@@ -273,17 +285,6 @@ void DlgExpressionInput::show()
 void DlgExpressionInput::showEvent(QShowEvent* ev)
 {
     QDialog::showEvent(ev);
-
-#if 0//defined(Q_OS_WIN)
-    // This way we can fetch click events outside modal dialogs
-    QWidget* widget = QApplication::activeModalWidget();
-    if (widget) {
-        QList<QWidget*> childs = widget->findChildren<QWidget*>();
-        if (childs.contains(this)) {
-            this->grabMouse();
-        }
-    }
-#endif
 }
 
 bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
@@ -295,7 +296,7 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
         // cursor is on this or an underlying widget or outside.
         if (!underMouse()) {
             // if the expression fields context-menu is open do not close the dialog
-            QMenu* menu = qobject_cast<QMenu*>(obj);
+            auto menu = qobject_cast<QMenu*>(obj);
             if (menu && menu->parentWidget() == ui->expression) {
                 return false;
             }
@@ -307,7 +308,6 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
             }
         }
     }
-
     return false;
 }
 

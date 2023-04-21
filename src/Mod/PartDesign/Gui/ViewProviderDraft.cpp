@@ -24,9 +24,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "TaskDraftParameters.h"
 #include "ViewProviderDraft.h"
 

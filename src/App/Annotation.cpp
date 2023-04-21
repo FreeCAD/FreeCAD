@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "Annotation.h"
 
 using namespace App;
@@ -33,28 +30,24 @@ using namespace App;
 PROPERTY_SOURCE(App::Annotation, App::DocumentObject)
 
 
-Annotation::Annotation() 
+Annotation::Annotation()
 {
-    ADD_PROPERTY(LabelText ,(""));
-    ADD_PROPERTY(Position,(Base::Vector3d()));
+    ADD_PROPERTY(LabelText, (""));
+    ADD_PROPERTY(Position, (Base::Vector3d()));
 }
 
-Annotation::~Annotation()
-{
-}
+Annotation::~Annotation() = default;
 
 // --------------------------------------------------
 
 PROPERTY_SOURCE(App::AnnotationLabel, App::DocumentObject)
 
 
-AnnotationLabel::AnnotationLabel() 
+AnnotationLabel::AnnotationLabel()
 {
-    ADD_PROPERTY_TYPE(LabelText,(""),"Label",Prop_Output,"Text label of the annotation");
-    ADD_PROPERTY_TYPE(BasePosition,(Base::Vector3d()),"Label",Prop_Output,"Base position");
-    ADD_PROPERTY_TYPE(TextPosition,(Base::Vector3d()),"Label",Prop_Output,"Text position");
+    ADD_PROPERTY_TYPE(LabelText, (""), "Label",Prop_Output, "Text label of the annotation");
+    ADD_PROPERTY_TYPE(BasePosition, (Base::Vector3d()), "Label", Prop_Output, "Base position");
+    ADD_PROPERTY_TYPE(TextPosition, (Base::Vector3d()), "Label", Prop_Output, "Text position");
 }
 
-AnnotationLabel::~AnnotationLabel()
-{
-}
+AnnotationLabel::~AnnotationLabel() = default;

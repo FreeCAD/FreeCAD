@@ -7,15 +7,17 @@
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins Drawing Fem FreeCAD Image Import Inspection Mesh MeshPart Part Points QtUnit Raytracing ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui PathSimulator
+%global plugins Fem FreeCAD PathApp Import Inspection Mesh MeshPart Part Points Raytracing ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui PathSimulator
+
 
 # Some configuration options for other environments
 # rpmbuild --with=bundled_zipios:  use bundled version of zipios++
-%global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 0}
+%global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
 # rpmbuild --without=bundled_pycxx:  don't use bundled version of pycxx
 %global bundled_pycxx %{?_without_bundled_pycxx: 0} %{?!_without_bundled_pycxx: 1}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
+
 
 # Prevent RPM from doing its magical 'build' directory for now
 %global __cmake_in_source_build 0
@@ -31,14 +33,15 @@
 
 Name:           %{name}
 Epoch:          1
-Version:    	0.19
-Release:        pre_{{{ git_commit_no }}}
+Version:        0.21
+Release:        pre_32806%{?dist}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
 
 License:        LGPLv2+
 URL:            http://www.freecadweb.org/
 Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
+
 
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext dos2unix
@@ -47,78 +50,92 @@ BuildRequires:  gcc-gfortran
 BuildRequires:  desktop-file-utils
 BuildRequires:  git
 
-# Development Libraries
+BuildRequires:  tbb-devel
 
-BuildRequires:  Coin4-devel
-BuildRequires:  Inventor-devel
+# Development Libraries
+BuildRequires:  freeimage-devel
+BuildRequires:  libXmu-devel
+BuildRequires:  mesa-libEGL-devel
+BuildRequires:  mesa-libGLU-devel
 BuildRequires:  opencascade-devel
+BuildRequires:  Coin4-devel
+BuildRequires:  python3-devel
+BuildRequires:  python3-matplotlib
+BuildRequires:  python3-pivy
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
 BuildRequires:  eigen3-devel
-BuildRequires:  freeimage-devel
-BuildRequires:  libXmu-devel
+%if 0%{?fedora} < 35
+BuildRequires:  Inventor-devel
+%endif
+# Qt5 dependencies
+BuildRequires:  qt5-qtwebengine-devel
+#BuildRequires:  qt5-qtwebkit-devel
+BuildRequires:  qt5-qtsvg-devel
+BuildRequires:  qt5-qttools-static
+BuildRequires:  qt5-qtxmlpatterns-devel
+
+BuildRequires:  fmt-devel
+
+
+BuildRequires:  xerces-c
+BuildRequires:  xerces-c-devel
+BuildRequires:  libspnav-devel
+BuildRequires:  python3-shiboken2-devel
+BuildRequires:  python3-pyside2-devel
+BuildRequires:  pyside2-tools
+%if ! %{bundled_smesh}
+BuildRequires:  smesh-devel
+%endif
+BuildRequires:  netgen-mesher-devel
+BuildRequires:  netgen-mesher-devel-private
+%if ! %{bundled_zipios}
+BuildRequires:  zipios++-devel
+%endif
+
+%if ! %{bundled_pycxx}
+BuildRequires:  python3-pycxx-devel
+%endif
+BuildRequires:  libicu-devel
+BuildRequires:  vtk-devel
+BuildRequires:  openmpi-devel
+BuildRequires:  med-devel
+BuildRequires:  libkdtree++-devel
+
+BuildRequires:  pcl-devel
+BuildRequires:  python3
+BuildRequires:  libglvnd-devel
+#BuildRequires:  zlib-devel
+
 # For appdata
 %if 0%{?fedora}
 BuildRequires:  libappstream-glib
 %endif
-BuildRequires:  libglvnd-devel
-BuildRequires:  libicu-devel
-BuildRequires:  libkdtree++-devel
-BuildRequires:  libspnav-devel
-BuildRequires:  libusb-devel
-BuildRequires:  med-devel
-BuildRequires:  mesa-libEGL-devel
-BuildRequires:  mesa-libGLU-devel
-BuildRequires:  netgen-mesher-devel
-BuildRequires:  netgen-mesher-devel-private
-BuildRequires:  python3-pivy
-BuildRequires:  mesa-libEGL-devel
-BuildRequires:  openmpi-devel
-BuildRequires:  pcl-devel
-BuildRequires:  pyside2-tools
-BuildRequires:  python3
-BuildRequires:  python3-devel
-BuildRequires:  python3-matplotlib
-%if ! %{bundled_pycxx}
-BuildRequires:  python3-pycxx-devel
-%endif
-BuildRequires:  python3-pyside2-devel
-BuildRequires:  python3-shiboken2-devel
-BuildRequires:  qt5-qtwebkit-devel
-BuildRequires:  qt5-qtsvg-devel
-BuildRequires:  qt5-qttools-static
-BuildRequires:  qt5-qtxmlpatterns-devel
-%if ! %{bundled_smesh}
-BuildRequires:  smesh-devel
-%endif
-BuildRequires:  tbb-devel
-BuildRequires:  vtk-devel
-BuildRequires:  xerces-c
-BuildRequires:  xerces-c-devel
-%if ! %{bundled_zipios}
-BuildRequires:  zipios++-devel
-%endif
-BuildRequires:  zlib-devel
 
 # Packages separated because they are noarch, but not optional so require them
 # here.
 Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
 Obsoletes:      %{name}-doc < 0.13-5
-
 Requires:       hicolor-icon-theme
-Requires:       python3-collada
-Requires:       python3-matplotlib
+
+Requires:       fmt
+
 Requires:       python3-pivy
+Requires:       python3-matplotlib
+Requires:       python3-collada
 Requires:       python3-pyside2
-Requires:	qt5-assistant
-%if %{bundled_smesh} 
+Requires:       qt5-assistant
+
+%if %{bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
-%if %{bundled_pycxx} 
+%if %{bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
-Recommends:	python3-pysolar
+Recommends:     python3-pysolar
+
+
 
 # plugins and private shared libs in %%{_libdir}/freecad/lib are private;
 # prevent private capabilities being advertised in Provides/Requires
@@ -152,7 +169,6 @@ Data files for FreeCAD
 
 %prep
 %autosetup -p1 -n FreeCAD-%{branch}
-
 # Remove bundled pycxx if we're not using it
 %if ! %{bundled_pycxx}
 rm -rf src/CXX
@@ -164,12 +180,8 @@ rm -rf src/zipios++
 #    src/Base/Reader.cpp src/Base/Writer.h
 %endif
 
-# Fix encodings
-dos2unix -k src/Mod/Test/unittestgui.py \
-            ChangeLog.txt \
-            data/License.txt
-
 # Removed bundled libraries
+
 
 %build
 rm -rf build && mkdir build && cd build
@@ -203,7 +215,6 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DOpenGL_GL_PREFERENCE=GLVND \
        -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
        -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
-       -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DUSE_OCC=TRUE \
 %if ! %{bundled_smesh}
        -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
@@ -220,6 +231,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 %endif
        -DPACKAGE_WCREF="%{release} (Git)" \
        -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git master" \
+       -DBUILD_TEST=FALSE \
        ../
 
 make fc_version
@@ -267,8 +279,10 @@ popd
 # Remove obsolete Start_Page.html
 rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
 # Belongs in %%license not %%doc
-#No longer present?
-#rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
+rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
+
+# Remove header from external library that's erroneously installed
+rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
 
 # Bug maintainers to keep %%{plugins} macro up to date.
 #
@@ -294,11 +308,15 @@ for p in %{plugins}; do
     fi
 done
 
+# Bytecompile Python modules
+%py_byte_compile %{__python3} %{buildroot}%{_libdir}/%{name}
+
+
 %check
 desktop-file-validate \
     %{buildroot}%{_datadir}/applications/org.freecadweb.FreeCAD.desktop
 %{?fedora:appstream-util validate-relax --nonet \
-    %{buildroot}/%{_metainfodir}/*.appdata.xml}
+    %{buildroot}%{_metainfodir}/*.appdata.xml}
 
 
 %post
@@ -319,17 +337,14 @@ fi
 
 
 %files
-%license data/License.txt
-%doc ChangeLog.txt
-%exclude %{_docdir}/%{name}/%{name}.*
-%exclude %{_docdir}/%{name}/ThirdPartyLibraries.html
+
 %{_bindir}/*
 %{_metainfodir}/*
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/bin/
 %{_libdir}/%{name}/%{_lib}/
-%{_libdir}/%{name}/Mod/
 %{_libdir}/%{name}/Ext/
+%{_libdir}/%{name}/Mod/
 %{_datadir}/applications/*
 %{_datadir}/icons/hicolor/scalable/*
 %{_datadir}/pixmaps/*
@@ -338,6 +353,9 @@ fi
 
 %files data
 %{_datadir}/%{name}/
-%{_docdir}/%{name}/%{name}.q*
-%{_docdir}/%{name}/CONTRIBUTORS
 %{_docdir}/%{name}/LICENSE.html
+
+
+%changelog
+
+

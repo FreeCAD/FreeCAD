@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FeatureMeshCurvature_H
 #define FeatureMeshCurvature_H
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 
-#include "Mesh.h"
 #include "MeshProperties.h"
+
 
 namespace Mesh
 {
@@ -40,7 +38,7 @@ namespace Mesh
  */
 class MeshExport Curvature : public App::DocumentObject
 {
-    PROPERTY_HEADER(Mesh::Curvature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Curvature);
 
 public:
     Curvature();
@@ -51,15 +49,15 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const { 
-        return "MeshGui::ViewProviderMeshCurvature"; 
+    const char* getViewProviderName() const override {
+        return "MeshGui::ViewProviderMeshCurvature";
     }
   //@}
 };
 
 }
 
-#endif // Curvature_H 
+#endif // Curvature_H

@@ -20,18 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_TrajectoryDressUpObject_H
 #define ROBOT_TrajectoryDressUpObject_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 
-#include "Trajectory.h"
 #include "TrajectoryObject.h"
-#include "PropertyTrajectory.h"
+
 
 namespace Robot
 {

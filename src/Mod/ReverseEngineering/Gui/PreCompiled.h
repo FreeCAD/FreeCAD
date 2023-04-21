@@ -20,66 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ReenExport    __declspec(dllimport)
-# define ReenGuiExport __declspec(dllexport)
-# define PartExport    __declspec(dllimport)
-# define MeshExport    __declspec(dllimport)
-# define MeshGuiExport __declspec(dllimport)
-# define PointsExport  __declspec(dllimport)
-# define AppExport     __declspec(dllimport)
-#else // for Linux
-# define ReenExport
-# define ReenGuiExport
-# define PartExport
-# define MeshExport
-# define MeshGuiExport
-# define PointsExport
-# define AppExport
-#endif
-
 #ifdef _MSC_VER
-#   pragma warning(disable : 4275)
+# pragma warning(disable : 4181)
+# pragma warning(disable : 4267)
+# pragma warning(disable : 4275)
+# pragma warning(disable : 4305)
+# pragma warning(disable : 4522)
 #endif
-
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
-
-// STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <sstream>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
+// OpenCasCade
+#include <BRep_Builder.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
+#include <Geom_Plane.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Wire.hxx>
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+#include <QApplication>
+#include <QMessageBox>
+#include <QPushButton>
 
 #endif //_PreComp_
 

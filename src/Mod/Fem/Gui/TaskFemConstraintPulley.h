@@ -21,13 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
 #define GUI_TASKVIEW_TaskFemConstraintPulley_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
@@ -39,13 +34,13 @@ class TaskFemConstraintPulley : public TaskFemConstraintGear
     Q_OBJECT
 
 public:
-    TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = 0);
+    explicit TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = nullptr);
 
-    double getOtherDiameter(void) const;
-    double getCenterDistance(void) const;
-    double getTensionForce(void) const;
-    double getTorque(void) const;
-    bool getIsDriven(void) const;
+    double getOtherDiameter() const;
+    double getCenterDistance() const;
+    double getTensionForce() const;
+    double getTorque() const;
+    bool getIsDriven() const;
 
 private Q_SLOTS:
     void onOtherDiameterChanged(double dia);
@@ -54,7 +49,7 @@ private Q_SLOTS:
     void onCheckIsDriven(bool);
 
 protected:
-    virtual void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 };
 
 /// simulation dialog for the TaskView
@@ -63,11 +58,11 @@ class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintGear
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
+    explicit TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    void open();
+    bool accept() override;
+    void open() override;
 };
 
 } //namespace FemGui

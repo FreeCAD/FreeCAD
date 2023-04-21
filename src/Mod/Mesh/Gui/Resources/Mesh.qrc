@@ -19,6 +19,7 @@
         <file>icons/Mesh_Import.svg</file>
         <file>icons/Mesh_Intersection.svg</file>
         <file>icons/Mesh_Merge.svg</file>
+        <file>icons/Mesh_Pipette.svg</file>
         <file>icons/Mesh_PolyCut.svg</file>
         <file>icons/Mesh_PolyTrim.svg</file>
         <file>icons/Mesh_RemeshGmsh.svg</file>
@@ -42,6 +43,8 @@
         <file>icons/RegularSolids/Mesh_Ellipsoid.svg</file>
         <file>icons/RegularSolids/Mesh_Sphere.svg</file>
         <file>icons/RegularSolids/Mesh_Torus.svg</file>
+    </qresource>
+    <qresource>
         <file>translations/Mesh_af.qm</file>
         <file>translations/Mesh_de.qm</file>
         <file>translations/Mesh_fi.qm</file>
@@ -79,5 +82,10 @@
         <file>translations/Mesh_val-ES.qm</file>
         <file>translations/Mesh_ar.qm</file>
         <file>translations/Mesh_vi.qm</file>
+        <file>translations/Mesh_es-AR.qm</file>
+        <file>translations/Mesh_bg.qm</file>
+        <file>translations/Mesh_ka.qm</file>
+        <file>translations/Mesh_sr-CS.qm</file>
+        <file>translations/Mesh_be.qm</file>
     </qresource>
-</RCC> 
+</RCC>

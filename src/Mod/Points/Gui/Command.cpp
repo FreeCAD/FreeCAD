@@ -20,28 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <QFileInfo>
 # include <QInputDialog>
-# include <Python.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
@@ -49,6 +46,7 @@
 #include "../App/PointsFeature.h"
 #include "../App/Structured.h"
 #include "../App/Properties.h"
+
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
 
@@ -95,7 +93,7 @@ void CmdPointsImport::activated(int iMsg)
     }
 }
 
-bool CmdPointsImport::isActive(void)
+bool CmdPointsImport::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -138,7 +136,7 @@ void CmdPointsExport::activated(int iMsg)
     }
 }
 
-bool CmdPointsExport::isActive(void)
+bool CmdPointsExport::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
@@ -175,7 +173,7 @@ void CmdPointsTransform::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdPointsTransform::isActive(void)
+bool CmdPointsTransform::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
@@ -197,71 +195,61 @@ CmdPointsConvert::CmdPointsConvert()
 void CmdPointsConvert::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    double STD_OCC_TOLERANCE = 1e-6;
+
+    int decimals = Base::UnitsApi::getDecimals();
+    double tolerance_from_decimals = pow(10., -decimals);
+
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
-        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        QObject::tr("Enter maximum distance:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
     Gui::WaitCursor wc;
     openCommand(QT_TRANSLATE_NOOP("Command", "Convert to points"));
-    std::vector<App::DocumentObject*> geoObject = getSelection().getObjectsOfType(Base::Type::fromName("App::GeoFeature"));
+    std::vector<App::GeoFeature*> geoObject = getSelection().getObjectsOfType<App::GeoFeature>();
 
-    bool addedPoints = false;
-    for (std::vector<App::DocumentObject*>::iterator it = geoObject.begin(); it != geoObject.end(); ++it) {
-        Base::Placement globalPlacement = static_cast<App::GeoFeature*>(*it)->globalPlacement();
-        Base::Placement localPlacement = static_cast<App::GeoFeature*>(*it)->Placement.getValue();
-        localPlacement = globalPlacement * localPlacement.inverse();
-        const App::PropertyComplexGeoData* prop = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
-        if (prop) {
-            const Data::ComplexGeoData* data = prop->getComplexData();
-            std::vector<Base::Vector3d> vertexes;
-            std::vector<Base::Vector3d> normals;
-            data->getPoints(vertexes, normals, static_cast<float>(tol));
-            if (!vertexes.empty()) {
-                Points::Feature* fea = 0;
-                if (vertexes.size() == normals.size()) {
-                    fea = static_cast<Points::Feature*>(Base::Type::fromName("Points::FeatureCustom").createInstance());
-                    if (!fea) {
-                        Base::Console().Error("Failed to create instance of 'Points::FeatureCustom'\n");
-                        continue;
-                    }
-                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
-                        (fea->addDynamicProperty("Points::PropertyNormalList", "Normal"));
-                    if (prop) {
-                        std::vector<Base::Vector3f> normf;
-                        normf.resize(normals.size());
-                        std::transform(normals.begin(), normals.end(), normf.begin(), Base::toVector<float, double>);
-                        prop->setValues(normf);
-                    }
-                }
-                else {
-                    fea = new Points::Feature;
-                }
-
-                Points::PointKernel kernel;
-                kernel.reserve(vertexes.size());
-                for (std::vector<Base::Vector3d>::iterator pt = vertexes.begin(); pt != vertexes.end(); ++pt)
-                    kernel.push_back(*pt);
-                fea->Points.setValue(kernel);
-                fea->Placement.setValue(localPlacement);
-
-                App::Document* doc = (*it)->getDocument();
-                doc->addObject(fea, "Points");
-                fea->purgeTouched();
-                addedPoints = true;
+    auto run_python = [](const std::vector<App::GeoFeature*>& geoObject, double tol) -> bool {
+        Py::List list;
+        for (auto it : geoObject) {
+            const App::PropertyComplexGeoData* prop = it->getPropertyOfGeometry();
+            if (prop) {
+                list.append(Py::asObject(it->getPyObject()));
             }
         }
-    }
 
-    if (addedPoints)
-        commitCommand();
-    else
+        if (list.size() > 0) {
+            PyObject* module = PyImport_ImportModule("pointscommands.commands");
+            if (!module) {
+                throw Py::Exception();
+            }
+
+            Py::Module commands(module, true);
+            commands.callMemberFunction("make_points_from_geometry", Py::TupleN(list, Py::Float(tol)));
+            return true;
+        }
+
+        return false;
+    };
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (run_python(geoObject, tol))
+            commitCommand();
+        else
+            abortCommand();
+    }
+    catch (const Py::Exception&) {
         abortCommand();
+        Base::PyException e;
+        e.ReportException();
+    }
 }
 
-bool CmdPointsConvert::isActive(void)
+bool CmdPointsConvert::isActive()
 {
     return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
 }
@@ -305,7 +293,7 @@ void CmdPointsPolyCut::activated(int iMsg)
     }
 }
 
-bool CmdPointsPolyCut::isActive(void)
+bool CmdPointsPolyCut::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
@@ -349,7 +337,7 @@ void CmdPointsMerge::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPointsMerge::isActive(void)
+bool CmdPointsMerge::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
 }
@@ -457,12 +445,12 @@ void CmdPointsStructure::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPointsStructure::isActive(void)
+bool CmdPointsStructure::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) == 1;
 }
 
-void CreatePointsCommands(void)
+void CreatePointsCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPointsImport());

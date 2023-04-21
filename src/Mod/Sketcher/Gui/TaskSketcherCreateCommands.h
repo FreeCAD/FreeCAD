@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherCreateCommands_H
 #define GUI_TASKVIEW_TaskSketcherCreateCommands_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-
-
+#include <Gui/TaskView/TaskView.h>
 
 
 namespace App {
@@ -45,16 +42,16 @@ class TaskSketcherCreateCommands : public TaskBox, public Gui::SelectionSingleto
     Q_OBJECT
 
 public:
-    TaskSketcherCreateCommands(QWidget *parent = 0);
-    ~TaskSketcherCreateCommands();
+    explicit TaskSketcherCreateCommands(QWidget *parent = nullptr);
+    ~TaskSketcherCreateCommands() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+                  Gui::SelectionSingleton::MessageType Reason) override;
 
 private Q_SLOTS:
  
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 
 private:

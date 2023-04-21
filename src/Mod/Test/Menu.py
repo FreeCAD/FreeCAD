@@ -42,6 +42,7 @@ import FreeCAD, os, unittest, FreeCADGui
 class MenuCreateCases(unittest.TestCase):
 
     def setUp(self):
+        FreeCADGui.activateWorkbench("TestWorkbench")
         FreeCAD.Console.PrintLog ('Setup Test menu...\n')
         list = ["Test_TestAll","Test_TestDoc","Test_TestBase","Test_TestWork"]
         w = FreeCADGui.getWorkbench('TestWorkbench')
@@ -55,10 +56,10 @@ class MenuCreateCases(unittest.TestCase):
         self.b = False
         for i in list:
           if i == 'TestMenu': self.b=True
-        self.failUnless(self.b==True,"Test menu not found")
+        self.failUnless(self.b,"Test menu not found")
 
     def tearDown(self):
-      if self.b == True:
+      if self.b:
         FreeCAD.Console.PrintLog ('Test menu successfully added\n')
       else:
         FreeCAD.Console.PrintLog ('Adding Test menu failed\n')
@@ -67,6 +68,7 @@ class MenuCreateCases(unittest.TestCase):
 class MenuDeleteCases(unittest.TestCase):
 
     def setUp(self):
+        FreeCADGui.activateWorkbench("TestWorkbench")
         FreeCAD.Console.PrintLog ('Remove Test menu...\n')
         w = FreeCADGui.getWorkbench('TestWorkbench')
         w.removeMenu("TestMenu")
@@ -82,7 +84,7 @@ class MenuDeleteCases(unittest.TestCase):
         self.failUnless(self.b==True,"Test menu still added")
 
     def tearDown(self):
-      if self.b == True:
+      if self.b:
         FreeCAD.Console.PrintLog ('Test menu successfully removed\n')
       else:
         FreeCAD.Console.PrintLog ('Removing Test menu failed\n')

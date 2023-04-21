@@ -58,12 +58,11 @@ class Fillet(gui_base_original.Creator):
         self.featureName = "Fillet"
 
     def GetResources(self):
-        """Set icon, menu and tooltip.""" 
-
+        """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_Fillet',
                 'Accel':'F,I',
-                'MenuText': QT_TRANSLATE_NOOP("Draft", "Fillet"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates a fillet between two selected wires or edges.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between two selected wires or edges.")}
 
     def Activated(self, name="Fillet"):
         """Execute when the command is called."""
@@ -96,13 +95,8 @@ class Fillet(gui_base_original.Creator):
                                                     "Create chamfer"))
             self.ui.check_chamfer.show()
 
-            # TODO: change to Qt5 style
-            QtCore.QObject.connect(self.ui.check_delete,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.set_delete)
-            QtCore.QObject.connect(self.ui.check_chamfer,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.set_chamfer)
+            self.ui.check_delete.stateChanged.connect(self.set_delete)
+            self.ui.check_chamfer.stateChanged.connect(self.set_chamfer)
 
             # TODO: somehow we need to set up the trackers
             # to show a preview of the fillet.
@@ -194,7 +188,7 @@ class Fillet(gui_base_original.Creator):
         self.commit(translate("draft", "Create fillet"),
                     _cmd_list)
 
-    def finish(self, close=False):
+    def finish(self, cont=False):
         """Terminate the operation."""
         super(Fillet, self).finish()
         if self.ui:

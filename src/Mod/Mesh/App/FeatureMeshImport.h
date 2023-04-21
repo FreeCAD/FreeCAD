@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_IMPORT_H
 #define FEATURE_MESH_IMPORT_H
 
 #include "MeshFeature.h"
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
+
 
 namespace Mesh
 {
@@ -39,7 +38,7 @@ namespace Mesh
  */
 class Import : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Import);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Import);
 
 public:
   Import();
@@ -49,11 +48,11 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
-  short mustExecute(void) const;
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
   //@}
 };
 
 }
 
-#endif // FEATURE_MESH_IMPORT_H 
+#endif // FEATURE_MESH_IMPORT_H

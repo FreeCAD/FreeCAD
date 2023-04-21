@@ -50,33 +50,38 @@ class Polygon(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Radius of the control circle")
         obj.addProperty("App::PropertyLength", "Radius", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "How the polygon must be drawn from the control circle")
         obj.addProperty("App::PropertyEnumeration", "DrawMode", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Create a face")
         obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
-        
+
         obj.MakeFace = get_param("fillmode",True)
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
         obj.Radius = 1
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         if (obj.FacesNumber >= 3) and (obj.Radius.Value > 0):
             import Part
             plm = obj.Placement
@@ -101,7 +106,7 @@ class Polygon(DraftObject):
                         shape = w
             if "FilletRadius" in obj.PropertiesList:
                 if obj.FilletRadius.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape, 
+                    w = DraftGeomUtils.filletWire(shape,
                                                   obj.FilletRadius.Value)
                     if w:
                         shape = w
@@ -115,6 +120,10 @@ class Polygon(DraftObject):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

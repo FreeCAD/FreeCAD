@@ -24,8 +24,11 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
+#include <boost/signals2/connection.hpp>
 #include "PropertyPage.h"
 #include <memory>
+
+class QTreeWidgetItem;
 
 namespace Gui {
 namespace Dialog {
@@ -46,26 +49,28 @@ class DlgCustomToolbars : public CustomizeActionPage
 protected:
     enum Type { Toolbar, Toolboxbar };
 
-    DlgCustomToolbars(Type, QWidget* parent = 0);
-    virtual ~DlgCustomToolbars();
-
-protected Q_SLOTS:
-    void on_categoryBox_activated(int index);
-    void on_workbenchBox_activated(int index);
-    void on_moveActionRightButton_clicked();
-    void on_moveActionLeftButton_clicked();
-    void on_moveActionUpButton_clicked();
-    void on_moveActionDownButton_clicked();
-    void on_newButton_clicked();
-    void on_renameButton_clicked();
-    void on_deleteButton_clicked();
-    void onAddMacroAction(const QByteArray&);
-    void onRemoveMacroAction(const QByteArray&);
-    void onModifyMacroAction(const QByteArray&);
+    explicit DlgCustomToolbars(Type, QWidget* parent = nullptr);
+    ~DlgCustomToolbars() override;
 
 protected:
-    void changeEvent(QEvent *e);
-    void hideEvent(QHideEvent * event);
+    void setupConnections();
+    void onWorkbenchBoxActivated(int index);
+    void onMoveActionRightButtonClicked();
+    void onMoveActionLeftButtonClicked();
+    void onMoveActionUpButtonClicked();
+    void onMoveActionDownButtonClicked();
+    void onNewButtonClicked();
+    void onRenameButtonClicked();
+    void onDeleteButtonClicked();
+
+protected Q_SLOTS:
+    void onAddMacroAction(const QByteArray&) override;
+    void onRemoveMacroAction(const QByteArray&) override;
+    void onModifyMacroAction(const QByteArray&) override;
+
+protected:
+    void changeEvent(QEvent *e) override;
+    void hideEvent(QHideEvent * event) override;
     virtual void addCustomToolbar(const QString&);
     virtual void removeCustomToolbar(const QString&);
     virtual void renameCustomToolbar(const QString&, const QString&);
@@ -73,6 +78,7 @@ protected:
     virtual void removeCustomCommand(const QString&, const QByteArray&);
     virtual void moveUpCustomCommand(const QString&, const QByteArray&);
     virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+    void onActivateCategoryBox();
 
 private:
     void importCustomToolbars(const QByteArray&);
@@ -82,6 +88,7 @@ protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:
     Type type;
+    boost::signals2::scoped_connection conn;
 };
 
 /** This class implements the creation of user defined toolbars.
@@ -94,22 +101,24 @@ class DlgCustomToolbarsImp : public DlgCustomToolbars
     Q_OBJECT
 
 public:
-    DlgCustomToolbarsImp(QWidget* parent = 0);
-    ~DlgCustomToolbarsImp();
+    explicit DlgCustomToolbarsImp(QWidget* parent = nullptr);
+    ~DlgCustomToolbarsImp() override;
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void addCustomToolbar(const QString&);
-    virtual void removeCustomToolbar(const QString&);
-    virtual void renameCustomToolbar(const QString&, const QString&);
-    virtual void addCustomCommand(const QString&, const QByteArray&);
-    virtual void removeCustomCommand(const QString&, const QByteArray&);
-    virtual void moveUpCustomCommand(const QString&, const QByteArray&);
-    virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+    void showEvent(QShowEvent* e) override;
+    void changeEvent(QEvent *e) override;
+    void addCustomToolbar(const QString&) override;
+    void removeCustomToolbar(const QString&) override;
+    void renameCustomToolbar(const QString&, const QString&) override;
+    void addCustomCommand(const QString&, const QByteArray&) override;
+    void removeCustomCommand(const QString&, const QByteArray&) override;
+    void moveUpCustomCommand(const QString&, const QByteArray&) override;
+    void moveDownCustomCommand(const QString&, const QByteArray&) override;
 
 private:
     QList<QAction*> getActionGroup(QAction*);
     void setActionGroup(QAction*, const QList<QAction*>& group);
+    bool firstShow = true;
 };
 
 /** This class implements the creation of user defined toolbox bars.
@@ -126,11 +135,11 @@ class DlgCustomToolBoxbarsImp : public DlgCustomToolbars
     Q_OBJECT
 
 public:
-    DlgCustomToolBoxbarsImp(QWidget* parent = 0);
-    ~DlgCustomToolBoxbarsImp();
+    explicit DlgCustomToolBoxbarsImp(QWidget* parent = nullptr);
+    ~DlgCustomToolBoxbarsImp() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 };
 
 } // namespace Dialog

@@ -30,7 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \brief task panel for solver ccx tools object
 
 import os
-import sys
 import time
 from PySide import QtCore
 from PySide import QtGui
@@ -42,15 +41,17 @@ import FreeCADGui
 
 import FemGui
 
-if sys.version_info.major >= 3:
-    def unicode(text, *args):
-        return str(text)
+
+def unicode(text, *args):
+    return str(text)
 
 
 class _TaskPanel:
     """
     The TaskPanel for CalculiX ccx tools solver object
     """
+
+    PREFS_PATH = "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
 
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(
@@ -72,6 +73,14 @@ class _TaskPanel:
         self.Timer.start(300)
 
         self.fem_console_message = ""
+
+        self.CCX_pipeline = None
+        self.CCX_mesh_visibility = False
+
+        # store visibility of possibly existing mesh object
+        CCX_mesh = self.fea.analysis.Document.getObject("CCX_Results_Mesh")
+        if CCX_mesh is not None:
+            self.CCX_mesh_visibility = CCX_mesh.ViewObject.Visibility
 
         # Connect Signals and Slots
         QtCore.QObject.connect(
@@ -171,8 +180,6 @@ class _TaskPanel:
         return
 
     def femConsoleMessage(self, message="", color="#000000"):
-        if sys.version_info.major < 3:
-            message = message.encode("utf-8", "replace")
         self.fem_console_message = self.fem_console_message + (
             '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'
             .format(time.time() - self.Start, color, message)
@@ -190,25 +197,9 @@ class _TaskPanel:
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
             return False
 
-        if sys.version_info.major >= 3:
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
-            # convert QByteArray to a binary string an decode it to "utf-8"
-            out = out.data().decode()  # "utf-8" can be omitted
-            # print(type(out))
-            # print(out)
-        else:
-            try:
-                out = unicode(out, "utf-8", "replace")
-                rx = QtCore.QRegExp("\\*ERROR.*\\n\\n")
-                # print(rx)
-                rx.setMinimal(True)
-                pos = rx.indexIn(out)
-                while not pos < 0:
-                    match = rx.cap(0)
-                    FreeCAD.Console.PrintError(match.strip().replace("\n", " ") + "\n")
-                    pos = rx.indexIn(out, pos + 1)
-            except UnicodeDecodeError:
-                self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
+        # convert QByteArray to a binary string an decode it to "utf-8"
+        out = out.data().decode()  # "utf-8" can be omitted
         out = os.linesep.join([s for s in out.splitlines() if s])
         out = out.replace("\n", "<br>")
         # print(out)
@@ -242,15 +233,17 @@ class _TaskPanel:
     def calculixStarted(self):
         # print("calculixStarted()")
         FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
-        self.form.pb_run_ccx.setText("Break CalculiX")
+        self.form.pb_run_ccx.setText("Stop CalculiX")
 
     def calculixStateChanged(self, newState):
-        if (newState == QtCore.QProcess.ProcessState.Starting):
-                self.femConsoleMessage("Starting CalculiX...")
-        if (newState == QtCore.QProcess.ProcessState.Running):
-                self.femConsoleMessage("CalculiX is running...")
-        if (newState == QtCore.QProcess.ProcessState.NotRunning):
-                self.femConsoleMessage("CalculiX stopped.")
+        if newState == QtCore.QProcess.ProcessState.Starting:
+            self.femConsoleMessage("Starting CalculiX...")
+        elif newState == QtCore.QProcess.ProcessState.Running:
+            self.femConsoleMessage("CalculiX is running...")
+        elif newState == QtCore.QProcess.ProcessState.NotRunning:
+            self.femConsoleMessage("CalculiX stopped.")
+        else:
+            self.femConsoleMessage("Problems.")
 
     def calculixFinished(self, exitCode):
         # print("calculixFinished(), exit code: {}".format(exitCode))
@@ -298,6 +291,11 @@ class _TaskPanel:
         QApplication.restoreOverrideCursor()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
+        # restore mesh object visibility
+        CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
+        if CCX_mesh is not None:
+            CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
+
     def choose_working_dir(self):
         wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
                                                     self.fea.working_dir)
@@ -341,7 +339,7 @@ class _TaskPanel:
 
     def editCalculixInputFile(self):
         print("editCalculixInputFile {}".format(self.fea.inp_file_name))
-        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
         if ccx_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.fea.inp_file_name)
         else:
@@ -356,6 +354,13 @@ class _TaskPanel:
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
+        if self.fea.ccx_binary_present is False:
+            self.femConsoleMessage(
+                "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
+                .format(self.fea.ccx_binary)
+            )
+            # TODO deactivate the run button
+            return
         # print("runCalculix")
         self.Start = time.time()
 
@@ -369,6 +374,19 @@ class _TaskPanel:
         )
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
+
+        # Set up for multi-threading. Note: same functionality as ccx_tools.py/start_ccx()
+        ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
+        env = QtCore.QProcessEnvironment.systemEnvironment()
+        num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 1)
+        if num_cpu_pref > 1:
+            env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
+        else:
+            cpu_count = os.cpu_count()
+            if cpu_count is not None and cpu_count > 1:
+                env.insert("OMP_NUM_THREADS", str(cpu_count))
+        self.Calculix.setProcessEnvironment(env)
+
         self.cwd = QtCore.QDir.currentPath()
         fi = QtCore.QFileInfo(self.fea.inp_file_name)
         QtCore.QDir.setCurrent(fi.path())

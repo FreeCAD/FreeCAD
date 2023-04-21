@@ -37,13 +37,13 @@ if App.GuiUp:
 
 
 def make_shape2dview(baseobj,projectionVector=None,facenumbers=[]):
-    """makeShape2DView(object, [projectionVector], [facenumbers])
-    
-    Add a 2D shape to the document, which is a 2D projection of the given object. 
-    
+    """make_shape2dview(object, [projectionVector], [facenumbers])
+
+    Add a 2D shape to the document, which is a 2D projection of the given object.
+
     Parameters
     ----------
-    object : 
+    object :
         TODO: Describe
 
     projectionVector : Base.Vector

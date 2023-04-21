@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_RootPy"
+      PythonName="Part.ShapeFix.Root"
+      Twin="ShapeFix_Root"
+      TwinPointer="ShapeFix_Root"
+      Include="ShapeFix_Root.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="false">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Root class for fixing operations</UserDocu>
+    </Documentation>
+    <Methode Name="limitTolerance" Const="true">
+      <Documentation>
+        <UserDocu>Returns tolerance limited by [MinTolerance,MaxTolerance]</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Precision" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Basic precision value</UserDocu>
+      </Documentation>
+      <Parameter Name="Precision" Type="Float"/>
+    </Attribute>
+    <Attribute Name="MinTolerance" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Minimal allowed tolerance</UserDocu>
+      </Documentation>
+      <Parameter Name="MinTolerance" Type="Float"/>
+    </Attribute>
+    <Attribute Name="MaxTolerance" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Maximal allowed tolerance</UserDocu>
+      </Documentation>
+      <Parameter Name="MaxTolerance" Type="Float"/>
+    </Attribute>
+    <ClassDeclarations>
+private:
+    Handle(ShapeFix_Root) hRoot;
+
+public:
+    void setHandle(Handle(ShapeFix_Root) handle) {
+        setTwinPointer(handle.get());
+        hRoot = handle;
+    }
+    </ClassDeclarations>
+  </PythonExport>
+</GenerateModel>

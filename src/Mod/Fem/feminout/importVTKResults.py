@@ -39,12 +39,7 @@ import Fem
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == "__builtin__":
-    # because we'll redefine open below (Python2)
-    pyopen = open
-elif open.__module__ == "io":
-    # because we'll redefine open below (Python3)
-    pyopen = open
+pyopen = open
 
 
 def open(
@@ -134,6 +129,9 @@ def importVtkVtkResult(
 ):
     vtk_result_obj = FreeCAD.ActiveDocument.addObject("Fem::FemPostPipeline", resultname)
     vtk_result_obj.read(filename)
+    # set display mode to "Surface" like for any other new pipeline to assure the user sees
+    # something after the import was done
+    vtk_result_obj.ViewObject.DisplayMode = "Surface"
     vtk_result_obj.touch()
     FreeCAD.ActiveDocument.recompute()
     return vtk_result_obj

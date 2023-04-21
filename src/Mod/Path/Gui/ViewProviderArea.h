@@ -51,7 +51,7 @@ public:
     virtual void dropObject(App::DocumentObject*);
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderArea> ViewProviderAreaPython;
+using ViewProviderAreaPython = Gui::ViewProviderPythonFeatureT<ViewProviderArea>;
 
 
 class PathGuiExport ViewProviderAreaView : public PartGui::ViewProviderPlaneParametric
@@ -74,7 +74,7 @@ public:
     virtual void dropObject(App::DocumentObject*);
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderAreaView> ViewProviderAreaViewPython;
+using ViewProviderAreaViewPython = Gui::ViewProviderPythonFeatureT<ViewProviderAreaView>;
 
 } //namespace PathGui
 

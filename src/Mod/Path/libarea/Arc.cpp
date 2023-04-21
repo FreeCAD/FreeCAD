@@ -53,8 +53,10 @@ bool CArc::AlmostALine()const
 
 Point CArc::MidParam(double param)const {
 	/// returns a point which is 0-1 along arc
-	if(fabs(param) < 0.00000000000001)return m_s;
-	if(fabs(param - 1.0) < 0.00000000000001)return m_e;
+	if(fabs(param) < 0.00000000000001)
+	    return m_s;
+	if(fabs(param - 1.0) < 0.00000000000001)
+	    return m_e;
 
 	Point p;
 	Point v = m_s - m_c;

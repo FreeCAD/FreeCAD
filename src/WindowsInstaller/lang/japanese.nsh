@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "このウィザードが、あなたのFreeCAD�
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Pythonスクリプトをコンパイルしています..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "デスクトップにショートカットを作成する"
-${LangFileString} TEXT_FINISH_WEBSITE "freecadweb.orgを開いて最新ニュースやサポート、ヒントなどを入手する"
+${LangFileString} TEXT_FINISH_WEBSITE "freecad.orgを開いて最新ニュースやサポート、ヒントなどを入手する"
 
 #${LangFileString} FileTypeTitle "FreeCAD文書"
 

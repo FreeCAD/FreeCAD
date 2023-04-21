@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : StdMeshers_Hexa_3D.cxx
 //           Moved here from SMESH_Hexa_3D.cxx
 //  Author : Paul RASCLE, EDF
@@ -181,7 +181,7 @@ namespace
 
   //================================================================================
   /*!
-   * \brief Convertor of a pair of integers to a sole index
+   * \brief Converter of a pair of integers to a sole index
    */
   struct _Indexer
   {

@@ -19,10 +19,21 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys
+import os
+import codecs
+import ntpath
 # import numpy as np
+
+import FreeCAD
+import Arch
+import Draft
+import DraftGeomUtils
+import Mesh
+import MeshPart
+import Part
+
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(context,text):
@@ -43,19 +54,12 @@ p = Draft.precision()
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
-def decode(txt):
-
-    if sys.version_info.major < 3:
-        if isinstance(txt,unicode):
-            return txt.encode("utf8")
-    return txt
-
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
     for i in range(len(aList)):
-        if ( round(aVertex.X,p) == round(aList[i].X,p) ):
-            if ( round(aVertex.Y,p) == round(aList[i].Y,p) ):
-                if ( round(aVertex.Z,p) == round(aList[i].Z,p) ):
+        if round(aVertex.X,p) == round(aList[i].X,p):
+            if round(aVertex.Y,p) == round(aList[i].Y,p):
+                if round(aVertex.Z,p) == round(aList[i].Z,p):
                     return i
     return None
 
@@ -98,13 +102,13 @@ def getIndices(obj,shape,offsetv,offsetvn):
         curves = shape.Topology
     if mesh:
         for v in mesh.Topology[0]:
-              vlist.append(" "+str(round(v[0],p))+" "+str(round(v[1],p))+" "+str(round(v[2],p)))
+            vlist.append(" "+str(round(v[0],p))+" "+str(round(v[1],p))+" "+str(round(v[2],p)))
 
         for vn in mesh.Facets:
-              vnlist.append(" "+str(vn.Normal[0]) + " " + str(vn.Normal[1]) + " " + str(vn.Normal[2]))
+            vnlist.append(" "+str(vn.Normal[0]) + " " + str(vn.Normal[1]) + " " + str(vn.Normal[2]))
 
         for i, vn in enumerate(mesh.Topology[1]):
-              flist.append(" "+str(vn[0]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
+            flist.append(" "+str(vn[0]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
     else:
         if curves:
             for v in curves[0]:
@@ -119,7 +123,7 @@ def getIndices(obj,shape,offsetv,offsetvn):
                 vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
             if not shape.Faces:
                 for e in shape.Edges:
-                   if DraftGeomUtils.geomType(e) == "Line":
+                    if DraftGeomUtils.geomType(e) == "Line":
                         ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offsetv)
                         ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offsetv)
                         elist.append(ei)
@@ -155,7 +159,6 @@ def export(exportList,filename,colors=None):
     optionally colors can be a dict containing ["objectName:colorTuple"]
     pairs for use in non-GUI mode."""
 
-    import codecs
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
@@ -247,12 +250,12 @@ def export(exportList,filename,colors=None):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + filename + "\n")
     if materials:
         outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
         outfile.write("# https://www.freecadweb.org\n")
-        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr "}
+        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr ","Dissolve":"d "}
         done = [] # store names to avoid duplicates
         for mat in materials:
             if isinstance(mat,tuple):
@@ -260,6 +263,7 @@ def export(exportList,filename,colors=None):
                     outfile.write("newmtl " + mat[0] + "\n")
                     outfile.write("Kd " + str(mat[1][0]) + " " + str(mat[1][1]) + " " + str(mat[1][2]) + "\n")
                     outfile.write("Tr " + str(mat[2]/100) + "\n")
+                    outfile.write("d " + str(1-mat[2]/100) + "\n")
                     done.append(mat[0])
             else:
                 if not mat.Name in done:
@@ -270,20 +274,8 @@ def export(exportList,filename,colors=None):
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + decode(filenamemtl) + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
 
-
-#def decode(name):
-#    "decodes encoded strings"
-#    try:
-#        decodedName = (name.decode("utf8"))
-#    except UnicodeDecodeError:
-#        try:
-#            decodedName = (name.decode("latin1"))
-#        except UnicodeDecodeError:
-#            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-#            decodedName = name
-#    return decodedName
 
 def open(filename):
     "called when freecad wants to open a file"
@@ -293,6 +285,12 @@ def open(filename):
     return insert(filename,doc.Name)
 
 def insert(filename,docname):
+
+    meshName = ntpath.basename(filename)
+    for i in meshName.split():
+        if "." in i:
+            i = i.split(".")[0]
+    meshName = i
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -306,49 +304,59 @@ def insert(filename,docname):
         activeobject = None
         material = None
         colortable = {}
+        content_array = []
         for line in infile:
-            line = line.strip()
-            if line[:7] == "mtllib ":
-                matlib = os.path.join(os.path.dirname(filename),line[7:])
-                if os.path.exists(matlib):
-                    with pythonopen(matlib,"r") as matfile:
-                        mname = None
-                        color = None
-                        trans = None
-                        for mline in matfile:
-                            mline = mline.strip()
-                            if mline[:7] == "newmtl ":
-                                if mname and color:
-                                    colortable[mname] = [color,trans]
-                                color = None
-                                trans = None
-                                mname = mline[7:]
-                            elif mline[:3] == "Kd ":
-                                color = tuple([float(i) for i in mline[3:].split()])
-                            elif mline[:2] == "d ":
-                                trans = int(float(mline[2:])*100)
-                        if mname and color:
-                            colortable[mname] = [color,trans]
-            elif line[:2] == "o ":
-                if activeobject:
-                    makeMesh(doc,activeobject,verts,facets,material,colortable)
-                material = None
-                facets = []
-                activeobject = line[2:]
-            elif line[:2] == "v ":
-                verts.append([float(i) for i in line[2:].split()])
-            elif line[:2] == "f ":
-                fa = []
-                for i in line[2:].split():
-                    if "/" in i:
-                        i = i.split("/")[0]
-                    fa.append(int(i))
-                facets.append(fa)
-            elif line[:7] == "usemtl ":
-                material = line[7:]
-        if activeobject:
-            makeMesh(doc,activeobject,verts,facets,material,colortable)
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + decode(filename) + "\n")
+            content_array.append(line)
+    activeobjectExists = False
+    for line in content_array:
+        line = line.strip()
+        if line[:2] == "o ":
+            activeobjectExists = True
+    if not activeobjectExists:
+        activeobject = meshName
+    for line in content_array:
+        line = line.strip()
+        if line[:7] == "mtllib ":
+            matlib = os.path.join(os.path.dirname(filename),line[7:])
+            if os.path.exists(matlib):
+                with pythonopen(matlib,"r") as matfile:
+                    mname = None
+                    color = None
+                    trans = None
+                    for mline in matfile:
+                        mline = mline.strip()
+                        if mline[:7] == "newmtl ":
+                            if mname and color:
+                                colortable[mname] = [color,trans]
+                            color = None
+                            trans = None
+                            mname = mline[7:]
+                        elif mline[:3] == "Kd ":
+                            color = tuple([float(i) for i in mline[3:].split()])
+                        elif mline[:2] == "d ":
+                            trans = int((1-float(mline[2:]))*100)
+                    if mname and color:
+                        colortable[mname] = [color,trans]
+        elif line[:2] == "o ":
+            if activeobject:
+                makeMesh(doc,activeobject,verts,facets,material,colortable)
+            material = None
+            facets = []
+            activeobject = line[2:]
+        elif line[:2] == "v ":
+            verts.append([float(i) for i in line[2:].split()])
+        elif line[:2] == "f ":
+            fa = []
+            for i in line[2:].split():
+                if "/" in i:
+                    i = i.split("/")[0]
+                fa.append(int(i))
+            facets.append(fa)
+        elif line[:7] == "usemtl ":
+            material = line[7:]
+    if activeobject:
+        makeMesh(doc,activeobject,verts,facets,material,colortable)
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
     return doc
 
 def makeMesh(doc,activeobject,verts,facets,material,colortable):
@@ -375,5 +383,5 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
         if material and FreeCAD.GuiUp:
             if material in colortable:
                 mobj.ViewObject.ShapeColor = colortable[material][0]
-                if colortable[material][1] != None:
+                if colortable[material][1] is not None:
                     mobj.ViewObject.Transparency = colortable[material][1]

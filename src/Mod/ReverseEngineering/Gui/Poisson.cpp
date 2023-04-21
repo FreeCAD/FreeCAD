@@ -20,28 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QTextStream>
 #endif
+
+#include <App/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/WaitCursor.h>
 
 #include "ui_Poisson.h"
 #include "Poisson.h"
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
 
 
 using namespace ReenGui;
@@ -128,7 +118,7 @@ TaskPoisson::TaskPoisson(const App::DocumentObjectT& obj)
     widget = new PoissonWidget(obj);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("actions/FitSurface"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

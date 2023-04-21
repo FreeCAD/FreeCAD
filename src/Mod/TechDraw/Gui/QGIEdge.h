@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
 #define DRAWINGGUI_QGRAPHICSITEMEDGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIPrimPath.h"
 
 namespace TechDrawGui
@@ -39,7 +41,6 @@ public:
     int type() const override { return Type;}
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
     int getProjIndex() const { return projIndex; }
 
@@ -49,7 +50,7 @@ public:
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
     virtual void setPrettyNormal() override;
-    
+
     double getEdgeFuzz(void) const;
 
 protected:

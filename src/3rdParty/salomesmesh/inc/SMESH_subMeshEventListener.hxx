@@ -62,7 +62,7 @@ class SMESH_EXPORT SMESH_subMeshEventListener
    * \brief Do something on a certain event
    * \param event - algo_event or compute_event itself (of SMESH_subMesh)
    * \param eventType - ALGO_EVENT or COMPUTE_EVENT (of SMESH_subMesh)
-   * \param subMesh - the submesh where the event occures
+   * \param subMesh - the submesh where the event occurs
    * \param data - listener data stored in the subMesh
    * \param hyp - hypothesis, if eventType is algo_event
    * 

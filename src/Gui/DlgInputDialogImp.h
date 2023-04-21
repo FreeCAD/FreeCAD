@@ -52,7 +52,7 @@ class GuiExport DlgInputDialogImp : public QDialog
 public:
   enum Type { LineEdit, SpinBox, UIntBox, FloatSpinBox, ComboBox };
 
-  DlgInputDialogImp( const QString& label, QWidget* parent = 0, bool modal = true, Type = LineEdit );
+  DlgInputDialogImp( const QString& label, QWidget* parent = nullptr, bool modal = true, Type = LineEdit );
   ~DlgInputDialogImp();
 
   void setType( Type t );

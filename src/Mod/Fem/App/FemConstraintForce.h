@@ -21,26 +21,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTFORCE_H
 #define FEM_CONSTRAINTFORCE_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
 
-class AppFemExport ConstraintForce : public Fem::Constraint
+class FemExport ConstraintForce : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintForce);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintForce);
 
 public:
     /// Constructor
-    ConstraintForce(void);
+    ConstraintForce();
 
     App::PropertyFloat Force;
     App::PropertyLinkSub Direction;
@@ -50,15 +46,15 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemConstraintForce";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
     Base::Vector3d naturalDirectionVector;

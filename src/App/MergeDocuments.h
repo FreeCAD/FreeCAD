@@ -24,8 +24,8 @@
 #ifndef APP_MERGEDOCUMENTS_H
 #define APP_MERGEDOCUMENTS_H
 
-#include <boost_signals2.hpp>
 #include <Base/Persistence.h>
+#include <boost/signals2.hpp>
 
 namespace zipios {
 class ZipInputStream;
@@ -37,18 +37,18 @@ class DocumentObject;
 class AppExport MergeDocuments : public Base::Persistence
 {
 public:
-    MergeDocuments(App::Document* doc);
-    ~MergeDocuments();
+    explicit MergeDocuments(App::Document* doc);
+    ~MergeDocuments() override;
     bool isVerbose() const { return verbose; }
     void setVerbose(bool on) { verbose = on; }
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const override;
     std::vector<App::DocumentObject*> importObjects(std::istream&);
     void importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r);
     void exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w);
-    void Save (Base::Writer & w) const;
-    void Restore(Base::XMLReader &r);
-    void SaveDocFile (Base::Writer & w) const;
-    void RestoreDocFile(Base::Reader & r);
+    void Save (Base::Writer & w) const override;
+    void Restore(Base::XMLReader &r) override;
+    void SaveDocFile (Base::Writer & w) const override;
+    void RestoreDocFile(Base::Reader & r) override;
 
     const std::map<std::string, std::string> &getNameMap() const {return nameMap;}
 
@@ -59,7 +59,7 @@ private:
     App::Document* appdoc;
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectExport;
     Connection connectImport;
 };

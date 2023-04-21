@@ -28,8 +28,7 @@
 #endif
 
 #include <CXX/Objects.hxx>
-#include "Exception.h"
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+
 #include "UnitsApi.h"
 #include "Quantity.h"
 #include "QuantityPy.h"
@@ -41,34 +40,9 @@ using namespace Base;
 //**************************************************************************
 // Python stuff of UnitsApi
 
-// UnitsApi Methods						// Methods structure
+// UnitsApi Methods
 PyMethodDef UnitsApi::Methods[] = {
-    //{"translateUnit",  (PyCFunction) UnitsApi::sTranslateUnit, METH_VARARGS,
-    // "translateUnit(string) -> double\n\n"
-    // "calculate a mathematical expression with units to a number. \n"
-    // "can be used for simple unit translation like: \n"
-    // " translateUnit('10m')\n"
-    // " or for more complex espressions:\n"
-    // " translateUnit('sin(pi)/50.0 m/s^2')\n"
-    //},
-    //{"getWithPrefs",  (PyCFunction) UnitsApi::sGetWithPrefs, METH_VARARGS,
-    // "getWithPrefs(type,[string|float|int]) -> double\n\n"
-    // "Translation to internal regarding user prefs \n"
-    // " That means if no unit is issued the user prefs are in \n"
-    // " charge. If one unit is used the user prefs get ignored\n"
-    // " type can be: \n"
-    // " Length  \n"
-    // " Area  \n"
-    // " Volume  \n"
-    // " Angle  \n"
-    // " TimeSpan  \n"
-    // " Velocity  \n"
-    // " Acceleration \n"
-    // " Mass   \n"
-    // " Temperature \n"
-
-    //},
-    {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity, METH_VARARGS,
+    {"parseQuantity",  UnitsApi::sParseQuantity, METH_VARARGS,
      "parseQuantity(string) -> Base.Quantity()\n\n"
      "calculate a mathematical expression with units to a quantity object. \n"
      "can be used for simple unit translation like: \n"
@@ -76,77 +50,35 @@ PyMethodDef UnitsApi::Methods[] = {
      "or for more complex espressions:\n"
      "parseQuantity('sin(pi)/50.0 m/s^2')\n"
     },
-    {"listSchemas",  (PyCFunction) UnitsApi::sListSchemas, METH_VARARGS,
+    {"listSchemas",  UnitsApi::sListSchemas, METH_VARARGS,
      "listSchemas() -> a tuple of schemas\n\n"
      "listSchemas(int) -> description of the given schema\n\n"
     },
-    {"getSchema",  (PyCFunction) UnitsApi::sGetSchema, METH_VARARGS,
+    {"getSchema",  UnitsApi::sGetSchema, METH_VARARGS,
      "getSchema() -> int\n\n"
      "The int is the position of the tuple returned by listSchemas"
     },
-    {"setSchema",  (PyCFunction) UnitsApi::sSetSchema, METH_VARARGS,
+    {"setSchema",  UnitsApi::sSetSchema, METH_VARARGS,
      "setSchema(int) -> None\n\n"
      "Sets the current schema to the given number, if possible"
     },
-    {"schemaTranslate",  (PyCFunction) UnitsApi::sSchemaTranslate, METH_VARARGS,
+    {"schemaTranslate",  UnitsApi::sSchemaTranslate, METH_VARARGS,
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"
     },
+    {"toNumber",  UnitsApi::sToNumber, METH_VARARGS,
+     "toNumber(Quantity or float, [format='g', decimals=-1]) -> str\n\n"
+     "Convert a quantity or float to a string"
+    },
 
-    {NULL, NULL, 0, NULL}		/* Sentinel */
+    {nullptr, nullptr, 0, nullptr}      /* Sentinel */
 };
-
-//PyObject* UnitsApi::sTranslateUnit(PyObject * /*self*/, PyObject *args)
-//{
-//    char *pstr;
-//    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-//        return NULL;                             // NULL triggers exception
-//    try {
-//        return Py::new_reference_to(Py::Object(Py::Float(UnitsApi::translateUnit(pstr))));
-//    }
-//    catch (const Base::Exception& e) {
-//        PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());
-//        return 0L;
-//    }
-//    catch (const std::exception& e) {
-//        PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());
-//        return 0L;
-//    }
-//}
-//
-//PyObject* UnitsApi::sGetWithPrefs(PyObject * /*self*/, PyObject *args)
-//{
-//    char     *type;
-//    PyObject *obj;
-//    if (!PyArg_ParseTuple(args, "sO", &type,&obj))     // convert args: Python->C
-//        return NULL;                                   // NULL triggers exception
-//    try {
-//        QuantityType t;
-//        if(strcmp("Length",type)==0)
-//            t = Length;
-//        else{
-//            PyErr_Format(PyExc_IOError, "invalid quantity type: %s!", type);
-//            return 0L;
-//        }
-//
-//        double result = toDblWithUserPrefs(t,obj);
-//        return Py::new_reference_to(Py::Object(Py::Float(result)));
-//    }
-//    catch (const Base::Exception&) {
-//        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-//        return 0L;
-//    }
-//    catch (const std::exception&) {
-//        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-//        return 0L;
-//    }
-//}
 
 PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "et", "utf-8", &pstr))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &pstr))
+        return nullptr;
 
     Quantity rtn;
     QString qstr = QString::fromUtf8(pstr);
@@ -154,13 +86,9 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
     try {
         rtn = Quantity::parse(qstr);
     }
-    catch (const Base::Exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
-    }
-    catch (const std::exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
+    catch (const Base::ParserError&) {
+        PyErr_Format(PyExc_ValueError, "invalid unit expression \n");
+        return nullptr;
     }
 
     return new QuantityPy(new Quantity(rtn));
@@ -184,22 +112,22 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
         int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
-            return 0;
+            return nullptr;
         }
 
         return Py_BuildValue("s", UnitsApi::getDescription(static_cast<UnitSystem>(index)));
     }
 
     PyErr_SetString(PyExc_TypeError, "int or empty argument list expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* UnitsApi::sGetSchema(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
-    return Py_BuildValue("i", static_cast<int>(actSystem));
+    return Py_BuildValue("i", static_cast<int>(currentSystem));
 }
 
 PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
@@ -210,9 +138,9 @@ PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
         int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
-            return 0;
+            return nullptr;
         }
-        setSchema((UnitSystem)index);
+        setSchema(static_cast<UnitSystem>(index));
     }
     Py_Return;
 }
@@ -222,7 +150,7 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
     PyObject* q;
     int index;
     if (!PyArg_ParseTuple(args, "O!i", &(QuantityPy::Type), &q, &index))
-        return 0;
+        return nullptr;
 
     Quantity quant;
     quant = *static_cast<Base::QuantityPy*>(q)->getQuantityPtr();
@@ -230,7 +158,7 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
     std::unique_ptr<UnitsSchema> schema(createSchema(static_cast<UnitSystem>(index)));
     if (!schema.get()) {
         PyErr_SetString(PyExc_ValueError, "invalid schema value");
-        return 0;
+        return nullptr;
     }
 
     double factor;
@@ -243,4 +171,46 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
     res[2] = Py::String(uus.toUtf8(),"utf-8");
 
     return Py::new_reference_to(res);
+}
+
+PyObject* UnitsApi::sToNumber(PyObject * /*self*/, PyObject *args)
+{
+    double value;
+    char* format = "g";
+    int decimals;
+
+    do {
+        PyObject* q;
+        if (PyArg_ParseTuple(args, "O!|si", &(QuantityPy::Type), &q, &format, &decimals)) {
+            value = static_cast<QuantityPy*>(q)->getQuantityPtr()->getValue();
+            break;
+        }
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "d|si", &value, &format, &decimals)) {
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "toNumber(Quantity or float, [format='g', decimals=-1])");
+        return nullptr;
+    }
+    while (false);
+
+    if (strlen(format) != 1) {
+        PyErr_SetString(PyExc_ValueError, "Format string hasn't length of 1");
+        return nullptr;
+    }
+
+    bool ok;
+    QuantityFormat qf;
+    qf.format = QuantityFormat::toFormat(format[0], &ok);
+    qf.precision = decimals;
+
+    if (!ok) {
+        PyErr_SetString(PyExc_ValueError, "Invalid format string");
+        return nullptr;
+    }
+
+    QString string = toNumber(value, qf);
+    return Py::new_reference_to(Py::String(string.toStdString()));
 }

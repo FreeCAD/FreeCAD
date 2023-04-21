@@ -27,39 +27,40 @@
 #include <vector>
 #include <iterator>
 
-#include <Base/Vector3D.h>
+#include <App/ComplexGeoData.h>
+#include <App/PropertyGeo.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
+#include <Base/Vector3D.h>
 #include <Base/Writer.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
+
+#include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {
-
 
 /** Point kernel
  */
 class PointsExport PointKernel : public Data::ComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    typedef float float_type;
-    typedef Base::Vector3<float_type> value_type;
-    typedef std::vector<value_type>::difference_type difference_type;
-    typedef std::vector<value_type>::size_type size_type;
+    using float_type = float;
+    using value_type = Base::Vector3<float_type>;
+    using difference_type = std::vector<value_type>::difference_type;
+    using size_type = std::vector<value_type>::size_type;
 
-    PointKernel(void)
+    PointKernel()
     {
     }
-    PointKernel(size_type size)
+    explicit PointKernel(size_type size)
     {
         resize(size);
     }
     PointKernel(const PointKernel&);
-    virtual ~PointKernel()
+    ~PointKernel() override
     {
     }
 
@@ -71,14 +72,14 @@ public:
      *  List of different subelement types
      *  its NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes(void) const;
-    virtual unsigned long countSubElements(const char* Type) const;
+    std::vector<const char*> getElementTypes() const override;
+    unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
+    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     //@}
 
-    inline void setTransform(const Base::Matrix4D& rclTrf){_Mtrx = rclTrf;}
-    inline Base::Matrix4D getTransform(void) const{return _Mtrx;}
+    inline void setTransform(const Base::Matrix4D& rclTrf) override{_Mtrx = rclTrf;}
+    inline Base::Matrix4D getTransform() const override{return _Mtrx;}
     std::vector<value_type>& getBasicPoints()
     { return this->_Points; }
     const std::vector<value_type>& getBasicPoints() const
@@ -88,20 +89,20 @@ public:
     void swap(std::vector<value_type>& pts)
     { this->_Points.swap(pts); }
 
-    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+    void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
-    virtual void transformGeometry(const Base::Matrix4D &rclMat);
-    virtual Base::BoundBox3d getBoundBox(void)const;
+        double Accuracy, uint16_t flags=0) const override;
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
+    Base::BoundBox3d getBoundBox()const override;
 
     /** @name I/O */
     //@{
     // Implemented from Persistence
-    unsigned int getMemSize (void) const;
-    void Save (Base::Writer &writer) const;
-    void SaveDocFile (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader);
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &writer) const override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+    void RestoreDocFile(Base::Reader &reader) override;
     void save(const char* file) const;
     void save(std::ostream&) const;
     void load(const char* file);
@@ -113,9 +114,9 @@ private:
     std::vector<value_type> _Points;
 
 public:
-    /// number of points stored 
-    size_type size(void) const {return this->_Points.size();}
-    size_type countValid(void) const;
+    /// number of points stored
+    size_type size() const {return this->_Points.size();}
+    size_type countValid() const;
     std::vector<value_type> getValidPoints() const;
     void resize(size_type n){_Points.resize(n);}
     void reserve(size_type n){_Points.reserve(n);}
@@ -123,32 +124,32 @@ public:
         _Points.erase(_Points.begin()+first,_Points.begin()+last);
     }
 
-    void clear(void){_Points.clear();}
+    void clear(){_Points.clear();}
 
 
     /// get the points
     inline const Base::Vector3d getPoint(const int idx) const {
-        return transformToOutside(_Points[idx]);
+        return transformPointToOutside(_Points[idx]);
     }
     /// set the points
     inline void setPoint(const int idx,const Base::Vector3d& point) {
-        _Points[idx] = transformToInside(point);
+        _Points[idx] = transformPointToInside(point);
     }
     /// insert the points
     inline void push_back(const Base::Vector3d& point) {
-        _Points.push_back(transformToInside(point));
+        _Points.push_back(transformPointToInside(point));
     }
 
     class PointsExport const_point_iterator
     {
     public:
-        typedef PointKernel::value_type kernel_type;
-        typedef Base::Vector3d value_type;
-        typedef std::vector<kernel_type>::const_iterator iter_type;
-        typedef iter_type::difference_type difference_type;
-        typedef iter_type::iterator_category iterator_category;
-        typedef const value_type* pointer;
-        typedef const value_type& reference;
+        using kernel_type = PointKernel::value_type;
+        using value_type = Base::Vector3d;
+        using iter_type = std::vector<kernel_type>::const_iterator;
+        using difference_type = iter_type::difference_type;
+        using iterator_category = iter_type::iterator_category;
+        using pointer = const value_type*;
+        using reference = const value_type&;
 
         const_point_iterator(const PointKernel*, std::vector<kernel_type>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
@@ -175,8 +176,8 @@ public:
         std::vector<kernel_type>::const_iterator _p_it;
     };
 
-    typedef const_point_iterator const_iterator;
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    using const_iterator = const_point_iterator;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     /** @name Iterator */
     //@{
@@ -194,4 +195,4 @@ public:
 } // namespace Points
 
 
-#endif // POINTS_POINTPROPERTIES_H 
+#endif // POINTS_POINTPROPERTIES_H

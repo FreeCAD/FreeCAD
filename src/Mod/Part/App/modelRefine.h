@@ -20,32 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MODELREFINE_H
 #define MODELREFINE_H
 
-#include <vector>
-#include <map>
 #include <list>
+#include <map>
+#include <vector>
+
+#include <BRepBuilderAPI_MakeShape.hxx>
 #include <GeomAbs_SurfaceType.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Wire.hxx>
+#include <Standard_Version.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shell.hxx>
+
 #include <TopTools_DataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
-#include <BRepBuilderAPI_MakeShape.hxx>
+#include <TopTools_MapOfShape.hxx>
+
+#include <Mod/Part/PartGlobal.h>
 
 
 namespace ModelRefine
 {
-    typedef std::vector<TopoDS_Face>  FaceVectorType;
-    typedef std::vector<TopoDS_Edge>  EdgeVectorType;
-    typedef std::vector<TopoDS_Shape> ShapeVectorType;
-    typedef std::pair<TopoDS_Shape, TopoDS_Shape> ShapePairType;
+    using FaceVectorType = std::vector<TopoDS_Face>;
+    using EdgeVectorType = std::vector<TopoDS_Edge>;
+    using ShapeVectorType = std::vector<TopoDS_Shape>;
+    using ShapePairType = std::pair<TopoDS_Shape, TopoDS_Shape>;
 
     void getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges);
     void boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut);
@@ -74,9 +76,9 @@ namespace ModelRefine
     private:
         FaceTypedPlane();
     public:
-        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
-        virtual GeomAbs_SurfaceType getType() const;
-        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const override;
+        GeomAbs_SurfaceType getType() const override;
+        TopoDS_Face buildFace(const FaceVectorType &faces) const override;
         friend FaceTypedPlane& getPlaneObject();
     };
     FaceTypedPlane& getPlaneObject();
@@ -86,13 +88,13 @@ namespace ModelRefine
     private:
         FaceTypedCylinder();
     public:
-        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
-        virtual GeomAbs_SurfaceType getType() const;
-        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const override;
+        GeomAbs_SurfaceType getType() const override;
+        TopoDS_Face buildFace(const FaceVectorType &faces) const override;
         friend FaceTypedCylinder& getCylinderObject();
 
     protected:
-        virtual void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const;
+        void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const override;
     };
     FaceTypedCylinder& getCylinderObject();
 
@@ -101,16 +103,16 @@ namespace ModelRefine
     private:
         FaceTypedBSpline();
     public:
-        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
-        virtual GeomAbs_SurfaceType getType() const;
-        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const override;
+        GeomAbs_SurfaceType getType() const override;
+        TopoDS_Face buildFace(const FaceVectorType &faces) const override;
         friend FaceTypedBSpline& getBSplineObject();
     };
     FaceTypedBSpline& getBSplineObject();
 
     class FaceTypeSplitter
     {
-        typedef std::map<GeomAbs_SurfaceType, FaceVectorType> SplitMapType;
+        using SplitMapType = std::map<GeomAbs_SurfaceType, FaceVectorType>;
     public:
         FaceTypeSplitter(){}
         void addShell(const TopoDS_Shell &shellIn);
@@ -197,9 +199,13 @@ class PartExport BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
-    void Build();
-    const TopTools_ListOfShape& Modified(const TopoDS_Shape& S);
-    Standard_Boolean IsDeleted(const TopoDS_Shape& S);
+#if OCC_VERSION_HEX >= 0x070600
+    void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
+#else
+    void Build() override;
+#endif
+    const TopTools_ListOfShape& Modified(const TopoDS_Shape& S) override;
+    Standard_Boolean IsDeleted(const TopoDS_Shape& S) override;
 
 private:
     void LogModifications(const ModelRefine::FaceUniter& uniter);

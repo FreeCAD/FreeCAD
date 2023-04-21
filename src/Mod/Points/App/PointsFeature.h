@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTS_FEATURE_H
 #define POINTS_FEATURE_H
 
-#include <App/GeoFeature.h>
+#include <App/GeoFeature.h> // must be first include
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
+
 #include "Points.h"
 #include "PropertyPointKernel.h"
 
@@ -51,40 +50,40 @@ class PointsFeaturePy;
  */
 class PointsExport Feature : public App::GeoFeature
 {
-    PROPERTY_HEADER(Points::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Points::Feature);
 
 public:
     /// Constructor
-    Feature(void);
-    virtual ~Feature(void);
+    Feature();
+    ~Feature() override;
 
     /** @name methods override Feature */
     //@{
-    void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader);
-    short mustExecute() const;
+    void Restore(Base::XMLReader &reader) override;
+    void RestoreDocFile(Base::Reader &reader) override;
+    short mustExecute() const override;
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PointsGui::ViewProviderScattered";
     }
 
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override {
         return &Points;
     }
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     //@}
 
 public:
     PropertyPointKernel Points; /**< The point kernel property. */
 };
 
-typedef App::FeatureCustomT<Feature> FeatureCustom;
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeatureCustom = App::FeatureCustomT<Feature>;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 } //namespace Points
 
 
-#endif 
+#endif

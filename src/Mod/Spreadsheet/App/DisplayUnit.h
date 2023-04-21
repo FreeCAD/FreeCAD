@@ -35,7 +35,7 @@ public:
     Base::Unit unit;
     double scaler;
 
-    DisplayUnit(const std::string _stringRep = "", const Base::Unit _unit = Base::Unit(), double _scaler = 0.0)
+    explicit DisplayUnit(const std::string _stringRep = "", const Base::Unit _unit = Base::Unit(), double _scaler = 0.0)
         : stringRep(_stringRep)
         , unit(_unit)
         , scaler(_scaler)
@@ -52,7 +52,7 @@ public:
         return !operator==(c);
     }
 
-    bool isEmpty() const { return stringRep.size() == 0; }
+    bool isEmpty() const { return stringRep.empty(); }
 
 };
 

@@ -20,43 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_ROBOTOBJECT_H
 #define ROBOT_ROBOTOBJECT_H
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
 
 #include "Robot6Axis.h"
+
 
 namespace Robot
 {
 
 class RobotExport RobotObject : public App::GeoFeature
 {
-    PROPERTY_HEADER(Robot::RobotObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Robot::RobotObject);
 
 public:
     /// Constructor
-    RobotObject(void);
-    virtual ~RobotObject();
+    RobotObject();
+    ~RobotObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "RobotGui::ViewProviderRobotObject";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
-	virtual void Save (Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+	void Save (Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
-    Robot6Axis &getRobot(void){return robot;}
+    Robot6Axis &getRobot(){return robot;}
 
     App::PropertyFileIncluded RobotVrmlFile;
     App::PropertyFileIncluded RobotKinematicFile;
@@ -75,7 +73,7 @@ public:
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    void onChanged (const App::Property* prop) override;
 
     Robot6Axis robot;
 

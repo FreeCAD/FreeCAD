@@ -35,14 +35,14 @@ class UnitTestDialog;
 class UnitTestDialogPy : public Py::PythonExtension<UnitTestDialogPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     UnitTestDialogPy();
-    ~UnitTestDialogPy();
+    ~UnitTestDialogPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
-    int setattr(const char *, const Py::Object &);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
+    int setattr(const char *, const Py::Object &) override;
 
     Py::Object clearErrorList   (const Py::Tuple&);
     Py::Object insertError      (const Py::Tuple&);
@@ -60,7 +60,7 @@ public:
     Py::Object clearUnitTests   (const Py::Tuple&);
 
 private:
-    typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
+    using method_varargs_handler = PyObject* (*)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
 };

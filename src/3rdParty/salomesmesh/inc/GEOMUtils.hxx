@@ -307,7 +307,7 @@ namespace GEOMUtils
   /*!
    * \brief Extract single SOLID from COMPSOLID or COMPOUND.
    *
-   * If the argument shape is a COMPUND or COMPSOLID and there's
+   * If the argument shape is a COMPOUND or COMPSOLID and there's
    * only single simple-shape type inside, this sub-shape is returned as a result;
    * otherwise, the shape is not changed.
    *

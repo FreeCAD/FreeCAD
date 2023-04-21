@@ -34,30 +34,31 @@ class TaskDlgDressUpParameters;
 
 class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDressUp);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDressUp);
 
 public:
     /// constructor
     ViewProviderDressUp()
         {}
     /// destructor
-    virtual ~ViewProviderDressUp()
+    ~ViewProviderDressUp() override
         {}
 
     /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// Highlight the references that have been selected
     void highlightReferences(const bool on);
-    
-    /** 
+
+    /**
      * Returns the feature Name associated with the view provider.
      * Should be reimplemented in the successor.
      */
     virtual const std::string & featureName() const;
+    QString menuName;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 
 private:
     std::vector<App::Color> originalFaceColors;

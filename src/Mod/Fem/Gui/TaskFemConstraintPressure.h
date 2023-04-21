@@ -23,51 +23,45 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPressure_H
 #define GUI_TASKVIEW_TaskFemConstraintPressure_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <memory>
+#include <QObject>
 
-#include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintPressure.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintPressure;
 
 namespace FemGui {
-class TaskFemConstraintPressure : public TaskFemConstraint
+class TaskFemConstraintPressure : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = 0);
-    ~TaskFemConstraintPressure();
-    const std::string getReferences() const;
+    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure* ConstraintView,
+                                       QWidget* parent = nullptr);
+    ~TaskFemConstraintPressure() override;
+    const std::string getReferences() const override;
     double get_Pressure()const;
     bool get_Reverse()const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onCheckReverse(bool);
-    void addToSelection();
-    void removeFromSelection();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintPressure* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintPressure> ui;
 };
 
 class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
@@ -75,10 +69,10 @@ class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

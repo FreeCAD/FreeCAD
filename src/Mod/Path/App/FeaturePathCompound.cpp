@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "FeaturePathCompound.h"
 #include "Command.h"
-#include "Path.h"
 #include "FeaturePathCompoundPy.h"
-#include <App/FeaturePythonPyImp.h>
+
 
 using namespace Path;
 using namespace App;
@@ -40,7 +35,7 @@ PROPERTY_SOURCE(Path::FeatureCompound, Path::Feature)
 
 FeatureCompound::FeatureCompound()
 {
-    ADD_PROPERTY_TYPE( Group,         (0),   "Base",Prop_None,"Ordered list of paths to combine");
+    ADD_PROPERTY_TYPE( Group,         (nullptr),   "Base",Prop_None,"Ordered list of paths to combine");
     ADD_PROPERTY_TYPE( UsePlacements, (false), "Base",Prop_None,"Specifies if the placements of children must be computed");
 }
 
@@ -48,7 +43,7 @@ FeatureCompound::~FeatureCompound()
 {
 }
 
-App::DocumentObjectExecReturn *FeatureCompound::execute(void)
+App::DocumentObjectExecReturn *FeatureCompound::execute()
 {
     const std::vector<DocumentObject*> &Paths = Group.getValues();
     Path::Toolpath result;
@@ -58,7 +53,7 @@ App::DocumentObjectExecReturn *FeatureCompound::execute(void)
             const std::vector<Command*> &cmds = static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
             const Base::Placement pl = static_cast<Path::Feature*>(*it)->Placement.getValue();
             for (std::vector<Command*>::const_iterator it2= cmds.begin();it2!=cmds.end();++it2) {
-                if (UsePlacements.getValue() == true) {
+                if (UsePlacements.getValue()) {
                     result.addCommand((*it2)->transform(pl));
                 } else {
                     result.addCommand(**it2);
@@ -71,7 +66,7 @@ App::DocumentObjectExecReturn *FeatureCompound::execute(void)
 
     result.setCenter(Path.getValue().getCenter());
     Path.setValue(result);
-    
+
     return App::DocumentObject::StdReturn;
 }
 
@@ -121,7 +116,7 @@ PyObject *FeatureCompound::getPyObject()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureCompoundPython, Path::FeatureCompound)
-template<> const char* Path::FeatureCompoundPython::getViewProviderName(void) const {
+template<> const char* Path::FeatureCompoundPython::getViewProviderName() const {
     return "PathGui::ViewProviderPathCompoundPython";
 }
 /// @endcond

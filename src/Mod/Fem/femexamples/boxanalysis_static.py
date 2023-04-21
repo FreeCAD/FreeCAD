@@ -22,145 +22,98 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.boxanalysis_static import setup
-setup()
-
-"""
-
 import FreeCAD
 
-import Fem
 import ObjectsFem
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .boxanalysis_base import setup_boxanalysisbase
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Box Analysis Static",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force", "pressure"],
-            "solvers": ["calculix", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Box Analysis Static",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "force", "pressure"],
+        "solvers": ["calculix", "ccxtools", "elmer"],
+        "material": "solid",
+        "equations": ["mechanical"]
+    }
 
 
-def setup_base(doc=None, solvertype="ccxtools"):
-    # setup box base model
+def get_explanation(header=""):
+    return header + """
 
-    if doc is None:
-        doc = init_doc()
+To run the example from Python console use:
+from femexamples.boxanalysis_static import setup
+setup()
 
-    # geometry object
-    geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = geom_obj.Width = geom_obj.Length = 10
-    doc.recompute()
 
-    if FreeCAD.GuiUp:
-        geom_obj.ViewObject.Document.activeView().viewAxonometric()
-        geom_obj.ViewObject.Document.activeView().fitAll()
+See forum topic post:
+...
 
-    # analysis
-    analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
-
-    # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
-    )[0]
-    mat = material_object.Material
-    mat["Name"] = "Steel-Generic"
-    mat["YoungsModulus"] = "200000 MPa"
-    mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
-
-    # mesh
-    from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
-
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, mesh_name))[0]
-    femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
-    femmesh_obj.SecondOrderLinear = False
-    femmesh_obj.CharacteristicLengthMin = "8.0 mm"
-
-    doc.recompute()
-    return doc
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup box static, add a fixed, force and a pressure constraint
 
-    doc = setup_base(doc, solvertype)
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
+
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # setup box static, add a fixed, force and a pressure constraint
+    doc = setup_boxanalysisbase(doc, solvertype)
     geom_obj = doc.Box
     analysis = doc.Analysis
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     elif solvertype == "elmer":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        )[0]
-        ObjectsFem.makeEquationElasticity(doc, solver_object)
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        ObjectsFem.makeEquationElasticity(doc, solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="FemConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face1")]
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face1")]
+    analysis.addObject(con_fixed)
 
-    # force_constraint
-    force_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="FemConstraintForce")
-    )[0]
-    force_constraint.References = [(geom_obj, "Face6")]
-    force_constraint.Force = 40000.0
-    force_constraint.Direction = (geom_obj, ["Edge5"])
-    force_constraint.Reversed = True
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
+    con_force.References = [(geom_obj, "Face6")]
+    con_force.Force = 40000.0
+    con_force.Direction = (geom_obj, ["Edge5"])
+    con_force.Reversed = True
+    analysis.addObject(con_force)
 
-    # pressure_constraint
-    pressure_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
-    )[0]
-    pressure_constraint.References = [(geom_obj, "Face2")]
-    pressure_constraint.Pressure = 1000.0
-    pressure_constraint.Reversed = False
+    # constraint pressure
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
+    con_pressure.References = [(geom_obj, "Face2")]
+    con_pressure.Pressure = 1000.0
+    con_pressure.Reversed = False
+    analysis.addObject(con_pressure)
 
     doc.recompute()
     return doc

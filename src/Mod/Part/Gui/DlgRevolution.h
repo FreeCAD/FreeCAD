@@ -23,10 +23,11 @@
 #ifndef PARTGUI_DLGREVOLUTION_H
 #define PARTGUI_DLGREVOLUTION_H
 
-#include <Gui/Selection.h>
 #include <Gui/InputVector.h>
+#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
 
 namespace PartGui {
 
@@ -36,9 +37,9 @@ class DlgRevolution : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgRevolution(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgRevolution();
-    void accept();
+    explicit DlgRevolution(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgRevolution() override;
+    void accept() override;
 
     Base::Vector3d getDirection() const;
     Base::Vector3d getPosition() const;
@@ -55,19 +56,20 @@ public:
     bool validate();
 
 protected:
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void on_selectLine_clicked();
-    void on_btnX_clicked();
-    void on_btnY_clicked();
-    void on_btnZ_clicked();
-    void on_txtAxisLink_textChanged(QString);
+private:
+    void setupConnections();
+    void onSelectLineClicked();
+    void onButtonXClicked();
+    void onButtonYClicked();
+    void onButtonZClicked();
+    void onAxisLinkTextChanged(QString);
 
 private:
     void findShapes();
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToRevolve() const;
@@ -87,12 +89,12 @@ class TaskRevolution : public Gui::TaskView::TaskDialog
 
 public:
     TaskRevolution();
-    ~TaskRevolution();
+    ~TaskRevolution() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

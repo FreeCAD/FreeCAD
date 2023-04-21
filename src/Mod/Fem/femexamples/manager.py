@@ -22,9 +22,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-# run examples
+import FreeCAD
+
+
+# ************************************************************************************************
+# setup and run examples by Python
+
+# TODO: use method from examples gui to collect all examples in run_all method
+# FreeCAD Gui update between the examples would makes sense too
+
 """
-# all examples
+# setup all examples
+from femexamples.manager import *
+setup_all()
+
+
+# run all examples
 from femexamples.manager import *
 run_all()
 
@@ -35,13 +48,90 @@ from femexamples.manager import run_example as run
 doc = run("boxanalysis_static")
 doc = run("boxanalysis_frequency")
 
-...
 """
 
-import FreeCAD
+
+def run_all():
+    run_example("boxanalysis_frequency", run_solver=True)
+    run_example("boxanalysis_static", run_solver=True)
+    run_example("buckling_lateraltorsionalbuckling", run_solver=True)
+    run_example("buckling_platebuckling", run_solver=True)
+    run_example("ccx_buckling_flexuralbuckling", run_solver=True)
+    run_example("ccx_cantilever_faceload", run_solver=True)
+    run_example("ccx_cantilever_hexa20faceload", run_solver=True)
+    run_example("ccx_cantilever_nodeload", run_solver=True)
+    run_example("ccx_cantilever_prescribeddisplacement", run_solver=True)
+    run_example("constraint_contact_shell_shell", run_solver=True)
+    run_example("constraint_contact_solid_solid", run_solver=True)
+    run_example("constraint_section_print", run_solver=True)
+    run_example("constraint_selfweight_cantilever", run_solver=True)
+    run_example("constraint_tie", run_solver=True)
+    run_example("constraint_transform_beam_hinged", run_solver=True)
+    run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam", run_solver=True)
+    run_example("equation_deformation_spring_elmer", run_solver=True)
+    run_example("equation_electrostatics_capacitance_two_balls", run_solver=True)
+    run_example("equation_electrostatics_electricforce_elmer_nongui6", run_solver=True)
+    run_example("equation_flow_elmer_2D", run_solver=True)
+    run_example("equation_flow_initial_elmer_2D", run_solver=True)
+    run_example("equation_flow_turbulent_elmer_2D", run_solver=True)
+    run_example("equation_flux_elmer", run_solver=True)
+    run_example("equation_magnetodynamics_elmer", run_solver=True)
+    run_example("equation_magnetodynamics_2D_elmer.py", run_solver=True)
+    run_example("equation_magnetostatics_2D_elmer.py", run_solver=True)
+    run_example("frequency_beamsimple", run_solver=True)
+    run_example("material_multiple_bendingbeam_fiveboxes", run_solver=True)
+    run_example("material_multiple_bendingbeam_fivefaces", run_solver=True)
+    run_example("material_multiple_tensionrod_twoboxes", run_solver=True)
+    run_example("material_nl_platewithhole", run_solver=True)
+    run_example("rc_wall_2d", run_solver=True)
+    run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
+    run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
+    run_example("thermomech_bimetall", run_solver=True)
+    run_example("thermomech_flow1d", run_solver=True)
+    run_example("thermomech_spine", run_solver=True)
 
 
-def run_analysis(doc, base_name, filepath=""):
+def setup_all():
+    run_example("boxanalysis_frequency")
+    run_example("boxanalysis_static")
+    run_example("buckling_lateraltorsionalbuckling")
+    run_example("buckling_platebuckling")
+    run_example("ccx_buckling_flexuralbuckling")
+    run_example("ccx_cantilever_faceload")
+    run_example("ccx_cantilever_hexa20faceload")
+    run_example("ccx_cantilever_nodeload")
+    run_example("ccx_cantilever_prescribeddisplacement")
+    run_example("constraint_contact_shell_shell")
+    run_example("constraint_contact_solid_solid")
+    run_example("constraint_section_print")
+    run_example("constraint_selfweight_cantilever")
+    run_example("constraint_tie")
+    run_example("constraint_transform_beam_hinged")
+    run_example("elmer_nonguitutorial01_eigenvalue_of_elastic_beam")
+    run_example("equation_deformation_spring_elmer")
+    run_example("equation_electrostatics_capacitance_two_balls")
+    run_example("equation_electrostatics_electricforce_elmer_nongui6")
+    run_example("equation_flow_elmer_2D")
+    run_example("equation_flow_initial_elmer_2D")
+    run_example("equation_flow_turbulent_elmer_2D")
+    run_example("equation_flux_elmer")
+    run_example("equation_magnetodynamics_elmer")
+    run_example("equation_magnetodynamics_2D_elmer.py")
+    run_example("equation_magnetostatics_2D_elmer.py")
+    run_example("frequency_beamsimple")
+    run_example("material_multiple_bendingbeam_fiveboxes")
+    run_example("material_multiple_bendingbeam_fivefaces")
+    run_example("material_multiple_tensionrod_twoboxes")
+    run_example("material_nl_platewithhole")
+    run_example("rc_wall_2d")
+    run_example("square_pipe_end_twisted_edgeforces")
+    run_example("square_pipe_end_twisted_nodeforces")
+    run_example("thermomech_bimetall")
+    run_example("thermomech_flow1d")
+    run_example("thermomech_spine")
+
+
+def run_analysis(doc, base_name, filepath="", run_solver=False):
 
     from os.path import join, exists
     from os import makedirs
@@ -80,13 +170,14 @@ def run_analysis(doc, base_name, filepath=""):
 
     # run analysis
     from femsolver.run import run_fem_solver
-    run_fem_solver(solver, working_dir)
+    if run_solver is True:
+        run_fem_solver(solver, working_dir)
 
     # save doc once again with results
     doc.save()
 
 
-def run_example(example, solver=None, base_name=None):
+def run_example(example, solver=None, base_name=None, run_solver=False):
 
     from importlib import import_module
     module = import_module("femexamples." + example)
@@ -103,27 +194,50 @@ def run_example(example, solver=None, base_name=None):
         base_name = example
         if solver is not None:
             base_name += "_" + solver
-    run_analysis(doc, base_name)
+    run_analysis(doc, base_name, run_solver=run_solver)
     doc.recompute()
 
     return doc
 
 
-def run_all():
-    run_example("boxanalysis_static")
-    run_example("boxanalysis_frequency")
-    run_example("ccx_cantilever_faceload")
-    run_example("ccx_cantilever_nodeload")
-    run_example("ccx_cantilever_prescribeddisplacement")
-    run_example("ccx_cantilever_hexa20faceload")
-    run_example("constraint_contact_shell_shell")
-    run_example("constraint_contact_solid_solid")
-    run_example("constraint_tie")
-    run_example("material_multiple_twoboxes")
-    run_example("material_nl_platewithhole")
-    run_example("rc_wall_2d")
-    run_example("thermomech_bimetall")
-    run_example("thermomech_flow1d")
-    run_example("thermomech_spine")
-    run_example("boxanalysis_frequency")
-    run_example("boxanalysis_frequency")
+# ************************************************************************************************
+# helper used from examples
+def init_doc(doc=None):
+    if doc is None:
+        doc = FreeCAD.newDocument()
+    return doc
+
+
+def get_meshname():
+    # needs to be "Mesh" to work with unit tests
+    return "Mesh"
+
+
+def get_header(information):
+    return """{name}
+
+{information}""".format(name=information["name"], information=print_info_dict(information))
+
+
+def print_info_dict(information):
+    the_text = ""
+    for k, v in information.items():
+        value_text = ""
+        if isinstance(v, list):
+            for j in v:
+                value_text += "{}, ".format(j)
+            value_text = value_text.rstrip(", ")
+        else:
+            value_text = v
+        the_text += "{} --> {}\n".format(k, value_text)
+    # print(the_text)
+    return the_text
+
+
+def add_explanation_obj(doc, the_text):
+    text_obj = doc.addObject("App::TextDocument", "Explanation_Report")
+    text_obj.Text = the_text
+    text_obj.setPropertyStatus("Text", "ReadOnly")  # set property editor readonly
+    if FreeCAD.GuiUp:
+        text_obj.ViewObject.ReadOnly = True  # set editor view readonly
+    return text_obj

@@ -34,9 +34,11 @@
 #pragma warning(disable : 4267)
 #endif
 
-#include <Quarter/devices/InputDevice.h>
-#include <QtGui/QInputEvent>
+#include <QInputEvent>
 #include <Inventor/events/SoEvents.h>
+
+#include "devices/InputDevice.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -48,7 +50,7 @@ using namespace SIM::Coin3D::Quarter;
   devices.
 */
 
-InputDevice::InputDevice(void) : quarter(nullptr)
+InputDevice::InputDevice() : quarter(nullptr)
 {
   this->mousepos = SbVec2s(0, 0);
 }

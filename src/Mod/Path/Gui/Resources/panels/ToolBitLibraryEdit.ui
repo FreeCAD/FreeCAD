@@ -83,7 +83,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="toolTableGroup" native="true">
+    <widget class="QWidget" name="toolTableGroup">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">

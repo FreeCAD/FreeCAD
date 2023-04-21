@@ -24,15 +24,16 @@
 #define Fem_FemAnalysis_H
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
+#include <Mod/Fem/FemGlobal.h>
 
 
 namespace Fem {
 
 /**
  * @brief Container of objects relevant to one simulation.
- * 
+ *
  * @details
  *  A Analysis contains all objects necessary for a complete specification
  *  of a simulation. After computing it also contains the result of the
@@ -48,8 +49,8 @@ namespace Fem {
  *  Analysis object. Every document object of FreeCAD can be part of a
  *  Analysis.
  */
-class AppFemExport FemAnalysis : public App::DocumentObjectGroup {
-    PROPERTY_HEADER(Fem::FemAnalysis);
+class FemExport FemAnalysis : public App::DocumentObjectGroup {
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemAnalysis);
 
 public:
     /**
@@ -57,7 +58,7 @@ public:
      * unique id because PropertyUUID doesn't initialize itself.
      */
     FemAnalysis();
-    virtual ~FemAnalysis();
+    ~FemAnalysis() override;
 
     /**
      * A unique identifier for each Analysis object. Useful when doing
@@ -67,7 +68,7 @@ public:
      */
     App::PropertyUUID    Uid;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemAnalysis";
     }
 
@@ -81,17 +82,17 @@ protected:
      *  property of DocumentObjectGroup. This methods translates old files
      *  still using the "Member" property.
      */
-    virtual void handleChangedPropertyName(
-        Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    void handleChangedPropertyName(
+        Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 };
 
-class AppFemExport DocumentObject : public App::DocumentObject
+class FemExport DocumentObject : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::DocumentObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::DocumentObject);
 };
 
-typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
-typedef App::FeaturePythonT<DocumentObject> FeaturePython;
+using FemAnalysisPython = App::FeaturePythonT<FemAnalysis>;
+using FeaturePython = App::FeaturePythonT<DocumentObject>;
 
 
 } //namespace Fem

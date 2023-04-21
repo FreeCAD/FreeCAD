@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCUMENTOBSERVER_H
 #define GUI_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
 #include <boost_signals2.hpp>
+
 
 namespace App { class Property; }
 namespace Gui
@@ -46,9 +46,9 @@ public:
     /*! Constructor */
     DocumentT();
     /*! Constructor */
-    DocumentT(Document*);
+    explicit DocumentT(Document*);
     /*! Constructor */
-    DocumentT(const std::string&);
+    explicit DocumentT(const std::string&);
     /*! Constructor */
     DocumentT(const DocumentT&);
     /*! Destructor */
@@ -90,7 +90,7 @@ public:
     /*! Constructor */
     ViewProviderT(ViewProviderT &&);
     /*! Constructor */
-    ViewProviderT(const ViewProviderDocumentObject*);
+    explicit ViewProviderT(const ViewProviderDocumentObject*);
     /*! Destructor */
     ~ViewProviderT();
     /*! Assignment operator */
@@ -134,7 +134,7 @@ private:
 class GuiExport DocumentWeakPtrT
 {
 public:
-    DocumentWeakPtrT(Gui::Document*) noexcept;
+    explicit DocumentWeakPtrT(Gui::Document*) noexcept;
     ~DocumentWeakPtrT();
 
     /*!
@@ -148,10 +148,15 @@ public:
      */
     bool expired() const noexcept;
     /*!
+     * \brief operator *
+     * \return pointer to the document
+     */
+    Gui::Document* operator*() const noexcept;
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
-    Gui::Document* operator->() noexcept;
+    Gui::Document* operator->() const noexcept;
 
 private:
     // disable
@@ -165,10 +170,10 @@ private:
 /**
  * @brief The ViewProviderWeakPtrT class
  */
-class AppExport ViewProviderWeakPtrT
+class GuiExport ViewProviderWeakPtrT
 {
 public:
-    ViewProviderWeakPtrT(ViewProviderDocumentObject*);
+    explicit ViewProviderWeakPtrT(ViewProviderDocumentObject*);
     ~ViewProviderWeakPtrT();
 
     /*!
@@ -187,10 +192,15 @@ public:
      */
     ViewProviderWeakPtrT& operator= (ViewProviderDocumentObject* p);
     /*!
+     * \brief operator *
+     * \return pointer to the document
+     */
+    ViewProviderDocumentObject* operator*() const noexcept;
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
-    ViewProviderDocumentObject* operator->() noexcept;
+    ViewProviderDocumentObject* operator->() const noexcept;
     /*!
      * \brief operator ==
      * \return true if both objects are equal, false otherwise
@@ -226,7 +236,7 @@ template <class T>
 class WeakPtrT
 {
 public:
-    WeakPtrT(T* t) : ptr(t) {
+    explicit WeakPtrT(T* t) : ptr(t) {
     }
     ~WeakPtrT() {
     }
@@ -254,10 +264,17 @@ public:
         return *this;
     }
     /*!
-     * \brief operator ->
-     * \return pointer to the document
+     * \brief operator *
+     * \return pointer to the view provider
      */
-    T* operator->() {
+    T* operator*() const {
+        return ptr.get<T>();
+    }
+    /*!
+     * \brief operator ->
+     * \return pointer to the view provider
+     */
+    T* operator->() const {
         return ptr.get<T>();
     }
     /*!
@@ -273,6 +290,11 @@ public:
      */
     bool operator!= (const WeakPtrT<T>& p) const {
         return ptr != p.ptr;
+    }
+    /*! Get a pointer to the object or 0 if it doesn't exist any more. */
+    T* get() const noexcept
+    {
+        return ptr.get<T>();
     }
 
 private:
@@ -297,7 +319,7 @@ class GuiExport DocumentObserver
 public:
     /// Constructor
     DocumentObserver();
-    DocumentObserver(Document*);
+    explicit DocumentObserver(Document*);
     virtual ~DocumentObserver();
 
     /** Attaches to another document, the old document
@@ -333,7 +355,7 @@ private:
     virtual void slotDeleteDocument(const Document& Doc);
 
 private:
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;

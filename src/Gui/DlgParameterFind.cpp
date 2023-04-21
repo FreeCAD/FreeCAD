@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QPushButton>
 #endif
 
-#include "ui_DlgParameterFind.h"
 #include "DlgParameterFind.h"
+#include "ui_DlgParameterFind.h"
 #include "DlgParameterImp.h"
 
 
@@ -42,6 +41,8 @@ DlgParameterFind::DlgParameterFind(DlgParameterImp* parent)
   , dialog(parent)
 {
     ui->setupUi(this);
+    setupConnections();
+
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
         btn->setText(tr("Find Next"));
@@ -58,7 +59,19 @@ DlgParameterFind::~DlgParameterFind()
     delete ui;
 }
 
-void DlgParameterFind::on_lineEdit_textChanged(const QString& text)
+void DlgParameterFind::setupConnections()
+{
+    connect(ui->lineEdit, &QLineEdit::textChanged,
+            this, &DlgParameterFind::onLineEditTextChanged);
+    connect(ui->checkGroups, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckGroupsToggled);
+    connect(ui->checkNames, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckNamesToggled);
+    connect(ui->checkValues, &QCheckBox::toggled,
+            this, &DlgParameterFind::onCheckValuesToggled);
+}
+
+void DlgParameterFind::onLineEditTextChanged(const QString& text)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -69,7 +82,7 @@ void DlgParameterFind::on_lineEdit_textChanged(const QString& text)
     }
 }
 
-void DlgParameterFind::on_checkGroups_toggled(bool)
+void DlgParameterFind::onCheckGroupsToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -81,7 +94,7 @@ void DlgParameterFind::on_checkGroups_toggled(bool)
     }
 }
 
-void DlgParameterFind::on_checkNames_toggled(bool)
+void DlgParameterFind::onCheckNamesToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -93,7 +106,7 @@ void DlgParameterFind::on_checkNames_toggled(bool)
     }
 }
 
-void DlgParameterFind::on_checkValues_toggled(bool)
+void DlgParameterFind::onCheckValuesToggled(bool)
 {
     QPushButton* btn = ui->buttonBox->button(QDialogButtonBox::Ok);
     if (btn) {
@@ -121,7 +134,7 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
     }
 
     if (opt.name || opt.value) {
-        ParameterGroupItem* group = static_cast<ParameterGroupItem*>(item);
+        auto group = static_cast<ParameterGroupItem*>(item);
         Base::Reference<ParameterGrp> hGrp = group->_hcGrp;
 
         auto boolMap = hGrp->GetBoolMap();
@@ -133,54 +146,54 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
         // check the name of an entry in the group
         if (opt.name) {
             if (opt.match) {
-                for (auto it : boolMap) {
+                for (const auto& it : boolMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
                         return true;
                 }
-                for (auto it : intMap) {
+                for (const auto& it : intMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
                         return true;
                 }
-                for (auto it : uintMap) {
+                for (const auto& it : uintMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
                         return true;
                 }
-                for (auto it : floatMap) {
+                for (const auto& it : floatMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
                         return true;
                 }
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
                         return true;
                 }
             }
             else {
-                for (auto it : boolMap) {
+                for (const auto& it : boolMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
                         return true;
                 }
-                for (auto it : intMap) {
+                for (const auto& it : intMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
                         return true;
                 }
-                for (auto it : uintMap) {
+                for (const auto& it : uintMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
                         return true;
                 }
-                for (auto it : floatMap) {
+                for (const auto& it : floatMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
                         return true;
                 }
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.first.c_str());
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
                         return true;
@@ -191,14 +204,14 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
         // check the value of an entry in the group
         if (opt.value) {
             if (opt.match) {
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.second.c_str());
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0)
                         return true;
                 }
             }
             else {
-                for (auto it : asciiMap) {
+                for (const auto& it : asciiMap) {
                     QString text = QString::fromUtf8(it.second.c_str());
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0)
                         return true;
@@ -236,7 +249,7 @@ QTreeWidgetItem* DlgParameterFind::findItem(QTreeWidgetItem* root, const Options
 
 void DlgParameterFind::accept()
 {
-    ParameterGroup* groupTree = dialog->findChild<ParameterGroup*>();
+    auto groupTree = dialog->findChild<ParameterGroup*>();
     if (groupTree) {
         Options opt;
         opt.text = ui->lineEdit->text();

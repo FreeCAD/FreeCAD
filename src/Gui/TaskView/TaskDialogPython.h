@@ -26,7 +26,7 @@
 
 #include "TaskDialog.h"
 #include "TaskWatcher.h"
-#include <CXX/Extensions.hxx>
+
 
 namespace Gui {
 namespace TaskView {
@@ -34,15 +34,16 @@ namespace TaskView {
 class ControlPy : public Py::PythonExtension<ControlPy> 
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
     static ControlPy* getInstance();
 
     ControlPy();
-    ~ControlPy();
+    ~ControlPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object showDialog(const Py::Tuple&);
     Py::Object activeDialog(const Py::Tuple&);
+    Py::Object activeTaskDialog(const Py::Tuple&);
     Py::Object closeDialog(const Py::Tuple&);
     Py::Object addTaskWatcher(const Py::Tuple&);
     Py::Object clearTaskWatcher(const Py::Tuple&);
@@ -59,52 +60,127 @@ private:
 class GuiExport TaskWatcherPython : public TaskWatcher
 {
 public:
-    TaskWatcherPython(const Py::Object&);
-    ~TaskWatcherPython();
-    bool shouldShow();
+    explicit TaskWatcherPython(const Py::Object&);
+    ~TaskWatcherPython() override;
+    bool shouldShow() override;
 
 private:
     Py::Object watcher;
 };
 
-class GuiExport TaskDialogPython : public TaskDialog
+/**
+ * @brief The TaskDialogPy class
+ * This class exposes a TaskDialog written in C++ to Python.
+ */
+class TaskDialogPy : public Py::PythonExtension<TaskDialogPy>
 {
 public:
-    TaskDialogPython(const Py::Object&);
-    ~TaskDialogPython();
+    using BaseType = Py::PythonExtension<TaskDialogPy>;
+    static void init_type();    // announce properties and methods
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    explicit TaskDialogPy(TaskDialog*);
+    ~TaskDialogPy() override;
+
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
+    int setattr(const char *, const Py::Object &) override;
+
+public:
+    Py::Object getDialogContent(const Py::Tuple&);
+
+    /// tells the framework which buttons are wished for the dialog
+    Py::Object getStandardButtons(const Py::Tuple&);
+
+    /// Defines whether a task dialog can be rejected by pressing Esc
+    Py::Object setEscapeButtonEnabled(const Py::Tuple&);
+    Py::Object isEscapeButtonEnabled(const Py::Tuple&);
+
+    /// Defines whether a task dialog must be closed if the document changed the
+    /// active transaction.
+    Py::Object setAutoCloseOnTransactionChange(const Py::Tuple&);
+    Py::Object isAutoCloseOnTransactionChange(const Py::Tuple&);
+
+    Py::Object getDocumentName(const Py::Tuple&);
 
     /*!
       Indicates whether this task dialog allows other commands to modify
       the document while it is open.
     */
-    virtual bool isAllowedAlterDocument(void) const;
+    Py::Object isAllowedAlterDocument(const Py::Tuple&);
+
     /*!
       Indicates whether this task dialog allows other commands to modify
       the 3d view while it is open.
     */
-    virtual bool isAllowedAlterView(void) const;
+    Py::Object isAllowedAlterView(const Py::Tuple&);
+
     /*!
       Indicates whether this task dialog allows other commands to modify
       the selection while it is open.
     */
-    virtual bool isAllowedAlterSelection(void) const;
-    virtual bool needsFullSpace() const;
+    Py::Object isAllowedAlterSelection(const Py::Tuple&);
+    Py::Object needsFullSpace(const Py::Tuple&);
+
+    /// is called by the framework if the dialog is accepted (Ok)
+    Py::Object accept(const Py::Tuple&);
+    /// is called by the framework if the dialog is rejected (Cancel)
+    Py::Object reject(const Py::Tuple&);
+
+private:
+    QPointer<TaskDialog> dialog;
+};
+
+/**
+ * @brief The TaskDialogPython class
+ * This wraps a task dialog that is written in Python.
+ */
+class GuiExport TaskDialogPython : public TaskDialog
+{
+public:
+    explicit TaskDialogPython(const Py::Object&);
+    ~TaskDialogPython() override;
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
+    void modifyStandardButtons(QDialogButtonBox*) override;
+
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the document while it is open.
+    */
+    bool isAllowedAlterDocument() const override;
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the 3d view while it is open.
+    */
+    bool isAllowedAlterView() const override;
+    /*!
+      Indicates whether this task dialog allows other commands to modify
+      the selection while it is open.
+    */
+    bool isAllowedAlterSelection() const override;
+    bool needsFullSpace() const override;
 
 public:
     /// is called by the framework when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if a button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user press the help button 
-    virtual void helpRequested();
-    
+    void helpRequested() override;
+
+    /// event handling
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+private:
+    bool tryLoadUiFile();
+    bool tryLoadForm();
+    void appendForm(QWidget* widget, const QPixmap& icon);
+    void clearForm();
+
 private:
     Py::Object dlg;
 };

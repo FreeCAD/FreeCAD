@@ -28,31 +28,32 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 namespace Part { class Thickness; }
-namespace PartGui { 
+namespace PartGui {
 
 class ThicknessWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    ThicknessWidget(Part::Thickness*, QWidget* parent = 0);
-    ~ThicknessWidget();
+    explicit ThicknessWidget(Part::Thickness*, QWidget* parent = nullptr);
+    ~ThicknessWidget() override;
 
     bool accept();
     bool reject();
     Part::Thickness* getObject() const;
 
-private Q_SLOTS:
-    void on_spinOffset_valueChanged(double);
-    void on_modeType_activated(int);
-    void on_joinType_activated(int);
-    void on_intersection_toggled(bool);
-    void on_selfIntersection_toggled(bool);
-    void on_facesButton_toggled(bool);
-    void on_updateView_toggled(bool);
+private:
+    void setupConnections();
+    void onSpinOffsetValueChanged(double);
+    void onModeTypeActivated(int);
+    void onJoinTypeActivated(int);
+    void onIntersectionToggled(bool);
+    void onSelfIntersectionToggled(bool);
+    void onFacesButtonToggled(bool);
+    void onUpdateViewToggled(bool);
 
 private:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -64,17 +65,17 @@ class TaskThickness : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskThickness(Part::Thickness*);
-    ~TaskThickness();
+    explicit TaskThickness(Part::Thickness*);
+    ~TaskThickness() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
     Part::Thickness* getObject() const;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

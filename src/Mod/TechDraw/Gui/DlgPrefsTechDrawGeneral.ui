@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>581</height>
+    <width>499</width>
+    <height>776</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -199,22 +199,6 @@ for ProjectionGroups</string>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0" columnstretch="1,0,1">
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Preferred</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_LabelFont">
           <property name="minimumSize">
@@ -238,12 +222,21 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Label Size</string>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefFontBox" name="pfb_LabelFont">
@@ -275,15 +268,20 @@ for ProjectionGroups</string>
            <string>Font for labels</string>
           </property>
           <property name="currentFont">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
+           <font/>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelFont</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Labels</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Label Size</string>
           </property>
          </widget>
         </item>
@@ -362,6 +360,13 @@ for ProjectionGroups</string>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,0,1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Projection Group Angle</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
@@ -374,13 +379,6 @@ for ProjectionGroups</string>
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Projection Group Angle</string>
-          </property>
-         </widget>
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefComboBox" name="cbProjAngle">
@@ -496,7 +494,7 @@ for ProjectionGroups</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,2">
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="minimumSize">
@@ -789,6 +787,87 @@ for ProjectionGroups</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="gbGrid">
+     <property name="title">
+      <string>Grid</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1">
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_ShowGrid">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Set ShowGrid property to true on new Pages.</string>
+          </property>
+          <property name="text">
+           <string>Show Grid</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>showGrid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Grid Spacing</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing">
+          <property name="toolTip">
+           <string>Distance between Page grid lines.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>gridSpacing</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_12">
      <property name="font">
       <font>
@@ -803,19 +882,6 @@ for ProjectionGroups</string>
       <bool>true</bool>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>19</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

@@ -22,60 +22,67 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.constraint_section_print import setup
-setup()
-
-"""
-
-# constraint section print with volume elements
-# https://forum.freecadweb.org/viewtopic.php?t=43044
-
 import math
 
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Fem
-import ObjectsFem
 import Part
 import Sketcher
 from BOPTools.SplitFeatures import makeBooleanFragments
 from BOPTools.SplitFeatures import makeSlice
 from CompoundTools.CompoundFilter import makeCompoundFilter
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+import Fem
+import ObjectsFem
 
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Constraint Section Print",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["section_print", "fixed", "pressure"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Constraint Section Print",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["section_print", "fixed", "pressure"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "solid",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.constraint_section_print import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?t=43044
+
+constraint section print with volume elements
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
+    # geometric objects
     # the part sketch
-    arc_sketch = doc.addObject('Sketcher::SketchObject', 'Arc_Sketch')
+    arc_sketch = doc.addObject("Sketcher::SketchObject", "Arc_Sketch")
     arc_sketch.Placement = FreeCAD.Placement(
         Vector(0, 0, 0),
         Rotation(0, 0, 0, 1)
@@ -103,24 +110,24 @@ def setup(doc=None, solvertype="ccxtools"):
     # but the best way is to add a constraint is watching
     # FreeCAD python console while create this one by the Gui
     conList = [
-        Sketcher.Constraint('Coincident', 0, 3, -1, 1),
-        Sketcher.Constraint('PointOnObject', 0, 2, -1),
-        Sketcher.Constraint('PointOnObject', 0, 1, -1),
-        Sketcher.Constraint('PointOnObject', 1, 2, -1),
-        Sketcher.Constraint('PointOnObject', 1, 1, -1),
-        Sketcher.Constraint('Coincident', 2, 1, 0, 2),
-        Sketcher.Constraint('Coincident', 2, 2, 1, 2),
-        Sketcher.Constraint('Coincident', 3, 1, 1, 1),
-        Sketcher.Constraint('Coincident', 3, 2, 0, 1),
-        Sketcher.Constraint('DistanceX', 2, 2, 2, 1, 58),
-        Sketcher.Constraint('DistanceX', 3, 2, 3, 1, 20),
-        Sketcher.Constraint('Radius', 0, 47),
-        Sketcher.Constraint('Radius', 1, 89)
+        Sketcher.Constraint("Coincident", 0, 3, -1, 1),
+        Sketcher.Constraint("PointOnObject", 0, 2, -1),
+        Sketcher.Constraint("PointOnObject", 0, 1, -1),
+        Sketcher.Constraint("PointOnObject", 1, 2, -1),
+        Sketcher.Constraint("PointOnObject", 1, 1, -1),
+        Sketcher.Constraint("Coincident", 2, 1, 0, 2),
+        Sketcher.Constraint("Coincident", 2, 2, 1, 2),
+        Sketcher.Constraint("Coincident", 3, 1, 1, 1),
+        Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+        Sketcher.Constraint("DistanceX", 2, 2, 2, 1, 58),
+        Sketcher.Constraint("DistanceX", 3, 2, 3, 1, 20),
+        Sketcher.Constraint("Radius", 0, 47),
+        Sketcher.Constraint("Radius", 1, 89)
     ]
     arc_sketch.addConstraint(conList)
 
     # the part extrusion
-    extrude_part = doc.addObject('Part::Extrusion', 'ArcExtrude')
+    extrude_part = doc.addObject("Part::Extrusion", "ArcExtrude")
     extrude_part.Base = arc_sketch
     extrude_part.DirMode = "Custom"
     extrude_part.Dir = Vector(0.00, 0.00, 1.00)
@@ -134,7 +141,7 @@ def setup(doc=None, solvertype="ccxtools"):
     extrude_part.TaperAngleRev = 0.00
 
     # section plane sketch
-    section_sketch = doc.addObject('Sketcher::SketchObject', 'Section_Sketch')
+    section_sketch = doc.addObject("Sketcher::SketchObject", "Section_Sketch")
     section_sketch.Placement = FreeCAD.Placement(
         Vector(0.000000, 0.000000, 0.000000),
         Rotation(0.000000, 0.000000, 0.000000, 1.000000)
@@ -147,7 +154,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # section_sketch.ExternalGeometry = extrude_part
 
     # section plane extrusion
-    extrude_section_plane = doc.addObject('Part::Extrusion', 'SectionPlaneExtrude')
+    extrude_section_plane = doc.addObject("Part::Extrusion", "SectionPlaneExtrude")
     extrude_section_plane.Base = section_sketch
     extrude_section_plane.DirMode = "Custom"
     extrude_section_plane.Dir = Vector(0.00, 0.00, -1.00)
@@ -168,15 +175,15 @@ def setup(doc=None, solvertype="ccxtools"):
         extrude_part.ViewObject.hide()
         extrude_section_plane.ViewObject.hide()
 
-    Slice = makeSlice(name='Slice')
+    Slice = makeSlice(name="Slice")
     Slice.Base = extrude_part
     Slice.Tools = extrude_section_plane
-    Slice.Mode = 'Split'
+    Slice.Mode = "Split"
     # Slice.Proxy.execute(Slice)
     Slice.purgeTouched()
 
     # compound filter to get the solids of the slice
-    solid_one = makeCompoundFilter(name='SolidOne')
+    solid_one = makeCompoundFilter(name="SolidOne")
     solid_one.Base = Slice
     solid_one.FilterType = "specific items"
     solid_one.items = "0"
@@ -185,7 +192,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if FreeCAD.GuiUp:
         solid_one.Base.ViewObject.hide()
 
-    solid_two = makeCompoundFilter(name='SolidTwo')
+    solid_two = makeCompoundFilter(name="SolidTwo")
     solid_two.Base = Slice
     solid_two.FilterType = "specific items"
     solid_two.items = "1"
@@ -195,9 +202,9 @@ def setup(doc=None, solvertype="ccxtools"):
         solid_two.Base.ViewObject.hide()
 
     # CompSolid out of the two solids
-    geom_obj = makeBooleanFragments(name='BooleanFragments')
+    geom_obj = makeBooleanFragments(name="BooleanFragments")
     geom_obj.Objects = [solid_one, solid_two]
-    geom_obj.Mode = 'CompSolid'
+    geom_obj.Mode = "CompSolid"
     # geom_obj.Proxy.execute(geom_obj)
     geom_obj.purgeTouched()
     if FreeCAD.GuiUp:
@@ -215,56 +222,49 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "Material")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "Material")
+    mat = material_obj.Material
     mat["Name"] = "CalculiX-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
     # constraint fixed
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face9")]
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face9")]
+    analysis.addObject(con_fixed)
 
     # constraint pressure
-    pressure_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, name="ConstraintPressure")
-    )[0]
-    pressure_constraint.References = [(geom_obj, "Face1")]
-    pressure_constraint.Pressure = 100.0
-    pressure_constraint.Reversed = False
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure.References = [(geom_obj, "Face1")]
+    con_pressure.Pressure = 100.0
+    con_pressure.Reversed = False
+    analysis.addObject(con_pressure)
 
     # constraint section print
-    section_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintSectionPrint(doc, name="ConstraintSectionPrint")
-    )[0]
-    section_constraint.References = [(geom_obj, "Face6")]
+    con_sectionpr = ObjectsFem.makeConstraintSectionPrint(doc, "ConstraintSectionPrint")
+    con_sectionpr.References = [(geom_obj, "Face6")]
+    analysis.addObject(con_sectionpr)
 
     # mesh
     from .meshes.mesh_section_print_tetra10 import create_nodes, create_elements
@@ -275,9 +275,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

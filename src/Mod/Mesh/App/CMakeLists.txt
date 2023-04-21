@@ -19,21 +19,21 @@ set(Mesh_LIBS
     FreeCADApp
 )
 
-if (BUILD_QT5)
-    include_directories(
-        ${Qt5Concurrent_INCLUDE_DIRS}
-    )
-    list(APPEND Mesh_LIBS
-        ${Qt5Concurrent_LIBRARIES}
-    )
-endif()
+include_directories(
+    ${QtConcurrent_INCLUDE_DIRS}
+)
+list(APPEND Mesh_LIBS
+    ${QtConcurrent_LIBRARIES}
+)
 
+generate_from_xml(EdgePy)
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)
 generate_from_xml(MeshPointPy)
 generate_from_xml(MeshPy)
 
 SET(Mesh_XML_SRCS
+    EdgePy.xml
     FacetPy.xml
     MeshFeaturePy.xml
     MeshPointPy.xml
@@ -98,6 +98,16 @@ SET(Core_SRCS
     Core/CylinderFit.h
     Core/SphereFit.cpp
     Core/SphereFit.h
+    Core/IO/Reader3MF.cpp
+    Core/IO/Reader3MF.h
+    Core/IO/ReaderOBJ.cpp
+    Core/IO/ReaderOBJ.h
+    Core/IO/Writer3MF.cpp
+    Core/IO/Writer3MF.h
+    Core/IO/WriterInventor.cpp
+    Core/IO/WriterInventor.h
+    Core/IO/WriterOBJ.cpp
+    Core/IO/WriterOBJ.h
 )
 SOURCE_GROUP("Core" FILES ${Core_SRCS})
 
@@ -331,6 +341,9 @@ SET(Mesh_SRCS
     Exporter.h
     Importer.cpp
     Importer.h
+    Edge.cpp
+    Edge.h
+    EdgePyImp.cpp
     Facet.cpp
     Facet.h
     FacetPyImp.cpp
@@ -352,8 +365,6 @@ SET(Mesh_SRCS
     FeatureMeshTransform.h
     FeatureMeshTransformDemolding.cpp
     FeatureMeshTransformDemolding.h
-#   GTSAlgos.cpp
-#   GTSAlgos.h
     Mesh.cpp
     Mesh.h
     MeshFeature.cpp
@@ -371,6 +382,15 @@ SET(Mesh_SRCS
     Segment.cpp
     Segment.h
 )
+
+# Suppress -Wundefined-var-template
+if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-undefined-var-template" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    endif()
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
@@ -390,6 +410,8 @@ endif ()
 
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
+set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
 
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)

@@ -20,22 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ViewProviderEdge2TracObject.h"
 #include <Gui/Control.h>
 #include <Mod/Robot/Gui/TaskDlgEdge2Trac.h>
+
+#include "ViewProviderEdge2TracObject.h"
+
 
 using namespace Gui;
 using namespace RobotGui;
 
 PROPERTY_SOURCE(RobotGui::ViewProviderEdge2TracObject, RobotGui::ViewProviderTrajectory)
 
-bool ViewProviderEdge2TracObject::doubleClicked(void)
+bool ViewProviderEdge2TracObject::doubleClicked()
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgEdge2Trac(static_cast<Robot::Edge2TracObject *>(getObject()));
     Gui::Control().showDialog(dlg);

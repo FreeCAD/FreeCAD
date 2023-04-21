@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
 #endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
+
 #include "FeaturePartImportBrep.h"
 
 
@@ -37,7 +36,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::ImportBrep, Part::Feature)
 
 
-ImportBrep::ImportBrep(void)
+ImportBrep::ImportBrep()
 {
     ADD_PROPERTY(FileName,(""));
 }
@@ -49,7 +48,7 @@ short ImportBrep::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportBrep::execute(void)
+App::DocumentObjectExecReturn *ImportBrep::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {

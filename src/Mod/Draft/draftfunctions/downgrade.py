@@ -25,10 +25,10 @@
 See also the `upgrade` function.
 """
 ## @package downgrade
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to downgrade objects by different methods.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils

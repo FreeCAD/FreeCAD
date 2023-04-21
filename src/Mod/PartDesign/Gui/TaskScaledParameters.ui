@@ -118,10 +118,19 @@
   <customwidget>
    <class>Gui::UIntSpinBox</class>
    <extends>QSpinBox</extends>
-   <header location="global">Gui/SpinBox.h</header>
+   <header>Gui/SpinBox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonAddFeature</tabstop>
+  <tabstop>buttonRemoveFeature</tabstop>
+  <tabstop>listWidgetFeatures</tabstop>
+  <tabstop>spinFactor</tabstop>
+  <tabstop>spinOccurrences</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -38,12 +38,7 @@ from FreeCAD import Console
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == "__builtin__":
-    # because we'll redefine open below (Python2)
-    pyopen = open
-elif open.__module__ == "io":
-    # because we'll redefine open below (Python3)
-    pyopen = open
+pyopen = open
 
 
 def open(filename):
@@ -69,7 +64,8 @@ def insert(
 def importFrd(
     filename,
     analysis=None,
-    result_name_prefix=""
+    result_name_prefix="",
+    result_analysis_type=""
 ):
     import ObjectsFem
     from . import importToolsFem
@@ -85,11 +81,6 @@ def importFrd(
 
     if len(m["Nodes"]) > 0:
         mesh = importToolsFem.make_femmesh(m)
-        result_mesh_object = ObjectsFem.makeMeshResult(
-            doc,
-            "ResultMesh"
-        )
-        result_mesh_object.FemMesh = mesh
         res_mesh_is_compacted = False
         nodenumbers_for_compacted_mesh = []
 
@@ -107,14 +98,20 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        "{}Mode{}_Results"
+                        "{}EigenMode_{}_Results"
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
-                    results_name = (
-                        "{}Time{}_Results"
-                        .format(result_name_prefix, step_time)
-                    )
+                    if result_analysis_type == "buckling":
+                        results_name = (
+                            "{}BucklingFactor_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+                    else:
+                        results_name = (
+                            "{}Time_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
                 else:
                     results_name = (
                         "{}Results"
@@ -122,6 +119,9 @@ def importFrd(
                     )
 
                 res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
+                # create result mesh
+                result_mesh_object = ObjectsFem.makeMeshResult(doc, results_name + "_Mesh")
+                result_mesh_object.FemMesh = mesh
                 res_obj.Mesh = result_mesh_object
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
@@ -165,15 +165,15 @@ def importFrd(
                         if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
                             has_reinforced_mat = True
                             Console.PrintLog(
-                                "Reinfoced material object detected, "
+                                "Reinforced material object detected, "
                                 "reinforced principal stresses and standard principal "
-                                " stresses will be added.\n"
+                                "stresses will be added.\n"
                             )
                             resulttools.add_principal_stress_reinforced(res_obj)
                             break
                     if has_reinforced_mat is False:
                         Console.PrintLog(
-                            "No einfoced material object detected, "
+                            "No reinforced material object detected, "
                             "standard principal stresses will be added.\n"
                         )
                         # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
@@ -187,6 +187,31 @@ def importFrd(
                     res_obj = resulttools.add_principal_stress_std(res_obj)
                 # fill Stats
                 res_obj = resulttools.fill_femresult_stats(res_obj)
+
+                # create a results pipeline if not already existing
+                pipeline_name = "Pipeline_" + results_name
+                pipeline_obj = doc.getObject(pipeline_name)
+                if pipeline_obj is None:
+                    pipeline_obj = ObjectsFem.makePostVtkResult(doc, res_obj, results_name)
+                    pipeline_visibility = True
+                    if analysis:
+                        analysis.addObject(pipeline_obj)
+                else:
+                    if FreeCAD.GuiUp:
+                        # store pipeline visibility because pipeline_obj.load makes the
+                        # pipeline always visible
+                        pipeline_visibility = pipeline_obj.ViewObject.Visibility
+                    pipeline_obj.load(res_obj)
+                # update the pipeline
+                pipeline_obj.recomputeChildren()
+                pipeline_obj.recompute()
+                if FreeCAD.GuiUp:
+                    pipeline_obj.ViewObject.updateColorBars()
+                    # make results mesh invisible, will be made visible
+                    # later in task_solver_ccxtools.py
+                    res_obj.Mesh.ViewObject.Visibility = False
+                    # restore pipeline visibility
+                    pipeline_obj.ViewObject.Visibility = pipeline_visibility
 
         else:
             error_message = (
@@ -205,9 +230,9 @@ def importFrd(
         # see error message above for more information
         if not res_obj:
             if result_name_prefix:
-                results_name = ("{}_Results".format(result_name_prefix))
+                results_name = "{}_Results".format(result_name_prefix)
             else:
-                results_name = ("Results".format(result_name_prefix))
+                results_name = "Results"
             res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
             res_obj.Mesh = result_mesh_object
             # TODO, node numbers in result obj could be set
@@ -387,7 +412,7 @@ def read_frd_result(
                 CalculiX uses a different node order in
                 input file *.inp and result file *.frd for hexa20 (C3D20)
                 according to Guido (the developer of ccx):
-                see note in in first line of cgx manuel part element types
+                see note in the first line of cgx manual part element types
                 ccx (and thus the *.inp) follows the ABAQUS convention
                 documented in the ccx-documentation
                 cgx (and thus the *.frd) follows the FAM2 convention

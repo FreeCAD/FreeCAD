@@ -25,11 +25,13 @@
 
 #include <string>
 #include <set>
-#include <App/Material.h>
-#include <App/Range.h>
+
 #include <App/Expression.h>
+#include <App/Material.h>
+
 #include "DisplayUnit.h"
 #include "Utils.h"
+
 
 namespace Base {
 class Unit;
@@ -116,13 +118,11 @@ public:
 
     bool isMarked() const { return isUsed(MARK_SET); }
 
-    bool spansChanged() const { return isUsed(SPANS_UPDATED); }
-
     void visit(App::ExpressionVisitor & v);
 
     App::CellAddress getAddress() const { return address; }
 
-    std::string getFormattedQuantity(void);
+    std::string getFormattedQuantity();
 
     /* Alignment */
     static const int ALIGNMENT_LEFT;
@@ -170,7 +170,6 @@ private:
     static const int ALIAS_SET;
     static const int SPANS_SET;
     static const int MARK_SET;
-    static const int SPANS_UPDATED;
     static const int EXCEPTION_SET;
     static const int PARSE_EXCEPTION_SET;
     static const int RESOLVE_EXCEPTION_SET;

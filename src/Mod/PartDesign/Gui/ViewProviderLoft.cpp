@@ -24,24 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QMenu>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "Utils.h"
-#include "ViewProviderLoft.h"
-//#include "TaskLoftParameters.h"
-#include "TaskLoftParameters.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureLoft.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
+#include <Mod/PartDesign/App/FeatureLoft.h>
 
+#include "ViewProviderLoft.h"
+#include "TaskLoftParameters.h"
 
 using namespace PartDesignGui;
 
@@ -55,18 +47,18 @@ ViewProviderLoft::~ViewProviderLoft()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
 
     App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
-    if (sketch != NULL)
+    if (sketch)
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
             temp.push_back(obj);
     }
 
@@ -75,15 +67,8 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
 
 void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit loft"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit loft"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderLoft::doubleClicked(void)
-{
-    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderLoft::setEdit(int ModNum)
@@ -122,50 +107,73 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
     return true;
 }
 
-void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/)
-{/*
+void ViewProviderLoft::highlightProfile(bool on)
+{
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
-    Part::Feature* base;
-    if(!auxiliary)
-        base = static_cast<Part::Feature*>(pcLoft->Spine.getValue());
-    else
-        base = static_cast<Part::Feature*>(pcLoft->AuxillerySpine.getValue());
-
-    if (base == NULL) return;
-    PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (svp == NULL) return;
-
-    std::vector<std::string> edges;
-    if(!auxiliary)
-        edges = pcLoft->Spine.getSubValuesStartsWith("Edge");
-    else
-        edges = pcLoft->AuxillerySpine.getSubValuesStartsWith("Edge");
-
-    if (on) {
-         if (!edges.empty() && originalLineColors.empty()) {
-            TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
-            originalLineColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> colors = originalLineColors;
-            colors.resize(eMap.Extent(), svp->LineColor.getValue());
-
-            for (std::string e : edges) {
-                int idx = atoi(e.substr(4).c_str()) - 1;
-                if (idx < colors.size())
-                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
-            }
-            svp->LineColorArray.setValues(colors);
-        }
-    } else {
-        if (!edges.empty() && !originalLineColors.empty()) {
-            svp->LineColorArray.setValues(originalLineColors);
-            originalLineColors.clear();
-        }
-    }*/
+    highlightReferences(dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
+                        pcLoft->Profile.getSubValues(), on);
 }
 
-QIcon ViewProviderLoft::getIcon(void) const {
+void ViewProviderLoft::highlightSection(bool on)
+{
+    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    auto sections = pcLoft->Sections.getSubListValues();
+    for (auto& it : sections) {
+        // only take the entire shape when we have a sketch selected, but
+        // not a point of the sketch
+        auto subName = it.second.empty() ? "" : it.second.front();
+        if (it.first->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subName.compare(0, 6, "Vertex") != 0) {
+            it.second.clear();
+        }
+        highlightReferences(dynamic_cast<Part::Feature*>(it.first), it.second, on);
+    }
+}
+
+void ViewProviderLoft::highlightReferences(ViewProviderLoft::Reference mode, bool on)
+{
+    switch (mode) {
+    case Profile:
+        highlightProfile(on);
+        break;
+    case Section:
+        highlightSection(on);
+        break;
+    case Both:
+        highlightProfile(on);
+        highlightSection(on);
+        break;
+    default:
+        break;
+    }
+}
+
+void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vector<std::string>& elements, bool on)
+{
+    if (!base)
+        return;
+
+    PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(base));
+    if (!svp)
+        return;
+
+    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
+
+    if (on) {
+        edgeColors = svp->LineColorArray.getValues();
+        std::vector<App::Color> colors = edgeColors;
+
+        PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
+        highlighter.getEdgeColors(elements, colors);
+        svp->LineColorArray.setValues(colors);
+    }
+    else {
+        svp->LineColorArray.setValues({svp->LineColor.getValue()});
+        edgeColors.clear();
+    }
+}
+
+QIcon ViewProviderLoft::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

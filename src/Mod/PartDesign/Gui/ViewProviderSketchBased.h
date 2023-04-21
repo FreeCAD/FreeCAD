@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
+ *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,18 +32,18 @@ namespace PartDesignGui {
  */
 class PartDesignGuiExport ViewProviderSketchBased : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderSketchBased);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderSketchBased);
 
 public:
     /// constructor
     ViewProviderSketchBased();
     /// destructor
-    virtual ~ViewProviderSketchBased();
+    ~ViewProviderSketchBased() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren()const override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    bool onDelete(const std::vector<std::string> &) override;
 
 };
 

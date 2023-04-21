@@ -22,36 +22,34 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
-
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <cassert>
 
 #include <Inventor/SbRotation.h>
-
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <math.h>
-
 #include <Base/Quantity.h>
-#include <Gui/MainWindow.h>
-#include "SoFCDB.h"
+
 #include "SoFCCSysDragger.h"
+#include "MainWindow.h"
+#include "SoFCDB.h"
+
 
 /*
    GENERAL NOTE ON COIN3D CUSTOM DRAGGERS
@@ -137,14 +135,14 @@ void TDragger::buildFirstInstance()
 {
     SoGroup *geometryGroup = buildGeometry();
 
-    SoSeparator *localTranslator = new SoSeparator();
+    auto localTranslator = new SoSeparator();
     localTranslator->setName("CSysDynamics_TDragger_Translator");
     localTranslator->addChild(geometryGroup);
     SoFCDB::getStorage()->addChild(localTranslator);
 
-    SoSeparator *localTranslatorActive = new SoSeparator();
+    auto localTranslatorActive = new SoSeparator();
     localTranslatorActive->setName("CSysDynamics_TDragger_TranslatorActive");
-    SoBaseColor *colorActive = new SoBaseColor();
+    auto colorActive = new SoBaseColor();
     colorActive->rgb.setValue(1.0, 1.0, 0.0);
     localTranslatorActive->addChild(colorActive);
     localTranslatorActive->addChild(geometryGroup);
@@ -156,19 +154,19 @@ SoGroup* TDragger::buildGeometry()
     //this builds one leg in the Y+ direction because of default done direction.
     //the location anchor for shapes is the center of shape.
 
-    SoGroup *root = new SoGroup();
+    auto root = new SoGroup();
 
     //cylinder
     float cylinderHeight = 10.0;
     float cylinderRadius = 0.2f;
-    SoSeparator *cylinderSeparator = new SoSeparator();
+    auto cylinderSeparator = new SoSeparator();
     root->addChild(cylinderSeparator);
 
-    SoTranslation *cylinderTranslation = new SoTranslation();
+    auto cylinderTranslation = new SoTranslation();
     cylinderTranslation->translation.setValue(0.0, cylinderHeight / 2.0, 0.0);
     cylinderSeparator->addChild(cylinderTranslation);
 
-    SoCylinder *cylinder = new SoCylinder();
+    auto cylinder = new SoCylinder();
     cylinder->radius.setValue(cylinderRadius);
     cylinder->height.setValue(cylinderHeight);
     cylinderSeparator->addChild(cylinder);
@@ -176,19 +174,19 @@ SoGroup* TDragger::buildGeometry()
     //cone
     float coneBottomRadius = 1.0;
     float coneHeight = 2.0;
-    SoSeparator *coneSeparator = new SoSeparator();
+    auto coneSeparator = new SoSeparator();
     root->addChild(coneSeparator);
 
-    SoPickStyle *pickStyle = new SoPickStyle();
+    auto pickStyle = new SoPickStyle();
     pickStyle->style.setValue(SoPickStyle::SHAPE);
     pickStyle->setOverride(TRUE);
     coneSeparator->addChild(pickStyle);
 
-    SoTranslation *coneTranslation = new SoTranslation();
+    auto coneTranslation = new SoTranslation();
     coneTranslation->translation.setValue(0.0, cylinderHeight + coneHeight / 2.0, 0.0);
     coneSeparator->addChild(coneTranslation);
 
-    SoCone *cone = new SoCone();
+    auto cone = new SoCone();
     cone->bottomRadius.setValue(coneBottomRadius);
     cone->height.setValue(coneHeight);
     coneSeparator->addChild(cone);
@@ -198,36 +196,36 @@ SoGroup* TDragger::buildGeometry()
 
 void TDragger::startCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = static_cast<TDragger *>(d);
+    auto sudoThis = static_cast<TDragger *>(d);
     sudoThis->dragStart();
 }
 
 void TDragger::motionCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = static_cast<TDragger *>(d);
+    auto sudoThis = static_cast<TDragger *>(d);
     sudoThis->drag();
 }
 
 void TDragger::finishCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = static_cast<TDragger *>(d);
+    auto sudoThis = static_cast<TDragger *>(d);
     sudoThis->dragFinish();
 }
 
 void TDragger::fieldSensorCB(void *f, SoSensor *)
 {
-  TDragger *sudoThis = reinterpret_cast<TDragger *>(f);
+    auto sudoThis = static_cast<TDragger *>(f);
 
-  SbMatrix matrix = sudoThis->getMotionMatrix();
+  SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
   sudoThis->workFieldsIntoTransform(matrix);
   sudoThis->setMotionMatrix(matrix);
 }
 
 void TDragger::valueChangedCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    auto sudoThis = dynamic_cast<TDragger *>(d);
     assert(sudoThis);
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
 
     //all this just to get the translation?
     SbVec3f trans, scaleDummy;
@@ -314,13 +312,13 @@ SbBool TDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff)
   {
     inherited::setUpConnections(onoff, doitalways);
-    TDragger::fieldSensorCB(this, NULL);
+    TDragger::fieldSensorCB(this, nullptr);
     if (this->fieldSensor.getAttachedField() != &this->translation)
       this->fieldSensor.attach(&this->translation);
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != NULL)
+    if (this->fieldSensor.getAttachedField())
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -411,14 +409,14 @@ void RDragger::buildFirstInstance()
 {
     SoGroup *geometryGroup = buildGeometry();
 
-    SoSeparator *localRotator = new SoSeparator();
+    auto localRotator = new SoSeparator();
     localRotator->setName("CSysDynamics_RDragger_Rotator");
     localRotator->addChild(geometryGroup);
     SoFCDB::getStorage()->addChild(localRotator);
 
-    SoSeparator *localRotatorActive = new SoSeparator();
+    auto localRotatorActive = new SoSeparator();
     localRotatorActive->setName("CSysDynamics_RDragger_RotatorActive");
-    SoBaseColor *colorActive = new SoBaseColor();
+    auto colorActive = new SoBaseColor();
     colorActive->rgb.setValue(1.0, 1.0, 0.0);
     localRotatorActive->addChild(colorActive);
     localRotatorActive->addChild(geometryGroup);
@@ -427,10 +425,10 @@ void RDragger::buildFirstInstance()
 
 SoGroup* RDragger::buildGeometry()
 {
-    SoGroup *root = new SoGroup();
+    auto root = new SoGroup();
 
     //arc
-    SoCoordinate3 *coordinates = new SoCoordinate3();
+    auto coordinates = new SoCoordinate3();
 
     unsigned int segments = 6;
 
@@ -444,11 +442,11 @@ SoGroup* RDragger::buildGeometry()
     }
     root->addChild(coordinates);
 
-    SoLineSet *lineSet = new SoLineSet();
+    auto lineSet = new SoLineSet();
     lineSet->numVertices.setValue(segments + 1);
     root->addChild(lineSet);
 
-    SoPickStyle *pickStyle = new SoPickStyle();
+    auto pickStyle = new SoPickStyle();
     pickStyle->style.setValue(SoPickStyle::SHAPE);
     pickStyle->setOverride(TRUE);
     root->addChild(pickStyle);
@@ -457,11 +455,11 @@ SoGroup* RDragger::buildGeometry()
     SbVec3f origin(1.0, 1.0, 0.0);
     origin.normalize();
     origin *= arcRadius;
-    SoTranslation *sphereTranslation = new SoTranslation();
+    auto sphereTranslation = new SoTranslation();
     sphereTranslation->translation.setValue(origin);
     root->addChild(sphereTranslation);
 
-    SoSphere *sphere = new SoSphere();
+    auto sphere = new SoSphere();
     sphere->radius.setValue(1.0);
     root->addChild(sphere);
 
@@ -470,36 +468,36 @@ SoGroup* RDragger::buildGeometry()
 
 void RDragger::startCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = static_cast<RDragger *>(d);
+    auto sudoThis = static_cast<RDragger *>(d);
     sudoThis->dragStart();
 }
 
 void RDragger::motionCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = static_cast<RDragger *>(d);
+    auto sudoThis = static_cast<RDragger *>(d);
     sudoThis->drag();
 }
 
 void RDragger::finishCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = static_cast<RDragger *>(d);
+    auto sudoThis = static_cast<RDragger *>(d);
     sudoThis->dragFinish();
 }
 
 void RDragger::fieldSensorCB(void *f, SoSensor *)
 {
-  RDragger *sudoThis = reinterpret_cast<RDragger *>(f);
+    auto sudoThis = static_cast<RDragger *>(f);
 
-  SbMatrix matrix = sudoThis->getMotionMatrix();
+  SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
   sudoThis->workFieldsIntoTransform(matrix);
   sudoThis->setMotionMatrix(matrix);
 }
 
 void RDragger::valueChangedCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    auto sudoThis = dynamic_cast<RDragger *>(d);
     assert(sudoThis);
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
 
     //all this just to get the translation?
     SbVec3f translationDummy, scaleDummy;
@@ -599,13 +597,13 @@ SbBool RDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff)
   {
     inherited::setUpConnections(onoff, doitalways);
-    RDragger::fieldSensorCB(this, NULL);
+    RDragger::fieldSensorCB(this, nullptr);
     if (this->fieldSensor.getAttachedField() != &this->rotation)
       this->fieldSensor.attach(&this->rotation);
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != NULL)
+    if (this->fieldSensor.getAttachedField())
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -617,7 +615,7 @@ int RDragger::roundIncrement(const float &radiansIn)
 {
     int rCount = 0;
 
-    float increment = static_cast<float>(rotationIncrement.getValue());
+    auto increment = static_cast<float>(rotationIncrement.getValue());
     if (fabs(radiansIn) > (increment / 2.0))
     {
         rCount = static_cast<int>(radiansIn / increment);
@@ -760,7 +758,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SoRotation *localRotation;
     SbRotation tempRotation;
-    float angle = static_cast<float>(M_PI / 2.0);
+    auto angle = static_cast<float>(M_PI / 2.0);
     localRotation = SO_GET_ANY_PART(this, "xTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(0.0, 0.0, -1.0), angle);
     localRotation = SO_GET_ANY_PART(this, "yTranslatorRotation", SoRotation);
@@ -783,7 +781,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     //this is for non-autoscale mode. this will be disconnected for autoscale
     //and won't be used. see setUpAutoScale.
-    SoComposeVec3f *scaleEngine = new SoComposeVec3f(); //uses coin ref scheme.
+    auto scaleEngine = new SoComposeVec3f(); //uses coin ref scheme.
     scaleEngine->x.connectFrom(&draggerSize);
     scaleEngine->y.connectFrom(&draggerSize);
     scaleEngine->z.connectFrom(&draggerSize);
@@ -859,10 +857,10 @@ SbBool SoFCCSysDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
         inherited::setUpConnections(onoff, doitalways);
 
-        if (this->translationSensor.getAttachedField() != NULL)
+        if (this->translationSensor.getAttachedField())
           this->translationSensor.detach();
 
-        if (this->rotationSensor.getAttachedField() != NULL)
+        if (this->rotationSensor.getAttachedField())
             this->rotationSensor.detach();
     }
     return !(this->connectionsSetUp = onoff);
@@ -870,27 +868,27 @@ SbBool SoFCCSysDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
 void SoFCCSysDragger::translationSensorCB(void *f, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(f);
+    auto sudoThis = static_cast<SoFCCSysDragger *>(f);
 
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
     sudoThis->workFieldsIntoTransform(matrix);
     sudoThis->setMotionMatrix(matrix);
 }
 
 void SoFCCSysDragger::rotationSensorCB(void *f, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(f);
+    auto sudoThis = static_cast<SoFCCSysDragger *>(f);
 
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
     sudoThis->workFieldsIntoTransform(matrix);
     sudoThis->setMotionMatrix(matrix);
 }
 
 void SoFCCSysDragger::valueChangedCB(void *, SoDragger *d)
 {
-    SoFCCSysDragger *sudoThis = dynamic_cast<SoFCCSysDragger *>(d);
+    auto sudoThis = dynamic_cast<SoFCCSysDragger *>(d);
     assert(sudoThis);
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
 
     //all this just to get the translation?
     SbVec3f localTranslation, scaleDummy;
@@ -915,7 +913,7 @@ void SoFCCSysDragger::setUpAutoScale(SoCamera *cameraIn)
     //checking current attachment state.
     if (cameraIn->getTypeId() == SoOrthographicCamera::getClassTypeId())
     {
-        SoOrthographicCamera *localCamera = dynamic_cast<SoOrthographicCamera *>(cameraIn);
+        auto localCamera = dynamic_cast<SoOrthographicCamera *>(cameraIn);
         assert(localCamera);
         cameraSensor.attach(&localCamera->height);
         SoScale *localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
@@ -925,7 +923,7 @@ void SoFCCSysDragger::setUpAutoScale(SoCamera *cameraIn)
     }
     else if (cameraIn->getTypeId() == SoPerspectiveCamera::getClassTypeId())
     {
-        SoPerspectiveCamera *localCamera = dynamic_cast<SoPerspectiveCamera *>(cameraIn);
+        auto localCamera = dynamic_cast<SoPerspectiveCamera *>(cameraIn);
         assert(localCamera);
         cameraSensor.attach(&localCamera->position);
         SoScale *localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
@@ -937,7 +935,7 @@ void SoFCCSysDragger::setUpAutoScale(SoCamera *cameraIn)
 
 void SoFCCSysDragger::cameraCB(void *data, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
+    auto sudoThis = static_cast<SoFCCSysDragger *>(data);
     if (!sudoThis->idleSensor.isScheduled())
         sudoThis->idleSensor.schedule();
 }
@@ -982,11 +980,11 @@ void SoFCCSysDragger::handleEvent(SoHandleEventAction * action)
 
 void SoFCCSysDragger::idleCB(void *data, SoSensor *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
+    auto sudoThis = static_cast<SoFCCSysDragger *>(data);
     SoField* field = sudoThis->cameraSensor.getAttachedField();
     if (field)
     {
-        SoCamera* camera = static_cast<SoCamera*>(field->getContainer());
+        auto camera = static_cast<SoCamera*>(field->getContainer());
         SbMatrix localToWorld = sudoThis->getLocalToWorldMatrix();
         SbVec3f origin;
         localToWorld.multVecMatrix(SbVec3f(0.0, 0.0, 0.0), origin);
@@ -1005,7 +1003,7 @@ void SoFCCSysDragger::idleCB(void *data, SoSensor *)
 
 void SoFCCSysDragger::finishDragCB(void *data, SoDragger *)
 {
-    SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
+    auto sudoThis = static_cast<SoFCCSysDragger *>(data);
 
     // note: when creating a second view of the document and then closing
     // the first viewer it deletes the camera. However, the attached field
@@ -1013,7 +1011,7 @@ void SoFCCSysDragger::finishDragCB(void *data, SoDragger *)
     SoField* field = sudoThis->cameraSensor.getAttachedField();
     if (field)
     {
-        SoCamera* camera = static_cast<SoCamera*>(field->getContainer());
+        auto camera = static_cast<SoCamera*>(field->getContainer());
         if (camera->getTypeId() == SoPerspectiveCamera::getClassTypeId())
             cameraCB(sudoThis, nullptr);
     }

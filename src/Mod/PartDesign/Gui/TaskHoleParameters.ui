@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>342</width>
-    <height>486</height>
+    <width>438</width>
+    <height>561</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,12 +47,6 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
      </property>
     </widget>
    </item>
@@ -114,7 +108,7 @@ Note that the calculation can take some time</string>
       <string>Customize thread clearance</string>
      </property>
      <property name="text">
-      <string>Custom Thread Clearance</string>
+      <string>Custom Thread</string>
      </property>
     </widget>
    </item>
@@ -139,23 +133,17 @@ Note that the calculation can take some time</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="toolTip">
       <string>Custom Thread clearance value</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
      </property>
      <property name="singleStep">
       <double>0.100000000000000</double>
-     </property>
-     <property name="keyboardTracking">
-      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -231,12 +219,6 @@ Note that the calculation can take some time</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
     </widget>
    </item>
    <item row="8" column="2">
@@ -259,12 +241,6 @@ Note that the calculation can take some time</string>
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
      </property>
      <property name="toolTip">
       <string>Hole clearance
@@ -308,12 +284,6 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="toolTip">
       <string>Tolerance class for threaded holes according to hole profile</string>
      </property>
@@ -340,14 +310,11 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="toolTip">
       <string>Hole diameter</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
@@ -378,12 +345,6 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <item>
       <property name="text">
        <string>Dimension</string>
@@ -403,6 +364,9 @@ Only available for holes without thread</string>
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
@@ -430,12 +394,6 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <item>
       <property name="text">
        <string>Hole depth</string>
@@ -461,11 +419,11 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="unit" stdset="0">
-      <string notr="true">mm</string>
-     </property>
      <property name="keyboardTracking">
       <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
      </property>
     </widget>
    </item>
@@ -496,12 +454,6 @@ Only available for holes without thread</string>
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
      </property>
      <property name="toolTip">
       <string>Cut type for screw heads</string>
@@ -545,14 +497,11 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="contextMenuPolicy">
       <enum>Qt::NoContextMenu</enum>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
@@ -586,11 +535,12 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
+     <property name="toolTip">
+      <string>For countersinks this is the depth of
+the screw's top below the surface</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
@@ -624,11 +574,8 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">deg</string>
@@ -710,6 +657,9 @@ Only available for holes without thread</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
+     </property>
      <property name="unit" stdset="0">
       <string notr="true">deg</string>
      </property>
@@ -768,6 +718,9 @@ account for the depth of blind holes</string>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">deg</string>
@@ -883,7 +836,7 @@ over 90: larger hole radius at the bottom</string>
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="directionButtonGroup"/>
   <buttongroup name="drillPointButtonGroup"/>
+  <buttongroup name="directionButtonGroup"/>
  </buttongroups>
 </ui>

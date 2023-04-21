@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,46 +22,56 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.square_pipe_end_twisted_edgeforces import setup
-setup()
-"""
-
 import FreeCAD
 from FreeCAD import Vector
 
-import Fem
-import ObjectsFem
 import Part
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+import Fem
+import ObjectsFem
 
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Square Pipe End Twisted Edgeforces",
-            "meshtype": "solid",
-            "meshelement": "Tria6",
-            "constraints": ["force", "fixed"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Square Pipe End Twisted Edgeforces",
+        "meshtype": "face",
+        "meshelement": "Tria6",
+        "constraints": ["force", "fixed"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "solid",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.square_pipe_end_twisted_edgeforces import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric object
     # name is important because the other method in this module use obj name
     l1 = Part.makeLine((-142.5, -142.5, 0), (142.5, -142.5, 0))
     l2 = Part.makeLine((142.5, -142.5, 0), (142.5, 142.5, 0))
@@ -68,7 +79,7 @@ def setup(doc=None, solvertype="ccxtools"):
     l4 = Part.makeLine((-142.5, 142.5, 0), (-142.5, -142.5, 0))
     wire = Part.Wire([l1, l2, l3, l4])
     shape = wire.extrude(Vector(0, 0, 1000))
-    geom_obj = doc.addObject('Part::Feature', 'SquareTube')
+    geom_obj = doc.addObject("Part::Feature", "SquareTube")
     geom_obj.Shape = shape
     doc.recompute()
 
@@ -81,84 +92,77 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # shell thickness
-    thickness = analysis.addObject(
-        ObjectsFem.makeElementGeometry2D(doc, 0, "ShellThickness")
-    )[0]
-    thickness.Thickness = 15.0
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 15.0, "ShellThickness")
+    analysis.addObject(thickness_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    mat = material_obj.Material
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed"))[0]
-    fixed_constraint.References = [
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [
         (doc.SquareTube, "Edge4"),
         (doc.SquareTube, "Edge7"),
         (doc.SquareTube, "Edge10"),
         (doc.SquareTube, "Edge12")]
+    analysis.addObject(con_fixed)
 
-    # force_constraint1
-    force_constraint1 = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1"))[0]
-    force_constraint1.References = [(doc.SquareTube, "Edge9")]
-    force_constraint1.Force = 100000.00
-    force_constraint1.Direction = (doc.SquareTube, ["Edge9"])
-    force_constraint1.Reversed = True
+    # con_force1
+    con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
+    con_force1.References = [(geom_obj, "Edge9")]
+    con_force1.Force = 100000.00
+    con_force1.Direction = (geom_obj, ["Edge9"])
+    con_force1.Reversed = True
+    analysis.addObject(con_force1)
 
-    # force_constraint2
-    force_constraint2 = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2"))[0]
-    force_constraint2.References = [(doc.SquareTube, "Edge3")]
-    force_constraint2.Force = 100000.00
-    force_constraint2.Direction = (doc.SquareTube, ["Edge3"])
-    force_constraint2.Reversed = True
+    # con_force2
+    con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
+    con_force2.References = [(geom_obj, "Edge3")]
+    con_force2.Force = 100000.00
+    con_force2.Direction = (geom_obj, ["Edge3"])
+    con_force2.Reversed = True
+    analysis.addObject(con_force2)
 
-    # force_constraint3
-    force_constraint3 = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3"))[0]
-    force_constraint3.References = [(doc.SquareTube, "Edge11")]
-    force_constraint3.Force = 100000.00
-    force_constraint3.Direction = (doc.SquareTube, ["Edge11"])
-    force_constraint3.Reversed = True
+    # con_force3
+    con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
+    con_force3.References = [(geom_obj, "Edge11")]
+    con_force3.Force = 100000.00
+    con_force3.Direction = (geom_obj, ["Edge11"])
+    con_force3.Reversed = True
+    analysis.addObject(con_force3)
 
-    # force_constraint4
-    force_constraint4 = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4"))[0]
-    force_constraint4.References = [(doc.SquareTube, "Edge6")]
-    force_constraint4.Force = 100000.00
-    force_constraint4.Direction = (doc.SquareTube, ["Edge6"])
-    force_constraint4.Reversed = True
+    # con_force4
+    con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
+    con_force4.References = [(geom_obj, "Edge6")]
+    con_force4.Force = 100000.00
+    con_force4.Direction = (geom_obj, ["Edge6"])
+    con_force4.Reversed = True
+    analysis.addObject(con_force4)
 
     # mesh
     from .meshes.mesh_square_pipe_end_twisted_tria6 import create_nodes, create_elements
@@ -169,9 +173,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

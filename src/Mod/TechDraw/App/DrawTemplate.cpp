@@ -26,66 +26,48 @@
 # include <sstream>
 #endif
 
-#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
 
-#include <App/Application.h>
-
-#include <iostream>
-#include <iterator>
-
-#include "DrawPage.h"
 #include "DrawTemplate.h"
-#include <Mod/TechDraw/App/DrawTemplatePy.h>
+#include "DrawTemplatePy.h"
+#include "DrawPage.h"
+
 
 using namespace TechDraw;
-using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawTemplate, App::DocumentObject)
 
 
 const char* DrawTemplate::OrientationEnums[]= {"Portrait",
                                                   "Landscape",
-                                                  NULL};
+                                                  nullptr};
 
-
-
-DrawTemplate::DrawTemplate(void)
+DrawTemplate::DrawTemplate()
 {
     const char *group = "Page Properties";
 
     Orientation.setEnums(OrientationEnums);
-    ADD_PROPERTY(Orientation, ((long)0));
+    ADD_PROPERTY(Orientation, (0l));
 
     // Physical Properties inherent to every template class
-    ADD_PROPERTY_TYPE(Width,     (0),  group, (App::PropertyType)(App::Prop_None), "Width of page");
-    ADD_PROPERTY_TYPE(Height,    (0),  group, (App::PropertyType)(App::Prop_None), "Height of page");
-    //ADD_PROPERTY_TYPE(PaperSize, (""), group, (App::PropertyType)(App::Prop_None), "Paper Format");   //obs?
+    ADD_PROPERTY_TYPE(Width,     (0),  group, App::PropertyType::Prop_None, "Width of page");
+    ADD_PROPERTY_TYPE(Height,    (0),  group, App::PropertyType::Prop_None, "Height of page");
 
-    ADD_PROPERTY_TYPE(EditableTexts, (), group, (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(EditableTexts, (), group, App::PropertyType::Prop_None,
                       "Editable strings in the template");
 }
 
 DrawTemplate::~DrawTemplate()
 {
-  Base::Console().Log("template destroyed");
 }
 
-
-PyObject *DrawTemplate::getPyObject(void)
+PyObject *DrawTemplate::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawTemplatePy(this),true);
+        PythonObject = Py::Object(new DrawTemplatePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
-}
-
-unsigned int DrawTemplate::getMemSize(void) const
-{
-    return 0;
 }
 
 double DrawTemplate::getWidth() const
@@ -98,41 +80,15 @@ double DrawTemplate::getHeight() const
     return Height.getValue();
 }
 
-short DrawTemplate::mustExecute() const
-{
-    return App::DocumentObject::mustExecute();
-}
-
-/// get called by the container when a Property was changed
-void DrawTemplate::onChanged(const App::Property* prop)
-{
-    App::DocumentObject::onChanged(prop);
-}
-
-App::DocumentObjectExecReturn *DrawTemplate::execute(void)
-{
-    DrawPage *page = 0;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = dynamic_cast<TechDraw::DrawPage *>(*it);
-        }
-    }
-
-    if(page) {
-        page->Template.touch();     //if you are on a page, execute yourself???
-    }
-
-    return App::DocumentObject::execute();
-}
-
+//find the (first) DrawPage which points to this template
 DrawPage* DrawTemplate::getParentPage() const
 {
-    TechDraw::DrawPage* page = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = static_cast<TechDraw::DrawPage *>(*it);
+    TechDraw::DrawPage* page(nullptr);
+    std::vector<App::DocumentObject*> parents = getInList();
+    for (auto& obj : parents) {
+        if (obj->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage *>(obj);
+            break;
         }
     }
     return page;
@@ -143,7 +99,7 @@ DrawPage* DrawTemplate::getParentPage() const
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTemplatePython, TechDraw::DrawTemplate)
-template<> const char* TechDraw::DrawTemplatePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawTemplatePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderPython";
 }
 /// @endcond

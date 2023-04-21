@@ -40,7 +40,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
     def makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2):
 
-        import Part,Sketcher
+        import Part
+        import Sketcher
         width = float(width)
         height = float(height)
         h1 = float(h1)
@@ -87,7 +88,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
 
         def simpleFrame(s,width,height,h1,h2,tol):
-            
+
             "creates a simple frame with constraints"
 
             p1 = Vector(h1+tol,h1+tol,0)
@@ -450,7 +451,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         elif windowtype == "Simple door":
 
             wp = doorFrame(s,width,height,h1,w1,o1)
-            wp.extend(["Door","Solid panel","Wire1,Edge8,Mode2",str(w2),str(o2)+"+V"])
+            wp.extend(["Door","Solid panel","Wire1,Edge8,Mode1",str(w2),str(o2)+"+V"])
 
         elif windowtype == "Glass door":
 

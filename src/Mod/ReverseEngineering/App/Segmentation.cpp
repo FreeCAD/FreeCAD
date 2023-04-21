@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Segmentation.h"
 #include <Mod/Points/App/Points.h>
-#include <Base/Exception.h>
+
+#include "Segmentation.h"
+
 
 #if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/extract_indices.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/features/normal_3d.h>
+# include <pcl/filters/extract_indices.h>
+# include <pcl/filters/passthrough.h>
+# include <pcl/features/normal_3d.h>
 #endif
 
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-#include <pcl/sample_consensus/method_types.h>
-#include <pcl/sample_consensus/model_types.h>
+# include <pcl/sample_consensus/method_types.h>
+# include <pcl/sample_consensus/model_types.h>
 #endif
 
 #if defined(HAVE_PCL_SEGMENTATION)
-#include <pcl/ModelCoefficients.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/segmentation/sac_segmentation.h>
+# include <pcl/io/pcd_io.h>
+# include <pcl/ModelCoefficients.h>
+# include <pcl/point_types.h>
+# include <pcl/segmentation/sac_segmentation.h>
 #endif
 
 using namespace std;

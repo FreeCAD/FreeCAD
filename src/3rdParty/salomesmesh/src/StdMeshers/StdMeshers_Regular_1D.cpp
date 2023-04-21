@@ -504,7 +504,7 @@ static void compensateError(double a1, double an,
 //    * \brief Clean mesh on edges
 //    * \param event - algo_event or compute_event itself (of SMESH_subMesh)
 //    * \param eventType - ALGO_EVENT or COMPUTE_EVENT (of SMESH_subMesh)
-//    * \param subMesh - the submesh where the event occures
+//    * \param subMesh - the submesh where the event occurs
 //    */
 //   void ProcessEvent(const int event, const int eventType, SMESH_subMesh* subMesh,
 //                     EventListenerData*, const SMESH_Hypothesis*)

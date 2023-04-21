@@ -36,9 +36,11 @@ namespace geoff_geometry {
 
 	bool Matrix::operator==(const Matrix &m)const{
 		// m1 == m2
-		if(this->m_unit != m.m_unit || this->m_mirrored != m.m_mirrored) return false;
+		if(this->m_unit != m.m_unit || this->m_mirrored != m.m_mirrored)
+		    return false;
 		for(int i = 0; i < 16; i++)
-			if(FEQ(this->e[i], m.e[i], TIGHT_TOLERANCE) == false) return false;
+			if(!FEQ(this->e[i], m.e[i], TIGHT_TOLERANCE))
+			    return false;
 		return true;
 	}
 
@@ -227,10 +229,12 @@ namespace geoff_geometry {
 		// returns true if unit matrix
 		for(int i = 0; i < 16; i++) {
 			if(i == 0 || i == 5 || i == 10 || i == 15) {
-				if(e[i] != 1) return m_unit = false;
+				if(e[i] != 1)
+				    return m_unit = false;
 			}
 			else {
-				if(e[i] != 0) return m_unit = false;
+				if(e[i] != 0)
+				    return m_unit = false;
 			}
 		}
 		m_mirrored = false;
@@ -343,7 +347,8 @@ namespace geoff_geometry {
 		Matrix a = *this;
 		int l[4], m[4];
 
-		if(a.m_unit) return a;	// unit matrix
+		if(a.m_unit)	// unit matrix
+		    return a;
 
 		// search for largest element
 		nk =  - n ;
@@ -522,7 +527,7 @@ namespace geoff_geometry {
 
 	 void Vector2d::Transform(const Matrix& m) {
 		 // transform vector
-		 if(m.m_unit == false) {
+		 if(!m.m_unit) {
 			double dxt = dx * m.e[0] + dy * m.e[1];
 			double dyt = dx * m.e[4] + dy * m.e[5];
 			dx = dxt;
@@ -533,7 +538,7 @@ namespace geoff_geometry {
 
 	 void Vector3d::Transform(const Matrix& m) {
 		 // transform vector
-		 if(m.m_unit == false) {
+		 if(!m.m_unit) {
 			double dxt = dx * m.e[0] + dy * m.e[1] + dz * m.e[2];
 			double dyt = dx * m.e[4] + dy * m.e[5] + dz * m.e[6];
 			double dzt = dx * m.e[8] + dy * m.e[9] + dz * m.e[10];
@@ -599,7 +604,8 @@ namespace geoff_geometry {
 		 // calculates a mirror transformation that mirrors 2d about plane
 
 		//Point3d p1 = this->Near(Point3d(0.,0.,0.));
-		if(tmMirrored->m_unit == false) tmMirrored->Unit();
+		if(!tmMirrored->m_unit)
+			tmMirrored->Unit();
 
 		double nx = this->normal.getx();
 		double ny = this->normal.gety();

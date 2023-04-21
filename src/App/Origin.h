@@ -25,11 +25,10 @@
 #ifndef APP_Origin_H
 #define APP_Origin_H
 
-#include "GeoFeature.h"
-
-#include "OriginFeature.h"
 #include "GeoFeatureGroupExtension.h"
-#include "PropertyLinks.h"
+#include "OriginFeature.h"
+
+#include "QCoreApplication"
 
 namespace App
 {
@@ -38,15 +37,16 @@ namespace App
  */
 class AppExport Origin : public App::DocumentObject
 {
-    PROPERTY_HEADER(App::Origin);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Origin);
+    Q_DECLARE_TR_FUNCTIONS(App::Origin)
 
 public:
     /// Constructor
-    Origin(void);
-    virtual ~Origin();
+    Origin();
+    ~Origin() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderOrigin";
     }
 
@@ -57,28 +57,28 @@ public:
     ///@{
     // returns X axis
     App::Line *getX () const {
-        return getAxis ("X_Axis");
+        return getAxis (AxisRoles[0]);
     }
     // returns Y axis
     App::Line *getY () const {
-        return getAxis ("Y_Axis");
+        return getAxis (AxisRoles[1]);
     }
     // returns Z axis
     App::Line *getZ () const {
-        return getAxis ("Z_Axis");
+        return getAxis (AxisRoles[2]);
     }
 
     // returns XY plane
     App::Plane *getXY () const {
-        return getPlane ("XY_Plane");
+        return getPlane (PlaneRoles[0]);
     }
     // returns XZ plane
     App::Plane *getXZ () const {
-        return getPlane ("XZ_Plane");
+        return getPlane (PlaneRoles[1]);
     }
     // returns YZ plane
     App::Plane *getYZ () const {
-        return getPlane ("YZ_Plane");
+        return getPlane (PlaneRoles[2]);
     }
 
     /// Returns all axis objects to iterate on them
@@ -114,23 +114,23 @@ public:
     static Base::BoundBox3d defaultBoundBox();
 
     /// Returns true on changing OriginFeature set
-    virtual short mustExecute(void) const;
+    short mustExecute() const override;
 
     /// Axis types
-    static const char* AxisRoles[3];
+    static constexpr char* AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
     /// Baseplane types
-    static const char* PlaneRoles[3];
+    static constexpr char* PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
     // Axis links
     PropertyLinkList OriginFeatures;
 
 protected:
     /// Checks integrity of the Origin
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
     /// Creates all corresponding Axes and Planes objects for the origin if they aren't linked yet
-    virtual void setupObject ();
+    void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject ();
+    void unsetupObject () override;
 
 private:
     struct SetupData;
@@ -139,10 +139,10 @@ private:
     class OriginExtension : public GeoFeatureGroupExtension {
         Origin* obj;
     public:
-        OriginExtension(Origin* obj);
-        void initExtension(ExtensionContainer* obj);
+        explicit OriginExtension(Origin* obj);
+        void initExtension(ExtensionContainer* obj) override;
         bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                PyObject **, Base::Matrix4D *, bool, int) const;
+                PyObject **, Base::Matrix4D *, bool, int) const override;
     };
     OriginExtension extension;
 };

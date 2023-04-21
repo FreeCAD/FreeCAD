@@ -1,4 +1,4 @@
-# FreeCAD init script of the Import module  
+# FreeCAD init script of the Import module
 # (c) 2001 Juergen Riegel
 
 #***************************************************************************
@@ -13,12 +13,12 @@
 #*   for detail see the LICENCE text file.                                 *
 #*                                                                         *
 #*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 #*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 #*   GNU Lesser General Public License for more details.                   *
 #*                                                                         *
 #*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        * 
+#*   License along with FreeCAD; if not, write to the Free Software        *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
@@ -31,11 +31,6 @@
 #FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
 FreeCAD.addImportType("PLMXML files (*.plmxml)","PlmXmlParser")
-FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)","stepZ") 
-FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ") 
-
-# Add initial parameters value if they are not set
-
-paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTEP")
-if  paramGetV.GetBool("ReadShapeCompoundMode", False) != paramGetV.GetBool("ReadShapeCompoundMode", True):
-    paramGetV.SetBool("ReadShapeCompoundMode", True)
+FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)","stepZ")
+FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
+FreeCAD.addExportType("glTF (*.gltf *.glb)","ImportGui")

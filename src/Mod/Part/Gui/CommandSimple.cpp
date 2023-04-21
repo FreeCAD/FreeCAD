@@ -23,26 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDir>
-# include <QFileInfo>
-# include <QLineEdit>
-# include <QInputDialog>
 # include <Standard_math.hxx>
+# include <QInputDialog>
 #endif
 
-#include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/WaitCursor.h>
 
-#include "../App/PartFeature.h"
-#include "../App/TopoShape.h"
 #include "DlgPartCylinderImp.h"
+#include "ShapeFromMesh.h"
+#include <Mod/Part/App/PartFeature.h>
 
 
 //===========================================================================
@@ -86,7 +84,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
     }
 }
 
-bool CmdPartSimpleCylinder::isActive(void)
+bool CmdPartSimpleCylinder::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -115,54 +113,11 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    double STD_OCC_TOLERANCE = 1e-6;
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int decimals = hGrp->GetInt("Decimals");
-    double tolerance_from_decimals = pow(10., -decimals);
-
-    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
-
-    bool ok;
-    double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
-    if (!ok)
-        return;
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
-    std::vector<App::DocumentObject*> meshes;
-    meshes = Gui::Selection().getObjectsOfType(meshid);
-    Gui::WaitCursor wc;
-    std::vector<App::DocumentObject*>::iterator it;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
-    for (it = meshes.begin(); it != meshes.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        std::string mesh = (*it)->getNameInDocument();
-        std::string name = doc->getUniqueObjectName(mesh.c_str());
-        doCommand(Doc,"import Part");
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").addObject(\"Part::Feature\",\"%s\")"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"__shape__=Part.Shape()");
-        doCommand(Doc,"__shape__.makeShapeFromMesh("
-                      "FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Topology,%f"
-                      ")"
-                     ,doc->getName()
-                     ,mesh.c_str()
-                     ,tol);
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Shape=__shape__"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").purgeTouched()"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"del __shape__");
-    }
-
-    commitCommand();
+    PartGui::ShapeFromMesh dlg(Gui::getMainWindow());
+    dlg.exec();
 }
 
-bool CmdPartShapeFromMesh::isActive(void)
+bool CmdPartShapeFromMesh::isActive()
 {
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
     return Gui::Selection().countObjectsOfType(meshid) > 0;
@@ -177,8 +132,8 @@ CmdPartPointsFromMesh::CmdPartPointsFromMesh()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create points object from mesh");
-    sToolTipText  = QT_TR_NOOP("Create selectable points object from selected mesh object");
+    sMenuText     = QT_TR_NOOP("Create points object from geometry");
+    sToolTipText  = QT_TR_NOOP("Create selectable points object from selected geometric object");
     sWhatsThis    = "Part_PointsFromMesh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_PointsFromMesh";
@@ -188,32 +143,69 @@ void CmdPartPointsFromMesh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
-    std::vector<App::DocumentObject*> meshes;
-    meshes = Gui::Selection().getObjectsOfType(meshid);
-    Gui::WaitCursor wc;
-    std::vector<App::DocumentObject*>::iterator it;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Points from mesh"));
+    auto getDefaultDistance = [](Part::Feature* geometry) {
+        auto bbox = geometry->Shape.getBoundingBox();
+        int steps{20};
+        return bbox.CalcDiagonalLength() / steps;
+    };
 
-    for (it = meshes.begin(); it != meshes.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        std::string mesh = (*it)->getNameInDocument();
-        if (!(*it)->isDerivedFrom(Base::Type::fromName("Mesh::Feature")))
-            continue;
-        doCommand(Doc,"import Part");
-        doCommand(Doc,"mesh_pts = FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Points\n",
-                     doc->getName(), mesh.c_str());
-        doCommand(Doc,"Part.show(Part.makeCompound([Part.Point(m.Vector).toShape() for m in mesh_pts]),\"%s\")\n",
-                  (mesh+"_pts").c_str());
-        doCommand(Doc,"del mesh_pts\n");
+    Base::Type geoid = Base::Type::fromName("App::GeoFeature");
+    std::vector<App::DocumentObject*> geoms;
+    geoms = Gui::Selection().getObjectsOfType(geoid);
+
+    double distance{1.0};
+    auto found = std::find_if(geoms.begin(), geoms.end(), [](App::DocumentObject* obj) {
+        return Base::freecad_dynamic_cast<Part::Feature>(obj);
+    });
+
+    if (found != geoms.end()) {
+
+        double defaultDistance = getDefaultDistance(Base::freecad_dynamic_cast<Part::Feature>(*found));
+
+        double STD_OCC_TOLERANCE = 1e-6;
+
+        int decimals = Base::UnitsApi::getDecimals();
+        double tolerance_from_decimals = pow(10., -decimals);
+
+        double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
+
+        bool ok;
+        distance = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance in parameter space"),
+            QObject::tr("Enter distance:"), defaultDistance, minimal_tolerance, 10.0 * defaultDistance, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        if (!ok) {
+            return;
+        }
+    }
+
+    Gui::WaitCursor wc;
+    openCommand(QT_TRANSLATE_NOOP("Command", "Points from geometry"));
+
+    Base::PyGILStateLocker lock;
+    try {
+        PyObject* module = PyImport_ImportModule("BasicShapes.Utils");
+        if (!module) {
+            throw Py::Exception();
+        }
+        Py::Module utils(module, true);
+
+        for (auto it : geoms) {
+            Py::Tuple args(2);
+            args.setItem(0, Py::asObject(it->getPyObject()));
+            args.setItem(1, Py::Float(distance));
+            utils.callMemberFunction("showCompoundFromPoints", args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
     }
 
     commitCommand();
 }
 
-bool CmdPartPointsFromMesh::isActive(void)
+bool CmdPartPointsFromMesh::isActive()
 {
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
+    Base::Type meshid = Base::Type::fromName("App::GeoFeature");
     return Gui::Selection().countObjectsOfType(meshid) > 0;
 }
 
@@ -237,18 +229,21 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 static void _copyShape(const char *cmdName, bool resolve,bool needElement=false, bool refine=false) {
     Gui::WaitCursor wc;
     Gui::Command::openCommand(cmdName);
-    for(auto &sel : Gui::Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),resolve)) {
+    for(auto &sel : Gui::Selection().getSelectionEx("*", App::DocumentObject::getClassTypeId(),
+                                                    resolve ? Gui::ResolveMode::OldStyleElement : Gui::ResolveMode::NoResolve)) {
         std::map<std::string,App::DocumentObject*> subMap;
         auto obj = sel.getObject();
-        if(!obj) continue;
-        if(resolve || !sel.hasSubNames())
+        if (!obj)
+            continue;
+        if (resolve || !sel.hasSubNames()) {
             subMap.emplace("",obj);
+        }
         else {
             for(const auto &sub : sel.getSubNames()) {
-                const char *element = 0;
-                auto sobj = obj->resolve(sub.c_str(),0,0,&element);
+                const char *element = nullptr;
+                auto sobj = obj->resolve(sub.c_str(),nullptr,nullptr,&element);
                 if(!sobj) continue;
-                if(!needElement && element) 
+                if(!needElement && element)
                     subMap.emplace(sub.substr(0,element-sub.c_str()),sobj);
                 else
                     subMap.emplace(sub,sobj);
@@ -263,9 +258,10 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                     "App.ActiveDocument.addObject('Part::Feature','%s').Shape=__shape\n"
                     "App.ActiveDocument.ActiveObject.Label=%s.Label\n",
                         parentName.c_str(), v.first.c_str(),
-                        needElement?"True":"False", refine?"True":"False",
-                        needElement?".copy()":"", 
-                        v.second->getNameInDocument(), 
+                        needElement ? "True" : "False",
+                        refine ? "True" : "False",
+                        needElement ? ".copy()" : "",
+                        v.second->getNameInDocument(),
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
             Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
@@ -283,7 +279,7 @@ void CmdPartSimpleCopy::activated(int iMsg)
     _copyShape("Simple copy",true);
 }
 
-bool CmdPartSimpleCopy::isActive(void)
+bool CmdPartSimpleCopy::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -311,7 +307,7 @@ void CmdPartTransformedCopy::activated(int iMsg)
     _copyShape("Transformed copy",false);
 }
 
-bool CmdPartTransformedCopy::isActive(void)
+bool CmdPartTransformedCopy::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -339,7 +335,7 @@ void CmdPartElementCopy::activated(int iMsg)
     _copyShape("Element copy",false,true);
 }
 
-bool CmdPartElementCopy::isActive(void)
+bool CmdPartElementCopy::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -399,7 +395,7 @@ void CmdPartRefineShape::activated(int iMsg)
     }
 }
 
-bool CmdPartRefineShape::isActive(void)
+bool CmdPartRefineShape::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -426,7 +422,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
@@ -465,10 +461,10 @@ void CmdPartDefeaturing::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPartDefeaturing::isActive(void)
+bool CmdPartDefeaturing::isActive()
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         std::vector<std::string> subnames = it->getSubNames();
         for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
@@ -481,21 +477,9 @@ bool CmdPartDefeaturing::isActive(void)
 }
 
 
-// {
-//     if (getActiveGuiDocument())
-// #if OCC_VERSION_HEX < 0x060900
-//         return false;
-// #else
-//         return true;
-// #endif
-//     else
-//         return false;
-// }
-
-
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void CreateSimplePartCommands(void)
+void CreateSimplePartCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPartSimpleCylinder());

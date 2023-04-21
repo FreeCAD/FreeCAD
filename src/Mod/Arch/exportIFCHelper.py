@@ -20,13 +20,11 @@
 # ***************************************************************************
 
 import json
-import ifcopenshell
 import math
-
 
 import FreeCAD
 # import Draft
-
+import ifcopenshell
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []
@@ -38,18 +36,17 @@ def getObjectsOfIfcType(objects, ifcType):
 
 
 def writeUnits(ifcfile,unit="metre"):
-
     """adds additional units settings to the given ifc file if needed"""
     # so far, only metre or foot possible (which is all revit knows anyway)
 
     if unit == "foot":
-        d1 = ifcfile.createIfcDimensionalExponents(1,0,0,0,0,0,0);
+        d1 = ifcfile.createIfcDimensionalExponents(1,0,0,0,0,0,0)
         d2 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.3048),ifcfile[13])
         d3 = ifcfile.createIfcConversionBasedUnit(d1,'LENGTHUNIT','FOOT',d2)
-        d4 = ifcfile.createIfcDimensionalExponents(2,0,0,0,0,0,0);
+        d4 = ifcfile.createIfcDimensionalExponents(2,0,0,0,0,0,0)
         d5 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.09290304000000001),ifcfile[14])
         d6 = ifcfile.createIfcConversionBasedUnit(d4,'AREAUNIT','SQUARE FOOT',d5)
-        d7 = ifcfile.createIfcDimensionalExponents(3,0,0,0,0,0,0);
+        d7 = ifcfile.createIfcDimensionalExponents(3,0,0,0,0,0,0)
         d8 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.028316846592),ifcfile[15])
         d9 = ifcfile.createIfcConversionBasedUnit(d7,'VOLUMEUNIT','CUBIC FOOT',d8)
         ifcfile.createIfcUnitAssignment((d3,d6,d9,ifcfile[18]))
@@ -204,17 +201,21 @@ class recycler:
     # but it checks if a similar entity already exists before creating a new one
     # to compress a new type, just add the necessary method here
 
-    def __init__(self,ifcfile):
+    def __init__(self,ifcfile,template=True):
 
         self.ifcfile = ifcfile
         self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
         self.mergeProfiles = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcMergeProfiles",False)
-        self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
-        self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
+        self.cartesianpoints = {}
+        self.directions = {}
+        self.axis2placement3ds = {}
+        if template: # we are using the default template from exportIFC.py
+            self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
+            self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
+            self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
         self.polylines = {}
         self.polyloops = {}
         self.propertysinglevalues = {}
-        self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
         self.axis2placement2ds = {}
         self.localplacements = {}
         self.rgbs = {}

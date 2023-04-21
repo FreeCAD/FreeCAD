@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "GeomFormatPy.h"
 
 #include "PropertyGeomFormatList.h"
+#include "GeomFormatPy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyGeomFormatList
@@ -74,7 +62,7 @@ void PropertyGeomFormatList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyGeomFormatList::getSize(void) const
+int PropertyGeomFormatList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -105,7 +93,7 @@ void PropertyGeomFormatList::setValues(const std::vector<GeomFormat*>& lValue)
     hasSetValue();
 }
 
-PyObject *PropertyGeomFormatList::getPyObject(void)
+PyObject *PropertyGeomFormatList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -151,18 +139,19 @@ void PropertyGeomFormatList::setPyObject(PyObject *value)
 
 void PropertyGeomFormatList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<GeomFormatList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<GeomFormatList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<GeomFormat  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</GeomFormat>" << endl;
+        writer.Stream() << writer.ind() << "</GeomFormat>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</GeomFormatList>" << endl ;
+    writer.Stream() << writer.ind() << "</GeomFormatList>" << std::endl;
 }
 
 void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
@@ -177,11 +166,11 @@ void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("GeomFormat");
         const char* TypeName = reader.getAttribute("type");
-        GeomFormat *newG = (GeomFormat *)Base::Type::fromName(TypeName).createInstance();
+        GeomFormat *newG = static_cast<GeomFormat *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("GeomFormat \"%s\" within a PropertyGeomFormatList was subject to a partial restore.\n",reader.localName());
+            Base::Console().Error("GeomFormat \"%s\" within a PropertyGeomFormatList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the GeomFormat class
                 values.push_back(newG);
@@ -204,7 +193,7 @@ void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyGeomFormatList::Copy(void) const
+App::Property *PropertyGeomFormatList::Copy() const
 {
     PropertyGeomFormatList *p = new PropertyGeomFormatList();
     p->setValues(_lValueList);
@@ -217,7 +206,7 @@ void PropertyGeomFormatList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyGeomFormatList::getMemSize(void) const
+unsigned int PropertyGeomFormatList::getMemSize() const
 {
     int size = sizeof(PropertyGeomFormatList);
     for (int i = 0; i < getSize(); i++)

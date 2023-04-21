@@ -24,24 +24,76 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
-        <property name="toolTip">
-         <string>Main coordinate system will always be shown in
+       <layout class="QHBoxLayout" name="horizontalLayoutCoord">
+      <item>
+         <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
+          <property name="toolTip">
+           <string>Main coordinate system will always be shown in
 lower right corner within opened files</string>
-        </property>
-        <property name="text">
-         <string>Show coordinate system in the corner</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>CornerCoordSystem</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>Show coordinate system in the corner</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CornerCoordSystem</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacerCoord">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelCoordSize">
+          <property name="text">
+           <string>Relative size :   </string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="SpinBox_CornerCoordSystemSize">
+          <property name="toolTip">
+           <string>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</string>
+          </property>
+          <property name="minimum">
+           <number>2</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="suffix">
+           <string notr="true">%</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CornerCoordSystemSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowAxisCross">
@@ -71,25 +123,6 @@ will be shown at the lower left corner in opened files</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowFPS</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="CheckBox_WbByTab">
-        <property name="toolTip">
-         <string>If checked, application will remember which workbench is active for each tab of the viewport</string>
-        </property>
-        <property name="text">
-         <string>Remember active workbench by tab</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>SaveWBbyTab</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
@@ -134,7 +167,7 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+can be rendered directly by GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
@@ -170,7 +203,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
           </property>
           <property name="toolTip">
            <string>'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
+There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
@@ -310,57 +343,14 @@ but slower response to any scene changes.</string>
           </property>
          </widget>
         </item>
-         <item row="4" column="0">
-           <widget class="QLabel" name="spinPickRadiusLabel">
-             <property name="text">
-               <string>Pick radius (px):</string>
-             </property>
-           </widget>
-         </item>
-         <item row="4" column="4">
-           <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
-             <property name="minimumSize">
-               <size>
-                 <width>120</width>
-                 <height>0</height>
-               </size>
-             </property>
-             <property name="toolTip">
-               <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </string>
-             </property>
-             <property name="inputMethodHints">
-               <set>Qt::ImhPreferNumbers</set>
-             </property>
-             <property name="decimals">
-               <number>1</number>
-             </property>
-             <property name="minimum">
-               <double>0.500000000000000</double>
-             </property>
-             <property name="maximum">
-               <double>200.000000000000000</double>
-             </property>
-             <property name="value">
-               <double>5.000000000000000</double>
-             </property>
-             <property name="prefEntry" stdset="0">
-               <cstring>PickRadius</cstring>
-             </property>
-             <property name="prefPath" stdset="0">
-               <cstring>View</cstring>
-             </property>
-           </widget>
-         </item>
-        <item row="5" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="textLabel1">
           <property name="text">
            <string>Eye to eye distance for stereo modes</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="4">
+        <item row="4" column="4">
          <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_EyeDistance">
           <property name="minimumSize">
            <size>
@@ -396,7 +386,7 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxBacklight">
           <property name="toolTip">
            <string>Backlight is enabled with the defined color</string>
@@ -412,7 +402,7 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="5" column="1">
          <widget class="Gui::PrefColorButton" name="backlightColor">
           <property name="enabled">
            <bool>false</bool>
@@ -435,7 +425,7 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
+        <item row="5" column="2">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -448,7 +438,7 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </spacer>
         </item>
-        <item row="6" column="3">
+        <item row="5" column="3">
          <widget class="QLabel" name="backlightLabel">
           <property name="enabled">
            <bool>false</bool>
@@ -464,7 +454,7 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="4">
+        <item row="5" column="4">
          <widget class="Gui::PrefSlider" name="sliderIntensity">
           <property name="enabled">
            <bool>false</bool>
@@ -536,7 +526,23 @@ bounding box size of the 3D object that is currently displayed.</string>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
+      <item row="0" column="0">
+       <widget class="Gui::PrefRadioButton" name="radioPerspective">
+        <property name="toolTip">
+         <string>Objects will appear in a perspective projection</string>
+        </property>
+        <property name="text">
+         <string>Perspective renderin&amp;g</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Perspective</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="1">
        <widget class="Gui::PrefRadioButton" name="radioOrthographic">
         <property name="toolTip">
          <string>Objects will be projected in orthographic projection</string>
@@ -555,23 +561,7 @@ bounding box size of the 3D object that is currently displayed.</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="Gui::PrefRadioButton" name="radioPerspective">
-        <property name="toolTip">
-         <string>Objects will appear in a perspective projection</string>
-        </property>
-        <property name="text">
-         <string>Perspective renderin&amp;g</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>Perspective</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item>
@@ -626,6 +616,11 @@ bounding box size of the 3D object that is currently displayed.</string>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -676,6 +671,12 @@ bounding box size of the 3D object that is currently displayed.</string>
      <y>507</y>
     </hint>
    </hints>
+  </connection>
+  <connection>
+   <sender>CheckBox_CornerCoordSystem</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>SpinBox_CornerCoordSystemSize</receiver>
+   <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
 </ui>

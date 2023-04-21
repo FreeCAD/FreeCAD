@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Este programa instalará FreeCAD en su ordenador
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Compilando guiones Python..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Crear acceso directo en el escritorio"
-${LangFileString} TEXT_FINISH_WEBSITE "Visite freecadweb.org para últimas noticias, ayuda y consejos"
+${LangFileString} TEXT_FINISH_WEBSITE "Visite freecad.org para últimas noticias, ayuda y consejos"
 
 #${LangFileString} FileTypeTitle "Documento FreeCAD"
 

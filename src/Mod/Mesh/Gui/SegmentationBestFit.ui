@@ -14,59 +14,6 @@
    <string>Mesh segmentation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
-   <item row="2" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBoxSph">
-     <property name="title">
-      <string>Sphere</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Tolerance</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="tolSph">
-        <property name="singleStep">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.010000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Minimum number of faces</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="numSph">
-        <property name="maximum">
-         <number>100000</number>
-        </property>
-        <property name="value">
-         <number>100</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="sphereParameters">
-        <property name="text">
-         <string>Parameters...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBoxPln">
      <property name="title">
@@ -76,7 +23,14 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="planeParameters">
+        <property name="text">
+         <string>Parameters...</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Tolerance</string>
@@ -110,14 +64,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="planeParameters">
-        <property name="text">
-         <string>Parameters...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
@@ -129,7 +76,14 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="cylinderParameters">
+        <property name="text">
+         <string>Parameters...</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Tolerance</string>
@@ -163,17 +117,63 @@
         </property>
        </widget>
       </item>
+      </layout>
+    </widget>
+   </item>
+  <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBoxSph">
+     <property name="title">
+      <string>Sphere</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
-       <widget class="QPushButton" name="cylinderParameters">
+       <widget class="QPushButton" name="sphereParameters">
         <property name="text">
          <string>Parameters...</string>
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="1" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Tolerance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="tolSph">
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Minimum number of faces</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="numSph">
+        <property name="maximum">
+         <number>100000</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
-  </layout>
+   </layout>
  </widget>
  <resources/>
  <connections/>

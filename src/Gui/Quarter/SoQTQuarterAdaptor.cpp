@@ -19,26 +19,29 @@
  */
 
 #include "PreCompiled.h"
-#include "SoQTQuarterAdaptor.h"
+
 #include <Base/Console.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoLocateHighlight.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/SoEventManager.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/events/SoEvents.h>
+#include <Inventor/nodes/SoLocateHighlight.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #if !defined(FC_OS_MACOSX)
 # include <GL/gl.h>
 # include <GL/glu.h>
 # include <GL/glext.h>
 #endif
+
+#include "SoQTQuarterAdaptor.h"
+
 
 static unsigned char fps2dfont[][12] = {
     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
@@ -168,7 +171,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
     m_seekdistanceabs = false;
     m_seekperiod = 2.0f;
     m_inseekmode = false;
-    m_storedcamera = 0;
+    m_storedcamera = nullptr;
     m_viewingflag = false;
     pickRadius = 5.0;
 
@@ -200,7 +203,7 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget() const
 
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget() const
 {
-    return const_cast<QWidget*>(viewport());
+    return viewport();
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
@@ -298,12 +301,12 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const So
     out->height = 2.0f * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);
 }
 
-SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera(void) const
+SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera() const
 {
     return getSoRenderManager()->getCamera();
 }
 
-const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRegion(void) const
+const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRegion() const
 {
     return getSoRenderManager()->getViewportRegion();
 }
@@ -315,20 +318,20 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
 
     // Turn off the selection indicators when we go back from picking
     // mode into viewing mode.
-    if(m_viewingflag) {
+    if (m_viewingflag) {
         SoGLRenderAction* action = getSoRenderManager()->getGLRenderAction();
 
-        if(action != NULL)
+        if (action)
             SoLocateHighlight::turnOffCurrentHighlight(action);
     }
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing(void) const
+SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing() const
 {
     return m_viewingflag;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc()
 {
     // Catch problems with missing interactiveCountDec() calls.
     assert(m_interactionnesting < 100);
@@ -338,7 +341,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc(void)
     }
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec()
 {
     if(--m_interactionnesting <= 0) {
         m_interactionEndCallback.invokeCallbacks(this);
@@ -346,7 +349,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec(void)
     }
 }
 
-int SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getInteractiveCount(void) const
+int SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getInteractiveCount() const
 {
     return m_interactionnesting;
 }
@@ -372,22 +375,22 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::removeFinishCallback(SIM::Coin3D:
 }
 
 
-float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekDistance(void) const
+float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekDistance() const
 {
     return m_seekdistance;
 }
 
-float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekTime(void) const
+float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekTime() const
 {
     return m_seekperiod;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode(void) const
+SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode() const
 {
     return m_inseekmode;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage(void) const
+SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage() const
 {
     return m_seekdistanceabs ? false : true;
 }
@@ -541,7 +544,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor
     if(end) thisp->setSeekMode(false);
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition()
 {
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (!cam) {
@@ -562,7 +565,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
     m_storedcamera->copyFieldValues(getSoRenderManager()->getCamera());
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition()
 {
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (!cam) {
@@ -724,7 +727,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::paintEvent(QPaintEvent* event)
     this->framesPerSecond = addFrametime(start);
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter()
 {
     this->framecount = 0;
     this->frametime = 0.0f;
@@ -753,3 +756,5 @@ SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
     this->starttime = timeofday;
     return SbVec2f(1000 * this->drawtime, 1.0f / this->frametime);
 }
+
+#include "moc_SoQTQuarterAdaptor.cpp"

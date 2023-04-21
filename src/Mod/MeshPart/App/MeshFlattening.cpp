@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <map>
+# include <set>
+# include <vector>
+
+# include <BRep_Tool.hxx>
+# include <Geom_BSplineSurface.hxx>
+# include <Geom_Surface.hxx>
+# include <Poly_Triangulation.hxx>
+# include <Standard_Version.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopLoc_Location.hxx>
+#endif
+
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
-#include <Poly_Triangulation.hxx>
-#include <BRep_Tool.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopLoc_Location.hxx>
-#include <Standard_Version.hxx>
-
-#include <set>
-#include <map>
-#include <vector>
-#include <exception>
 
 
 std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris)
@@ -48,7 +48,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
     std::map<long, std::vector<long>> neighbour_map;
     std::vector<long> edge_vector_0;
     std::vector<std::vector<long>> edge_vector;
-    
+
 
     for (long i=0; i<tris.rows(); i++)
     {
@@ -109,7 +109,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
             }
             neighbour_map.erase(start_index);
             edge_vector_0.push_back(next_index);
-            
+
         }
         edge_vector.push_back(edge_vector_0);
     }
@@ -134,44 +134,44 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     long i = 0;
 //  transform to nurbs:
     TopLoc_Location location;
-    
+
 //  triangulate:
     const Handle(Poly_Triangulation) &triangulation = BRep_Tool::Triangulation(face, location);
 
     if (triangulation.IsNull())
         throw std::runtime_error("null triangulation in face construction");
 
+    Standard_Integer numNodes = triangulation->NbNodes();
+    Standard_Integer numTriangles = triangulation->NbTriangles();
+
 //  compute uv coordinates
     if (triangulation->HasUVNodes())
     {
-        const TColgp_Array1OfPnt2d &_uv_nodes = triangulation->UVNodes();
-        this->uv_nodes.resize(triangulation->NbNodes(), 2);
+        this->uv_nodes.resize(numNodes, 2);
         i = 0;
-        for (Standard_Integer index = _uv_nodes.Lower(); index <= _uv_nodes.Upper(); ++index)
+        for (Standard_Integer index = 1; index <= numNodes; ++index)
         {
-            const gp_Pnt2d& _uv_node = _uv_nodes.Value(index);
+            const gp_Pnt2d& _uv_node = triangulation->UVNode(index);
             this->uv_nodes.row(i) << _uv_node.X(), _uv_node.Y();
             i++;
         }
     }
-// 
-    const TColgp_Array1OfPnt &_nodes = triangulation->Nodes();
-    this->xyz_nodes.resize(triangulation->NbNodes(), 3);
+//
+    this->xyz_nodes.resize(numNodes, 3);
     i = 0;
-    for (Standard_Integer index = _nodes.Lower(); index <= _nodes.Upper(); ++index)
+    for (Standard_Integer index = 1; index <= numNodes; ++index)
     {
-        gp_Pnt _node = _nodes.Value(index);
+        gp_Pnt _node = triangulation->Node(index);
         this->xyz_nodes.row(i) << _node.X(), _node.Y(), _node.Z();
         i++;
     }
-    
-    const Poly_Array1OfTriangle &_tris = triangulation->Triangles();
-    this->tris.resize(triangulation->NbTriangles(), 3);
+
+    this->tris.resize(numTriangles, 3);
     i = 0;
-    for (Standard_Integer index = _tris.Lower(); index <= _tris.Upper(); ++index)
+    for (Standard_Integer index = 1; index <= numTriangles; ++index)
     {
         int n1, n2, n3;
-        Poly_Triangle _tri = _tris.Value(index);
+        const Poly_Triangle& _tri = triangulation->Triangle(index);
         _tri.Get(n1, n2, n3);
         this->tris.row(i) << n1-1, n2-1, n3-1;
         i++;
@@ -192,19 +192,13 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
 {
     if (this->uv_nodes.size() == 0)
         throw(std::runtime_error("no uv-coordinates found, interpolating with nurbs is only possible if the Flattener was constructed with a nurbs."));
-    
+
     // extract xyz poles, knots, weights, degree
     const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
-#if OCC_VERSION_HEX < 0x070000
-    TColStd_Array1OfReal _uknots(1, _bspline->NbUPoles() + _bspline->UDegree() + 1);
-    TColStd_Array1OfReal _vknots(1, _bspline->NbVPoles() + _bspline->VDegree() + 1);
-    _bspline->UKnotSequence(_uknots);
-    _bspline->VKnotSequence(_vknots);
-#else
+
     const TColStd_Array1OfReal &_uknots = _bspline->UKnotSequence();
     const TColStd_Array1OfReal &_vknots = _bspline->VKnotSequence();
-#endif
 
     Eigen::VectorXd weights;
     weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());
@@ -230,11 +224,11 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     {
         v_knots[v - 1] = _vknots.Value(v);
     }
-    
+
 
     nu = nurbs::NurbsBase2D(u_knots, v_knots, weights, _bspline->UDegree(), _bspline->VDegree());
     A = nu.getInfluenceMatrix(this->uv_nodes);
-    
+
     Eigen::LeastSquaresConjugateGradient<spMat > solver;
     solver.compute(A);
     ColMat<double, 2> ze_poles;
@@ -245,7 +239,7 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     ze_poles = solver.solve(ze_nodes);
     flat_poles.col(0) << ze_poles.col(0);
     flat_poles.col(1) << ze_poles.col(1);
-    return flat_poles;    
+    return flat_poles;
 }
 
 
@@ -253,7 +247,7 @@ FaceUnwrapper::FaceUnwrapper(ColMat< double, int(3) > xyz_nodes, ColMat< long in
 {
     this->tris = tris;
     this->xyz_nodes = xyz_nodes;
-    
+
 }
 
 std::vector<ColMat<double, 3>> FaceUnwrapper::getFlatBoundaryNodes()

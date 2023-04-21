@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERBUILDER_H
 #define GUI_VIEWPROVIDERBUILDER_H
 
-#include <vector>
 #include <map>
-#include <memory>
+#include <vector>
 #include <Base/Type.h>
-#include <Base/Factory.h>
+
 
 class SoNode;
 
@@ -45,7 +43,7 @@ class GuiExport ViewProviderBuilder
 {
 public:
     /// Constructor
-    ViewProviderBuilder(void);
+    ViewProviderBuilder();
     virtual ~ViewProviderBuilder();
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const = 0;
 
@@ -61,9 +59,9 @@ class GuiExport ViewProviderColorBuilder : public ViewProviderBuilder
 {
 public:
     /// Constructor
-    ViewProviderColorBuilder(void);
-    virtual ~ViewProviderColorBuilder();
-    virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
+    ViewProviderColorBuilder();
+    ~ViewProviderColorBuilder() override;
+    void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
 };
 
 } //namespace Gui

@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Denne guide vil installere FreeCAD på din compu
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Compiling Python scripts..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Create desktop shortcut"
-${LangFileString} TEXT_FINISH_WEBSITE "Visit freecadweb.org for the latest news, support and tips"
+${LangFileString} TEXT_FINISH_WEBSITE "Visit freecad.org for the latest news, support and tips"
 
 #${LangFileString} FileTypeTitle "FreeCAD-Dokument"
 

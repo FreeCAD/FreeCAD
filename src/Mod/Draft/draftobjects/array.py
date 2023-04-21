@@ -39,6 +39,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftVecUtils
 
+from draftutils.messages import _wrn
+from draftutils.translate import translate
+
 from draftobjects.draftlink import DraftLink
 
 
@@ -59,6 +62,18 @@ class Array(DraftLink):
         """Set up the properties when the object is attached."""
         self.set_properties(obj)
         super(Array, self).attach(obj)
+
+    def onDocumentRestored(self, obj):
+        super(Array, self).onDocumentRestored(obj)
+        if hasattr(obj, "Count"):
+            return
+        self.update_properties_0v21(obj)
+
+    def update_properties_0v21(self, obj):
+        self.set_general_properties(obj)
+        self.execute(obj) # Required to update Count to the correct value.
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("draft", "added property 'Count'"))
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -111,6 +126,20 @@ class Array(DraftLink):
                             "Objects",
                             _tip)
             obj.Fuse = False
+
+        if "Count" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Total number of elements "
+                                     "in the array.\n"
+                                     "This property is read-only, "
+                                     "as the number depends "
+                                     "on the parameters of the array.")
+            obj.addProperty("App::PropertyInteger",
+                            "Count",
+                            "Objects",
+                            _tip)
+            obj.Count = 0
+            obj.setEditorMode("Count", 1)  # Read only
 
     def set_ortho_properties(self, obj):
         """Set orthogonal properties only if they don't exist."""
@@ -287,7 +316,7 @@ class Array(DraftLink):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "A parameter that determines "
                                      "how many symmetry planes "
-                                     " the circular array will have.")
+                                     "the circular array will have.")
             obj.addProperty("App::PropertyInteger",
                             "Symmetry",
                             "Circular array",
@@ -299,20 +328,6 @@ class Array(DraftLink):
         properties = obj.PropertiesList
 
         if self.use_link:
-            if "Count" not in properties:
-                _tip = QT_TRANSLATE_NOOP("App::Property",
-                                         "Total number of elements "
-                                         "in the array.\n"
-                                         "This property is read-only, "
-                                         "as the number depends "
-                                         "on the parameters of the array.")
-                obj.addProperty("App::PropertyInteger",
-                                "Count",
-                                "Objects",
-                                _tip)
-                obj.Count = 0
-                obj.setEditorMode("Count", 1)  # Read only
-
             if "ExpandArray" not in properties:
                 _tip = QT_TRANSLATE_NOOP("App::Property",
                                          "Show the individual array elements "
@@ -380,8 +395,10 @@ class Array(DraftLink):
                     obj.setPropertyStatus(pr, "Hidden")
 
     def execute(self, obj):
-        """Execture when the object is created or recomputed."""
-        if not obj.Base:
+        """Execute when the object is created or recomputed."""
+        if self.props_changed_placement_only() \
+                or not obj.Base:
+            self.props_changed_clear()
             return
 
         pl = obj.Placement
@@ -419,7 +436,9 @@ class Array(DraftLink):
                                   axis, center,
                                   obj.NumberCircles, obj.Symmetry)
 
-        return super(Array, self).buildShape(obj, pl, pls)
+        self.buildShape(obj, pl, pls)
+        self.props_changed_clear()
+        return (not self.use_link)
 
 
 # Alias for compatibility with v0.18 and earlier
@@ -468,29 +487,21 @@ def polar_placements(base_placement,
     # print("angle ",angle," num ",num)
     placements = [base_placement.copy()]
 
-    if number == 0:
+    if number <= 1:
         return placements
 
-    spin = App.Placement(App.Vector(), base_placement.Rotation)
-    pl = App.Placement(base_placement.Base, App.Rotation())
-    center = center.sub(base_placement.Base)
-
     if angle == 360:
-        fraction = float(angle)/number
+        fraction = float(angle) / number
     else:
-        fraction = float(angle)/(number - 1)
-
-    center_tuple = DraftVecUtils.tup(center)
-    axis_tuple = DraftVecUtils.tup(axis)
+        fraction = float(angle) / (number - 1)
 
     for i in range(number - 1):
-        currangle = fraction + (i*fraction)
-        npl = pl.copy()
-        npl.rotate(center_tuple, axis_tuple, currangle)
-        npl = npl.multiply(spin)
+        currangle = fraction + (i * fraction)
+        npl = base_placement.copy()
+        npl.rotate(center, axis, currangle, comp=True)
         if axisvector:
             if not DraftVecUtils.isNull(axisvector):
-                npl.translate(App.Vector(axisvector).multiply(i+1))
+                npl.translate(App.Vector(axisvector).multiply(i + 1))
         placements.append(npl)
 
     return placements
@@ -512,20 +523,18 @@ def circ_placements(base_placement,
 
     for xcount in range(1, circle_number):
         rc = xcount * r_distance
+        trans = App.Vector(direction).multiply(rc)
         c = 2 * rc * math.pi
         n = math.floor(c / tan_distance)
         n = int(math.floor(n / symmetry) * symmetry)
         if n == 0:
             continue
 
-        angle = 360.0/n
+        angle = 360.0 / n
         for ycount in range(0, n):
             npl = base_placement.copy()
-            trans = App.Vector(direction).multiply(rc)
             npl.translate(trans)
-            npl.rotate(npl.Rotation.inverted().multVec(center-trans),
-                       axis,
-                       ycount * angle)
+            npl.rotate(center, axis, ycount * angle, comp=True)
             placements.append(npl)
 
     return placements

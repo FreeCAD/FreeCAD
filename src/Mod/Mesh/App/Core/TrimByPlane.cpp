@@ -21,11 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
+#ifndef _PreComp_
+# include <algorithm>
+#endif
 
 #include "TrimByPlane.h"
 #include "Grid.h"
 #include "Iterator.h"
+
 
 using namespace MeshCore;
 
@@ -39,12 +42,12 @@ MeshTrimByPlane::~MeshTrimByPlane()
 }
 
 void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vector3f& base, const Base::Vector3f& normal,
-                                  std::vector<unsigned long> &trimFacets, std::vector<unsigned long>& removeFacets) const
+                                  std::vector<FacetIndex> &trimFacets, std::vector<FacetIndex>& removeFacets) const
 {
     // Go through the grid and check for each cell if its bounding box intersects the plane.
     // If the box is completely below the plane all facets will be kept, if it's above the
     // plane all triangles will be removed.
-    std::vector<unsigned long> checkElements;
+    std::vector<FacetIndex> checkElements;
     MeshGridIterator clGridIter(rclGrid);
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         Base::BoundBox3f clBBox3d = clGridIter.GetBoundBox();
@@ -134,7 +137,7 @@ void MeshTrimByPlane::CreateTwoFacet(const Base::Vector3f& base, const Base::Vec
     trimmedFacets.push_back(create);
 }
 
-void MeshTrimByPlane::TrimFacets(const std::vector<unsigned long>& trimFacets, const Base::Vector3f& base,
+void MeshTrimByPlane::TrimFacets(const std::vector<FacetIndex>& trimFacets, const Base::Vector3f& base,
                                  const Base::Vector3f& normal, std::vector<MeshGeomFacet>& trimmedFacets)
 {
     trimmedFacets.reserve(2 * trimFacets.size());

@@ -27,12 +27,14 @@
 #include "Unit.h"
 #include <QString>
 
+// NOLINTBEGIN
 #ifndef  DOUBLE_MAX
 # define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
 #endif
 #ifndef  DOUBLE_MIN
 # define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
 #endif
+// NOLINTEND
 
 namespace Base {
 class UnitsSchema;
@@ -49,7 +51,7 @@ struct BaseExport QuantityFormat {
         Scientific = 2
     };
 
-    typedef int NumberOptions;
+    using NumberOptions = int;
     NumberOptions option;
     NumberFormat format;
     int precision;
@@ -57,6 +59,7 @@ struct BaseExport QuantityFormat {
 
     // Default denominator of minimum fractional inch. Only used in certain
     // schemas.
+    // NOLINTNEXTLINE
     static int defaultDenominator; // i.e 8 for 1/8"
 
     static inline int getDefaultDenominator() {
@@ -75,7 +78,7 @@ struct BaseExport QuantityFormat {
         denominator = denom;
     }
     QuantityFormat();
-    QuantityFormat(NumberFormat format, int decimals=-1);
+    explicit QuantityFormat(NumberFormat format, int decimals=-1);
     inline char toFormat() const {
         switch (format) {
         case Fixed:
@@ -86,10 +89,11 @@ struct BaseExport QuantityFormat {
             return 'g';
         }
     }
-    static inline NumberFormat toFormat(char c, bool* ok = 0) {
-        if (ok)
+    static inline NumberFormat toFormat(char ch, bool* ok = nullptr) {
+        if (ok) {
             *ok = true;
-        switch (c) {
+        }
+        switch (ch) {
         case 'f':
             return Fixed;
         case 'e':
@@ -97,8 +101,9 @@ struct BaseExport QuantityFormat {
         case 'g':
             return Default;
         default:
-            if (ok)
+            if (ok) {
                 *ok = false;
+            }
             return Default;
         }
     }
@@ -111,58 +116,63 @@ class BaseExport Quantity
 {
 public:
     /// default constructor
-    Quantity(void);
-    Quantity(const Quantity&);
-    explicit Quantity(double Value, const Unit& unit=Unit());
+    Quantity();
+    Quantity(const Quantity&) = default;
+    Quantity(Quantity&&) = default;
+    explicit Quantity(double value, const Unit& unit=Unit());
+    explicit Quantity(double value, const QString& unit);
     /// Destruction
-    ~Quantity () {}
+    ~Quantity () = default;
 
     /** Operators. */
     //@{
-    Quantity operator *(const Quantity &p) const;
-    Quantity operator *(double p) const;
-    Quantity operator +(const Quantity &p) const;
-    Quantity& operator +=(const Quantity &p);
-    Quantity operator -(const Quantity &p) const;
-    Quantity& operator -=(const Quantity &p);
-    Quantity operator -(void) const;
-    Quantity operator /(const Quantity &p) const;
-    Quantity operator /(double p) const;
+    Quantity operator *(const Quantity &other) const;
+    Quantity operator *(double factor) const;
+    Quantity operator +(const Quantity &other) const;
+    Quantity& operator +=(const Quantity &other);
+    Quantity operator -(const Quantity &other) const;
+    Quantity& operator -=(const Quantity &other);
+    Quantity operator -() const;
+    Quantity operator /(const Quantity &other) const;
+    Quantity operator /(double factor) const;
     bool operator ==(const Quantity&) const;
+    bool operator !=(const Quantity&) const;
     bool operator < (const Quantity&) const;
     bool operator > (const Quantity&) const;
     bool operator <= (const Quantity&) const;
     bool operator >= (const Quantity&) const;
-    Quantity& operator =(const Quantity&);
+    Quantity& operator =(const Quantity&) = default;
+    Quantity& operator =(Quantity&&) = default;
     Quantity pow(const Quantity&)const;
     Quantity pow(double)const;
     //@}
 
     const QuantityFormat& getFormat() const {
-        return _Format;
+        return myFormat;
     }
-    void setFormat(const QuantityFormat& f) {
-        _Format = f;
+    void setFormat(const QuantityFormat& fmt) {
+        myFormat = fmt;
     }
     /// transfer to user preferred unit/potence
     QString getUserString(double &factor, QString &unitString) const;
-    QString getUserString(void) const { // to satisfy GCC
-        double  dummy1;
-        QString dummy2;
-        return getUserString(dummy1,dummy2);
+    QString getUserString() const { // to satisfy GCC
+        double  dummy1{};
+        QString dummy2{};
+        return getUserString(dummy1, dummy2);
     }
     QString getUserString(UnitsSchema* schema, double &factor, QString &unitString) const;
+    QString getSafeUserString() const;
 
     static Quantity parse(const QString &string);
 
     /// returns the unit of the quantity
-    const Unit & getUnit(void) const{return _Unit;}
+    const Unit & getUnit() const{return myUnit;}
     /// set the unit of the quantity
-    void setUnit(const Unit &un){_Unit = un;}
+    void setUnit(const Unit &un){myUnit = un;}
     /// get the Value of the quantity
-    double getValue(void) const{return _Value;}
+    double getValue() const{return myValue;}
     /// set the value of the quantity
-    void setValue(double val){_Value = val;}
+    void setValue(double val){myValue = val;}
     /** get the Value in a special unit given as quantity.
       * One can use one of the predifeined quantity units in this class
       */
@@ -170,163 +180,170 @@ public:
 
 
     /// true if it has a number without a unit
-    bool isDimensionless(void)const;
+    bool isDimensionless()const;
+    /// true if it has a specific unit or no dimension.
+    bool isDimensionlessOrUnit(const Unit& unit)const;
     /// true if it has a number and a valid unit
-    bool isQuantity(void)const;
+    bool isQuantity()const;
     /// true if it has a number with or without a unit
-    bool isValid(void)const;
+    bool isValid()const;
     /// sets the quantity invalid
-    void setInvalid(void);
+    void setInvalid();
 
 
     /** Predefined Unit types. */
     //@{
-    static Quantity NanoMetre;
-    static Quantity MicroMetre;
-    static Quantity CentiMetre;
-    static Quantity DeciMetre;
-    static Quantity Metre;
-    static Quantity MilliMetre;
-    static Quantity KiloMetre;
+    static const Quantity NanoMetre;
+    static const Quantity MicroMetre;
+    static const Quantity CentiMetre;
+    static const Quantity DeciMetre;
+    static const Quantity Metre;
+    static const Quantity MilliMetre;
+    static const Quantity KiloMetre;
 
-    static Quantity Liter;
-    static Quantity MilliLiter;
+    static const Quantity Liter;
+    static const Quantity MilliLiter;
 
-    static Quantity Hertz;
-    static Quantity KiloHertz;
-    static Quantity MegaHertz;
-    static Quantity GigaHertz;
-    static Quantity TeraHertz;
+    static const Quantity Hertz;
+    static const Quantity KiloHertz;
+    static const Quantity MegaHertz;
+    static const Quantity GigaHertz;
+    static const Quantity TeraHertz;
 
-    static Quantity MicroGram;
-    static Quantity MilliGram;
-    static Quantity Gram;
-    static Quantity KiloGram;
-    static Quantity Ton;
+    static const Quantity MicroGram;
+    static const Quantity MilliGram;
+    static const Quantity Gram;
+    static const Quantity KiloGram;
+    static const Quantity Ton;
 
-    static Quantity Second;
-    static Quantity Minute;
-    static Quantity Hour;
+    static const Quantity Second;
+    static const Quantity Minute;
+    static const Quantity Hour;
 
-    static Quantity Ampere;
-    static Quantity MilliAmpere;
-    static Quantity KiloAmpere;
-    static Quantity MegaAmpere;
+    static const Quantity Ampere;
+    static const Quantity MilliAmpere;
+    static const Quantity KiloAmpere;
+    static const Quantity MegaAmpere;
 
-    static Quantity Kelvin;
-    static Quantity MilliKelvin;
-    static Quantity MicroKelvin;
+    static const Quantity Kelvin;
+    static const Quantity MilliKelvin;
+    static const Quantity MicroKelvin;
 
-    static Quantity MilliMole;
-    static Quantity Mole;
+    static const Quantity MilliMole;
+    static const Quantity Mole;
 
-    static Quantity Candela;
+    static const Quantity Candela;
 
-    static Quantity Inch;
-    static Quantity Foot;
-    static Quantity Thou;
-    static Quantity Yard;
+    static const Quantity Inch;
+    static const Quantity Foot;
+    static const Quantity Thou;
+    static const Quantity Yard;
 
-    static Quantity Pound;
-    static Quantity Ounce;
-    static Quantity Stone;
-    static Quantity Hundredweights;
-    static Quantity Mile;
+    static const Quantity Pound;
+    static const Quantity Ounce;
+    static const Quantity Stone;
+    static const Quantity Hundredweights;
+    static const Quantity Mile;
 
-    static Quantity MilePerHour;
-    static Quantity SquareFoot;
-    static Quantity CubicFoot;
+    static const Quantity MilePerHour;
+    static const Quantity SquareFoot;
+    static const Quantity CubicFoot;
 
-    static Quantity PoundForce;
+    static const Quantity PoundForce;
 
-    static Quantity Newton;
-    static Quantity MilliNewton;
-    static Quantity KiloNewton;
-    static Quantity MegaNewton;
+    static const Quantity Newton;
+    static const Quantity MilliNewton;
+    static const Quantity KiloNewton;
+    static const Quantity MegaNewton;
 
-    static Quantity Pascal;
-    static Quantity KiloPascal;
-    static Quantity MegaPascal;
-    static Quantity GigaPascal;
+    static const Quantity NewtonPerMeter;
+    static const Quantity MilliNewtonPerMeter;
+    static const Quantity KiloNewtonPerMeter;
+    static const Quantity MegaNewtonPerMeter;
 
-    static Quantity Bar;
-    static Quantity MilliBar;
+    static const Quantity Pascal;
+    static const Quantity KiloPascal;
+    static const Quantity MegaPascal;
+    static const Quantity GigaPascal;
 
-    static Quantity Torr;
-    static Quantity mTorr;
-    static Quantity yTorr;
+    static const Quantity Bar;
+    static const Quantity MilliBar;
 
-    static Quantity PSI;
-    static Quantity KSI;
-    static Quantity MPSI;
+    static const Quantity Torr;
+    static const Quantity mTorr;
+    static const Quantity yTorr;
 
-    static Quantity Watt;
-    static Quantity MilliWatt;
-    static Quantity KiloWatt;
-    static Quantity VoltAmpere;
+    static const Quantity PSI;
+    static const Quantity KSI;
+    static const Quantity MPSI;
 
-    static Quantity Volt;
-    static Quantity MilliVolt;
-    static Quantity KiloVolt;
+    static const Quantity Watt;
+    static const Quantity MilliWatt;
+    static const Quantity KiloWatt;
+    static const Quantity VoltAmpere;
 
-    static Quantity MegaSiemens;
-    static Quantity KiloSiemens;
-    static Quantity Siemens;
-    static Quantity MilliSiemens;
-    static Quantity MicroSiemens;
+    static const Quantity Volt;
+    static const Quantity MilliVolt;
+    static const Quantity KiloVolt;
 
-    static Quantity Ohm;
-    static Quantity KiloOhm;
-    static Quantity MegaOhm;
+    static const Quantity MegaSiemens;
+    static const Quantity KiloSiemens;
+    static const Quantity Siemens;
+    static const Quantity MilliSiemens;
+    static const Quantity MicroSiemens;
 
-    static Quantity Coulomb;
+    static const Quantity Ohm;
+    static const Quantity KiloOhm;
+    static const Quantity MegaOhm;
 
-    static Quantity Tesla;
-    static Quantity Gauss;
+    static const Quantity Coulomb;
 
-    static Quantity Weber;
+    static const Quantity Tesla;
+    static const Quantity Gauss;
 
-    static Quantity Oersted;
+    static const Quantity Weber;
 
-    static Quantity Farad;
-    static Quantity MilliFarad;
-    static Quantity MicroFarad;
-    static Quantity NanoFarad;
-    static Quantity PicoFarad;
+    //static const Quantity Oersted;
 
-    static Quantity Henry;
-    static Quantity MilliHenry;
-    static Quantity MicroHenry;
-    static Quantity NanoHenry;
+    static const Quantity Farad;
+    static const Quantity MilliFarad;
+    static const Quantity MicroFarad;
+    static const Quantity NanoFarad;
+    static const Quantity PicoFarad;
 
-    static Quantity Joule;
-    static Quantity MilliJoule;
-    static Quantity KiloJoule;
-    static Quantity NewtonMeter;
-    static Quantity VoltAmpereSecond;
-    static Quantity WattSecond;
-    static Quantity KiloWattHour;
-    static Quantity ElectronVolt;
-    static Quantity KiloElectronVolt;
-    static Quantity MegaElectronVolt;
-    static Quantity Calorie;
-    static Quantity KiloCalorie;
+    static const Quantity Henry;
+    static const Quantity MilliHenry;
+    static const Quantity MicroHenry;
+    static const Quantity NanoHenry;
 
-    static Quantity KMH;
-    static Quantity MPH;
+    static const Quantity Joule;
+    static const Quantity MilliJoule;
+    static const Quantity KiloJoule;
+    static const Quantity NewtonMeter;
+    static const Quantity VoltAmpereSecond;
+    static const Quantity WattSecond;
+    static const Quantity KiloWattHour;
+    static const Quantity ElectronVolt;
+    static const Quantity KiloElectronVolt;
+    static const Quantity MegaElectronVolt;
+    static const Quantity Calorie;
+    static const Quantity KiloCalorie;
 
-    static Quantity Degree;
-    static Quantity Radian;
-    static Quantity Gon;
-    static Quantity AngMinute;
-    static Quantity AngSecond;
+    static const Quantity KMH;
+    static const Quantity MPH;
+
+    static const Quantity Degree;
+    static const Quantity Radian;
+    static const Quantity Gon;
+    static const Quantity AngMinute;
+    static const Quantity AngSecond;
     //@}
 
 
 protected:
-    double         _Value;
-    Unit           _Unit;
-    QuantityFormat _Format;
+    double         myValue;
+    Unit           myUnit;
+    QuantityFormat myFormat;
 };
 
 } // namespace Base

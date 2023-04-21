@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2012 Sebastian Hoogen <github@sebastianhoogen.de>       *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - replace object function"
+__title__ = "FreeCAD OpenSCAD Workbench - replace object function"
 __author__ = "Sebastian Hoogen"
 __url__ = ["https://www.freecadweb.org"]
 
@@ -28,9 +27,10 @@ __url__ = ["https://www.freecadweb.org"]
 This functions allows to replace an object in the feature hierarchy
 '''
 
-def replaceobj(parent,oldchild,newchild):
+
+def replaceobj(parent, oldchild, newchild):
     for propname in parent.PropertiesList:
-        propvalue=parent.getPropertyByName(propname)
+        propvalue = parent.getPropertyByName(propname)
         if type(propvalue) == list:
             bModified = False
             for dontcare in range(propvalue.count(oldchild)):
@@ -51,8 +51,8 @@ def replaceobj(parent,oldchild,newchild):
 
 def replaceobjfromselection(objs):
     # The Parent can be omitted as long as one object is orphaned
-    if len(objs)==2:
-        InListLength= tuple((len(obj.InList)) for obj in objs)
+    if len(objs) == 2:
+        InListLength = tuple((len(obj.InList)) for obj in objs)
         if InListLength == (0,1):
             newchild,oldchild  = objs
             parent = oldchild.InList[0]
@@ -62,7 +62,7 @@ def replaceobjfromselection(objs):
         else:
             raise ValueError("Selection ambiguous. Please select oldchild,\
             newchild and parent")
-    elif len(objs)==3:
+    elif len(objs) == 3:
         if objs[2] in objs[0].InList: oldchild, newchild, parent = objs
         elif objs[0] in objs[1].InList: parent, oldchild, newchild = objs
         elif objs[0] in objs[2].InList: parent, newchild, oldchild = objs
@@ -76,9 +76,9 @@ def replaceobjfromselection(objs):
     replaceobj(parent,oldchild,newchild)
     parent.Document.recompute()
 
+
 if __name__ == '__main__':
-    import FreeCAD,FreeCADGui
-    objs=[selobj.Object for selobj in FreeCADGui.Selection.getSelectionEx()]
+    import FreeCAD
+    import FreeCADGui
+    objs = [selobj.Object for selobj in FreeCADGui.Selection.getSelectionEx()]
     replaceobjfromselection(objs)
-
-

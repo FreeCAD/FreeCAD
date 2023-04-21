@@ -30,31 +30,40 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderLoft : public ViewProviderAddSub
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderLoft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderLoft);
 
 public:
+    enum Reference {
+        Profile,
+        Section,
+        Both
+    };
+
     /// constructor
     ViewProviderLoft();
     /// destructor
-    virtual ~ViewProviderLoft();
+    ~ViewProviderLoft() override;
 
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    bool doubleClicked();
+    /// grouping handling
+    std::vector<App::DocumentObject*> claimChildren(void)const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
-    void highlightReferences(const bool on, bool auxiliary);
-    
+    bool onDelete(const std::vector<std::string> &) override;
+    void highlightProfile(bool on);
+    void highlightSection(bool on);
+    void highlightReferences(Reference mode, bool on);
+
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual TaskDlgFeatureParameters* getEditDialog();
-    
-    virtual QIcon getIcon(void) const;
-    
+    QIcon getIcon(void) const override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    TaskDlgFeatureParameters* getEditDialog() override;
+
 private:
-    std::vector<App::Color> originalLineColors;
+    void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);
+
+private:
+    std::map<long, std::vector<App::Color>> originalLineColors;
 };
 
 

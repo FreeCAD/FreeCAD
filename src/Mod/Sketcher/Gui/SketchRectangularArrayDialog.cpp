@@ -21,23 +21,19 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
 # include <QDialog>
 #endif
 
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
 #include "ui_SketchRectangularArrayDialog.h"
 #include "SketchRectangularArrayDialog.h"
 
+
 using namespace SketcherGui;
 
-SketchRectangularArrayDialog::SketchRectangularArrayDialog(void)
+SketchRectangularArrayDialog::SketchRectangularArrayDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_SketchRectangularArrayDialog)
 {
     ui->setupUi(this);
@@ -68,7 +64,7 @@ void SketchRectangularArrayDialog::accept()
     QDialog::accept();
 }
 
-void SketchRectangularArrayDialog::updateValues(void)
+void SketchRectangularArrayDialog::updateValues()
 {
     Rows = ui->RowsQuantitySpinBox->value();
     Cols = ui->ColsQuantitySpinBox->value();

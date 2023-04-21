@@ -22,17 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewSection_h_
-#define _DrawViewSection_h_
+#ifndef DrawViewSection_h_
+#define DrawViewSection_h_
+
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
-#include <App/Material.h>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Compound.hxx>
+#include <App/PropertyFile.h>
+#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"
 
@@ -46,110 +47,164 @@ class gp_Ax2;
 namespace TechDraw
 {
 class Face;
-}
-
-namespace TechDraw
-{
 class DrawProjGroupItem;
 class DrawGeomHatch;
 class PATLineSpec;
 class LineSet;
 class DashSet;
 
-class TechDrawExport DrawViewSection : public DrawViewPart
+//changes in direction of complex section line. also marks at arrow positions.
+class ChangePoint
+{
+public:
+    ChangePoint(QPointF location, QPointF preDirection, QPointF postDirection);
+    ChangePoint(gp_Pnt location, gp_Dir preDirection, gp_Dir postDirection);
+    ~ChangePoint() = default;
+
+    QPointF getLocation() const { return m_location; }
+    void setLocation(QPointF newLocation) { m_location = newLocation; }
+    QPointF getPreDirection() const { return m_preDirection; }
+    QPointF getPostDirection() const { return m_postDirection; }
+    void scale(double scaleFactor);
+
+private:
+    QPointF m_location;
+    QPointF m_preDirection;
+    QPointF m_postDirection;
+};
+
+using ChangePointVector = std::vector<ChangePoint>;
+
+class TechDrawExport DrawViewSection: public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
 
 public:
-    DrawViewSection(void);
-    virtual ~DrawViewSection();
+    DrawViewSection();
+    ~DrawViewSection() override;
 
-    App::PropertyLink   BaseView;
+    App::PropertyLink BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
-    App::PropertyEnumeration SectionDirection;
+    App::PropertyString SectionSymbol;
 
-    App::PropertyEnumeration CutSurfaceDisplay;        //new v019
-    App::PropertyFile   FileHatchPattern;
-    App::PropertyFile   FileGeomPattern;               //new v019
+
+    App::PropertyEnumeration SectionDirection; //to be made obsolete eventually
+    App::PropertyEnumeration CutSurfaceDisplay;//new v019
+    App::PropertyFile FileHatchPattern;
+    App::PropertyFile FileGeomPattern;//new v019
     App::PropertyFileIncluded SvgIncluded;
     App::PropertyFileIncluded PatIncluded;
     App::PropertyString NameGeomPattern;
-    App::PropertyFloat  HatchScale;
+    App::PropertyFloat HatchScale;
+    App::PropertyFloat HatchRotation;
+    App::PropertyVector HatchOffset;
 
-    App::PropertyString SectionSymbol;
-    App::PropertyBool   FuseBeforeCut;
+    App::PropertyBool FuseBeforeCut;
+    App::PropertyBool TrimAfterCut;//new v021
 
-    bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
-    bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
+    bool isReallyInBox(const Base::Vector3d v, const Base::BoundBox3d bb) const;
+    bool isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const;
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName(void) const override {
+    App::DocumentObjectExecReturn* execute() override;
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName() const override
+    {
         return "TechDrawGui::ViewProviderViewSection";
     }
-    virtual void unsetupObject() override;
-    virtual short mustExecute() const override;
+    void unsetupObject() override;
+    short mustExecute() const override;
 
-    void sectionExec(TopoDS_Shape s);
+    void sectionExec(TopoDS_Shape& s);
+    virtual void makeSectionCut(const TopoDS_Shape& baseShape);
+    void postHlrTasks(void) override;
+    virtual void postSectionCutTasks();
+    void waitingForCut(bool s) { m_waitingForCut = s; }
+    bool waitingForCut(void) const { return m_waitingForCut; }
+    bool waitingForResult() const override;
 
-    std::vector<TechDraw::Face*> getTDFaceGeometry() {return tdSectionFaces;}
+    virtual TopoDS_Shape makeCuttingTool(double shapeSize);
+    virtual TopoDS_Shape getShapeToCut();
+    virtual bool isBaseValid() const;
+    virtual TopoDS_Shape prepareShape(const TopoDS_Shape& rawShape, double shapeSize);
+    virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
 
+    //CS related methods
+    gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const override;
     void setCSFromBase(const std::string sectionName);
-    gp_Ax2 getCSFromBase(const std::string sectionName) const;
-
-    gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
-                             Base::Vector3d axis,
-                             double degAngle) const;
+    void setCSFromBase(Base::Vector3d localUnit);
+    void setCSFromLocalUnit(const Base::Vector3d localUnit);
+    virtual gp_Ax2 getCSFromBase(const std::string sectionName) const;
     gp_Ax2 getSectionCS() const;
-    virtual Base::Vector3d getXDirection(void) const override;       //don't use XDirection.getValue()
+    Base::Vector3d getXDirection() const override;//don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
-    TopoDS_Compound getSectionFaces() { return sectionFaces;};
-//    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }   //obs?
-    TopoDS_Face getSectionTFace(int i);
-    void makeLineSets(void) ;
+    //section face related methods
+    TopoDS_Compound getSectionTFaces() { return m_sectionTopoDSFaces; }
+    std::vector<TechDraw::FacePtr> getTDFaceGeometry() { return m_tdSectionFaces; }
+    TopoDS_Face getSectionTopoDSFace(int i);
+    virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
+    TopoDS_Compound mapToPage(TopoDS_Shape& shapeToAlign);
+    virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(TopoDS_Compound topoDSFaces);
+    virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces; }
+
+    void makeLineSets(void);
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
-    TopoDS_Shape getCutShape(void) {return m_cutShape;}
+    TopoDS_Shape getCutShape() const { return m_cutShape; }
+
+    TopoDS_Shape getShapeForDetail() const override;
 
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
 
-    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds(void);
+    virtual std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
+    virtual ChangePointVector getChangePointsFromSectionLine();
 
     bool showSectionEdges(void);
 
+    TopoDS_Shape makeFaceFromWires(std::vector<TopoDS_Wire> &inWires);
+
+public Q_SLOTS:
+    virtual void onSectionCutFinished(void);
+
 protected:
-    TopoDS_Compound sectionFaces;    //tSectionFaces
-//    std::vector<TopoDS_Wire> sectionFaceWires;   //obs??? getSectionFaceWires
+    TopoDS_Compound m_sectionTopoDSFaces;//needed for hatching
     std::vector<LineSet> m_lineSets;
-    std::vector<TechDraw::Face*> tdSectionFaces;
+    std::vector<TechDraw::FacePtr> m_tdSectionFaces;
 
 
-    gp_Pln getSectionPlane() const;
-    TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
-    void getParameters(void);
-    bool debugSection(void) const;
-    int prefCutSurface(void) const;
+    virtual gp_Pln getSectionPlane() const;
+    virtual TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
+    void getParameters();
+    bool debugSection() const;
+    int prefCutSurface() const;
+    bool trimAfterCut() const;
 
     TopoDS_Shape m_cutShape;
 
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
-    void setupSvgIncluded(void);
-    void setupPatIncluded(void);
+    void onDocumentRestored() override;
+    void setupObject() override;
     void replaceSvgIncluded(std::string newSvgFile);
     void replacePatIncluded(std::string newPatFile);
 
+    TopoDS_Shape m_cutPieces;//the shape after cutting, but before centering & scaling
+    gp_Ax2 m_projectionCS;
+    TopoDS_Shape m_preparedShape;//the shape after cutting, centering, scaling etc
 
+    QMetaObject::Connection connectCutWatcher;
+    QFutureWatcher<void> m_cutWatcher;
+    QFuture<void> m_cutFuture;
+    bool m_waitingForCut;
+    TopoDS_Shape m_cuttingTool;
+    double m_shapeSize;
 };
 
-typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;
+using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;
 
-} //namespace TechDraw
+}//namespace TechDraw
 
 #endif

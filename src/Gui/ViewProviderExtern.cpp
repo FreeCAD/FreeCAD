@@ -20,24 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
+# include <cstring>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Stream.h>
-#include "SoFCSelection.h"
-#include "ViewProviderExtern.h"
 
-#include <cstring>
-#include <algorithm>
+#include "ViewProviderExtern.h"
+#include "SoFCSelection.h"
+
 
 using std::vector;
 using std::string;
@@ -101,7 +97,7 @@ void ViewProviderExtern::setModeBySoInput(const char* name, SoInput &ivFileInput
            ::iterator,string>(modes.begin(),modes.end(),string(name));
         if (pos == modes.end()) {
             // new mode
-            modes.push_back(name);
+            modes.emplace_back(name);
             addDisplayMaskMode(root, name);
             setDisplayMaskMode(name);
         }
@@ -133,7 +129,7 @@ void ViewProviderExtern::adjustRecursiveDocumentName(SoNode* child, const char* 
         static_cast<SoFCSelection*>(child)->documentName = docname;
     }
     else if (child->getTypeId().isDerivedFrom( SoGroup::getClassTypeId())) {
-        SoGroup* group = (SoGroup*)child;
+        SoGroup* group = static_cast<SoGroup*>(child);
         for (int i=0; i<group->getNumChildren(); i++) {
             SoNode* subchild = group->getChild(i);
             adjustRecursiveDocumentName(subchild, docname);
@@ -147,7 +143,7 @@ const char* ViewProviderExtern::getDefaultDisplayMode() const
     return (modes.empty() ? "" : modes.front().c_str());
 }
 
-std::vector<std::string> ViewProviderExtern::getDisplayModes(void) const
+std::vector<std::string> ViewProviderExtern::getDisplayModes() const
 {
     return modes;
 }

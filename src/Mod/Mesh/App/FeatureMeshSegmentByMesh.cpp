@@ -20,20 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <Base/Converter.h>
 
 #include "Core/Algorithm.h"
 #include "Core/Evaluation.h"
-#include "Core/Iterator.h"
-#include "Core/Visitor.h"
 
 #include "FeatureMeshSegmentByMesh.h"
 
@@ -44,12 +36,12 @@ using namespace MeshCore;
 PROPERTY_SOURCE(Mesh::SegmentByMesh, Mesh::Feature)
 
 
-SegmentByMesh::SegmentByMesh(void)
+SegmentByMesh::SegmentByMesh()
 {
-    ADD_PROPERTY(Source  ,(0));
-    ADD_PROPERTY(Tool    ,(0));
-    ADD_PROPERTY(Base    ,(0.0,0.0,0.0));
-    ADD_PROPERTY(Normal  ,(0.0,0.0,1.0));
+    ADD_PROPERTY(Source, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY(Base, (0.0, 0.0, 0.0));
+    ADD_PROPERTY(Normal, (0.0, 0.0, 1.0));
 }
 
 short SegmentByMesh::mustExecute() const
@@ -63,9 +55,9 @@ short SegmentByMesh::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
+App::DocumentObjectExecReturn *SegmentByMesh::execute()
 {
-    Mesh::PropertyMeshKernel *kernel=0;
+    Mesh::PropertyMeshKernel *kernel=nullptr;
     App::DocumentObject* mesh = Source.getValue();
     if (mesh) {
         App::Property* prop = mesh->getPropertyByName("Mesh");
@@ -77,7 +69,7 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
     else if (mesh->isError())
         return new App::DocumentObjectExecReturn("No valid mesh.\n");
 
-    Mesh::PropertyMeshKernel *toolmesh=0;
+    Mesh::PropertyMeshKernel *toolmesh=nullptr;
     App::DocumentObject* tool = Tool.getValue();
     if (tool) {
         App::Property* prop = tool->getPropertyByName("Mesh");
@@ -106,7 +98,7 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
         return new App::DocumentObjectExecReturn("Toolmesh is not solid.\n");
     }
 
-    std::vector<unsigned long> faces;
+    std::vector<MeshCore::FacetIndex> faces;
     std::vector<MeshGeomFacet> aFaces;
 
     MeshAlgorithm cAlg(rMeshKernel);
@@ -116,16 +108,16 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
         cAlg.GetFacetsFromToolMesh(rToolMesh, Base::Vector3f(0.0, 1.0f, 0.0f), faces);
 
     // if the clipping plane was set then we want only the visible facets
-    if ( cNormal.Length() > 0.1f ) { // not a null vector 
-        // now we have too many facets since we have (invisible) facets near to the back clipping plane, 
+    if ( cNormal.Length() > 0.1f ) { // not a null vector
+        // now we have too many facets since we have (invisible) facets near to the back clipping plane,
         // so we need the nearest facet to the front clipping plane
         //
         float fDist = FLOAT_MAX;
-        unsigned long uIdx=ULONG_MAX;
+        MeshCore::FacetIndex uIdx = MeshCore::FACET_INDEX_MAX;
         MeshFacetIterator cFIt(rMeshKernel);
 
         // get the nearest facet to the user (front clipping plane)
-        for ( std::vector<unsigned long>::iterator it = faces.begin(); it != faces.end(); ++it ) {
+        for ( std::vector<MeshCore::FacetIndex>::iterator it = faces.begin(); it != faces.end(); ++it ) {
             cFIt.Set(*it);
             float dist = (float)fabs(cFIt->GetGravityPoint().DistanceToPlane( cBase, cNormal ));
             if ( dist < fDist ) {
@@ -135,7 +127,7 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
         }
 
         // succeeded
-        if ( uIdx != ULONG_MAX ) {
+        if ( uIdx != MeshCore::FACET_INDEX_MAX ) {
             // set VISIT-Flag to all outer facets
             cAlg.SetFacetFlag( MeshFacet::VISIT );
             cAlg.ResetFacetsFlag(faces, MeshFacet::VISIT);
@@ -149,7 +141,7 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
         }
     }
 
-    for ( std::vector<unsigned long>::iterator it = faces.begin(); it != faces.end(); ++it )
+    for ( std::vector<MeshCore::FacetIndex>::iterator it = faces.begin(); it != faces.end(); ++it )
         aFaces.push_back( rMeshKernel.GetFacet(*it) );
 
     std::unique_ptr<MeshObject> pcKernel(new MeshObject);

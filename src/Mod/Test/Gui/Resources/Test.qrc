@@ -38,5 +38,10 @@
         <file>translations/Test_val-ES.qm</file>
         <file>translations/Test_ar.qm</file>
         <file>translations/Test_vi.qm</file>
+        <file>translations/Test_es-AR.qm</file>
+        <file>translations/Test_bg.qm</file>
+        <file>translations/Test_ka.qm</file>
+        <file>translations/Test_sr-CS.qm</file>
+        <file>translations/Test_be.qm</file>
     </qresource>
 </RCC>

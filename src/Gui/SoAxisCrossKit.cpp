@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,30 +31,30 @@
 # else
 # include <GL/gl.h>
 # endif
+
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/nodekits/SoShapeKit.h>
 # include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoShape.h>
-# include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoCube.h>
 # include <Inventor/nodes/SoFontStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodekits/SoShapeKit.h>
 #endif
 
-
 #include "SoAxisCrossKit.h"
+
 
 using namespace Gui;
 
@@ -63,7 +62,7 @@ using namespace Gui;
 SO_KIT_SOURCE(SoShapeScale)
 
 //  Constructor.
-SoShapeScale::SoShapeScale(void)
+SoShapeScale::SoShapeScale()
 {
     SO_KIT_CONSTRUCTOR(SoShapeScale);
 
@@ -83,7 +82,7 @@ SoShapeScale::~SoShapeScale()
 }
 
 void
-SoShapeScale::initClass(void)
+SoShapeScale::initClass()
 {
     SO_KIT_INIT_CLASS(SoShapeScale, SoBaseKit, "BaseKit");
 }
@@ -176,7 +175,7 @@ void
 SoAxisCrossKit::createAxes()
 {
    // Create the heads.
-   SoCone *head = new SoCone;
+   auto head = new SoCone;
    head->bottomRadius.setValue(5);
    head->height.setValue(10);
    setPart("xHead.shape", head);
@@ -184,14 +183,14 @@ SoAxisCrossKit::createAxes()
    setPart("zHead.shape", head);
 
    // Create the axes.
-   SoCoordinate3* coords = new SoCoordinate3;
+   auto coords = new SoCoordinate3;
    coords->point.set1Value(0, SbVec3f(0,0,0));
    coords->point.set1Value(1, SbVec3f(90,0,0));
    setPart("xAxis.coordinate3", coords);
    setPart("yAxis.coordinate3", coords);
    setPart("zAxis.coordinate3", coords);
 
-   SoLineSet *shape = new SoLineSet;
+   auto shape = new SoLineSet;
    setPart("xAxis.shape", shape);
    setPart("yAxis.shape", shape);
    setPart("zAxis.shape", shape);
@@ -261,18 +260,18 @@ SoRegPoint::SoRegPoint()
     root->ref();
 
     // translation
-    SoTranslation* move = new SoTranslation();
+    auto move = new SoTranslation();
     move->translation.setValue(base.getValue() + normal.getValue() * length.getValue());
     root->addChild(move);
 
     // sub-group
-    SoBaseColor* col = new SoBaseColor();
+    auto col = new SoBaseColor();
     col->rgb.setValue(this->color.getValue());
 
-    SoFontStyle* font = new SoFontStyle;
+    auto font = new SoFontStyle;
     font->size = 14;
 
-    SoSeparator* sub = new SoSeparator();
+    auto sub = new SoSeparator();
     sub->addChild(col);
     sub->addChild(font);
     sub->addChild(new SoText2());
@@ -347,17 +346,17 @@ void SoRegPoint::notify(SoNotList * node)
 {
     SoField * f = node->getLastField();
     if (f == &this->base || f == &this->normal || f == &this->length) {
-        SoTranslation* move = static_cast<SoTranslation*>(root->getChild(0));
+        auto move = static_cast<SoTranslation*>(root->getChild(0));
         move->translation.setValue(base.getValue() + normal.getValue() * length.getValue());
     }
     else if (f == &this->color) {
-        SoSeparator* sub = static_cast<SoSeparator*>(root->getChild(1));
-        SoBaseColor* col = static_cast<SoBaseColor*>(sub->getChild(0));
+        auto sub = static_cast<SoSeparator*>(root->getChild(1));
+        auto col = static_cast<SoBaseColor*>(sub->getChild(0));
         col->rgb = this->color.getValue();
     }
     else if (f == &this->text) {
-        SoSeparator* sub = static_cast<SoSeparator*>(root->getChild(1));
-        SoText2* label = static_cast<SoText2*>(sub->getChild(2));
+        auto sub = static_cast<SoSeparator*>(root->getChild(1));
+        auto label = static_cast<SoText2*>(sub->getChild(2));
         label->string = this->text.getValue();
     }
 

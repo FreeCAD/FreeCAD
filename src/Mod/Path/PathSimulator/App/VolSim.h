@@ -22,13 +22,14 @@
 *   Volumetric Path simulation engine                                     *
 ***************************************************************************/
 
-
 #ifndef PATHSIMULATOR_VolSim_H
 #define PATHSIMULATOR_VolSim_H
 
 #include <vector>
+
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Path/App/Command.h>
+
 
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP		1
@@ -50,8 +51,8 @@ struct Point3D
 {
 	Point3D() : x(0), y(0), z(0), sina(0), cosa(0) {}
 	Point3D(float x, float y, float z) : x(x), y(y), z(z), sina(0), cosa(0) {}
-	Point3D(Base::Vector3d & vec) : x(vec[0]), y(vec[1]), z(vec[2]), sina(0), cosa(0) {}
-	Point3D(Base::Placement & pl) : x(pl.getPosition()[0]), y(pl.getPosition()[1]), z(pl.getPosition()[2]), sina(0), cosa(0) {}
+	explicit Point3D(Base::Vector3d & vec) : x(vec[0]), y(vec[1]), z(vec[2]), sina(0), cosa(0) {}
+	explicit Point3D(Base::Placement & pl) : x(pl.getPosition()[0]), y(pl.getPosition()[1]), z(pl.getPosition()[2]), sina(0), cosa(0) {}
 	inline void set(float px, float py, float pz) { x = px; y = py; z = pz; }
 	inline void Add(Point3D & p) { x += p.x; y += p.y; z += p.z; }
 	inline void Rotate() { float tx = x;  x = x * cosa - y * sina; y = tx * sina + y * cosa; }
@@ -119,7 +120,7 @@ public:
 
 	~Array2D()
 	{
-		if (data != nullptr)
+		if (data)
 			delete[] data;
 	}
 

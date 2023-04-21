@@ -20,28 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTileWeld_h_
-#define _TechDraw_DrawTileWeld_h_
-
-#include <QString>
+#ifndef TechDraw_DrawTileWeld_h_
+#define TechDraw_DrawTileWeld_h_
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyStandard.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawTile.h"
+
 
 namespace TechDraw
 {
 
 class TechDrawExport DrawTileWeld : public TechDraw::DrawTile
 {
-    PROPERTY_HEADER(TechDraw::DrawTileWeld);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTileWeld);
 
 public:
     DrawTileWeld();
-    virtual ~DrawTileWeld();
+    ~DrawTileWeld() override;
 
     App::PropertyString       LeftText;
     App::PropertyString       RightText;
@@ -49,30 +48,25 @@ public:
     App::PropertyFile         SymbolFile;
     App::PropertyFileIncluded SymbolIncluded;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onDocumentRestored();
-    virtual void setupObject();
+    void setupObject() override;
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderTile";
     }
-    virtual PyObject *getPyObject(void);
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}
+    PyObject *getPyObject() override;
+    virtual QRectF getRect() const { return { 0, 0, 1, 1}; }
 
-    void replaceSymbolIncluded(std::string newSymbolFile);
-    void setupSymbolIncluded(void);
-//    void replaceSymbol(std::string newSymbolFile);
+    void replaceFileIncluded(std::string newSymbolFile);
 
-    std::string prefSymbol(void);
+    std::string prefSymbol();
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
 };
 
-typedef App::FeaturePythonT<DrawTileWeld> DrawTileWeldPython;
+using DrawTileWeldPython = App::FeaturePythonT<DrawTileWeld>;
 
 } //namespace TechDraw
 #endif

@@ -24,16 +24,12 @@
 #ifndef APP_EXTENSIONCONTAINER_H
 #define APP_EXTENSIONCONTAINER_H
 
-#include "Extension.h"
 #include "PropertyContainer.h"
-#include "PropertyPythonObject.h"
-#include "DynamicProperty.h"
-#include <CXX/Objects.hxx>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
+
 
 namespace App {
 
+class Extension;
 /**
  * @brief Container which can hold extensions
  *
@@ -118,10 +114,10 @@ class AppExport ExtensionContainer : public App::PropertyContainer
 
 public:
 
-    typedef std::map<Base::Type, App::Extension*>::iterator ExtensionIterator;
+    using ExtensionIterator = std::map<Base::Type, App::Extension*>::iterator;
 
     ExtensionContainer();
-    virtual ~ExtensionContainer();
+    ~ExtensionContainer() override;
 
     void registerExtension(Base::Type extension, App::Extension* ext);
     bool hasExtension(Base::Type, bool derived=true) const; //returns first of type (or derived from if set to true) and throws otherwise
@@ -141,7 +137,7 @@ public:
     template<typename ExtensionT>
     std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
         std::vector<ExtensionT*> typevec;
-        for(auto entry : _extensions) {
+        for(const auto& entry : _extensions) {
             if(entry.first.isDerivedFrom(ExtensionT::getExtensionClassTypeId()))
                 typevec.push_back(static_cast<ExtensionT*>(entry.second));
         }
@@ -155,37 +151,54 @@ public:
     /** @name Access properties */
     //@{
     /// find a property by its name
-    virtual Property *getPropertyByName(const char* name) const override;
+    Property *getPropertyByName(const char* name) const override;
     /// get the name of a property
-    virtual const char* getPropertyName(const Property* prop) const override;
+    const char* getPropertyName(const Property* prop) const override;
     /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyMap(std::map<std::string,Property*> &Map) const override;
+    void getPropertyMap(std::map<std::string,Property*> &Map) const override;
     /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<Property*> &List) const override;
+    void getPropertyList(std::vector<Property*> &List) const override;
 
     /// get the Type of a Property
-    virtual short getPropertyType(const Property* prop) const override;
+    short getPropertyType(const Property* prop) const override;
     /// get the Type of a named Property
-    virtual short getPropertyType(const char *name) const override;
+    short getPropertyType(const char *name) const override;
     /// get the Group of a Property
-    virtual const char* getPropertyGroup(const Property* prop) const override;
+    const char* getPropertyGroup(const Property* prop) const override;
     /// get the Group of a named Property
-    virtual const char* getPropertyGroup(const char *name) const override;
+    const char* getPropertyGroup(const char *name) const override;
     /// get the Group of a Property
-    virtual const char* getPropertyDocumentation(const Property* prop) const override;
+    const char* getPropertyDocumentation(const Property* prop) const override;
     /// get the Group of a named Property
-    virtual const char* getPropertyDocumentation(const char *name) const override;
+    const char* getPropertyDocumentation(const char *name) const override;
     //@}
 
-    virtual void onChanged(const Property*) override;
+    void onChanged(const Property*) override;
 
-    virtual void Save(Base::Writer& writer) const override;
-    virtual void Restore(Base::XMLReader& reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
     //those methods save/restore the dynamic extensions without handling properties, which is something
     //done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);
+
+    /** Extends the rules for handling property name changed, so that extensions are given an opportunity to handle it.
+     *  If an extension handles a change, neither the rest of the extensions, nor the container itself get to handle it.
+     *
+     *  Extensions get their extensionHandleChangedPropertyName() called.
+     *
+     *  If no extension handles the request, then the containers handleChangedPropertyName() is called.
+     */
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    /** Extends the rules for handling property type changed, so that extensions are given an opportunity to handle it.
+     *  If an extension handles a change, neither the rest of the extensions, nor the container itself get to handle it.
+     *
+     *  Extensions get their extensionHandleChangedPropertyType() called.
+     *
+     *  If no extension handles the request, then the containers handleChangedPropertyType() is called.
+     */
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop) override;
 
 private:
     //stored extensions

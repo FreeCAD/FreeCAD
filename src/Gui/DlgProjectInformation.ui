@@ -26,7 +26,16 @@
       <string>Information</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -288,7 +297,7 @@
       <item row="11" column="0">
        <widget class="QLabel" name="textLabelComment">
         <property name="text">
-         <string>Commen&amp;t:</string>
+         <string>&amp;Comment:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

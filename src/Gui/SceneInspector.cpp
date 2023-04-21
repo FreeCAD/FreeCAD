@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
@@ -30,12 +29,12 @@
 
 #include "SceneInspector.h"
 #include "ui_SceneInspector.h"
+#include "Application.h"
+#include "Document.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
-#include "Document.h"
-#include "Application.h"
-#include <App/Document.h>
+
 
 using namespace Gui::Dialog;
 
@@ -92,9 +91,9 @@ void SceneModel::setNode(SoNode* node)
 
 void SceneModel::setNode(QModelIndex index, SoNode* node)
 {
-    this->setData(index, QVariant(QString::fromLatin1(node->getTypeId().getName())));
+    this->setData(index, QVariant(QString::fromLatin1(QByteArray(node->getTypeId().getName()))));
     if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
-        SoGroup *group = static_cast<SoGroup*>(node);
+        auto group = static_cast<SoGroup*>(node);
         // insert SoGroup icon
         this->insertColumns(0,2,index);
         this->insertRows(0,group->getNumChildren(), index);
@@ -136,9 +135,11 @@ DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_SceneInspector())
 {
     ui->setupUi(this);
+    connect(ui->refreshButton, &QPushButton::clicked,
+            this, &DlgInspector::onRefreshButtonClicked);
     setWindowTitle(tr("Scene Inspector"));
 
-    SceneModel* model = new SceneModel(this);
+    auto model = new SceneModel(this);
     ui->treeView->setModel(model);
     ui->treeView->setRootIsDecorated(true);
 }
@@ -156,7 +157,7 @@ void DlgInspector::setDocument(Gui::Document* doc)
 {
     setNodeNames(doc);
 
-    View3DInventor* view = qobject_cast<View3DInventor*>(doc->getActiveView());
+    auto view = qobject_cast<View3DInventor*>(doc->getActiveView());
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         setNode(viewer->getSceneGraph());
@@ -166,7 +167,7 @@ void DlgInspector::setDocument(Gui::Document* doc)
 
 void DlgInspector::setNode(SoNode* node)
 {
-    SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+    auto model = static_cast<SceneModel*>(ui->treeView->model());
     model->setNode(node);
 
     QHeaderView* header = ui->treeView->header();
@@ -179,8 +180,8 @@ void DlgInspector::setNodeNames(Gui::Document* doc)
     std::vector<Gui::ViewProvider*> vps = doc->getViewProvidersOfType
             (Gui::ViewProviderDocumentObject::getClassTypeId());
     QHash<SoNode*, QString> nodeNames;
-    for (std::vector<Gui::ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
-        Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(*it);
+    for (const auto & it : vps) {
+        auto vp = static_cast<Gui::ViewProviderDocumentObject*>(it);
         App::DocumentObject* obj = vp->getObject();
         if (obj) {
             QString label = QString::fromUtf8(obj->Label.getValue());
@@ -188,15 +189,15 @@ void DlgInspector::setNodeNames(Gui::Document* doc)
         }
 
         std::vector<std::string> modes = vp->getDisplayMaskModes();
-        for (std::vector<std::string>::iterator jt = modes.begin(); jt != modes.end(); ++jt) {
-            SoNode* node = vp->getDisplayMaskMode(jt->c_str());
+        for (const auto & mode : modes) {
+            SoNode* node = vp->getDisplayMaskMode(mode.c_str());
             if (node) {
-                nodeNames[node] = QString::fromStdString(*jt);
+                nodeNames[node] = QString::fromStdString(mode);
             }
         }
     }
 
-    SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+    auto model = static_cast<SceneModel*>(ui->treeView->model());
     model->setNodeNames(nodeNames);
 }
 
@@ -209,13 +210,13 @@ void DlgInspector::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-void DlgInspector::on_refreshButton_clicked()
+void DlgInspector::onRefreshButtonClicked()
 {
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
         setNodeNames(doc);
 
-        View3DInventor* view = qobject_cast<View3DInventor*>(doc->getActiveView());
+        auto view = qobject_cast<View3DInventor*>(doc->getActiveView());
         if (view) {
             View3DInventorViewer* viewer = view->getViewer();
             setNode(viewer->getSceneGraph());
@@ -223,7 +224,7 @@ void DlgInspector::on_refreshButton_clicked()
         }
     }
     else {
-        SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+        auto model = static_cast<SceneModel*>(ui->treeView->model());
         model->clear();
     }
 }

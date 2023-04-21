@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMTEXT_H
 #define DRAWINGGUI_QGCUSTOMTEXT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>
@@ -46,7 +48,7 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
     QRectF tightBoundingRect() const;
     QPointF tightBoundingAdjust() const;
@@ -65,7 +67,7 @@ public:
 
     virtual double getHeight(void);
     virtual double getWidth(void);
-    
+
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);

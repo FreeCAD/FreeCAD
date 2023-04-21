@@ -23,39 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <deque>
+# include <memory>
+# include <sstream>
+# include <boost/tokenizer.hpp>
 #endif
 
-#include <boost/regex.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/assign.hpp>
-#include <boost/graph/topological_sort.hpp>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
-#include <App/FeaturePythonPyImp.h>
 #include <App/ExpressionParser.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
-#include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
-#include <Base/Writer.h>
 #include <Base/Tools.h>
-#include <Base/Console.h>
+
 #include "Sheet.h"
 #include "SheetObserver.h"
-#include "Utils.h"
 #include "SheetPy.h"
-#include <ostream>
-#include <fstream>
-#include <string>
-#include <iomanip>
-#include <boost/regex.hpp>
-#include <deque>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace Base;
 using namespace App;
@@ -63,7 +53,7 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(Spreadsheet::Sheet, App::DocumentObject)
 
-typedef boost::adjacency_list <
+using DependencyList = boost::adjacency_list <
 boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
 boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
 boost::directedS,      // class DirectedS     : This is a directed graph
@@ -71,10 +61,10 @@ boost::no_property,    // class VertexProperty:
 boost::no_property,    // class EdgeProperty:
 boost::no_property,    // class GraphProperty:
 boost::listS           // class EdgeListS:
-> DependencyList;
-typedef boost::graph_traits<DependencyList> Traits;
-typedef Traits::vertex_descriptor Vertex;
-typedef Traits::edge_descriptor Edge;
+>;
+using Traits = boost::graph_traits<DependencyList>;
+using Vertex = Traits::vertex_descriptor;
+using Edge = Traits::edge_descriptor;
 
 /**
   * Construct a new Sheet object.
@@ -89,6 +79,9 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
+    ExpressionEngine.expressionChanged.connect([this](const App::ObjectIdentifier &) {
+        this->updateBindings();
+    });
 }
 
 /**
@@ -120,12 +113,51 @@ void Sheet::clearAll()
     cellErrors.clear();
     columnWidths.clear();
     rowHeights.clear();
-    removedAliases.clear();
 
     for (ObserverMap::iterator i = observers.begin(); i != observers.end(); ++i)
         delete i->second;
     observers.clear();
 }
+
+//validate import/export parameters
+bool Sheet::getCharsFromPrefs(char &delim, char &quote, char &escape, std::string &errMsg){
+    bool isValid = true;
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    QString delimiter = QString::fromStdString(group->GetASCII("ImportExportDelimiter","tab"));
+    QString quoteChar = QString::fromStdString(group->GetASCII("ImportExportQuoteCharacter","\""));
+    QString escapeChar = QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter","\\"));
+
+    delim = delimiter.size() == 1 ? delimiter[0].toLatin1() : '\0';
+    if (delimiter.compare(QLatin1String("tab"), Qt::CaseInsensitive) == 0 || delimiter.compare(QLatin1String("\\t"),Qt::CaseInsensitive) == 0){
+        delim = '\t';
+    } else if (delimiter.compare(QLatin1String("comma"), Qt::CaseInsensitive) == 0){
+        delim = ',';
+    } else if (delimiter.compare(QLatin1String("semicolon"), Qt::CaseInsensitive) == 0){
+        delim = ';';
+    }
+    if(delim != '\0' && quoteChar.size() == 1 && escapeChar.size() == 1){
+        quote = quoteChar[0].toLatin1();
+        escape = escapeChar[0].toLatin1();
+    } else {
+        isValid = false;
+        std::string importExport = errMsg;
+        std::stringstream errStream;
+        errStream << "Invalid spreadsheet Import/Export parameter.\n";
+        if (delim == '\0') {
+            errStream << "Unrecognized delimiter: " << delimiter.toStdString() << " (recognized tokens: \\t, tab, semicolon, comma, or any single character)\n";
+        }
+        if (quoteChar.size() != 1){
+            errStream << "Invalid quote character: " << quoteChar.toStdString() << " (quote character must be one single character)\n";
+        }
+        if (escapeChar.size() != 1){
+            errStream << "Invalid escape character: " << escapeChar.toStdString() << " (escape character must be one single character)\n";
+        }
+        errStream << importExport << " not done.\n";
+        errMsg = errStream.str();
+    }
+    return isValid;
+}
+
 
 /**
   * Import a file into the spreadsheet object.
@@ -166,7 +198,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
                 tokenizer<escaped_list_separator<char> > tok(line, e);
 
                 for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
-                    if ((*i).size() > 0)
+                    if (!i->empty())
                         setCell(CellAddress(row, col), (*i).c_str());
                     col++;
                 }
@@ -224,16 +256,17 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
 
 bool Sheet::exportToFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar) const
 {
-    std::ofstream file;
+    Base::ofstream file;
     int prevRow = -1, prevCol = -1;
 
-    file.open(filename.c_str(), std::ios::out | std::ios::ate | std::ios::binary);
+    Base::FileInfo fi(filename);
+    file.open(fi, std::ios::out | std::ios::ate | std::ios::binary);
 
     if (!file.is_open())
         return false;
 
-    std::set<CellAddress> usedCells = cells.getUsedCells();
-    std::set<CellAddress>::const_iterator i = usedCells.begin();
+    auto usedCells = cells.getNonEmptyCells();
+    auto i = usedCells.begin();
 
     while (i != usedCells.end()) {
         Property * prop = getProperty(*i);
@@ -326,7 +359,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 {
      Cell * cell = getCell(address);
 
-    if (cell == 0)
+    if (!cell)
         cell = cells.createCell(address);
 
     return cell;
@@ -342,7 +375,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 
 void Sheet::setCell(const char * address, const char * contents)
 {
-    assert(address != 0 &&  contents != 0);
+    assert(address && contents);
 
     setCell(CellAddress(address), contents);
 }
@@ -358,7 +391,7 @@ void Sheet::setCell(const char * address, const char * contents)
 
 void Sheet::setCell(CellAddress address, const char * value)
 {
-    assert(value != 0);
+    assert(value);
 
 
     if (*value == '\0') {
@@ -393,7 +426,7 @@ PyObject *Sheet::getPyObject(void)
 
 Property * Sheet::getProperty(CellAddress key) const
 {
-    return props.getDynamicPropertyByName(key.toString().c_str());
+    return props.getDynamicPropertyByName(key.toString(CellAddress::Cell::ShowRowColumn).c_str());
 }
 
 /**
@@ -424,6 +457,14 @@ bool Sheet::getCellAddress(const Property *prop, CellAddress & address)
     return false;
 }
 
+App::CellAddress Sheet::getCellAddress(const char *name, bool silent) const {
+    return cells.getCellAddress(name,silent);
+}
+
+App::Range Sheet::getRange(const char *name, bool silent) const {
+    return cells.getRange(name,silent);
+}
+
 /**
  * @brief Get a map with column indices and widths.
  * @return Map with results.
@@ -446,22 +487,6 @@ std::map<int, int> Sheet::getRowHeights() const
 
 
 /**
- * @brief Remove all aliases.
- *
- */
-
-void Sheet::removeAliases()
-{
-    std::map<CellAddress, std::string>::iterator i = removedAliases.begin();
-
-    while (i != removedAliases.end()) {
-        this->removeDynamicProperty(i->second.c_str());
-        ++i;
-    }
-    removedAliases.clear();
-}
-
-/**
  * Update internal structure when document is set for this property.
  */
 
@@ -481,15 +506,16 @@ void Sheet::onSettingDocument()
 
 Property * Sheet::setFloatProperty(CellAddress key, double value)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
+    Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat * floatProp;
 
     if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
     else
         floatProp = static_cast<PropertyFloat*>(prop);
@@ -502,16 +528,17 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
 
 Property * Sheet::setIntegerProperty(CellAddress key, long value)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
+    Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger * intProp;
 
     if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
         intProp = freecad_dynamic_cast<PropertyInteger>(addDynamicProperty(
-                    "App::PropertyInteger", key.toString().c_str(), 0, 0, 
+                    "App::PropertyInteger", name.c_str(), nullptr, nullptr, 
                     Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
     else
@@ -536,15 +563,16 @@ Property * Sheet::setIntegerProperty(CellAddress key, long value)
 
 Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
+    Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity * quantityProp;
 
     if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
+        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
         quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
     }
     else
@@ -570,15 +598,16 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
 
 Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
+    Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyString * stringProp = freecad_dynamic_cast<PropertyString>(prop);
 
     if (!stringProp) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
 
     propAddress[stringProp] = key;
@@ -589,57 +618,22 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 
 Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
+    Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyPythonObject * pyProp = freecad_dynamic_cast<PropertyPythonObject>(prop);
 
     if (!pyProp) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
 
     propAddress[pyProp] = key;
     pyProp->setValue(object);
 
     return pyProp;
-}
-
-/**
- * @brief Update the alias for the cell at \a key.
- * @param key Cell to update.
- */
-
-void Sheet::updateAlias(CellAddress key)
-{
-    std::string alias;
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
-
-    if (!prop)
-        return;
-
-    Cell * cell = getCell(key);
-
-    if (cell && cell->getAlias(alias)) {
-        Property * aliasProp = props.getDynamicPropertyByName(alias.c_str());
-
-        /* Update or create alias? */
-        if (aliasProp) {
-            // Type of alias and property must always be the same
-            if (aliasProp->getTypeId() != prop->getTypeId()) {
-                this->removeDynamicProperty(alias.c_str());
-                aliasProp = 0;
-            }
-        }
-
-        if (!aliasProp) {
-            aliasProp = addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_NoPersist);
-            aliasProp->setStatus(App::Property::Hidden,true);
-        }
-
-        aliasProp->Paste(*prop);
-    }
 }
 
 struct CurrentAddressLock {
@@ -669,7 +663,7 @@ void Sheet::updateProperty(CellAddress key)
 {
     Cell * cell = getCell(key);
 
-    if (cell != 0) {
+    if (cell) {
         std::unique_ptr<Expression> output;
         const Expression * input = cell->getExpression();
 
@@ -680,10 +674,12 @@ void Sheet::updateProperty(CellAddress key)
         else {
             std::string s;
 
-            if (cell->getStringContent(s))
+            if (cell->getStringContent(s) && !s.empty())
                 output.reset(new StringExpression(this, s));
-            else
-                output.reset(new StringExpression(this, ""));
+            else {
+                this->removeDynamicProperty(key.toString().c_str());
+                return;
+            }
         }
 
         /* Eval returns either NumberExpression or StringExpression, or
@@ -732,23 +728,46 @@ void Sheet::updateProperty(CellAddress key)
 
 Property *Sheet::getPropertyByName(const char* name) const
 {
-    std::string _name;
-    CellAddress addr;
-    if(addr.parseAbsoluteAddress(name)) {
-        _name = addr.toString(true);
-        name = _name.c_str();
-    }
-    Property * prop = getProperty(name);
-
+    CellAddress addr = getCellAddress(name,true);
+    Property *prop = nullptr;
+    if(addr.isValid())
+        prop = getProperty(addr);
     if (prop)
         return prop;
     else
         return DocumentObject::getPropertyByName(name);
 }
 
+Property *Sheet::getDynamicPropertyByName(const char* name) const {
+    CellAddress addr = getCellAddress(name,true);
+    Property *prop = nullptr;
+    if(addr.isValid())
+        prop = getProperty(addr);
+    if (prop)
+        return prop;
+    else
+        return DocumentObject::getDynamicPropertyByName(name);
+}
+
+void Sheet::getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const {
+    DocumentObject::getPropertyNamedList(List);
+    List.reserve(List.size()+cells.aliasProp.size());
+    for(auto &v : cells.aliasProp) {
+        auto prop = getProperty(v.first);
+        if(prop)
+            List.emplace_back(v.second.c_str(),prop);
+    }
+}
+
 void Sheet::touchCells(Range range) {
     do {
         cells.setDirty(*range);
+    }while(range.next());
+}
+
+void Sheet::recomputeCells(Range range) {
+    do {
+        recomputeCell(*range);
     }while(range.next());
 }
 
@@ -791,11 +810,90 @@ void Sheet::recomputeCell(CellAddress p)
         if(e.isDerivedFrom(Base::AbortException::getClassTypeId()))
             throw;
     }
+}
 
-    updateAlias(p);
+PropertySheet::BindingType
+Sheet::getCellBinding(Range &range,
+                      ExpressionPtr *pStart,
+                      ExpressionPtr *pEnd,
+                      App::ObjectIdentifier *pTarget) const 
+{
+    range.normalize();
+    do {
+        CellAddress addr = *range;
+        for(const auto &r : boundRanges) {
+            if(addr.row()>=r.from().row()
+                    && addr.row()<=r.to().row()
+                    && addr.col()>=r.from().col()
+                    && addr.col()<=r.to().col())
+            {
+                auto res = cells.getBinding(r,pStart,pEnd,pTarget);
+                if(res != PropertySheet::BindingNone) {
+                    range = r;
+                    return res;
+                }
+            }
+        }
+    } while(range.next());
+    return PropertySheet::BindingNone;
+}
 
-    if (!cell || cell->spansChanged())
-        cellSpanChanged(p);
+static inline unsigned _getBorder(const Sheet *sheet,
+                                  const std::vector<App::Range> &ranges,
+                                  const App::CellAddress &address)
+{
+    unsigned flags = 0;
+    int rows, cols;
+    sheet->getSpans(address, rows, cols);
+    --rows;
+    --cols;
+    for(auto &range : ranges) {
+        auto from = range.from();
+        auto to = range.to();
+        if(address.row() < from.row()
+                || address.row() + rows > to.row()
+                || address.col() < from.col()
+                || address.col() + cols > to.col())
+            continue;
+        if(address.row() == from.row())
+            flags |= Sheet::BorderTop;
+        if(address.row() == to.row() || address.row() + rows == to.row())
+            flags |= Sheet::BorderBottom;
+        if(address.col() == from.col())
+            flags |= Sheet::BorderLeft;
+        if(address.col() == to.col() || address.col() + cols == to.col())
+            flags |= Sheet::BorderRight;
+        if(flags == Sheet::BorderAll)
+            break;
+    }
+    return flags;
+}
+
+unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
+    return _getBorder(this, boundRanges, address);
+}
+
+void Sheet::updateBindings()
+{
+    std::set<Range> oldRangeSet(boundRanges.begin(), boundRanges.end());
+    std::set<Range> newRangeSet;
+    std::set<Range> rangeSet;
+    boundRanges.clear();
+    for(const auto &v : ExpressionEngine.getExpressions()) {
+        CellAddress from,to;
+        if(!cells.isBindingPath(v.first,&from,&to))
+            continue;
+        App::Range range(from,to,true);
+        if(!oldRangeSet.erase(range))
+            newRangeSet.insert(range);
+        rangeSet.insert(range);
+    }
+    boundRanges.reserve(rangeSet.size());
+    boundRanges.insert(boundRanges.end(),rangeSet.begin(),rangeSet.end());
+    for(const auto &range : oldRangeSet)
+        rangeUpdated(range);
+    for(const auto &range : newRangeSet)
+        rangeUpdated(range);
 }
 
 /**
@@ -805,8 +903,7 @@ void Sheet::recomputeCell(CellAddress p)
 
 DocumentObjectExecReturn *Sheet::execute(void)
 {
-    // Remove all aliases first
-    removeAliases();
+    updateBindings();
 
     // Get dirty cells that we have to recompute
     std::set<CellAddress> dirtyCells = cells.getDirty();
@@ -821,7 +918,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
     std::map<CellAddress, Vertex> VertexList;
     std::map<Vertex, CellAddress> VertexIndexList;
     std::deque<CellAddress> workQueue(dirtyCells.begin(),dirtyCells.end());
-    while(workQueue.size()) {
+    while(!workQueue.empty()) {
         CellAddress currPos = workQueue.front();
         workQueue.pop_front();
 
@@ -854,7 +951,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
         FC_LOG("recomputing " << getFullName());
         for(auto &pos : make_order) {
             const auto &addr = VertexIndexList[pos];
-            FC_LOG(addr.toString());
+            FC_TRACE(addr.toString());
             recomputeCell(addr);
         }
     } catch (std::exception &) {
@@ -869,7 +966,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
         }
 
         // Try to be more user friendly by finding individual loops
-        while(dirtyCells.size()) {
+        while(!dirtyCells.empty()) {
 
             std::deque<CellAddress> workQueue;
             DependencyList graph;
@@ -880,7 +977,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
             workQueue.push_back(currentAddr);
             dirtyCells.erase(dirtyCells.begin());
 
-            while (workQueue.size() > 0) {
+            while (!workQueue.empty()) {
                 CellAddress currPos = workQueue.front();
                 workQueue.pop_front();
 
@@ -948,7 +1045,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
     rowHeights.clearDirty();
     columnWidths.clearDirty();
 
-    if (cellErrors.size() == 0)
+    if (cellErrors.empty())
         return DocumentObject::StdReturn;
     else
         return new DocumentObjectExecReturn("One or more cells failed contains errors.", this);
@@ -961,7 +1058,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
 
 short Sheet::mustExecute(void) const
 {
-    if (cellErrors.size() > 0 || cells.isDirty())
+    if (!cellErrors.empty() || cells.isDirty())
         return 1;
     return DocumentObject::mustExecute();
 }
@@ -980,19 +1077,19 @@ short Sheet::mustExecute(void) const
 
 void Sheet::clear(CellAddress address, bool /*all*/)
 {
-    Cell * cell = getCell(address);
+    if (auto cell = getCell(address)) {
+        // Remove alias, if defined
+        std::string aliasStr;
+        if (cell->getAlias(aliasStr))
+            this->removeDynamicProperty(aliasStr.c_str());
+        cells.clear(address);
+    }
+
     std::string addr = address.toString();
-    Property * prop = props.getDynamicPropertyByName(addr.c_str());
-
-    // Remove alias, if defined
-    std::string aliasStr;
-    if (cell && cell->getAlias(aliasStr))
-        this->removeDynamicProperty(aliasStr.c_str());
-
-    cells.clear(address);
-
-    propAddress.erase(prop);
-    this->removeDynamicProperty(addr.c_str());
+    if (auto prop = props.getDynamicPropertyByName(addr.c_str())) {
+        propAddress.erase(prop);
+        this->removeDynamicProperty(addr.c_str());
+    }
 }
 
 /**
@@ -1021,6 +1118,11 @@ void Sheet::getSpans(CellAddress address, int &rows, int &cols) const
 bool Sheet::isMergedCell(CellAddress address) const
 {
     return cells.isMergedCell(address);
+}
+
+App::CellAddress Spreadsheet::Sheet::getAnchor(App::CellAddress address) const
+{
+    return cells.getAnchor(address);
 }
 
 /**
@@ -1077,12 +1179,8 @@ int Sheet::getRowHeight(int row) const
 std::vector<std::string> Sheet::getUsedCells() const
 {
     std::vector<std::string> usedCells;
-
-    // Insert int usedSet
-    std::set<CellAddress> usedSet = cells.getUsedCells();
-
-    for (std::set<CellAddress>::const_iterator i = usedSet.begin(); i != usedSet.end(); ++i)
-        usedCells.push_back(i->toString());
+    for (const auto &addr : cells.getUsedCells())
+        usedCells.push_back(addr.toString());
 
     return usedCells;
 }
@@ -1136,7 +1234,7 @@ void Sheet::insertColumns(int col, int count)
 void Sheet::removeColumns(int col, int count)
 {
     // Remove aliases, if defined
-    for (auto address : cells.getColumns(col, count)) {
+    for (const auto &address : cells.getColumns(col, count)) {
         auto cell = getCell(address);
         std::string aliasStr;
         if (cell && cell->getAlias(aliasStr))
@@ -1148,7 +1246,7 @@ void Sheet::removeColumns(int col, int count)
 }
 
 /**
-  * Inser \a count rows at row \a row.
+  * Insert \a count rows at row \a row.
   *
   * @param row   Address of row where the rows are inserted.
   * @param count Number of rows to insert.
@@ -1172,7 +1270,7 @@ void Sheet::insertRows(int row, int count)
 void Sheet::removeRows(int row, int count)
 {
     // Remove aliases, if defined
-    for (auto address : cells.getRows(row, count)) {
+    for (const auto &address : cells.getRows(row, count)) {
         auto cell = getCell(address);
         std::string aliasStr;
         if (cell && cell->getAlias(aliasStr))
@@ -1271,13 +1369,13 @@ void Sheet::setAlias(CellAddress address, const std::string &alias)
 {
     std::string existingAlias = getAddressFromAlias(alias);
 
-    if (existingAlias.size() > 0) {
+    if (!existingAlias.empty()) {
         if (existingAlias == address.toString()) // Same as old?
             return;
         else
             throw Base::ValueError("Alias already defined");
     }
-    else if (alias.size() == 0) // Empty?
+    else if (alias.empty()) // Empty?
         cells.setAlias(address, "");
     else if (isValidAlias(alias)) // Valid?
         cells.setAlias(address, alias);
@@ -1317,7 +1415,7 @@ bool Sheet::isValidAlias(const std::string & candidate)
         return false;
 
     // Existing alias? Then it's ok
-    if (getAddressFromAlias(candidate).size() > 0 )
+    if (!getAddressFromAlias(candidate).empty() )
         return true;
 
     // Check to see that is does not crash with any other property in the Sheet object.
@@ -1337,17 +1435,6 @@ bool Sheet::isValidAlias(const std::string & candidate)
 void Sheet::setSpans(CellAddress address, int rows, int columns)
 {
     cells.setSpans(address, rows, columns);
-}
-
-/**
- * @brief Called when alias \a alias at \a address is removed.
- * @param address Address of alias.
- * @param alias Removed alias.
- */
-
-void Sheet::aliasRemoved(CellAddress address, const std::string & alias)
-{
-    removedAliases[address] = alias;
 }
 
 /**
@@ -1469,6 +1556,43 @@ std::string Sheet::getColumn(int offset) const {
     return txt;
 }
 
+void Sheet::onChanged(const App::Property *prop) {
+    if(prop == &cells) {
+        decltype(copyCutRanges) tmp;
+        tmp.swap(copyCutRanges);
+        for(auto &range : tmp)
+            rangeUpdated(range);
+    }
+    else
+        cells.slotChangedObject(*this, *prop);
+    App::DocumentObject::onChanged(prop);
+}
+
+void Sheet::setCopyOrCutRanges(const std::vector<App::Range> &ranges, bool copy)
+{
+    std::set<Range> rangeSet(copyCutRanges.begin(), copyCutRanges.end());
+    copyCutRanges = ranges;
+    rangeSet.insert(copyCutRanges.begin(), copyCutRanges.end());
+    for(const auto &range : rangeSet)
+        rangeUpdated(range);
+    hasCopyRange = copy;
+}
+
+const std::vector<Range> &Sheet::getCopyOrCutRange(bool copy) const
+{
+    static const std::vector<Range> nullRange;
+    if(hasCopyRange != copy)
+        return nullRange;
+    return copyCutRanges;
+}
+
+unsigned Sheet::getCopyOrCutBorder(CellAddress address, bool copy) const
+{
+    if(hasCopyRange != copy)
+        return 0;
+    return _getBorder(this, copyCutRanges, address);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity)
@@ -1497,10 +1621,10 @@ void PropertySpreadsheetQuantity::Paste(const Property &from)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
-template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
+template<> const char* Spreadsheet::SheetPython::getViewProviderName() const {
     return "SpreadsheetGui::ViewProviderSheet";
 }
-template<> PyObject* Spreadsheet::SheetPython::getPyObject(void) {
+template<> PyObject* Spreadsheet::SheetPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<Spreadsheet::SheetPy>(this),true);

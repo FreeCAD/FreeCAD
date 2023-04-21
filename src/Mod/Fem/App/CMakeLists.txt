@@ -30,7 +30,6 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
     ${VTK_INCLUDE_DIRS}
@@ -158,6 +157,8 @@ SET(FemConstraints_SRCS
     FemConstraintFluidBoundary.h
     FemConstraintPressure.cpp
     FemConstraintPressure.h
+    FemConstraintSpring.cpp
+    FemConstraintSpring.h
     FemConstraintGear.cpp
     FemConstraintGear.h
     FemConstraintPulley.cpp
@@ -198,10 +199,9 @@ endif(FREECAD_USE_PCH)
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 
-# external SMESH doesn't support C++17 yet
-if(FREECAD_USE_EXTERNAL_SMESH)
-    set_target_properties(Fem PROPERTIES CXX_STANDARD_REQUIRED ON)
-    set_target_properties(Fem PROPERTIES CXX_STANDARD 14)
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+	target_link_libraries(Fem OpenMP::OpenMP_CXX)
 endif()
 
 

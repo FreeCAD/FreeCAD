@@ -1,0 +1,16 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "grepMatcher-warning",
+      "severity": "warning",
+      "pattern": [
+        {
+          "regexp": "^(.+):([0-9]+):(.+)$",
+          "file": 1,
+          "line": 2,
+          "message": 3
+        }
+      ]
+    }
+  ]
+}

@@ -23,59 +23,49 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 # include <QClipboard>
 # include <QDateTime>
-# include <QEventLoop>
-# include <QFileDialog>
-# include <QLabel>
+# include <QMessageBox>
 # include <QTextStream>
-# include <QStatusBar>
-# include <QPointer>
-# include <QProcess>
-# include <sstream>
-# include <Inventor/nodes/SoCamera.h>
+# include <QTreeWidgetItem>
 #endif
-#include <algorithm>
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
 #include <App/GeoFeature.h>
-#include <App/Origin.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
+#include <Base/Tools.h>
 
 #include "Action.h"
 #include "Application.h"
-#include "Document.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include "Control.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "Selection.h"
+#include "DlgObjectSelection.h"
 #include "DlgProjectInformationImp.h"
 #include "DlgProjectUtility.h"
-#include "Transform.h"
-#include "Placement.h"
+#include "GraphvizView.h"
 #include "ManualAlignment.h"
-#include "WaitCursor.h"
-#include "ViewProvider.h"
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include "MergeDocuments.h"
 #include "NavigationStyle.h"
-#include "GraphvizView.h"
-#include "DlgObjectSelection.h"
+#include "Placement.h"
+#include "Transform.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
+#include "ViewProvider.h"
+#include "WaitCursor.h"
 
 FC_LOG_LEVEL_INIT("Command", false)
 
@@ -92,7 +82,7 @@ StdCmdOpen::StdCmdOpen()
   : Command("Std_Open")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Open...");
     sToolTipText  = QT_TR_NOOP("Open a document or import files");
     sWhatsThis    = "Std_Open";
@@ -160,15 +150,25 @@ void StdCmdOpen::activated(int iMsg)
     }
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
+
+            // Set flag indicating that this load/restore has been initiated by the user (not by a macro)
+            getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, true);
+
             getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
+
+            getGuiApplication()->setStatus(Gui::Application::UserInitiatedOpenDocument, false);
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            if(doc && doc->testStatus(App::Document::PartialRestore))
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+            if(doc && doc->testStatus(App::Document::PartialRestore)) {
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+                                      QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+            }
 
-            if(doc && doc->testStatus(App::Document::RestoreError))
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+            if(doc && doc->testStatus(App::Document::RestoreError)) {
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+                                      QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+            }
         }
     }
 }
@@ -183,7 +183,7 @@ StdCmdImport::StdCmdImport()
   : Command("Std_Import")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Import...");
     sToolTipText  = QT_TR_NOOP("Import a file in the active document");
     sWhatsThis    = "Std_Import";
@@ -246,14 +246,14 @@ void StdCmdImport::activated(int iMsg)
         if (emptyDoc) {
             // only do a view fit if the document was empty before. See also parameter 'AutoFitToView' in importFrom()
             std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
-            for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-                (*it)->viewAll();
+            for (const auto & view : views) {
+                view->viewAll();
             }
         }
     }
 }
 
-bool StdCmdImport::isActive(void)
+bool StdCmdImport::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -269,7 +269,7 @@ StdCmdExport::StdCmdExport()
   : Command("Std_Export")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Export...");
     sToolTipText  = QT_TR_NOOP("Export an object in the active document");
     sWhatsThis    = "Std_Export";
@@ -282,7 +282,7 @@ StdCmdExport::StdCmdExport()
 
 /**
 Create a default filename from a user-specified format string
- 
+
 Format options are:
 %F - the basename of the .FCStd file (or the label, if it is not saved yet)
 %Lx - the label of the selected object(s), separated by character 'x'
@@ -317,7 +317,7 @@ QString createDefaultExportBasename()
     QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
     QFileInfo fi(docFilename);
     QString fcstdBasename = fi.completeBaseName();
-    if (fcstdBasename.isEmpty()) 
+    if (fcstdBasename.isEmpty())
         fcstdBasename = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
 
     // %L - the label of the selected object(s)
@@ -358,7 +358,7 @@ QString createDefaultExportBasename()
                 auto formatChar = exportFormatString.at(i);
                 QChar separatorChar = QLatin1Char('-');
                 // If this format type requires an additional char, read that now (or default to
-                // '-' if the format string ends) 
+                // '-' if the format string ends)
                 if (formatChar == QLatin1Char('L') ||
                     formatChar == QLatin1Char('P')) {
                     if (i < exportFormatString.size() - 1) {
@@ -384,8 +384,8 @@ QString createDefaultExportBasename()
                     defaultFilename.append(localISO8601);
                 }
                 else {
-                    FC_WARN("When parsing default export filename format string, %" 
-                        << QString(formatChar).toStdString() 
+                    FC_WARN("When parsing default export filename format string, %"
+                        << QString(formatChar).toStdString()
                         << " is not a known format string.");
                 }
             }
@@ -409,10 +409,10 @@ void StdCmdExport::activated(int iMsg)
     static QString lastExportFilterUsed = QString();
 
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QString::fromUtf8(QT_TR_NOOP("No selection")),
-            QString::fromUtf8(QT_TR_NOOP("Select the objects to export before choosing Export.")));
+            QCoreApplication::translate("StdCmdExport", "No selection"),
+            QCoreApplication::translate("StdCmdExport", "Select the objects to export before choosing Export."));
         return;
     }
 
@@ -425,7 +425,7 @@ void StdCmdExport::activated(int iMsg)
             filterList << QString::fromStdString(filter.first);
     }
     QString formatList = filterList.join(QLatin1String(";;"));
-    Base::Reference<ParameterGrp> hPath = 
+    Base::Reference<ParameterGrp> hPath =
         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
     if (!lastExportFilterUsed.isEmpty())
@@ -492,7 +492,7 @@ void StdCmdExport::activated(int iMsg)
         // there is one.
         QFileInfo defaultExportFI(defaultFilename);
         QFileInfo thisExportFI(fileName);
-        if (filenameWasGenerated && 
+        if (filenameWasGenerated &&
             thisExportFI.completeBaseName() == defaultExportFI.completeBaseName())
             lastExportUsedGeneratedFilename = true;
         else
@@ -501,7 +501,7 @@ void StdCmdExport::activated(int iMsg)
     }
 }
 
-bool StdCmdExport::isActive(void)
+bool StdCmdExport::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -516,7 +516,7 @@ StdCmdMergeProjects::StdCmdMergeProjects()
   : Command("Std_MergeProjects")
 {
     sAppModule    = "File";
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Merge project...");
     sToolTipText  = QT_TR_NOOP("Merge project");
     sWhatsThis    = "Std_MergeProjects";
@@ -554,7 +554,7 @@ void StdCmdMergeProjects::activated(int iMsg)
     }
 }
 
-bool StdCmdMergeProjects::isActive(void)
+bool StdCmdMergeProjects::isActive()
 {
     return this->hasActiveDocument();
 }
@@ -569,7 +569,7 @@ StdCmdDependencyGraph::StdCmdDependencyGraph()
   : Command("Std_DependencyGraph")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Dependency graph...");
     sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
     sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
@@ -582,12 +582,12 @@ void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
+    auto view = new Gui::GraphvizView(*doc);
     view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
     getMainWindow()->addWindow(view);
 }
 
-bool StdCmdDependencyGraph::isActive(void)
+bool StdCmdDependencyGraph::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -601,7 +601,7 @@ DEF_STD_CMD(StdCmdNew)
 StdCmdNew::StdCmdNew()
   :Command("Std_New")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&New");
     sToolTipText  = QT_TR_NOOP("Create a new empty document");
     sWhatsThis    = "Std_New";
@@ -614,8 +614,7 @@ void StdCmdNew::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmd;
-    cmd = QString::fromLatin1("App.newDocument(\"%1\")")
-        .arg(qApp->translate("StdCmdNew","Unnamed"));
+    cmd = QString::fromLatin1("App.newDocument()");
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 
@@ -632,7 +631,7 @@ DEF_STD_CMD_A(StdCmdSave)
 StdCmdSave::StdCmdSave()
   :Command("Std_Save")
 {
-  sGroup        = QT_TR_NOOP("File");
+  sGroup        = "File";
   sMenuText     = QT_TR_NOOP("&Save");
   sToolTipText  = QT_TR_NOOP("Save the active document");
   sWhatsThis    = "Std_Save";
@@ -645,22 +644,11 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->save();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Save\")");
 }
 
-bool StdCmdSave::isActive(void)
+bool StdCmdSave::isActive()
 {
-#if 0
-  if( getActiveGuiDocument() )
-    return true;
-  else
-#endif
     return getGuiApplication()->sendHasMsgToActiveView("Save");
 }
 
@@ -672,7 +660,7 @@ DEF_STD_CMD_A(StdCmdSaveAs)
 StdCmdSaveAs::StdCmdSaveAs()
   :Command("Std_SaveAs")
 {
-  sGroup        = QT_TR_NOOP("File");
+  sGroup        = "File";
   sMenuText     = QT_TR_NOOP("Save &As...");
   sToolTipText  = QT_TR_NOOP("Save the active document under a new file name");
   sWhatsThis    = "Std_SaveAs";
@@ -685,22 +673,11 @@ StdCmdSaveAs::StdCmdSaveAs()
 void StdCmdSaveAs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->saveAs();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveAs\")");
 }
 
-bool StdCmdSaveAs::isActive(void)
+bool StdCmdSaveAs::isActive()
 {
-#if 0
-  if( getActiveGuiDocument() )
-    return true;
-  else
-#endif
     return getGuiApplication()->sendHasMsgToActiveView("SaveAs");
 }
 
@@ -712,7 +689,7 @@ DEF_STD_CMD_A(StdCmdSaveCopy)
 StdCmdSaveCopy::StdCmdSaveCopy()
   :Command("Std_SaveCopy")
 {
-  sGroup        = QT_TR_NOOP("File");
+  sGroup        = "File";
   sMenuText     = QT_TR_NOOP("Save a &Copy...");
   sToolTipText  = QT_TR_NOOP("Save a copy of the active document under a new file name");
   sWhatsThis    = "Std_SaveCopy";
@@ -723,16 +700,10 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 void StdCmdSaveCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->saveCopy();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveCopy\")");
 }
 
-bool StdCmdSaveCopy::isActive(void)
+bool StdCmdSaveCopy::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -745,7 +716,7 @@ DEF_STD_CMD_A(StdCmdSaveAll)
 StdCmdSaveAll::StdCmdSaveAll()
   :Command("Std_SaveAll")
 {
-  sGroup        = QT_TR_NOOP("File");
+  sGroup        = "File";
   sMenuText     = QT_TR_NOOP("Save All");
   sToolTipText  = QT_TR_NOOP("Save all opened document");
   sWhatsThis    = "Std_SaveAll";
@@ -759,7 +730,7 @@ void StdCmdSaveAll::activated(int iMsg)
     Gui::Document::saveAll();
 }
 
-bool StdCmdSaveAll::isActive(void)
+bool StdCmdSaveAll::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -773,7 +744,7 @@ DEF_STD_CMD_A(StdCmdRevert)
 StdCmdRevert::StdCmdRevert()
   :Command("Std_Revert")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Revert");
     sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
     sWhatsThis    = "Std_Revert";
@@ -797,7 +768,7 @@ void StdCmdRevert::activated(int iMsg)
         doCommand(Command::App,"App.ActiveDocument.restore()");
 }
 
-bool StdCmdRevert::isActive(void)
+bool StdCmdRevert::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -812,7 +783,7 @@ StdCmdProjectInfo::StdCmdProjectInfo()
   :Command("Std_ProjectInfo")
 {
   // setting the
-  sGroup        = QT_TR_NOOP("File");
+  sGroup        = "File";
   sMenuText     = QT_TR_NOOP("Project i&nformation...");
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
   sWhatsThis    = "Std_ProjectInfo";
@@ -827,7 +798,7 @@ void StdCmdProjectInfo::activated(int iMsg)
     dlg.exec();
 }
 
-bool StdCmdProjectInfo::isActive(void)
+bool StdCmdProjectInfo::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -842,7 +813,7 @@ StdCmdProjectUtil::StdCmdProjectUtil()
   :Command("Std_ProjectUtil")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sWhatsThis    = "Std_ProjectUtil";
     sMenuText     = QT_TR_NOOP("Project utility...");
     sToolTipText  = QT_TR_NOOP("Utility to extract or create project files");
@@ -857,7 +828,7 @@ void StdCmdProjectUtil::activated(int iMsg)
     dlg.exec();
 }
 
-bool StdCmdProjectUtil::isActive(void)
+bool StdCmdProjectUtil::isActive()
 {
     return true;
 }
@@ -870,7 +841,7 @@ DEF_STD_CMD_A(StdCmdPrint)
 StdCmdPrint::StdCmdPrint()
   :Command("Std_Print")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Print...");
     sToolTipText  = QT_TR_NOOP("Print the document");
     sWhatsThis    = "Std_Print";
@@ -889,7 +860,7 @@ void StdCmdPrint::activated(int iMsg)
     }
 }
 
-bool StdCmdPrint::isActive(void)
+bool StdCmdPrint::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Print");
 }
@@ -902,7 +873,7 @@ DEF_STD_CMD_A(StdCmdPrintPreview)
 StdCmdPrintPreview::StdCmdPrintPreview()
   :Command("Std_PrintPreview")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Print preview...");
     sToolTipText  = QT_TR_NOOP("Print the document");
     sWhatsThis    = "Std_PrintPreview";
@@ -919,7 +890,7 @@ void StdCmdPrintPreview::activated(int iMsg)
     }
 }
 
-bool StdCmdPrintPreview::isActive(void)
+bool StdCmdPrintPreview::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("PrintPreview");
 }
@@ -932,7 +903,7 @@ DEF_STD_CMD_A(StdCmdPrintPdf)
 StdCmdPrintPdf::StdCmdPrintPdf()
   :Command("Std_PrintPdf")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Export PDF...");
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
@@ -950,7 +921,7 @@ void StdCmdPrintPdf::activated(int iMsg)
     }
 }
 
-bool StdCmdPrintPdf::isActive(void)
+bool StdCmdPrintPdf::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("PrintPdf");
 }
@@ -964,13 +935,13 @@ DEF_STD_CMD(StdCmdQuit)
 StdCmdQuit::StdCmdQuit()
   :Command("Std_Quit")
 {
-  sGroup        = QT_TR_NOOP("File");
+  sGroup        = "File";
   sMenuText     = QT_TR_NOOP("E&xit");
   sToolTipText  = QT_TR_NOOP("Quits the application");
   sWhatsThis    = "Std_Quit";
   sStatusTip    = QT_TR_NOOP("Quits the application");
   sPixmap       = "application-exit";
-  sAccel        = "Alt+F4";
+  sAccel        = keySequenceToAccel(QKeySequence::Quit);
   eType         = NoTransaction;
 }
 
@@ -990,7 +961,7 @@ DEF_STD_CMD_AC(StdCmdUndo)
 StdCmdUndo::StdCmdUndo()
   :Command("Std_Undo")
 {
-  sGroup        = QT_TR_NOOP("Edit");
+  sGroup        = "Edit";
   sMenuText     = QT_TR_NOOP("&Undo");
   sToolTipText  = QT_TR_NOOP("Undo exactly one action");
   sWhatsThis    = "Std_Undo";
@@ -1007,12 +978,12 @@ void StdCmdUndo::activated(int iMsg)
     getGuiApplication()->sendMsgToActiveView("Undo");
 }
 
-bool StdCmdUndo::isActive(void)
+bool StdCmdUndo::isActive()
 {
   return getGuiApplication()->sendHasMsgToActiveView("Undo");
 }
 
-Action * StdCmdUndo::createAction(void)
+Action * StdCmdUndo::createAction()
 {
     Action *pcAction;
 
@@ -1034,7 +1005,7 @@ DEF_STD_CMD_AC(StdCmdRedo)
 StdCmdRedo::StdCmdRedo()
   :Command("Std_Redo")
 {
-  sGroup        = QT_TR_NOOP("Edit");
+  sGroup        = "Edit";
   sMenuText     = QT_TR_NOOP("&Redo");
   sToolTipText  = QT_TR_NOOP("Redoes a previously undone action");
   sWhatsThis    = "Std_Redo";
@@ -1051,12 +1022,12 @@ void StdCmdRedo::activated(int iMsg)
     getGuiApplication()->sendMsgToActiveView("Redo");
 }
 
-bool StdCmdRedo::isActive(void)
+bool StdCmdRedo::isActive()
 {
   return getGuiApplication()->sendHasMsgToActiveView("Redo");
 }
 
-Action * StdCmdRedo::createAction(void)
+Action * StdCmdRedo::createAction()
 {
     Action *pcAction;
 
@@ -1077,7 +1048,7 @@ DEF_STD_CMD_A(StdCmdCut)
 StdCmdCut::StdCmdCut()
   : Command("Std_Cut")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("&Cut");
     sToolTipText  = QT_TR_NOOP("Cut out");
     sWhatsThis    = "Std_Cut";
@@ -1092,7 +1063,7 @@ void StdCmdCut::activated(int iMsg)
     getGuiApplication()->sendMsgToActiveView("Cut");
 }
 
-bool StdCmdCut::isActive(void)
+bool StdCmdCut::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Cut");
 }
@@ -1105,7 +1076,7 @@ DEF_STD_CMD_A(StdCmdCopy)
 StdCmdCopy::StdCmdCopy()
   : Command("Std_Copy")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("C&opy");
     sToolTipText  = QT_TR_NOOP("Copy operation");
     sWhatsThis    = "Std_Copy";
@@ -1125,7 +1096,7 @@ void StdCmdCopy::activated(int iMsg)
     }
 }
 
-bool StdCmdCopy::isActive(void)
+bool StdCmdCopy::isActive()
 {
     if (getGuiApplication()->sendHasMsgToFocusView("Copy"))
         return true;
@@ -1140,7 +1111,7 @@ DEF_STD_CMD_A(StdCmdPaste)
 StdCmdPaste::StdCmdPaste()
   : Command("Std_Paste")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("&Paste");
     sToolTipText  = QT_TR_NOOP("Paste operation");
     sWhatsThis    = "Std_Paste";
@@ -1163,13 +1134,14 @@ void StdCmdPaste::activated(int iMsg)
     }
 }
 
-bool StdCmdPaste::isActive(void)
+bool StdCmdPaste::isActive()
 {
     if (getGuiApplication()->sendHasMsgToFocusView("Paste"))
         return true;
     QClipboard* cb = QApplication::clipboard();
     const QMimeData* mime = cb->mimeData();
-    if (!mime) return false;
+    if (!mime)
+        return false;
     return getMainWindow()->canInsertFromMimeData(mime);
 }
 
@@ -1179,7 +1151,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
   :Command("Std_DuplicateSelection")
 {
     sAppModule    = "Edit";
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Duplicate selection");
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
     sWhatsThis    = "Std_DuplicateSelection";
@@ -1213,7 +1185,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         }
         std::vector<App::Document*> unsaved;
         hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
-        if(unsaved.size()) {
+        if(!unsaved.empty()) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
                 QObject::tr("The exported object contains external link. Please save the document"
                    "at least once before exporting."));
@@ -1231,7 +1203,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     if (doc) {
         bool proceed = true;
         if(hasXLink && !doc->isSaved()) {
-            int ret = QMessageBox::question(getMainWindow(),
+            auto ret = QMessageBox::question(getMainWindow(),
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
                 qApp->translate("Std_DuplicateSelection",
                 "To link to external objects, the document must be saved at least once.\n"
@@ -1253,7 +1225,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     fi.deleteFile();
 }
 
-bool StdCmdDuplicateSelection::isActive(void)
+bool StdCmdDuplicateSelection::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -1267,7 +1239,7 @@ DEF_STD_CMD_A(StdCmdSelectAll)
 StdCmdSelectAll::StdCmdSelectAll()
   : Command("Std_SelectAll")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Select &All");
     sToolTipText  = QT_TR_NOOP("Select all");
     sWhatsThis    = "Std_SelectAll";
@@ -1285,9 +1257,9 @@ void StdCmdSelectAll::activated(int iMsg)
     rSel.setSelection(doc->getName(), objs);
 }
 
-bool StdCmdSelectAll::isActive(void)
+bool StdCmdSelectAll::isActive()
 {
-    return App::GetApplication().getActiveDocument() != 0;
+    return App::GetApplication().getActiveDocument() != nullptr;
 }
 
 //===========================================================================
@@ -1298,7 +1270,7 @@ DEF_STD_CMD_A(StdCmdDelete)
 StdCmdDelete::StdCmdDelete()
   :Command("Std_Delete")
 {
-  sGroup        = QT_TR_NOOP("Edit");
+  sGroup        = "Edit";
   sMenuText     = QT_TR_NOOP("&Delete");
   sToolTipText  = QT_TR_NOOP("Deletes the selected objects");
   sWhatsThis    = "Std_Delete";
@@ -1324,7 +1296,7 @@ void StdCmdDelete::activated(int iMsg)
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
-        ViewProviderDocumentObject *vpedit = 0;
+        ViewProviderDocumentObject *vpedit = nullptr;
         if(editDoc)
             vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
         if(vpedit) {
@@ -1369,23 +1341,6 @@ void StdCmdDelete::activated(int iMsg)
                     break;
             }
 
-            // The check below is not needed because we now only get selection
-            // from the active document
-#if 0
-            //check for inactive objects in selection  Mantis #3477
-            std::set<QString> inactiveLabels;
-            App::Application& app = App::GetApplication();
-            App::Document* actDoc = app.getActiveDocument();
-            for (std::vector<Gui::SelectionObject>::iterator ft = sels.begin(); ft != sels.end(); ++ft) {
-                App::DocumentObject* obj = ft->getObject();
-                App::Document* objDoc = obj->getDocument();
-                if (actDoc != objDoc) {
-                    inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
-                    autoDeletion = false;
-                }
-            }
-#endif
-
             if (!autoDeletion) {
                 QString bodyMessage;
                 QTextStream bodyMessageStream(&bodyMessage);
@@ -1396,21 +1351,8 @@ void StdCmdDelete::activated(int iMsg)
                     bodyMessageStream << '\n' << currentLabel;
                 if(more)
                     bodyMessageStream << "\n...";
-#if 0
-                //message for inactive items
-                if (!inactiveLabels.empty()) {
-                    if (!affectedLabels.empty()) {
-                        bodyMessageStream << "\n";
-                    }
-                    std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete",
-                                            "These items are selected for deletion, but are not in the active document.");
-                    for (const auto &currentLabel : inactiveLabels)
-                        bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
-                }
-#endif
 
-                int ret = QMessageBox::warning(Gui::getMainWindow(),
+                auto ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
                     QMessageBox::Yes, QMessageBox::No);
                 if (ret == QMessageBox::Yes)
@@ -1423,14 +1365,14 @@ void StdCmdDelete::activated(int iMsg)
                     if (vp) {
                         // ask the ViewProvider if it wants to do some clean up
                         if (vp->onDelete(sel.getSubNames())) {
-                            FCMD_OBJ_DOC_CMD(obj,"removeObject('" << obj->getNameInDocument() << "')");
                             docs.insert(obj->getDocument());
+                            FCMD_OBJ_DOC_CMD(obj,"removeObject('" << obj->getNameInDocument() << "')");
                         }
                     }
                 }
             }
         }
-        if(docs.size()) {
+        if(!docs.empty()) {
             const auto &outList = App::PropertyXLink::getDocumentOutList();
             for(auto it=docs.begin();it!=docs.end();++it) {
                 auto itd = outList.find(*it);
@@ -1458,9 +1400,9 @@ void StdCmdDelete::activated(int iMsg)
     Gui::getMainWindow()->update();
 }
 
-bool StdCmdDelete::isActive(void)
+bool StdCmdDelete::isActive()
 {
-    return Selection().getCompleteSelection().size() > 0;
+    return !Selection().getCompleteSelection().empty();
 }
 
 //===========================================================================
@@ -1471,7 +1413,7 @@ DEF_STD_CMD_A(StdCmdRefresh)
 StdCmdRefresh::StdCmdRefresh()
   : Command("Std_Refresh")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("&Refresh");
     sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
     sWhatsThis    = "Std_Refresh";
@@ -1500,7 +1442,7 @@ void StdCmdRefresh::activated(int iMsg)
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
         }
         catch (Base::Exception& /*e*/) {
-            int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
                 qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
                             "Please check the Report View for more details.\n\n"
                             "Do you still want to proceed?"),
@@ -1512,7 +1454,7 @@ void StdCmdRefresh::activated(int iMsg)
     }
 }
 
-bool StdCmdRefresh::isActive(void)
+bool StdCmdRefresh::isActive()
 {
     return this->getDocument() && this->getDocument()->mustExecute();
 }
@@ -1525,7 +1467,7 @@ DEF_STD_CMD_A(StdCmdTransform)
 StdCmdTransform::StdCmdTransform()
   : Command("Std_Transform")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Transform...");
     sToolTipText  = QT_TR_NOOP("Transform the geometry of selected objects");
     sStatusTip    = QT_TR_NOOP("Transform the geometry of selected objects");
@@ -1538,9 +1480,9 @@ void StdCmdTransform::activated(int iMsg)
     Gui::Control().showDialog(new Gui::Dialog::TaskTransform());
 }
 
-bool StdCmdTransform::isActive(void)
+bool StdCmdTransform::isActive()
 {
-    return (Gui::Control().activeDialog()==0);
+    return (Gui::Control().activeDialog() == nullptr);
 }
 
 //===========================================================================
@@ -1551,7 +1493,7 @@ DEF_STD_CMD_A(StdCmdPlacement)
 StdCmdPlacement::StdCmdPlacement()
   : Command("Std_Placement")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Placement...");
     sToolTipText  = QT_TR_NOOP("Place the selected objects");
     sStatusTip    = QT_TR_NOOP("Place the selected objects");
@@ -1563,18 +1505,29 @@ void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    Gui::Dialog::TaskPlacement* plm = new Gui::Dialog::TaskPlacement();
+    auto plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
         App::Property* prop = sel.front()->getPropertyByName("Placement");
-        if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId())
+        if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId()) {
             plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
+
+            std::vector<Gui::SelectionObject> selection;
+            selection.reserve(sel.size());
+            std::transform(sel.cbegin(), sel.cend(), std::back_inserter(selection), [](App::DocumentObject* obj) {
+                return Gui::SelectionObject(obj);
+            });
+
+            plm->setPropertyName(QLatin1String("Placement"));
+            plm->setSelection(selection);
+            plm->bindObject();
+        }
     }
     Gui::Control().showDialog(plm);
 }
 
-bool StdCmdPlacement::isActive(void)
+bool StdCmdPlacement::isActive()
 {
-    return (Gui::Control().activeDialog()==0);
+    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
 }
 
 //===========================================================================
@@ -1585,7 +1538,7 @@ DEF_STD_CMD_A(StdCmdTransformManip)
 StdCmdTransformManip::StdCmdTransformManip()
   : Command("Std_TransformManip")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Transform");
     sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3d view");
     sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3d view");
@@ -1606,7 +1559,7 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
 }
 
-bool StdCmdTransformManip::isActive(void)
+bool StdCmdTransformManip::isActive()
 {
     return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1;
 }
@@ -1619,7 +1572,7 @@ DEF_STD_CMD_A(StdCmdAlignment)
 StdCmdAlignment::StdCmdAlignment()
   : Command("Std_Alignment")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Alignment...");
     sToolTipText  = QT_TR_NOOP("Align the selected objects");
     sStatusTip    = QT_TR_NOOP("Align the selected objects");
@@ -1633,8 +1586,8 @@ void StdCmdAlignment::activated(int iMsg)
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::GeoFeature::getClassTypeId());
     ManualAlignment* align = ManualAlignment::instance();
-    QObject::connect(align, SIGNAL(emitCanceled()), align, SLOT(deleteLater()));
-    QObject::connect(align, SIGNAL(emitFinished()), align, SLOT(deleteLater()));
+    QObject::connect(align, &ManualAlignment::emitCanceled, align, &QObject::deleteLater);
+    QObject::connect(align, &ManualAlignment::emitFinished, align, &QObject::deleteLater);
 
     // Get the fixed and moving meshes
     FixedGroup fixedGroup;
@@ -1653,7 +1606,7 @@ void StdCmdAlignment::activated(int iMsg)
     Base::Vector3d upDir(0,1,0), viewDir(0,0,-1);
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
-        View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
+        auto mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
         if (mdi) {
             View3DInventorViewer* viewer = mdi->getViewer();
             SoCamera* camera = viewer->getSoRenderManager()->getCamera();
@@ -1674,7 +1627,7 @@ void StdCmdAlignment::activated(int iMsg)
     Gui::Selection().clearSelection();
 }
 
-bool StdCmdAlignment::isActive(void)
+bool StdCmdAlignment::isActive()
 {
     if (ManualAlignment::hasInstance())
         return false;
@@ -1689,7 +1642,7 @@ DEF_STD_CMD_A(StdCmdEdit)
 StdCmdEdit::StdCmdEdit()
   : Command("Std_Edit")
 {
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
     sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
     sWhatsThis    = "Std_Edit";
@@ -1708,7 +1661,7 @@ void StdCmdEdit::activated(int iMsg)
         if (viewer->isEditingViewProvider()) {
             doCommand(Command::Gui,"Gui.activeDocument().resetEdit()");
         } else {
-            if (Selection().getCompleteSelection().size() > 0) {
+            if (!Selection().getCompleteSelection().empty()) {
                 SelectionSingleton::SelObj obj = Selection().getCompleteSelection()[0];
                 doCommand(Command::Gui,"Gui.activeDocument().setEdit(\"%s\",0)",obj.FeatName);
             }
@@ -1716,9 +1669,9 @@ void StdCmdEdit::activated(int iMsg)
     }
 }
 
-bool StdCmdEdit::isActive(void)
+bool StdCmdEdit::isActive()
 {
-    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != 0);
+    return (!Selection().getCompleteSelection().empty()) || (Gui::Control().activeDialog() != nullptr);
 }
 
 //======================================================================
@@ -1733,7 +1686,7 @@ public:
                        , pcActionCopyActive(nullptr)
                        , pcActionPaste(nullptr)
     {
-        sGroup        = QT_TR_NOOP("Edit");
+        sGroup        = "Edit";
         sMenuText     = QT_TR_NOOP("Expression actions");
         sToolTipText  = QT_TR_NOOP("Expression actions");
         sWhatsThis    = "Std_Expressions";
@@ -1741,10 +1694,10 @@ public:
         eType         = ForEdit;
     }
 
-    virtual const char* className() const {return "StdCmdExpression";}
+    const char* className() const override {return "StdCmdExpression";}
 protected:
 
-    virtual void activated(int iMsg) {
+    void activated(int iMsg) override {
         std::map<App::Document*, std::set<App::DocumentObject*> > objs;
         switch(iMsg) {
         case 0:
@@ -1773,8 +1726,8 @@ protected:
         copyExpressions(objs);
     }
 
-    virtual Gui::Action * createAction(void) {
-        ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    Gui::Action * createAction() override {
+        auto pcAction = new ActionGroup(this, getMainWindow());
         pcAction->setDropDownMenu(true);
         applyCommandData(this->className(), pcAction);
 
@@ -1801,7 +1754,7 @@ protected:
                            << obj->getFullName() << '.' << p->getName()
                            << " (" << obj->Label.getValue() << ')' << std::endl;
                         ss << "##@@";
-                        if(v.second->comment.size()) {
+                        if(!v.second->comment.empty()) {
                             if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
                                     || v.second->comment.find('\r') != std::string::npos)
@@ -1870,7 +1823,7 @@ protected:
             size_t len = (found?m2[0].first:tend) - m[0].second;
             try {
                 App::ExpressionPtr expr(App::Expression::parse(obj,std::string(m[0].second,len)));
-                if(expr && comment.size()) {
+                if(expr && !comment.empty()) {
                     if(comment[0] == '&') {
                         expr->comment = comment.c_str()+1;
                         boost::replace_all(expr->comment,"&amp;","&");
@@ -1904,7 +1857,7 @@ protected:
                         if(iter != old.end() && it->second->isSame(*iter->second))
                             expressions.erase(it);
                     }
-                    if(expressions.size())
+                    if(!expressions.empty())
                         v2.first->setExpressions(std::move(expressions));
                 }
             }
@@ -1917,7 +1870,7 @@ protected:
         }
     }
 
-    bool isActive() {
+    bool isActive() override {
         if(!App::GetApplication().getActiveDocument()) {
             pcActionCopyAll->setEnabled(false);
             pcActionCopySel->setEnabled(false);
@@ -1942,7 +1895,7 @@ protected:
 
 namespace Gui {
 
-void CreateDocCommands(void)
+void CreateDocCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderLinearPattern.h"
 #include "TaskLinearPatternParameters.h"
 

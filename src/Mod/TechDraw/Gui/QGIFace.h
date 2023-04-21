@@ -23,18 +23,15 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
-#include <Qt>
-#include <QGraphicsItem>
-#include <QSvgRenderer>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QByteArray>
-#include <QBrush>
 #include <QPixmap>
-#include <QImage>
 
 #include <Mod/TechDraw/App/HatchLine.h>
-#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIPrimPath.h"
+
 
 namespace TechDrawGui
 {
@@ -50,13 +47,12 @@ class QGIFace : public QGIPrimPath
 {
 public:
     explicit QGIFace(int index = -1);
-    ~QGIFace();
+    ~QGIFace() override;
 
     enum {Type = QGraphicsItem::UserType + 104};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
 public:
     enum fillMode {
@@ -72,27 +68,27 @@ public:
     int getProjIndex() const { return projIndex; }
 
     void draw();
-    virtual void setPrettyNormal() override;
-    virtual void setPrettyPre() override;
-    virtual void setPrettySel() override;
+    void setPrettyNormal() override;
+    void setPrettyPre() override;
+    void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
- 
+
     //shared fill parms
     void isHatched(bool s) {m_isHatched = s; }
-    bool isHatched(void) {return m_isHatched;}
+    bool isHatched() {return m_isHatched;}
     void setFillMode(fillMode m);
 
     //general hatch parms & methods
     void setHatchColor(App::Color c);
     void setHatchScale(double s);
-    
+
     //svg fill parms & methods
     void setHatchFile(std::string fileSpec);
     void loadSvgHatch(std::string fileSpec);
-    void buildSvgHatch(void);
+    void buildSvgHatch();
     void hideSvg(bool b);
-    void clearSvg(void);
+    void clearSvg();
 
     //tiled pixmap fill from svg
     void buildPixHatch();
@@ -101,43 +97,50 @@ public:
     void setGeomHatchWeight(double w) { m_geomWeight = w; }
     void setLineWeight(double w);
 
-    void clearLineSets(void);
+    void clearLineSets();
     void addLineSet(TechDraw::LineSet& ls);
-    void clearFillItems(void);
+    void clearFillItems();
 
     void lineSetToFillItems(TechDraw::LineSet& ls);
-    QGraphicsPathItem* geomToLine(TechDraw::BaseGeom* base, TechDraw::LineSet& ls);
-//    QGraphicsPathItem* geomToOffsetLine(TechDraw::BaseGeom* base, double offset, const TechDraw::LineSet& ls);
-    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeom* base, double offset, TechDraw::LineSet& ls);
+    QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
+//    QGraphicsPathItem* geomToOffsetLine(TechDraw::BaseGeomPtr base, double offset, const TechDraw::LineSet& ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeomPtr base, double offset, TechDraw::LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, TechDraw::DashSpec ds);
 
     //bitmap texture fill parms method
     QPixmap textureFromBitmap(std::string fileSpec);
     QPixmap textureFromSvg(std::string fillSpec);
 
+    //Qt uses clockwise degrees
+    void setHatchRotation(double degrees) { m_hatchRotation = -degrees; }
+    double getHatchRotation() const { return -m_hatchRotation; }
+
+    void setHatchOffset(Base::Vector3d offset) { m_hatchOffset = offset; }
+    Base::Vector3d getHatchOffset() { return m_hatchOffset; }
+
 protected:
     void makeMark(double x, double y);
-    double getXForm(void);
-    void getParameters(void);
+    double getXForm();
+    void getParameters();
 
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
-    double calcOffset(TechDraw::BaseGeom* g,TechDraw::LineSet ls);
+    double calcOffset(TechDraw::BaseGeomPtr g, TechDraw::LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
-    QGCustomRect *m_rect;
+    QGCustomRect* m_svgHatchArea;
 
     QByteArray m_svgXML;
     std::string m_svgCol;
     std::string m_fileSpec;   //for svg & bitmaps
 
-    QGCustomImage* m_image;
+    QGCustomImage* m_imageHatchArea;
 
     double m_fillScale;
     bool m_isHatched;
     QGIFace::fillMode m_mode;
 
-    QPen setGeomPen(void);
+    QPen setGeomPen();
     std::vector<double> decodeDashSpec(TechDraw::DashSpec d);
     std::vector<QGraphicsPathItem*> m_fillItems;
     std::vector<TechDraw::LineSet> m_lineSets;
@@ -148,18 +151,21 @@ protected:
 
     bool m_hideSvgTiles;
 
-
 private:
     QPixmap m_texture;                          //
- 
+
     QPainterPath m_outline;                     //
- 
+
     QPainterPath m_geomhatch;                  //crosshatch fill lines
- 
+
     QColor m_geomColor;                        //color for crosshatch lines
     double m_geomWeight;                       //lineweight for crosshatch lines
     bool m_defClearFace;
     QColor m_defFaceColor;
+
+    double m_hatchRotation;
+    Base::Vector3d m_hatchOffset;
+
 };
 
 }

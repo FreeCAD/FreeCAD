@@ -28,10 +28,8 @@
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
-#include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <boost_signals2.hpp>
 
 class SbVec3f;
 class SoPickedPoint;
@@ -193,7 +191,7 @@ class GuiExport ManualAlignment : public QObject
 
 protected:
     ManualAlignment();
-    ~ManualAlignment();
+    ~ManualAlignment() override;
 
 public:
     static ManualAlignment* instance();
@@ -251,7 +249,7 @@ private:
 
     static ManualAlignment* _instance;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentDeletedObject;
 

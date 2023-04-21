@@ -35,7 +35,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="widget">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <property name="spacing">
          <number>0</number>
@@ -182,7 +182,7 @@
           <string>Revert to last calculated value (as constant)</string>
          </property>
          <property name="autoDefault">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="default">
           <bool>false</bool>
@@ -193,6 +193,12 @@
         <widget class="QPushButton" name="okBtn">
          <property name="text">
           <string>Ok</string>
+         </property>
+         <property name="autoDefault">
+          <bool>true</bool>
+         </property>
+         <property name="default">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

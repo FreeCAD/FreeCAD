@@ -31,22 +31,22 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderCustom : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderCustom);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCustom);
 
 public:
     /// constructor
     ViewProviderCustom();
     /// destructor
-    virtual ~ViewProviderCustom();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderCustom() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPython;
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderCustom> ViewProviderCustomPython;
+using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderPart>;
+using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
 
 } // namespace PartGui
 

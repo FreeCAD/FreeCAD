@@ -26,11 +26,11 @@
 # include <Standard_Failure.hxx>
 #endif
 
-
-#include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Parameter.h>
 #include <Mod/Part/App/modelRefine.h>
+
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
 

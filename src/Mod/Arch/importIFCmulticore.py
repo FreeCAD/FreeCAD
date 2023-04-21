@@ -20,8 +20,6 @@
 # ***************************************************************************
 """FreeCAD IFC importer - Multicore version"""
 
-from __future__ import print_function
-
 import sys
 import time
 import os
@@ -29,7 +27,6 @@ import os
 import FreeCAD
 import Draft
 import Arch
-import importIFC
 import importIFCHelper
 from FreeCAD import Base
 import ArchIFC
@@ -77,7 +74,7 @@ def insert(filename,docname=None,preferences=None):
 
     # setup ifcopenshell
     if not preferences:
-        preferences = importIFC.getPreferences()
+        preferences = importIFCHelper.getPreferences()
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_BREP_DATA,True)
     settings.set(settings.SEW_SHELLS,True)
@@ -106,17 +103,21 @@ def insert(filename,docname=None,preferences=None):
     count = 0
 
     # process objects
-    while True:
-        item = iterator.get()
-        if item:
-            brep = item.geometry.brep_data
-            ifcproduct = ifcfile.by_id(item.guid)
-            obj = createProduct(ifcproduct,brep)
-            progressbar.next(True)
-            writeProgress(count,productscount,starttime)
-            count += 1
-        if not iterator.next():
-            break
+    for item in iterator:
+        brep = item.geometry.brep_data
+        ifcproduct = ifcfile.by_id(item.guid)
+        obj = createProduct(ifcproduct,brep)
+        progressbar.next(True)
+        writeProgress(count,productscount,starttime)
+        count += 1
+
+    # process 2D annotations
+    annotations = ifcfile.by_type("IfcAnnotation")
+    if annotations:
+        print("Processing",str(len(annotations)),"annotations...")
+        ifcscale = importIFCHelper.getScaling(ifcfile)
+        for annotation in annotations:
+            importIFCHelper.createAnnotation(annotation,FreeCAD.ActiveDocument,ifcscale,preferences)
 
     # post-processing
     processRelationships()

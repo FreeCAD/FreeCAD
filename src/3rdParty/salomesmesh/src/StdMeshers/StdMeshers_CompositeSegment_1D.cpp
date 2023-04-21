@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : StdMeshers_CompositeSegment_1D.cxx
 //  Module : SMESH
 //
@@ -125,7 +125,7 @@ namespace {
      * \brief Restore nodes on internal vertices of a complex side
      * \param event - algo_event or compute_event itself (of SMESH_subMesh)
      * \param eventType - ALGO_EVENT or COMPUTE_EVENT (of SMESH_subMesh)
-     * \param subMesh - the submesh where the event occures
+     * \param subMesh - the submesh where the event occurs
      * \param data - listener data stored in the subMesh
      * \param hyp - hypothesis, if eventType is algo_event
      */

@@ -24,9 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QAction>
 #endif
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Origin.h>
+
+#include <Base/Console.h>
+#include <Gui/Selection.h>
+#include <Gui/Command.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureLinearPattern.h>
+#include <Mod/PartDesign/App/FeatureMirrored.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
+#include <Mod/PartDesign/App/FeaturePolarPattern.h>
+#include <Mod/PartDesign/App/FeatureScaled.h>
 
 #include "ui_TaskMultiTransformParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -35,25 +48,6 @@
 #include "TaskPolarPatternParameters.h"
 #include "TaskScaledParameters.h"
 #include "Utils.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/PartDesign/App/FeatureMirrored.h>
-#include <Mod/PartDesign/App/FeatureLinearPattern.h>
-#include <Mod/PartDesign/App/FeaturePolarPattern.h>
-#include <Mod/PartDesign/App/FeatureScaled.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -72,8 +66,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    connect(ui->buttonAddFeature, &QToolButton::toggled,
+            this, &TaskMultiTransformParameters::onButtonAddFeature);
+    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
+            this, &TaskMultiTransformParameters::onButtonRemoveFeature);
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -83,50 +79,51 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    connect(action, &QAction::triggered,
+            this, &TaskMultiTransformParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskMultiTransformParameters::indexesMoved);
 
     // Create a context menu for the listview of transformation features
     action = new QAction(tr("Edit"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformEdit()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformEdit);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Delete"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformDelete()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformDelete);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add mirrored transformation"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddMirrored()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddMirrored);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add linear pattern"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddLinearPattern()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddLinearPattern);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add polar pattern"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddPolarPattern()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddPolarPattern);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add scaled transformation"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onTransformAddScaled()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onTransformAddScaled);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Move up"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onMoveUp()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onMoveUp);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Move down"), ui->listTransformFeatures);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onMoveDown()));
+    action->connect(action, &QAction::triggered,
+                    this, &TaskMultiTransformParameters::onMoveDown);
     ui->listTransformFeatures->addAction(action);
     ui->listTransformFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskMultiTransformParameters::onUpdateView);
 
-    connect(ui->listTransformFeatures, SIGNAL(activated(QModelIndex)),
-            this, SLOT(onTransformActivated(QModelIndex)));
+    connect(ui->listTransformFeatures, &QListWidget::activated,
+            this, &TaskMultiTransformParameters::onTransformActivated);
 
     // Get the transformFeatures data
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
@@ -137,10 +134,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     ui->listTransformFeatures->clear();
     for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
     {
-        if ((*i) != NULL)
+        if (*i)
             ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
     }
-    if (transformFeatures.size() > 0) {
+    if (!transformFeatures.empty()) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
         editHint = false;
     } else {
@@ -154,7 +151,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
         const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
+        if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -194,7 +191,7 @@ void TaskMultiTransformParameters::clearButtons()
     ui->buttonRemoveFeature->setChecked(false);
 }
 
-void TaskMultiTransformParameters::onFeatureDeleted(void)
+void TaskMultiTransformParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -221,9 +218,9 @@ void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
         exitSelectionMode();
-        disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
+        disconnect(ui->checkBoxUpdateView, nullptr, subTask, nullptr);
         delete subTask;
-        subTask = NULL;
+        subTask = nullptr;
     }
 }
 
@@ -275,8 +272,9 @@ void TaskMultiTransformParameters::onTransformEdit()
     else
         return; // TODO: Show an error?
 
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            subTask, SLOT(onUpdateView(bool)));
+    subTask->setEnabledTransaction(isEnabledTransaction());
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            subTask, &TaskTransformedParameters::onUpdateView);
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index)
@@ -293,7 +291,9 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -319,7 +319,9 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -355,7 +357,9 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -381,7 +385,9 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -449,6 +455,9 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
+    if (transformFeatures.empty())
+        return;
+
     App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);
     QListWidgetItem* item = new QListWidgetItem(*(ui->listTransformFeatures->item(row)));
@@ -486,7 +495,8 @@ void TaskMultiTransformParameters::onMoveDown()
     moveTransformFeature(+1);
 }
 
-void TaskMultiTransformParameters::onSubTaskButtonOK() {
+void TaskMultiTransformParameters::onSubTaskButtonOK()
+{
     closeSubTask();
 }
 
@@ -494,12 +504,11 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
 {
     blockUpdate = !on;
     if (on) {
-        setupTransaction();
         recomputeFeature();
     }
 }
 
-const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
+const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures() const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     return pcMultiTransform->Transformations.getValues();
@@ -539,6 +548,7 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
     : TaskDlgTransformedParameters(MultiTransformView)
 {
     parameter = new TaskMultiTransformParameters(MultiTransformView);
+    parameter->setEnabledTransaction(false);
 
     Content.push_back(parameter);
 }
@@ -553,7 +563,7 @@ bool TaskDlgMultiTransformParameters::accept()
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Transformations = [";
     for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
     {
-        if ((*it) != NULL)
+        if (*it)
             str << Gui::Command::getObjectCmd(*it) << ",";
     }
     str << "]";

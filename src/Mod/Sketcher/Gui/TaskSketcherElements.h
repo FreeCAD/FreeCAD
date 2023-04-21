@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherElements_H
 #define GUI_TASKVIEW_TaskSketcherElements_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
+#include <QStyledItemDelegate>
 #include <QListWidget>
-#include <QIcon>
+
+#include <boost_signals2.hpp>
+
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace App {
 class Property;
@@ -39,22 +41,31 @@ namespace SketcherGui {
 class ViewProviderSketch;
 class Ui_TaskSketcherElements;
 
+
+
+class ElementItem;
+class ElementView;
+
+// Struct to identify the selection/preselection of a subelement of the item
+enum class SubElementType {
+    edge,
+    start,
+    end,
+    mid,
+    none
+};
+
 class ElementView : public QListWidget
 {
     Q_OBJECT
 
 public:
-    explicit ElementView(QWidget *parent = 0);
-    ~ElementView();
-
-
-Q_SIGNALS:
-    void onFilterShortcutPressed();
-    void signalCloseShape();
+    explicit ElementView(QWidget *parent = nullptr);
+    ~ElementView() override;
+    ElementItem* itemFromIndex(const QModelIndex& index);
 
 protected:
-    void contextMenuEvent (QContextMenuEvent* event);
-    void keyPressEvent(QKeyEvent * event);
+    void contextMenuEvent (QContextMenuEvent* event) override;
 
 protected Q_SLOTS:
     // Constraints
@@ -82,60 +93,57 @@ protected Q_SLOTS:
     void doToggleConstruction();
 
     // Acelerators
-    void doCloseShape();
-    void doConnect();
     void doSelectConstraints();
     void doSelectOrigin();
     void doSelectHAxis();
     void doSelectVAxis();
     void deleteSelectedItems();
+
+    void onIndexHovered(QModelIndex index);
+    void onIndexChecked(QModelIndex, Qt::CheckState state);
+
+Q_SIGNALS:
+    void onItemHovered(QListWidgetItem *);
+
+private:
+    void changeLayer(int layer);
 };
+
+class ElementFilterList;
 
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
-    class MultIcon {
-        
-    public:
-        MultIcon(const char*);
-        
-        QIcon Normal;
-        QIcon Construction;
-        QIcon External;
-        
-        QIcon getIcon(bool construction, bool external) const;
-    };
-    
 public:
-    TaskSketcherElements(ViewProviderSketch *sketchView);
-    ~TaskSketcherElements();
+    explicit TaskSketcherElements(ViewProviderSketch *sketchView);
+    ~TaskSketcherElements() override;
 
     /// Observer message from the Selection
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
-    void slotElementsChanged(void);
-    void updateIcons(int element);
-    void updatePreselection();
-    void updateVisibility(int filterindex);
-    void setItemVisibility(int elementindex,int filterindex);
+    void slotElementsChanged();
+    void updateVisibility();
+    void setItemVisibility(QListWidgetItem* item);
     void clearWidget();
+    void createFilterButtonActions();
+    void createSettingsButtonActions();
+    void connectSignals();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void);
-    void on_listWidgetElements_itemEntered(QListWidgetItem *item);
-    void on_listWidgetElements_filterShortcutPressed();
-    void on_listWidgetElements_currentFilterChanged ( int index );
-    void on_listWidgetElements_currentModeFilterChanged ( int index );
-    void on_namingBox_stateChanged(int state);
-    void on_autoSwitchBox_stateChanged(int state);
+    void onListWidgetElementsItemPressed(QListWidgetItem* item);
+    void onListWidgetElementsItemEntered(QListWidgetItem *item);
+    void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
+    void onSettingsExtendedInformationChanged();
+    void onFilterBoxStateChanged(int val);
+    void onListMultiFilterItemChanged(QListWidgetItem* item);
 
 protected:
-    void changeEvent(QEvent *e);
-    void leaveEvent ( QEvent * event );
+    void changeEvent(QEvent *e) override;
+    void leaveEvent ( QEvent * event ) override;
     ViewProviderSketch *sketchView;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectionElementsChanged;
 
 private:
@@ -143,11 +151,12 @@ private:
     std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
+    int previouslyHoveredItemIndex;
+    SubElementType previouslyHoveredType;
+
+    ElementFilterList* filterList;
 
     bool isNamingBoxChecked;
-    bool isautoSwitchBoxChecked;
-
-    bool inhibitSelectionUpdate;
 };
 
 } //namespace SketcherGui

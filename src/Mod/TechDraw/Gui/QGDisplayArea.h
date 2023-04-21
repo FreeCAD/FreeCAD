@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGDISPLAYAREA_H
 #define DRAWINGGUI_QGDISPLAYAREA_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QPointF>
 #include <QRectF>
@@ -45,7 +47,7 @@ public:
     int type() const { return Type;}
     virtual QRectF boundingRect() const;
 
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

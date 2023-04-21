@@ -20,30 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-
 #include <Base/PlacementPy.h>
-#include <Base/Placement.h>
-#include <Base/Exception.h>
 #include <Base/UnitsApi.h>
-
-#include "Mod/Robot/App/Waypoint.h"
-
 
 // inclusion of the generated files (generated out of WaypointPy.xml)
 #include "WaypointPy.h"
 #include "WaypointPy.cpp"
 
+
 using namespace Robot;
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
-std::string WaypointPy::representation(void) const
+std::string WaypointPy::representation() const
 {
     double A,B,C;
-    //PlacementPy::PointerType ptr = reinterpret_cast<PlacementPy::PointerType>(_pcTwinPointer);
     std::stringstream str;
     getWaypointPtr()->EndPos.getRotation().getYawPitchRoll(A,B,C);
     str.precision(5);
@@ -83,66 +76,66 @@ PyObject *WaypointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 // constructor method
 int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
 {
-    PyObject *pos;
-    char *name="P";
-    char *type = "PTP";
-    PyObject *vel = 0;
-    PyObject *acc = 0;
+    PyObject* pos;
+    char* name = "P";
+    char* type = "PTP";
+    PyObject* vel = nullptr;
+    PyObject* acc = nullptr;
     int cont = 0;
-    int tool=0;
-    int base=0;
+    int tool = 0;
+    int base = 0;
 
-    static char *kwlist[] = {"Pos", "type","name", "vel", "cont", "tool", "base", "acc" ,NULL};
+    static char* kwlist[] = { "Pos", "type","name", "vel", "cont", "tool", "base", "acc" ,nullptr };
 
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "O!|ssOiiiO", kwlist,
-                                      &(Base::PlacementPy::Type), &pos, // the placement object
-                                      &type, &name, &vel, &cont, &tool, &base, &acc ))
+        &(Base::PlacementPy::Type), &pos, // the placement object
+        &type, &name, &vel, &cont, &tool, &base, &acc))
         return -1;
 
     Base::Placement TempPos = *static_cast<Base::PlacementPy*>(pos)->getPlacementPtr();
     getWaypointPtr()->EndPos = TempPos;
-    getWaypointPtr()->Name   = name;
+    getWaypointPtr()->Name = name;
     std::string typeStr(type);
-    if(typeStr=="PTP")
+    if (typeStr == "PTP")
         getWaypointPtr()->Type = Waypoint::PTP;
-    else if(typeStr=="LIN")
+    else if (typeStr == "LIN")
         getWaypointPtr()->Type = Waypoint::LINE;
-    else if(typeStr=="CIRC")
+    else if (typeStr == "CIRC")
         getWaypointPtr()->Type = Waypoint::CIRC;
-    else if(typeStr=="WAIT")
+    else if (typeStr == "WAIT")
         getWaypointPtr()->Type = Waypoint::WAIT;
-    else 
+    else
         getWaypointPtr()->Type = Waypoint::UNDEF;
 
-    if(vel == 0)
-        switch (getWaypointPtr()->Type){
-            case Waypoint::PTP:
-                getWaypointPtr()->Velocity = 100;
-                break;
-            case Waypoint::LINE:
-                getWaypointPtr()->Velocity = 2000;
-                break;
-            case Waypoint::CIRC:
-                getWaypointPtr()->Velocity = 2000;
-                break;
-            default:
-                getWaypointPtr()->Velocity = 0;
+    if (!vel)
+        switch (getWaypointPtr()->Type) {
+        case Waypoint::PTP:
+            getWaypointPtr()->Velocity = 100;
+            break;
+        case Waypoint::LINE:
+            getWaypointPtr()->Velocity = 2000;
+            break;
+        case Waypoint::CIRC:
+            getWaypointPtr()->Velocity = 2000;
+            break;
+        default:
+            getWaypointPtr()->Velocity = 0;
         }
     else
-        getWaypointPtr()->Velocity = Base::UnitsApi::toDbl(vel,Base::Unit::Velocity);
-    getWaypointPtr()->Cont = cont?true:false;
+        getWaypointPtr()->Velocity = Base::UnitsApi::toDouble(vel, Base::Unit::Velocity);
+    getWaypointPtr()->Cont = cont ? true : false;
     getWaypointPtr()->Tool = tool;
     getWaypointPtr()->Base = base;
-    if(acc == 0)
-        getWaypointPtr()->Accelaration  = 100;
+    if (!acc)
+        getWaypointPtr()->Acceleration = 100;
     else
-        getWaypointPtr()->Accelaration  = Base::UnitsApi::toDbl(acc,Base::Unit::Acceleration);
+        getWaypointPtr()->Acceleration = Base::UnitsApi::toDouble(acc, Base::Unit::Acceleration);
 
     return 0;
 }
 
 
-Py::Float WaypointPy::getVelocity(void) const
+Py::Float WaypointPy::getVelocity() const
 {
     return Py::Float(getWaypointPtr()->Velocity);
 }
@@ -153,7 +146,7 @@ void  WaypointPy::setVelocity(Py::Float arg)
 }
 
 
-Py::String WaypointPy::getName(void) const
+Py::String WaypointPy::getName() const
 {
     return Py::String(getWaypointPtr()->Name.c_str());
 }
@@ -163,7 +156,7 @@ void WaypointPy::setName(Py::String arg)
     getWaypointPtr()->Name = arg.as_std_string("ascii");
 }
 
-Py::String WaypointPy::getType(void) const
+Py::String WaypointPy::getType() const
 {
     if(getWaypointPtr()->Type == Waypoint::PTP)
         return Py::String("PTP");
@@ -195,20 +188,19 @@ void WaypointPy::setType(Py::String arg)
 }
 
 
-Py::Object WaypointPy::getPos(void) const
+Py::Object WaypointPy::getPos() const
 {
     return Py::Object(new PlacementPy(new Placement(getWaypointPtr()->EndPos)),true);
 }
 
 void WaypointPy::setPos(Py::Object arg)
 {
-    union PyType_Object pyType = {&(Base::PlacementPy::Type)};
-    Py::Type PlacementType(pyType.o);
+    Py::Type PlacementType(Base::getTypeAsObject(&(Base::PlacementPy::Type)));
     if(arg.isType(PlacementType))
         getWaypointPtr()->EndPos = *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr();
 }
 
-Py::Boolean WaypointPy::getCont(void) const
+Py::Boolean WaypointPy::getCont() const
 {
     return Py::Boolean(getWaypointPtr()->Cont);
 }
@@ -218,7 +210,7 @@ void WaypointPy::setCont(Py::Boolean arg)
     getWaypointPtr()->Cont = (bool)arg;
 }
 
-Py::Long WaypointPy::getTool(void) const
+Py::Long WaypointPy::getTool() const
 {
     return Py::Long((long)getWaypointPtr()->Tool);
 }
@@ -232,7 +224,7 @@ void WaypointPy::setTool(Py::Long arg)
         throw Py::ValueError("negative tool not allowed!");
 }
 
-Py::Long WaypointPy::getBase(void) const
+Py::Long WaypointPy::getBase() const
 {
     return Py::Long((long)getWaypointPtr()->Base);
 }
@@ -248,7 +240,7 @@ void WaypointPy::setBase(Py::Long arg)
 
 PyObject *WaypointPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int WaypointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qapplication.h>
-# include <qevent.h>
-# include <qpainter.h>
-# include <qpixmap.h>
+# include <QPixmap>
 # include <QMenu>
 # include <Inventor/SbBox.h>
 # include <Inventor/events/SoEvent.h>
@@ -36,16 +32,13 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <QtOpenGL.h>
-#include <Base/Console.h>
-
 #include "MouseSelection.h"
-#include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
-AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
+AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(nullptr)
 {
     m_iXold = 0;
     m_iYold = 0;
@@ -63,14 +56,14 @@ void AbstractMouseSelection::grabMouseModel(Gui::View3DInventorViewer* viewer)
     initialize();
 }
 
-void AbstractMouseSelection::releaseMouseModel()
+void AbstractMouseSelection::releaseMouseModel(bool abort)
 {
     if (_pcView3D) {
         // do termination of your mousemodel
-        terminate();
+        terminate(abort);
 
         _pcView3D->getWidget()->setCursor(m_cPrevCursor);
-        _pcView3D = 0;
+        _pcView3D = nullptr;
     }
 }
 
@@ -93,7 +86,7 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
     y = h-y; // the origin is at the left bottom corner (instead of left top corner)
 
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent* const event = (const SoMouseButtonEvent*) ev;
+        const auto event = (const SoMouseButtonEvent*) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
         if (press) {
@@ -124,87 +117,6 @@ BaseMouseSelection::BaseMouseSelection()
 {
 }
 
-// -----------------------------------------------------------------------------------
-#if 0
-/* XPM */
-static const char* cursor_polypick[]= {
-    "32 32 2 1",
-    "# c #646464",
-    ". c None",
-    "................................",
-    "................................",
-    ".......#........................",
-    ".......#........................",
-    ".......#........................",
-    "................................",
-    ".......#........................",
-    "..###.###.###...................",
-    ".......#...............#........",
-    "......................##........",
-    ".......#..............#.#.......",
-    ".......#.............#..#.......",
-    ".......#............#...#.......",
-    "....................#....#......",
-    "...................#.....#......",
-    "..................#......#......",
-    "............#.....#.......#.....",
-    "...........#.##..#........#.....",
-    "..........#....##.........#.....",
-    ".........#...............#......",
-    "........#................#......",
-    ".......#................#.......",
-    "......#.................#.......",
-    ".....#.................#........",
-    "....#####..............#........",
-    ".........#########....#.........",
-    "..................#####.........",
-    "................................",
-    "................................",
-    "................................",
-    "................................",
-    "................................"
-};
-
-/* XPM */
-static const char* cursor_scissors[]= {
-    "32 32 3 1",
-    "# c #000000",
-    "+ c #ffffff",
-    ". c None",
-    "....+...........................",
-    "....+...........................",
-    "....+...........................",
-    "................................",
-    "+++.+.+++.......................",
-    "................................",
-    "....+...........................",
-    "....+...................#####...",
-    "....+.................########..",
-    ".....................#########..",
-    ".....###............##########..",
-    "....##++##.........#####...###..",
-    "...#++++++##.......####...####..",
-    "...##+++++++#......####.######..",
-    ".....#+++++++##....##########...",
-    "......##+++++++##.##########....",
-    "........##+++++++#########......",
-    "..........#+++++++#####.........",
-    "...........##+++++####..........",
-    "...........##+++++###...........",
-    ".........##+++++++########......",
-    "........##+++++++###########....",
-    "......##+++++++##.###########...",
-    "....##+++++++##....##########...",
-    "...#+++++++##......####..#####..",
-    "...#++++++#........#####..####..",
-    "....##++##..........#####..###..",
-    "......#.............##########..",
-    ".....................#########..",
-    ".......................######...",
-    "................................",
-    "................................"
-};
-#endif
 static const char* cursor_cut_scissors[]= {
     "32 32 6 1",
     "a c #800000",
@@ -278,8 +190,10 @@ void PolyPickerSelection::initialize()
     lastConfirmed = false;
 }
 
-void PolyPickerSelection::terminate()
+void PolyPickerSelection::terminate(bool abort)
 {
+    Q_UNUSED(abort)
+
     _pcView3D->removeGraphicsItem(&polyline);
     _pcView3D->setRenderType(View3DInventorViewer::Native);
     _pcView3D->redraw();
@@ -671,8 +585,10 @@ void RubberbandSelection::initialize()
     _pcView3D->redraw();
 }
 
-void RubberbandSelection::terminate()
+void RubberbandSelection::terminate(bool abort)
 {
+    Q_UNUSED(abort)
+
     _pcView3D->removeGraphicsItem(&rubberband);
     if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Native);
@@ -763,14 +679,15 @@ BoxZoomSelection::~BoxZoomSelection()
 {
 }
 
-void BoxZoomSelection::terminate()
+void BoxZoomSelection::terminate(bool abort)
 {
-    RubberbandSelection::terminate();
-
-    int xmin = std::min<int>(m_iXold, m_iXnew);
-    int xmax = std::max<int>(m_iXold, m_iXnew);
-    int ymin = std::min<int>(m_iYold, m_iYnew);
-    int ymax = std::max<int>(m_iYold, m_iYnew);
-    SbBox2s box(xmin, ymin, xmax, ymax);
-    _pcView3D->boxZoom(box);
+    RubberbandSelection::terminate(abort);
+    if (!abort) {
+        int xmin = std::min<int>(m_iXold, m_iXnew);
+        int xmax = std::max<int>(m_iXold, m_iXnew);
+        int ymin = std::min<int>(m_iYold, m_iYnew);
+        int ymax = std::max<int>(m_iYold, m_iYnew);
+        SbBox2s box(xmin, ymin, xmax, ymax);
+        _pcView3D->boxZoom(box);
+    }
 }

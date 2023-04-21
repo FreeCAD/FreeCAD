@@ -24,13 +24,7 @@
 #ifndef APP_PROPERTFILE_H
 #define APP_PROPERTFILE_H
 
-// Std. configurations
-
-
 #include <string>
-#include <list>
-#include <vector>
-#include <boost/filesystem/path.hpp>
 
 #include "PropertyStandard.h"
 
@@ -47,17 +41,18 @@ namespace App
   */
 class AppExport PropertyFile : public PropertyString
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyFile(void);
-    virtual ~PropertyFile();
+    PropertyFile();
+    ~PropertyFile() override;
 
-    virtual const char* getEditorName(void) const
+    const char* getEditorName() const override
     { return "Gui::PropertyEditor::PropertyFileItem"; }
 
+    void setPyObject(PyObject *) override;
     virtual void setFilter(const std::string filter);
-    virtual std::string getFilter(void) const;
+    virtual std::string getFilter() const;
 
 private:
     std::string m_filter;
@@ -79,50 +74,65 @@ private:
  */
 class AppExport PropertyFileIncluded : public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyFileIncluded(void);
-    virtual ~PropertyFileIncluded();
+    PropertyFileIncluded();
+    ~PropertyFileIncluded() override;
 
-    void setValue(const char* sFile, const char* sName=0);
-    const char* getValue(void) const;
+    void setValue(const char* sFile, const char* sName=nullptr);
+    const char* getValue() const;
 
-    virtual const char* getEditorName(void) const
+    const char* getEditorName() const override
     { return "Gui::PropertyEditor::PropertyTransientFileItem"; }
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
-    
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
+
+    Property *Copy() const override;
+    void Paste(const Property &from) override;
+    unsigned int getMemSize () const override;
+
+    bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
+        return getTypeId() == other.getTypeId()
+            && _BaseFileName == static_cast<decltype(this)>(&other)->_BaseFileName
+            && _OriginalName == static_cast<decltype(this)>(&other)->_OriginalName
+            && _cValue == static_cast<decltype(this)>(&other)->_cValue;
+    }
 
     /** get a temp file name in the transient path of the document.
       * Using this file for new Version of the file and set 
       * this file with setValue() is the fastest way to change
       * the File.
       */
-    std::string getExchangeTempFile(void) const;
-    std::string getOriginalFileName(void) const;
+    std::string getExchangeTempFile() const;
+    std::string getOriginalFileName() const;
 
-    bool isEmpty(void) const {return _cValue.empty();}
+    bool isEmpty() const {return _cValue.empty();}
+
+    void setFilter(std::string filter);
+    std::string getFilter() const;
 
 protected:
     // get the transient path if the property is in a DocumentObject
-    std::string getDocTransientPath(void) const;
+    std::string getDocTransientPath() const;
     std::string getUniqueFileName(const std::string&, const std::string&) const;
-    void aboutToSetValue(void);
+    void aboutToSetValue() override;
 
 protected:
     mutable std::string _cValue;
     mutable std::string _BaseFileName;
     mutable std::string _OriginalName;
+
+private:
+    std::string m_filter;
 };
 
 

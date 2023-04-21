@@ -25,16 +25,12 @@
 #define GUI_TASKVIEW_TaskPrimitiveParameters_H
 
 #include <memory>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
-#include "TaskSketchBasedParameters.h"
 #include "ViewProviderPrimitive.h"
 #include "TaskDatumParameters.h"
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
 
 namespace App {
 class Property;
@@ -44,7 +40,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 class Ui_DlgPrimitives;
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
                           public Gui::DocumentObserver
@@ -52,8 +48,8 @@ class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
     Q_OBJECT
 
 public:
-    TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
-    ~TaskBoxPrimitives();
+    explicit TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = nullptr);
+    ~TaskBoxPrimitives() override;
 
     bool setPrimitive(App::DocumentObject *);
 
@@ -103,7 +99,7 @@ public Q_SLOTS:
 
 private:
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 private:
     QWidget* proxy;
@@ -116,14 +112,14 @@ class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
-    ~TaskPrimitiveParameters();
+    explicit TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
+    ~TaskPrimitiveParameters() override;
 
 protected:
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
-    virtual bool accept();
-    virtual bool reject();
+    bool accept() override;
+    bool reject() override;
 
 private:
     TaskBoxPrimitives*     primitive;

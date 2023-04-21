@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="DocumentObjectExtensionPy"  
-    Name="AttachExtensionPy" 
-    Twin="AttachExtension" 
-    TwinPointer="AttachExtension" 
-    Include="Mod/Part/App/AttachExtension.h" 
-    Namespace="Part" 
-    FatherInclude="App/DocumentObjectExtensionPy.h" 
+  <PythonExport
+    Father="DocumentObjectExtensionPy"
+    Name="AttachExtensionPy"
+    Twin="AttachExtension"
+    TwinPointer="AttachExtension"
+    Include="Mod/Part/App/AttachExtension.h"
+    Namespace="Part"
+    FatherInclude="App/DocumentObjectExtensionPy.h"
     FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />

@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
-#define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#define DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
-#include <QGraphicsItemGroup>
-#include <QObject>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIView.h"
 
@@ -40,19 +39,12 @@ class TechDrawGuiExport  QGIViewCollection : public QGIView
 {
 public:
     QGIViewCollection();
-    ~QGIViewCollection() = default;
+    ~QGIViewCollection() override = default;
 
     enum {Type = QGraphicsItem::UserType + 110};
     int type() const override { return Type;}
-
-    virtual void updateView(bool update = false) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-
 };
 
 } // namespace MDIViewPageGui
 
-#endif // _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#endif // DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H

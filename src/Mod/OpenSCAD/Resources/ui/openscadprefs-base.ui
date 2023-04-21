@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
-    <height>629</height>
+    <width>577</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
@@ -36,7 +45,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -166,7 +175,79 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Send to OpenSCAD via:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="guiprefcomboSendVia">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>The transfer mechanism for getting data to and from OpenSCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>transfermechanism</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/OpenSCAD</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Standard temp directory</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>User-specified directory</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>stdout pipe (requires OpenSCAD &gt;= 2021.1)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="transferDirectoryLayout">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Transfer directory</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>The path to the directory for transferring files to and from OpenSCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>transferdirectory</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/OpenSCAD</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -182,7 +263,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>maximum fragment size</string>
+           <string>Maximum fragment size</string>
           </property>
          </widget>
         </item>
@@ -215,7 +296,7 @@
            <string>Minimum angle for a fragment</string>
           </property>
           <property name="suffix">
-           <string>°</string>
+           <string notr="true">°</string>
           </property>
           <property name="minimum">
            <double>0.010000000000000</double>
@@ -301,7 +382,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>convexity</string>
+           <string>Convexity</string>
           </property>
          </widget>
         </item>
@@ -355,6 +436,23 @@
           </property>
          </spacer>
         </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_4">
+          <property name="toolTip">
+           <string>Deflection</string>
+          </property>
+          <property name="text">
+           <string>deflection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Triangulation settings</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2a">
           <property name="toolTip">
@@ -374,23 +472,6 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/OpenSCAD</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_4">
-          <property name="toolTip">
-           <string>Deflection</string>
-          </property>
-          <property name="text">
-           <string>deflection</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Triangulation settings</string>
           </property>
          </widget>
         </item>
@@ -440,6 +521,11 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

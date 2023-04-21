@@ -24,14 +24,12 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
-import sys
 from os.path import join
 
 import FreeCAD
 
 
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 # TODO:
@@ -239,6 +237,8 @@ def get_material_template(withSpaces=False):
             new_group[gg] = {}
             for proper in list(group[gg].keys()):
                 new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
+                # strip underscores of vectorial properties
+                new_proper = new_proper.replace("_", " ")
                 new_group[gg][new_proper] = group[gg][proper]
             new_template.append(new_group)
         template_data = new_template
@@ -344,7 +344,7 @@ def get_known_material_quantity_parameter():
     return known_quantities
 
 
-# ***** debug known and not known material parameter *********************************************
+# ***** debug known and unknown material parameter *********************************************
 def get_and_output_all_carddata(cards):
     print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
     # get all registered material property keys
@@ -441,8 +441,11 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
 # ***** material parameter units *********************************************
 def check_parm_unit(param):
     # check if this parameter is known to FreeCAD unit system
+    # for properties with underscores (vectorial values), we must
+    # strip the part after the first underscore to obtain the bound unit
     from FreeCAD import Units
-    # FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if param.find("_") != -1:
+        param = param.split("_")[0]
     if hasattr(Units, param):
         return True
     else:
@@ -474,7 +477,7 @@ def check_value_unit(param, value):
                     return True
                 else:
                     FreeCAD.Console.PrintError(
-                        '{} Not known problem in unit conversion.\n'
+                        '{} Unknown problem in unit conversion.\n'
                         .format(some_text)
                     )
             except ValueError:
@@ -485,23 +488,23 @@ def check_value_unit(param, value):
                 )
             except Exception:
                 FreeCAD.Console.PrintError(
-                    '{} Not known problem.\n'
+                    '{} Unknown problem.\n'
                     .format(some_text)
                 )
         except ValueError:
             unitproblem = value.split()[-1]
             FreeCAD.Console.PrintError(
-                '{} Unit {} is not known by FreeCAD.\n'
+                '{} Unit {} is unknown to FreeCAD.\n'
                 .format(some_text, unitproblem)
             )
         except Exception:
             FreeCAD.Console.PrintError(
-                '{} Not known problem.\n'
+                '{} Unknown problem.\n'
                 .format(some_text)
             )
     else:
         FreeCAD.Console.PrintError(
-            'Parameter {} is not known to FreeCAD unit system.\n'
+            'Parameter {} is unknown to the FreeCAD unit system.\n'
             .format(param)
         )
     return False
@@ -538,7 +541,7 @@ def output_parm_unit_info(param):
 
     else:
         FreeCAD.Console.PrintMessage(
-            'Parameter {} is NOT known to FreeCAD unit system.'
+            'Parameter {} is Unknown to the FreeCAD unit system.'
             .format(param)
         )
 
@@ -586,26 +589,26 @@ def output_value_unit_info(param, value):
                 )
             except Exception:
                 FreeCAD.Console.PrintError(
-                    '{} Not known problem.\n'
+                    '{} Unknown problem.\n'
                     .format(some_text)
                 )
 
         except ValueError:
             unitproblem = value.split()[-1]
             FreeCAD.Console.PrintError(
-                '{} Unit {} is not known by FreeCAD.\n'
+                '{} Unit {} is unknown by FreeCAD.\n'
                 .format(some_text, unitproblem)
             )
 
         except Exception:
             FreeCAD.Console.PrintError(
-                '{} Not known problem.\n'
+                '{} Unknown problem.\n'
                 .format(some_text)
             )
 
     else:
         FreeCAD.Console.PrintMessage(
-            'Parameter {} is not known to FreeCAD unit system.'
+            'Parameter {} is unknown to the FreeCAD unit system.'
             .format(param)
         )
 
@@ -729,6 +732,15 @@ checkvalueunit('FractureToughness', '25')
 checkvalueunit('Density', '1 kg/m^3')
 checkvalueunit('Density', '0 kg/m^3')
 
+# syntax error in unit system, only the try: except in the checkvalueunit let it work
+checkvalueunit('ThermalConductivity', '0.02583 W/m/K')
+checkvalueunit('ThermalConductivity', '123abc456 W/m/K')
+checkvalueunit('ThermalConductivity', '25.83e−3 W/m/K')
+checkvalueunit('ThermalConductivity', '25.83e-3 W/m/K')
+from FreeCAD import Units
+Units.Quantity('25.83e−3 W/m/K')
+
+
 # test mat unit properties
 mat = {
     'Name': 'Concrete',
@@ -746,7 +758,7 @@ mat = {
 from materialtools.cardutils import check_mat_units as checkunits
 checkunits(mat)
 
-# not known quantities, returns True too
+# unknown quantities, returns True too
 mat = {
     'Name': 'Concrete',
     'FractureToughness' : '1',

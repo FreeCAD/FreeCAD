@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/DocumentObjectPy.h>
 
 #include "FemSetElementsObject.h"
-#include <App/DocumentObjectPy.h>
+
 
 using namespace Fem;
 using namespace App;
@@ -43,7 +41,7 @@ FemSetElementsObject::~FemSetElementsObject()
 {
 }
 
-short FemSetElementsObject::mustExecute(void) const
+short FemSetElementsObject::mustExecute() const
 {
     return 0;
 }

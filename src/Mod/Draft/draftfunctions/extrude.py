@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to create an extrusion object from a profile."""
 ## @package extrude
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to create an extrusion object from a profile.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
@@ -33,7 +33,7 @@ import draftutils.gui_utils as gui_utils
 
 def extrude(obj, vector, solid=False):
     """extrude(object, vector, [solid])
-    
+
     Create a Part::Extrusion object from a given object.
 
     Parameters
@@ -42,7 +42,7 @@ def extrude(obj, vector, solid=False):
 
     vector : Base.Vector
         The extrusion direction and module.
-    
+
     solid : bool
         TODO: describe.
     """

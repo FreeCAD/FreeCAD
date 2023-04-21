@@ -20,25 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
-#include "ViewProviderPath.h"
+
 #include "DlgSettingsPathColor.h"
+#include "ViewProviderArea.h"
+#include "ViewProviderPath.h"
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
-#include "ViewProviderArea.h"
+
 
 // use a different name to CreateCommand()
-void CreatePathCommands(void);
+void CreatePathCommands();
 
 void loadPathResource()
 {
@@ -56,7 +55,7 @@ PyMOD_INIT_FUNC(PathGui)
 {
      if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     try {
         Base::Interpreter().runString("import PartGui");
@@ -64,7 +63,7 @@ PyMOD_INIT_FUNC(PathGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = PathGui::initModule();
     Base::Console().Log("Loading GUI of Path module... done\n");

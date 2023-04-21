@@ -1,8 +1,0 @@
-#include "../src/iistaskpanel.h"
-#include "../src/iistaskpanelscheme.h"
-#include "../src/iiswinxptaskpanelscheme.h"
-#include "../src/iisfreecadscheme.h"
-#include "../src/iistaskbox.h"
-#include "../src/iistaskheader.h"
-#include "../src/iistaskgroup.h"
-#include "../src/iisiconlabel.h"

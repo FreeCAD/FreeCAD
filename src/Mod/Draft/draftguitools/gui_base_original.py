@@ -137,7 +137,6 @@ class DraftTool:
         self.ui = Gui.draftToolBar
         self.featureName = name
         self.ui.sourceCmd = self
-        self.ui.show()
         if not noplanesetup:
             App.DraftWorkingPlane.setup()
         self.node = []
@@ -149,12 +148,12 @@ class DraftTool:
         if utils.get_param("showPlaneTracker", False):
             self.planetrack = trackers.PlaneTracker()
         if hasattr(Gui, "Snapper"):
-            Gui.Snapper.setTrackers()
+            Gui.Snapper.setTrackers(tool=True)
 
         _msg("{}".format(16*"-"))
         _msg("GuiCommand: {}".format(self.featureName))
 
-    def finish(self, close=False):
+    def finish(self, cont=False):
         """Finish the current command.
 
         These are general cleaning tasks that are performed
@@ -191,7 +190,13 @@ class DraftTool:
                 pass
             self.call = None
         if self.commitList:
-            todo.ToDo.delayCommit(self.commitList)
+            last_cmd = self.commitList[-1][1][-1]
+            if last_cmd.find("recompute") >= 0:
+                self.commitList[-1] = (self.commitList[-1][0], self.commitList[-1][1][:-1])
+                todo.ToDo.delayCommit(self.commitList)
+                todo.ToDo.delayAfter(Gui.doCommand, last_cmd)
+            else:
+                todo.ToDo.delayCommit(self.commitList)
         self.commitList = []
 
     def commit(self, name, func):
@@ -303,4 +308,9 @@ class Modifier(DraftTool):
         super(Modifier, self).__init__()
         self.copymode = False
 
+    def Activated(self, name="None", noplanesetup=False, is_subtool=False):
+        super(Modifier, self).Activated(name, noplanesetup, is_subtool)
+        # call DraftWorkingPlane.save to sync with
+        # DraftWorkingPlane.restore called in finish method
+        App.DraftWorkingPlane.save()
 ## @}

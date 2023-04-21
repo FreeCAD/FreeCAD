@@ -22,57 +22,52 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QBoxLayout>
+# include <QCheckBox>
 # include <QCoreApplication>
 # include <QHeaderView>
-# include <QTextEdit>
-# include <QCheckBox>
+# include <QPushButton>
 # include <QScrollBar>
+# include <QTextEdit>
 # include <QTextStream>
 # include <QThread>
-# include <QTreeWidget>
-# include <QPushButton>
-# include <Python.h>
+# include <QTreeView>
 # include <Standard_Version.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepCheck_Result.hxx>
-# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+# include <Bnd_Box.hxx>
+# include <BOPAlgo_ArgumentAnalyzer.hxx>
+# include <BOPAlgo_ListOfCheckResult.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+# include <BRepCheck_Result.hxx>
 # include <BRepTools_ShapeSet.hxx>
-
-# if OCC_VERSION_HEX >= 0x060600
-#  include <BOPAlgo_ArgumentAnalyzer.hxx>
-#  include <BOPAlgo_ListOfCheckResult.hxx>
-# endif
-
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <gp_Trsf.hxx>
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoResetTransform.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoResetTransform.h>
 #endif //_PreComp_
 
-#include "../App/PartFeature.h"
 #include <Base/Interpreter.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/MainWindow.h>
+#include <Mod/Part/App/PartFeature.h>
+
 #include "TaskCheckGeometry.h"
+
 
 using namespace PartGui;
 
@@ -177,7 +172,6 @@ QVector<QString> buildBOPCheckResultVector()
   return results;
 }
 
-#if OCC_VERSION_HEX >= 0x060600
 QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
@@ -186,14 +180,13 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
     index = 0;
   return strings.at(index);
 }
-#endif
 
 ResultEntry::ResultEntry()
 {
-    viewProviderRoot = 0;
-    boxSep = 0;
-    boxSwitch = 0;
-    parent = 0;
+    viewProviderRoot = nullptr;
+    boxSep = nullptr;
+    boxSwitch = nullptr;
+    parent = nullptr;
     children.clear();
     selectionStrings.clear();
 }
@@ -209,14 +202,13 @@ ResultEntry::~ResultEntry()
 
 void ResultEntry::buildEntryName()
 {
-  ResultEntry *parentEntry = this;
-  while(parentEntry->parent != 0)
-  {
-      ResultEntry *temp = parentEntry->parent;
-      if (temp->parent == 0)
-        break;
-      parentEntry = parentEntry->parent;
-  }
+    ResultEntry* parentEntry = this;
+    while (parentEntry->parent) {
+        ResultEntry* temp = parentEntry->parent;
+        if (!temp->parent)
+            break;
+        parentEntry = parentEntry->parent;
+    }
 
   QString stringOut;
   QTextStream stream(&stringOut);
@@ -271,7 +263,7 @@ void ResultEntry::buildEntryName()
 
 ResultModel::ResultModel(QObject *parent) : QAbstractItemModel(parent)
 {
-    root = 0;
+    root = nullptr;
 }
 
 ResultModel::~ResultModel()
@@ -405,8 +397,8 @@ void TaskCheckGeometryResults::setupInterface()
     treeView->setModel(model);
     treeView->setSelectionMode(QAbstractItemView::SingleSelection);
     treeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    connect(treeView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(currentRowChanged(QModelIndex,QModelIndex)));
+    connect(treeView->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &TaskCheckGeometryResults::currentRowChanged);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(message);
@@ -425,9 +417,7 @@ void TaskCheckGeometryResults::goCheck()
 #if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
-#if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
-#endif
 #else
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     Message_ProgressRange theRange(theProgress->Start());
@@ -450,7 +440,7 @@ void TaskCheckGeometryResults::goCheck()
         checkedCount++;
         checkedMap.Clear();
 
-        buildShapeContent(baseName, shape);
+        buildShapeContent(sel.pObject, baseName, shape);
 
         BRepCheck_Analyzer shapeCheck(shape);
         if (!shapeCheck.IsValid())
@@ -584,81 +574,34 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
     }
 }
 
-void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const TopoDS_Shape &shape)
+void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape)
 {
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units");
-    int decimals = group->GetInt("Decimals", 2);
-    group = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
-    bool advancedShapeContent = group->GetBool("AdvancedShapeContent", true);
+
+    bool advancedShapeContent = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->
+            GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry")->GetBool("AdvancedShapeContent", true);
+    int decimals = App::GetApplication().GetUserParameter().
+            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units")->GetInt("Decimals", 2);
     std::ostringstream stream;
     if (!shapeContentString.empty())
         stream << std::endl << std::endl;
-    stream << "Checked object: ";
-    std::ostringstream cmdstream;
-    cmdstream << "_basename = '" << baseName.toStdString().c_str() << "'" << std::endl;
-    cmdstream << "_obj = _basename[_basename.index('.')+1:]" << std::endl;
-    cmdstream << "_doc = _basename[:_basename.index(_obj)-1]" << std::endl;
-    cmdstream << "_shp = App.ActiveDocument.getObject(_obj).Shape" << std::endl;
-    cmdstream << "_type = str(_shp.ShapeType)" << std::endl;
-    cmdstream << "_result = _doc+'.'+App.ActiveDocument.getObject(_obj).Label+' ('+_obj+'):\\n'" << std::endl;
-    cmdstream << "_result += 'Shape type:  '+_type+'\\n'" << std::endl;
-    cmdstream << "_result += 'Vertices:  '+str(len(_shp.Vertexes))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Edges:  '+str(len(_shp.Edges))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Wires:  '+str(len(_shp.Wires))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Faces:  '+str(len(_shp.Faces))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Shells:  '+str(len(_shp.Shells))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Solids:  '+str(len(_shp.Solids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'CompSolids:  '+str(len(_shp.CompSolids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Compounds:  '+str(len(_shp.Compounds))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Shapes:  '+str(len(_shp.Vertexes+_shp.Edges+_shp.Wires+_shp.Faces+_shp.Shells+_shp.Solids+_shp.CompSolids+_shp.Compounds))+'\\n'" << std::endl;
-    if (advancedShapeContent){
-        cmdstream << "_result += '----------\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Area') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type:" << std::endl;
-        cmdstream << "    _result += 'Area:  '+str(round(_shp.Area, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Volume') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type and not 'Face' in _type:" << std::endl;
-        cmdstream << "    _result += 'Volume:  '+str(round(_shp.Volume, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Mass'):" << std::endl;
-        cmdstream << "    _result += 'Mass:  '+str(round(_shp.Mass, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Length'):" << std::endl;
-        cmdstream << "    _result += 'Length:  '+str(round(_shp.Length, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Radius'):" << std::endl;
-        cmdstream << "    _result += 'Radius:  '+str(round(_shp.Curve.Radius, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Center'):" << std::endl;
-        cmdstream << "    _result += 'Curve center:  '+str([round(vv," << decimals << ") for vv in _shp.Curve.Center])+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Continuity'):" << std::endl;
-        cmdstream << "    _result += 'Continuity:  '+str(_shp.Curve.Continuity)+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'CenterOfMass'):" << std::endl;
-        cmdstream << "    _result += 'CenterOfMass:  '+str([round(vv," << decimals << ") for vv in _shp.CenterOfMass])+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
-        cmdstream << "    try:" << std::endl;
-        cmdstream << "        _result += 'normalAt(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
-        cmdstream << "    except Exception:" << std::endl;
-        cmdstream << "        try:" << std::endl;
-        cmdstream << "            _result += 'normalAt(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
-        cmdstream << "        except Exception:" << std::endl;
-        cmdstream << "            pass" << std::endl;
-        cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
-        cmdstream << "    _result += 'isClosed:  '+str(_shp.isClosed())+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp, 'Orientation'):" << std::endl;
-        cmdstream << "    _result += 'Orientation:  '+str(_shp.Orientation)+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp, 'PrincipalProperties'):" << std::endl;
-        cmdstream << "    _props = _shp.PrincipalProperties" << std::endl;
-        cmdstream << "    for _p in _props:" << std::endl;
-        cmdstream << "        if 'Base.Vector' in str(type(_props[_p])) or 'tuple' in str(type(_props[_p])):" << std::endl;
-        cmdstream << "            _result += str(_p)+':  '+str([round(vv," << decimals << ") for vv in _props[_p]]) +'\\n'" << std::endl;
-        cmdstream << "        else:" << std::endl;
-        cmdstream << "            _result += str(_p)+':  '+str(_props[_p])+'\\n'" << std::endl;
-    }
-
-    std::string cmd = cmdstream.str();
-
+    stream << tr("Checked object").toStdString() << ": ";
+    Base::PyGILStateLocker lock;
     try {
-        std::string result = Base::Interpreter().runStringWithKey(cmd.c_str(),"_result");
-        stream << result;
+        PyObject* module = PyImport_ImportModule("BasicShapes.ShapeContent");
+        if (!module) {
+            throw Py::Exception();
+        }
+        Py::Tuple args(3);
+        args.setItem(0, Py::asObject(pObject->getPyObject()));
+        args.setItem(1, Py::Long(decimals));
+        args.setItem(2, Py::Boolean(advancedShapeContent));
+        Py::Module shapecontent(module, true);
+        Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
+        stream << result.as_std_string("utf-8");
     }
-    catch (Base::PyException&) { //script had runtime error so fall back on OCCT method
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
         stream << baseName.toLatin1().data() << std::endl;
         BRepTools_ShapeSet set;
         set.Add(shape);
@@ -694,8 +637,6 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     bool mergeEdgeMode = group->GetBool("MergeEdgeMode", true);
     bool curveOnSurfaceMode = group->GetBool("CurveOnSurfaceMode", true);
 
-    //ArgumentAnalyser was moved at version 6.6. no back port for now.
-#if OCC_VERSION_HEX >= 0x060600
   //Reference use: src/BOPTest/BOPTest_CheckCommands.cxx
 
   //I don't why we need to make a copy, but it doesn't work without it.
@@ -708,39 +649,36 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
-#if OCC_VERSION_HEX >= 0x060900
+
 #if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
-#else
+#elif OCC_VERSION_HEX < 0x070600
   BOPCheck.SetProgressIndicator(theScope);
-#endif // 0x070500
 #else
-  Q_UNUSED(theProgress);
-#endif
-//   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
+  Q_UNUSED(theScope)
+#endif // 0x070500
+
+
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
   BOPCheck.ArgumentTypeMode() = argumentTypeMode;
   BOPCheck.SelfInterMode() = selfInterMode;
   BOPCheck.SmallEdgeMode() = smallEdgeMode;
   BOPCheck.RebuildFaceMode() = rebuildFaceMode;
-#if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = continuityMode;
-#endif
-#if OCC_VERSION_HEX >= 0x060900
+
   BOPCheck.SetParallelMode(!runSingleThreaded); //this doesn't help for speed right now(occt 6.9.1).
   BOPCheck.SetRunParallel(!runSingleThreaded); //performance boost, use all available cores
   BOPCheck.TangentMode() = tangentMode; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = mergeVertexMode;
   BOPCheck.MergeEdgeMode() = mergeEdgeMode;
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
-#endif
 
 #ifdef FC_DEBUG
   Base::TimeInfo start_time;
 #endif
 
-BOPCheck.Perform();
+  BOPCheck.Perform();
 
 #ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
@@ -766,14 +704,9 @@ BOPCheck.Perform();
   for (; BOPResultsIt.More(); BOPResultsIt.Next())
   {
     const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
-
-#if OCC_VERSION_HEX < 0x070000
-    const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
-    BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#else
     const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
     TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#endif
+
     for (;faultyShapes1It.More(); faultyShapes1It.Next())
     {
       const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
@@ -812,9 +745,6 @@ BOPCheck.Perform();
     }
   }
   return 1;
-#else
-  return 0;
-#endif
 }
 
 
@@ -903,10 +833,10 @@ bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &obje
 QString PartGui::buildSelectionName(const ResultEntry *entry, const TopoDS_Shape &shape)
 {
     const ResultEntry *parentEntry = entry;
-    while(parentEntry->parent != 0)
+    while(parentEntry->parent)
     {
         ResultEntry *temp = parentEntry->parent;
-        if (temp->parent == 0)
+        if (!temp->parent)
           break;
         parentEntry = parentEntry->parent;
     }
@@ -1047,7 +977,7 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 TaskCheckGeometryDialog::TaskCheckGeometryDialog()
-    : widget(0), contentLabel(0), okBtn(0), settingsBtn(0), resultsBtn(0)
+    : widget(nullptr), contentLabel(nullptr), okBtn(nullptr), settingsBtn(nullptr), resultsBtn(nullptr)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -1058,14 +988,14 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
 
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     contentLabel = new QTextEdit();
     contentLabel->setText(widget->getShapeContentString());
     shapeContentBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        tr("Shape Content"), true, 0);
+        tr("Shape Content"), true, nullptr);
     shapeContentBox->groupLayout()->addWidget(contentLabel);
     if (!expandShapeContent){
         shapeContentBox->hideGroupBox();
@@ -1073,7 +1003,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     Content.push_back(shapeContentBox);
 
     settingsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        tr("Settings"), true, 0);
+        tr("Settings"), true, nullptr);
     Content.push_back(settingsBox);
 
     autoRunCheckBox = new QCheckBox();
@@ -1082,8 +1012,8 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
 Skip this settings page and run the geometry check automatically.\n\
 Default: false"));
     autoRunCheckBox->setChecked(group->GetBool("AutoRun", false));
-    connect(autoRunCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_autoRunCheckBox_toggled(bool)));
+    connect(autoRunCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onAutoRunCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(autoRunCheckBox);
 
     runBOPCheckBox = new QCheckBox();
@@ -1093,8 +1023,8 @@ Extra boolean operations check that can sometimes find errors that\n\
 the standard BRep geometry check misses. These errors do not always \n\
 mean the checked object is unusable.  Default: false"));
     runBOPCheckBox->setChecked(group->GetBool("RunBOPCheck", false));
-    connect(runBOPCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_runBOPCheckBox_toggled(bool)));
+    connect(runBOPCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onRunBOPCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(runBOPCheckBox);
 
     runSingleThreadedCheckBox = new QCheckBox();
@@ -1103,16 +1033,16 @@ mean the checked object is unusable.  Default: false"));
 Run the geometry check in a single thread.  This is slower,\n\
 but more stable.  Default: false"));
     runSingleThreadedCheckBox->setChecked(group->GetBool("RunSingleThreaded", false));
-    connect(runSingleThreadedCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_runSingleThreadedCheckBox_toggled(bool)));
+    connect(runSingleThreadedCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onRunSingleThreadedCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(runSingleThreadedCheckBox);
 
     logErrorsCheckBox = new QCheckBox();
     logErrorsCheckBox->setText(tr("Log errors"));
     logErrorsCheckBox->setToolTip(tr("Log errors to report view.  Default: true"));
     logErrorsCheckBox->setChecked(group->GetBool("LogErrors", true));
-    connect(logErrorsCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_logErrorsCheckBox_toggled(bool)));
+    connect(logErrorsCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onLogErrorsCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(logErrorsCheckBox);
 
     expandShapeContentCheckBox = new QCheckBox();
@@ -1121,8 +1051,8 @@ but more stable.  Default: false"));
 Expand shape content.  Changes will take effect next time you use \n\
 the check geometry tool.  Default: false"));
     expandShapeContentCheckBox->setChecked(group->GetBool("ExpandShapeContent", false));
-    connect(expandShapeContentCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_expandShapeContentCheckBox_toggled(bool)));
+    connect(expandShapeContentCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onExpandShapeContentCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(expandShapeContentCheckBox);
 
     advancedShapeContentCheckBox = new QCheckBox();
@@ -1131,8 +1061,8 @@ the check geometry tool.  Default: false"));
 Show advanced shape content.  Changes will take effect next time you use \n\
 the check geometry tool.  Default: false"));
     advancedShapeContentCheckBox->setChecked(group->GetBool("AdvancedShapeContent", true));
-    connect(advancedShapeContentCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_advancedShapeContentCheckBox_toggled(bool)));
+    connect(advancedShapeContentCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onAdvancedShapeContentCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(advancedShapeContentCheckBox);
 
     settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual BOP Checks:")));
@@ -1141,72 +1071,72 @@ the check geometry tool.  Default: false"));
     argumentTypeModeCheckBox->setText(tr("  Bad type"));
     argumentTypeModeCheckBox->setToolTip(tr("Check for bad argument types.  Default: true"));
     argumentTypeModeCheckBox->setChecked(group->GetBool("ArgumentTypeMode", true));
-    connect(argumentTypeModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_argumentTypeModeCheckBox_toggled(bool)));
+    connect(argumentTypeModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onArgumentTypeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(argumentTypeModeCheckBox);
 
     selfInterModeCheckBox = new QCheckBox();
     selfInterModeCheckBox->setText(tr("  Self-intersect"));
     selfInterModeCheckBox->setToolTip(tr("Check for self-intersections.  Default: true"));
     selfInterModeCheckBox->setChecked(group->GetBool("SelfInterMode", true));
-    connect(selfInterModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_selfInterModeCheckBox_toggled(bool)));
+    connect(selfInterModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onSelfInterModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(selfInterModeCheckBox);
 
     smallEdgeModeCheckBox = new QCheckBox();
     smallEdgeModeCheckBox->setText(tr("  Too small edge"));
     smallEdgeModeCheckBox->setToolTip(tr("Check for edges that are too small.  Default: true"));
     smallEdgeModeCheckBox->setChecked(group->GetBool("SmallEdgeMode", true));
-    connect(smallEdgeModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_smallEdgeModeCheckBox_toggled(bool)));
+    connect(smallEdgeModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onSmallEdgeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(smallEdgeModeCheckBox);
 
     rebuildFaceModeCheckBox = new QCheckBox();
     rebuildFaceModeCheckBox->setText(tr("  Nonrecoverable face"));
     rebuildFaceModeCheckBox->setToolTip(tr("Check for nonrecoverable faces.  Default: true"));
     rebuildFaceModeCheckBox->setChecked(group->GetBool("RebuildFaceMode", true));
-    connect(rebuildFaceModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_rebuildFaceModeCheckBox_toggled(bool)));
+    connect(rebuildFaceModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onRebuildFaceModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(rebuildFaceModeCheckBox);
 
     continuityModeCheckBox = new QCheckBox();
     continuityModeCheckBox->setText(tr("  Continuity"));
     continuityModeCheckBox->setToolTip(tr("Check for continuity.  Default: true"));
     continuityModeCheckBox->setChecked(group->GetBool("ContinuityMode", true));
-    connect(continuityModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_continuityModeCheckBox_toggled(bool)));
+    connect(continuityModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onContinuityModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(continuityModeCheckBox);
 
     tangentModeCheckBox = new QCheckBox();
     tangentModeCheckBox->setText(tr("  Incompatibility of face"));
     tangentModeCheckBox->setToolTip(tr("Check for incompatible faces.  Default: true"));
     tangentModeCheckBox->setChecked(group->GetBool("TangentMode", true));
-    connect(tangentModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_tangentModeCheckBox_toggled(bool)));
+    connect(tangentModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onTangentModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(tangentModeCheckBox);
 
     mergeVertexModeCheckBox = new QCheckBox();
     mergeVertexModeCheckBox->setText(tr("  Incompatibility of vertex"));
     mergeVertexModeCheckBox->setToolTip(tr("Check for incompatible vertices.  Default: true"));
     mergeVertexModeCheckBox->setChecked(group->GetBool("MergeVertexMode", true));
-    connect(mergeVertexModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_mergeVertexModeCheckBox_toggled(bool)));
+    connect(mergeVertexModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onMergeVertexModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(mergeVertexModeCheckBox);
 
     mergeEdgeModeCheckBox = new QCheckBox();
     mergeEdgeModeCheckBox->setText(tr("  Incompatibility of edge"));
     mergeEdgeModeCheckBox->setToolTip(tr("Check for incompatible edges.  Default: true"));
     mergeEdgeModeCheckBox->setChecked(group->GetBool("MergeEdgeMode", true));
-    connect(mergeEdgeModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_mergeEdgeModeCheckBox_toggled(bool)));
+    connect(mergeEdgeModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onMergeEdgeModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(mergeEdgeModeCheckBox);
 
     curveOnSurfaceModeCheckBox = new QCheckBox();
     curveOnSurfaceModeCheckBox->setText(tr("  Invalid curve on surface"));
     curveOnSurfaceModeCheckBox->setToolTip(tr("Check for invalid curves on surfaces.  Default: true"));
     curveOnSurfaceModeCheckBox->setChecked(group->GetBool("CurveOnSurfaceMode", true));
-    connect(curveOnSurfaceModeCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_curveOnSurfaceModeCheckBox_toggled(bool)));
+    connect(curveOnSurfaceModeCheckBox, &QCheckBox::toggled,
+            this, &TaskCheckGeometryDialog::onCurveOnSurfaceModeCheckBoxToggled);
     settingsBox->groupLayout()->addWidget(curveOnSurfaceModeCheckBox);
     if (group->GetBool("AutoRun",false)){
         settingsBox->hide();
@@ -1238,7 +1168,7 @@ bool TaskCheckGeometryDialog::reject()
     return true;
 }
 
-void TaskCheckGeometryDialog::on_clicked(QAbstractButton *btn)
+void TaskCheckGeometryDialog::onClicked(QAbstractButton *btn)
 {
     /** when ok (run check) is clicked or when close is clicked
      *  the appropriate accept() or reject() is called already
@@ -1274,108 +1204,108 @@ void TaskCheckGeometryDialog::modifyStandardButtons(QDialogButtonBox* box)
         settingsBtn->setEnabled(false);
     resultsBtn = box->addButton(tr("Results"),QDialogButtonBox::ActionRole);
     resultsBtn->setEnabled(false);
-    connect(box, SIGNAL(clicked(QAbstractButton*)), this, SLOT(on_clicked(QAbstractButton*)));
+    connect(box, &QDialogButtonBox::clicked, this, &TaskCheckGeometryDialog::onClicked);
 }
 
-void TaskCheckGeometryDialog::on_autoRunCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onAutoRunCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("AutoRun", isOn);
 }
 
-void TaskCheckGeometryDialog::on_runBOPCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRunBOPCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RunBOPCheck", isOn);
 }
 
-void TaskCheckGeometryDialog::on_runSingleThreadedCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRunSingleThreadedCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RunSingleThreaded", isOn);
 }
 
-void TaskCheckGeometryDialog::on_logErrorsCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onLogErrorsCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("LogErrors", isOn);
 }
 
-void TaskCheckGeometryDialog::on_argumentTypeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onArgumentTypeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ArgumentTypeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onExpandShapeContentCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ExpandShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_advancedShapeContentCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onAdvancedShapeContentCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("AdvancedShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onSelfInterModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("SelfInterMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_smallEdgeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onSmallEdgeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("SmallEdgeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_rebuildFaceModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onRebuildFaceModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("RebuildFaceMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_continuityModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onContinuityModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ContinuityMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_tangentModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onTangentModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("TangentMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_mergeVertexModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onMergeVertexModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("MergeVertexMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_mergeEdgeModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onMergeEdgeModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("MergeEdgeMode", isOn);
 }
 
-void TaskCheckGeometryDialog::on_curveOnSurfaceModeCheckBox_toggled(bool isOn)
+void TaskCheckGeometryDialog::onCurveOnSurfaceModeCheckBoxToggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -1387,12 +1317,12 @@ TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
   if (widget)
   {
     delete widget;
-    widget = 0;
+    widget = nullptr;
   }
   if (contentLabel)
   {
     delete contentLabel;
-    contentLabel = 0;
+    contentLabel = nullptr;
   }
 }
 

@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "TopoShape.h"
 
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
+# include <Precision.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <Standard_Failure.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
 #endif
 
 #include "OCCError.h"
@@ -41,10 +40,11 @@
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompoundPy.cpp"
 
+
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeCompoundPy::representation(void) const
+std::string TopoShapeCompoundPy::representation() const
 {
     std::stringstream str;
     str << "<Compound object at " << getTopoShapePtr() << ">";
@@ -98,7 +98,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &obj))
-        return NULL;
+        return nullptr;
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
@@ -112,7 +112,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     getTopoShapePtr()->setShape(comp);
@@ -125,7 +125,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
     PyObject *shared=Py_True;
     double tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "|O!d",&PyBool_Type,&shared,&tol))
-        return 0;
+        return nullptr;
 
     try {
         const TopoDS_Shape& s = getTopoShapePtr()->getShape();
@@ -135,7 +135,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
         for (TopExp_Explorer xp(s, TopAbs_EDGE); xp.More(); xp.Next())
             hEdges->Append(xp.Current());
 
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, PyObject_IsTrue(shared) ? Standard_True : Standard_False, hWires);
+        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, Base::asBoolean(shared), hWires);
 
         TopoDS_Compound comp;
         BRep_Builder builder;
@@ -152,13 +152,13 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeCompoundPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

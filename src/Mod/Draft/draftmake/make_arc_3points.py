@@ -178,10 +178,10 @@ def make_arc_3points(points, placement=None, face=False,
     _placement = App.Placement(center, rot)
     start = edge.FirstParameter
     end = math.degrees(edge.LastParameter)
-    obj = Draft.makeCircle(radius,
-                           placement=_placement, face=face,
-                           startangle=start, endangle=end,
-                           support=support)
+    obj = Draft.make_circle(radius,
+                            placement=_placement, face=face,
+                            startangle=start, endangle=end,
+                            support=support)
 
     if App.GuiUp:
         gui_utils.autogroup(obj)

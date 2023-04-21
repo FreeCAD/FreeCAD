@@ -76,7 +76,7 @@
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>Aceasta sectiune contine material pentru dezvoltatori: cum să compilaţi dvs FreeCAD, cum este structurat codul sursă FreeCAD şi cum să navigaţi în el, şi cum să dezvolte noi ateliere și/sau să încorporați FreeCAD în aplicaţia proprie.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -157,7 +157,7 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Puteți configura afișarea unui dosar personalizat aici pentru afișare în meniul Edit-&gt; Preferences-&gt; Start-&gt; Folder personalizat</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -212,7 +212,7 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
     <message>
       <location filename="TranslationTexts.py" line="83"/>
       <source>Open start page preferences</source>
-      <translation type="unfinished">Open start page preferences</translation>
+      <translation>Deschide preferințele paginii de start</translation>
     </message>
   </context>
   <context>
@@ -292,8 +292,8 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>Un dosar personalizat opțional care va fi afișat în partea de jos a primei pagini.
+Folosind ";;" pentru a separa căi, poți adăuga mai multe dosare aici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -303,17 +303,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>Prezinta un notepad lângă miniaturile de fişier, în cazul în care puteţi să vă păstraţi notițe în timpul sesiunilor FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>Afișează sfaturi</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Afişează sfaturi de ajutor în fila Documente a Atelierului Start</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -343,7 +343,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>Culoare fundal gradient în jos</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -363,7 +363,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>În cazul în care această casetă este bifată, dacă o foaie de stil este specificată în Preferinţe generale, acesta va fi folosită şi va înlocui culorile de mai jos</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -458,7 +458,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>Dacă acest lucru este selectat, pictograma 'Fișier nou' afișează o pictogramă de gradient în loc de pictograma normală</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -468,12 +468,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>Alegeți la care bancă de lucru să comutați după lansarea programului</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Daca este bifat, va inchide automat pagina de start la lansarea FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
@@ -488,12 +488,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Închide și comută la deschiderea fișierului</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>Dacă FreeCAD este pornit prin deschiderea unui fișier, aplicați cei doi parametri de mai sus</translation>
     </message>
   </context>
 </TS>

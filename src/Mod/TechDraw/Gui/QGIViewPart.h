@@ -23,11 +23,15 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 
-#include <QObject>
-#include <QPainter>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
+
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
+
 #include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawViewPart;
@@ -36,51 +40,55 @@ class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
 class DrawView;
+
 }
 
 namespace TechDrawGui
 {
 class QGIFace;
 class QGIEdge;
+class QGIHighlight;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
 public:
 
     explicit QGIViewPart();
-    ~QGIViewPart();
+    ~QGIViewPart() override;
 
     enum {Type = QGraphicsItem::UserType + 102};
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
 
 
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
     void tidy();
-    virtual QRectF boundingRect() const override;
-    virtual void drawAllSectionLines(void);
+    QRectF boundingRect() const override;
+    virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
+    virtual void drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b);
     virtual void drawCenterLines(bool b);
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
-    virtual void drawMatting(void);
+    virtual void drawMatting();
     bool showSection;
 
-    virtual void draw() override;
-    virtual void rotateView(void) override;
+    void draw() override;
+    void rotateView() override;
 
+    virtual void highlightMoved(QGIHighlight* highlight, QPointF newPos);
 
-    static QPainterPath geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rotation = 0.0);
+    static QPainterPath geomToPainterPath(TechDraw::BaseGeomPtr baseGeom, double rotation = 0.0);
     /// Helper for pathArc()
     /*!
      * x_axis_rotation is in radian
      */
     static void pathArcSegment(QPainterPath &path, double xc, double yc, double th0,
-                        double th1,double rx, double ry, double xAxisRotation);
+                        double th1, double rx, double ry, double xAxisRotation);
 
     /// Draws an arc using QPainterPath path
     /*!
@@ -91,22 +99,22 @@ public:
                                      double x, double y,
                                      double curx, double cury);
     void setExporting(bool b) { m_isExporting = b; }
-    bool getExporting(void) { return m_isExporting; }
+    bool getExporting() { return m_isExporting; }
 
 protected:
-    QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
+    QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
-    QGIFace* drawFace(TechDraw::Face* f, int idx);
+    QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-    TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
-    TechDraw::DrawGeomHatch* faceIsGeomHatched(int i,std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
-    void dumpPath(const char* text,QPainterPath path);
-    void removePrimitives(void);
-    void removeDecorations(void);
-    bool prefFaceEdges(void);
-    bool prefPrintCenters(void);
+    TechDraw::DrawHatch* faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs) const;
+    TechDraw::DrawGeomHatch* faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
+    void dumpPath(const char* text, QPainterPath path);
+    void removePrimitives();
+    void removeDecorations();
+    bool prefFaceEdges();
+    bool prefPrintCenters();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);

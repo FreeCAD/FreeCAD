@@ -1,7 +1,7 @@
 import sys
 #sys.path.append("")
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 import FreeCADGui
 
 class MainWindow(QtGui.QMainWindow):

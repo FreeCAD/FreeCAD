@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/Application.h>
 
 #include "DlgSettingsSelection.h"
 #include "ui_DlgSettingsSelection.h"
-#include <App/Application.h>
+
 
 using namespace Gui::Dialog;
 
@@ -47,6 +45,7 @@ DlgSettingsSelection::~DlgSettingsSelection()
 
 void DlgSettingsSelection::saveSettings()
 {
+    ui->spinPickRadius->onSave();
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     handle->SetBool("SyncView", ui->checkBoxAutoSwitch->isChecked());
     handle->SetBool("SyncSelection", ui->checkBoxAutoExpand->isChecked());
@@ -57,11 +56,12 @@ void DlgSettingsSelection::saveSettings()
 
 void DlgSettingsSelection::loadSettings()
 {
+    ui->spinPickRadius->onRestore();
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView"));
-    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection"));
-    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection"));
-    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection"));
+    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView", true));
+    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection", true));
+    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection", true));
+    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection", true));
     ui->checkBoxSelectionCheckBoxes->setChecked(handle->GetBool("CheckBoxesSelection"));
 }
 

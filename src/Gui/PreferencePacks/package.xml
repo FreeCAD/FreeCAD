@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1">
+  <name>Built-In Preference Packs</name>
+  <description>Preference Packs included with the FreeCAD distribution</description>
+  <version>1.0.0</version>
+  <maintainer email="email@freecadweb.org">No Maintainer</maintainer>
+  <license file="../../LICENSE">LGPL2</license>
+  <url type="repository">https://github.com/FreeCAD/FreeCAD</url>
+
+  <content>
+    <preferencepack>
+      <name>FreeCAD Classic Colors</name>
+      <description>FreeCAD default colors for core app and included Mods.</description>
+      <version>1.0.0</version>
+      <tag>built-in</tag>
+      <tag>colors</tag>
+    </preferencepack>
+  </content>
+
+</package>

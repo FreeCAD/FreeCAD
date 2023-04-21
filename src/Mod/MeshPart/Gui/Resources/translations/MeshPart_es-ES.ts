@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="268"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Cross-sections...</source>
       <translation>Cortes transversales...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections</source>
       <translation>Cortes transversales</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Curve on mesh...</source>
       <translation>Curva en malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Crea una curva aproximada encima de una malla.
@@ -42,17 +42,17 @@ Este comando solo funciona con un objeto 'malla'.</translation>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Create mesh from shape...</source>
       <translation>Crear malla de forma ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Tessellate shape</source>
       <translation>Teselar forma</translation>
     </message>
@@ -60,17 +60,17 @@ Este comando solo funciona con un objeto 'malla'.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Create section from mesh and plane</source>
       <translation>Crear sección de malla y del plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Section</source>
       <translation>Sección</translation>
     </message>
@@ -78,18 +78,18 @@ Este comando solo funciona con un objeto 'malla'.</translation>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
       <translation>Recortar malla con un plano</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
-      <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Ajusta una malla con un plano</translation>
     </message>
@@ -97,12 +97,12 @@ Este comando solo funciona con un objeto 'malla'.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Trim with plane</source>
       <translation>Cortar con plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Section with plane</source>
       <translation>Sección con planos</translation>
     </message>
@@ -170,7 +170,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
       <translation>Conectar aristas si la distancia es inferior a</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
       <translation>Fallo</translation>
     </message>
@@ -260,7 +260,7 @@ Este comando solo funciona con un objeto 'malla', no con una cara regular o supe
       <translation>Continuidad</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
       <translation>Grado máximo de la curva</translation>
     </message>
@@ -288,24 +288,14 @@ Este comando solo funciona con un objeto 'malla', no con una cara regular o supe
       <translation>Estándar</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="145"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="206"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation>Usar el mallador estándar</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
       <translation>Superficie de desviación:</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="33"/>
-      <source>Use the standard mesher</source>
-      <translation>Usar el mallador estándar</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -359,6 +349,11 @@ esta característica (por ejemplo, el formato OBJ).</translation>
       <translation>Definir segmentos por colores de cara</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
       <translation>Usa el mallador Mefisto</translation>
@@ -379,6 +374,11 @@ El valor más pequeño es 0.</translation>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
       <translation>Estimar</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -486,18 +486,32 @@ Un valor en el rango de 0.2-10.</translation>
       <translation>Dejar panel abierto</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
-      <source>gmsh</source>
-      <translation>gmsh</translation>
+      <location filename="../../Tessellation.cpp" line="61"/>
+      <source>Gmsh</source>
+      <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="213"/>
-      <location filename="../../Tessellation.cpp" line="219"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Ningún documento activo</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="234"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation>Ha seleccionado un cuerpo sin punta.
+Puede establecer la punta del cuerpo o seleccionar una forma diferente, por favor.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="263"/>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation>Ha seleccionado una forma sin caras.
+Seleccione una forma diferente, por favor.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Seleccione primero una forma para el mallado.</translation>
     </message>
@@ -505,12 +519,12 @@ Un valor en el rango de 0.2-10.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Select plane</source>
       <translation>Seleccionar plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Por favor seleccione el plano de corte de la malla.</translation>
     </message>
@@ -518,37 +532,37 @@ Un valor en el rango de 0.2-10.</translation>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Select plane</source>
       <translation>Seleccionar plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="96"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Por favor seleccione el plano de corte de la malla.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Trim by plane</source>
       <translation>Corte por plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Select the side you want to keep.</source>
       <translation>Seleccione el lado que desea mantener.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Below</source>
       <translation>Debajo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Above</source>
       <translation>Encima</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Split</source>
       <translation>Dividir</translation>
     </message>
@@ -559,6 +573,32 @@ Un valor en el rango de 0.2-10.</translation>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Desenvolver Malla</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Encuentra una representación plana de una malla.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Desenvolver Cara</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a face.</source>
+      <translation>Encuentra una representación plana de la cara.</translation>
     </message>
   </context>
 </TS>

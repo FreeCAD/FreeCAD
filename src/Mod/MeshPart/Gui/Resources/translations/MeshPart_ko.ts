@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="268"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Cross-sections...</source>
       <translation>횡단면...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections</source>
       <translation>횡단면</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Curve on mesh...</source>
       <translation>메쉬위에 곡선...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation type="unfinished">Creates an approximated curve on top of a mesh.
@@ -42,17 +42,17 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Create mesh from shape...</source>
       <translation>쉐이프에서 메쉬 생성...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Tessellate shape</source>
       <translation>쉐이프 테셀레이션</translation>
     </message>
@@ -60,17 +60,17 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Create section from mesh and plane</source>
       <translation type="unfinished">Create section from mesh and plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Section</source>
       <translation>단면</translation>
     </message>
@@ -78,18 +78,18 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
       <translation type="unfinished">Trim mesh with a plane</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
-      <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation type="unfinished">Trims a mesh with a plane</translation>
     </message>
@@ -97,14 +97,14 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>평면으로 다듬기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>평면이 있는 단면</translation>
     </message>
   </context>
   <context>
@@ -167,12 +167,12 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>거리가 다음보다 작을 경우 가장자리를 연결 하십시오</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>실패</translation>
     </message>
   </context>
   <context>
@@ -195,7 +195,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="369"/>
       <source>Cancel</source>
-      <translation>취소</translation>
+      <translation>취소하기</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
@@ -205,7 +205,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation type="unfinished">No point was picked</translation>
+      <translation>포인트가 선택되지 않았습니다</translation>
     </message>
   </context>
   <context>
@@ -220,9 +220,7 @@ This command only works with a 'mesh' object.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
-
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+      <translation>'시작'을 누른다음 메쉬의 점을 선택하시오, 포인트가 충분할 떄..</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -232,7 +230,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>정점에 대한 스냅 허용오차</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -242,7 +240,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>분할 임계값</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
@@ -252,17 +250,17 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>메쉬에 대한 공차</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>연속성</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>최대 곡률</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
@@ -288,24 +286,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>표준</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="145"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="206"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation>표준 측정을 사용</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
       <translation>표면 편차:</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="33"/>
-      <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -359,6 +347,11 @@ this feature (e.g. the format OBJ).</translation>
       <translation>면의 색상에 의한 구역 정의</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
       <translation type="unfinished">Use the Mefisto mesher</translation>
@@ -379,6 +372,11 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
       <translation type="unfinished">Estimate</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -486,18 +484,32 @@ A value in the range of 0.2-10.</translation>
       <translation type="unfinished">Leave panel open</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
-      <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <location filename="../../Tessellation.cpp" line="61"/>
+      <source>Gmsh</source>
+      <translation type="unfinished">Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="213"/>
-      <location filename="../../Tessellation.cpp" line="219"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="234"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation type="unfinished">You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="263"/>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation type="unfinished">You have selected a shape without faces.
+Select a different shape, please.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>메쉬 생성을 위해 쉐이프를 먼저 선택하세요.</translation>
     </message>
@@ -505,12 +517,12 @@ A value in the range of 0.2-10.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Select plane</source>
       <translation>평면 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>메쉬를 단면화할 평면을 선택하세요.</translation>
     </message>
@@ -518,37 +530,37 @@ A value in the range of 0.2-10.</translation>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Select plane</source>
       <translation>평면 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="96"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>메쉬를 자를 평면을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Trim by plane</source>
       <translation>평면에 의한 자르기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Select the side you want to keep.</source>
       <translation>유지할 측면을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Below</source>
       <translation type="unfinished">Below</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Above</source>
       <translation type="unfinished">Above</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Split</source>
       <translation>분할</translation>
     </message>
@@ -559,6 +571,32 @@ A value in the range of 0.2-10.</translation>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation type="unfinished">Unwrap Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation type="unfinished">Unwrap Face</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a face.</source>
+      <translation type="unfinished">Find a flat representation of a face.</translation>
     </message>
   </context>
 </TS>

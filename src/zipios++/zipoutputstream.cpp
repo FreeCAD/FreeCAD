@@ -5,15 +5,18 @@
 
 #include "zipoutputstreambuf.h"
 #include "zipoutputstream.h"
+#if defined(_WIN32) && defined(ZIPIOS_UTF8)
+#include <Base/FileInfo.h>
+#endif
 
 using std::ostream;
 
 namespace zipios {
 
 ZipOutputStream::ZipOutputStream( std::ostream &os ) 
-  : std::ostream( 0 ), 
+  : std::ostream( nullptr ), 
 // SGIs basic_ifstream calls istream with 0, but calls basic_ios constructor first??
-    ofs( 0 )
+    ofs( nullptr )
 {
   ozf = new ZipOutputStreambuf( os.rdbuf() ) ;
   
@@ -22,10 +25,15 @@ ZipOutputStream::ZipOutputStream( std::ostream &os )
 
 
 ZipOutputStream::ZipOutputStream( const std::string &filename )
-  : std::ostream( 0 ),
-    ofs( 0 )
+  : std::ostream( nullptr ),
+    ofs( nullptr )
 {
+#if defined(_WIN32) && defined(ZIPIOS_UTF8)
+  std::wstring wsfilename = Base::FileInfo(filename).toStdWString();
+  ofs = new std::ofstream( wsfilename.c_str(), std::ios::out | std::ios::binary ) ;
+#else
   ofs = new std::ofstream( filename.c_str(), std::ios::out | std::ios::binary ) ;
+#endif
   ozf = new ZipOutputStreambuf( ofs->rdbuf() ) ;
   this->init( ozf ) ;
 }

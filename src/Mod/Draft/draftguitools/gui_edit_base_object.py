@@ -64,7 +64,7 @@ class GuiTools:
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         """ Get the context menu associated to edit points (user is over an editpoint)
 
-        Return a list of tuples containig menu labels and associated functions:
+        Return a list of tuples containing menu labels and associated functions:
             return [
                 ("action label", lambda: self.handle_action_label(edit_command, obj, node_idx)),
             ]
@@ -79,7 +79,7 @@ class GuiTools:
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         """ Get the context menu associated to edited object (user is over the object)
 
-        Return a list of tuples containig menu labels and associated functions:
+        Return a list of tuples containing menu labels and associated functions:
             return [
                 ("action label", lambda: self.handle_action_label(edit_command, obj, position)),
             ]

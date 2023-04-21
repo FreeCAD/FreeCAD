@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DLGSETTINGSIMAGE_IMP_H
 #define GUI_DIALOG_DLGSETTINGSIMAGE_IMP_H
 
-#include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/SoOffscreenRenderer.h>
 
 #include <QWidget>
 #include <memory>
@@ -44,8 +43,8 @@ class DlgSettingsImageImp : public QWidget
     Q_OBJECT
 
 public:
-    DlgSettingsImageImp( QWidget* parent = 0 );
-    ~DlgSettingsImageImp();
+    explicit DlgSettingsImageImp( QWidget* parent = nullptr );
+    ~DlgSettingsImageImp() override;
 
     /** @name Image dimensions */
     //@{
@@ -69,18 +68,19 @@ public:
 public Q_SLOTS:
     void onSelectedFilter( const QString& );
 
-protected Q_SLOTS:
-    void on_buttonRatioScreen_clicked();
-    void on_buttonRatio4x3_clicked();
-    void on_buttonRatio16x9_clicked();
-    void on_buttonRatio1x1_clicked();
-    void on_standardSizeBox_activated(int);
-    void on_comboMethod_activated(int);
+protected:
+    void setupConnections();
+    void onButtonRatioScreenClicked();
+    void onButtonRatio4x3Clicked();
+    void onButtonRatio16x9Clicked();
+    void onButtonRatio1x1Clicked();
+    void onStandardSizeBoxActivated(int);
+    void onComboMethodActivated(int);
 
 protected:
     // helper to force an aspect ratio
     void adjustImageSize(float fRatio);
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 
 private:

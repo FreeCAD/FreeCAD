@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <FCConfig.h>
 
 #if HAVE_CONFIG_H
@@ -33,19 +32,19 @@
 
 #include <QApplication>
 #include <QIcon>
-#include <QThread>
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #elif defined(Q_WS_X11)
 #include <QX11EmbedWidget>
 #endif
 #include <thread>
+
 // FreeCAD Base header
-#include <CXX/WrapPython.h>
+#include <App/Application.h>
 #include <Base/Exception.h>
 #include <Base/Factory.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
@@ -54,6 +53,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
+
 
 static bool _isSetupWithoutGui = false;
 
@@ -97,15 +97,15 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 
     PyObject* inThread = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread))
-        return NULL;
+        return nullptr;
 
     static bool thr = false;
     if (!qApp) {
-        if (PyObject_IsTrue(inThread) && !thr) {
+        if (Base::asBoolean(inThread) && !thr) {
             thr = true;
             std::thread t([]() {
                 static int argc = 0;
-                static char **argv = {0};
+                static char **argv = {nullptr};
                 QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
                 // This only works well if the QApplication is the very first created instance
                 // of a QObject. Otherwise the application lives in a different thread than the
@@ -130,7 +130,7 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
                 FilterProc, 0, GetCurrentThreadId());
 #elif !defined(QT_NO_GLIB)
             static int argc = 0;
-            static char **argv = {0};
+            static char **argv = {nullptr};
             (void)new QApplication(argc, argv);
 #else
             PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
@@ -140,13 +140,13 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
     }
     else if (!qobject_cast<QApplication*>(qApp)) {
         PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
-        return NULL;
+        return nullptr;
     }
 
     if (!thr) {
         if (!setupMainWindow()) {
             PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -166,15 +166,15 @@ static PyObject *
 FreeCADGui_exec_loop(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     if (!qApp) {
         PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
-        return NULL;
+        return nullptr;
     }
     else if (!qobject_cast<QApplication*>(qApp)) {
         PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
-        return NULL;
+        return nullptr;
     }
 
     qApp->exec();
@@ -187,18 +187,13 @@ static PyObject *
 FreeCADGui_setupWithoutGUI(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     if (!Gui::Application::Instance) {
         static Gui::Application *app = new Gui::Application(false);
         _isSetupWithoutGui = true;
         Q_UNUSED(app);
     }
-    else {
-        PyErr_SetString(PyExc_RuntimeError, "FreeCADGui already initialized");
-        return 0;
-    }
-
     if (!SoDB::isInitialized()) {
         // init the Inventor subsystem
         SoDB::init();
@@ -218,12 +213,12 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
 {
     char* pointer;
     if (!PyArg_ParseTuple(args, "s", &pointer))
-        return NULL;
+        return nullptr;
 
     QWidget* widget = Gui::getMainWindow();
     if (!widget) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "No main window");
-        return 0;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "No main window");
+        return nullptr;
     }
 
     std::string pointer_str = pointer;
@@ -253,7 +248,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
     x11->show();
 #else
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented for this platform");
-    return 0;
+    return nullptr;
 #endif
 
     Py_INCREF(Py_None);
@@ -272,7 +267,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "an event loop or showing up any GUI\n"},
     {"embedToWindow",FreeCADGui_embedToWindow,METH_VARARGS,
      "embedToWindow() -- Embeds the main window into another window\n"},
-    {NULL, NULL, 0, NULL}  /* sentinel */
+    {nullptr, nullptr, 0, nullptr}  /* sentinel */
 };
 
 static
@@ -288,7 +283,7 @@ QWidget* setupMainWindow()
         if (hasMainWindow) {
             // if a main window existed and has been deleted it's not supported
             // to re-create it
-            return 0;
+            return nullptr;
         }
 
         Base::PyGILStateLocker lock;
@@ -320,8 +315,8 @@ QWidget* setupMainWindow()
                 Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
             }
             catch (const Base::Exception& e) {
-                PyErr_Format(Base::BaseExceptionFreeCADError, "Error in FreeCADGuiInit.py: %s\n", e.what());
-                return 0;
+                PyErr_Format(Base::PyExc_FC_GeneralError, "Error in FreeCADGuiInit.py: %s\n", e.what());
+                return nullptr;
             }
             init = true;
         }
@@ -370,7 +365,7 @@ PyMOD_INIT_FUNC(FreeCADGui)
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
         App::Application::Config()["SplashScreen"] = "freecadsplash";
-        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2020\n";
+        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n";
         App::Application::Config()["LicenseInfo"] = "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n";
         App::Application::Config()["CreditsInfo"] = "FreeCAD wouldn't be possible without FreeCAD community.\n";
         // it's possible that the GUI is already initialized when the Gui version of the executable
@@ -381,7 +376,7 @@ PyMOD_INIT_FUNC(FreeCADGui)
             PyModuleDef_HEAD_INIT,
             "FreeCADGui", "FreeCAD GUI module\n", -1,
             FreeCADGui_methods,
-            NULL, NULL, NULL, NULL
+            nullptr, nullptr, nullptr, nullptr
         };
         PyObject* module = PyModule_Create(&FreeCADGuiModuleDef);
         return module;
@@ -392,6 +387,6 @@ PyMOD_INIT_FUNC(FreeCADGui)
     catch (...) {
         PyErr_SetString(PyExc_ImportError, "Unknown runtime error occurred");
     }
-    return 0;
+    return nullptr;
 }
 

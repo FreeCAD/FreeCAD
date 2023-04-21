@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Этот мастер проведет вас ч
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Компиляция скриптов Python..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Создать ярлык на рабочем столе"
-${LangFileString} TEXT_FINISH_WEBSITE "Перейти на freecadweb.org за новостями, поддержкой и советами"
+${LangFileString} TEXT_FINISH_WEBSITE "Перейти на freecad.org за новостями, поддержкой и советами"
 
 #${LangFileString} FileTypeTitle "FreeCAD-Document"
 

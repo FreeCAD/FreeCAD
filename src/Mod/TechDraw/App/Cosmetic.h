@@ -23,18 +23,12 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
-#include <boost/uuid/uuid_io.hpp>
-
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-
 #include <App/FeaturePython.h>
-
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
-#include <App/Material.h>
 
 #include "Geometry.h"
+
 
 class TopoDS_Edge;
 
@@ -50,7 +44,7 @@ public:
     LineFormat(int style,
                double weight,
                App::Color color,
-               bool visible );
+               bool visible);
     ~LineFormat() = default;
 
     int m_style;
@@ -66,95 +60,45 @@ public:
     std::string toString() const;
 };
 
-//********** Cosmetic Vertex ***************************************************
-class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::Vertex
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    CosmeticVertex();
-    CosmeticVertex(const CosmeticVertex* cv);
-    CosmeticVertex(Base::Vector3d loc);
-    virtual ~CosmeticVertex() = default;
-
-    void move(Base::Vector3d newPos);
-    void moveRelative(Base::Vector3d movement);
-
-    std::string toString(void) const;
-    void dump(const char* title);
-    Base::Vector3d scaled(double factor);
-
-    static bool restoreCosmetic(void);
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-
-    virtual PyObject *getPyObject(void);
-    CosmeticVertex* copy(void) const;
-    CosmeticVertex* clone(void) const;
-
-    Base::Vector3d permaPoint;           //permanent, unscaled value
-    int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
-                                         //better to do reverse search for CosmeticTag in vertex geometry
-    App::Color     color;
-    double         size;
-    int            style;
-    bool           visible;              //base class vertex also has visible property
-
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
-
-protected:
-    //Uniqueness
-    void createNewTag();
-    void assignTag(const TechDraw::CosmeticVertex* cv);
-
-    boost::uuids::uuid tag;
-
-    Py::Object PythonObject;
-
-
-};
-
 //********** CosmeticEdge ******************************************************
 
 class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     CosmeticEdge();
+    CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
     CosmeticEdge(CosmeticEdge* ce);
     CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
     CosmeticEdge(TopoDS_Edge e);
-    CosmeticEdge(TechDraw::BaseGeom* g);
-    virtual ~CosmeticEdge();
+    CosmeticEdge(TechDraw::BaseGeomPtr g);
+    ~CosmeticEdge() override;
 
-    void initialize(void);
-    TechDraw::BaseGeom* scaledGeometry(double scale);
+    void initialize();
+    TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
+    TechDraw::BaseGeomPtr scaledGeometry(double scale);
 
-    virtual std::string toString(void) const;
+    std::string toString() const override;
     void dump(const char* title);
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual PyObject *getPyObject(void);
-    CosmeticEdge* copy(void) const;
-    CosmeticEdge* clone(void) const;
+    PyObject *getPyObject() override;
+    CosmeticEdge* copy() const;
+    CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
-    Base::Vector3d permaEnd; 
+    Base::Vector3d permaEnd;
     double permaRadius;
 //    void unscaleEnds(double scale);
-    TechDraw::BaseGeom* m_geometry;
+    TechDraw::BaseGeomPtr m_geometry;
     LineFormat m_format;
 
     boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
+    std::string getTagAsString() const override;
 
 protected:
     //Uniqueness
@@ -166,142 +110,30 @@ protected:
 
 };
 
-//***** CenterLine *************************************************************
-
-class TechDrawExport CenterLine: public Base::Persistence
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    CenterLine();
-    CenterLine(CenterLine* cl);
-    //set m_faces after using next 3 ctors
-    CenterLine(TechDraw::BaseGeom* bg);
-    CenterLine(Base::Vector3d p1, Base::Vector3d p2);
-    CenterLine(Base::Vector3d p1, Base::Vector3d p2,
-               int m, 
-               double h,
-               double v,
-               double r,
-               double x);
-    virtual ~CenterLine();
-
-    enum CLMODE {
-        VERTICAL,
-        HORIZONTAL,
-        ALIGNED
-    };
-
-    enum CLTYPE {
-        FACE,
-        EDGE,
-        VERTEX
-    };
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-
-    virtual PyObject *getPyObject(void);
-    CenterLine* copy(void) const;
-    CenterLine* clone(void) const;
-
-    std::string toString(void) const;
-
-    static CenterLine* CenterLineBuilder(TechDraw::DrawViewPart* partFeat,
-                                         std::vector<std::string> subs,
-                                         int mode = 0,
-                                         bool flip = false);
-    TechDraw::BaseGeom* scaledGeometry(TechDraw::DrawViewPart* partFeat);
-    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
-                                          TechDraw::DrawViewPart* partFeat,
-                                          std::vector<std::string> faceNames,
-                                          int mode, double ext,
-                                          double m_hShift, double m_vShift,
-                                          double rotate);
-    static bool Circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
-    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Lines(
-                                          TechDraw::DrawViewPart* partFeat,
-                                          std::vector<std::string> faceNames,
-                                          int vert, double ext,
-                                          double m_hShift, double m_vShift,
-                                          double rotate, bool flip);
-    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Points(
-                                          TechDraw::DrawViewPart* partFeat,
-                                          std::vector<std::string> faceNames,
-                                          int vert, double ext,
-                                          double m_hShift, double m_vShift,
-                                          double rotate, bool flip);
-    void dump(const char* title);
-    void setShifts(double h, double v);
-    double getHShift(void);
-    double getVShift(void);
-    void setRotate(double r);
-    double getRotate(void);
-    void setExtend(double e);
-    double getExtend(void);
-    void setFlip(bool f);
-    bool getFlip(void);
-
-    Base::Vector3d m_start;
-    Base::Vector3d m_end;
-
-    //required to recalculate CL after source geom changes.
-    std::vector<std::string> m_faces;
-    std::vector<std::string> m_edges;
-    std::vector<std::string> m_verts;
-    int m_type;          // 0 - face, 1 - 2 line, 2 - 2 point
-    int m_mode;          // 0 - vert/ 1 - horiz/ 2 - aligned
-    double m_hShift;
-    double m_vShift;
-    double m_rotate;
-    double m_extendBy;
-    LineFormat m_format;
-    bool m_flip2Line;
-
-    TechDraw::BaseGeom* m_geometry;
-
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
-
-protected:
-    void initialize();
-    
-    void createNewTag();
-    void assignTag(const TechDraw::CenterLine* cl);
-
-    boost::uuids::uuid tag;
-
-    Py::Object PythonObject;
-
-};
-
 //********** GeomFormat ********************************************************
 
 // format specifier for geometric edges (Edge5)
 class TechDrawExport GeomFormat: public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GeomFormat();
-    GeomFormat(TechDraw::GeomFormat* gf);
+    explicit GeomFormat(TechDraw::GeomFormat* gf);
     GeomFormat(int idx,
                LineFormat fmt);
-    ~GeomFormat();
+    ~GeomFormat() override;
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual PyObject *getPyObject(void);
-    GeomFormat* copy(void) const;
-    GeomFormat* clone(void) const;
+    PyObject *getPyObject() override;
+    GeomFormat* copy() const;
+    GeomFormat* clone() const;
 
-    std::string toString(void) const;
+    std::string toString() const;
     void dump(const char* title) const;
 
     //std::string linkTag;
@@ -310,7 +142,7 @@ public:
 
     //Uniqueness
     boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString(void) const;
+    virtual std::string getTagAsString() const;
 
 protected:
     void createNewTag();

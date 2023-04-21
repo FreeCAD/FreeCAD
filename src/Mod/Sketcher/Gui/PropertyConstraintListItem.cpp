@@ -21,7 +21,6 @@
 ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <memory>
 # include <QDebug>
@@ -29,9 +28,8 @@
 #endif
 
 #include <Base/Tools.h>
+#include <Mod/Sketcher/App/PropertyConstraintList.h>
 
-#include <Gui/MetaTypes.h>
-#include "../App/PropertyConstraintList.h"
 #include "PropertyConstraintListItem.h"
 
 
@@ -109,7 +107,7 @@ void PropertyConstraintListItem::initialize()
                 item->setObjectName(internalName);
                 this->appendChild(item);
             }
-            
+
             item->bind(list->createPath(id-1));
             item->setAutoApply(false);
         }

@@ -1,5 +1,6 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
-#   (c) Emmanuel O'Brien 2021  LGPL                                       *
+#**************************************************************************
+#   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+#   Copyright (c) 2021 Emmanuel O'Brien                                   *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -23,6 +24,7 @@
 # Broken-out test modules
 from SketcherTests.TestSketcherSolver import TestSketcherSolver
 from SketcherTests.TestSketchFillet import TestSketchFillet
+from SketcherTests.TestSketchExpression import TestSketchExpression
 
 # Path and PartDesign tests use these functions that used to live here
 # but moved to SketcherTests/TestSketcherSolver.py

@@ -160,7 +160,7 @@
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="widget">
        <property name="minimumSize">
         <size>
          <width>125</width>
@@ -185,7 +185,7 @@
              </size>
             </property>
             <property name="text">
-             <string>W =</string>
+             <string notr="true">W =</string>
             </property>
            </widget>
           </item>
@@ -212,7 +212,7 @@
              </size>
             </property>
             <property name="text">
-             <string>h = </string>
+             <string notr="true">h = </string>
             </property>
            </widget>
           </item>
@@ -353,7 +353,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="widget_2" native="true">
+      <widget class="QWidget" name="widget_2">
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_2">

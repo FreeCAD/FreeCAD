@@ -24,16 +24,16 @@
 #ifndef BASE_UNITSAPI_H
 #define BASE_UNITSAPI_H
 
-#include <CXX/WrapPython.h>
 #include <memory>
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
 #include "Quantity.h"
 
+using PyObject = struct _object;
+using PyMethodDef = struct PyMethodDef;
 
 namespace Base {
-typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
+using UnitsSchemaPtr = std::unique_ptr<UnitsSchema>;
 
 /**
  * The UnitsApi
@@ -42,11 +42,6 @@ class BaseExport UnitsApi
 {
 
 public:
-    /** Constructs a UnitsApi object. */
-    UnitsApi(const char* filter);
-    UnitsApi(const std::string& filter);
-    virtual ~UnitsApi();
-
     /** set Schema
      * set the UnitsSchema of the Application
      * this a represented by a class of type UnitSchema which
@@ -55,7 +50,9 @@ public:
      */
     static void setSchema(UnitSystem s);
     /// return the active schema
-    static UnitSystem getSchema(void){return actSystem;}
+    static UnitSystem getSchema() {
+        return currentSystem;
+    }
     /// Returns a brief description of a schema
     static const char* getDescription(UnitSystem);
 
@@ -83,46 +80,47 @@ public:
     static QString toNumber(double d, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
 
     /// generate a value for a quantity with default user preferred system
-    static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
+    static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
     /// generate a value for a quantity with default user preferred system
-    static Quantity toQuantity(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
+    static Quantity toQuantity(PyObject* args, const Base::Unit& u = Base::Unit());
 
     // set the number of decimals
     static void setDecimals(int);
     // get the number of decimals
     static int getDecimals();
-    /// set the application defaults
-    //static void setDefaults(void);
     //@}
 
     //double Result;
 
+    //return true if the current user schema uses multiple units for length (ex. Ft/In)
+    static bool isMultiUnitLength();
+
+    //return true if the current user schema uses multiple units for angles (ex. DMS)
+    static bool isMultiUnitAngle();
+
+    //return the basic unit of measure for length in the current user schema.
+    static std::string getBasicLengthUnit();
+
     // Python interface
     static PyMethodDef    Methods[];
-
-    static double defaultFactor;
 
     /// return an instance of the given enum value
     static UnitsSchemaPtr createSchema(UnitSystem s);
 
 protected:
-    // not used at the moment
     static UnitsSchemaPtr UserPrefSystem;
-    static UnitSystem actSystem;
+    static UnitSystem currentSystem;
     /// number of decimals for floats
     static int      UserPrefDecimals;
 
-    // do the real work
-    //static double parse(const char*,bool &UsedUnit);
-
-protected: // the python API wrapper methods
-    //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args);
-    //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args);
+protected:
+    // the python API wrapper methods
     static PyObject *sParseQuantity   (PyObject *self,PyObject *args);
     static PyObject *sListSchemas     (PyObject *self,PyObject *args);
     static PyObject *sGetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSchemaTranslate (PyObject *self,PyObject *args);
+    static PyObject *sToNumber        (PyObject *self,PyObject *args);
 };
 
 } // namespace Base

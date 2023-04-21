@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Pas het aantal recente bestanden dat hier getoond aan in het menu Bewerken-&gt; Voorkeuren-&gt; generaal-&gt; grootte van de lijst met recente bestanden aanpassen</translation>
+      <translation>Pas het aantal recente bestanden dat hier getoond wordt aan in het menu Bewerken&gt; Opties&gt; Algemeen&gt; Tabblad Algemeen&gt; Grootte van de recente-bestanden lijst</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -487,7 +487,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Sluit en wissel bij het openen van bestand</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>

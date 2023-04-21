@@ -23,12 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/GeoFeaturePy.h>
 
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
-#include <App/GeoFeaturePy.h>
+#include "ComplexGeoData.h"
+
 
 using namespace App;
 
@@ -40,14 +40,12 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 // Feature
 //===========================================================================
 
-GeoFeature::GeoFeature(void)
+GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
 }
 
-GeoFeature::~GeoFeature(void)
-{
-}
+GeoFeature::~GeoFeature() = default;
 
 void GeoFeature::transformPlacement(const Base::Placement &transform)
 {
@@ -71,7 +69,7 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
-PyObject* GeoFeature::getPyObject(void)
+PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -87,7 +85,8 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
     (void)type;
 
     std::pair<std::string,std::string> ret;
-    if(!name) return ret;
+    if(!name)
+        return ret;
 
     ret.second = name;
     return ret;
@@ -99,20 +98,20 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         const char **_element, GeoFeature **geoFeature)
 {
     if(!obj || !obj->getNameInDocument())
-        return 0;
+        return nullptr;
     if(!subname)
         subname = "";
     const char *element = Data::ComplexGeoData::findElementName(subname);
     if(_element) *_element = element;
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
-        return 0;
+        return nullptr;
     obj = sobj->getLinkedObject(true);
     auto geo = dynamic_cast<GeoFeature*>(obj);
     if(geoFeature) 
         *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
-        return 0;
+        return nullptr;
     if(!element || !element[0]) {
         if(append) 
             elementName.second = Data::ComplexGeoData::oldElementName(subname);
@@ -131,7 +130,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     else{
         const auto &names = geo->getElementName(element,type);
         std::string prefix(subname,element-subname);
-        if(names.first.size())
+        if(!names.first.empty())
             elementName.first = prefix + names.first;
         elementName.second = prefix + names.second;
     }

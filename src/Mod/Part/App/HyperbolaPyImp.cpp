@@ -20,42 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Hypr.hxx>
-# include <Geom_Hyperbola.hxx>
 # include <GC_MakeHyperbola.hxx>
+# include <Geom_Hyperbola.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "HyperbolaPy.h"
+#include "HyperbolaPy.cpp"
 #include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/HyperbolaPy.cpp>
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string HyperbolaPy::representation(void) const
+std::string HyperbolaPy::representation() const
 {
     return "<Hyperbola object>";
 }
 
 PyObject *HyperbolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of HyperbolaPy and the Twin object 
+    // create a new instance of HyperbolaPy and the Twin object
     return new HyperbolaPy(new GeomHyperbola);
 }
 
 // constructor method
 int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {NULL};
+    char* keywords_n[] = {nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
         hyperbola->SetMajorRadius(2.0);
@@ -63,7 +61,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_e[] = {"Hyperbola",NULL};
+    char* keywords_e[] = {"Hyperbola",nullptr};
     PyErr_Clear();
     PyObject *pHypr;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(HyperbolaPy::Type), &pHypr)) {
@@ -76,7 +74,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",NULL};
+    char* keywords_ssc[] = {"S1","S2","Center",nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
@@ -99,7 +97,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",NULL};
+    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
@@ -127,10 +125,10 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float HyperbolaPy::getMajorRadius(void) const
+Py::Float HyperbolaPy::getMajorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MajorRadius()); 
+    return Py::Float(hyperbola->MajorRadius());
 }
 
 void HyperbolaPy::setMajorRadius(Py::Float arg)
@@ -139,10 +137,10 @@ void HyperbolaPy::setMajorRadius(Py::Float arg)
     hyperbola->SetMajorRadius((double)arg);
 }
 
-Py::Float HyperbolaPy::getMinorRadius(void) const
+Py::Float HyperbolaPy::getMinorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MinorRadius()); 
+    return Py::Float(hyperbola->MinorRadius());
 }
 
 void HyperbolaPy::setMinorRadius(Py::Float arg)
@@ -151,20 +149,20 @@ void HyperbolaPy::setMinorRadius(Py::Float arg)
     hyperbola->SetMinorRadius((double)arg);
 }
 
-Py::Float HyperbolaPy::getFocal(void) const
+Py::Float HyperbolaPy::getFocal() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->Focal()); 
+    return Py::Float(hyperbola->Focal());
 }
 
-Py::Object HyperbolaPy::getFocus1(void) const
+Py::Object HyperbolaPy::getFocus1() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus1();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Object HyperbolaPy::getFocus2(void) const
+Py::Object HyperbolaPy::getFocus2() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus2();
@@ -173,10 +171,10 @@ Py::Object HyperbolaPy::getFocus2(void) const
 
 PyObject *HyperbolaPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int HyperbolaPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

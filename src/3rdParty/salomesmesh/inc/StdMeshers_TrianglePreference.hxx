@@ -19,7 +19,7 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-//  SMESH StdMeshers : implementaion of SMESH idl descriptions
+//  SMESH StdMeshers : implementation of SMESH idl descriptions
 //  File   : StdMeshers_TrianglePreference.hxx
 //  Module : SMESH
 //  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/Attic/StdMeshers_TrianglePreference.hxx,v 1.1.4.2 2008/11/27 13:03:50 abd Exp $

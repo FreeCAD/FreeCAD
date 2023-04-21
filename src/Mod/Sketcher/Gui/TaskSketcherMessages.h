@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherMessages_H
 #define GUI_TASKVIEW_TaskSketcherMessages_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <boost_signals2.hpp>
 
+#include <Gui/TaskView/TaskView.h>
+
+
 class Ui_TaskSketcherMessages;
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 
 namespace App {
 class Property;
@@ -44,22 +44,20 @@ class TaskSketcherMessages : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskSketcherMessages(ViewProviderSketch *sketchView);
-    ~TaskSketcherMessages();
+    explicit TaskSketcherMessages(ViewProviderSketch *sketchView);
+    ~TaskSketcherMessages() override;
 
-    void slotSetUp(QString msg);
-    void slotSolved(QString msg);
+    void slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText);
 
-private Q_SLOTS:
-    void on_labelConstrainStatus_linkActivated(const QString &);
-    void on_autoUpdate_stateChanged(int state);
-    void on_autoRemoveRedundants_stateChanged(int state);
-    void on_manualUpdate_clicked(bool checked);
+private:
+    void setupConnections();
+    void onLabelConstrainStatusLinkClicked(const QString &);
+    void onAutoUpdateStateChanged();
+    void onManualUpdateClicked(bool checked);
     
 protected:
     ViewProviderSketch *sketchView;
     Connection connectionSetUp;
-    Connection connectionSolved;
 
 private:
     QWidget* proxy;

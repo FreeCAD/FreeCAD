@@ -20,22 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cinttypes>
-# include <iomanip>
-# include <boost/algorithm/string.hpp>
-# include <boost/lexical_cast.hpp>
-#endif
-
-#include <Base/Vector3D.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include "Voronoi.h"
 #include "VoronoiCell.h"
+
 
 using namespace Base;
 using namespace Path;
@@ -45,7 +33,7 @@ TYPESYSTEM_SOURCE(Path::VoronoiCell , Base::Persistence)
 VoronoiCell::VoronoiCell(Voronoi::diagram_type *d, long index)
   : dia(d)
   , index(index)
-  , ptr(0)
+  , ptr(nullptr)
 {
   if (dia && long(dia->num_cells()) > index) {
     ptr = &(dia->cells()[index]);
@@ -65,13 +53,13 @@ VoronoiCell::VoronoiCell(Voronoi::diagram_type *d, const Voronoi::diagram_type::
 VoronoiCell::~VoronoiCell() {
 }
 
-bool VoronoiCell::isBound(void) const {
-  if (ptr != 0 && dia.isValid() && index != Voronoi::InvalidIndex) {
+bool VoronoiCell::isBound() const {
+  if (ptr && dia.isValid() && index != Voronoi::InvalidIndex) {
     if (&(dia->cells()[index]) == ptr) {
       return true;
     }
   }
-  ptr = 0;
+  ptr = nullptr;
   return false;
 }
 

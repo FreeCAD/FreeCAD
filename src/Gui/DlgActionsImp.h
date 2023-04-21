@@ -53,8 +53,8 @@ class DlgCustomActionsImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgCustomActionsImp( QWidget* parent = 0 );
-    ~DlgCustomActionsImp();
+    explicit DlgCustomActionsImp( QWidget* parent = nullptr );
+    ~DlgCustomActionsImp() override;
 
 Q_SIGNALS:
     void addMacroAction( const QByteArray& );
@@ -63,35 +63,35 @@ Q_SIGNALS:
 
 protected:
     /** Trigger for reparent event. */
-    bool event(QEvent* e);
-    void showEvent(QShowEvent* e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent *e) override;
+
+protected:
+    void setupConnections();
+    /** Enables/disables buttons for deletion */
+    void onActionListWidgetItemActivated( QTreeWidgetItem *i );
+    /** Opens a iconview to select a pixmap */
+    void onButtonChoosePixmapClicked();
+    /** Adds a custom action */
+    void onButtonAddActionClicked();
+    /** Deletes a custom action */
+    void onButtonRemoveActionClicked();
+    /** Shows the setup of the action */
+    void onButtonReplaceActionClicked();
 
 protected Q_SLOTS:
-    /** Enables/disables buttons for deletion */
-    void on_actionListWidget_itemActivated( QTreeWidgetItem *i );
-    /** Opens a iconview to select a pixmap */
-    void on_buttonChoosePixmap_clicked();
-    /** Adds a custom action */
-    void on_buttonAddAction_clicked();
-    /** Deletes a custom action */
-    void on_buttonRemoveAction_clicked();
-    /** Shows the setup of the action */
-    void on_buttonReplaceAction_clicked();
-    void onAddMacroAction(const QByteArray&);
-    void onRemoveMacroAction(const QByteArray&);
-    void onModifyMacroAction(const QByteArray&);
+    void onAddMacroAction(const QByteArray&) override;
+    void onRemoveMacroAction(const QByteArray&) override;
+    void onModifyMacroAction(const QByteArray&) override;
 
 private:
     /** Shows all actions and their pixmaps if available  */
     void showActions();
-    /** Name for the new created action */
-    QString newActionName();
 
 private:
     std::unique_ptr<Ui_DlgCustomActions> ui;
-    bool bShown; /**< For internal use only*/
     QString m_sPixmap; /**< Name of the specified pixmap */
+    bool bChanged = false;
 };
 
 class Ui_DlgChooseIcon;
@@ -100,12 +100,12 @@ class IconDialog : public QDialog
     Q_OBJECT
 
 public:
-    IconDialog(QWidget* parent);
-    ~IconDialog();
-    void resizeEvent(QResizeEvent*);
+    explicit IconDialog(QWidget* parent);
+    ~IconDialog() override;
+    void resizeEvent(QResizeEvent*) override;
     QListWidgetItem* currentItem() const;
 
-private Q_SLOTS:
+private:
     void onAddIconPath();
 
 private:
@@ -118,10 +118,10 @@ class IconFolders : public QDialog
 
 public:
     IconFolders(const QStringList&, QWidget* parent);
-    ~IconFolders();
+    ~IconFolders() override;
     QStringList getPaths() const;
 
-private Q_SLOTS:
+private:
     void addFolder();
     void removeFolder();
 

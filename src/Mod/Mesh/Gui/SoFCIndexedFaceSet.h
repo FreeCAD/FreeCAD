@@ -23,18 +23,21 @@
 #ifndef MESHGUI_SOFCINDEXEDFACESET_H
 #define MESHGUI_SOFCINDEXEDFACESET_H
 
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/engines/SoSubEngine.h>
-#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFColor.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
+
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-typedef unsigned int GLuint;
-typedef int GLint;
-typedef float GLfloat;
+using GLuint = unsigned int;
+using GLint = int;
+using GLfloat = float;
 
 namespace MeshGui {
 
@@ -77,9 +80,9 @@ public:
     SoEngineOutput trigger;
 
 private:
-    virtual ~SoFCMaterialEngine();
-    virtual void evaluate();
-    virtual void inputChanged(SoField *);
+    ~SoFCMaterialEngine() override;
+    void evaluate() override;
+    void inputChanged(SoField *) override;
 };
 
 /**
@@ -90,7 +93,7 @@ private:
  * @author Werner Mayer
  */
 class MeshGuiExport SoFCIndexedFaceSet : public SoIndexedFaceSet {
-    typedef SoIndexedFaceSet inherited;
+    using inherited = SoIndexedFaceSet;
 
     SO_NODE_HEADER(SoFCIndexedFaceSet);
 
@@ -105,8 +108,8 @@ public:
 
 protected:
     // Force using the reference count mechanism.
-    virtual ~SoFCIndexedFaceSet() {}
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoFCIndexedFaceSet() override {}
+    void GLRender(SoGLRenderAction *action) override;
     void drawFaces(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *vertexindices,
@@ -119,7 +122,7 @@ protected:
                     const SoTextureCoordinateBundle * const texcoords,
                     const int32_t *texindices);
 
-    void doAction(SoAction * action);
+    void doAction(SoAction * action) override;
 
 private:
     void startSelection(SoAction * action);

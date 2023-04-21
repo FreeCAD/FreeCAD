@@ -28,10 +28,14 @@ superseded by the use of the BuildingPart class, set to the "Building Storey"
 IfcType.
 """
 
-import FreeCAD,Draft,ArchCommands, DraftVecUtils, ArchIFC
+import FreeCAD
+import ArchCommands
+import ArchIFC
+import Draft
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -139,7 +143,7 @@ class _CommandFloor:
             if not Draft.getType(obj) in ["Site", "Building"] :
                 floorobj.append(obj)
             else :
-                if link == True :
+                if link:
                     floorobj.append(obj)
                 else:
                     warning = True

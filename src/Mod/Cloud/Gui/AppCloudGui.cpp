@@ -20,20 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
 #include "Workbench.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
 // use a different name to CreateCommand()
 void CreateCloudCommands(void);
@@ -55,7 +50,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace CloudGui
@@ -66,7 +61,7 @@ PyMOD_INIT_FUNC(CloudGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     // instantiating the commands

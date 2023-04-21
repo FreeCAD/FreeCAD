@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCBACKGROUNDGRADIENT_H
 #define GUI_SOFCBACKGROUNDGRADIENT_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+#include <Inventor/SbColor.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
+#include <FCGlobal.h>
+
 
 class SbColor;
 class SoGLRenderAction;
@@ -34,18 +35,30 @@ class SoGLRenderAction;
 namespace Gui {
 
 class GuiExport SoFCBackgroundGradient : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCBackgroundGradient(void);
+    enum Gradient {
+        LINEAR = 0,
+        RADIAL = 1
+    };
+    static void initClass();
+    static void finish();
+    SoFCBackgroundGradient();
 
     void GLRender (SoGLRenderAction *action);
-    void setColorGradient(const SbColor& fromColor, const SbColor& toColor);
-    void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor);
+    void setGradient(Gradient grad);
+    Gradient getGradient() const;
+    void setColorGradient(const SbColor& fromColor,
+                          const SbColor& toColor);
+    void setColorGradient(const SbColor& fromColor,
+                          const SbColor& toColor,
+                          const SbColor& midColor);
+
+private:
+    Gradient gradient;
 
 protected:
     virtual ~SoFCBackgroundGradient();

@@ -20,22 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef COIN_SOFCBOUNDINGBOX_H
 #define COIN_SOFCBOUNDINGBOX_H
 
-#include <Inventor/SbLinear.h>
 #include <Inventor/actions/SoAction.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFVec4f.h>
-#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/fields/SoSFBool.h>
+
 
 namespace Gui {
 
@@ -50,7 +45,7 @@ namespace Gui {
  * @author Josh Grant
  */
 class GuiExport SoFCBoundingBox : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(Gui::SoFCBoundingBox);
 
@@ -83,14 +78,14 @@ private:
  * @author Werner Mayer
  */
 class GuiExport SoSkipBoundingGroup : public SoGroup {
-    typedef SoGroup inherited;
+    using inherited = SoGroup;
 
     SO_NODE_HEADER(Gui::SoSkipBoundingGroup);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoSkipBoundingGroup(void);
+    static void initClass();
+    static void finish();
+    SoSkipBoundingGroup();
 
     enum Modes {
         INCLUDE_BBOX, EXCLUDE_BBOX

@@ -38,6 +38,7 @@
  *		$Id: path_circle.cpp,v 1.1.1.1.2.5 2003/07/24 13:26:15 psoetens Exp $
  *		$Name:  $
  ****************************************************************************/
+// clazy:excludeall=rule-of-two-soft
 
 
 #include "path_circle.hpp"

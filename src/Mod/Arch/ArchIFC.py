@@ -25,15 +25,16 @@
 and attributes of Arch/BIM objects.
 """
 
-import FreeCAD,json
+import json
+
+import FreeCAD
+import ArchIFCSchema
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def QT_TRANSLATE_NOOP(ctx,txt):
         return txt
-
-import ArchIFCSchema
 
 def uncamel(t):
     return ''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
@@ -289,7 +290,6 @@ class IfcRoot:
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
-            import ArchIFCSchema
             propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
             obj.addProperty(propertyType,
                             attribute["name"],

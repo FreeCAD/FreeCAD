@@ -19,13 +19,18 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
 #include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoCacheElement.h>
+
+#ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
+# include <Inventor/elements/SoCacheElement.h>
+# include <Inventor/misc/SoState.h>
+#endif
+
+#include "SoFCSelectionContext.h"
 #include "SoFCUnifiedSelection.h"
-#include "Selection.h"
+
 
 using namespace Gui;
 
@@ -165,7 +170,7 @@ bool SoFCSelectionContextEx::applyColor(int idx, std::vector<uint32_t> &packedCo
 }
 
 bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparency) {
-    if(colors.size() && colors.begin()->first<0) {
+    if(!colors.empty() && colors.begin()->first<0) {
         color = packColor(colors.begin()->second,hasTransparency);
         return colors.size()==1;
     }

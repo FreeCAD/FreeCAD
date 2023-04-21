@@ -25,10 +25,12 @@ objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 
-import FreeCAD,ArchIFC,ArchIFCView
+import FreeCAD
+import ArchIFC
+import ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):

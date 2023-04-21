@@ -1025,7 +1025,7 @@ namespace SMESH{
 
     /*
       Class       : GroupColor
-      Description : Functor for check color of group to whic mesh element belongs to
+      Description : Functor for check color of group to which mesh element belongs to
     */
     class SMESHCONTROLS_EXPORT GroupColor: public virtual Predicate{
     public:

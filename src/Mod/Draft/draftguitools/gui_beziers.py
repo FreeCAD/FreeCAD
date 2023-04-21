@@ -24,7 +24,7 @@
 # ***************************************************************************
 """Provides GUI tools to create BezCurve objects.
 
-In particular, a cubic Bezier curve is defined, as it is one of the most
+In particular, a cubic Bézier curve is defined, as it is one of the most
 useful curves for many applications.
 
 See https://en.wikipedia.org/wiki/B%C3%A9zier_curve
@@ -50,7 +50,7 @@ from draftutils.translate import translate
 
 
 class BezCurve(gui_lines.Line):
-    """Gui command for the Bezier Curve tool."""
+    """Gui command for the Bézier Curve tool."""
 
     def __init__(self):
         super(BezCurve, self).__init__(wiremode=True)
@@ -59,15 +59,15 @@ class BezCurve(gui_lines.Line):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_BezCurve',
-                'Accel': "B, Z",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_BezCurve", "Bezier curve"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bezier curve. The more points you pick, the higher the degree.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_BezCurve",
+                "Accel": "B, Z",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bézier curve. The more points you pick, the higher the degree.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
 
-        Activate the specific bezier curve tracker.
+        Activate the specific Bézier curve tracker.
         """
         super(BezCurve, self).Activated(name="BezCurve",
                                         icon="Draft_BezCurve")
@@ -102,7 +102,8 @@ class BezCurve(gui_lines.Line):
               and arg["State"] == "DOWN"
               and arg["Button"] == "BUTTON1"):  # left click
             if arg["Position"] == self.pos:
-                self.finish(False, cont=True)
+                self.finish(cont=None)
+                return
 
             if (not self.node) and (not self.support):  # first point
                 gui_tool_utils.getSupport(arg)
@@ -118,7 +119,7 @@ class BezCurve(gui_lines.Line):
                 # then create 2 handle points?
                 self.drawUpdate(self.point)
                 if not self.isWire and len(self.node) == 2:
-                    self.finish(False, cont=True)
+                    self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # does this make sense for a BCurve?
                     # DNC: allows to close the curve
@@ -127,9 +128,9 @@ class BezCurve(gui_lines.Line):
                     # old code has been to insensitive
                     if (self.point-self.node[0]).Length < utils.tolerance():
                         self.undolast()
-                        self.finish(True, cont=True)
+                        self.finish(cont=None, closed=True)
                         _msg(translate("draft",
-                                       "Bezier curve has been closed"))
+                                       "Bézier curve has been closed"))
 
     def undolast(self):
         """Undo last line segment."""
@@ -148,9 +149,7 @@ class BezCurve(gui_lines.Line):
             _msg(translate("draft", "Pick next point"))
         else:
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft",
-                           "Pick next point, "
-                           "or finish (A) or close (O)"))
+            _msg(translate("draft", "Pick next point"))
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -174,19 +173,20 @@ class BezCurve(gui_lines.Line):
         w = Part.Wire(edges)
         return w
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the curve if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
-            Close the line if `True`.
+            Close the curve if `True`.
         """
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
                 self.bezcurvetrack.finalize()
-        if not utils.getParam("UiMode", 1):
-            Gui.Control.closeDialog()
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
@@ -197,7 +197,7 @@ class BezCurve(gui_lines.Line):
             try:
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = 'Draft.makeBezCurve'
+                _cmd = 'Draft.make_bezcurve'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '
@@ -220,7 +220,7 @@ class BezCurve(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
 
@@ -228,7 +228,7 @@ Gui.addCommand('Draft_BezCurve', BezCurve())
 
 
 class CubicBezCurve(gui_lines.Line):
-    """Gui command for the 3rd degree Bezier Curve tool."""
+    """Gui command for the 3rd degree Bézier Curve tool."""
 
     def __init__(self):
         super(CubicBezCurve, self).__init__(wiremode=True)
@@ -237,10 +237,10 @@ class CubicBezCurve(gui_lines.Line):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_CubicBezCurve',
-                # 'Accel': "B, Z",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic bezier curve"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_CubicBezCurve",
+                # "Accel": "B, Z",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -309,7 +309,7 @@ class CubicBezCurve(gui_lines.Line):
                         # then create 2 handle points?
                         self.drawUpdate(self.point)
                         if not self.isWire and len(self.node) == 2:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
                         # does this make sense for a BCurve?
                         if len(self.node) > 2:
                             # add point to "clicked list"
@@ -327,9 +327,9 @@ class CubicBezCurve(gui_lines.Line):
                                 # close the curve with a smooth symmetric knot
                                 _sym = 2 * self.node[0] - self.node[1]
                                 self.node.append(_sym)
-                                self.finish(True, cont=True)
+                                self.finish(cont=None, closed=True)
                                 _msg(translate("draft",
-                                               "Bezier curve has been closed"))
+                                               "Bézier curve has been closed"))
 
             # Release the held button
             if arg["State"] == "UP" and arg["Button"] == "BUTTON1":
@@ -349,7 +349,7 @@ class CubicBezCurve(gui_lines.Line):
                         # then create 2 handle points?
                         self.drawUpdate(self.point)
                         if not self.isWire and len(self.node) == 2:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
                         # Does this make sense for a BCurve?
                         if len(self.node) > 2:
                             self.node[-3] = 2 * self.node[-2] - self.node[-1]
@@ -377,9 +377,7 @@ class CubicBezCurve(gui_lines.Line):
         elif (len(self.node) - 1) % self.degree == 1 and len(self.node) > 2:
             # is a knot
             self.obj.Shape = self.updateShape(self.node[:-1])
-            _msg(translate("draft",
-                           "Click and drag to define next knot, "
-                           "or finish (A) or close (O)"))
+            _msg(translate("draft", "Click and drag to define next knot"))
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -408,19 +406,20 @@ class CubicBezCurve(gui_lines.Line):
         w = Part.Wire(edges)
         return w
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the curve if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
-            Close the line if `True`.
+            Close the curve if `True`.
         """
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
                 self.bezcurvetrack.finalize()
-        if not utils.getParam("UiMode", 1):
-            Gui.Control.closeDialog()
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
@@ -437,7 +436,7 @@ class CubicBezCurve(gui_lines.Line):
                 # to be committed through the `draftutils.todo.ToDo` class.
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = 'Draft.makeBezCurve'
+                _cmd = 'Draft.make_bezcurve'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '
@@ -460,7 +459,7 @@ class CubicBezCurve(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
 
@@ -468,12 +467,12 @@ Gui.addCommand('Draft_CubicBezCurve', CubicBezCurve())
 
 
 class BezierGroup:
-    """Gui Command group for the Bezier curve tools."""
+    """Gui Command group for the Bézier curve tools."""
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft_BezierTools", "Bezier tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bezier curves.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_BezierTools", "Bézier tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bézier curves.")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

@@ -20,22 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
-#include "Mod/Robot/App/Trajectory.h"
 
 // inclusion of the generated files (generated out of TrajectoryPy.xml)
 #include <Mod/Robot/App/TrajectoryPy.h>
 #include <Mod/Robot/App/TrajectoryPy.cpp>
 #include <Mod/Robot/App/WaypointPy.h>
 
+
 using namespace Robot;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TrajectoryPy::representation(void) const
+std::string TrajectoryPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -57,7 +55,7 @@ PyObject *TrajectoryPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  //
 // constructor method
 int TrajectoryPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=0;
+    PyObject *pcObj=nullptr;
     if (!PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj))
         return -1;
 
@@ -111,7 +109,7 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
     }
 
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - waypoint or placement expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - waypoint or placement expected");
 
 }
 
@@ -119,7 +117,7 @@ PyObject* TrajectoryPy::position(PyObject * args)
 {
     double pos;
     if (!PyArg_ParseTuple(args, "d", &pos))
-        return NULL;
+        return nullptr;
 
     return (new Base::PlacementPy(new Base::Placement(getTrajectoryPtr()->getPosition(pos))));
 }
@@ -128,7 +126,7 @@ PyObject* TrajectoryPy::velocity(PyObject * args)
 {
     double pos;
     if (!PyArg_ParseTuple(args, "d", &pos))
-        return NULL;
+        return nullptr;
 
      // return velocity as float
     return Py::new_reference_to(Py::Float(getTrajectoryPtr()->getVelocity(pos)));
@@ -138,19 +136,19 @@ PyObject* TrajectoryPy::deleteLast(PyObject *args)
 {
     int n=1;
     if (!PyArg_ParseTuple(args, "|i", &n))
-        return NULL;
+        return nullptr;
     getTrajectoryPtr()->deleteLast(n);
     return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
  }
 
 
 
-Py::Float TrajectoryPy::getDuration(void) const
+Py::Float TrajectoryPy::getDuration() const
 {
     return Py::Float(getTrajectoryPtr()->getDuration());
 }
 
-Py::List TrajectoryPy::getWaypoints(void) const
+Py::List TrajectoryPy::getWaypoints() const
 {
     Py::List list;
     for(unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++)
@@ -159,7 +157,7 @@ Py::List TrajectoryPy::getWaypoints(void) const
     return list;
 }
 
-Py::Float TrajectoryPy::getLength(void) const
+Py::Float TrajectoryPy::getLength() const
 {
     return Py::Float(getTrajectoryPtr()->getLength());
 }
@@ -173,7 +171,7 @@ void TrajectoryPy::setWaypoints(Py::List)
 
 PyObject *TrajectoryPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TrajectoryPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

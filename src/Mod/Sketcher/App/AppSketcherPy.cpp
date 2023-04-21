@@ -20,27 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <TopoDS_Face.hxx>
-# include <Geom_Plane.hxx>
-#endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <App/Application.h>
 #include <App/Document.h>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-// Things from the part module
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/PyObjectBase.h>
 
 #include "SketchObjectSF.h"
 
@@ -58,7 +45,7 @@ public:
         initialize("This module is the Sketcher module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object open(const Py::Tuple& args)
@@ -103,7 +90,7 @@ private:
             }
 
             if (file.hasExtension("skf")) {
-                Sketcher::SketchObjectSF *pcFeature = (Sketcher::SketchObjectSF *)pcDoc->addObject("Sketcher::SketchObjectSF",file.fileNamePure().c_str());
+                Sketcher::SketchObjectSF *pcFeature = static_cast<Sketcher::SketchObjectSF *>(pcDoc->addObject("Sketcher::SketchObjectSF",file.fileNamePure().c_str()));
                 pcFeature->SketchFlatFile.setValue(EncodedName.c_str());
 
                 pcDoc->recompute();
@@ -122,7 +109,7 @@ private:
 /// @cond DOXERR
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 /// @endcond
 

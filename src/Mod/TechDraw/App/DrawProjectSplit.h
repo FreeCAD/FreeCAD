@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjectSplit_h_
-#define _DrawProjectSplit_h_
-
+#ifndef DrawProjectSplit_h_
+#define DrawProjectSplit_h_
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Base/Vector3D.h>
-#include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include "DrawUtil.h"
+#include "Geometry.h"
+
 
 class gp_Pnt;
 class gp_Ax2;
@@ -40,12 +40,17 @@ class gp_Ax2;
 namespace TechDraw
 {
 class GeometryObject;
+using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 class Vertex;
 class BaseGeom;
 }
 
 namespace TechDraw
 {
+
+//magic number for finding parameter of point on curve
+#define PARAM_MAX_DIST 0.000001
+
 struct splitPoint {
     int i;
     Base::Vector3d v;
@@ -59,7 +64,7 @@ public:
         startAngle = endAngle = 0.0;
         idx = 0;
     }
-    ~edgeSortItem() {}
+    ~edgeSortItem()  = default;
 
     Base::Vector3d start;
     Base::Vector3d end;
@@ -69,8 +74,23 @@ public:
 
     static bool edgeLess(const edgeSortItem& e1, const edgeSortItem& e2);
     static bool edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2);
-    std::string dump(void);
+    std::string dump();
 };
+
+using vertexMap = std::map<Base::Vector3d, int, DrawUtil::vectorLessType>;
+
+class edgeVectorEntry {
+public:
+    edgeVectorEntry(TopoDS_Edge e, bool flag) {
+        edge = e;
+        validFlag = flag;
+    }
+    ~edgeVectorEntry() = default;
+
+    TopoDS_Edge edge;
+    bool validFlag;
+};
+
 class TechDrawExport DrawProjectSplit
 {
 public:
@@ -79,7 +99,7 @@ public:
 
 public:
     static std::vector<TopoDS_Edge> getEdgesForWalker(TopoDS_Shape shape, double scale, Base::Vector3d direction);
-    static TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
+    static TechDraw::GeometryObjectPtr  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
 
     static bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
     static std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
@@ -91,6 +111,28 @@ public:
     static std::vector<TopoDS_Edge> removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges);
     static std::vector<edgeSortItem> sortEdges(std::vector<edgeSortItem>& e, bool ascend);
 
+
+    //routines for revised face finding approach
+    static std::vector<TopoDS_Edge> scrubEdges(const std::vector<BaseGeomPtr> &origEdges,
+                                               std::vector<TopoDS_Edge>& closedEdges);
+    static std::vector<TopoDS_Edge> scrubEdges(std::vector<TopoDS_Edge>& origEdges,
+                                               std::vector<TopoDS_Edge>& closedEdges);
+    static vertexMap                getUniqueVertexes(std::vector<TopoDS_Edge> inEdges);
+    static std::vector<TopoDS_Edge> pruneUnconnected(vertexMap verts,
+                                                     std::vector<TopoDS_Edge> edges);
+    static std::vector<TopoDS_Edge> removeOverlapEdges(const std::vector<TopoDS_Edge>& inEdges);
+    static std::vector<TopoDS_Edge> splitIntersectingEdges(std::vector<TopoDS_Edge>& inEdges);
+
+    static bool                     sameEndPoints(const TopoDS_Edge& e1,
+                                                  const TopoDS_Edge& e2);
+    static int                      isSubset(const TopoDS_Edge &e0,
+                                             const TopoDS_Edge &e1);
+    static std::vector<TopoDS_Edge> fuseEdges(const TopoDS_Edge& e0,
+                                              const TopoDS_Edge& e1);
+    static bool                     boxesIntersect(const TopoDS_Edge& e0,
+                                                   const TopoDS_Edge& e1);
+    static void dumpVertexMap(vertexMap verts);
+
 protected:
     static std::vector<TopoDS_Edge> getEdges(TechDraw::GeometryObject* geometryObject);
 
@@ -99,8 +141,8 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawProjectSplit> DrawProjectSplitPython;
+using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
 
 } //namespace TechDraw
 
-#endif  // #ifndef _DrawProjectSplit_h_
+#endif  // #ifndef DrawProjectSplit_h_

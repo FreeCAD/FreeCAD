@@ -10,7 +10,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning( disable : 4996 )
 #ifndef WINVER
 	#define WINVER 0x501
@@ -448,7 +448,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		// operators
 		const	CLine operator~(void);// perp to left
-		const	CLine operator=(const Point& p0){p.x=p0.x; p.y=p0.y; return *this;};				// s = p;
+		const	CLine& operator=(const Point& p0){p.x=p0.x; p.y=p0.y; return *this;};				// s = p;
 
 		// methods
 		double c();																// returns c
@@ -772,7 +772,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning(disable:4522)
 #endif
 
@@ -902,7 +902,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		PK_BODY_t ToPKlofted_thickened_body(Kurve &sec, double thickness);
 #endif
 	};
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning(default:4522)
 #endif
 

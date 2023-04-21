@@ -33,10 +33,10 @@
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+import draftobjects.label as label
 
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import translate
-from draftobjects.label import Label
 
 if App.GuiUp:
     from draftviewproviders.view_label import ViewProviderLabel
@@ -104,9 +104,8 @@ def make_label(target_point=App.Vector(0, 0, 0),
 
     label_type: str, optional
         It defaults to `'Custom'`.
-        It can be `'Custom'`, `'Name'`, `'Label'`, `'Position'`,
-        `'Length'`, `'Area'`, `'Volume'`, `'Tag'`, or `'Material'`.
         It indicates the type of information that will be shown in the label.
+        See the get_label_types function in label.py for supported types.
 
         Only `'Custom'` allows you to manually set the text
         by defining `custom_text`. The other types take their information
@@ -270,12 +269,12 @@ def make_label(target_point=App.Vector(0, 0, 0),
     try:
         utils.type_check([(label_type, str)], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'."))
+        _err(translate("draft","Wrong input: label_type must be a string."))
         return None
 
-    if label_type not in ("Custom", "Name", "Label", "Position",
-                          "Length", "Area", "Volume", "Tag", "Material"):
-        _err(translate("draft","Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'."))
+    types = label.get_label_types()
+    if label_type not in types:
+        _err(translate("draft", "Wrong input: label_type must be one of the following: ") + str(types).strip("[]"))
         return None
 
     _msg("custom_text: {}".format(custom_text))
@@ -334,7 +333,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
 
     new_obj = doc.addObject("App::FeaturePython",
                             "dLabel")
-    Label(new_obj)
+    label.Label(new_obj)
 
     new_obj.TargetPoint = target_point
     new_obj.Placement = placement
@@ -357,7 +356,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
     if App.GuiUp:
         ViewProviderLabel(new_obj.ViewObject)
         h = utils.get_param("textheight", 0.20)
-        new_obj.ViewObject.TextSize = h
+        new_obj.ViewObject.FontSize = h
 
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)

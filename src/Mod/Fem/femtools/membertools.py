@@ -40,7 +40,7 @@ def get_member(analysis, t):
     """ Return list of all members of *analysis* of type *t*.
 
     Search *analysis* for members of type *t*. This method checks the custom
-    python typesytem (BaseType class property) used by the Fem module if
+    python typesystem (BaseType class property) used by the Fem module if
     possible. If the object does not use the python typesystem the usual
     isDerivedFrom from the C++ dynamic type system is used.
 
@@ -68,7 +68,7 @@ def get_single_member(analysis, t):
     """ Return one object of type *t* and part of *analysis*.
 
     Search *analysis* for members of type *t* and return the first one that's
-    found. This method checks the custom python typesytem (BaseType class
+    found. This method checks the custom python typesystem (BaseType class
     property) used by the Fem module if possible. If the object doesn't use the
     python typesystem the usual isDerivedFrom from the C++ dynamic type system
     is used.
@@ -188,6 +188,10 @@ class AnalysisMember():
             [{"Object":shell_thickness_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints:
+        constraints_centrif : list of dictionaries
+            list of centrifs for the analysis.
+            [{"Object":centrif_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_contact : list of dictionaries
             list of contact constraints from the analysis.
             [{"Object":contact_obj, "xxxxxxxx":value}, {}, ...]
@@ -220,13 +224,17 @@ class AnalysisMember():
             list of pressure constraints from the analysis.
             [{"Object":pressure_obj, "xxxxxxxx":value}, {}, ...]
 
+        constraints_sectionprint : list of dictionaries
+            list of sectionprints for the analysis.
+            [{"Object":sectionprint_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_selfweight : list of dictionaries
             list of selfweight constraints from the analysis.
             [{"Object":selfweight_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_temperature : list of dictionaries
             list of temperatures for the analysis.
-            [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
+            [{"Object":temperature_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_tie : list of dictionaries
             list of ties for the analysis.
@@ -271,6 +279,9 @@ class AnalysisMember():
         )
 
         # constraints
+        self.cons_centrif = self.get_several_member(
+            "Fem::ConstraintCentrif"
+        )
         self.cons_contact = self.get_several_member(
             "Fem::ConstraintContact"
         )

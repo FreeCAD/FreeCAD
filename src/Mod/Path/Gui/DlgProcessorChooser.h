@@ -24,8 +24,7 @@
 #define PATH_DlgProcessorChooser_H
 
 #include <QDialog>
-#include <QString>
-#include <App/DocumentObject.h>
+
 
 class Ui_DlgProcessorChooser;
 
@@ -36,13 +35,13 @@ class DlgProcessorChooser : public QDialog
     Q_OBJECT
 
 public:
-    DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
-    ~DlgProcessorChooser();
+    explicit DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
+    ~DlgProcessorChooser() override;
 
     std::string getProcessor();
     std::string getArguments();
 
-    void accept();
+    void accept() override;
 
 protected Q_SLOTS:
 

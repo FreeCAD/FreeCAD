@@ -80,7 +80,7 @@
    <item row="1" column="0">
     <widget class="QTextEdit" name="textEdit">
      <property name="toolTip">
-      <string>List of last used calculations 
+      <string>List of last used calculations.
 To add a calculation press Return in the value input field</string>
      </property>
      <property name="readOnly">

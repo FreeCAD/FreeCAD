@@ -24,10 +24,7 @@
 #ifndef PARTDESIGN_FeatureSolid_H
 #define PARTDESIGN_FeatureSolid_H
 
-#include <App/PropertyStandard.h>
 #include "Feature.h"
-
-class gp_Pnt;
 
 
 /// Base class of all additive features in PartDesign
@@ -40,13 +37,13 @@ namespace PartDesign
  */
 class PartDesignExport Solid : public Feature
 {
-    PROPERTY_HEADER(PartDesign::FeatureSolid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureSolid);
 
 public:
     Solid();
 
 protected:
- 
+
 };
 
 } //namespace PartDesign

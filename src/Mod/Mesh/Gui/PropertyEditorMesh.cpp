@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <Mod/Mesh/App/MeshFeature.h>
+
 #include "PropertyEditorMesh.h"
+
 
 using namespace MeshGui;
 using MeshCore::MeshKernel;
@@ -93,7 +91,7 @@ QWidget* PropertyMeshKernelItem::createEditor(QWidget* parent, const QObject* re
     Q_UNUSED(parent);
     Q_UNUSED(receiver);
     Q_UNUSED(method);
-    return 0;
+    return nullptr;
 }
 
 void PropertyMeshKernelItem::setEditorData(QWidget *editor, const QVariant& data) const

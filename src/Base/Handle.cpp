@@ -25,14 +25,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cassert>
 # include <iostream>
-# include <assert.h>
 #endif
 
 #include <QAtomicInt>
 
 #include "Handle.h"
-#include "Exception.h"
+
 
 using namespace Base;
 
@@ -64,7 +64,14 @@ void Handled::unref() const
     }
 }
 
-int Handled::getRefCount(void) const
+int Handled::unrefNoDelete() const
+{
+    int res = _lRefCount->deref();
+    assert(res>=0);
+    return res;
+}
+
+int Handled::getRefCount() const
 {
     return static_cast<int>(*_lRefCount);
 }

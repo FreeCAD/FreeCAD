@@ -31,14 +31,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "ContextMenu.h"
-
+#include <QActionGroup>
 #include <QMenu>
 
-#include <Inventor/SoEventManager.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
+#include "ContextMenu.h"
+#include "QuarterWidget.h"
 
-#include <Quarter/QuarterWidget.h>
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -58,9 +56,9 @@ ContextMenu::ContextMenu(QuarterWidget * quarterwidget)
 
   SoRenderManager * sorendermanager = quarterwidget->getSoRenderManager();
 
-  QActionGroup * rendermodegroup = NULL;
-  QActionGroup * stereomodegroup = NULL;
-  QActionGroup * transparencytypegroup = NULL;
+  QActionGroup * rendermodegroup = nullptr;
+  QActionGroup * stereomodegroup = nullptr;
+  QActionGroup * transparencytypegroup = nullptr;
 
   foreach (QAction * action, quarterwidget->renderModeActions()) {
     if (!rendermodegroup) {
@@ -107,25 +105,25 @@ ContextMenu::ContextMenu(QuarterWidget * quarterwidget)
   functionsmenu->addAction(viewall);
   functionsmenu->addAction(seek);
 
-  QObject::connect(seek, SIGNAL(triggered()),
-                   this->quarterwidget, SLOT(seek()));
+  QObject::connect(seek, &QAction::triggered,
+                   this->quarterwidget, &QuarterWidget::seek);
 
-  QObject::connect(viewall, SIGNAL(triggered()),
-                   this->quarterwidget, SLOT(viewAll()));
+  QObject::connect(viewall, &QAction::triggered,
+                   this->quarterwidget, &QuarterWidget::viewAll);
 
   // FIXME: It would be ideal to expose these actiongroups to Qt
   // Designer and be able to connect them to the appropriate slots on
   // QuarterWidget, but this is not possible in Qt. Exposing every
   // single action is supposed to work, but it doesn't at the
   // moment. (20081215 frodo)
-  QObject::connect(rendermodegroup, SIGNAL(triggered(QAction *)),
-                   this, SLOT(changeRenderMode(QAction *)));
+  QObject::connect(rendermodegroup, &QActionGroup::triggered,
+                   this, &ContextMenu::changeRenderMode);
 
-  QObject::connect(stereomodegroup, SIGNAL(triggered(QAction *)),
-                   this, SLOT(changeStereoMode(QAction *)));
+  QObject::connect(stereomodegroup, &QActionGroup::triggered,
+                   this, &ContextMenu::changeStereoMode);
 
-  QObject::connect(transparencytypegroup, SIGNAL(triggered(QAction *)),
-                   this, SLOT(changeTransparencyType(QAction *)));
+  QObject::connect(transparencytypegroup, &QActionGroup::triggered,
+                   this, &ContextMenu::changeTransparencyType);
 }
 
 ContextMenu::~ContextMenu()
@@ -138,7 +136,7 @@ ContextMenu::~ContextMenu()
 }
 
 QMenu *
-ContextMenu::getMenu(void) const
+ContextMenu::getMenu() const
 {
   return this->contextmenu;
 }

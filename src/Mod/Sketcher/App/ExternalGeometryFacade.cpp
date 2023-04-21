@@ -20,19 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <Base/Console.h>
+
 #include "ExternalGeometryFacade.h"
-
-#include <Base/Console.h> // Only for Debug - To be removed
-#include <Base/Exception.h>
-#include <boost/uuid/uuid_io.hpp>
-
 #include "ExternalGeometryFacadePy.h"
+
 
 using namespace Sketcher;
 
@@ -46,7 +43,7 @@ ExternalGeometryFacade::ExternalGeometryFacade(): Geo(nullptr), SketchGeoExtensi
 ExternalGeometryFacade::ExternalGeometryFacade(const Part::Geometry * geometry)
 : Geo(geometry)
 {
-    if(geometry != nullptr)
+    if(geometry)
         initExtensions();
     else
         THROWM(Base::ValueError, "ExternalGeometryFacade initialized with Geometry null pointer");
@@ -54,7 +51,7 @@ ExternalGeometryFacade::ExternalGeometryFacade(const Part::Geometry * geometry)
 
 std::unique_ptr<ExternalGeometryFacade> ExternalGeometryFacade::getFacade(Part::Geometry * geometry)
 {
-     if(geometry != nullptr)
+     if(geometry)
         return std::unique_ptr<ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
      else
         return std::unique_ptr<ExternalGeometryFacade>(nullptr);
@@ -62,7 +59,7 @@ std::unique_ptr<ExternalGeometryFacade> ExternalGeometryFacade::getFacade(Part::
 
 std::unique_ptr<const ExternalGeometryFacade> ExternalGeometryFacade::getFacade(const Part::Geometry * geometry)
 {
-     if(geometry != nullptr)
+     if(geometry)
         return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
      else
         return std::unique_ptr<const ExternalGeometryFacade>(nullptr);
@@ -72,7 +69,7 @@ void ExternalGeometryFacade::setGeometry(Part::Geometry *geometry)
 {
     Geo = geometry;
 
-    if(geometry != nullptr)
+    if(geometry)
         initExtensions();
     else
         THROWM(Base::ValueError, "ExternalGeometryFacade initialized with Geometry null pointer");
@@ -140,7 +137,7 @@ void ExternalGeometryFacade::copyId(const Part::Geometry * src, Part::Geometry *
     gfdst->setId(gfsrc->getId());
 }
 
-PyObject * ExternalGeometryFacade::getPyObject(void)
+PyObject * ExternalGeometryFacade::getPyObject()
 {
     return new ExternalGeometryFacadePy(new ExternalGeometryFacade(this->Geo));
 }

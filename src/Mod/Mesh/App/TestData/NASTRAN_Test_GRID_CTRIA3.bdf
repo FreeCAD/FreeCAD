@@ -1,0 +1,23 @@
+$-------------------------------------------------------------------------------
+$       Nastran case control file                                               
+$ Part of the FreeCAD unit test system. Tests the CTRIA3 grid element.
+$-------------------------------------------------------------------------------
+$       Exec control section                                                    
+$-------------------------------------------------------------------------------
+ID    TESTCASE,Nastran
+APP   DISP    
+SOL   1       
+TIME  20      
+CEND
+$-------------------------------------------------------------------------------
+$       Case control section                                                    
+$-------------------------------------------------------------------------------
+MAXLINES    = 1000000
+TITLE    = TESTCASE                                   
+SUBTITLE = Test case for FreeCAD Mesh NASTRAN input                    
+
+GRID    1               0.00E+000.00E+000.00E+00                                
+GRID    2               0.00E+001.0000000.00E+00                                
+GRID    3               1.00E+001.0000000.00E+00                                
+CTRIA3  1       400     1       2       3                                                               
+ENDDATA

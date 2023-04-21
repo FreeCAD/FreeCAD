@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
 
 #include "GeometryDefaultExtension.h"
-
-#include "GeometryStringExtensionPy.h"
-#include "GeometryIntExtensionPy.h"
 #include "GeometryBoolExtensionPy.h"
 #include "GeometryDoubleExtensionPy.h"
+#include "GeometryIntExtensionPy.h"
+#include "GeometryStringExtensionPy.h"
+
 
 using namespace Part;
 
@@ -69,34 +66,16 @@ void GeometryDefaultExtension<T>::saveAttributes(Base::Writer &writer) const
 }
 
 template <typename T>
-std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void) const
+std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() const
 {
     std::unique_ptr<GeometryDefaultExtension<T>> cpy = std::make_unique<GeometryDefaultExtension<T>>();
 
     copyAttributes(cpy.get());
-
-    #if (defined(__GNUC__) && __GNUC__ < 7 ) || defined(_MSC_VER)
-        return std::move(cpy); // GCC 4.8 and MSC do not support automatic move constructor call if the compiler fails to elide
-    #else
-        return cpy; // all the others do automatic move constructor if RVO optimization not possible.
-    #endif
-    // Advise from Scott Meyers Effective Modern c++:
-    //
-    // Don't std::move(cpy); RVO optimization Item 25, if the compiler fails to elide, would have to move it anyway
-    // move constructor is executed if available (it is). Unique_ptr does not have copy constructor.
-    //
-    // That would work perfectly with GCC 7.3.0. However, GCC 4.8.4 misserably fails:
-    //
-    // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp: In instantiation of
-    // ‘std::unique_ptr<Part::GeometryExtension> Part::GeometryDefaultExtension<T>::copy() const [with T = long int]’:
-    // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp:164:16:   required from here
-    // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp:84:12: error: cannot bind //
-    // ‘std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >’ lvalue
-    // to ‘std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >&&’
+    return cpy;
 }
 
 template <typename T>
-PyObject * GeometryDefaultExtension<T>::getPyObject(void)
+PyObject * GeometryDefaultExtension<T>::getPyObject()
 {
     THROWM(Base::NotImplementedError,"Python object not implemented for default geometry extension template type. Template Specialisation missing."); // use template specialisation to provide the actual object
 }
@@ -104,14 +83,14 @@ PyObject * GeometryDefaultExtension<T>::getPyObject(void)
 namespace Part {
 // ----------------------------- Template specialisations----------------------------------------------------
 
-//typedef Part::GeometryDefaultExtension<long> GeometryIntExtension;
-//typedef Part::GeometryStringExtension<std::string> GeometryStringExtension;
+//using GeometryIntExtension = Part::GeometryDefaultExtension<long>;
+//using GeometryStringExtension = Part::GeometryStringExtension<std::string>;
 
 // ---------- GeometryIntExtension ----------
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<long>::getPyObject(void)
+PyObject * GeometryDefaultExtension<long>::getPyObject()
 {
     return new GeometryIntExtensionPy(new GeometryIntExtension(*this));
 }
@@ -128,7 +107,7 @@ void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader &reader)
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
+PyObject * GeometryDefaultExtension<std::string>::getPyObject()
 {
     return new GeometryStringExtensionPy(new GeometryStringExtension(*this));
 }
@@ -137,7 +116,7 @@ PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<bool>::getPyObject(void)
+PyObject * GeometryDefaultExtension<bool>::getPyObject()
 {
     return new GeometryBoolExtensionPy(new GeometryBoolExtension(*this));
 }
@@ -154,7 +133,7 @@ void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryPersistenceExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<double>::getPyObject(void)
+PyObject * GeometryDefaultExtension<double>::getPyObject()
 {
     return new GeometryDoubleExtensionPy(new GeometryDoubleExtension(*this));
 }

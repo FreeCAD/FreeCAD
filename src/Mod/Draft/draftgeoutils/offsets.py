@@ -174,9 +174,8 @@ def offsetWire(wire, dvec, bind=False, occ=False,
 
     Parameters
     ----------
-    wire as a list of edges (use the list directly),
-    or previously as a wire or a face (Draft Wire with MakeFace True
-    or False supported).
+    wire as a sorted list of edges (the list is used directly), or as a
+    wire or a face (Draft Wire with MakeFace True or False supported).
 
     The vector will be applied at the first vertex of the wire. If bind
     is True (and the shape is open), the original wire and the offsetted one
@@ -207,17 +206,24 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     in this function if widthList and alignList are provided
     - 'dvec' to be obsolete in future?
     """
-    if isinstance(wire, Part.Wire) or isinstance(wire, Part.Face):
-        # Found Draft GuiOffset directly offset Sketch.Shape(wire) would fails
-        # thus need to sort its edges same order 
+    if isinstance(wire, list) and isinstance(wire[0], Part.Edge):
+        edges = wire.copy()
+        wire = Part.Wire(edges)
+        closed = wire.isClosed()
+    elif isinstance(wire, Part.Wire):
+        # Draft_Offset can fail when directly offsetting a Sketch wire. We need
+        # to sort the edges. And because Part.__sortEdges__() can remove edges,
+        # we need to create a new wire as well.
         edges = Part.__sortEdges__(wire.Edges)
-        #edges = wire.Edges
-    elif isinstance(wire, list):
-        if isinstance(wire[0], Part.Edge):
-            edges = wire.copy()
-            # How to avoid __sortEdges__ again?
-            # Make getNormal directly tackle edges?
-            wire = Part.Wire(Part.__sortEdges__(edges))
+        wire = Part.Wire(edges)
+        closed = wire.isClosed()
+    elif isinstance(wire, Part.Face):
+        # We also need to sort the edges of a face.
+        edges = Part.__sortEdges__(wire.OuterWire.Edges)
+        closed = True
+    elif isinstance(wire, Part.Edge):
+        edges = [wire]
+        closed = wire.isClosed()
     else:
         print("Either Part.Wire or Part.Edges should be provided, "
               "returning None")
@@ -236,7 +242,6 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if norm is None:
             norm = App.Vector(0, 0, 1)
 
-    closed = isReallyClosed(wire)
     nedges = []
     if occ:
         length = abs(dvec.Length)
@@ -295,13 +300,14 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # check against dvec provided for the offset direction
         # would not know if dvec is vector of width (Left/Right Align)
         # or width/2 (Center Align)
-        dvec0 = DraftVecUtils.scaleTo(v0, dvec.Length)
-        if DraftVecUtils.equals(dvec0, dvec):
+        v0.normalize()
+        v1 = App.Vector(dvec).normalize()
+        if v0.isEqual(v1, 0.0001):
             # "Left Offset" (Left Align or 'left offset' in Centre Align)
             firstDir = 1
             firstAlign = 'Left'
             alignListC.append('Left')
-        elif DraftVecUtils.equals(dvec0, dvec.negative()):
+        elif v0.isEqual(v1.negative(), 0.0001):
             # "Right Offset" (Right Align or 'right offset' in Centre Align)
             firstDir = -1
             firstAlign = 'Right'

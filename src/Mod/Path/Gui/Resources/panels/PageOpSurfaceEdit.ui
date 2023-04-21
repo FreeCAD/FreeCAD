@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
+    <width>498</width>
     <height>541</height>
    </rect>
   </property>
@@ -55,8 +55,50 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="boundBoxSelect_label">
+        <property name="text">
+         <string>BoundBox</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="2">
+       <widget class="QComboBox" name="boundBoxSelect">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="scanType_label">
+        <property name="text">
+         <string>Scan Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QComboBox" name="scanType">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="layerMode_label">
+        <property name="text">
+         <string>Layer Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QComboBox" name="layerMode">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or multiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="cutPattern_label">
         <property name="text">
@@ -64,10 +106,45 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="sampleInterval_label">
+      <item row="3" column="1" colspan="2">
+       <widget class="QComboBox" name="cutPattern">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="profileEdges_label">
         <property name="text">
-         <string>Sample interval</string>
+         <string>Profile Edges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="2">
+       <widget class="QComboBox" name="profileEdges">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile the edges of the selection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="avoidLastX_Faces_label">
+        <property name="text">
+         <string>Avoid Last X Faces</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="2">
+       <widget class="QSpinBox" name="avoidLastX_Faces">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="boundBoxExtraOffset_label">
+        <property name="text">
+         <string>BoundBox extra offset X, Y</string>
         </property>
        </widget>
       </item>
@@ -101,190 +178,10 @@
         </item>
        </layout>
       </item>
-      <item row="12" column="1" colspan="2">
-       <widget class="Gui::InputField" name="sampleInterval">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="1">
-       <widget class="QCheckBox" name="optimizeEnabled">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+      <item row="8" column="0">
+       <widget class="QLabel" name="dropCutterDirSelect_label">
         <property name="text">
-         <string>Optimize Linear Paths</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="boundBoxSelect_label">
-        <property name="text">
-         <string>BoundBox</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QComboBox" name="boundBoxSelect">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Stock</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>BaseBoundBox</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="15" column="1">
-       <widget class="QCheckBox" name="optimizeStepOverTransitions">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable separate optimization of transitions between, and breaks within, each step over path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Optimize StepOver Transitions</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="2">
-       <widget class="QComboBox" name="profileEdges">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile the edges of the selection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>None</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Only</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>First</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Last</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="stepOver_label">
-        <property name="text">
-         <string>Step over</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QComboBox" name="cutPattern">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Circular</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CircularZigZag</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Line</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Offset</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Spiral</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ZigZag</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QComboBox" name="scanType">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Planar</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Rotational</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="boundBoxExtraOffset_label">
-        <property name="text">
-         <string>BoundBox extra offset X, Y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="depthOffset_label">
-        <property name="text">
-         <string>Depth offset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QComboBox" name="layerMode">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Single-pass</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Multi-pass</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="layerMode_label">
-        <property name="text">
-         <string>Layer Mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="scanType_label">
-        <property name="text">
-         <string>Scan Type</string>
+         <string>Drop Cutter Direction</string>
         </property>
        </widget>
       </item>
@@ -293,16 +190,13 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dropcutter lines are created parallel to this axis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>X</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </item>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="depthOffset_label">
+        <property name="text">
+         <string>Depth offset</string>
+        </property>
        </widget>
       </item>
       <item row="9" column="1" colspan="2">
@@ -315,41 +209,10 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="dropCutterDirSelect_label">
+      <item row="10" column="0">
+       <widget class="QLabel" name="stepOver_label">
         <property name="text">
-         <string>Drop Cutter Direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="0">
-       <widget class="QCheckBox" name="useStartPoint">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make True, if specifying a Start Point&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Use Start Point</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="2">
-       <widget class="QSpinBox" name="avoidLastX_Faces">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="profileEdges_label">
-        <property name="text">
-         <string>Profile Edges</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="avoidLastX_Faces_label">
-        <property name="text">
-         <string>Avoid Last X Faces</string>
+         <string>Step over</string>
         </property>
        </widget>
       </item>
@@ -366,6 +229,43 @@
         </property>
        </widget>
       </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="sampleInterval_label">
+        <property name="text">
+         <string>Sample interval</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1" colspan="2">
+       <widget class="Gui::InputField" name="sampleInterval">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QCheckBox" name="useStartPoint">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make True, if specifying a Start Point&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Use Start Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="QCheckBox" name="optimizeEnabled">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Optimize Linear Paths</string>
+        </property>
+       </widget>
+      </item>
       <item row="15" column="0">
        <widget class="QCheckBox" name="boundaryEnforcement">
         <property name="toolTip">
@@ -379,7 +279,17 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="15" column="1">
+       <widget class="QCheckBox" name="optimizeStepOverTransitions">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable separate optimization of transitions between, and breaks within, each step over path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Optimize StepOver Transitions</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">

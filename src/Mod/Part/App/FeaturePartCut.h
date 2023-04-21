@@ -20,20 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATUREPARTCUT_H
 #define PART_FEATUREPARTCUT_H
 
-#include <App/PropertyLinks.h>
-
 #include "FeaturePartBoolean.h"
+
 
 namespace Part
 {
 
 class Cut : public Boolean
 {
-    PROPERTY_HEADER(Part::Cut);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Cut);
 
 public:
     Cut();
@@ -42,7 +40,7 @@ public:
     //@{
     /// recalculate the Feature
 protected:
-    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const;
+    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const override;
     //@}
 };
 

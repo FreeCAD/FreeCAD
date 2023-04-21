@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Kreator przeprowadzi Ciebie przez proces instala
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Kompilowanie skryptów Python..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Utwórz skrót na pulpicie"
-${LangFileString} TEXT_FINISH_WEBSITE "Odwiedź freecadweb.org by poznać wiadomości i wskazówki lub skorzystać ze wsparcia"
+${LangFileString} TEXT_FINISH_WEBSITE "Odwiedź freecad.org by poznać wiadomości i wskazówki lub skorzystać ze wsparcia"
 
 #${LangFileString} FileTypeTitle "Dokument FreeCAD"
 

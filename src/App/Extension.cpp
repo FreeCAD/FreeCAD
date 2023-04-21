@@ -25,24 +25,24 @@
 
 #ifndef _PreComp_
 # include <cassert>
-# include <algorithm>
 #endif
 
-#include "Extension.h"
-#include "DocumentObject.h"
-#include "Base/Exception.h"
-#include <Base/Console.h>
 #include <Base/PyObjectBase.h>
+
+#include "Extension.h"
+#include "ExtensionContainer.h"
+#include "ExtensionPython.h"
 #include <ExtensionPy.h>
+
 
 /* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data.
  */
 EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension)
-const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
-const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
+const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(){return &propertyData;}
+const App::PropertyData & App::Extension::extensionGetPropertyData() const{return propertyData;}
 App::PropertyData App::Extension::propertyData;
-void App::Extension::init(void){
+void App::Extension::init(){
 
     assert(Extension::classTypeId == Base::Type::badType() && "don't init() twice!");
 
@@ -65,7 +65,7 @@ Extension::~Extension()
         // not to dec'ref the Python object any more.
         // But we must still invalidate the Python object because it need not to be
         // destructed right now because the interpreter can own several references to it.
-        Base::PyObjectBase* obj = (Base::PyObjectBase*)ExtensionPythonObject.ptr();
+        Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(ExtensionPythonObject.ptr());
         // Call before decrementing the reference counter, otherwise a heap error can occur
         obj->setInvalid();
     }
@@ -95,7 +95,7 @@ void Extension::initExtension(ExtensionContainer* obj) {
 }
 
 
-PyObject* Extension::getExtensionPyObject(void) {
+PyObject* Extension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -186,6 +186,24 @@ void Extension::initExtensionSubclass(Base::Type& toInit, const char* ClassName,
     toInit = Base::Type::createType(parentType, ClassName, method);
 }
 
+
+bool Extension::extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) PropName;
+
+    return false;
+};
+
+bool Extension::extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) prop;
+
+    return false;
+};
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::ExtensionPython, App::ExtensionPython::Inherited)

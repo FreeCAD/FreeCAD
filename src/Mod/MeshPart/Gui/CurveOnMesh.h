@@ -23,11 +23,13 @@
 #ifndef MESHPARTGUI_CURVEONMESH_H
 #define MESHPARTGUI_CURVEONMESH_H
 
+#include <memory>
 #include <QObject>
 #include <Geom_BSplineCurve.hxx>
 #include <GeomAbs_Shape.hxx>
+
 #include <Gui/ViewProviderDocumentObject.h>
-#include <memory>
+
 
 class SbVec3f;
 class SoCoordinate3;
@@ -45,16 +47,16 @@ namespace MeshPartGui
 
 class ViewProviderCurveOnMesh : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(MeshPartGui::ViewProviderCurveOnMesh);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshPartGui::ViewProviderCurveOnMesh);
 
 public:
     ViewProviderCurveOnMesh();
-    virtual ~ViewProviderCurveOnMesh();
+    ~ViewProviderCurveOnMesh() override;
     void addVertex(const SbVec3f&);
     void clearVertex();
     void setPoints(const std::vector<SbVec3f>&);
     void clearPoints();
-    void setDisplayMode(const char* ModeName);
+    void setDisplayMode(const char* ModeName) override;
 
 private:
     SoCoordinate3 * pcCoords;
@@ -68,8 +70,8 @@ class CurveOnMeshHandler : public QObject
     Q_OBJECT
 
 public:
-    CurveOnMeshHandler(QObject* parent = 0);
-    ~CurveOnMeshHandler();
+    explicit CurveOnMeshHandler(QObject* parent = nullptr);
+    ~CurveOnMeshHandler() override;
     void enableApproximation(bool);
     void setParameters(int maxDegree, GeomAbs_Shape cont, double tol3d, double angle);
     void enableCallback(Gui::View3DInventor* viewer);

@@ -21,13 +21,16 @@
 """Helper functions that are used by IFC importer and exporter."""
 import sys
 import math
-import six
 
 import FreeCAD
 import Arch
 import ArchIFC
 
+if FreeCAD.GuiUp:
+    import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn
+
 
 PREDEFINED_RGB = {"black": (0, 0, 0),
                   "red": (1.0, 0, 0),
@@ -41,16 +44,6 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
 
 DEBUG_prod_repr = False
 DEBUG_prod_colors = False
-
-
-def decode(filename, utf=False):
-    """Turn unicode into strings, only for Python 2."""
-    if six.PY2 and isinstance(filename, six.text_type):
-        # This is a workaround since ifcopenshell 0.6 currently
-        # can't handle unicode filenames
-        encoding = "utf8" if utf else sys.getfilesystemencoding()
-        filename = filename.encode(encoding)
-    return filename
 
 
 def dd2dms(dd):
@@ -78,6 +71,49 @@ def dms2dd(degrees, minutes, seconds, milliseconds=0):
     """
     dd = float(degrees) + float(minutes)/60 + float(seconds)/3600
     return dd
+
+
+def getPreferences():
+    """Retrieve the IFC preferences available in import and export.
+
+    MERGE_MODE_ARCH:
+        0 = parametric arch objects
+        1 = non-parametric arch objects
+        2 = Part shapes
+        3 = One compound per storey
+    """
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+
+    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+        Gui.showPreferences("Import-Export", 0)
+
+    preferences = {
+        'DEBUG': p.GetBool("ifcDebug", False),
+        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers", False),
+        'SKIP': p.GetString("ifcSkip", "").split(","),
+        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings", False),
+        'ROOT_ELEMENT': p.GetString("ifcRootElement", "IfcProduct"),
+        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions", False),
+        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials", False),
+        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch", 0),
+        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
+        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
+        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
+        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
+        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
+        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
+        'MULTICORE': p.GetInt("ifcMulticore", 0),
+        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
+    }
+
+    if preferences['MERGE_MODE_ARCH'] > 0:
+        preferences['SEPARATE_OPENINGS'] = False
+        preferences['GET_EXTRUSIONS'] = False
+    if not preferences['SEPARATE_OPENINGS']:
+        preferences['SKIP'].append("IfcOpeningElement")
+
+    return preferences
 
 
 class ProjectImporter:
@@ -348,6 +384,10 @@ def buildRelProductColors(ifcfile, prodrepr):
     i = 0
 
     for p in prodrepr.keys():
+        # see method getColorFromProduct()
+        # it is a method for the redundant code inside this loop
+        # which can be used to get the color from a product directly
+
         # Representation item, see `IfcRepresentationItem` documentation.
         # All kinds of geometric or topological representation items
         # `IfcExtrudedAreaSolid`, `IfcMappedItem`, `IfcFacetedBrep`,
@@ -396,6 +436,7 @@ def getColorFromProduct(product):
                     if color:
                         return color
 
+
 def getColorFromMaterial(material):
 
     if material.HasRepresentation:
@@ -405,6 +446,20 @@ def getColorFromMaterial(material):
             if rep.is_a("IfcStyledRepresentation"):
                 return getColorFromStyledItem(rep)
     return None
+
+
+def color2colorRGB(color_data):
+
+    if color_data is None:
+        return None
+
+    color_rgb = [
+        int(round(color_data[0]*255, 0)),
+        int(round(color_data[1]*255, 0)),
+        int(round(color_data[2]*255, 0))
+    ]  # int(159.99) would return 159 not 160, thus round
+
+    return color_rgb
 
 
 def getColorFromStyledItem(styled_item):
@@ -540,6 +595,8 @@ def predefined_to_rgb(rgb_color):
 
 # ************************************************************************************************
 # property related methods
+
+
 def buildRelProperties(ifcfile):
     """
     Builds and returns a dictionary of {object:[properties]} from an IFC file
@@ -584,20 +641,14 @@ def getIfcProperties(ifcfile, pid, psets, d):
     for pset in psets.keys():
         # print("reading pset: ",pset)
         psetname = ifcfile[pset].Name
-        if six.PY2:
-            psetname = psetname.encode("utf8")
         for prop in psets[pset]:
             e = ifcfile[prop]
             pname = e.Name
-            if six.PY2:
-                pname = pname.encode("utf8")
             if e.is_a("IfcPropertySingleValue"):
                 if e.NominalValue:
                     ptype = e.NominalValue.is_a()
                     if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                         pvalue = e.NominalValue.wrappedValue
-                        if six.PY2:
-                            pvalue = pvalue.encode("utf8")
                     else:
                         pvalue = str(e.NominalValue.wrappedValue)
                     if hasattr(e.NominalValue,'Unit'):
@@ -814,6 +865,7 @@ def get2DShape(representation,scaling=1000):
                         result.append(e)
             elif el.is_a("IfcIndexedPolyCurve"):
                 coords = el.Points.CoordList
+
                 def index2points(segment):
                     pts = []
                     for i in segment.wrappedValue:
@@ -856,8 +908,12 @@ def get2DShape(representation,scaling=1000):
             elif item.is_a("IfcTextLiteral"):
                 pl = getPlacement(item.Placement, scaling)
                 if pl:
-                    t = Draft.makeText([item.Literal], point=pl.Base)
-                    return [t]  # dirty hack... Object creation should not be done here
+                    t = Draft.make_text(item.Literal.split(";"), pl)
+                    if FreeCAD.GuiUp:
+                        if item.Path == "RIGHT":
+                            t.ViewObject.Justification = "Right"
+                    # do not return because there might be more than one representation
+                    #return []  # TODO dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
         result = getCurveSet(representation)
     return result
@@ -898,7 +954,6 @@ def isRectangle(verts):
 
 
 def createFromProperties(propsets,ifcfile,parametrics):
-
     """
     Creates a FreeCAD parametric object from a set of properties.
     """
@@ -986,7 +1041,6 @@ def createFromProperties(propsets,ifcfile,parametrics):
 
 
 def applyColorDict(doc,colordict=None):
-
     """applies the contents of a color dict to the objects in the given doc.
     If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
 
@@ -1007,7 +1061,6 @@ def applyColorDict(doc,colordict=None):
 
 
 def getParents(ifcobj):
-
     """finds the parent entities of an IFC entity"""
 
     parentlist = []
@@ -1019,3 +1072,76 @@ def getParents(ifcobj):
             if rel.is_a("IfcRelAggregates"):
                 parentlist.append(rel.RelatingObject)
     return parentlist
+
+
+def createAnnotation(annotation,doc,ifcscale,preferences):
+    """creates an annotation object"""
+
+    anno = None
+    aid =  annotation.id()
+    if annotation.is_a("IfcGrid"):
+        axes = []
+        uvwaxes = ()
+        if annotation.UAxes:
+            uvwaxes = annotation.UAxes
+        if annotation.VAxes:
+            uvwaxes = uvwaxes + annotation.VAxes
+        if annotation.WAxes:
+            uvwaxes = uvwaxes + annotation.WAxes
+        for axis in uvwaxes:
+            if axis.AxisCurve:
+                sh = get2DShape(axis.AxisCurve,ifcscale)
+                if sh and (len(sh[0].Vertexes) == 2):  # currently only straight axes are supported
+                    sh = sh[0]
+                    l = sh.Length
+                    pl = FreeCAD.Placement()
+                    pl.Base = sh.Vertexes[0].Point
+                    pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),sh.Vertexes[-1].Point.sub(sh.Vertexes[0].Point))
+                    o = Arch.makeAxis(1,l)
+                    o.Length = l
+                    o.Placement = pl
+                    o.CustomNumber = axis.AxisTag
+                    axes.append(o)
+        if axes:
+            name = "Grid"
+            grid_placement = None
+            if annotation.Name:
+                name = annotation.Name
+            if annotation.ObjectPlacement:
+                # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
+                grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
+            if preferences['PREFIX_NUMBERS']:
+                name = "ID" + str(aid) + " " + name
+            anno = Arch.makeAxisSystem(axes,name)
+            if grid_placement:
+                anno.Placement = grid_placement
+        print(" axis")
+    else:
+        name = "Annotation"
+        if annotation.Name:
+            name = annotation.Name
+        if "annotation" not in name.lower():
+            name = "Annotation " + name
+        if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name
+        shapes2d = []
+        for rep in annotation.Representation.Representations:
+            if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
+                sh = get2DShape(rep,ifcscale)
+                if sh in doc.Objects:
+                    # dirty hack: get2DShape might return an object directly if non-shape based (texts for ex)
+                    anno = sh
+                else:
+                    shapes2d.extend(sh)
+        if shapes2d:
+            import Part
+            sh = Part.makeCompound(shapes2d)
+            #if preferences['DEBUG']: print(" shape")
+            anno = doc.addObject("Part::Feature",name)
+            anno.Shape = sh
+            p = getPlacement(annotation.ObjectPlacement,ifcscale)
+            if p:  # and annotation.is_a("IfcAnnotation"):
+                anno.Placement = p
+        #else:
+            #if preferences['DEBUG']: print(" no shape")
+
+    return anno

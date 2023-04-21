@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QCoreApplication>
 # include <Inventor/fields/SoMFString.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -34,8 +34,8 @@
 # include <Inventor/nodes/SoTransform.h>
 #endif
 
-#include "ViewProvider.h"
 #include "SoFCColorLegend.h"
+#include "ViewProvider.h"
 
 
 using namespace Gui;
@@ -45,18 +45,19 @@ SO_NODE_SOURCE(SoFCColorLegend)
 /*!
   Constructor.
 */
-SoFCColorLegend::SoFCColorLegend() : _fPosX(4.0f), _fPosY(4.0f)
+SoFCColorLegend::SoFCColorLegend() : _bbox(4.0f, -4.0f, 4.5f, 4.0f)
 {
-  SO_NODE_CONSTRUCTOR(SoFCColorLegend);
-  _cColRamp.setStyle(App::ColorGradient::FLOW);
+    SO_NODE_CONSTRUCTOR(SoFCColorLegend);
+    coords = new SoCoordinate3;
+    coords->ref();
+    labelGroup = new SoSeparator;
+    labelGroup->ref();
 
-  coords = new SoCoordinate3;
-  coords->ref();
-  labels = new SoSeparator;
-  labels->ref();
+    valueGroup = new SoSeparator;
+    valueGroup->ref();
 
-  setColorModel( App::ColorGradient::TRIA );
-  setRange(-0.5f,0.5f,1);
+    setColorLegend(_currentLegend);
+    setLegendLabels(_currentLegend, 3);
 }
 
 /*!
@@ -64,181 +65,294 @@ SoFCColorLegend::SoFCColorLegend() : _fPosX(4.0f), _fPosY(4.0f)
 */
 SoFCColorLegend::~SoFCColorLegend()
 {
-  //delete THIS;
-  coords->unref();
-  labels->unref();
+    //delete THIS;
+    coords->unref();
+    labelGroup->unref();
+    valueGroup->unref();
 }
 
 // doc from parent
-void SoFCColorLegend::initClass(void)
+void SoFCColorLegend::initClass()
 {
-  SO_NODE_INIT_CLASS(SoFCColorLegend,SoFCColorBarBase,"Separator");
+    SO_NODE_INIT_CLASS(SoFCColorLegend,SoFCColorBarBase,"Separator");
 }
 
 void SoFCColorLegend::finish()
 {
-  atexit_cleanup();
+    atexit_cleanup();
 }
 
-void SoFCColorLegend::setMarkerLabel( const SoMFString& label )
+const char* SoFCColorLegend::getColorBarName() const
 {
-  coinRemoveAllChildren(labels);
-
-  int num = label.getNum();
-  if ( num > 1 )
-  {
-    float fStep = 8.0f / ((float)num-1);
-    SoTransform* trans = new SoTransform;
-    trans->translation.setValue(_fPosX+0.1f,_fPosY-0.05f+fStep,0.0f);
-    labels->addChild(trans);
-
-    for ( int i=0; i<num; i++ )
-    {
-      SoTransform* trans = new SoTransform;
-      SoBaseColor* color = new SoBaseColor;
-      SoText2    * text2 = new SoText2;
-
-      trans->translation.setValue(0,-fStep,0);
-      color->rgb.setValue(0,0,0);
-      text2->string.setValue( label[i] );
-      labels->addChild(trans);
-      labels->addChild(color);
-      labels->addChild(text2);
-    }
-  }
+    return QT_TRANSLATE_NOOP("QObject", "Color Legend");
 }
 
-void SoFCColorLegend::setViewportSize( const SbVec2s& size )
+namespace {
+std::vector<SbVec3f> getLabelPositions(int num, const SbBox2f& bbox)
 {
-  float fRatio = ((float)size[0])/((float)size[1]);
-  float fMinX=  4.0f, fMaxX=4.5f;
-  float fMinY= -4.0f, fMaxY=4.0f;
+    std::vector<SbVec3f> pos;
+    float fMinY = bbox.getMin()[1];
+    float fMaxX = bbox.getMax()[0];
+    float fMaxY = bbox.getMax()[1] - 0.5f;
 
-  if ( fRatio > 1.0f )
-  {
-    fMinX = 4.0f * fRatio;
-    fMaxX = fMinX+0.5f;
-  }
-  else if ( fRatio < 1.0f )
-  {
-    fMinY =  -4.0f / fRatio;
-    fMaxY =   4.0f / fRatio;
-  }
-
-  _fPosX = fMaxX;
-  _fPosY = fMaxY;
-
-  // search for the labels
-  int num=0;
-  for ( int i=0; i<labels->getNumChildren(); i++ )
-  {
-    if ( labels->getChild(i)->getTypeId() == SoTransform::getClassTypeId() )
-      num++;
-  }
-
-  if ( num > 2 )
-  {
-    bool first=true;
-    float fStep = (fMaxY-fMinY) / ((float)num-2);
-
-    for ( int j=0; j<labels->getNumChildren(); j++ )
-    {
-      if ( labels->getChild(j)->getTypeId() == SoTransform::getClassTypeId() )
-      {
-        if ( first )
-        {
-          first = false;
-          static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX+0.1f,fMaxY-0.05f+fStep,0.0f);
+    if (num > 1) {
+        float fStep = (fMaxY-fMinY) / static_cast<float>(num - 1);
+        pos.emplace_back(fMaxX + 0.1f, fMaxY + 0.20f + fStep, 0.0f);
+        for (int i=0; i<num; i++) {
+            pos.emplace_back(0.0f, -fStep, 0.0f);
         }
-        else
-        {
-          static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(0,-fStep,0.0f);
-        }
-      }
     }
-  }
 
-  // set the vertices spanning the faces for the color gradient
-  int ct = coords->point.getNum()/2;
-  for ( int j=0; j<ct; j++ )
-  {
-    float w = (float)j/(float)(ct-1);
-    float fPosY = (1.0f-w)*fMaxY + w*fMinY;
-    coords->point.set1Value(2*j, fMinX, fPosY, 0.0f);
-    coords->point.set1Value(2*j+1, fMaxX, fPosY, 0.0f);
-  }
+    return pos;
 }
 
-void SoFCColorLegend::setRange( float fMin, float fMax, int prec )
+std::vector<SbVec3f> getValuePositions(int num, const SbBox2f& bbox)
 {
-  SoMFString label;
-  for (int j=0; j<9; j++)
-  {
-    std::stringstream s;
-    s.precision(prec);
-    s.setf(std::ios::fixed | std::ios::showpoint | std::ios::showpos);
-    float fValue = (1.0f-0.125f*(float)j)*fMax + (0.125f*(float)j)*fMin;
-    s << fValue;
-    label.set1Value(j, s.str().c_str());
-  }
+    std::vector<SbVec3f> pos;
+    float fMinY = bbox.getMin()[1];
+    float fMaxX = bbox.getMax()[0];
+    float fMaxY = bbox.getMax()[1] - 0.5f;
 
-  setMarkerLabel( label );
-  _cColRamp.setRange(fMin, fMax);
+    if (num > 2) {
+        float fStep = (fMaxY-fMinY) / static_cast<float>(num - 2);
+        float eps = fStep / 4.0f;
+
+        pos.emplace_back(fMaxX + 0.1f, fMaxY + 0.25f + 1.5f * fStep, 0.0f);
+        for (int i=0; i<num; i++) {
+            pos.emplace_back(0.0f, -fStep, 0.0f);
+        }
+
+        SbVec3f v;
+        v = pos[1];
+        v[1] -= eps;
+        pos[1] = v;
+
+        v = pos[2];
+        v[1] += eps;
+        pos[2] = v;
+
+        v = pos.back();
+        v[1] += eps;
+        pos.back() = v;
+    }
+
+    return pos;
+}
 }
 
-void SoFCColorLegend::setColorModel( App::ColorGradient::TColorModel tModel )
+void SoFCColorLegend::setMarkerLabel(const SoMFString& label)
 {
-  _cColRamp.setColorModel( tModel );
-  App::ColorModel model = _cColRamp.getColorModel();
-  int uCtColors = (int)model._usColors;
+    coinRemoveAllChildren(labelGroup);
 
-  // don't know why the parameter range isn't between [-1,+1]
-  float fMinX=  4.0f, fMaxX=4.5f;
-  float fMinY= -4.0f, fMaxY=4.0f;
-  coords->point.setNum(2*uCtColors);
-  for ( int i=0; i<uCtColors; i++ )
-  {
-    float w = (float)i/(float)(uCtColors-1);
-    float fPosY = (1.0f-w)*fMaxY + w*fMinY;
-    coords->point.set1Value(2*i, fMinX, fPosY, 0.0f);
-    coords->point.set1Value(2*i+1, fMaxX, fPosY, 0.0f);
-  }
+    int num = label.getNum();
+    if (num > 1) {
+        std::vector<SbVec3f> pos = getLabelPositions(num, _bbox);
 
-  // for uCtColors colors we need 2*(uCtColors-1) facets and therefore an array with
-  // 8*(uCtColors-1) face indices
-  SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-  faceset->coordIndex.setNum(8*(uCtColors-1));
-  for ( int j=0; j<uCtColors-1; j++ )
-  {
-    faceset->coordIndex.set1Value(8*j,   2*j);
-    faceset->coordIndex.set1Value(8*j+1, 2*j+3);
-    faceset->coordIndex.set1Value(8*j+2, 2*j+1);
-    faceset->coordIndex.set1Value(8*j+3, SO_END_FACE_INDEX);
-    faceset->coordIndex.set1Value(8*j+4, 2*j);
-    faceset->coordIndex.set1Value(8*j+5, 2*j+2);
-    faceset->coordIndex.set1Value(8*j+6, 2*j+3);
-    faceset->coordIndex.set1Value(8*j+7, SO_END_FACE_INDEX);
-  }
+        auto trans = new SoTransform;
+        trans->translation.setValue(pos[0]);
+        labelGroup->addChild(trans);
 
-  SoMaterial* mat = new SoMaterial;
-  //mat->transparency = 0.3f;
-  mat->diffuseColor.setNum(2*uCtColors);
-  for ( int k=0; k<uCtColors; k++ )
-  {
-    App::Color col = model._pclColors[uCtColors-k-1];
-    mat->diffuseColor.set1Value(2*k, col.r, col.g, col.b);
-    mat->diffuseColor.set1Value(2*k+1, col.r, col.g, col.b);
-  }
+        for (int i=0; i<num; i++) {
+            auto trans = new SoTransform;
+            auto color = new SoBaseColor;
+            auto text2 = new SoText2;
 
-  SoMaterialBinding* matBinding = new SoMaterialBinding;
-  matBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+            trans->translation.setValue(pos[i+1]);
+            color->rgb.setValue(0, 0, 0);
+            text2->string.setValue(label[i]);
+            labelGroup->addChild(trans);
+            labelGroup->addChild(color);
+            labelGroup->addChild(text2);
+        }
+    }
+}
 
-  // first clear the children
-  if ( getNumChildren() > 0 )
-    coinRemoveAllChildren(this);
-  addChild(labels);
-  addChild(coords);
-  addChild(mat);
-  addChild(matBinding);
-  addChild(faceset);
+void SoFCColorLegend::setMarkerValue(const SoMFString& value)
+{
+    coinRemoveAllChildren(valueGroup);
+
+    int num = value.getNum();
+    if (num > 1) {
+        std::vector<SbVec3f> pos = getValuePositions(num, _bbox);
+
+        auto trans = new SoTransform;
+        trans->translation.setValue(pos[0]);
+        valueGroup->addChild(trans);
+
+        for (int i=0; i<num; i++) {
+            auto trans = new SoTransform;
+            auto color = new SoBaseColor;
+            auto text2 = new SoText2;
+
+            trans->translation.setValue(pos[i+1]);
+            color->rgb.setValue(0, 0, 0);
+            text2->string.setValue(value[i]);
+            valueGroup->addChild(trans);
+            valueGroup->addChild(color);
+            valueGroup->addChild(text2);
+        }
+    }
+}
+
+void SoFCColorLegend::setViewportSize(const SbVec2s& size)
+{
+    float fMinX, fMinY, fMaxX, fMaxY;
+    float boxWidth = getBounds(size, fMinX, fMinY, fMaxX, fMaxY);
+
+    // legend bar is shifted to the left by width of the labels to assure that labels are fully visible
+    _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
+
+    arrangeLabels(_bbox);
+    arrangeValues(_bbox);
+    modifyPoints(_bbox);
+}
+
+void SoFCColorLegend::setRange(float fMin, float fMax, int prec)
+{
+    std::size_t numFields = _currentLegend.hasNumberOfFields();
+    for (std::size_t i = 0; i <= numFields; i++) {
+        float factor = static_cast<float>(i) / numFields;
+        float value = (1 - factor) * fMin + factor * fMax;
+        _currentLegend.setValue(i, value);
+    }
+
+    setColorLegend(_currentLegend);
+    setLegendLabels(_currentLegend, prec);
+}
+
+void SoFCColorLegend::setLegendLabels(const App::ColorLegend& legend, int prec)
+{
+    float fMin = legend.getMinValue();
+    float fMax = legend.getMaxValue();
+
+    std::size_t numFields = legend.hasNumberOfFields();
+
+    SoMFString labels, values;
+
+    float eps = std::pow(10.0f, static_cast<float>(-prec));
+    float value = std::min<float>(fabs(fMin), fabs(fMax));
+    std::ios::fmtflags flags = value < eps ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
+                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
+
+    for (std::size_t i=0; i < numFields; i++) {
+        std::stringstream s;
+        s << legend.getText(numFields - 1 - i);
+        labels.set1Value(i, s.str().c_str());
+    }
+
+    for (std::size_t i=0; i <= numFields; i++) {
+        std::stringstream s;
+        s.precision(prec);
+        s.setf(flags);
+        float fValue = legend.getValue(numFields - i);
+        s << fValue;
+        values.set1Value(i, s.str().c_str());
+    }
+
+    setMarkerLabel(labels);
+    setMarkerValue(values);
+
+    setModified();
+}
+
+void SoFCColorLegend::modifyPoints(const SbBox2f& box)
+{
+    float fMinX = box.getMin()[0];
+    float fMinY = box.getMin()[1];
+    float fMaxX = box.getMax()[0];
+    float fMaxY = box.getMax()[1] - 0.5f;
+
+    // set the vertices spanning the faces for the color legend
+    int intFields = coords->point.getNum() / 4;
+    for (int i = 0; i < intFields; i++) {
+        float w = static_cast<float>(i) / (intFields - 1);
+        float fPosY1 = w * fMaxY + (1.0f - w) * fMinY;
+        float fPosY2 = fPosY1 + 0.5f;
+        coords->point.set1Value(4 * i,     fMinX, fPosY1, 0.0f);
+        coords->point.set1Value(4 * i + 1, fMaxX, fPosY1, 0.0f);
+        coords->point.set1Value(4 * i + 2, fMaxX, fPosY2, 0.0f);
+        coords->point.set1Value(4 * i + 3, fMinX, fPosY2, 0.0f);
+    }
+}
+
+void SoFCColorLegend::arrangeLabels(const SbBox2f& box)
+{
+    // search for the labels
+    int num=0;
+    for (int i=0; i<labelGroup->getNumChildren(); i++) {
+        if (labelGroup->getChild(i)->getTypeId() == SoTransform::getClassTypeId())
+            num++;
+    }
+
+    if (num > 2) {
+        std::vector<SbVec3f> pos = getLabelPositions(num-1, box);
+
+        int index = 0;
+        for (int j=0; j<labelGroup->getNumChildren(); j++) {
+            if (labelGroup->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
+                static_cast<SoTransform*>(labelGroup->getChild(j))->translation.setValue(pos[index++]);
+            }
+        }
+    }
+}
+
+void SoFCColorLegend::arrangeValues(const SbBox2f& box)
+{
+    // search for the labels
+    int num=0;
+    for (int i=0; i<valueGroup->getNumChildren(); i++) {
+        if (valueGroup->getChild(i)->getTypeId() == SoTransform::getClassTypeId())
+            num++;
+    }
+
+    if (num > 3) {
+        std::vector<SbVec3f> pos = getValuePositions(num-1, box);
+
+        int index = 0;
+        for (int j=0; j<valueGroup->getNumChildren(); j++) {
+            if (valueGroup->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
+                static_cast<SoTransform*>(valueGroup->getChild(j))->translation.setValue(pos[index++]);
+            }
+        }
+    }
+}
+
+void SoFCColorLegend::setColorLegend(const App::ColorLegend& legend)
+{
+    // create top value field
+    std::size_t numFields = legend.hasNumberOfFields();
+    int intFields = static_cast<int>(numFields);
+    coords->point.setNum(4 * intFields);
+    modifyPoints(_bbox);
+
+    // for numFields colors we need numFields quads
+    auto faceset = new SoIndexedFaceSet;
+    faceset->coordIndex.setNum(5 * intFields);
+    for (int j = 0; j < intFields; j++) {
+        faceset->coordIndex.set1Value(5*j,   4*j);
+        faceset->coordIndex.set1Value(5*j+1, 4*j+1);
+        faceset->coordIndex.set1Value(5*j+2, 4*j+2);
+        faceset->coordIndex.set1Value(5*j+3, 4*j+3);
+        faceset->coordIndex.set1Value(5*j+4, SO_END_FACE_INDEX);
+    }
+
+    auto mat = new SoMaterial;
+    mat->diffuseColor.setNum(intFields);
+    for (std::size_t k = 0; k < numFields; k++) {
+        App::Color col = legend.getColor(k);
+        mat->diffuseColor.set1Value(k, col.r, col.g, col.b);
+    }
+
+    auto matBinding = new SoMaterialBinding;
+    matBinding->value = SoMaterialBinding::PER_FACE;
+
+    // first clear the children
+    if (getNumChildren() > 0)
+        coinRemoveAllChildren(this);
+    addChild(labelGroup);
+    addChild(valueGroup);
+    addChild(coords);
+    addChild(mat);
+    addChild(matBinding);
+    addChild(faceset);
 }

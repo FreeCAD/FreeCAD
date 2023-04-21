@@ -41,10 +41,10 @@ public:
     /// constructor.
     ViewProviderGeoFeatureGroup();
     /// destructor.
-    virtual ~ViewProviderGeoFeatureGroup();
+    ~ViewProviderGeoFeatureGroup() override;
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoFeatureGroupPython;
+using ViewProviderGeoFeatureGroupPython = ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup>;
 
 } // namespace Gui
 

@@ -41,23 +41,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="FirstLimitLength">
-          <property name="suffix">
-           <string>mm</string>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="TextLabel2">
-          <property name="text">
-           <string>Length:</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QComboBox" name="FirstLimitType">
           <item>
@@ -85,6 +68,23 @@
             <string>Up to face</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="TextLabel2">
+          <property name="text">
+           <string>Length:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="FirstLimitLength">
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
@@ -195,26 +195,6 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="SecondLimitLength">
-          <property name="suffix">
-           <string>mm</string>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="SecondLimitSelection">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>No selection</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="TextLabel1_2">
           <property name="text">
@@ -258,6 +238,16 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="SecondLimitLength">
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="TextLabel3_2">
           <property name="text">
@@ -265,7 +255,17 @@
           </property>
          </widget>
         </item>
-       </layout>
+       <item row="2" column="1">
+         <widget class="QLineEdit" name="SecondLimitSelection">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>No selection</string>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
      </layout>
     </widget>
@@ -300,7 +300,14 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="0" column="1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="TextLabel5">
+          <property name="text">
+           <string>Reference</string>
+          </property>
+         </widget>
+        </item>
+       <item row="0" column="1">
          <widget class="QLineEdit" name="DirectionSelection">
           <property name="enabled">
            <bool>false</bool>
@@ -310,14 +317,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="TextLabel5">
-          <property name="text">
-           <string>Reference</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        </layout>
       </item>
      </layout>
     </widget>

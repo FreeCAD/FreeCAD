@@ -1,5 +1,5 @@
-#ifndef _TECHDRAW_ZVALUE_
-#define _TECHDRAW_ZVALUE_
+#ifndef TECHDRAW_ZVALUE_
+#define TECHDRAW_ZVALUE_
 namespace ZVALUE {
     const int BACKGROUND = -999999;
     const int TEMPLATE = -1000;

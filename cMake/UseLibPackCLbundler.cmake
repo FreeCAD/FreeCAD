@@ -7,14 +7,7 @@ set(OCE_DIR ${FREECAD_LIBPACK_DIR}/lib/cmake CACHE PATH "" FORCE)
 
 set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/swig/swig.exe CACHE FILEPATH "Swig" FORCE)
 
-#set(PYTHON_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/python.exe CACHE FILEPATH "" FORCE)
-#set(PYTHON_LIBRARY ${FREECAD_LIBPACK_DIR}/lib/python27.lib CACHE FILEPATH "" FORCE)
-#set(PYTHON_DEBUG_LIBRARY ${FREECAD_LIBPACK_DIR}/lib/python27_d.lib CACHE FILEPATH "" FORCE)
-#set(PYTHON_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/python2.7 CACHE PATH "" FORCE)
 
-if (BUILD_QT5)
-
-# default Qt5 stuff
 # Set paths to cmake config files for each Qt module
 set(Qt5_ROOT_DIR ${FREECAD_LIBPACK_DIR} CACHE PATH "")
 
@@ -48,12 +41,10 @@ set (Qt5Widgets_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5Widgets CACHE PATH "")
 set (Qt5Xml_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5Xml CACHE PATH "")
 set (Qt5XmlPatterns_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5XmlPatterns CACHE PATH "")
 
-endif (BUILD_QT5)
-
 find_library(XercesC_LIBRARY_RELEASE xerces-c_3 "${FREECAD_LIBPACK_DIR}/lib")
 find_library(XercesC_LIBRARY_DEBUG xerces-c_3D "${FREECAD_LIBPACK_DIR}/lib")
 set (XercesC_LIBRARIES debug ${XercesC_LIBRARY_DEBUG} optimized ${XercesC_LIBRARY_RELEASE})
-set(XercesC_FOUND TRUE) 
+set(XercesC_FOUND TRUE)
 
 find_library(COIN3D_LIBRARY_RELEASE coin4 "${FREECAD_LIBPACK_DIR}/lib")
 find_library(COIN3D_LIBRARY_DEBUG coin4d "${FREECAD_LIBPACK_DIR}/lib")

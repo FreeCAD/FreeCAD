@@ -20,27 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include "kdl_cp/chainfksolverpos_recursive.hpp"
+# include "kdl_cp/chainiksolvervel_pinv.hpp"
+# include "kdl_cp/chainiksolverpos_nr_jl.hpp"
 #endif
 
-#include <Base/Writer.h>
+#include <Base/FileInfo.h>
 #include <Base/Reader.h>
-
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/chainfksolver.hpp"
-#include "kdl_cp/chainfksolverpos_recursive.hpp"
-#include "kdl_cp/frames_io.hpp"
-#include "kdl_cp/chainiksolver.hpp"
-#include "kdl_cp/chainiksolvervel_pinv.hpp"
-#include "kdl_cp/chainjnttojacsolver.hpp"
-#include "kdl_cp/chainiksolverpos_nr.hpp"
-#include "kdl_cp/chainiksolverpos_nr_jl.hpp"
+#include <Base/Stream.h>
+#include <Base/Writer.h>
 
 #include "Robot6Axis.h"
 #include "RobotAlgos.h"
+
 
 #ifndef M_PI
     #define M_PI    3.14159265358979323846 /* pi */
@@ -76,7 +70,7 @@ Robot6Axis::Robot6Axis()
     Max = JntArray(6);
 
     // Create joint array
-    Actuall = JntArray(6);
+    Actual = JntArray(6);
 
     // set to default kuka 500
     setKinematic(KukaIR500);
@@ -136,19 +130,23 @@ void split(std::string const& string, const char delimiter, std::vector<std::str
 void Robot6Axis::readKinematic(const char * FileName)
 {
     char buf[120];
-    std::ifstream in(FileName);
-    if(!in)return;
+    Base::FileInfo fi(FileName);
+    Base::ifstream in(fi);
+    if (!in)
+        return;
+
     std::vector<std::string> destination;
     AxisDefinition temp[6];
 
     // over read the header
     in.getline(buf,119,'\n');
     // read 6 Axis
-    for( int i = 0; i<6; i++){
+    for (int i = 0; i < 6; i++) {
         in.getline(buf,79,'\n');
         destination.clear();
         split(std::string(buf),',',destination);
-        if(destination.size() < 8) continue;
+        if (destination.size() < 8)
+            continue;
         // transfer the values in kinematic structure
         temp[i].a        = atof(destination[0].c_str());
         temp[i].alpha    = atof(destination[1].c_str());
@@ -163,7 +161,7 @@ void Robot6Axis::readKinematic(const char * FileName)
     setKinematic(temp);
 }
 
-unsigned int Robot6Axis::getMemSize (void) const
+unsigned int Robot6Axis::getMemSize () const
 {
     return 0;
 }
@@ -184,7 +182,7 @@ void Robot6Axis::Save (Writer &writer) const
                         << "maxAngle=\""    <<  Max(i)*(180.0/M_PI)  << "\" "
                         << "minAngle=\""    <<  Min(i)*(180.0/M_PI)  << "\" "
                         << "AxisVelocity=\""<<  Velocity[i]          << "\" "
-                        << "Pos=\""         <<  Actuall(i)           << "\"/>"
+                        << "Pos=\""         <<  Actual(i)           << "\"/>"
                         << std::endl;
     }
 }
@@ -219,7 +217,7 @@ void Robot6Axis::Restore(XMLReader &reader)
             Velocity[i] = reader.getAttributeAsFloat("AxisVelocity");
         else
             Velocity[i] = 156.0;
-        Actuall(i) = reader.getAttributeAsFloat("Pos");
+        Actual(i) = reader.getAttributeAsFloat("Pos");
     }
     Kinematic = Temp;
 
@@ -240,24 +238,24 @@ bool Robot6Axis::setTo(const Placement &To)
     Frame F_dest = Frame(KDL::Rotation::Quaternion(To.getRotation()[0],To.getRotation()[1],To.getRotation()[2],To.getRotation()[3]),KDL::Vector(To.getPosition()[0],To.getPosition()[1],To.getPosition()[2]));
 
     // solve
-    if (iksolver1.CartToJnt(Actuall,F_dest,result) < 0) {
+    if (iksolver1.CartToJnt(Actual,F_dest,result) < 0) {
         return false;
     }
     else {
-        Actuall = result;
+        Actual = result;
         Tcp = F_dest;
         return true;
     }
 }
 
-Base::Placement Robot6Axis::getTcp(void)
+Base::Placement Robot6Axis::getTcp()
 {
     double x,y,z,w;
     Tcp.M.GetQuaternion(x,y,z,w);
     return Base::Placement(Base::Vector3d(Tcp.p[0],Tcp.p[1],Tcp.p[2]),Base::Rotation(x,y,z,w));
 }
 
-bool Robot6Axis::calcTcp(void)
+bool Robot6Axis::calcTcp()
 {
     // Create solver based on kinematic chain
     ChainFkSolverPos_recursive fksolver = ChainFkSolverPos_recursive(Kinematic);
@@ -267,7 +265,7 @@ bool Robot6Axis::calcTcp(void)
  
     // Calculate forward position kinematics
     int kinematics_status;
-    kinematics_status = fksolver.JntToCart(Actuall,cartpos);
+    kinematics_status = fksolver.JntToCart(Actual,cartpos);
     if (kinematics_status>=0) {
         Tcp = cartpos;
         return true;
@@ -279,11 +277,11 @@ bool Robot6Axis::calcTcp(void)
 
 bool Robot6Axis::setAxis(int Axis,double Value)
 {
-    Actuall(Axis) = RotDir[Axis] * Value * (M_PI/180); // degree to radiants
+    Actual(Axis) = RotDir[Axis] * Value * (M_PI/180); // degree to radiants
     return calcTcp();
 }
 
 double Robot6Axis::getAxis(int Axis)
 {
-    return RotDir[Axis] * (Actuall(Axis)/(M_PI/180)); // radian to degree
+    return RotDir[Axis] * (Actual(Axis)/(M_PI/180)); // radian to degree
 }

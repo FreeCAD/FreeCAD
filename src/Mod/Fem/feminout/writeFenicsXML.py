@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -71,19 +71,17 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "hexahedron": 8
     }
 
-    Console.PrintMessage("Converting {} to fenics XML File\n".format(fem_mesh_obj.Label))
-    Console.PrintMessage("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.PrintMessage(f"Converting {fem_mesh_obj.Label} to fenics XML File\n")
+    Console.PrintMessage(f"Dimension of mesh: {get_FemMeshObjectDimension(fem_mesh_obj)}\n")
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    Console.PrintMessage("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    Console.PrintMessage(f"Elements appearing in mesh: {str(elements_in_mesh)}\n")
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
-    Console.PrintMessage(
-        u"Celltype in mesh -> %s and its Fenics name: %s\n"
-        % (str(celltype_in_mesh), cellname_fenics)
-    )
+    Console.PrintMessage(f"Celltype in mesh -> {str(celltype_in_mesh)} " +
+                         f"and its Fenics name: {cellname_fenics}\n")
 
     root = ET.Element("dolfin", dolfin="http://fenicsproject.org")
     meshchild = ET.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
@@ -118,7 +116,8 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
         ET.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
 
-    ET.SubElement(meshchild, "data")
+    # ET.SubElement(meshchild, "data")
+    # removed to eliminate warning from meshio
 
     fp = open(outputfile, "wb")
     fp.write(ET.tostring(root))

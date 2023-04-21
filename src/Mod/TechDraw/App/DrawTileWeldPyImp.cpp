@@ -21,19 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
 
 #include "DrawTileWeld.h"
-
 // inclusion of the generated files (generated out of DrawTileWeldPy.xml)
-#include <Base/VectorPy.h>
 #include <Mod/TechDraw/App/DrawTileWeldPy.h>
 #include <Mod/TechDraw/App/DrawTileWeldPy.cpp>
+
 
 using namespace TechDraw;
 
@@ -45,7 +38,7 @@ std::string DrawTileWeldPy::representation(void) const
 
 PyObject *DrawTileWeldPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawTileWeldPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

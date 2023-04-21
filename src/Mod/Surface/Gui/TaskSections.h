@@ -23,16 +23,21 @@
 #ifndef SURFACEGUI_TASKSECTIONS_H
 #define SURFACEGUI_TASKSECTIONS_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureSections.h>
 #include <memory>
 
+#include <Gui/DocumentObserver.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Mod/Surface/App/FeatureSections.h>
+
+
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -41,15 +46,15 @@ class Ui_Sections;
 
 class ViewProviderSections : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderSections);
-    typedef std::vector<App::PropertyLinkSubList::SubSet> References;
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderSections);
+    using References = std::vector<App::PropertyLinkSubList::SubSet>;
 
 public:
     enum ShapeType {Vertex, Edge, Face};
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    QIcon getIcon(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    QIcon getIcon() const override;
     void highlightReferences(ShapeType type, const References& refs, bool on);
 };
 
@@ -69,10 +74,11 @@ protected:
 private:
     std::unique_ptr<Ui_Sections> ui;
     ViewProviderSections* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj);
-    ~SectionsPanel();
+    ~SectionsPanel() override;
 
     void open();
     void checkOpenCommand();
@@ -81,25 +87,27 @@ public:
     void setEditedObject(Surface::Sections* obj);
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
+    void slotUndoDocument(const Gui::Document& Doc) override;
     /** Notifies on redo */
-    virtual void slotRedoDocument(const Gui::Document& Doc);
+    void slotRedoDocument(const Gui::Document& Doc) override;
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-private Q_SLOTS:
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
-    void onDeleteEdge(void);
+private:
+    void setupConnections();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
+    void onDeleteEdge();
     void clearSelection();
     void onIndexesMoved();
 
-private:
     void appendCurve(App::DocumentObject*, const std::string& subname);
     void removeCurve(App::DocumentObject*, const std::string& subname);
+
+    void exitSelectionMode();
 };
 
 class TaskSections : public Gui::TaskView::TaskDialog
@@ -108,15 +116,15 @@ class TaskSections : public Gui::TaskView::TaskDialog
 
 public:
     TaskSections(ViewProviderSections* vp, Surface::Sections* obj);
-    ~TaskSections();
+    ~TaskSections() override;
     void setEditedObject(Surface::Sections* obj);
 
 public:
-    void open();
-    bool accept();
-    bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

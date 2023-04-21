@@ -27,6 +27,9 @@
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 class QButtonGroup;
 
@@ -42,20 +45,21 @@ public:
     enum Smooth {
         None,
         Taubin,
-        Laplace
+        Laplace,
+        MedianFilter
     };
 
-    DlgSmoothing(QWidget* parent = 0);
-    ~DlgSmoothing();
+    explicit DlgSmoothing(QWidget* parent = nullptr);
+    ~DlgSmoothing() override;
     int iterations() const;
     double lambdaStep() const;
     double microStep() const;
     Smooth method() const;
     bool smoothSelection() const;
 
-private Q_SLOTS:
-    void method_clicked(int);
-    void on_checkBoxSelection_toggled(bool);
+private:
+    void methodClicked(int);
+    void onCheckBoxSelectionToggled(bool);
 
 Q_SIGNALS:
     void toggledSelection(bool);
@@ -73,8 +77,8 @@ class MeshGuiExport SmoothingDialog : public QDialog
     Q_OBJECT
 
 public:
-    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SmoothingDialog();
+    explicit SmoothingDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~SmoothingDialog() override;
 
     int iterations() const
     { return widget->iterations(); }
@@ -100,14 +104,14 @@ class TaskSmoothing : public Gui::TaskView::TaskDialog
 
 public:
     TaskSmoothing();
-    ~TaskSmoothing();
+    ~TaskSmoothing() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return true; }
 
 private:

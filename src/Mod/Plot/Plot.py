@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*   Copyright (c) 2011, 2012 Jose Luis Cercos Pita <jlcercos@gmail.com>   *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -26,25 +24,20 @@ import FreeCAD
 import PySide
 from PySide import QtCore, QtGui
 from distutils.version import LooseVersion as V
+import sys
 
 try:
     import matplotlib
-    matplotlib.use('Qt4Agg')
-    matplotlib.rcParams['backend.qt4']='PySide'
+    matplotlib.use('Qt5Agg')
+
     import matplotlib.pyplot as plt
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    if V(matplotlib.__version__) < V("1.4.0"):
-       from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
-    else:
-       from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
     from matplotlib.figure import Figure
 except ImportError:
-    msg = PySide.QtGui.QApplication.translate(
-        "plot_console",
-        "matplotlib not found, so Plot module can not be loaded",
-        None)
-    FreeCAD.Console.PrintMessage(msg + '\n')
+    FreeCAD.Console.PrintWarning('matplotlib not found, so Plot module can not be loaded\n')
     raise ImportError("matplotlib not installed")
 
 
@@ -84,6 +77,7 @@ def getPlot():
             return i
     return None
 
+
 def closePlot():
     """ closePlot(): Close the active plot window. """
     # Get active tab
@@ -97,7 +91,8 @@ def closePlot():
     for i in sub.children():
         if i.metaObject().className() == "Plot":
             sub.close()
-    
+
+
 def figure(winTitle="plot"):
     """Create a new plot subwindow/tab.
 
@@ -198,7 +193,7 @@ def legend(status=True, pos=None, fontsize=None):
             # Get resultant position
             try:
                 fax = axes.get_frame().get_extents()
-            except:
+            except Exception:
                 fax = axes.patch.get_extents()
             fl = l.get_frame()
             plt.legPos = (

@@ -156,26 +156,27 @@ def findWiresOld(edges):
     return result[1]
 
 
-def flattenWire(wire):
-    """Force a wire to get completely flat along its normal."""
-    n = get_normal(wire)
-    # for backward compatibility with previous getNormal implementation
-    if n is None:
-        n = App.Vector(0, 0, 1)
+def flattenWire(wire, origin=None, normal=None):
+    """Force a wire to be flat on a plane defined by an origin and a normal.
 
-    o = wire.Vertexes[0].Point
+    If origin or normal are None they are derived from the wire.
+    """
+    if normal is None:
+        normal = get_normal(wire)
+        # for backward compatibility with previous getNormal implementation
+        if normal is None:
+            normal = App.Vector(0, 0, 1)
+    if origin is None:
+        origin = wire.Vertexes[0].Point
+
     plane = WorkingPlane.plane()
-    plane.alignToPointAndAxis(o, n, 0)
-    verts = [o]
-
-    for v in wire.Vertexes[1:]:
-        verts.append(plane.projectPoint(v.Point))
-
+    plane.alignToPointAndAxis(origin, normal, 0)
+    points = [plane.projectPoint(vert.Point) for vert in wire.Vertexes]
     if wire.isClosed():
-        verts.append(o)
-    w = Part.makePolygon(verts)
+        points.append(points[0])
+    new_wire = Part.makePolygon(points)
 
-    return w
+    return new_wire
 
 
 def superWire(edgeslist, closed=False):
@@ -245,36 +246,9 @@ def superWire(edgeslist, closed=False):
 
 
 def isReallyClosed(wire):
-    """Check if a wire is really closed."""
-    # TODO yet to find out why not use wire.isClosed() direct,
-    # in isReallyClosed(wire)
-
-    # Remark out below - Found not true if a vertex is used again
-    # in a wire in sketch (e.g. wire with shape like 'd', 'b', 'g', ...)
-    # if len(wire.Edges) == len(wire.Vertexes): return True
-
-    # Found cases where Wire[-1] are not 'last' vertexes
-    # e.g. Part.Wire( Part.__sortEdges__(<Rectangle Geometries>.toShape()))
-    # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex
-    # for the rectangle - use Edges[i].Vertexes[0/1] instead
-    length = len(wire.Edges)
-
-    # Test if it is full circle / ellipse first
-    if length == 1:
-        if len(wire.Edges[0].Vertexes) == 1:
-            return True  # This is a closed wire - full circle/ellipse
-        else:
-            # TODO Should be False if 1 edge but not single vertex, correct?
-            # No need to test further below.
-            return False
-
-    # If more than 1 edge, further test below
-    v1 = wire.Edges[0].Vertexes[0].Point   # v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point  # v2 = wire.Vertexes[-1].Point
-    if DraftVecUtils.equals(v1, v2):
-        return True
-
-    return False
+    if isinstance(wire, (Part.Wire, Part.Edge)):
+        return wire.isClosed()
+    return isinstance(wire, Part.Face)
 
 
 def curvetowire(obj, steps):
@@ -353,56 +327,35 @@ def removeInterVertices(wire):
 
 
 def cleanProjection(shape, tessellate=True, seglength=0.05):
-    """Return a valid compound of edges, by recreating them.
+    """Return a compound of edges, optionally tessellate ellipses, splines
+    and bezcurves.
 
-    This is because the projection algorithm somehow creates wrong shapes.
-    They display fine, but on loading the file the shape is invalid.
-
-    Now with tanderson's fix to `ProjectionAlgos`, that isn't the case,
-    but this function can be used for tessellating ellipses and splines
-    for DXF output-DF.
+    The function was formerly used to workaround bugs in the projection
+    algorithm. These bugs have since been fixed. Now the function is only
+    used when tessellation of ellipses, splines and bezcurves is required
+    (DXF output and Draft_Shape2DView).
     """
     oldedges = shape.Edges
     newedges = []
     for e in oldedges:
+        typ = geomType(e)
         try:
-            if geomType(e) == "Line":
-                newedges.append(e.Curve.toShape())
-
-            elif geomType(e) == "Circle":
-                if len(e.Vertexes) > 1:
-                    mp = findMidpoint(e)
-                    a = Part.Arc(e.Vertexes[0].Point,
-                                 mp,
-                                 e.Vertexes[-1].Point).toShape()
-                    newedges.append(a)
-                else:
-                    newedges.append(e.Curve.toShape())
-
-            elif geomType(e) == "Ellipse":
+            if typ in ["Line", "Circle"]:
+                newedges.append(e)
+            elif typ == "Ellipse":
                 if tessellate:
                     newedges.append(Part.Wire(curvetowire(e, seglength)))
                 else:
-                    if len(e.Vertexes) > 1:
-                        a = Part.Arc(e.Curve,
-                                     e.FirstParameter,
-                                     e.LastParameter).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-
-            elif (geomType(e) == "BSplineCurve"
-                  or geomType(e) == "BezierCurve"):
-                if tessellate:
+                    newedges.append(e)
+            elif typ in ["BSplineCurve", "BezierCurve"]:
+                if isLine(e.Curve):
+                    line = Part.LineSegment(e.Vertexes[0].Point,
+                                            e.Vertexes[-1].Point)
+                    newedges.append(line)
+                elif tessellate:
                     newedges.append(Part.Wire(curvetowire(e, seglength)))
                 else:
-                    if isLine(e.Curve):
-                        line = Part.LineSegment(e.Vertexes[0].Point,
-                                                e.Vertexes[-1].Point).toShape()
-                        newedges.append(line)
-                    else:
-                        newedges.append(e.Curve.toShape(e.FirstParameter,
-                                                        e.LastParameter))
+                    newedges.append(e)
             else:
                 newedges.append(e)
         except Part.OCCError:
@@ -434,5 +387,96 @@ def tessellateProjection(shape, seglen):
             print("Debug: error cleaning edge ", e)
 
     return Part.makeCompound(newedges)
+
+def get_placement_perpendicular_to_wire(wire):
+    """Return the placement whose base is the wire's first vertex and it's z axis aligned to the wire's tangent."""
+    pl = App.Placement()
+    if wire.Length > 0.0:
+        pl.Base = wire.OrderedVertexes[0].Point
+        first_edge = wire.OrderedEdges[0]
+        if first_edge.Orientation == "Forward":
+            zaxis = -first_edge.tangentAt(first_edge.FirstParameter)
+        else:
+            zaxis = first_edge.tangentAt(first_edge.LastParameter)
+        pl.Rotation = App.Rotation(App.Vector(1, 0, 0), App.Vector(0, 0, 1), zaxis, "ZYX")
+    else:
+        App.Console.PrintError("debug: get_placement_perpendicular_to_wire called with a zero-length wire.\n")
+    return pl
+
+
+def get_extended_wire(wire, offset_start, offset_end):
+    """Return a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends.
+
+    get_extended_wire(wire, -100.0, 0.0) -> returns a copy of the wire with its first 100 mm removed
+    get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex
+    """
+    if min(offset_start, offset_end, offset_start + offset_end) <= -wire.Length:
+        App.Console.PrintError("debug: get_extended_wire error, wire's length insufficient for trimming.\n")
+        return wire
+    if offset_start < 0: # Trim the wire from the first vertex
+        offset_start = -offset_start
+        out_edges = []
+        for edge in wire.OrderedEdges:
+            if offset_start >= edge.Length: # Remove entire edge
+                offset_start -= edge.Length
+            elif round(offset_start, precision()) > 0: # Split edge, to remove the required length
+                if edge.Orientation == "Forward":
+                    new_edge = edge.split(edge.getParameterByLength(offset_start)).OrderedEdges[1]
+                else:
+                    new_edge = edge.split(edge.getParameterByLength(edge.Length - offset_start)).OrderedEdges[0]
+                new_edge.Placement = edge.Placement # Strangely, edge.split discards the placement and orientation
+                new_edge.Orientation = edge.Orientation
+                out_edges.append(new_edge)
+                offset_start = 0
+            else: # Keep the remaining entire edges
+                out_edges.append(edge)
+        wire = Part.Wire(out_edges)
+    elif offset_start > 0: # Extend the first edge along its normal
+        first_edge = wire.OrderedEdges[0]
+        if first_edge.Orientation == "Forward":
+            start, end = first_edge.FirstParameter, first_edge.LastParameter
+            vec = first_edge.tangentAt(start).multiply(offset_start)
+        else:
+            start, end = first_edge.LastParameter, first_edge.FirstParameter
+            vec = -first_edge.tangentAt(start).multiply(offset_start)
+        if geomType(first_edge) == "Line": # Replace first edge with the extended new edge
+            new_edge = Part.LineSegment(first_edge.valueAt(start).sub(vec), first_edge.valueAt(end)).toShape()
+            wire = Part.Wire([new_edge] + wire.OrderedEdges[1:])
+        else: # Add a straight edge before the first vertex
+            new_edge = Part.LineSegment(first_edge.valueAt(start).sub(vec), first_edge.valueAt(start)).toShape()
+            wire = Part.Wire([new_edge] + wire.OrderedEdges)
+    if offset_end < 0: # Trim the wire from the last vertex
+        offset_end = -offset_end
+        out_edges = []
+        for edge in reversed(wire.OrderedEdges):
+            if offset_end >= edge.Length: # Remove entire edge
+                offset_end -= edge.Length
+            elif round(offset_end, precision()) > 0: # Split edge, to remove the required length
+                if edge.Orientation == "Forward":
+                    new_edge = edge.split(edge.getParameterByLength(edge.Length - offset_end)).OrderedEdges[0]
+                else:
+                    new_edge = edge.split(edge.getParameterByLength(offset_end)).OrderedEdges[1]
+                new_edge.Placement = edge.Placement # Strangely, edge.split discards the placement and orientation
+                new_edge.Orientation = edge.Orientation
+                out_edges.insert(0, new_edge)
+                offset_end = 0
+            else: # Keep the remaining entire edges
+                out_edges.insert(0, edge)
+        wire = Part.Wire(out_edges)
+    elif offset_end > 0: # Extend the last edge along its normal
+        last_edge = wire.OrderedEdges[-1]
+        if last_edge.Orientation == "Forward":
+            start, end = last_edge.FirstParameter, last_edge.LastParameter
+            vec = last_edge.tangentAt(end).multiply(offset_end)
+        else:
+            start, end = last_edge.LastParameter, last_edge.FirstParameter
+            vec = -last_edge.tangentAt(end).multiply(offset_end)
+        if geomType(last_edge) == "Line": # Replace last edge with the extended new edge
+            new_edge = Part.LineSegment(last_edge.valueAt(start), last_edge.valueAt(end).add(vec)).toShape()
+            wire = Part.Wire(wire.OrderedEdges[:-1] + [new_edge])
+        else: # Add a straight edge after the last vertex
+            new_edge = Part.LineSegment(last_edge.valueAt(end), last_edge.valueAt(end).add(vec)).toShape()
+            wire = Part.Wire(wire.OrderedEdges + [new_edge])
+    return wire
 
 ## @}

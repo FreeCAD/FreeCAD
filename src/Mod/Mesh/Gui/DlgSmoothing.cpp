@@ -26,15 +26,16 @@
 # include <QDialogButtonBox>
 #endif
 
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Smoothing.h>
+
 #include "DlgSmoothing.h"
 #include "ui_DlgSmoothing.h"
 #include "Selection.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
 
 using namespace MeshGui;
 
@@ -47,8 +48,16 @@ DlgSmoothing::DlgSmoothing(QWidget* parent)
     bg = new QButtonGroup(this);
     bg->addButton(ui->radioButtonTaubin, 0);
     bg->addButton(ui->radioButtonLaplace, 1);
-    connect(bg, SIGNAL(buttonClicked(int)),
-            this, SLOT(method_clicked(int)));
+
+    connect(ui->checkBoxSelection, &QCheckBox::toggled,
+            this, &DlgSmoothing::onCheckBoxSelectionToggled);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(bg, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &DlgSmoothing::methodClicked);
+#else
+    connect(bg, qOverload<int>(&QButtonGroup::idClicked),
+            this, &DlgSmoothing::methodClicked);
+#endif
 
     ui->labelLambda->setText(QString::fromUtf8("\xce\xbb"));
     ui->labelMu->setText(QString::fromUtf8("\xce\xbc"));
@@ -64,7 +73,7 @@ DlgSmoothing::~DlgSmoothing()
     delete ui;
 }
 
-void DlgSmoothing::method_clicked(int id)
+void DlgSmoothing::methodClicked(int id)
 {
     if (bg->button(id) == ui->radioButtonTaubin) {
         ui->labelMu->setEnabled(true);
@@ -105,9 +114,9 @@ bool DlgSmoothing::smoothSelection() const
     return ui->checkBoxSelection->isChecked();
 }
 
-void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
+void DlgSmoothing::onCheckBoxSelectionToggled(bool on)
 {
-    /*emit*/ toggledSelection(on);
+    Q_EMIT toggledSelection(on);
 }
 
 // ------------------------------------------------
@@ -121,11 +130,11 @@ SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
     QVBoxLayout* hboxLayout = new QVBoxLayout(this);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    
-    connect(buttonBox, SIGNAL(accepted()),
-            this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()),
-            this, SLOT(reject()));
+
+    connect(buttonBox, &QDialogButtonBox::accepted,
+            this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected,
+            this, &QDialog::reject);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);
@@ -143,24 +152,20 @@ TaskSmoothing::TaskSmoothing()
 {
     widget = new DlgSmoothing();
     Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     selection = new Selection();
-    selection->setObjects(Gui::Selection().getSelectionEx(0, Mesh::Feature::getClassTypeId()));
+    selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
-#if !defined (QSINT_ACTIONPANEL)
-    Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
-#else
     Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
-#endif
     tasksel->groupLayout()->addWidget(selection);
     tasksel->hide();
     Content.push_back(tasksel);
 
-    connect(widget, SIGNAL(toggledSelection(bool)),
-            tasksel, SLOT(setVisible(bool)));
+    connect(widget, &DlgSmoothing::toggledSelection,
+            tasksel, &QWidget::setVisible);
 }
 
 TaskSmoothing::~TaskSmoothing()
@@ -180,7 +185,7 @@ bool TaskSmoothing::accept()
     bool hasSelection = false;
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
-        std::vector<unsigned long> selection;
+        std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid
             // to have coloured triangles when doing an 'undo'
@@ -209,6 +214,16 @@ bool TaskSmoothing::accept()
                 {
                     MeshCore::LaplaceSmoothing s(mm->getKernel());
                     s.SetLambda(widget->lambdaStep());
+                    if (widget->smoothSelection()) {
+                        s.SmoothPoints(widget->iterations(), selection);
+                    }
+                    else {
+                        s.Smooth(widget->iterations());
+                    }
+                }   break;
+            case MeshGui::DlgSmoothing::MedianFilter:
+                {
+                    MeshCore::MedianFilterSmoothing s(mm->getKernel());
                     if (widget->smoothSelection()) {
                         s.SmoothPoints(widget->iterations(), selection);
                     }

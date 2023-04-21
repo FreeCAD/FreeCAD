@@ -21,38 +21,37 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <string>
-#include <QString>
-//#include <QFont>
-//#include <QColor>
+# include <string>
+
+# include <QString>
 #endif
 
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Base/Vector3D.h>
 
 #include "Preferences.h"
 
+
 //getters for parameters used in multiple places.
-//ensure this is in sync with preference page uis
+//ensure this is in sync with preference page user interfaces
 
 using namespace TechDraw;
 
 const double Preferences::DefaultFontSizeInMM = 5.0;
 
+//! Returns the TechDraw preference group
+Base::Reference<ParameterGrp> Preferences::getPreferenceGroup(const char* Name)
+{
+    return App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/TechDraw")->GetGroup(Name);
+}
+
 std::string Preferences::labelFont()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    return fontName;
+    return getPreferenceGroup("Labels")->GetASCII("LabelFont", "osifont");
 }
 
 QString Preferences::labelFontQString()
@@ -63,173 +62,321 @@ QString Preferences::labelFontQString()
 
 double Preferences::labelFontSizeMM()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Labels");
-    return hGrp->GetFloat("LabelSize", DefaultFontSizeInMM);
+    return getPreferenceGroup("Labels")->GetFloat("LabelSize", DefaultFontSizeInMM);
 }
 
 double Preferences::dimFontSizeMM()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Dimensions");
-    return hGrp->GetFloat("FontSize", DefaultFontSizeInMM);
+    return getPreferenceGroup("Dimensions")->GetFloat("FontSize", DefaultFontSizeInMM);
 }
 
 App::Color Preferences::normalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-           GetGroup("BaseApp")->GetGroup("Preferences")->
-           GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x000000FF));     //#000000 black
+    fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("NormalColor", 0x000000FF));//#000000 black
     return fcColor;
 }
 
 App::Color Preferences::selectColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);  //#00FF00 lime
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("View");
+    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);//#00FF00 lime
 
-    hGrp = App::GetApplication().GetUserParameter().
-           GetGroup("BaseApp")->GetGroup("Preferences")->
-           GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", defColor));
+    fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("SelectColor", defColor));
     return fcColor;
 }
 
 App::Color Preferences::preselectColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);  //#FFFF00 yellow
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("View");
+    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);//#FFFF00 yellow
 
-    hGrp = App::GetApplication().GetUserParameter().
-           GetGroup("BaseApp")->GetGroup("Preferences")->
-           GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", defColor));
+    fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("PreSelectColor", defColor));
     return fcColor;
 }
 
 App::Color Preferences::vertexColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-           GetGroup("BaseApp")->GetGroup("Preferences")->
-           GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x000000FF));     //#000000 black
+    fcColor.setPackedValue(getPreferenceGroup("Decorations")->GetUnsigned("VertexColor", 0x000000FF));//#000000 black
     return fcColor;
 }
 
 double Preferences::vertexScale()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("VertexScale", 3.0);
-    return result;
+    return getPreferenceGroup("General")->GetFloat("VertexScale", 3.0);
 }
 
+int Preferences::scaleType()
+{
+    return getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);
+}
 
-
-//lightgray #D3D3D3 
+double Preferences::scale()
+{
+    int prefScaleType = scaleType();
+    if (prefScaleType == 0) {//page scale
+        return getPreferenceGroup("General")->GetFloat("DefaultPageScale", 1.0);
+    }
+    else if (prefScaleType == 1) {//custom scale
+        return getPreferenceGroup("General")->GetFloat("DefaultViewScale", 1.0);
+    }
+    return 1.0;
+}
 
 bool Preferences::keepPagesUpToDate()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/General");
-    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", true);
-    return autoUpdate;
+    return getPreferenceGroup("General")->GetBool("KeepPagesUpToDate", true);  // Auto update
 }
 
 bool Preferences::useGlobalDecimals()
 {
-    bool result = false;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().
-                                         GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    result = hGrp->GetBool("UseGlobalDecimals", true);
-    return result;
+    return getPreferenceGroup("Dimensions")->GetBool("UseGlobalDecimals", true);
 }
 
 int Preferences::projectionAngle()
 {
-    Base::Reference<ParameterGrp>  hGrp = App::GetApplication().GetUserParameter().
-                                          GetGroup("BaseApp")->GetGroup("Preferences")->
-                                          GetGroup("Mod/TechDraw/General");
-    int projType = hGrp->GetInt("ProjectionAngle", 0);    //First Angle
-    return projType;
+    return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
 }
 
 int Preferences::lineGroup()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    int lgInt = hGrp->GetInt("LineGroup", 3); // FC 0.70mm
-    return lgInt;
+    return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
 }
 
 int Preferences::balloonArrow()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 0);
-    return end;
+    return getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+}
+
+double Preferences::balloonKinkLength()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("BalloonKink", 5.0);
+}
+
+int Preferences::balloonShape()
+{
+    return getPreferenceGroup("Decorations")->GetInt("BalloonShape", 0);
 }
 
 QString Preferences::defaultTemplate()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
     std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
-    std::string prefFileName = hGrp->GetASCII("TemplateFile",defaultFileName.c_str());
+    std::string prefFileName = getPreferenceGroup("Files")->GetASCII("TemplateFile", defaultFileName.c_str());
+    if (prefFileName.empty()) {
+        prefFileName = defaultFileName;
+    }
     QString templateFileName = QString::fromStdString(prefFileName);
     Base::FileInfo fi(prefFileName);
     if (!fi.isReadable()) {
-        templateFileName = QString::fromStdString(defaultFileName);
         Base::Console().Warning("Template File: %s is not readable\n", prefFileName.c_str());
+        templateFileName = QString::fromStdString(defaultFileName);
     }
     return templateFileName;
 }
 
 QString Preferences::defaultTemplateDir()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
-    std::string prefTemplateDir = hGrp->GetASCII("TemplateDir", defaultDir.c_str());
+    std::string prefTemplateDir = getPreferenceGroup("Files")->GetASCII("TemplateDir", defaultDir.c_str());
+    if (prefTemplateDir.empty()) {
+        prefTemplateDir = defaultDir;
+    }
     QString templateDir = QString::fromStdString(prefTemplateDir);
     Base::FileInfo fi(prefTemplateDir);
     if (!fi.isReadable()) {
+        Base::Console().Warning("Template Directory: %s is not readable\n",
+                                prefTemplateDir.c_str());
         templateDir = QString::fromStdString(defaultDir);
-        Base::Console().Warning("Template Directory: %s is not readable\n", prefTemplateDir.c_str());
-   }
+    }
     return templateDir;
 }
 
 std::string Preferences::lineGroupFile()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().
-                                         GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
     std::string defaultFileName = defaultDir + "LineGroup.csv";
-    std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
+    std::string lgFileName = getPreferenceGroup("Files")->GetASCII("LineGroupFile", defaultFileName.c_str());
+    if (lgFileName.empty()) {
+        lgFileName = defaultFileName;
+    }
     Base::FileInfo fi(lgFileName);
     if (!fi.isReadable()) {
-        lgFileName = defaultFileName;
         Base::Console().Warning("Line Group File: %s is not readable\n", lgFileName.c_str());
+        lgFileName = defaultFileName;
     }
     return lgFileName;
+}
+
+std::string Preferences::formatSpec()
+{
+    return getPreferenceGroup("Dimensions")->GetASCII("formatSpec", "%.2w");
+}
+
+int Preferences::altDecimals()
+{
+    return getPreferenceGroup("Dimensions")->GetInt("AltDecimals", 2);
+}
+
+int Preferences::mattingStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("MattingStyle", 0);
+}
+
+std::string Preferences::svgFile()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
+    std::string defaultFileName = defaultDir + "simple.svg";
+    std::string prefHatchFile = getPreferenceGroup("Files")->GetASCII("FileHatch", defaultFileName.c_str());
+    if (prefHatchFile.empty()) {
+        prefHatchFile = defaultFileName;
+    }
+    Base::FileInfo fi(prefHatchFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        prefHatchFile = defaultFileName;
+    }
+    return prefHatchFile;
+}
+
+std::string Preferences::patFile()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    std::string defaultFileName = defaultDir + "FCPAT.pat";
+    std::string prefHatchFile = getPreferenceGroup("PAT")->GetASCII("FilePattern", defaultFileName.c_str());
+    if (prefHatchFile.empty()) {
+        prefHatchFile = defaultFileName;
+    }
+    Base::FileInfo fi(prefHatchFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        prefHatchFile = defaultFileName;
+    }
+
+    return prefHatchFile;
+}
+
+std::string Preferences::bitmapFill()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
+    std::string defaultFileName = defaultDir + "default.png";
+    std::string prefBitmapFile = getPreferenceGroup("Files")->GetASCII("BitmapFill", defaultFileName.c_str());
+    if (prefBitmapFile.empty()) {
+        prefBitmapFile = defaultFileName;
+    }
+    Base::FileInfo fi(prefBitmapFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+        prefBitmapFile = defaultFileName;
+    }
+    return prefBitmapFile;
+}
+
+//! Returns the factor for calculating the ISO extension line gap, not the actual distance.
+double Preferences::GapISO()
+{
+    double factor = getPreferenceGroup("Dimensions")->GetFloat("GapISO", 0.0);
+    return factor;
+}
+
+//! Returns the factor for calculating the ASME extension line gap, not the actual distance.
+double Preferences::GapASME()
+{
+    double factor = getPreferenceGroup("Dimensions")->GetFloat("GapASME", 0.0);
+    return factor;
+}
+
+bool Preferences::reportProgress()
+{
+    return getPreferenceGroup("General")->GetBool("ReportProgress", false);
+}
+
+bool Preferences::lightOnDark()
+{
+    return getPreferenceGroup("Colors")->GetBool("LightOnDark", false);
+}
+
+void Preferences::lightOnDark(bool state)
+{
+    getPreferenceGroup("Colors")->SetBool("LightOnDark", state);
+}
+
+bool Preferences::monochrome()
+{
+    return getPreferenceGroup("Colors")->GetBool("Monochrome", false);
+}
+
+void Preferences::monochrome(bool state)
+{
+    Base::Console().Message("Pref::useLightText - set to %d\n", state);
+    getPreferenceGroup("Colors")->SetBool("Monochrome", state);
+}
+
+App::Color Preferences::lightTextColor()
+{
+    App::Color result;
+    result.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("LightTextColor", 0xFFFFFFFF));//#FFFFFFFF white
+    return result;
+}
+
+App::Color Preferences::lightenColor(App::Color orig)
+{
+    // get component colours on [0, 255]
+    uchar red = orig.r * 255;
+    uchar blue = orig.b * 255;
+    uchar green = orig.g * 255;
+    //    uchar alpha = orig.a * 255;
+
+    // shift color values
+    uchar m = std::min({red, blue, green});
+    red -= m;
+    blue -= m;
+    green -= m;
+
+    // calculate chroma (colour range)
+    uchar chroma = std::max({red, blue, green});
+
+    // calculate lightened colour value
+    uchar newm = 255 - chroma - m;
+    red += newm;
+    green += newm;
+    blue += newm;
+
+    double redF = (float)red / 255.0;
+    double greenF = (float)green / 255.0;
+    double blueF = (float)blue / 255.0;
+
+    return App::Color(redF, greenF, blueF, orig.a);
+}
+
+App::Color Preferences::getAccessibleColor(App::Color orig)
+{
+    if (Preferences::lightOnDark() && Preferences::monochrome()) {
+        return lightTextColor();
+    }
+    if (Preferences::lightOnDark()) {
+        return lightenColor(orig);
+    }
+    return orig;
+}
+
+bool Preferences::autoCorrectDimRefs()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("AutoCorrectRefs", true);
+}
+
+int Preferences::scrubCount()
+{
+    return getPreferenceGroup("General")->GetInt("ScrubCount", 0);
 }

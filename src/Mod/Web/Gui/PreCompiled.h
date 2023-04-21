@@ -20,55 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef WEBGUI_PRECOMPILED_H
 #define WEBGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define WebGuiExport __declspec(dllexport)
-#else // for Linux
-# define WebGuiExport
-#endif
-
-
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
-// standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
-
 // STL
-#include <vector>
-#include <map>
 #include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <vector>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
-
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
-
-// QtWebKit
-#include <QWebFrame>
-#include <QWebView>
-#include <QWebSettings>
+// Qt
+#include <QApplication>
+#include <QDesktopServices>
+#include <QFileInfo>
+#include <QIcon>
+#include <QLatin1String>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QNetworkCookie>
+#include <QNetworkRequest>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QSignalMapper>
+#include <QStatusBar>
+#include <QTextStream>
+#include <QUrl>
 
 #endif //_PreComp_
 

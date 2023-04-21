@@ -22,33 +22,25 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QCheckBox>
 # include <QLineEdit>
 # include <QMenu>
 #endif
 
-#include "TaskOrthoViews.h"
-#include "ui_TaskOrthoViews.h"
-
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Part/App/PartFeature.h>
 
-#include <boost_bind_bind.hpp>
+#include "TaskOrthoViews.h"
+#include "ui_TaskOrthoViews.h"
 
 
 using namespace Gui;
 using namespace DrawingGui;
 using namespace std;
 namespace bp = boost::placeholders;
-
-
-#ifndef PI
-    #define PI    3.14159265358979323846 /* pi */
-#endif
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("QObject", "Make axonometric...");
@@ -57,12 +49,7 @@ namespace bp = boost::placeholders;
 #endif
 
 
-#if _MSC_VER <= 1700
-// maybe in the c++ standard later, older compiler don't have round()
-double round(double r) {
-    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
-}
-#endif  // _MSC_VER < 1500
+
 
 void pagesize(string & page_template, int dims[4], int block[4])
 {
@@ -247,25 +234,25 @@ void orthoview::set_projection(const gp_Ax2& cs)
     // this can lead to choosing a different normal x-direction when the file
     // gets reloaded see issue #1909
     // we anticipate the actual_cs after reloading by rounding the Z_dir now
-    const double x = round( Z_dir.X()  * 1e12 ) / 1e12;
-    const double y = round( Z_dir.Y()  * 1e12 ) / 1e12;
-    const double z = round( Z_dir.Z()  * 1e12 ) / 1e12;
-    actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(x,y,z));
+    const double x = round(Z_dir.X() * 1e12) / 1e12;
+    const double y = round(Z_dir.Y() * 1e12) / 1e12;
+    const double z = round(Z_dir.Z() * 1e12) / 1e12;
+    actual_cs = gp_Ax2(gp_Pnt(0, 0, 0), gp_Dir(x, y, z));
 
     actual_X = actual_cs.XDirection();
 
     // angle between desired projection and actual projection
     float rotation = X_dir.Angle(actual_X);
 
-    if (rotation != 0 && abs(PI - rotation) > 0.05)
+    if (rotation != 0 && abs(M_PI - rotation) > 0.05)
         if (!Z_dir.IsEqual(actual_X.Crossed(X_dir), 0.05))
             rotation = -rotation;
 
     calcCentre();
 
     //this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
-    this_view->Direction.setValue(x,y,z);
-    this_view->Rotation.setValue(180 * rotation / PI);
+    this_view->Direction.setValue(x, y, z);
+    this_view->Rotation.setValue(180 * rotation / M_PI);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,8 +261,8 @@ void orthoview::set_projection(const gp_Ax2& cs)
 
 OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * partname)
 {
-    horiz = 0;
-    vert = 0;
+    horiz = nullptr;
+    vert = nullptr;
 
     parent_doc = doc;
     parent_doc->openTransaction("Create view");
@@ -583,8 +570,8 @@ void OrthoViews::set_orientation(int index)                 // set orientation o
             n = -views[index]->rel_y;
         }
 
-        rotation = n * rotate_coeff * PI/2;              // rotate_coeff is -1 or 1 for 1st or 3rd angle
-        cs = primary.Rotated(gp_Ax1(gp_Pnt(0,0,0), dir), rotation);
+        rotation = n * rotate_coeff * M_PI / 2;             // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        cs = primary.Rotated(gp_Ax1(gp_Pnt(0, 0, 0), dir), rotation);
         views[index]->set_projection(cs);
     }
 }
@@ -740,19 +727,19 @@ void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool awa
     }
     else
     {
-        rotations[0] = 1.3088876392502007 - PI/2;
+        rotations[0] = 1.3088876392502007 - M_PI / 2;
         rotations[1] = -0.6156624905260762;
     }
 
     if (away)
         rotations[1] = - rotations[1];
 
-    gp_Ax2  cs = gp_Ax2(gp_Pnt(0,0,0), right);
+    gp_Ax2  cs = gp_Ax2(gp_Pnt(0, 0, 0), right);
     cs.SetYDirection(up);
-    cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), up), rotations[0]);
+    cs.Rotate(gp_Ax1(gp_Pnt(0, 0, 0), up), rotations[0]);
     gp_Dir  dir;
     dir = cs.XDirection();
-    cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), dir), rotations[1]);
+    cs.Rotate(gp_Ax1(gp_Pnt(0, 0, 0), dir), rotations[1]);
 
     int num = index(rel_x, rel_y);
     if (num != -1) {
@@ -1329,7 +1316,7 @@ TaskDlgOrthoViews::TaskDlgOrthoViews()
 {
     widget = new TaskOrthoViews();
     taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("actions/drawing-orthoviews"), widget->windowTitle(), true, 0);
+        Gui::BitmapFactory().pixmap("actions/drawing-orthoviews"), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

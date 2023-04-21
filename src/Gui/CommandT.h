@@ -24,13 +24,14 @@
 #ifndef GUI_COMMAND_T_H
 #define GUI_COMMAND_T_H
 
-#include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Gui/Command.h>
-#include <exception>
 #include <type_traits>
+#include <typeinfo>
 #include <boost/format.hpp>
+
 
 namespace Gui {
 
@@ -40,11 +41,24 @@ public:
     static std::string str(const std::string& s) {
         return s;
     }
+    static std::string str(const char* s) {
+        return s;
+    }
+    static std::string str(const QString& s) {
+        return s.toStdString();
+    }
     static std::string str(const std::stringstream& s) {
         return s.str();
     }
+    static std::string str(const std::ostringstream& s) {
+        return s.str();
+    }
     static std::string str(const std::ostream& s) {
-        return dynamic_cast<const std::ostringstream&>(s).str();
+        if (typeid(s) == typeid(std::ostringstream))
+            return dynamic_cast<const std::ostringstream&>(s).str();
+        else if (typeid(s) == typeid(std::stringstream))
+            return dynamic_cast<const std::stringstream&>(s).str();
+        throw Base::TypeError("Not a std::stringstream or std::ostringstream");
     }
     static std::string toStr(boost::format& f) {
         return f.str();
@@ -86,6 +100,33 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::Document* doc, co
     }
 }
 
+/** Runs a command for accessing document attribute or method
+ * This function is an alternative to _FCMD_DOC_CMD
+ * @param doc: document name
+ * @param mod: module name, "Gui" or "App"
+ * @param cmd: command string, streamable
+ *
+ * Example:
+ * @code{.cpp}
+ *      _cmdDocument(Gui::Command::Gui, doc, "Gui", std::stringstream() << "getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName contains value 'ObjName'):
+ * @code{.py}
+ *       Gui.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
+template<typename T>
+void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const std::string& doc, const std::string& mod, T&& cmd) {
+    if (!doc.empty()) {
+        std::stringstream str;
+        str << mod << ".getDocument('" << doc << "')."
+            << FormatString::str(cmd);
+        Gui::Command::runCommand(cmdType, str.str().c_str());
+    }
+}
+
 /** Runs a command for accessing App.Document attribute or method
  * This function is an alternative to FCMD_DOC_CMD
  *
@@ -106,6 +147,29 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::Document* doc, co
  */
 template<typename T>
 inline void cmdAppDocument(const App::Document* doc, T&& cmd) {
+    _cmdDocument(Gui::Command::Doc, doc, "App", std::forward<T>(cmd));
+}
+
+/** Runs a command for accessing App.Document attribute or method
+ * This function is an alternative to FCMD_DOC_CMD
+ *
+ * @param doc: document name
+ * @param cmd: command string, streamable
+ * @sa _cmdDocument()
+ *
+ * Example:
+ * @code{.cpp}
+ *      cmdAppDocument(doc, std::stringstream() << "getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName contains value 'ObjName'):
+ * @code{.py}
+ *       App.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
+template<typename T>
+inline void cmdAppDocument(const std::string& doc, T&& cmd) {
     _cmdDocument(Gui::Command::Doc, doc, "App", std::forward<T>(cmd));
 }
 
@@ -131,6 +195,28 @@ inline void cmdGuiDocument(const App::Document* doc, T&& cmd) {
     _cmdDocument(Gui::Command::Gui, doc, "Gui", std::forward<T>(cmd));
 }
 
+/** Runs a command for accessing App.Document attribute or method
+ *
+ * @param doc: document name
+ * @param cmd: command string, streamable
+ * @sa _cmdDocument()
+ *
+ * Example:
+ * @code{.cpp}
+ *      cmdGuiDocument(doc, std::stringstream() << "getObject('" << objName << "')");
+ * @endcode
+ *
+ * Translates to command (assuming doc's name is 'DocName', and
+ * and objName contains value 'ObjName'):
+ * @code{.py}
+ *       Gui.getDocument('DocName').getObject('ObjName')
+ * @endcode
+ */
+template<typename T>
+inline void cmdGuiDocument(const std::string& doc, T&& cmd) {
+    _cmdDocument(Gui::Command::Gui, doc, "Gui", std::forward<T>(cmd));
+}
+
 /** Runs a command for accessing an object's document attribute or method
  * This function is an alternative to _FCMD_OBJ_DOC_CMD
  * @param obj: pointer to a DocumentObject
@@ -150,6 +236,39 @@ inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::DocumentOb
 template<typename T>
 inline void cmdAppDocument(const App::DocumentObject* obj, T&& cmd) {
     _cmdDocument(Gui::Command::Doc, obj, "App", std::forward<T>(cmd));
+}
+
+/** Runs a command for accessing a document's attribute or method
+ * @param doc: pointer to a Document
+ * @param cmd: command string, supporting printf like formatter
+ *
+ * Example:
+ * @code{.cpp}
+ *      cmdAppDocumentArgs(obj, "addObject('%s')", "Part::Feature");
+ * @endcode
+ *
+ * Translates to command (assuming obj's document name is 'DocName':
+ * @code{.py}
+ *       App.getDocument('DocName').addObject('Part::Feature')
+ * @endcode
+ */
+template<typename...Args>
+void cmdAppDocumentArgs(const App::Document* doc, const std::string& cmd, Args&&... args) {
+    std::string _cmd;
+    try {
+        boost::format fmt(cmd);
+        _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s",
+            doc->getName(), _cmd.c_str());
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("%s: %s\n", e.what(), cmd.c_str());
+    }
+    catch (const Base::Exception&) {
+        Base::Console().Error("App.getDocument('%s').%s\n",
+            doc->getName(), _cmd.c_str());
+        throw;
+    }
 }
 
 /** Runs a command for accessing an object's Gui::Document attribute or method
@@ -232,11 +351,11 @@ inline void cmdAppObjectShow(const App::DocumentObject* obj) {
  * in-place editing an object, which may be brought in through linking to an
  * external group.
  */
-inline void cmdSetEdit(const App::DocumentObject* obj) {
+inline void cmdSetEdit(const App::DocumentObject* obj, int mod = 0) {
     if (obj && obj->getNameInDocument()) {
         Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",
-            obj->getDocument()->getName(), obj->getNameInDocument());
+            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %d)",
+            obj->getDocument()->getName(), obj->getNameInDocument(), mod);
     }
 }
 

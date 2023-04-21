@@ -26,33 +26,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
 # include <sstream>
 #endif
 
-#include "Mod/Fem/App/FemConstraintInitialTemperature.h"
+#include <Gui/Command.h>
+#include <Mod/Fem/App/FemConstraintInitialTemperature.h>
+
 #include "TaskFemConstraintInitialTemperature.h"
 #include "ui_TaskFemConstraintInitialTemperature.h"
-#include <App/Application.h>
-#include <Gui/Command.h>
-
-
-
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
 
 
 using namespace FemGui;
@@ -60,49 +42,47 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintInitialTemperature */
 
-TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintInitialTemperature")
+TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
+    ViewProviderFemConstraintInitialTemperature* ConstraintView, QWidget* parent)
+    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintInitialTemperature"),
+      ui(new Ui_TaskFemConstraintInitialTemperature)
 {
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintInitialTemperature();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
-    Fem::ConstraintInitialTemperature* pcConstraint = static_cast<Fem::ConstraintInitialTemperature*>(ConstraintView->getObject());
+    Fem::ConstraintInitialTemperature* pcConstraint =
+        static_cast<Fem::ConstraintInitialTemperature*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_temperature->setMinimum(0);
-    ui->if_temperature->setMaximum(FLOAT_MAX);
-    Base::Quantity t = Base::Quantity(pcConstraint->initialTemperature.getValue(), Base::Unit::Temperature);
-    ui->if_temperature->setValue(t);
+    ui->if_temperature->setValue(pcConstraint->initialTemperature.getQuantityValue());
+
+    ui->if_temperature->bind(pcConstraint->initialTemperature);
 }
 
 TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature()
+{}
+
+std::string TaskFemConstraintInitialTemperature::get_temperature() const
 {
-    delete ui;
+    return ui->if_temperature->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintInitialTemperature::get_temperature() const
-{
-    Base::Quantity temperature =  ui->if_temperature->getQuantity();
-    double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
-    return temperature_in_kelvin;
-}
+void TaskFemConstraintInitialTemperature::changeEvent(QEvent*)
+{}
 
-void TaskFemConstraintInitialTemperature::changeEvent(QEvent *)
-{
-}
 
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView)
+TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(
+    ViewProviderFemConstraintInitialTemperature* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -119,21 +99,31 @@ void TaskDlgFemConstraintInitialTemperature::open()
         QString msg = QObject::tr("Constraint initial temperature");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            ViewProviderFemConstraint::gethideMeshShowPartStr(
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                .c_str());// OvG: Hide meshes and show parts
     }
 }
 
 bool TaskDlgFemConstraintInitialTemperature::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintInitialTemperature* parameterTemperature = static_cast<const TaskFemConstraintInitialTemperature*>(parameter);
+    const TaskFemConstraintInitialTemperature* parameterTemperature =
+        static_cast<const TaskFemConstraintInitialTemperature*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.initialTemperature = %f",
-            name.c_str(), parameterTemperature->get_temperature());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.initialTemperature = \"%s\"",
+                                name.c_str(),
+                                parameterTemperature->get_temperature().c_str());
 
-        std::string scale = parameterTemperature->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        std::string scale = parameterTemperature->getScale();// OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Scale = %s",
+                                name.c_str(),
+                                scale.c_str());// OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -141,10 +131,10 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
     }
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid())
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -158,7 +148,7 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
 bool TaskDlgFemConstraintInitialTemperature::reject()
 {
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 
     return true;

@@ -23,25 +23,25 @@
 #ifndef GUI_TASKVIEW_TASKGEOMHATCH_H
 #define GUI_TASKVIEW_TASKGEOMHATCH_H
 
-#include <App/Material.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskGeomHatch.h>
-
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-
-
-class Ui_TaskGeomHatch;
 
 namespace App
 {
 class DocumentObject;
 }
 
+namespace TechDraw
+{
+class DrawGeomHatch;
+}
+
 
 namespace TechDrawGui
 {
+class Ui_TaskGeomHatch;
 class ViewProviderGeomHatch;
 
 class TaskGeomHatch : public QWidget
@@ -49,31 +49,23 @@ class TaskGeomHatch : public QWidget
     Q_OBJECT
 
 public:
-    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
-    ~TaskGeomHatch();
+    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
+    ~TaskGeomHatch() = default;
 
-public:
     virtual bool accept();
     virtual bool reject();
-    void setCreateMode(bool b) { m_createMode = b;}
-    bool getCreateMode() { return m_createMode; }
-
-protected Q_SLOTS:
-    void onFileChanged(void);
+    void setCreateMode(bool mode) { m_createMode = mode;}
+    bool getCreateMode() const { return m_createMode; }
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *event) override;
     void initUi();
-//    bool resetUi();
     void updateValues();
     void getParameters();
-    QStringList listToQ(std::vector<std::string> in);
+    QStringList listToQ(std::vector<std::string> inList);
 
-private Q_SLOTS:
-    void onNameChanged();
-    void onScaleChanged();
-    void onLineWeightChanged();
-    void onColorChanged();
+protected Q_SLOTS:
+    void onFileChanged();
 
 private:
     std::unique_ptr<Ui_TaskGeomHatch> ui;
@@ -90,8 +82,20 @@ private:
     double m_origScale;
     double m_origWeight;
     App::Color m_origColor;
+    double m_rotation;
+    double m_origRotation;
+    Base::Vector3d m_offset;
+    Base::Vector3d m_origOffset;
 
     bool m_createMode;
+
+private Q_SLOTS:
+        void onNameChanged();
+        void onScaleChanged();
+        void onLineWeightChanged();
+        void onColorChanged();
+        void onRotationChanged();
+        void onOffsetChanged();
 
 };
 
@@ -100,31 +104,26 @@ class TaskDlgGeomHatch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
-    ~TaskDlgGeomHatch();
+    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
+    ~TaskDlgGeomHatch() override;
     const ViewProviderGeomHatch * getViewProvider() const { return viewProvider; }
 
-public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    bool reject() override;
+    bool isAllowedAlterDocument() const override
     { return false; }
-    void setCreateMode(bool b);
+    void setCreateMode(bool mode);
 
     void update();
 
-protected:
-    const ViewProviderGeomHatch *viewProvider;
-
 private:
+    const ViewProviderGeomHatch *viewProvider;
     TaskGeomHatch * widget;
     Gui::TaskView::TaskBox* taskbox;
 };

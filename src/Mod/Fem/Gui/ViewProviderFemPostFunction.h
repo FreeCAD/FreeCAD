@@ -20,23 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
 #define FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Mod/Fem/App/FemPostFunction.h>
-#include <Inventor/SbMatrix.h>
 #include <QWidget>
 #include <boost_signals2.hpp>
+#include <Inventor/SbBox3f.h>
 
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Mod/Fem/App/FemPostFunction.h>
+
+
+class SoComposeMatrix;
+class SoDragger;
+class SoGroup;
+class SoMatrixTransform;
 class SoScale;
+class SoSphere;
 class SoSurroundScale;
 class SoTransformManip;
-class SoComposeMatrix;
-class SoMatrixTransform;
-class SoDragger;
-class SoSphere;
+class Ui_BoxWidget;
+class Ui_CylinderWidget;
 class Ui_PlaneWidget;
 class Ui_SphereWidget;
 
@@ -45,12 +49,12 @@ namespace FemGui
 
 class ViewProviderFemPostFunction;
 
-class FemGuiExport FunctionWidget : public QWidget {
-
+class FemGuiExport FunctionWidget : public QWidget
+{
     Q_OBJECT
 public:
-    FunctionWidget() : m_block(false), m_view(0), m_object(0) {}
-    virtual ~FunctionWidget() {}
+    FunctionWidget() : m_block(false), m_view(nullptr), m_object(nullptr) {}
+    ~FunctionWidget() override {}
 
     virtual void applyPythonCode() = 0;
     virtual void setViewProvider(ViewProviderFemPostFunction* view);
@@ -74,62 +78,68 @@ private:
 
 class FemGuiExport ViewProviderFemPostFunctionProvider : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
 
 public:
     ViewProviderFemPostFunctionProvider();
-    virtual ~ViewProviderFemPostFunctionProvider();
+    ~ViewProviderFemPostFunctionProvider() override;
 
     App::PropertyFloat SizeX;
     App::PropertyFloat SizeY;
     App::PropertyFloat SizeZ;
 
+    // handling when object is deleted
+    bool onDelete(const std::vector<std::string>&) override;
+    /// asks view provider if the given object can be deleted
+    bool canDelete(App::DocumentObject* obj) const override;
+
 protected:
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
-    virtual void onChanged(const App::Property* prop);
-    virtual void updateData(const App::Property*);
+    std::vector< App::DocumentObject* > claimChildren() const override;
+    std::vector< App::DocumentObject* > claimChildren3D() const override;
+    void onChanged(const App::Property* prop) override;
+    void updateData(const App::Property*) override;
 
     void updateSize();
 };
 
 class FemGuiExport ViewProviderFemPostFunction : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
 
 public:
     /// constructor.
     ViewProviderFemPostFunction();
-    ~ViewProviderFemPostFunction();
+    ~ViewProviderFemPostFunction() override;
 
     App::PropertyFloat AutoScaleFactorX;
     App::PropertyFloat AutoScaleFactorY;
     App::PropertyFloat AutoScaleFactorZ;
 
-    void attach(App::DocumentObject *pcObject);
-    bool doubleClicked(void);
-    std::vector<std::string> getDisplayModes() const;
+    void attach(App::DocumentObject *pcObject) override;
+    bool doubleClicked() override;
+    std::vector<std::string> getDisplayModes() const override;
 
     //creates the widget used in the task dalogs, either for the function itself or for
     //the filter using it
-    virtual FunctionWidget* createControlWidget() {return NULL;}
+    virtual FunctionWidget* createControlWidget() {return nullptr;}
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual void onChanged(const App::Property* prop);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    void onChanged(const App::Property* prop) override;
 
     void setAutoScale(bool value) {m_autoscale = value;}
     bool autoScale()              {return m_autoscale;}
 
     bool isDragging() {return m_isDragging;}
+    SbBox3f getBoundingsOfView() const;
+    bool findScaleFactor(double& scale) const;
 
     virtual SoTransformManip*   setupManipulator();
     virtual void                draggerUpdate(SoDragger*) {}
     SoTransformManip*           getManipulator() {return m_manip;}
     SoSeparator*                getGeometryNode() {return m_geometrySeperator;}
     SoScale*                    getScaleNode() {return m_scale;}
-    SoTransform*                getTransformNode() {return m_transform;}
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -139,82 +149,173 @@ private:
     SoSeparator*        m_geometrySeperator;
     SoTransformManip*   m_manip;
     SoScale*            m_scale;
-    SoTransform*        m_transform;
     bool                m_autoscale, m_isDragging, m_autoRecompute;
+};
+
+// ***************************************************************************
+class FemGuiExport BoxWidget : public FunctionWidget
+{
+    Q_OBJECT
+public:
+    BoxWidget();
+    ~BoxWidget() override;
+
+    void applyPythonCode() override;
+    void onChange(const App::Property& p) override;
+    void setViewProvider(ViewProviderFemPostFunction* view) override;
+
+private Q_SLOTS:
+    void centerChanged(double);
+    void lengthChanged(double);
+    void widthChanged(double);
+    void heightChanged(double);
+
+private:
+    std::unique_ptr<Ui_BoxWidget> ui;
+};
+
+class FemGuiExport ViewProviderFemPostBoxFunction : public ViewProviderFemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostBoxFunction);
+
+public:
+    ViewProviderFemPostBoxFunction();
+    ~ViewProviderFemPostBoxFunction() override;
+
+    SoTransformManip* setupManipulator() override;
+    FunctionWidget* createControlWidget() override;
+
+protected:
+    void draggerUpdate(SoDragger* mat) override;
+    void updateData(const App::Property*) override;
 };
 
 
 // ***************************************************************************
-class FemGuiExport PlaneWidget : public FunctionWidget {
+class FemGuiExport CylinderWidget : public FunctionWidget
+{
+    Q_OBJECT
+public:
+    CylinderWidget();
+    ~CylinderWidget() override;
 
+    void applyPythonCode() override;
+    void onChange(const App::Property& p) override;
+    void setViewProvider(ViewProviderFemPostFunction* view) override;
+
+private Q_SLOTS:
+    void centerChanged(double);
+    void axisChanged(double);
+    void radiusChanged(double);
+
+private:
+    std::unique_ptr<Ui_CylinderWidget> ui;
+};
+
+class FemGuiExport ViewProviderFemPostCylinderFunction : public ViewProviderFemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostCylinderFunction);
+
+public:
+    ViewProviderFemPostCylinderFunction();
+    ~ViewProviderFemPostCylinderFunction() override;
+
+    SoTransformManip* setupManipulator() override;
+    FunctionWidget* createControlWidget() override;
+
+protected:
+    void draggerUpdate(SoDragger* mat) override;
+    void updateData(const App::Property*) override;
+};
+
+
+// ***************************************************************************
+class FemGuiExport PlaneWidget : public FunctionWidget
+{
     Q_OBJECT
 public:
     PlaneWidget();
-    virtual ~PlaneWidget();
+    ~PlaneWidget() override;
 
-    virtual void applyPythonCode();
-    virtual void onChange(const App::Property& p);
-    virtual void setViewProvider(ViewProviderFemPostFunction* view);
+    void applyPythonCode() override;
+    void onChange(const App::Property& p) override;
+    void setViewProvider(ViewProviderFemPostFunction* view) override;
 
 private Q_SLOTS:
     void originChanged(double);
     void normalChanged(double);
 
 private:
-    Ui_PlaneWidget* ui;
+    std::unique_ptr<Ui_PlaneWidget> ui;
 };
 
-class FemGuiExport ViewProviderFemPostPlaneFunction : public ViewProviderFemPostFunction {
-
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostPlaneFunction);
+class FemGuiExport ViewProviderFemPostPlaneFunction : public ViewProviderFemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostPlaneFunction);
 
 public:
     ViewProviderFemPostPlaneFunction();
-    virtual ~ViewProviderFemPostPlaneFunction();
+    ~ViewProviderFemPostPlaneFunction() override;
 
-    virtual FunctionWidget* createControlWidget();
+    App::PropertyFloatConstraint Scale;
+
+    SoTransformManip* setupManipulator() override;
+    FunctionWidget* createControlWidget() override;
 
 protected:
-    virtual void draggerUpdate(SoDragger* mat);
-    virtual void updateData(const App::Property*);
+    void draggerUpdate(SoDragger* mat) override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property*) override;
+
+private:
+    bool m_detectscale;
 };
 
 
 // ***************************************************************************
-class FemGuiExport SphereWidget : public FunctionWidget {
-
+class FemGuiExport SphereWidget : public FunctionWidget
+{
     Q_OBJECT
 public:
     SphereWidget();
-    virtual ~SphereWidget();
+    ~SphereWidget() override;
 
-    virtual void applyPythonCode();
-    virtual void onChange(const App::Property& p);
-    virtual void setViewProvider(ViewProviderFemPostFunction* view);
+    void applyPythonCode() override;
+    void onChange(const App::Property& p) override;
+    void setViewProvider(ViewProviderFemPostFunction* view) override;
 
 private Q_SLOTS:
     void centerChanged(double);
     void radiusChanged(double);
 
 private:
-    Ui_SphereWidget* ui;
+    std::unique_ptr<Ui_SphereWidget> ui;
 };
 
-class FemGuiExport ViewProviderFemPostSphereFunction : public ViewProviderFemPostFunction {
-
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostSphereFunction);
+class FemGuiExport ViewProviderFemPostSphereFunction : public ViewProviderFemPostFunction
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostSphereFunction);
 
 public:
     ViewProviderFemPostSphereFunction();
-    virtual ~ViewProviderFemPostSphereFunction();
+    ~ViewProviderFemPostSphereFunction() override;
 
-    virtual SoTransformManip* setupManipulator();
-    virtual FunctionWidget* createControlWidget();
+    SoTransformManip* setupManipulator() override;
+    FunctionWidget* createControlWidget() override;
 
 protected:
-    virtual void draggerUpdate(SoDragger* mat);
-    virtual void updateData(const App::Property*);
+    void draggerUpdate(SoDragger* mat) override;
+    void updateData(const App::Property*) override;
 };
+
+namespace ShapeNodes
+{
+    SoGroup* postBox();
+    SoGroup* postCylinder();
+    SoGroup* postPlane();
+    SoGroup* postSphere();
+
+} //namespace ShapeNodes
 
 } //namespace FemGui
 

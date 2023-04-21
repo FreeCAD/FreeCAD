@@ -20,28 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
-# include <qapplication.h>
-# include <qregexp.h>
+# include <boost/core/ignore_unused.hpp>
+# include <QApplication>
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
-#include <iostream>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
+# include <QPrinter>
+# include <QPrinterInfo>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
-#include "Command.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -116,7 +122,7 @@ void MDIView::deleteSelf()
     // detach from document
     if (_pcDocument)
         onClose();
-    _pcDocument = 0;
+    _pcDocument = nullptr;
 }
 
 PyObject* MDIView::getPyObject()
@@ -143,16 +149,19 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         // Try to separate document name and view number if there is one
         QString cap = windowTitle();
         // Either with dirty flag ...
-        QRegExp rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
-        int pos = rx.lastIndexIn(cap);
-        if (pos == -1) {
+        QRegularExpression rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
+        QRegularExpressionMatch match;
+        //int pos =
+        boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
+        if (!match.hasMatch()) {
             // ... or not
             rx.setPattern(QLatin1String("(\\s\\:\\s\\d+)$"));
-            pos = rx.lastIndexIn(cap);
+            //pos =
+            boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         }
-        if (pos != -1) {
+        if (match.hasMatch()) {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap += rx.cap();
+            cap += match.captured();
             setWindowTitle(cap);
         }
         else {
@@ -181,8 +190,11 @@ bool MDIView::onHasMsg(const char* pMsg) const
     return false;
 }
 
-bool MDIView::canClose(void)
+bool MDIView::canClose()
 {
+    if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc))
+        return true;
+
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
         this->setFocus(); // raises the view to front
         return (getGuiDocument()->canClose(true,true));
@@ -228,17 +240,99 @@ void MDIView::print(QPrinter* printer)
 
 void MDIView::print()
 {
-    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    printer.setFullPage(true);
+    QPrintDialog dlg(&printer, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        print(&printer);
+    }
 }
 
 void MDIView::printPdf()
 {
-    std::cerr << "Printing PDF not implemented for " << this->metaObject()->className() << std::endl;
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    if (!filename.isEmpty()) {
+        QPrinter printer(QPrinter::ScreenResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+        print(&printer);
+    }
 }
 
 void MDIView::printPreview()
 {
-    std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    QPrintPreviewDialog dlg(&printer, this);
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&MDIView::print));
+    dlg.exec();
+}
+
+void MDIView::savePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    QString printerName = printer->printerName();
+    if (printerName.isEmpty()) {
+        // no printer defined
+        return;
+    }
+
+    hGrp = hGrp->GetGroup(printerName.toUtf8());
+
+    hGrp->SetInt("DefaultPageSize", printer->pageLayout().pageSize().id());
+    hGrp->SetInt("DefaultPageOrientation", static_cast<int>(printer->pageLayout().orientation()));
+    hGrp->SetInt("DefaultColorMode", static_cast<int>(printer->colorMode()));
+}
+
+void MDIView::restorePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    QString printerName = printer->printerName();
+    if (printerName.isEmpty()) {
+        // no printer defined
+        return;
+    }
+
+    hGrp = hGrp->GetGroup(printerName.toUtf8());
+
+    QPrinterInfo info = QPrinterInfo::defaultPrinter();
+    int initialDefaultPageSize = info.isNull() ? QPageSize::A4 : info.defaultPageSize().id();
+    int defaultPageSize = hGrp->GetInt("DefaultPageSize", initialDefaultPageSize);
+    int defaultPageOrientation = hGrp->GetInt("DefaultPageOrientation", QPageLayout::Portrait);
+    int defaultColorMode = hGrp->GetInt("DefaultColorMode", QPrinter::ColorMode::Color);
+
+    printer->setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(defaultPageSize)));
+    printer->setPageOrientation(static_cast<QPageLayout::Orientation>(defaultPageOrientation));
+    printer->setColorMode(static_cast<QPrinter::ColorMode>(defaultColorMode));
+}
+
+QStringList MDIView::undoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecUndos = doc->getUndoVector();
+        for (const auto & vecUndo : vecUndos) {
+            actions << QCoreApplication::translate("Command", vecUndo.c_str());
+        }
+    }
+
+    return actions;
+}
+
+QStringList MDIView::redoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecRedos = doc->getRedoVector();
+        for (const auto & vecRedo : vecRedos) {
+            actions << QCoreApplication::translate("Command", vecRedo.c_str());
+        }
+    }
+
+    return actions;
 }
 
 QSize MDIView::minimumSizeHint () const
@@ -304,7 +398,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
+                    setParent(nullptr, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                                  Qt::WindowMinMaxButtonsHint);
                     if (this->wstate & Qt::WindowMaximized)
                         showMaximized();
@@ -334,7 +428,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window);
+                    setParent(nullptr, Qt::Window);
                     showFullScreen();
                 }
                 else if (this->currentMode == TopLevel) {

@@ -12,8 +12,6 @@ SET(Draft_SRCS_base
     DraftGui.py
     DraftVecUtils.py
     DraftGeomUtils.py
-    DraftLayer.py
-    DraftFillet.py
     WorkingPlane.py
     TestDraft.py
     TestDraftGui.py
@@ -62,6 +60,7 @@ SET(Draft_tests
     drafttests/test_dwg.py
     drafttests/test_oca.py
     drafttests/test_airfoildat.py
+    drafttests/test_draftgeomutils.py
     drafttests/draft_test_objects.py
     drafttests/README.md
 )
@@ -116,7 +115,6 @@ SET(Draft_make_functions
     draftmake/make_clone.py
     draftmake/make_copy.py
     draftmake/make_dimension.py
-    draftmake/make_drawingview.py
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
@@ -136,6 +134,7 @@ SET(Draft_make_functions
     draftmake/make_text.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
+    draftmake/make_hatch.py
     draftmake/README.md
 )
 
@@ -148,7 +147,6 @@ SET(Draft_objects
     draftobjects/bspline.py
     draftobjects/circle.py
     draftobjects/clone.py
-    draftobjects/drawingview.py
     draftobjects/ellipse.py
     draftobjects/facebinder.py
     draftobjects/draft_annotation.py
@@ -168,6 +166,7 @@ SET(Draft_objects
     draftobjects/text.py
     draftobjects/wire.py
     draftobjects/wpproxy.py
+    draftobjects/hatch.py
     draftobjects/README.md
 )
 
@@ -193,6 +192,8 @@ SET(Draft_view_providers
     draftviewproviders/view_text.py
     draftviewproviders/view_wire.py
     draftviewproviders/view_wpproxy.py
+    draftviewproviders/view_hatch.py
+    draftviewproviders/view_shapestring.py
     draftviewproviders/README.md
 )
 
@@ -212,6 +213,7 @@ SET(Creator_tools
     draftguitools/gui_points.py
     draftguitools/gui_facebinders.py
     draftguitools/gui_labels.py
+    draftguitools/gui_hatch.py
 )
 
 SET(Modifier_tools
@@ -227,7 +229,6 @@ SET(Modifier_tools
     draftguitools/gui_downgrade.py
     draftguitools/gui_trimex.py
     draftguitools/gui_scale.py
-    draftguitools/gui_drawing.py
     draftguitools/gui_wire2spline.py
     draftguitools/gui_shape2dview.py
     draftguitools/gui_draft2sketch.py
@@ -260,7 +261,6 @@ SET(Draft_GUI_tools
     draftguitools/gui_edit_part_objects.py
     draftguitools/gui_edit_sketcher_objects.py
     draftguitools/gui_edit.py
-    draftguitools/gui_lineops.py
     draftguitools/gui_togglemodes.py
     draftguitools/gui_groups.py
     draftguitools/gui_grid.py

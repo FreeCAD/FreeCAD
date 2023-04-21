@@ -21,24 +21,19 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-
-#include <Python.h>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+#include <App/Application.h>
 
 #include <Base/Console.h>
-#include "PovTools.h"
+#include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
+#include <Base/Stream.h>
+#include <Mod/Part/App/TopoShapePy.h>
+
 #include "LuxTools.h"
 // automatically generated.....
 #include "FreeCADpov.h"
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <App/Application.h>
 
 using namespace std;
 
@@ -70,20 +65,18 @@ public:
         initialize("This module is the Raytracing module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object writeProjectFile(const Py::Tuple& args)
     {
-        char *fromPython;
-        if (! PyArg_ParseTuple(args.ptr(), "(s)", &fromPython))
+        const char *fromPython = "FreeCAD.pov";
+        if (! PyArg_ParseTuple(args.ptr(), "|(s)", &fromPython))
             throw Py::Exception();
 
-        std::ofstream fout;
-        if (fromPython)
-            fout.open(fromPython);
-        else
-          fout.open("FreeCAD.pov");
+        Base::ofstream fout;
+        Base::FileInfo fi(fromPython);
+        fout.open(fi);
 
         fout << FreeCAD ;
         fout.close();
@@ -222,7 +215,7 @@ private:
         if (! PyArg_ParseTuple(args.ptr(), "ss",&FileName,&DestDir))
             throw Py::Exception();
 
-        std::string resName = App::GetApplication().getHomePath(); 
+        std::string resName = App::Application::getHomePath();
         resName += "Mod"; 
         resName += PATHSEP ;
         resName += "Raytracing"; 
@@ -244,7 +237,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Raytracing

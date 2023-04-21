@@ -23,17 +23,12 @@
 #ifndef PARTGUI_SOBREPEDGESET_H
 #define PARTGUI_SOBREPEDGESET_H
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <Gui/SoFCSelectionContext.h>
+#include <Mod/Part/PartGlobal.h>
+
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -42,7 +37,7 @@ class SoTextureCoordinateBundle;
 namespace PartGui {
 
 class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
-    typedef SoIndexedLineSet inherited;
+    using inherited = SoIndexedLineSet;
 
     SO_NODE_HEADER(SoBrepEdgeSet);
 
@@ -51,21 +46,21 @@ public:
     SoBrepEdgeSet();
 
 protected:
-    virtual ~SoBrepEdgeSet() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void doAction(SoAction* action); 
-    virtual SoDetail * createLineSegmentDetail(
+    ~SoBrepEdgeSet() override {}
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void doAction(SoAction* action) override;
+    SoDetail * createLineSegmentDetail(
         SoRayPickAction *action,
         const SoPrimitiveVertex *v1,
         const SoPrimitiveVertex *v2,
-        SoPickedPoint *pp);
+        SoPickedPoint *pp) override;
 
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
     struct SelContext;
-    typedef std::shared_ptr<SelContext> SelContextPtr;
+    using SelContextPtr = std::shared_ptr<SelContext>;
 
     void renderShape(const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices, int num_vertexindices);

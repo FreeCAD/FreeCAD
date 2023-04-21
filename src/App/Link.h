@@ -24,20 +24,14 @@
 #define APP_LINK_H
 
 #include <unordered_set>
-#include <boost_signals2.hpp>
-#include <boost/preprocessor/facilities/expand.hpp>
-#include <boost/preprocessor/cat.hpp>
-#include <boost/preprocessor/seq/for_each.hpp>
-#include <boost/preprocessor/seq/elem.hpp>
-#include <boost/preprocessor/seq/cat.hpp>
-#include <boost/preprocessor/tuple/elem.hpp>
-#include <boost/preprocessor/tuple/enum.hpp>
+#include <Base/Parameter.h>
+#include <Base/Bitmask.h>
 #include "DocumentObject.h"
-#include "FeaturePython.h"
-#include "PropertyLinks.h"
 #include "DocumentObjectExtension.h"
 #include "FeaturePython.h"
 #include "GroupExtension.h"
+#include "PropertyLinks.h"
+
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -57,13 +51,14 @@ namespace App
 class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
-    typedef App::DocumentObjectExtension inherited;
+    using inherited = App::DocumentObjectExtension;
 
 public:
     LinkBaseExtension();
-    virtual ~LinkBaseExtension();
+    ~LinkBaseExtension() override;
 
     PropertyBool _LinkTouched;
+    PropertyInteger _LinkOwner;
     PropertyLinkList _ChildCache; // cache for plain group expansion
 
     enum {
@@ -94,6 +89,28 @@ public:
 #define LINK_PARAM_TRANSFORM(...) \
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
+
+#define LINK_PARAM_CLAIM_CHILD(...) \
+    (LinkClaimChild, bool, App::PropertyBool, false, \
+      "Claim the linked object as a child", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE(...) \
+    (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
+      "Disabled: disable copy on change\n"\
+      "Enabled: enable copy linked object on change of any of its properties marked as CopyOnChange\n"\
+      "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"\
+      "       the link will try to sync any change of the original linked object back to the copy.",\
+      ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...) \
+    (LinkCopyOnChangeSource, App::DocumentObject*, App::PropertyLink, 0, "The copy on change source object", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_GROUP(...) \
+    (LinkCopyOnChangeGroup, App::DocumentObject*, App::PropertyLink, 0, \
+     "Linked to a internal group object for holding on change copies", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...) \
+    (LinkCopyOnChangeTouched, bool, App::PropertyBool, 0, "Indicating the copy on change source object has been changed", ##__VA_ARGS__)
 
 #define LINK_PARAM_SCALE(...) \
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
@@ -149,6 +166,7 @@ public:
     LINK_PARAM(PLACEMENT)\
     LINK_PARAM(LINK_PLACEMENT)\
     LINK_PARAM(OBJECT)\
+    LINK_PARAM(CLAIM_CHILD)\
     LINK_PARAM(TRANSFORM)\
     LINK_PARAM(SCALE)\
     LINK_PARAM(SCALE_VECTOR)\
@@ -161,6 +179,10 @@ public:
     LINK_PARAM(MODE)\
     LINK_PARAM(LINK_EXECUTE)\
     LINK_PARAM(COLORED_ELEMENTS)\
+    LINK_PARAM(COPY_ON_CHANGE)\
+    LINK_PARAM(COPY_ON_CHANGE_SOURCE)\
+    LINK_PARAM(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM(COPY_ON_CHANGE_TOUCHED)\
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -184,7 +206,7 @@ public:
             : index(index), name(name), type(type), doc(doc)
         {}
 
-        PropInfo() : index(0), name(0), doc(0) {}
+        PropInfo() : index(0), name(nullptr), doc(nullptr) {}
     };
 
 #define LINK_PROP_INFO(_1,_var,_param) \
@@ -195,8 +217,15 @@ public:
 
     virtual const std::vector<PropInfo> &getPropertyInfo() const;
 
-    typedef std::map<std::string, PropInfo> PropInfoMap;
+    using PropInfoMap = std::map<std::string, PropInfo>;
     virtual const PropInfoMap &getPropertyInfoMap() const;
+
+    enum LinkCopyOnChangeType {
+        CopyOnChangeDisabled = 0,
+        CopyOnChangeEnabled = 1,
+        CopyOnChangeOwned = 2,
+        CopyOnChangeTracking = 3
+    };
 
 #define LINK_PROP_GET(_1,_2,_param) \
     LINK_PTYPE(_param) BOOST_PP_SEQ_CAT((get)(LINK_PNAME(_param))(Value)) () const {\
@@ -241,7 +270,7 @@ public:
 
     const char *getSubName() const {
         parseSubName();
-        return mySubName.size()?mySubName.c_str():0;
+        return !mySubName.empty()?mySubName.c_str():nullptr;
     }
 
     const std::vector<std::string> &getSubElements() const {
@@ -250,41 +279,41 @@ public:
     }
 
     bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-            PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
+            PyObject **pyObj=nullptr, Base::Matrix4D *mat=nullptr, bool transform=false, int depth=0) const override;
 
     bool extensionGetSubObjects(std::vector<std::string>&ret, int reason) const override;
 
     bool extensionGetLinkedObject(DocumentObject *&ret,
             bool recurse, Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
-    virtual short extensionMustExecute(void) override;
-    virtual void extensionOnChanged(const Property* p) override;
-    virtual void onExtendedUnsetupObject () override;
-    virtual void onExtendedDocumentRestored() override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
+    short extensionMustExecute() override;
+    void extensionOnChanged(const Property* p) override;
+    void onExtendedUnsetupObject () override;
+    void onExtendedDocumentRestored() override;
 
-    virtual int extensionSetElementVisible(const char *, bool) override;
-    virtual int extensionIsElementVisible(const char *) override;
-    virtual bool extensionHasChildElement() const override;
+    int extensionSetElementVisible(const char *, bool) override;
+    int extensionIsElementVisible(const char *) override;
+    bool extensionHasChildElement() const override;
 
-    virtual PyObject* getExtensionPyObject(void) override;
+    PyObject* getExtensionPyObject() override;
 
-    virtual Property *extensionGetPropertyByName(const char* name) const override;
+    Property *extensionGetPropertyByName(const char* name) const override;
 
-    static int getArrayIndex(const char *subname, const char **psubname=0);
-    int getElementIndex(const char *subname, const char **psubname=0) const;
+    static int getArrayIndex(const char *subname, const char **psubname=nullptr);
+    int getElementIndex(const char *subname, const char **psubname=nullptr) const;
     void elementNameFromIndex(int idx, std::ostream &ss) const;
 
     DocumentObject *getContainer();
     const DocumentObject *getContainer() const;
 
-    void setLink(int index, DocumentObject *obj, const char *subname=0,
+    void setLink(int index, DocumentObject *obj, const char *subname=nullptr,
         const std::vector<std::string> &subs = std::vector<std::string>());
 
     DocumentObject *getTrueLinkedObject(bool recurse,
-            Base::Matrix4D *mat=0,int depth=0, bool noElement=false) const;
+            Base::Matrix4D *mat=nullptr,int depth=0, bool noElement=false) const;
 
-    typedef std::map<const Property*,std::pair<LinkBaseExtension*,int> > LinkPropMap;
+    using LinkPropMap = std::map<const Property*,std::pair<LinkBaseExtension*,int> >;
 
     bool hasPlacement() const {
         return getLinkPlacementProperty() || getPlacementProperty();
@@ -292,13 +321,53 @@ public:
 
     void cacheChildLabel(int enable=-1) const;
 
+    static bool setupCopyOnChange(App::DocumentObject *obj, App::DocumentObject *linked,
+            std::vector<boost::signals2::scoped_connection> *copyOnChangeConns, bool checkExisting);
+
+    static bool isCopyOnChangeProperty(App::DocumentObject *obj, const Property &prop);
+
+    void syncCopyOnChange();
+
+    /** Options used in setOnChangeCopyObject()
+     * Multiple options can be combined by bitwise or operator
+     */
+    enum class OnChangeCopyOptions {
+        /// No options set
+        None = 0,
+        /// If set, then exclude the input from object list to copy on change, or else, include the input object.
+        Exclude = 1,
+        /// If set , then apply the setting to all links to the input object, or else, apply only to this link.
+        ApplyAll = 2,
+    };
+
+    /** Include or exclude object from list of objects to copy on change
+     * @param obj: input object
+     * @param options: control options. @sa OnChangeCopyOptions.
+     */
+    void setOnChangeCopyObject(App::DocumentObject *obj, OnChangeCopyOptions options);
+
+    std::vector<App::DocumentObject *> getOnChangeCopyObjects(
+            std::vector<App::DocumentObject *> *excludes = nullptr,
+            App::DocumentObject *src = nullptr);
+
+    bool isLinkedToConfigurableObject() const;
+
+    void monitorOnChangeCopyObjects(const std::vector<App::DocumentObject*> &objs);
+
+    /// Check if the linked object is a copy on change
+    bool isLinkMutated() const;
+
 protected:
     void _handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
+    void checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop);
+    void setupCopyOnChange(App::DocumentObject *parent, bool checkSource = false);
+    App::DocumentObject *makeCopyOnChange();
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
+    void detachElements();
     void checkGeoElementMap(const App::DocumentObject *obj,
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
@@ -313,30 +382,36 @@ protected:
     std::unordered_map<const App::DocumentObject*,
         boost::signals2::scoped_connection> plainGroupConns;
 
-    long myOwner;
+    long prevLinkedObjectID = 0;
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;
-
     bool hasOldSubElement;
 
+    std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
+    std::vector<boost::signals2::scoped_connection> copyOnChangeSrcConns;
+    bool hasCopyOnChange;
+
     mutable bool checkingProperty = false;
+    bool pauseCopyOnChange = false;
+
+    boost::signals2::scoped_connection connCopyOnChangeSource;
 };
 
 ///////////////////////////////////////////////////////////////////////////
 
-typedef ExtensionPythonT<LinkBaseExtension> LinkBaseExtensionPython;
+using LinkBaseExtensionPython = ExtensionPythonT<LinkBaseExtension>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkExtension : public LinkBaseExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
-    typedef LinkBaseExtension inherited;
+    using inherited = LinkBaseExtension;
 
 public:
     LinkExtension();
-    virtual ~LinkExtension();
+    ~LinkExtension() override;
 
     /** \name Helpers for defining extended parameter
      *
@@ -436,18 +511,19 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////
 
-typedef ExtensionPythonT<LinkExtension> LinkExtensionPython;
+using LinkExtensionPython = ExtensionPythonT<LinkExtension>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport Link : public App::DocumentObject, public App::LinkExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::Link);
-    typedef App::DocumentObject inherited;
+    using inherited = App::DocumentObject;
 public:
 
 #define LINK_PARAMS_LINK \
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
+    LINK_PARAM_EXT(CLAIM_CHILD)\
     LINK_PARAM_EXT(TRANSFORM)\
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
@@ -455,12 +531,16 @@ public:
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
     LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
-    Link(void);
+    Link();
 
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "Gui::ViewProviderLink";
     }
 
@@ -478,13 +558,13 @@ public:
     bool canLinkProperties() const override;
 };
 
-typedef App::FeaturePythonT<Link> LinkPython;
+using LinkPython = App::FeaturePythonT<Link>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkElement : public App::DocumentObject, public App::LinkBaseExtension {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkElement);
-    typedef App::DocumentObject inherited;
+    using inherited = App::DocumentObject;
 public:
 
 #define LINK_PARAMS_ELEMENT \
@@ -494,12 +574,16 @@ public:
     LINK_PARAM_EXT(TRANSFORM) \
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
 
     LinkElement();
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "Gui::ViewProviderLink";
     }
 
@@ -517,13 +601,13 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<LinkElement> LinkElementPython;
+using LinkElementPython = App::FeaturePythonT<LinkElement>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkGroup : public App::DocumentObject, public App::LinkBaseExtension {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkGroup);
-    typedef App::DocumentObject inherited;
+    using inherited = App::DocumentObject;
 public:
 
 #define LINK_PARAMS_GROUP \
@@ -538,7 +622,7 @@ public:
 
     LinkGroup();
 
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "Gui::ViewProviderLink";
     }
 
@@ -548,9 +632,68 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
+using LinkGroupPython = App::FeaturePythonT<LinkGroup>;
 
 } //namespace App
+
+ENABLE_BITMASK_OPERATORS(App::Link::OnChangeCopyOptions)
+
+/*[[[cog
+import LinkParams
+LinkParams.declare()
+]]]*/
+
+namespace App {
+/** Convenient class to obtain App::Link related parameters
+
+ * The parameters are under group "User parameter:BaseApp/Preferences/Link"
+ *
+ * This class is auto generated by LinkParams.py. Modify that file
+ * instead of this one, if you want to add any parameter. You need
+ * to install Cog Python package for code generation:
+ * @code
+ *     pip install cogapp
+ * @endcode
+ *
+ * Once modified, you can regenerate the header and the source file,
+ * @code
+ *     python3 -m cogapp -r Link.h Link.cpp
+ * @endcode
+ *
+ * You can add a new parameter by adding lines in LinkParams.py. Available
+ * parameter types are 'Int, UInt, String, Bool, Float'. For example, to add
+ * a new Int type parameter,
+ * @code
+ *     ParamInt(parameter_name, default_value, documentation, on_change=False)
+ * @endcode
+ *
+ * If there is special handling on parameter change, pass in on_change=True.
+ * And you need to provide a function implementation in Link.cpp with
+ * the following signature.
+ * @code
+ *     void LinkParams:on<parameter_name>Changed()
+ * @endcode
+ */
+class AppExport LinkParams {
+public:
+    static ParameterGrp::handle getHandle();
+
+    //@{
+    /// Accessor for parameter CopyOnChangeApplyToAll
+    ///
+    /// Stores the last user choice of whether to apply CopyOnChange setup to all link
+    /// that links to the same configurable object
+    static const bool & getCopyOnChangeApplyToAll();
+    static const bool & defaultCopyOnChangeApplyToAll();
+    static void removeCopyOnChangeApplyToAll();
+    static void setCopyOnChangeApplyToAll(const bool &v);
+    static const char *docCopyOnChangeApplyToAll();
+    //@}
+
+    // Auto generated code. See class document of LinkParams.
+};
+} // namespace App
+//[[[end]]]
 
 
 #if defined(__clang__)

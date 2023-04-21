@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_ShapePy"
+      PythonName="Part.ShapeFix.Shape"
+      Twin="ShapeFix_Shape"
+      TwinPointer="ShapeFix_Shape"
+      Include="ShapeFix_Shape.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Class for fixing operations on shapes</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Iterates on sub- shape and performs fixes</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+        <UserDocu>Returns resulting shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSolidTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing solids</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixShellTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing shells</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixFaceTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing faces</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixWireTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing wires</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixEdgeTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="FixSolidMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of ShapeFix_Solid</UserDocu>
+      </Documentation>
+      <Parameter Name="FixSolidMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixFreeShellMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of ShapeFix_Shell</UserDocu>
+      </Documentation>
+      <Parameter Name="FixFreeShellMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixFreeFaceMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of ShapeFix_Face</UserDocu>
+      </Documentation>
+      <Parameter Name="FixFreeFaceMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixFreeWireMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of ShapeFix_Wire</UserDocu>
+      </Documentation>
+      <Parameter Name="FixFreeWireMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSameParameterMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying ShapeFix::SameParameter after all fixes</UserDocu>
+      </Documentation>
+      <Parameter Name="FixSameParameterMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixVertexPositionMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying ShapeFix::FixVertexPosition before all fixes</UserDocu>
+      </Documentation>
+      <Parameter Name="FixVertexPositionMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixVertexTolMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for fixing tolerances of vertices on whole shape</UserDocu>
+      </Documentation>
+      <Parameter Name="FixVertexTolMode" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

@@ -22,22 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
+# include <cassert>
+
 #include <QPainter>
+#include <QRectF>
 #include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include <qmath.h>
-#include <QRectF>
 #include "QGCustomBorder.h"
+
 
 using namespace TechDrawGui;
 
@@ -51,12 +44,7 @@ QGCustomBorder::QGCustomBorder()
 
 void QGCustomBorder::centerAt(QPointF centerPos)
 {
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = centerPos.x() - width/2.;
-    double newY = centerPos.y() - height/2.;
-    setPos(newX,newY);
+    centerAt(centerPos.x(), centerPos.y());
 }
 
 void QGCustomBorder::centerAt(double cX, double cY)
@@ -66,7 +54,7 @@ void QGCustomBorder::centerAt(double cX, double cY)
     double height = box.height();
     double newX = cX - width/2.;
     double newY = cY - height/2.;
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 

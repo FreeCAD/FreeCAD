@@ -33,7 +33,6 @@
 
 #include <Gui/Application.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "TaskHelixParameters.h"
 #include "ViewProviderHelix.h"
@@ -53,9 +52,7 @@ ViewProviderHelix::~ViewProviderHelix()
 
 void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit helix"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit helix"));
     PartDesignGui::ViewProviderAddSub::setupContextMenu(menu, receiver, member);
 }
 
@@ -96,7 +93,7 @@ void ViewProviderHelix::unsetEdit(int ModNum)
 std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
-    if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(sketch);
 
     return temp;
@@ -106,7 +103,7 @@ bool ViewProviderHelix::onDelete(const std::vector<std::string> &s) {
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
 
     // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
+    Sketcher::SketchObject *pcSketch = nullptr;
     if (feature->Profile.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
 

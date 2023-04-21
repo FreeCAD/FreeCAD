@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shsi Seger <shaise at gmail>                       *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,16 +22,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost/regex.hpp>
-#endif
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include <Base/Console.h>
-
 #include "PathSim.h"
+
 
 using namespace Base;
 using namespace PathSimulator;
@@ -46,9 +38,9 @@ PathSim::PathSim()
 
 PathSim::~PathSim()
 {
-	if (m_stock != nullptr)
+	if (m_stock)
 	    delete m_stock;
-	if (m_tool != nullptr)
+	if (m_tool)
 		delete m_tool;
 }
 
@@ -68,7 +60,7 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	Point3D fromPos(*pos);
 	Point3D toPos(*pos);
 	toPos.UpdateCmd(*cmd);
-	if (m_tool != NULL)
+	if (m_tool)
 	{
 		if (cmd->Name == "G0" || cmd->Name == "G1")
 		{

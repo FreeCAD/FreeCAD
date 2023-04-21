@@ -37,15 +37,15 @@ if App.GuiUp:
     from draftviewproviders.view_point import ViewProviderPoint
 
 
-def make_point(X=0, Y=0, Z=0, color=None, name = "Point", point_size= 5):
-    """ makePoint(x,y,z ,[color(r,g,b),point_size]) or
-        makePoint(Vector,color(r,g,b),point_size]) -
+def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
+    """ make_point(x, y, z, [color(r, g, b), point_size]) or
+        make_point(Vector, color(r, g, b), point_size])
 
     Creates a Draft Point in the current document.
 
     Parameters
     ----------
-    X : 
+    X :
         float -> X coordinate of the point
         Base.Vector -> Ignore Y and Z coordinates and create the point
             from the vector.
@@ -59,9 +59,9 @@ def make_point(X=0, Y=0, Z=0, color=None, name = "Point", point_size= 5):
     color : (R, G, B)
         Point color as RGB
         example to create a colored point:
-        make_point(0,0,0,(1,0,0)) # color = red
+        make_point(0, 0, 0, (1, 0, 0)) # color = red
         example to change the color, make sure values are floats:
-        p1.ViewObject.PointColor =(0.0,0.0,1.0)
+        p1.ViewObject.PointColor = (0.0, 0.0, 1.0)
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
@@ -75,19 +75,15 @@ def make_point(X=0, Y=0, Z=0, color=None, name = "Point", point_size= 5):
         X = X.x
 
     Point(obj, X, Y, Z)
-
-    # TODO: Check if this is a repetition:
-    obj.X = X
-    obj.Y = Y
-    obj.Z = Z
+    obj.Placement.Base = App.Vector(X, Y, Z)
 
     if App.GuiUp:
         ViewProviderPoint(obj.ViewObject)
-        if hasattr(Gui,"draftToolBar") and (not color):
-            color = Gui.draftToolBar.getDefaultColor('line')
-        obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
+        if hasattr(Gui,"draftToolBar") and color is None:
+            color = Gui.draftToolBar.getDefaultColor("line")
+        if color is not None:
+            obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
         obj.ViewObject.PointSize = point_size
-        obj.ViewObject.Visibility = True
         gui_utils.select(obj)
 
     return obj

@@ -23,7 +23,8 @@ using std::string ;
     the same path only the one in the first added collection will
     be accessible.
 */
-class CollectionCollection : public FileCollection {
+class BaseExport CollectionCollection: public FileCollection
+{
 public:
   /** \anchor collcoll_inst_anchor
       This static method provides a singleton instance of a CollectionCollection.
@@ -45,7 +46,7 @@ public:
   /** \anchor collcoll_addcoll_anchor
       Adds a collection.
       @param collection The collection to add.
-      @return true if the collection was added succesfully and
+      @return true if the collection was added successfully and
       the added collection is valid.
    */
   bool addCollection( const FileCollection &collection ) ;
@@ -57,7 +58,7 @@ public:
       not added false is returned and the caller remains responsible for the
       collection pointed to by collection.
       @param collection A pointer to the collection to add.
-      @return true if the collection was added succesfully and
+      @return true if the collection was added successfully and
       the added collection is valid.
    */
   bool addCollection( FileCollection *collection ) ;

@@ -20,29 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp.hxx>
-# include <gp_Lin2d.hxx>
-# include <Geom2d_Line.hxx>
 # include <GCE2d_MakeLine.hxx>
-# include <Precision.hxx>
+# include <Geom2d_Line.hxx>
+# include <gp_Lin2d.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Line2dPy.h>
-#include <Mod/Part/App/Geom2d/Line2dPy.cpp>
+#include "Geom2d/Line2dPy.h"
+#include "Geom2d/Line2dPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string Line2dPy::representation(void) const
+std::string Line2dPy::representation() const
 {
     return "<Line2d object>";
 }
@@ -104,7 +101,7 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -121,18 +118,12 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Object Line2dPy::getLocation(void) const
+Py::Object Line2dPy::getLocation() const
 {
     Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     gp_Pnt2d pnt = this_curve->Location();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dPy::setLocation(Py::Object arg)
@@ -175,18 +166,12 @@ void Line2dPy::setLocation(Py::Object arg)
     }
 }
 
-Py::Object Line2dPy::getDirection(void) const
+Py::Object Line2dPy::getDirection() const
 {
     Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     gp_Dir2d dir = this_curve->Direction();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(dir.X()));
-    arg.setItem(1, Py::Float(dir.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(dir.X(), dir.Y());
 }
 
 void Line2dPy::setDirection(Py::Object arg)
@@ -231,10 +216,10 @@ void Line2dPy::setDirection(Py::Object arg)
 
 PyObject *Line2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Line2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

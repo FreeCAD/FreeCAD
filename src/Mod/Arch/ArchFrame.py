@@ -19,10 +19,13 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -152,9 +155,9 @@ class _Frame(ArchComponent.Component):
         else:
             if not obj.Profile:
                 return
-            if not obj.Profile.isDerivedFrom("Part::Part2DObject"):
-                return
             if not obj.Profile.Shape:
+                return
+            if obj.Profile.Shape.findPlane() is None:
                 return
             if not obj.Profile.Shape.Wires:
                 return
@@ -162,7 +165,9 @@ class _Frame(ArchComponent.Component):
                 for w in obj.Profile.Shape.Wires:
                     if not w.isClosed():
                         return
-            import DraftGeomUtils, Part, math
+            import math
+            import DraftGeomUtils
+            import Part
             baseprofile = obj.Profile.Shape.copy()
             if hasattr(obj,"ProfilePlacement"):
                 if not obj.ProfilePlacement.isNull():
@@ -177,7 +182,6 @@ class _Frame(ArchComponent.Component):
                     baseprofile = Part.makeCompound(f)
             shapes = []
             normal = DraftGeomUtils.getNormal(obj.Base.Shape)
-            #for wire in obj.Base.Shape.Wires:
             edges = obj.Base.Shape.Edges
             if hasattr(obj,"Edges"):
                 if obj.Edges == "Vertical edges":
@@ -199,39 +203,44 @@ class _Frame(ArchComponent.Component):
                     z = edges[0].CenterOfMass.z
                     edges = [e for e in edges if abs(e.CenterOfMass.z-z) < 0.00001]
             for e in edges:
-                #e = wire.Edges[0]
                 bvec = DraftGeomUtils.vec(e)
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
-                #basepoint = profile.Placement.Base
-                if hasattr(obj,"BasePoint"):
+                rot = None # New rotation.
+                # Supplying FreeCAD.Rotation() with two parallel vectors and
+                # a null vector may seem strange, but the function is perfectly
+                # able to handle this. Its algorithm will use default axes in
+                # such cases.
+                if obj.Align:
+                    if normal is None:
+                        rot = FreeCAD.Rotation(FreeCAD.Vector(), bvec, bvec, "ZYX")
+                    else:
+                        rot = FreeCAD.Rotation(FreeCAD.Vector(), normal, bvec, "ZYX")
+                    profile.Placement.Rotation = rot
+                if hasattr(obj, "BasePoint"):
                     edges = Part.__sortEdges__(profile.Edges)
-                    basepointliste = [profile.CenterOfMass]
+                    basepointliste = [profile.Placement.Base]
                     for edge in edges:
                         basepointliste.append(DraftGeomUtils.findMidpoint(edge))
                         basepointliste.append(edge.Vertexes[-1].Point)
                     try:
                         basepoint = basepointliste[obj.BasePoint]
                     except IndexError:
-                        FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.")+"\n")
+                        FreeCAD.Console.PrintMessage(translate("Arch", "Crossing point not found in profile.")+"\n")
                         basepoint = basepointliste[0]
-                else :
-                    basepoint = profile.CenterOfMass
-                profile.translate(bpoint.sub(basepoint))
-                if obj.Align:
-                    axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-                    angle = bvec.getAngle(axis)
-                    if round(angle,Draft.precision()) != 0:
-                        if round(angle,Draft.precision()) != round(math.pi,Draft.precision()):
-                            rotaxis = axis.cross(bvec)
-                            profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(rotaxis), math.degrees(angle))
+                else:
+                    basepoint = profile.Placement.Base
+                delta = bpoint.sub(basepoint) # Translation vector.
+                if obj.Offset and (not DraftVecUtils.isNull(obj.Offset)):
+                    if rot is None:
+                        delta = delta + obj.Offset
+                    else:
+                        delta = delta + rot.multVec(obj.Offset)
+                profile.translate(delta)
                 if obj.Rotation:
-                    profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(FreeCAD.Vector(bvec).normalize()), obj.Rotation)
-                #profile = wire.makePipeShell([profile],True,False,2) TODO buggy
+                    profile.rotate(bpoint, bvec, obj.Rotation)
+                # profile = wire.makePipeShell([profile], True, False, 2) TODO buggy
                 profile = profile.extrude(bvec)
-                if obj.Offset:
-                    if not DraftVecUtils.isNull(obj.Offset):
-                        profile.translate(obj.Offset)
                 shapes.append(profile)
             if shapes:
                 if hasattr(obj,"Fuse"):

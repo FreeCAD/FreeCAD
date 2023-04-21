@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_Failure.hxx>
@@ -30,9 +29,9 @@
 #include "GeomPlate/BuildPlateSurfacePy.cpp"
 #include "GeomPlate/CurveConstraintPy.h"
 #include "GeomPlate/PointConstraintPy.h"
-#include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
 #include "Geometry2d.h"
+#include "GeometrySurfacePy.h"
+
 
 using namespace Part;
 
@@ -104,7 +103,7 @@ int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
     try {
         std::unique_ptr<GeomPlate_BuildPlateSurface> ptr(new GeomPlate_BuildPlateSurface
                                                          (degree, nbPtsOnCur, nbIter, tol2d, tol3d, tolAng, tolCurv,
-                                                          PyObject_IsTrue(anisotropy) ? Standard_True : Standard_False));
+                                                          Base::asBoolean(anisotropy)));
 
         if (surf) {
             GeomSurface* surface = static_cast<GeometrySurfacePy*>(surf)->getGeomSurfacePtr();
@@ -496,7 +495,7 @@ PyObject* BuildPlateSurfacePy::G2Error(PyObject *args)
 
 PyObject *BuildPlateSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int BuildPlateSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

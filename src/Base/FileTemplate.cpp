@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "FileTemplate.h"
 
 
@@ -41,10 +37,10 @@ using namespace Base;
  * A more elaborate description of the constructor.
  */
 ClassTemplate::ClassTemplate()
-  : enumPtr(0)
+  : enumPtr(nullptr)
   , enumVar(TVal1)
   , publicVar(0)
-  , handler(0)
+  , handler(nullptr)
 {
 }
 
@@ -52,9 +48,7 @@ ClassTemplate::ClassTemplate()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-ClassTemplate::~ClassTemplate()
-{
-}
+ClassTemplate::~ClassTemplate() = default;
 
 
 //**************************************************************************

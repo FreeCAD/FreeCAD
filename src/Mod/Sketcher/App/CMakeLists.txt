@@ -65,6 +65,8 @@ SET(Features_SRCS
     SketchAnalysis.h
     SketchAnalysis.cpp
     Analyse.h
+    PythonConverter.cpp
+    PythonConverter.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -73,10 +75,14 @@ SET(Datatypes_SRCS
     Constraint.h
     Sketch.cpp
     Sketch.h
+    GeoList.h
+    GeoList.cpp
     GeometryFacade.cpp
     GeometryFacade.h
     ExternalGeometryFacade.cpp
     ExternalGeometryFacade.h
+    GeoEnum.cpp
+    GeoEnum.h
 )
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 

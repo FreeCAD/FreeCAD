@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepCheck_Analyzer.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepBndLib.hxx>
 # include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
 # include <IntTools_FClass2d.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis.hxx>
@@ -47,7 +46,6 @@
 #endif
 
 #include "FaceMakerCheese.h"
-
 
 
 using namespace Part;

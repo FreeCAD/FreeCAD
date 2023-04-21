@@ -39,4 +39,5 @@ class ViewProviderFillet(ViewProviderWire):
     def __init__(self, vobj):
         super(ViewProviderFillet, self).__init__(vobj)
 
+
 ## @}

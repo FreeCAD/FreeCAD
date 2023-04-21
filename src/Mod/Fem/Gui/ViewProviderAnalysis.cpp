@@ -20,40 +20,72 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <boost_bind_bind.hpp>
 # include <QAction>
+# include <QApplication>
 # include <QMenu>
+# include <QMessageBox>
+# include <QTextStream>
+# include <Inventor/nodes/SoSeparator.h>
+#endif
+
+#include <App/Document.h>
+#include <App/MaterialObject.h>
+#include <App/TextDocument.h>
+#include <Gui/ActionFunction.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/Workbench.h>
+#include <Gui/WorkbenchManager.h>
+#include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemConstraint.h>
+#include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemResultObject.h>
+#include <Mod/Fem/App/FemSetObject.h>
+#include <Mod/Fem/App/FemSolverObject.h>
+#ifdef FC_USE_VTK
+# include <Mod/Fem/App/FemPostObject.h>
 #endif
 
 #include "ViewProviderAnalysis.h"
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-#include <Gui/ActionFunction.h>
-
-#include <Mod/Fem/App/FemAnalysis.h>
-#include <Mod/Fem/App/FemSolverObject.h>
-#include <Mod/Fem/App/FemResultObject.h>
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemSetObject.h>
-#include <Mod/Fem/App/FemConstraint.h>
-#include <App/MaterialObject.h>
-
 #include "TaskDlgAnalysis.h"
-
-#ifdef FC_USE_VTK
-    #include <Mod/Fem/App/FemPostObject.h>
-#endif
 
 
 using namespace FemGui;
 
+ViewProviderFemHighlighter::ViewProviderFemHighlighter()
+{
+    annotate = new SoSeparator();
+    annotate->ref();
+}
+
+ViewProviderFemHighlighter::~ViewProviderFemHighlighter()
+{
+    annotate->unref();
+}
+
+void ViewProviderFemHighlighter::attach(ViewProviderFemAnalysis *view)
+{
+    SoGroup *root = view->getRoot();
+    root->addChild(annotate);
+}
+
+void ViewProviderFemHighlighter::highlightView(Gui::ViewProviderDocumentObject *view)
+{
+    annotate->removeAllChildren();
+
+    if (view) {
+        annotate->addChild(view->getRoot());
+    }
+}
+
+// ----------------------------------------------------------------------------
 
 /* TRANSLATOR FemGui::ViewProviderFemAnalysis */
 
@@ -67,31 +99,52 @@ ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 
 ViewProviderFemAnalysis::~ViewProviderFemAnalysis()
 {
+}
 
+void ViewProviderFemAnalysis::attach(App::DocumentObject *obj)
+{
+    Gui::ViewProviderDocumentObjectGroup::attach(obj);
+    extension.attach(this);
+    // activate analysis if currently active workbench is FEM
+    auto *workbench = Gui::WorkbenchManager::instance()->active();
+    if (workbench->name() == "FemWorkbench") {
+        doubleClicked();
+    }
+}
+
+void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject *view)
+{
+    extension.highlightView(view);
 }
 
 bool ViewProviderFemAnalysis::doubleClicked(void)
 {
     Gui::Command::assureWorkbench("FemWorkbench");
-    Gui::Command::addModule(Gui::Command::Gui,"FemGui");
-    Gui::Command::doCommand(Gui::Command::Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+    Gui::Command::addModule(Gui::Command::Gui, "FemGui");
+    Gui::Command::doCommand(Gui::Command::Gui,
+                            "FemGui.setActiveAnalysis(App.activeDocument().%s)",
+                            this->getObject()->getNameInDocument());
+    // After activation of the analysis the allowed FEM toolbar buttons should become active.
+    // To achieve this we must clear the object selection to trigger the selection observer.
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
+    // indicate the activated analysis by selecting it
+    // especially useful for files with 2 or more analyses but also
+    // necessary for the workflow with new files to add a solver as next object
+    std::vector<App::DocumentObject*> selVector {};
+    selVector.push_back(this->getObject());
+    auto *docName = this->getObject()->getDocument()->getName();
+    Gui::Selection().setSelection(docName, selVector);
     return true;
 }
 
-std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)const
+std::vector<App::DocumentObject *> ViewProviderFemAnalysis::claimChildren(void) const
 {
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
 }
 
-bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
-{
-    Q_UNUSED(obj)
-    return true;
-}
-
 std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
 {
-    return { "Analysis" };
+    return {"Analysis"};
 }
 
 void ViewProviderFemAnalysis::hide(void)
@@ -104,11 +157,11 @@ void ViewProviderFemAnalysis::show(void)
     Gui::ViewProviderDocumentObjectGroup::show();
 }
 
-void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const char* )
+void ViewProviderFemAnalysis::setupContextMenu(QMenu *menu, QObject *, const char *)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Activate analysis"));
-    func->trigger(act, boost::bind(&ViewProviderFemAnalysis::doubleClicked, this));
+    Gui::ActionFunction *func = new Gui::ActionFunction(menu);
+    QAction *act = menu->addAction(tr("Activate analysis"));
+    func->trigger(act, std::bind(&ViewProviderFemAnalysis::doubleClicked, this));
 }
 
 bool ViewProviderFemAnalysis::setEdit(int ModNum)
@@ -160,34 +213,12 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
-{
-    // get the support and Sketch
-
-    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
-    //Sketcher::SketchObject *pcSketch = 0;
-    //App::DocumentObject    *pcSupport = 0;
-    //if (pcPad->Sketch.getValue()){
-    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
-    //    pcSupport = pcSketch->Support.getValue();
-    //}
-
-    // if abort command deleted the object the support is visible again
-
-    //if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-    //    Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    //if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-    //    Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
-    return true;
-}
-
 bool ViewProviderFemAnalysis::canDragObjects() const
 {
     return true;
 }
 
-bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
+bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject *obj) const
 {
     if (!obj)
         return false;
@@ -205,6 +236,8 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
         return true;
     else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
         return true;
+    else if (obj->getTypeId().isDerivedFrom(App::TextDocument::getClassTypeId()))
+        return true;
 #ifdef FC_USE_VTK
     else if (obj->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId()))
         return true;
@@ -213,7 +246,7 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
         return false;
 }
 
-void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)
+void ViewProviderFemAnalysis::dragObject(App::DocumentObject *obj)
 {
     ViewProviderDocumentObjectGroup::dragObject(obj);
 }
@@ -223,23 +256,87 @@ bool ViewProviderFemAnalysis::canDropObjects() const
     return true;
 }
 
-bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject* obj) const
+bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject *obj) const
 {
     return canDragObject(obj);
 }
 
-void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
+void ViewProviderFemAnalysis::dropObject(App::DocumentObject *obj)
 {
     ViewProviderDocumentObjectGroup::dropObject(obj);
 }
 
+bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
+{
+    // warn the user if the object has unselected children
+    auto objs = claimChildren();
+    return checkSelectedChildren(objs, this->getDocument(), "analysis");
+}
+
+bool ViewProviderFemAnalysis::checkSelectedChildren(const std::vector<App::DocumentObject*> objs,
+                                                    Gui::Document* docGui, std::string objectName)
+{
+    // warn the user if the object has unselected children
+    if (!objs.empty()) {
+        // check if all children are in the selection
+        bool found = false;
+        auto selectionList = Gui::Selection().getSelectionEx(docGui->getDocument()->getName());
+        for (auto child : objs) {
+            found = false;
+            for (Gui::SelectionObject selection : selectionList) {
+                if (std::string(child->getNameInDocument())
+                    == std::string(selection.getFeatName())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                break;
+        }
+        if (found)// all children are selected too
+            return true;
+
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            ("The " + objectName + " is not empty, therefore the\nfollowing "
+             "referencing objects might be lost:").c_str());
+        bodyMessageStream << '\n';
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
+        // show and evaluate the dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes)
+            return true;
+        else
+            return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderFemAnalysis::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of objects from a FemAnalysis don't necessarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
+    return true;
+}
+
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemAnalysisPython, FemGui::ViewProviderFemAnalysis)
 /// @endcond
 
 // explicit template instantiation
 template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemAnalysis>;
-}
+} // namespace Gui

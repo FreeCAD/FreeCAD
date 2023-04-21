@@ -22,33 +22,34 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#include <gp_Pnt.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <GeomAPI_PointsToBSplineSurface.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <Precision.hxx>
-#include <Standard_Version.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <Geom_BSplineSurface.hxx>
+# include <GeomAPI_PointsToBSplineSurface.hxx>
+# include <gp_Pnt.hxx>
+# include <Precision.hxx>
+# include <Standard_Version.hxx>
+# include <TColgp_Array2OfPnt.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-#include "FeatureExtend.h"
 #include <Base/Tools.h>
-#include <Base/Exception.h>
+
+#include "FeatureExtend.h"
+
 
 using namespace Surface;
 
-const App::PropertyIntegerConstraint::Constraints SampleRange = {2,INT_MAX,1};
-const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0,10.0,0.01};
-const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5,10.0,0.01};
+const App::PropertyIntegerConstraint::Constraints SampleRange = {2, INT_MAX, 1};
+const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0, 10.0, 0.01};
+const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5, 10.0, 0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
 Extend::Extend() : lockOnChangeMutex(false)
 {
-    ADD_PROPERTY(Face,(0));
+    ADD_PROPERTY(Face,(nullptr));
     Face.setScope(App::LinkScope::Global);
     ADD_PROPERTY(Tolerance, (0.1));
     Tolerance.setConstraints(&ToleranceRange);
@@ -90,7 +91,7 @@ short Extend::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Extend::execute(void)
+App::DocumentObjectExecReturn *Extend::execute()
 {
     App::DocumentObject* part = Face.getValue();
     if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
@@ -143,11 +144,7 @@ App::DocumentObjectExecReturn *Extend::execute(void)
     approx.Init(approxPoints, ParType, DegMin, DegMax, Continuity, Tol3d);
 
     Handle(Geom_BSplineSurface) surface(approx.Surface());
-    BRepBuilderAPI_MakeFace mkFace(surface
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
+    BRepBuilderAPI_MakeFace mkFace(surface, Precision::Confusion());
 
     Shape.setValue(mkFace.Face());
 

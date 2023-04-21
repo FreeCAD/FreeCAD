@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>417</height>
+    <width>371</width>
+    <height>698</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
         <item row="1" column="0">
          <widget class="QCheckBox" name="cbEqualTolerance">
           <property name="toolTip">
-           <string>Reverses usual direction of dimension line terminators</string>
+           <string>Assign same value to over and under tolerance</string>
           </property>
           <property name="text">
            <string>Equal Tolerance</string>
@@ -135,7 +135,7 @@ by negative value of 'Over Tolerance'.</string>
          <widget class="QCheckBox" name="cbArbitrary">
           <property name="toolTip">
            <string>If checked the content of 'Format Spec' will
-be used instead if the dimension value</string>
+be used instead of the dimension value</string>
           </property>
           <property name="text">
            <string>Arbitrary Text</string>
@@ -166,15 +166,14 @@ be used instead if the dimension value</string>
         <item row="3" column="1">
          <widget class="QLineEdit" name="leFormatSpecifierUnderTolerance">
           <property name="toolTip">
-            <string>Specifies the undertolerance format in printf() style, or arbitrary text</string>
+           <string>Specifies the undertolerance format in printf() style, or arbitrary text</string>
           </property>
          </widget>
         </item>
         <item row="4" column="0">
          <widget class="QCheckBox" name="cbArbitraryTolerances">
           <property name="toolTip">
-           <string>If checked the content of 'Format Spec' will
-be used instead if the dimension value</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Arbitrary Tolerance Text</string>
@@ -298,6 +297,115 @@ be used instead if the dimension value</string>
             <string>ASME Referencing</string>
            </property>
           </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbLines">
+     <property name="title">
+      <string>Lines</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="rbOverride">
+          <property name="toolTip">
+           <string>Use override angles if checked. Use default angles if unchecked.</string>
+          </property>
+          <property name="text">
+           <string>Override angles</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Dimension line angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="dsbDimAngle">
+          <property name="toolTip">
+           <string>Angle of dimension line with drawing X axis (degrees)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <double>-360.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="pbDimUseDefault">
+          <property name="toolTip">
+           <string>Set dimension line angle to default (ortho view).</string>
+          </property>
+          <property name="text">
+           <string>Use default</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pbDimUseSelection">
+          <property name="toolTip">
+           <string>Set dimension line angle to match selected edge or vertices.</string>
+          </property>
+          <property name="text">
+           <string>Use selection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Extension line angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="dsbExtAngle">
+          <property name="toolTip">
+           <string>Angle of extension lines with drawing X axis (degrees)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <double>-360.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="pbExtUseDefault">
+          <property name="toolTip">
+           <string>Set extension line angle to default (ortho).</string>
+          </property>
+          <property name="text">
+           <string>Use default</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QPushButton" name="pbExtUseSelection">
+          <property name="toolTip">
+           <string>Set extension line angle to match selected edge or vertices.</string>
+          </property>
+          <property name="text">
+           <string>Use selection</string>
+          </property>
          </widget>
         </item>
        </layout>

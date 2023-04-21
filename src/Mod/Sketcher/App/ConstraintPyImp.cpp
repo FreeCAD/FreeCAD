@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include "Constraint.h"
+#include <Base/QuantityPy.h>
+
 #include "ConstraintPy.h"
 #include "ConstraintPy.cpp"
-#include <Base/QuantityPy.h>
+
 
 using namespace Sketcher;
 
@@ -49,12 +49,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
 
     char *ConstraintType;
-    int  FirstIndex = Constraint::GeoUndef;
-    int  FirstPos   = none;
-    int  SecondIndex= Constraint::GeoUndef;
-    int  SecondPos  = none;
-    int  ThirdIndex = Constraint::GeoUndef;
-    int  ThirdPos   = none;
+    int  FirstIndex = GeoEnum::GeoUndef;
+    int  FirstPos   = static_cast<int>(PointPos::none);
+    int  SecondIndex= GeoEnum::GeoUndef;
+    int  SecondPos  = static_cast<int>(PointPos::none);
+    int  ThirdIndex = GeoEnum::GeoUndef;
+    int  ThirdPos   = static_cast<int>(PointPos::none);
     double Value    = 0;
     int intArg1, intArg2, intArg3, intArg4, intArg5;
     // Note: In Python 2.x PyArg_ParseTuple prints a warning if a float is given but an integer is expected.
@@ -105,13 +105,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Equal;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
+            else if (strstr(ConstraintType,"InternalAlignment")) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
-                if(strstr(ConstraintType,"EllipseMajorDiameter") != NULL)
+                if(strstr(ConstraintType,"EllipseMajorDiameter"))
                     this->getConstraintPtr()->AlignmentType=EllipseMajorDiameter;
-                else if(strstr(ConstraintType,"EllipseMinorDiameter") != NULL)
+                else if(strstr(ConstraintType,"EllipseMinorDiameter"))
                     this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -198,14 +198,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = PointOnObject;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
+            else if (strstr(ConstraintType,"InternalAlignment")) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"EllipseFocus1") != NULL)
+                if(strstr(ConstraintType,"EllipseFocus1"))
                     this->getConstraintPtr()->AlignmentType=EllipseFocus1;
-                else if(strstr(ConstraintType,"EllipseFocus2") != NULL)
+                else if(strstr(ConstraintType,"EllipseFocus2"))
                     this->getConstraintPtr()->AlignmentType=EllipseFocus2;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -214,7 +214,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             if (valid) {
                 this->getConstraintPtr()->First    = FirstIndex;
-                this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
                 this->getConstraintPtr()->Second   = SecondIndex;
                 return 0;
             }
@@ -224,14 +224,6 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyNumber_Check(index_or_value)) { // can be float or int
             SecondIndex = any_index;
             Value = PyFloat_AsDouble(index_or_value);
-            //if (strcmp("Distance",ConstraintType) == 0) {
-            //    this->getConstraintPtr()->Type   = Distance;
-            //    this->getConstraintPtr()->First  = FirstIndex;
-            //    this->getConstraintPtr()->Second = SecondIndex;
-            //    this->getConstraintPtr()->Value  = Value;
-            //    return 0;
-            //}
-            //else
             if (strcmp("Angle",ConstraintType) == 0) {
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
                     Base::Quantity q = *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
@@ -244,12 +236,19 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
+            else if (strcmp("Distance",ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Distance;
+                this->getConstraintPtr()->First = FirstIndex;
+                this->getConstraintPtr()->Second = SecondIndex;
+                this->getConstraintPtr()->setValue(Value);
+                return 0;
+            }
             else if (strcmp("DistanceX",ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 this->getConstraintPtr()->Type = DistanceX;
                 this->getConstraintPtr()->First    = FirstIndex;
-                this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
@@ -258,7 +257,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 SecondIndex = -1;
                 this->getConstraintPtr()->Type = DistanceY;
                 this->getConstraintPtr()->First    = FirstIndex;
-                this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
@@ -295,40 +294,44 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Tangent;
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
-                this->getConstraintPtr()->FirstPos  = Sketcher::none;
+                this->getConstraintPtr()->FirstPos  = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Second    = intArg2;
-                this->getConstraintPtr()->SecondPos = Sketcher::none;
+                this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Third     = intArg3;
-                this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
+                this->getConstraintPtr()->ThirdPos  = static_cast<Sketcher::PointPos>(intArg4);
                 return 0;
             }
             else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Perpendicular;
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
-                this->getConstraintPtr()->FirstPos  = Sketcher::none;
+                this->getConstraintPtr()->FirstPos  = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Second    = intArg2;
-                this->getConstraintPtr()->SecondPos = Sketcher::none;
+                this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Third     = intArg3;
-                this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
+                this->getConstraintPtr()->ThirdPos  = static_cast<Sketcher::PointPos>(intArg4);
                 return 0;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != NULL) { // InteralAlignment with InternalElementIndex argument
+            else if (strstr(ConstraintType,"InternalAlignment")) { // InteralAlignment with InternalElementIndex argument
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"BSplineControlPoint") != NULL) {
+                if (strstr(ConstraintType,"BSplineControlPoint")) {
                     this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
-                else {
+                else if (strstr(ConstraintType,"BSplineKnotPoint")) {
+                    this->getConstraintPtr()->AlignmentType=BSplineKnotPoint;
+                }
+                else
+                {
                     this->getConstraintPtr()->AlignmentType=Undef;
                     valid = false;
                 }
 
                 if (valid) {
                     this->getConstraintPtr()->First     = intArg1;
-                    this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
+                    this->getConstraintPtr()->FirstPos  = static_cast<Sketcher::PointPos>(intArg2);
                     this->getConstraintPtr()->Second    = intArg3;
                     this->getConstraintPtr()->InternalAlignmentIndex = intArg4;
                     return 0;
@@ -337,9 +340,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             if (valid) {
                 this->getConstraintPtr()->First     = intArg1;
-                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
+                this->getConstraintPtr()->FirstPos  = static_cast<Sketcher::PointPos>(intArg2);
                 this->getConstraintPtr()->Second    = intArg3;
-                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) intArg4;
+                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
                 return 0;
             }
         }
@@ -349,7 +352,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             if (strcmp("Distance",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = Distance;
                 this->getConstraintPtr()->First    = intArg1;
-                this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) intArg2;
+                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
                 this->getConstraintPtr()->Second   = intArg3;
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
@@ -365,9 +368,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             if (strcmp("Symmetric",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = Symmetric;
                 this->getConstraintPtr()->First     = intArg1;
-                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
+                this->getConstraintPtr()->FirstPos  = static_cast<Sketcher::PointPos>(intArg2);
                 this->getConstraintPtr()->Second    = intArg3;
-                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) intArg4;
+                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
                 this->getConstraintPtr()->Third     = intArg5;
                 return 0;
             }
@@ -406,19 +409,19 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Angle;
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
-                this->getConstraintPtr()->FirstPos  = Sketcher::none;
+                this->getConstraintPtr()->FirstPos  = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Second    = intArg2; //let's goof up all the terminology =)
-                this->getConstraintPtr()->SecondPos = Sketcher::none;
+                this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Third     = intArg3;
-                this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
+                this->getConstraintPtr()->ThirdPos  = static_cast<Sketcher::PointPos>(intArg4);
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
             if (valid) {
                 this->getConstraintPtr()->First     = intArg1;
-                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
+                this->getConstraintPtr()->FirstPos  = static_cast<Sketcher::PointPos>(intArg2);
                 this->getConstraintPtr()->Second    = intArg3;
-                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) intArg4;
+                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
@@ -433,11 +436,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             if (strcmp("Symmetric",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = Symmetric;
                 this->getConstraintPtr()->First     = FirstIndex;
-                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->FirstPos  = static_cast<Sketcher::PointPos>(FirstPos);
                 this->getConstraintPtr()->Second    = SecondIndex;
-                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
+                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
                 this->getConstraintPtr()->Third     = ThirdIndex;
-                this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) ThirdPos;
+                this->getConstraintPtr()->ThirdPos  = static_cast<Sketcher::PointPos>(ThirdPos);
                 return 0;
             }
         }
@@ -446,11 +449,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             if (strcmp("SnellsLaw",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = SnellsLaw;
                 this->getConstraintPtr()->First     = FirstIndex;
-                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->FirstPos  = static_cast<Sketcher::PointPos>(FirstPos);
                 this->getConstraintPtr()->Second    = SecondIndex;
-                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
+                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
                 this->getConstraintPtr()->Third     = ThirdIndex;
-                this->getConstraintPtr()->ThirdPos  = none;
+                this->getConstraintPtr()->ThirdPos  = Sketcher::PointPos::none;
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
@@ -470,7 +473,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string ConstraintPy::representation(void) const
+std::string ConstraintPy::representation() const
 {
     std::stringstream result;
     result << "<Constraint " ;
@@ -481,26 +484,26 @@ std::string ConstraintPy::representation(void) const
         case Coincident         : result << "'Coincident'>";break;
         case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
-        case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
+        case Block              : result << "'Block' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
         case Diameter           : result << "'Diameter'>";break;
         case Weight             : result << "'Weight'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
-            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
                 result << "'Tangent'>";
             else
                 result << "'TangentViaPoint'>";
         break;
         case Perpendicular            :
-            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
                 result << "'Perpendicular'>";
             else
                 result << "'PerpendicularViaPoint'>";
         break;
         case Distance           : result << "'Distance'>";break;
         case Angle              :
-            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
                 result << "'Angle'>";
             else
                 result << "'AngleViaPoint'>";
@@ -524,7 +527,7 @@ std::string ConstraintPy::representation(void) const
     return result.str();
 }
 
-Py::String ConstraintPy::getType(void) const
+Py::String ConstraintPy::getType() const
 {
     switch(this->getConstraintPtr()->Type) {
         case None               : return Py::String("None");break;
@@ -551,7 +554,7 @@ Py::String ConstraintPy::getType(void) const
     }
 }
 
-Py::Long ConstraintPy::getFirst(void) const
+Py::Long ConstraintPy::getFirst() const
 {
     return Py::Long(this->getConstraintPtr()->First);
 }
@@ -561,7 +564,7 @@ void  ConstraintPy::setFirst(Py::Long arg)
     this->getConstraintPtr()->First = arg;
 }
 
-Py::Long ConstraintPy::getFirstPos(void) const
+Py::Long ConstraintPy::getFirstPos() const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos));
 }
@@ -570,8 +573,8 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 {
     int pos = arg;
 
-    if(pos>=Sketcher::none && pos<=Sketcher::mid) {
-        this->getConstraintPtr()->FirstPos = (Sketcher::PointPos)pos;
+    if(pos>=static_cast<int>(Sketcher::PointPos::none) && pos<=static_cast<int>(Sketcher::PointPos::mid)) {
+        this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(pos);
     }
     else {
         std::stringstream str;
@@ -581,7 +584,7 @@ void ConstraintPy::setFirstPos(Py::Long arg)
     }
 }
 
-Py::Long ConstraintPy::getSecond(void) const
+Py::Long ConstraintPy::getSecond() const
 {
     return Py::Long(this->getConstraintPtr()->Second);
 }
@@ -591,7 +594,7 @@ void  ConstraintPy::setSecond(Py::Long arg)
     this->getConstraintPtr()->Second = arg;
 }
 
-Py::Long ConstraintPy::getSecondPos(void) const
+Py::Long ConstraintPy::getSecondPos() const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos));
 }
@@ -600,8 +603,8 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 {
     int pos = arg;
 
-    if(pos>=Sketcher::none && pos<=Sketcher::mid) {
-        this->getConstraintPtr()->SecondPos = (Sketcher::PointPos)pos;
+    if(pos>=static_cast<int>(Sketcher::PointPos::none) && pos<=static_cast<int>(Sketcher::PointPos::mid)) {
+        this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(pos);
     }
     else {
         std::stringstream str;
@@ -611,7 +614,7 @@ void ConstraintPy::setSecondPos(Py::Long arg)
     }
 }
 
-Py::Long ConstraintPy::getThird(void) const
+Py::Long ConstraintPy::getThird() const
 {
     return Py::Long(this->getConstraintPtr()->Third);
 }
@@ -621,7 +624,7 @@ void  ConstraintPy::setThird(Py::Long arg)
     this->getConstraintPtr()->Third = arg;
 }
 
-Py::Long ConstraintPy::getThirdPos(void) const
+Py::Long ConstraintPy::getThirdPos() const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos));
 }
@@ -630,8 +633,8 @@ void ConstraintPy::setThirdPos(Py::Long arg)
 {
     int pos = arg;
 
-    if(pos>=Sketcher::none && pos<=Sketcher::mid) {
-        this->getConstraintPtr()->ThirdPos = (Sketcher::PointPos)pos;
+    if(pos>=static_cast<int>(Sketcher::PointPos::none) && pos<=static_cast<int>(Sketcher::PointPos::mid)) {
+        this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(pos);
     }
     else {
         std::stringstream str;
@@ -641,7 +644,7 @@ void ConstraintPy::setThirdPos(Py::Long arg)
     }
 }
 
-Py::String ConstraintPy::getName(void) const
+Py::String ConstraintPy::getName() const
 {
     return Py::String(this->getConstraintPtr()->Name);
 }
@@ -651,29 +654,29 @@ void  ConstraintPy::setName(Py::String arg)
     this->getConstraintPtr()->Name = arg;
 }
 
-Py::Float ConstraintPy::getValue(void) const
+Py::Float ConstraintPy::getValue() const
 {
     return Py::Float(this->getConstraintPtr()->getValue());
 }
 
-Py::Boolean ConstraintPy::getDriving(void) const
+Py::Boolean ConstraintPy::getDriving() const
 {
     return Py::Boolean(this->getConstraintPtr()->isDriving);
 }
 
-Py::Boolean ConstraintPy::getInVirtualSpace(void) const
+Py::Boolean ConstraintPy::getInVirtualSpace() const
 {
     return Py::Boolean(this->getConstraintPtr()->isInVirtualSpace);
 }
 
-Py::Boolean ConstraintPy::getIsActive(void) const
+Py::Boolean ConstraintPy::getIsActive() const
 {
     return Py::Boolean(this->getConstraintPtr()->isActive);
 }
 
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

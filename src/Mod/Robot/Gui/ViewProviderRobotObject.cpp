@@ -20,43 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <sstream>
+# include <QFile>
+
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoRotation.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoJackDragger.h>
-# include <Inventor/draggers/SoTrackballDragger.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/VRMLnodes/SoVRMLTransform.h>
-# include <QFile>
 #endif
 
-#include "ViewProviderRobotObject.h"
-
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
 #include <App/Document.h>
 #include <App/VRMLObject.h>
 #include <Gui/Application.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <sstream>
+#include <Mod/Robot/App/RobotObject.h>
+#include <Mod/Part/Gui/ViewProvider.h>
+
+#include "ViewProviderRobotObject.h"
+
+
 using namespace Gui;
 using namespace RobotGui;
 
 PROPERTY_SOURCE(RobotGui::ViewProviderRobotObject, Gui::ViewProviderGeometryObject)
 
 ViewProviderRobotObject::ViewProviderRobotObject()
-  : pcDragger(0),toolShape(0)
+  : pcDragger(nullptr),toolShape(nullptr)
 {
     ADD_PROPERTY(Manipulator,(0));
 
@@ -79,7 +72,7 @@ ViewProviderRobotObject::ViewProviderRobotObject()
     pcTcpRoot->ref();
 
 
-    Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
+    Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = nullptr;
 }
 
 ViewProviderRobotObject::~ViewProviderRobotObject()
@@ -92,7 +85,7 @@ ViewProviderRobotObject::~ViewProviderRobotObject()
 
 void ViewProviderRobotObject::setDragger()
 {
-    assert(pcDragger==0);
+    assert(!pcDragger);
     pcDragger = new SoJackDragger();
     pcDragger->addMotionCallback(sDraggerMotionCallback,this);
     pcTcpRoot->addChild(pcDragger);
@@ -112,7 +105,7 @@ void ViewProviderRobotObject::resetDragger()
 {
     assert(pcDragger);
     Gui::coinRemoveAllChildren(pcTcpRoot);
-    pcDragger = 0;
+    pcDragger = nullptr;
 }
 
 void ViewProviderRobotObject::attach(App::DocumentObject *pcObj)
@@ -146,12 +139,12 @@ void ViewProviderRobotObject::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderRobotObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRobotObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("VRML");
-    StrList.push_back("Simple");
-    StrList.push_back("Off");
+    StrList.emplace_back("VRML");
+    StrList.emplace_back("Simple");
+    StrList.emplace_back("Off");
     return StrList;
 }
 
@@ -190,7 +183,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
             pcRobotRoot->addChild(pcTcpRoot);
         }
 		// search for the connection points +++++++++++++++++++++++++++++++++++++++++++++++++
-		Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
+		Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = nullptr;
 		SoSearchAction searchAction;
 		SoPath * path;
 
@@ -329,7 +322,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
             toolShape = Gui::Application::Instance->getViewProvider(o);
             toolShape->setTransformation((robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
         }else
-            toolShape = 0;
+            toolShape = nullptr;
  	}
 
 }

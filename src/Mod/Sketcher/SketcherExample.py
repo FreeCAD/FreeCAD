@@ -15,7 +15,7 @@ if(App.activeDocument() is None):App.newDocument()
 f = App.activeDocument().addObject("Sketcher::SketchObject","Sketch")
 
 # add geometry to the sketch
-f.Geometry = [Line(Vector(0,0,0),Vector(2,20,0)),Line(Vector(0,0,0),Vector(20,2,0))]
+f.Geometry = [LineSegment(Vector(0,0,0),Vector(2,20,0)),LineSegment(Vector(0,0,0),Vector(20,2,0))]
 
 # add constraints to the sketch
 f.Constraints = [Constraint('Vertical',0),Constraint('Horizontal',1)]

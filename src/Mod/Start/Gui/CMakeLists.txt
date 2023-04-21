@@ -16,13 +16,7 @@ set(StartGui_UIC_SRCS
     DlgStartPreferences.ui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(Start_QRC_SRCS Resources/Start.qrc)
-    qt5_wrap_ui(StartGui_UIC_HDRS ${StartGui_UIC_SRCS})
-else()
-    qt4_add_resources(Start_QRC_SRCS Resources/Start.qrc)
-    qt4_wrap_ui(StartGui_UIC_HDRS ${StartGui_UIC_SRCS})
-endif()
+qt_add_resources(Start_QRC_SRCS Resources/Start.qrc)
 
 SET(StartGui_SRCS
     ${Start_QRC_SRCS}
@@ -41,6 +35,12 @@ SET(StartGui_SRCS
 SET(StartGuiIcon_SVG
     Resources/icons/StartWorkbench.svg
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG})
 target_link_libraries(StartGui ${StartGui_LIBS})

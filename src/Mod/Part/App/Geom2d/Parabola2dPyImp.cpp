@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom2d_Parabola.hxx>
@@ -28,15 +27,15 @@
 
 #include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.cpp>
+#include "Geom2d/Parabola2dPy.h"
+#include "Geom2d/Parabola2dPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Parabola2dPy::representation(void) const
+std::string Parabola2dPy::representation() const
 {
     return "<Parabola2d object>";
 }
@@ -60,32 +59,26 @@ int Parabola2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Float Parabola2dPy::getFocal(void) const
+Py::Float Parabola2dPy::getFocal() const
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
-    return Py::Float(curve->Focal()); 
+    return Py::Float(curve->Focal());
 }
 
 void Parabola2dPy::setFocal(Py::Float arg)
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
-    curve->SetFocal((double)arg); 
+    curve->SetFocal((double)arg);
 }
 
-Py::Object Parabola2dPy::getFocus(void) const
+Py::Object Parabola2dPy::getFocus() const
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
     gp_Pnt2d loc = curve->Focus();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
-Py::Float Parabola2dPy::getParameter(void) const
+Py::Float Parabola2dPy::getParameter() const
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
     return Py::Float(curve->Parameter());
@@ -93,10 +86,10 @@ Py::Float Parabola2dPy::getParameter(void) const
 
 PyObject *Parabola2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Parabola2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

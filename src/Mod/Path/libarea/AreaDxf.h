@@ -18,6 +18,6 @@ public:
 	AreaDxfRead(CArea* area, const char* filepath);
 
 	// AreaDxfRead's virtual functions
-	void OnReadLine(const double* s, const double* e);
-	void OnReadArc(const double* s, const double* e, const double* c, bool dir);
+	void OnReadLine(const double* s, const double* e, bool /*hidden*/) override;
+	void OnReadArc(const double* s, const double* e, const double* c, bool dir, bool /*hidden*/) override;
 };

@@ -24,6 +24,10 @@
 #define MESHGUI_PROPERTYEDITOR_MESH_H
 
 #include <Gui/propertyeditor/PropertyItem.h>
+#ifndef MESH_GLOBAL_H
+# include <Mod/Mesh/MeshGlobal.h>
+#endif
+
 
 namespace MeshGui {
 
@@ -34,27 +38,27 @@ namespace MeshGui {
 class MeshGuiExport PropertyMeshKernelItem : public Gui::PropertyEditor::PropertyItem
 {
     Q_OBJECT
-    Q_PROPERTY(int Points READ countPoints)
-    Q_PROPERTY(int Edges READ countEdges)
-    Q_PROPERTY(int Faces READ countFaces)
+    Q_PROPERTY(int Points READ countPoints CONSTANT)
+    Q_PROPERTY(int Edges READ countEdges CONSTANT)
+    Q_PROPERTY(int Faces READ countFaces CONSTANT)
     PROPERTYITEM_HEADER
 
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
+    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    void setEditorData(QWidget *editor, const QVariant& data) const override;
+    QVariant editorData(QWidget *editor) const override;
 
     int countPoints() const;
     int countEdges() const;
     int countFaces() const;
 
 protected:
-    virtual QVariant toolTip(const App::Property*) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
+    QVariant toolTip(const App::Property*) const override;
+    QVariant value(const App::Property*) const override;
+    void setValue(const QVariant&) override;
 
 protected:
     PropertyMeshKernelItem();
-    void initialize();
+    void initialize() override;
 
 private:
     Gui::PropertyEditor::PropertyIntegerItem* m_p;

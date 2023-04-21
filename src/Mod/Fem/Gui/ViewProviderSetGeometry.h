@@ -31,14 +31,14 @@ namespace FemGui
 
 class ViewProviderSetGeometry : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderSetGeometry);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderSetGeometry);
 
 public:
-    virtual bool doubleClicked(void);
+    bool doubleClicked() override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 } //namespace FemGui

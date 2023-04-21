@@ -20,22 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <cinttypes>
 # include <iomanip>
 # include <boost/algorithm/string.hpp>
-# include <boost/lexical_cast.hpp>
 #endif
 
-#include <Base/Vector3D.h>
-#include <Base/Rotation.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
 #include <Base/Exception.h>
+#include <Base/Reader.h>
+#include <Base/Rotation.h>
+#include <Base/Vector3D.h>
+#include <Base/Writer.h>
+
 #include "Command.h"
+
 
 using namespace Base;
 using namespace Path;
@@ -75,7 +74,7 @@ Placement Command::getPlacement (const Base::Vector3d pos) const
     return plac;
 }
 
-Vector3d Command::getCenter (void) const
+Vector3d Command::getCenter () const
 {
     static const std::string i = "I";
     static const std::string j = "J";
@@ -301,7 +300,7 @@ void Command::scaleBy(double factor)
 
 // Reimplemented from base class
 
-unsigned int Command::getMemSize (void) const
+unsigned int Command::getMemSize () const
 {
     return toGCode().size();
 }

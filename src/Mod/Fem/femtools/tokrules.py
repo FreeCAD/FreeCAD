@@ -36,7 +36,7 @@ tokens = (
     'EQUALS',
     'LPAREN',
     'RPAREN',
-    'COMMENT',
+    'POWER'
 )
 
 # Tokens
@@ -48,6 +48,7 @@ t_DIVIDE = r'/'
 t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_POWER = r'\^'
 t_NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
 
 
@@ -91,7 +92,8 @@ lex.lex()
 precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('right', 'UMINUS'),
+    ('left', 'POWER'),
+    ('right', 'UMINUS')
 )
 
 # dictionary of names (for storing variables)
@@ -112,11 +114,13 @@ def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
-                  | expression DIVIDE expression'''
+                  | expression DIVIDE expression
+                  | expression POWER expression'''
     if p[2] == '+'  : p[0] = p[1] + p[3]
     elif p[2] == '-': p[0] = p[1] - p[3]
     elif p[2] == '*': p[0] = p[1] * p[3]
     elif p[2] == '/': p[0] = p[1] / p[3]
+    elif p[2] == '^': p[0] = p[1] ** p[3]
 
 
 def p_expression_uminus(p):
@@ -153,4 +157,4 @@ def p_error(p):
 
 
 import ply.yacc as yacc
-yacc.yacc()
+yacc.yacc(debug=False, write_tables=False)

@@ -434,6 +434,7 @@ void TRational<N>::ConvertTo (float& rfValue) const
     TInteger<N> kQuo, kRem;
     bool bSuccess = TInteger<N>::GetDivMod(kAbsNumer,kAbsDenom,kQuo,kRem);
     assert(bSuccess);
+    static_cast<void>(bSuccess);
 
     unsigned int uiExponent = 0, uiMantissa = 0;
 
@@ -718,6 +719,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
     TInteger<N> kQuo, kRem;
     bool bSuccess = TInteger<N>::GetDivMod(kAbsNumer,kAbsDenom,kQuo,kRem);
     assert(bSuccess);
+    static_cast<void>(bSuccess);
 
     unsigned int uiExponent = 0, uiMantissaHi = 0, uiMantissaLo;
 
@@ -979,6 +981,7 @@ void TRational<N>::GetPositiveDouble (const TInteger<N>& rkDenom,
                 rkRem = kNRem;
             }
         }
+        static_cast<void>(bSuccess);
     }
 }
 //----------------------------------------------------------------------------

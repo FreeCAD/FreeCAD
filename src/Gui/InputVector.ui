@@ -26,31 +26,32 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="vectorZ">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>X:</string>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="vectorX">
         <property name="minimum">
          <double>-2147480000.000000000000000</double>
         </property>
         <property name="maximum">
          <double>2147480000.000000000000000</double>
         </property>
-        <property name="value">
-         <double>1.000000000000000</double>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Y:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="vectorY">
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="vectorX">
         <property name="minimum">
          <double>-2147480000.000000000000000</double>
         </property>
@@ -66,21 +67,20 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Y:</string>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="vectorZ">
+        <property name="minimum">
+         <double>-2147480000.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>2147480000.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>X:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">

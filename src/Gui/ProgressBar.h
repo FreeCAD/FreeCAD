@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PROGRESSBAR_H
 #define GUI_PROGRESSBAR_H
 
 #include <QProgressBar>
 #ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarProgress>
 #include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 #endif
 
-
 #include <Base/Sequencer.h>
+
 
 namespace Gui {
 
@@ -105,15 +104,15 @@ public:
     void resume() override;
     bool isBlocking() const override;
     /** Returns an instance of the progress bar. It creates one if needed. */
-    QProgressBar* getProgressBar(QWidget* parent=0);
+    QProgressBar* getProgressBar(QWidget* parent=nullptr);
 
-    virtual void checkAbort() override;
+    void checkAbort() override;
 
 protected:
     /** Construction */
     SequencerBar();
     /** Destruction */
-    ~SequencerBar();
+    ~SequencerBar() override;
 
     /** Puts text to the status bar */
     void setText (const char* pszTxt) override;
@@ -146,14 +145,14 @@ class ProgressBar : public QProgressBar
 
 public:
     /** Construction */
-    ProgressBar (SequencerBar* s, QWidget * parent=0);
+    ProgressBar (SequencerBar* s, QWidget * parent=nullptr);
     /** Destruction */
-    ~ProgressBar ();
+    ~ProgressBar () override;
 
     /** Handles all incoming events while the progress bar is running. All key and mouse
     * events are ignored to block user input.
     */
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
     /** Returns the time in milliseconds that must pass before the progress bar appears.
     */
     int minimumDuration() const;
@@ -169,11 +168,12 @@ public Q_SLOTS:
     */
     void setMinimumDuration (int ms);
 
+public:
     bool canAbort() const;
 
 protected:
-    void showEvent(QShowEvent*);
-    void hideEvent(QHideEvent*);
+    void showEvent(QShowEvent*) override;
+    void hideEvent(QHideEvent*) override;
 
 protected Q_SLOTS:
     /* Shows the progress bar if it is still hidden after the operation has been started

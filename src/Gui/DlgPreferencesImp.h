@@ -1,24 +1,26 @@
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+ // SPDX-License-Identifier: LGPL-2.1-or-later
+
+  /****************************************************************************
+   *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+   *   Copyright (c) 2023 FreeCAD Project Association                         *
+   *                                                                          *
+   *   This file is part of FreeCAD.                                          *
+   *                                                                          *
+   *   FreeCAD is free software: you can redistribute it and/or modify it     *
+   *   under the terms of the GNU Lesser General Public License as            *
+   *   published by the Free Software Foundation, either version 2.1 of the   *
+   *   License, or (at your option) any later version.                        *
+   *                                                                          *
+   *   FreeCAD is distributed in the hope that it will be useful, but         *
+   *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+   *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+   *   Lesser General Public License for more details.                        *
+   *                                                                          *
+   *   You should have received a copy of the GNU Lesser General Public       *
+   *   License along with FreeCAD. If not, see                                *
+   *   <https://www.gnu.org/licenses/>.                                       *
+   *                                                                          *
+   ***************************************************************************/
 
 
 #ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
@@ -26,6 +28,7 @@
 
 #include <QDialog>
 #include <memory>
+#include <FCGlobal.h>
 
 class QAbstractButton;
 class QListWidgetItem;
@@ -113,41 +116,55 @@ class GuiExport DlgPreferencesImp : public QDialog
 public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
+    static void setGroupData(const std::string& group, const std::string& icon, const QString& tip);
+    static void getGroupData(const std::string& group, std::string& icon, QString& tip);
+    static void reloadSettings();
 
-    DlgPreferencesImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgPreferencesImp();
+    explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgPreferencesImp() override;
 
-    void accept();
-    void activateGroupPage(const QString& group, int id);
+    void accept() override;
+    void reject() override;
+    void reload();
+    void activateGroupPage(const QString& group, int index);
+    void activeGroupPage(QString& group, int& index) const;
 
 protected:
-    void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
-    void resizeEvent(QResizeEvent*);
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_buttonBox_clicked(QAbstractButton*);
+    void onButtonBoxClicked(QAbstractButton*);
     void resizeWindow(int w, int h);
 
 private:
     /** @name for internal use only */
     //@{
     void setupPages();
+    void reloadPages();
     QTabWidget* createTabForGroup(const std::string& groupName);
     void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
     void restoreDefaults();
-    void reloadPages();
+    QString longestGroupName() const;
+    void restartIfRequired();
     //@}
 
 private:
-    typedef std::pair<std::string, std::list<std::string>> TGroupPages;
+    using TGroupPages = std::pair<std::string, std::list<std::string>>;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
+    struct Group {
+        std::string iconName;
+        QString tooltip;
+    };
+    static std::map<std::string, Group> _groupMap;
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
     bool canEmbedScrollArea;
+    bool restartRequired;
 
     static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
 

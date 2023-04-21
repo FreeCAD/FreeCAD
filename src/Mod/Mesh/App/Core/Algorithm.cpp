@@ -20,12 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 #endif
+
+#include <Base/Console.h>
+#include <Base/Sequencer.h>
 
 #include "Algorithm.h"
 #include "Approximation.h"
@@ -34,8 +36,6 @@
 #include "Grid.h"
 #include "Triangulation.h"
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
 
 using namespace MeshCore;
 using Base::BoundBox3f;
@@ -47,7 +47,8 @@ bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base:
 {
     Base::Vector3f cDirection = rcVertex - rcView;
     float fDistance = cDirection.Length();
-    Base::Vector3f cIntsct; unsigned long uInd;
+    Base::Vector3f cIntsct;
+    FacetIndex uInd;
 
     // search for the nearest facet to rcView in direction to rcVertex
     if (NearestFacetOnRay(rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd)) {
@@ -66,22 +67,30 @@ bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base:
 }
 
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes,
-                                       unsigned long &rulFacet) const
+                                       FacetIndex &rulFacet) const
+{
+    return NearestFacetOnRay(rclPt, rclDir, Mathf::PI, rclRes, rulFacet);
+}
+
+bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxAngle,
+                                       Base::Vector3f &rclRes, FacetIndex &rulFacet) const
 {
     Base::Vector3f clProj, clRes;
     bool bSol = false;
-    unsigned long ulInd = 0;
+    FacetIndex ulInd = 0;
 
-    // langsame Ausfuehrung ohne Grid
+    // slow execution with no grid
     MeshFacetIterator  clFIter(_rclMesh);
     for (clFIter.Init(); clFIter.More(); clFIter.Next()) {
-        if (clFIter->Foraminate( rclPt, rclDir, clRes ) == true) {
-            if (bSol == false) { // erste Loesung
+        if (clFIter->Foraminate(rclPt, rclDir, clRes, fMaxAngle)) {
+            if (!bSol) {
+                // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = clFIter.Position();
             }
-            else {  // liegt Punkt naeher
+            else {
+                // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = clFIter.Position();
@@ -99,16 +108,16 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
 }
 
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const MeshFacetGrid &rclGrid,
-                                       Base::Vector3f &rclRes, unsigned long &rulFacet) const
+                                       Base::Vector3f &rclRes, FacetIndex &rulFacet) const
 {
-    std::vector<unsigned long> aulFacets;
+    std::vector<FacetIndex> aulFacets;
     MeshGridIterator clGridIter(rclGrid);
 
-    if (clGridIter.InitOnRay(rclPt, rclDir, aulFacets) == true) {
-        if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet) == false) {
+    if (clGridIter.InitOnRay(rclPt, rclDir, aulFacets)) {
+        if (!RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet)) {
             aulFacets.clear();
-            while (clGridIter.NextOnRay(aulFacets) == true) {
-                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet) == true)
+            while (clGridIter.NextOnRay(aulFacets)) {
+                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet))
                     return true;
             }
         }
@@ -120,16 +129,16 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
 }
 
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxSearchArea,
-                                       const MeshFacetGrid &rclGrid, Base::Vector3f &rclRes, unsigned long &rulFacet) const
+                                       const MeshFacetGrid &rclGrid, Base::Vector3f &rclRes, FacetIndex &rulFacet) const
 {
-    std::vector<unsigned long> aulFacets;
+    std::vector<FacetIndex> aulFacets;
     MeshGridIterator  clGridIter(rclGrid);
 
-    if (clGridIter.InitOnRay(rclPt, rclDir, fMaxSearchArea, aulFacets) == true) {
-        if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f) == false) {
+    if (clGridIter.InitOnRay(rclPt, rclDir, fMaxSearchArea, aulFacets)) {
+        if (!RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f)) {
             aulFacets.clear();
-            while (clGridIter.NextOnRay(aulFacets) == true) {
-                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f) == true)
+            while (clGridIter.NextOnRay(aulFacets)) {
+                if (RayNearestField(rclPt, rclDir, aulFacets, rclRes, rulFacet, 1.75f))
                     return true;
             }
         }
@@ -140,22 +149,22 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     return false;
 }
 
-bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<unsigned long> &raulFacets,
-                                       Base::Vector3f &rclRes, unsigned long &rulFacet) const
+bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<FacetIndex> &raulFacets,
+                                       Base::Vector3f &rclRes, FacetIndex &rulFacet) const
 {
     Base::Vector3f  clProj, clRes;
     bool bSol = false;
-    unsigned long ulInd = 0;
+    FacetIndex ulInd = 0;
 
-    for (std::vector<unsigned long>::const_iterator pI = raulFacets.begin(); pI != raulFacets.end(); ++pI) {
+    for (std::vector<FacetIndex>::const_iterator pI = raulFacets.begin(); pI != raulFacets.end(); ++pI) {
         MeshGeomFacet rclSFacet = _rclMesh.GetFacet(*pI);
-        if (rclSFacet.Foraminate(rclPt, rclDir, clRes) == true) {
-            if (bSol == false) {// erste Loesung
+        if (rclSFacet.Foraminate(rclPt, rclDir, clRes)) {
+            if (!bSol) {// first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = *pI;
             }
-            else {  // liegt Punkt naeher
+            else {  // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = *pI;
@@ -172,21 +181,21 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     return bSol;
 }
 
-bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<unsigned long> &raulFacets,
-                                     Base::Vector3f &rclRes, unsigned long &rulFacet, float /*fMaxAngle*/) const
+bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<FacetIndex> &raulFacets,
+                                     Base::Vector3f &rclRes, FacetIndex &rulFacet, float /*fMaxAngle*/) const
 {
     Base::Vector3f  clProj, clRes;
     bool bSol = false;
-    unsigned long ulInd = 0;
+    FacetIndex ulInd = 0;
 
-    for (std::vector<unsigned long>::const_iterator pF = raulFacets.begin(); pF != raulFacets.end(); ++pF) {
-        if (_rclMesh.GetFacet(*pF).Foraminate(rclPt, rclDir, clRes/*, fMaxAngle*/) == true) {
-            if (bSol == false) { // erste Loesung
+    for (std::vector<FacetIndex>::const_iterator pF = raulFacets.begin(); pF != raulFacets.end(); ++pF) {
+        if (_rclMesh.GetFacet(*pF).Foraminate(rclPt, rclDir, clRes/*, fMaxAngle*/)) {
+            if (!bSol) { // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = *pF;
             }
-            else {  // liegt Punkt naeher
+            else {  // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = *pF;
@@ -203,18 +212,18 @@ bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Ve
     return bSol;
 }
 
-bool MeshAlgorithm::FirstFacetToVertex(const Base::Vector3f &rPt, float fMaxDistance, const MeshFacetGrid &rGrid, unsigned long &uIndex) const
+bool MeshAlgorithm::FirstFacetToVertex(const Base::Vector3f &rPt, float fMaxDistance, const MeshFacetGrid &rGrid, FacetIndex &uIndex) const
 {
     const float fEps = 0.001f;
 
     bool found = false;
-    std::vector<unsigned long> facets;
+    std::vector<FacetIndex> facets;
 
     // get the facets of the grid the point lies into
     rGrid.GetElements(rPt, facets);
 
     // Check all facets inside the grid if the point is part of it
-    for (std::vector<unsigned long>::iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (std::vector<FacetIndex>::iterator it = facets.begin(); it != facets.end(); ++it) {
         MeshGeomFacet cFacet = this->_rclMesh.GetFacet(*it);
         if (cFacet.IsPointOfFace(rPt, fMaxDistance)) {
             found = true;
@@ -289,154 +298,61 @@ Base::Vector3f MeshAlgorithm::GetGravityPoint() const
 
 void MeshAlgorithm::GetMeshBorders (std::list<std::vector<Base::Vector3f> > &rclBorders) const
 {
-    std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
-    unsigned long k = 0;
-    for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
+    std::vector<FacetIndex> aulAllFacets(_rclMesh.CountFacets());
+    FacetIndex k = 0;
+    for (std::vector<FacetIndex>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
         *pI = k++;
 
     GetFacetBorders(aulAllFacets, rclBorders);
 }
 
-void MeshAlgorithm::GetMeshBorders (std::list<std::vector<unsigned long> > &rclBorders) const
+void MeshAlgorithm::GetMeshBorders (std::list<std::vector<PointIndex> > &rclBorders) const
 {
-    std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
-    unsigned long k = 0;
-    for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
+    std::vector<FacetIndex> aulAllFacets(_rclMesh.CountFacets());
+    FacetIndex k = 0;
+    for (std::vector<FacetIndex>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
         *pI = k++;
 
     GetFacetBorders(aulAllFacets, rclBorders, true);
 }
 
-void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd, std::list<std::vector<Base::Vector3f> > &rclBorders) const
+void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd, std::list<std::vector<Base::Vector3f> > &rclBorders) const
 {
-#if 1
   const MeshPointArray &rclPAry = _rclMesh._aclPointArray;
-  std::list<std::vector<unsigned long> > aulBorders;
+  std::list<std::vector<PointIndex> > aulBorders;
 
   GetFacetBorders (raulInd, aulBorders, true);
-  for ( std::list<std::vector<unsigned long> >::iterator it = aulBorders.begin(); it != aulBorders.end(); ++it )
+  for ( std::list<std::vector<PointIndex> >::iterator it = aulBorders.begin(); it != aulBorders.end(); ++it )
   {
     std::vector<Base::Vector3f> boundary;
     boundary.reserve( it->size() );
 
-    for ( std::vector<unsigned long>::iterator jt = it->begin(); jt != it->end(); ++jt )
+    for ( std::vector<PointIndex>::iterator jt = it->begin(); jt != it->end(); ++jt )
       boundary.push_back(rclPAry[*jt]);
 
     rclBorders.push_back( boundary );
   }
-
-#else
-  const MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
-
-  // alle Facets markieren die in der Indizie-Liste vorkommen
-  ResetFacetFlag(MeshFacet::VISIT);
-  for (std::vector<unsigned long>::const_iterator pIter = raulInd.begin(); pIter != raulInd.end(); ++pIter)
-    rclFAry[*pIter].SetFlag(MeshFacet::VISIT);
-
-  std::list<std::pair<unsigned long, unsigned long> >  aclEdges;
-  // alle Randkanten suchen und ablegen (unsortiert)
-  for (std::vector<unsigned long>::const_iterator pIter2 = raulInd.begin(); pIter2 != raulInd.end(); ++pIter2)
-  {
-    const MeshFacet  &rclFacet = rclFAry[*pIter2];
-    for (int i = 0; i < 3; i++)
-    {
-      unsigned long ulNB = rclFacet._aulNeighbours[i];
-      if (ulNB != ULONG_MAX)
-      {
-        if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT) == true)
-          continue;
-      }
-
-      aclEdges.push_back(rclFacet.GetEdge(i));
-    }
-  }
-
-  if (aclEdges.size() == 0)
-    return; // no borders found (=> solid)
-
-  // Kanten aus der unsortieren Kantenliste suchen
-  const MeshPointArray &rclPAry = _rclMesh._aclPointArray;
-  unsigned long              ulFirst, ulLast;
-  std::list<Base::Vector3f>   clBorder;
-  ulFirst = aclEdges.begin()->first;
-  ulLast  = aclEdges.begin()->second;
-
-  aclEdges.erase(aclEdges.begin());
-  clBorder.push_back(rclPAry[ulFirst]);
-  clBorder.push_back(rclPAry[ulLast]);
-
-  while (aclEdges.size() > 0)
-  {
-    // naechste anliegende Kante suchen
-    std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
-    for (pEI = aclEdges.begin(); pEI != aclEdges.end(); ++pEI)
-    {
-      if (pEI->first == ulLast)
-      {
-        ulLast = pEI->second;
-        clBorder.push_back(rclPAry[ulLast]);
-        aclEdges.erase(pEI);
-        break;
-      }
-      else if (pEI->second == ulLast)
-      {
-        ulLast = pEI->first;
-        clBorder.push_back(rclPAry[ulLast]);
-        aclEdges.erase(pEI);
-        break;
-      }
-      else if (pEI->first == ulFirst)
-      {
-        ulFirst = pEI->second;
-        clBorder.push_front(rclPAry[ulFirst]);
-        aclEdges.erase(pEI);
-        break;
-      }
-      else if (pEI->second == ulFirst)
-      {
-        ulFirst = pEI->first;
-        clBorder.push_front(rclPAry[ulFirst]);
-        aclEdges.erase(pEI);
-        break;
-      }
-    }
-    if ((pEI == aclEdges.end()) || (ulLast == ulFirst))
-    {  // keine weitere Kante gefunden bzw. Polylinie geschlossen
-      rclBorders.push_back(std::vector<Base::Vector3f>(clBorder.begin(), clBorder.end()));
-      clBorder.clear();
-
-      if (aclEdges.size() > 0)
-      {  // neue Border anfangen
-        ulFirst = aclEdges.begin()->first;
-        ulLast  = aclEdges.begin()->second;
-        aclEdges.erase(aclEdges.begin());
-        clBorder.push_back(rclPAry[ulFirst]);
-        clBorder.push_back(rclPAry[ulLast]);
-      }
-    }
-  }
-#endif
 }
 
-void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd, 
-                                     std::list<std::vector<unsigned long> > &rclBorders,
+void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd,
+                                     std::list<std::vector<PointIndex> > &rclBorders,
                                      bool ignoreOrientation) const
 {
     const MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
 
     // mark all facets that are in the indices list
     ResetFacetFlag(MeshFacet::VISIT);
-    for (std::vector<unsigned long>::const_iterator it = raulInd.begin(); it != raulInd.end(); ++it)
+    for (std::vector<FacetIndex>::const_iterator it = raulInd.begin(); it != raulInd.end(); ++it)
         rclFAry[*it].SetFlag(MeshFacet::VISIT);
 
     // collect all boundary edges (unsorted)
-    std::list<std::pair<unsigned long, unsigned long> >  aclEdges;
-    for (std::vector<unsigned long>::const_iterator it = raulInd.begin(); it != raulInd.end(); ++it) {
+    std::list<std::pair<PointIndex, PointIndex> >  aclEdges;
+    for (std::vector<FacetIndex>::const_iterator it = raulInd.begin(); it != raulInd.end(); ++it) {
         const MeshFacet  &rclFacet = rclFAry[*it];
         for (unsigned short i = 0; i < 3; i++) {
-            unsigned long ulNB = rclFacet._aulNeighbours[i];
-            if (ulNB != ULONG_MAX) {
-                if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT) == true)
+            FacetIndex ulNB = rclFacet._aulNeighbours[i];
+            if (ulNB != FACET_INDEX_MAX) {
+                if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT))
                     continue;
             }
 
@@ -444,12 +360,12 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
         }
     }
 
-    if (aclEdges.size() == 0)
+    if (aclEdges.empty())
         return; // no borders found (=> solid)
 
     // search for edges in the unsorted list
-    unsigned long              ulFirst, ulLast;
-    std::list<unsigned long>   clBorder;
+    PointIndex ulFirst, ulLast;
+    std::list<PointIndex> clBorder;
     ulFirst = aclEdges.begin()->first;
     ulLast  = aclEdges.begin()->second;
 
@@ -457,9 +373,9 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
     clBorder.push_back(ulFirst);
     clBorder.push_back(ulLast);
 
-    while (aclEdges.size() > 0) {
+    while (!aclEdges.empty()) {
         // get adjacent edge
-        std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
+        std::list<std::pair<PointIndex, PointIndex> >::iterator pEI;
         for (pEI = aclEdges.begin(); pEI != aclEdges.end(); ++pEI) {
             if (pEI->first == ulLast) {
                 ulLast = pEI->second;
@@ -501,7 +417,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
             rclBorders.emplace_back(clBorder.begin(), clBorder.end());
             clBorder.clear();
 
-            if (aclEdges.size() > 0) {
+            if (!aclEdges.empty()) {
                 // start new boundary
                 ulFirst = aclEdges.begin()->first;
                 ulLast  = aclEdges.begin()->second;
@@ -513,60 +429,115 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
     }
 }
 
-void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>& rBorder) const
+void MeshAlgorithm::GetFacetBorder(FacetIndex uFacet, std::list<PointIndex>& rBorder) const
 {
     const MeshFacetArray &rFAry = _rclMesh._aclFacetArray;
-    std::list<std::pair<unsigned long, unsigned long> >  openEdges;
+    std::list<std::pair<PointIndex, PointIndex> >  openEdges;
     if (uFacet >= rFAry.size())
         return;
     // add the open edge to the beginning of the list
     MeshFacetArray::_TConstIterator face = rFAry.begin() + uFacet;
     for (unsigned short i = 0; i < 3; i++)
     {
-        if (face->_aulNeighbours[i] == ULONG_MAX)
+        if (face->_aulNeighbours[i] == FACET_INDEX_MAX)
             openEdges.push_back(face->GetEdge(i));
     }
 
     if (openEdges.empty())
         return; // facet is not a border facet
-    
+
     for (MeshFacetArray::_TConstIterator it = rFAry.begin(); it != rFAry.end(); ++it)
     {
         if (it == face)
             continue;
         for (unsigned short i = 0; i < 3; i++)
         {
-            if (it->_aulNeighbours[i] == ULONG_MAX)
+            if (it->_aulNeighbours[i] == FACET_INDEX_MAX)
                 openEdges.push_back(it->GetEdge(i));
         }
     }
 
+    SplitBoundaryFromOpenEdges(openEdges, rBorder);
+}
+
+void MeshAlgorithm::GetFacetsBorders(const std::vector<FacetIndex>& uFacets, std::list<std::vector<PointIndex> >& rBorders) const
+{
+    ResetFacetFlag(MeshFacet::TMP0);
+    SetFacetsFlag(uFacets, MeshFacet::TMP0);
+    ResetPointFlag(MeshPoint::TMP0);
+
+    const MeshFacetArray &rFAry = _rclMesh._aclFacetArray;
+    const MeshPointArray &rPAry = _rclMesh._aclPointArray;
+    std::list<std::pair<PointIndex, PointIndex> > openEdges;
+
+    // add the open edge to the beginning of the list
+    for (auto it : uFacets) {
+        const MeshFacet& face = rFAry[it];
+        for (int i = 0; i < 3; i++) {
+            if (face._aulNeighbours[i] == FACET_INDEX_MAX) {
+                std::pair<PointIndex, PointIndex> openEdge = face.GetEdge(i);
+                openEdges.push_back(openEdge);
+                // mark all points of open edges of the given facets
+                rPAry[openEdge.first].SetFlag(MeshPoint::TMP0);
+                rPAry[openEdge.second].SetFlag(MeshPoint::TMP0);
+            }
+        }
+    }
+
+    if (openEdges.empty())
+        return; // none of the facets are border facets
+
+    for (MeshFacetArray::_TConstIterator it = rFAry.begin(); it != rFAry.end(); ++it) {
+        if (it->IsFlag(MeshFacet::TMP0))
+            continue;
+        for (int i = 0; i < 3; i++) {
+            if (it->_aulNeighbours[i] == FACET_INDEX_MAX)
+                openEdges.push_back(it->GetEdge(i));
+        }
+    }
+
+    // if the first element is not an edge of "uFacets" then give up
+    while (!openEdges.empty()) {
+        PointIndex first = openEdges.begin()->first;
+        PointIndex second  = openEdges.begin()->second;
+        if (!rPAry[first].IsFlag(MeshPoint::TMP0))
+            break;
+        if (!rPAry[second].IsFlag(MeshPoint::TMP0))
+            break;
+
+        std::list<PointIndex> boundary;
+        SplitBoundaryFromOpenEdges(openEdges, boundary);
+        rBorders.emplace_back(boundary.begin(), boundary.end());
+    }
+}
+
+void MeshAlgorithm::SplitBoundaryFromOpenEdges(std::list<std::pair<PointIndex, PointIndex> >& openEdges, std::list<PointIndex>& boundary) const
+{
     // Start with the edge that is associated to uFacet
-    unsigned long ulFirst = openEdges.begin()->first;
-    unsigned long ulLast  = openEdges.begin()->second;
+    if (openEdges.empty())
+        return;
+
+    PointIndex ulFirst = openEdges.begin()->first;
+    PointIndex ulLast  = openEdges.begin()->second;
 
     openEdges.erase(openEdges.begin());
-    rBorder.push_back(ulFirst);
-    rBorder.push_back(ulLast);
+    boundary.push_back(ulFirst);
+    boundary.push_back(ulLast);
 
-    while (ulLast != ulFirst)
-    {
+    while (ulLast != ulFirst) {
         // find adjacent edge
-        std::list<std::pair<unsigned long, unsigned long> >::iterator pEI;
-        for (pEI = openEdges.begin(); pEI != openEdges.end(); ++pEI)
-        {
-            if (pEI->first == ulLast)
-            {
+        std::list<std::pair<PointIndex, PointIndex> >::iterator pEI;
+        for (pEI = openEdges.begin(); pEI != openEdges.end(); ++pEI) {
+            if (pEI->first == ulLast) {
                 ulLast = pEI->second;
-                rBorder.push_back(ulLast);
+                boundary.push_back(ulLast);
                 openEdges.erase(pEI);
                 pEI = openEdges.begin();
                 break;
             }
-            else if (pEI->second == ulFirst)
-            {
+            else if (pEI->second == ulFirst) {
                 ulFirst = pEI->first;
-                rBorder.push_front(ulFirst);
+                boundary.push_front(ulFirst);
                 openEdges.erase(pEI);
                 pEI = openEdges.begin();
                 break;
@@ -579,14 +550,14 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
     }
 }
 
-void MeshAlgorithm::SplitBoundaryLoops( std::list<std::vector<unsigned long> >& aBorders )
+void MeshAlgorithm::SplitBoundaryLoops( std::list<std::vector<PointIndex> >& aBorders )
 {
     // Count the number of open edges for each point
-    std::map<unsigned long, int> openPointDegree;
+    std::map<PointIndex, int> openPointDegree;
     for (MeshFacetArray::_TConstIterator jt = _rclMesh._aclFacetArray.begin();
         jt != _rclMesh._aclFacetArray.end(); ++jt) {
         for (int i=0; i<3; i++) {
-            if (jt->_aulNeighbours[i] == ULONG_MAX) {
+            if (jt->_aulNeighbours[i] == FACET_INDEX_MAX) {
                 openPointDegree[jt->_aulPoints[i]]++;
                 openPointDegree[jt->_aulPoints[(i+1)%3]]++;
             }
@@ -594,11 +565,11 @@ void MeshAlgorithm::SplitBoundaryLoops( std::list<std::vector<unsigned long> >& 
     }
 
     // go through all boundaries and split them if needed
-    std::list<std::vector<unsigned long> > aSplitBorders;
-    for (std::list<std::vector<unsigned long> >::iterator it = aBorders.begin();
+    std::list<std::vector<PointIndex> > aSplitBorders;
+    for (std::list<std::vector<PointIndex> >::iterator it = aBorders.begin();
         it != aBorders.end(); ++it) {
         bool split=false;
-        for (std::vector<unsigned long>::iterator jt = it->begin(); jt != it->end(); ++jt) {
+        for (std::vector<PointIndex>::iterator jt = it->begin(); jt != it->end(); ++jt) {
             // two (or more) boundaries meet in one non-manifold point
             if (openPointDegree[*jt] > 2) {
                 split = true;
@@ -615,17 +586,17 @@ void MeshAlgorithm::SplitBoundaryLoops( std::list<std::vector<unsigned long> >& 
     aBorders = aSplitBorders;
 }
 
-void MeshAlgorithm::SplitBoundaryLoops(const std::vector<unsigned long>& rBound,
-                                       std::list<std::vector<unsigned long> >& aBorders)
+void MeshAlgorithm::SplitBoundaryLoops(const std::vector<PointIndex>& rBound,
+                                       std::list<std::vector<PointIndex> >& aBorders)
 {
-    std::map<unsigned long, int> aPtDegree;
-    std::vector<unsigned long> cBound;
-    for (std::vector<unsigned long>::const_iterator it = rBound.begin(); it != rBound.end(); ++it) {
+    std::map<PointIndex, int> aPtDegree;
+    std::vector<PointIndex> cBound;
+    for (std::vector<PointIndex>::const_iterator it = rBound.begin(); it != rBound.end(); ++it) {
         int deg = (aPtDegree[*it]++);
         if (deg > 0) {
-            for (std::vector<unsigned long>::iterator jt = cBound.begin(); jt != cBound.end(); ++jt) {
+            for (std::vector<PointIndex>::iterator jt = cBound.begin(); jt != cBound.end(); ++jt) {
                 if (*jt == *it) {
-                    std::vector<unsigned long> cBoundLoop;
+                    std::vector<PointIndex> cBoundLoop;
                     cBoundLoop.insert(cBoundLoop.end(), jt, cBound.end());
                     cBoundLoop.push_back(*it);
                     cBound.erase(jt, cBound.end());
@@ -640,8 +611,8 @@ void MeshAlgorithm::SplitBoundaryLoops(const std::vector<unsigned long>& rBound,
     }
 }
 
-bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary, 
-                               AbstractPolygonTriangulator& cTria, 
+bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
+                               AbstractPolygonTriangulator& cTria,
                                MeshFacetArray& rFaces, MeshPointArray& rPoints,
                                int level, const MeshRefPointToFacets* pP2FStructure) const
 {
@@ -657,14 +628,14 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
     // Get a facet as reference coordinate system
     MeshGeomFacet rTriangle;
     MeshFacet rFace;
-    unsigned long refPoint0 = *(boundary.begin());
-    unsigned long refPoint1 = *(boundary.begin()+1);
+    PointIndex refPoint0 = *(boundary.begin());
+    PointIndex refPoint1 = *(boundary.begin()+1);
     if (pP2FStructure) {
-        const std::set<unsigned long>& ring1 = (*pP2FStructure)[refPoint0];
-        const std::set<unsigned long>& ring2 = (*pP2FStructure)[refPoint1];
-        std::vector<unsigned long> f_int;
+        const std::set<FacetIndex>& ring1 = (*pP2FStructure)[refPoint0];
+        const std::set<FacetIndex>& ring2 = (*pP2FStructure)[refPoint1];
+        std::vector<FacetIndex> f_int;
         std::set_intersection(ring1.begin(), ring1.end(), ring2.begin(), ring2.end(),
-            std::back_insert_iterator<std::vector<unsigned long> >(f_int));
+            std::back_insert_iterator<std::vector<FacetIndex> >(f_int));
         if (f_int.size() != 1)
             return false; // error, this must be an open edge!
 
@@ -691,13 +662,13 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
 
     // add points to the polygon
     std::vector<Base::Vector3f> polygon;
-    for (std::vector<unsigned long>::const_iterator jt = boundary.begin(); jt != boundary.end(); ++jt) {
+    for (std::vector<PointIndex>::const_iterator jt = boundary.begin(); jt != boundary.end(); ++jt) {
         polygon.push_back(_rclMesh._aclPointArray[*jt]);
         rPoints.push_back(_rclMesh._aclPointArray[*jt]);
     }
 
     // remove the last added point if it is duplicated
-    std::vector<unsigned long> bounds = boundary;
+    std::vector<PointIndex> bounds = boundary;
     if (boundary.front() == boundary.back()) {
         bounds.pop_back();
         polygon.pop_back();
@@ -712,8 +683,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
 
     std::vector<Base::Vector3f> surf_pts = cTria.GetPolygon();
     if (pP2FStructure && level > 0) {
-        std::set<unsigned long> index = pP2FStructure->NeighbourPoints(boundary, level);
-        for (std::set<unsigned long>::iterator it = index.begin(); it != index.end(); ++it) {
+        std::set<PointIndex> index = pP2FStructure->NeighbourPoints(boundary, level);
+        for (std::set<PointIndex>::iterator it = index.begin(); it != index.end(); ++it) {
             Base::Vector3f pt(_rclMesh._aclPointArray[*it]);
             surf_pts.push_back(pt);
         }
@@ -734,8 +705,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         // criterion to decide whether it's a hole or not.
         //
         std::vector<MeshFacet> faces = cTria.GetFacets();
-        
-        // Special case handling for a hole with three edges: the resulting facet might be coincident with the 
+
+        // Special case handling for a hole with three edges: the resulting facet might be coincident with the
         // reference facet
         if (faces.size()==1){
             MeshFacet first = faces.front();
@@ -771,9 +742,9 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
             }
         }
 
-        // in case the reference facet has not an open edge print a log message 
+        // in case the reference facet has not an open edge print a log message
         if (ref_side == USHRT_MAX || tri_side == USHRT_MAX) {
-            Base::Console().Log("MeshAlgorithm::FillupHole: Expected open edge for facet <%d, %d, %d>\n", 
+            Base::Console().Log("MeshAlgorithm::FillupHole: Expected open edge for facet <%d, %d, %d>\n",
                 rFace._aulPoints[0], rFace._aulPoints[1], rFace._aulPoints[2]);
             rFaces.clear();
             rPoints.clear();
@@ -792,7 +763,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         // Now we have two adjacent triangles which we check for overlaps.
         // Therefore we build a separation plane that must separate the two diametrically opposed points.
         Base::Vector3f planeNormal = rTriangle.GetNormal() % (rTriangle._aclPoints[(ref_side+1)%3]-rTriangle._aclPoints[ref_side]);
-        Base::Vector3f planeBase = rTriangle._aclPoints[ref_side];
+        Base::Vector3f planeBase = rTriangle._aclPoints[ref_side%3];
         Base::Vector3f ref_point = rTriangle._aclPoints[(ref_side+2)%3];
         Base::Vector3f tri_point = triangle._aclPoints[(tri_side+2)%3];
 
@@ -816,28 +787,29 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
     return false;
 }
 
-void MeshAlgorithm::SetFacetsProperty(const std::vector<unsigned long> &raulInds, const std::vector<unsigned long> &raulProps) const
+void MeshAlgorithm::SetFacetsProperty(const std::vector<FacetIndex> &raulInds, const std::vector<unsigned long> &raulProps) const
 {
-    if (raulInds.size() != raulProps.size()) return;
+    if (raulInds.size() != raulProps.size())
+        return;
 
     std::vector<unsigned long>::const_iterator iP = raulProps.begin();
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i, ++iP)
+    for (std::vector<FacetIndex>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i, ++iP)
         _rclMesh._aclFacetArray[*i].SetProperty(*iP);
 }
 
-void MeshAlgorithm::SetFacetsFlag (const std::vector<unsigned long> &raulInds, MeshFacet::TFlagType tF) const
+void MeshAlgorithm::SetFacetsFlag (const std::vector<FacetIndex> &raulInds, MeshFacet::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
+    for (std::vector<FacetIndex>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclFacetArray[*i].SetFlag(tF);
 }
 
-void MeshAlgorithm::SetPointsFlag (const std::vector<unsigned long> &raulInds, MeshPoint::TFlagType tF) const 
+void MeshAlgorithm::SetPointsFlag (const std::vector<FacetIndex> &raulInds, MeshPoint::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
+    for (std::vector<FacetIndex>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclPointArray[*i].SetFlag(tF);
 }
 
-void MeshAlgorithm::GetFacetsFlag (std::vector<unsigned long> &raulInds, MeshFacet::TFlagType tF) const
+void MeshAlgorithm::GetFacetsFlag (std::vector<FacetIndex> &raulInds, MeshFacet::TFlagType tF) const
 {
     raulInds.reserve(raulInds.size() + CountFacetFlag(tF));
     MeshFacetArray::_TConstIterator beg = _rclMesh._aclFacetArray.begin();
@@ -848,7 +820,7 @@ void MeshAlgorithm::GetFacetsFlag (std::vector<unsigned long> &raulInds, MeshFac
     }
 }
 
-void MeshAlgorithm::GetPointsFlag (std::vector<unsigned long> &raulInds, MeshPoint::TFlagType tF) const
+void MeshAlgorithm::GetPointsFlag (std::vector<PointIndex> &raulInds, MeshPoint::TFlagType tF) const
 {
     raulInds.reserve(raulInds.size() + CountPointFlag(tF));
     MeshPointArray::_TConstIterator beg = _rclMesh._aclPointArray.begin();
@@ -859,15 +831,15 @@ void MeshAlgorithm::GetPointsFlag (std::vector<unsigned long> &raulInds, MeshPoi
     }
 }
 
-void MeshAlgorithm::ResetFacetsFlag (const std::vector<unsigned long> &raulInds, MeshFacet::TFlagType tF) const
+void MeshAlgorithm::ResetFacetsFlag (const std::vector<FacetIndex> &raulInds, MeshFacet::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
+    for (std::vector<FacetIndex>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclFacetArray[*i].ResetFlag(tF);
 }
 
-void MeshAlgorithm::ResetPointsFlag (const std::vector<unsigned long> &raulInds, MeshPoint::TFlagType tF) const
+void MeshAlgorithm::ResetPointsFlag (const std::vector<FacetIndex> &raulInds, MeshPoint::TFlagType tF) const
 {
-    for (std::vector<unsigned long>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
+    for (std::vector<FacetIndex>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i)
         _rclMesh._aclPointArray[*i].ResetFlag(tF);
 }
 
@@ -905,7 +877,7 @@ unsigned long MeshAlgorithm::CountPointFlag (MeshPoint::TFlagType tF) const
                          [flag, tF](const MeshPoint& f) { return flag(f, tF);});
 }
 
-void MeshAlgorithm::GetFacetsFromToolMesh( const MeshKernel& rToolMesh, const Base::Vector3f& rcDir, std::vector<unsigned long> &raclCutted ) const
+void MeshAlgorithm::GetFacetsFromToolMesh( const MeshKernel& rToolMesh, const Base::Vector3f& rcDir, std::vector<FacetIndex> &raclCutted ) const
 {
     MeshFacetIterator cFIt(_rclMesh);
     MeshFacetIterator cTIt(rToolMesh);
@@ -948,7 +920,7 @@ void MeshAlgorithm::GetFacetsFromToolMesh( const MeshKernel& rToolMesh, const Ba
 }
 
 void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Base::Vector3f& rcDir,
-                                          const MeshFacetGrid& rGrid, std::vector<unsigned long> &raclCutted) const
+                                          const MeshFacetGrid& rGrid, std::vector<FacetIndex> &raclCutted) const
 {
     // iterator over grid structure
     MeshGridIterator clGridIter(rGrid);
@@ -966,7 +938,7 @@ void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Bas
     // box is inside the toolmesh all facets are stored with no further tests because they must
     // also lie inside the toolmesh. Finally, if the grid box intersects with the toolmesh we must
     // also check for each whether it intersects with the toolmesh as well.
-    std::vector<unsigned long> aulInds;
+    std::vector<FacetIndex> aulInds;
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         int ret = cToolAlg.Surround(clGridIter.GetBoundBox(), rcDir);
 
@@ -974,7 +946,7 @@ void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Bas
         if (ret == 1) {
             // these facets can be removed without more checks
             clGridIter.GetElements(raclCutted);
-        } 
+        }
         // the box intersects with toolmesh
         else if (ret == 0) {
             // these facets must be tested for intersections with the toolmesh
@@ -997,7 +969,7 @@ void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Bas
     Base::SequencerLauncher seq("Check facets...", aulInds.size());
 
     // check all facets
-    for (std::vector<unsigned long>::iterator it = aulInds.begin(); it != aulInds.end(); ++it) {
+    for (std::vector<FacetIndex>::iterator it = aulInds.begin(); it != aulInds.end(); ++it) {
         cFIt.Set(*it);
 
         // check each point of each facet
@@ -1043,9 +1015,9 @@ int MeshAlgorithm::Surround(const Base::BoundBox3f& rBox, const Base::Vector3f& 
     if (cBB && rBox) {
         // check for intersections with the actual mesh
         Base::Vector3f cCorner[8] = {
-        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MinZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MinZ), 
+        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MinZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MinZ),
         Base::Vector3f(rBox.MaxX,rBox.MaxY,rBox.MinZ), Base::Vector3f(rBox.MinX,rBox.MaxY,rBox.MinZ),
-        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MaxZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MaxZ), 
+        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MaxZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MaxZ),
         Base::Vector3f(rBox.MaxX,rBox.MaxY,rBox.MaxZ), Base::Vector3f(rBox.MinX,rBox.MaxY,rBox.MaxZ)};
 
         MeshFacetIterator cTIt(_rclMesh);
@@ -1063,8 +1035,8 @@ int MeshAlgorithm::Surround(const Base::BoundBox3f& rBox, const Base::Vector3f& 
         std::vector<MeshGeomFacet> cFacet(12);
         int id=0;
         for (size_t ii=0; ii<12; ii++) {
-            cFacet[ii]._aclPoints[0]=cCorner[triangles[id++]]; 
-            cFacet[ii]._aclPoints[1]=cCorner[triangles[id++]]; 
+            cFacet[ii]._aclPoints[0]=cCorner[triangles[id++]];
+            cFacet[ii]._aclPoints[1]=cCorner[triangles[id++]];
             cFacet[ii]._aclPoints[2]=cCorner[triangles[id++]];
         }
 
@@ -1104,9 +1076,9 @@ int MeshAlgorithm::Surround(const Base::BoundBox3f& rBox, const Base::Vector3f& 
 }
 
 void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj, const Base::Polygon2d& rclPoly,
-                                bool bInner, std::vector<unsigned long> &raulFacets) const
+                                bool bInner, std::vector<FacetIndex> &raulFacets) const
 {
-    std::vector<unsigned long>::iterator it;
+    std::vector<FacetIndex>::iterator it;
     MeshFacetIterator clIter(_rclMesh, 0);
     Base::Vector3f clPt2d;
     Base::Vector3f clGravityOfFacet;
@@ -1120,7 +1092,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
     if (bInner) {
         BoundBox3f clBBox3d;
         BoundBox2d clViewBBox;
-        std::vector<unsigned long> aulAllElements;
+        std::vector<FacetIndex> aulAllElements;
         // iterator for the bounding box grids
         MeshGridIterator clGridIter(rclGrid);
         for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
@@ -1172,7 +1144,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
             for (int j=0; j<3; j++) {
                 clPt2d = fixedProj(clIter->_aclPoints[j]);
                 if ((clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
-                     rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) == false) {
+                     !rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)))) {
                     raulFacets.push_back(clIter.Position());
                     break;
                 }
@@ -1183,7 +1155,7 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
 }
 
 void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base::Polygon2d& rclPoly,
-                                bool bInner, std::vector<unsigned long> &raulFacets) const
+                                bool bInner, std::vector<FacetIndex> &raulFacets) const
 {
     const MeshPointArray& p = _rclMesh.GetPoints();
     const MeshFacetArray& f = _rclMesh.GetFacets();
@@ -1193,7 +1165,7 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
     // Precompute the screen projection matrix as Coin's projection function is expensive
     Base::ViewProjMatrix fixedProj(pclProj->getComposedProjectionMatrix());
 
-    unsigned long index=0;
+    FacetIndex index=0;
     for (MeshFacetArray::_TConstIterator it = f.begin(); it != f.end(); ++it,++index) {
         for (int i = 0; i < 3; i++) {
             pt2d = fixedProj(p[it->_aulPoints[i]]);
@@ -1208,7 +1180,7 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
     }
 }
 
-float MeshAlgorithm::Surface (void) const
+float MeshAlgorithm::Surface () const
 {
     float              fTotal = 0.0f;
     MeshFacetIterator clFIter(_rclMesh);
@@ -1250,23 +1222,23 @@ void MeshAlgorithm::SubSampleByCount (unsigned long ulCtPoints, std::vector<Base
 }
 
 void MeshAlgorithm::SearchFacetsFromPolyline (const std::vector<Base::Vector3f> &rclPolyline, float fRadius,
-                                              const MeshFacetGrid& rclGrid, std::vector<unsigned long> &rclResultFacetsIndices) const
+                                              const MeshFacetGrid& rclGrid, std::vector<FacetIndex> &rclResultFacetsIndices) const
 {
   rclResultFacetsIndices.clear();
   if ( rclPolyline.size() < 3 )
     return; // no polygon defined
 
-  std::set<unsigned long>  aclFacets;
+  std::set<FacetIndex>  aclFacets;
   for (std::vector<Base::Vector3f>::const_iterator pV = rclPolyline.begin(); pV < (rclPolyline.end() - 1); ++pV)
   {
     const Base::Vector3f &rclP0 = *pV, &rclP1 = *(pV + 1);
-   
+
     // BB eines Polyline-Segments
     BoundBox3f clSegmBB(rclP0.x, rclP0.y, rclP0.z, rclP0.x, rclP0.y, rclP0.z);
     clSegmBB.Add(rclP1);
     clSegmBB.Enlarge(fRadius);  // BB um Suchradius vergroessern
 
-    std::vector<unsigned long> aclBBFacets;
+    std::vector<FacetIndex> aclBBFacets;
     unsigned long k = rclGrid.Inside(clSegmBB, aclBBFacets, false);
     for (unsigned long i = 0; i < k; i++)
     {
@@ -1278,17 +1250,17 @@ void MeshAlgorithm::SearchFacetsFromPolyline (const std::vector<Base::Vector3f> 
   rclResultFacetsIndices.insert(rclResultFacetsIndices.begin(), aclFacets.begin(), aclFacets.end());
 }
 
-void MeshAlgorithm::CutBorderFacets (std::vector<unsigned long> &raclFacetIndices, unsigned short usLevel) const
+void MeshAlgorithm::CutBorderFacets (std::vector<FacetIndex> &raclFacetIndices, unsigned short usLevel) const
 {
-  std::vector<unsigned long> aclToDelete;
+  std::vector<FacetIndex> aclToDelete;
 
   CheckBorderFacets(raclFacetIndices, aclToDelete, usLevel);
 
   // alle gefunden "Rand"-Facetsindizes" aus dem Array loeschen
-  std::vector<unsigned long>  aclResult;
-  std::set<unsigned long>     aclTmp(aclToDelete.begin(), aclToDelete.end());
+  std::vector<FacetIndex>  aclResult;
+  std::set<FacetIndex>     aclTmp(aclToDelete.begin(), aclToDelete.end());
 
-  for (std::vector<unsigned long>::iterator pI = raclFacetIndices.begin(); pI != raclFacetIndices.end(); ++pI)
+  for (std::vector<FacetIndex>::iterator pI = raclFacetIndices.begin(); pI != raclFacetIndices.end(); ++pI)
   {
     if (aclTmp.find(*pI) == aclTmp.end())
       aclResult.push_back(*pI);
@@ -1304,7 +1276,7 @@ unsigned long MeshAlgorithm::CountBorderEdges() const
     MeshFacetArray::_TConstIterator end = rclFAry.end();
     for (MeshFacetArray::_TConstIterator it = rclFAry.begin(); it != end; ++it) {
         for (int i=0; i<3; i++) {
-            if (it->_aulNeighbours[i] == ULONG_MAX)
+            if (it->_aulNeighbours[i] == FACET_INDEX_MAX)
                 cnt++;
         }
     }
@@ -1312,7 +1284,7 @@ unsigned long MeshAlgorithm::CountBorderEdges() const
     return cnt;
 }
 
-void MeshAlgorithm::CheckBorderFacets (const std::vector<unsigned long> &raclFacetIndices, std::vector<unsigned long> &raclResultIndices, unsigned short usLevel) const
+void MeshAlgorithm::CheckBorderFacets (const std::vector<FacetIndex> &raclFacetIndices, std::vector<FacetIndex> &raclResultIndices, unsigned short usLevel) const
 {
   ResetFacetFlag(MeshFacet::TMP0);
   SetFacetsFlag(raclFacetIndices, MeshFacet::TMP0);
@@ -1321,18 +1293,18 @@ void MeshAlgorithm::CheckBorderFacets (const std::vector<unsigned long> &raclFac
 
   for (unsigned short usL = 0; usL < usLevel; usL++)
   {
-    for (std::vector<unsigned long>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); ++pF)
+    for (std::vector<FacetIndex>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); ++pF)
     {
       for (int i = 0; i < 3; i++)
       {
-        unsigned long ulNB = rclFAry[*pF]._aulNeighbours[i];
-        if (ulNB == ULONG_MAX)
+        FacetIndex ulNB = rclFAry[*pF]._aulNeighbours[i];
+        if (ulNB == FACET_INDEX_MAX)
         {
           raclResultIndices.push_back(*pF);
           rclFAry[*pF].ResetFlag(MeshFacet::TMP0);
           continue;
         }
-        if (rclFAry[ulNB].IsFlag(MeshFacet::TMP0) == false)
+        if (!rclFAry[ulNB].IsFlag(MeshFacet::TMP0))
         {
           raclResultIndices.push_back(*pF);
           rclFAry[*pF].ResetFlag(MeshFacet::TMP0);
@@ -1343,26 +1315,26 @@ void MeshAlgorithm::CheckBorderFacets (const std::vector<unsigned long> &raclFac
   }
 }
 
-void MeshAlgorithm::GetBorderPoints (const std::vector<unsigned long> &raclFacetIndices, std::set<unsigned long> &raclResultPointsIndices) const
+void MeshAlgorithm::GetBorderPoints (const std::vector<FacetIndex> &raclFacetIndices, std::set<PointIndex> &raclResultPointsIndices) const
 {
   ResetFacetFlag(MeshFacet::TMP0);
   SetFacetsFlag(raclFacetIndices, MeshFacet::TMP0);
 
   const MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
 
-  for (std::vector<unsigned long>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); ++pF)
+  for (std::vector<FacetIndex>::const_iterator pF = raclFacetIndices.begin(); pF != raclFacetIndices.end(); ++pF)
   {
     for (int i = 0; i < 3; i++)
     {
       const MeshFacet &rclFacet = rclFAry[*pF];
-      unsigned long      ulNB     = rclFacet._aulNeighbours[i];
-      if (ulNB == ULONG_MAX)
+      FacetIndex      ulNB     = rclFacet._aulNeighbours[i];
+      if (ulNB == FACET_INDEX_MAX)
       {
         raclResultPointsIndices.insert(rclFacet._aulPoints[i]);
         raclResultPointsIndices.insert(rclFacet._aulPoints[(i+1)%3]);
         continue;
       }
-      if (rclFAry[ulNB].IsFlag(MeshFacet::TMP0) == false)
+      if (!rclFAry[ulNB].IsFlag(MeshFacet::TMP0))
       {
         raclResultPointsIndices.insert(rclFacet._aulPoints[i]);
         raclResultPointsIndices.insert(rclFacet._aulPoints[(i+1)%3]);
@@ -1372,14 +1344,14 @@ void MeshAlgorithm::GetBorderPoints (const std::vector<unsigned long> &raclFacet
   }
 }
 
-bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, unsigned long &rclResFacetIndex, Base::Vector3f &rclResPoint) const
+bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, FacetIndex &rclResFacetIndex, Base::Vector3f &rclResPoint) const
 {
   if (_rclMesh.CountFacets() == 0)
     return false;
 
   // calc each facet
   float fMinDist = FLOAT_MAX;
-  unsigned long ulInd   = ULONG_MAX;
+  FacetIndex ulInd   = FACET_INDEX_MAX;
   MeshFacetIterator pF(_rclMesh);
   for (pF.Init(); pF.More(); pF.Next())
   {
@@ -1398,11 +1370,11 @@ bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, unsigned
   return true;
 }
 
-bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, const MeshFacetGrid& rclGrid, unsigned long &rclResFacetIndex, Base::Vector3f &rclResPoint) const
+bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, const MeshFacetGrid& rclGrid, FacetIndex &rclResFacetIndex, Base::Vector3f &rclResPoint) const
 {
-  unsigned long ulInd = rclGrid.SearchNearestFromPoint(rclPt);
+  FacetIndex ulInd = rclGrid.SearchNearestFromPoint(rclPt);
 
-  if (ulInd == ULONG_MAX)
+  if (ulInd == FACET_INDEX_MAX)
   {
     return false;
   }
@@ -1415,11 +1387,11 @@ bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, const Me
 }
 
 bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, const MeshFacetGrid& rclGrid, float fMaxSearchArea,
-                                           unsigned long &rclResFacetIndex, Base::Vector3f &rclResPoint) const
+                                           FacetIndex &rclResFacetIndex, Base::Vector3f &rclResPoint) const
 {
-  unsigned long ulInd = rclGrid.SearchNearestFromPoint(rclPt, fMaxSearchArea);
+  FacetIndex ulInd = rclGrid.SearchNearestFromPoint(rclPt, fMaxSearchArea);
 
-  if (ulInd == ULONG_MAX)
+  if (ulInd == FACET_INDEX_MAX)
     return false;  // no facets inside BoundingBox
 
   MeshGeomFacet rclSFacet = _rclMesh.GetFacet(ulInd);
@@ -1432,31 +1404,31 @@ bool MeshAlgorithm::NearestPointFromPoint (const Base::Vector3f &rclPt, const Me
 bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vector3f &clNormal, const MeshFacetGrid &rclGrid,
                                   std::list<std::vector<Base::Vector3f> > &rclResult, float fMinEps, bool bConnectPolygons) const
 {
-  std::vector<unsigned long>  aulFacets;  
+  std::vector<FacetIndex>  aulFacets;
 
-  // Grid durschsuchen
+  // Search grid
   MeshGridIterator clGridIter(rclGrid);
   for (clGridIter.Init(); clGridIter.More(); clGridIter.Next())
-  {  
-    // wenn Gridvoxel Ebene schneidet: alle Facets aufnehmen zum Schneiden
-    if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
+  {
+    // if Gridvoxel intersects the plane: pick up all facets for cutting
+    if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal))
       clGridIter.GetElements(aulFacets);
   }
 
-  // mehrfach vorhanden Dreiecke entfernen
+  // remove multiple triangles
   std::sort(aulFacets.begin(), aulFacets.end());
-  aulFacets.erase(std::unique(aulFacets.begin(), aulFacets.end()), aulFacets.end());  
+  aulFacets.erase(std::unique(aulFacets.begin(), aulFacets.end()), aulFacets.end());
 
-  // alle Facets mit Ebene schneiden
-  std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;  // Feld mit Schnittlinien (unsortiert, nicht verkettet)
+  // intersect all facets with plane
+  std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;  // Field with intersection lines (unsorted, not chained)
 
-  for (std::vector<unsigned long>::iterator pF = aulFacets.begin(); pF != aulFacets.end(); ++pF)
+  for (std::vector<FacetIndex>::iterator pF = aulFacets.begin(); pF != aulFacets.end(); ++pF)
   {
     Base::Vector3f  clE1, clE2;
     const MeshGeomFacet clF(_rclMesh.GetFacet(*pF));
 
-    // Facet schneiden und Schnittstrecke ablegen
-    if (clF.IntersectWithPlane(clBase, clNormal, clE1, clE2) == true)
+    // Cut the facet and store the cutting path
+    if (clF.IntersectWithPlane(clBase, clNormal, clE1, clE2))
       clTempPoly.emplace_back(clE1, clE2);
   }
 
@@ -1482,10 +1454,10 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
 bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines,
                                   std::list<std::vector<Base::Vector3f> > &rclPolylines, float fMinEps) const
 {
-    typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
+    using TCIter = std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator;
 
     // square search radius
-    // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
+    // const float fMinEps = 1.0e-2f; // := 10 micrometer distance
     fMinEps = fMinEps * fMinEps;
 
     // remove all lines whose distance is smaller than epsilon
@@ -1580,7 +1552,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
     }
 
     // remove all polylines with too few length
-    typedef std::list<std::vector<Base::Vector3f> >::iterator TPIter;
+    using TPIter = std::list<std::vector<Base::Vector3f> >::iterator;
     std::list<TPIter> _clPolyToDelete;
     for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); ++pJ) {
         if (pJ->size() == 2) { // only one line segment
@@ -1630,63 +1602,63 @@ bool MeshAlgorithm::ConnectPolygons(std::list<std::vector<Base::Vector3f> > &clP
 }
 
 void MeshAlgorithm::GetFacetsFromPlane (const MeshFacetGrid &rclGrid, const Base::Vector3f& clNormal, float d, const Base::Vector3f &rclLeft,
-                                        const Base::Vector3f &rclRight, std::vector<unsigned long> &rclRes) const
+                                        const Base::Vector3f &rclRight, std::vector<FacetIndex> &rclRes) const
 {
-    std::vector<unsigned long> aulFacets;
+    std::vector<FacetIndex> aulFacets;
 
     Base::Vector3f clBase = d * clNormal;
 
     Base::Vector3f clPtNormal(rclLeft - rclRight);
     clPtNormal.Normalize();
 
-    // search grid 
+    // search grid
     MeshGridIterator clGridIter(rclGrid);
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         // add facets from grid if the plane if cut the grid-voxel
-        if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
+        if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal))
             clGridIter.GetElements(aulFacets);
     }
 
     // testing facet against planes
-    for (std::vector<unsigned long>::iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI) {
+    for (std::vector<FacetIndex>::iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI) {
         MeshGeomFacet clSFacet = _rclMesh.GetFacet(*pI);
-        if (clSFacet.IntersectWithPlane(clBase, clNormal) == true) {
+        if (clSFacet.IntersectWithPlane(clBase, clNormal)) {
             bool bInner = false;
-            for (int i = 0; (i < 3) && (bInner == false); i++) {
+            for (int i = 0; (i < 3) && !bInner; i++) {
                 Base::Vector3f clPt = clSFacet._aclPoints[i];
                 if ((clPt.DistanceToPlane(rclLeft, clPtNormal) <= 0.0f) && (clPt.DistanceToPlane(rclRight, clPtNormal) >= 0.0f))
                     bInner = true;
             }
 
-            if (bInner == true)
+            if (bInner)
                 rclRes.push_back(*pI);
         }
     }
 }
 
-void MeshAlgorithm::PointsFromFacetsIndices (const std::vector<unsigned long> &rvecIndices, std::vector<Base::Vector3f> &rvecPoints) const
+void MeshAlgorithm::PointsFromFacetsIndices (const std::vector<FacetIndex> &rvecIndices, std::vector<Base::Vector3f> &rvecPoints) const
 {
   const MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
   const MeshPointArray &rclPAry = _rclMesh._aclPointArray;
 
-  std::set<unsigned long> setPoints;
+  std::set<PointIndex> setPoints;
 
-  for (std::vector<unsigned long>::const_iterator itI = rvecIndices.begin(); itI != rvecIndices.end(); ++itI)
+  for (std::vector<FacetIndex>::const_iterator itI = rvecIndices.begin(); itI != rvecIndices.end(); ++itI)
   {
     for (int i = 0; i < 3; i++)
       setPoints.insert(rclFAry[*itI]._aulPoints[i]);
   }
 
   rvecPoints.clear();
-  for (std::set<unsigned long>::iterator itP = setPoints.begin(); itP != setPoints.end(); ++itP)
+  for (std::set<PointIndex>::iterator itP = setPoints.begin(); itP != setPoints.end(); ++itP)
     rvecPoints.push_back(rclPAry[*itP]);
 }
 
-bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, unsigned long ulFacetIdx, float fMaxDistance, float &rfDistance) const
+bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, FacetIndex ulFacetIdx, float fMaxDistance, float &rfDistance) const
 {
   const MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
   const MeshPointArray &rclPAry = _rclMesh._aclPointArray;
-  const unsigned long *pulIdx = rclFAry[ulFacetIdx]._aulPoints;
+  const PointIndex *pulIdx = rclFAry[ulFacetIdx]._aulPoints;
 
   BoundBox3f clBB;
   clBB.Add(rclPAry[*(pulIdx++)]);
@@ -1694,7 +1666,7 @@ bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, unsigned long ulFacet
   clBB.Add(rclPAry[*pulIdx]);
   clBB.Enlarge(fMaxDistance);
 
-  if (clBB.IsInBox(rclPt) == false)
+  if (!clBB.IsInBox(rclPt))
     return false;
 
   rfDistance = _rclMesh.GetFacet(ulFacetIdx).DistanceToPoint(rclPt);
@@ -1714,7 +1686,7 @@ float MeshAlgorithm::CalculateMinimumGridLength(float fLength, const Base::Bound
 
 // ----------------------------------------------------
 
-void MeshRefPointToFacets::Rebuild (void)
+void MeshRefPointToFacets::Rebuild ()
 {
     _map.clear();
 
@@ -1730,12 +1702,12 @@ void MeshRefPointToFacets::Rebuild (void)
     }
 }
 
-Base::Vector3f MeshRefPointToFacets::GetNormal(unsigned long pos) const
+Base::Vector3f MeshRefPointToFacets::GetNormal(PointIndex pos) const
 {
-    const std::set<unsigned long>& n = _map[pos];
+    const std::set<FacetIndex>& n = _map[pos];
     Base::Vector3f normal;
     MeshGeomFacet f;
-    for (std::set<unsigned long>::const_iterator it = n.begin(); it != n.end(); ++it) {
+    for (std::set<FacetIndex>::const_iterator it = n.begin(); it != n.end(); ++it) {
         f = _rclMesh.GetFacet(*it);
         normal += f.Area() * f.GetNormal();
     }
@@ -1744,19 +1716,19 @@ Base::Vector3f MeshRefPointToFacets::GetNormal(unsigned long pos) const
     return normal;
 }
 
-std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(const std::vector<unsigned long>& pt, int level) const
+std::set<PointIndex> MeshRefPointToFacets::NeighbourPoints(const std::vector<PointIndex>& pt, int level) const
 {
-    std::set<unsigned long> cp,nb,lp;
+    std::set<PointIndex> cp,nb,lp;
     cp.insert(pt.begin(), pt.end());
     lp.insert(pt.begin(), pt.end());
     MeshFacetArray::_TConstIterator f_it = _rclMesh.GetFacets().begin();
     for (int i=0; i < level; i++) {
-        std::set<unsigned long> cur;
-        for (std::set<unsigned long>::iterator it = lp.begin(); it != lp.end(); ++it) {
-            const std::set<unsigned long>& ft = (*this)[*it];
-            for (std::set<unsigned long>::const_iterator jt = ft.begin(); jt != ft.end(); ++jt) {
+        std::set<PointIndex> cur;
+        for (std::set<PointIndex>::iterator it = lp.begin(); it != lp.end(); ++it) {
+            const std::set<FacetIndex>& ft = (*this)[*it];
+            for (std::set<FacetIndex>::const_iterator jt = ft.begin(); jt != ft.end(); ++jt) {
                 for (int j = 0; j < 3; j++) {
-                    unsigned long index = f_it[*jt]._aulPoints[j];
+                    PointIndex index = f_it[*jt]._aulPoints[j];
                     if (cp.find(index) == cp.end() && nb.find(index) == nb.end()) {
                         nb.insert(index);
                         cur.insert(index);
@@ -1772,12 +1744,12 @@ std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(const std::vector<
     return nb;
 }
 
-std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(unsigned long pos) const
+std::set<PointIndex> MeshRefPointToFacets::NeighbourPoints(PointIndex pos) const
 {
-    std::set<unsigned long> p;
-    const std::set<unsigned long>& vf = _map[pos];
-    for (std::set<unsigned long>::const_iterator it = vf.begin(); it != vf.end(); ++it) {
-        unsigned long p1, p2, p3;
+    std::set<PointIndex> p;
+    const std::set<FacetIndex>& vf = _map[pos];
+    for (std::set<FacetIndex>::const_iterator it = vf.begin(); it != vf.end(); ++it) {
+        PointIndex p1, p2, p3;
         _rclMesh.GetFacetPoints(*it, p1, p2, p3);
         if (p1 != pos)
             p.insert(p1);
@@ -1790,17 +1762,17 @@ std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(unsigned long pos)
     return p;
 }
 
-void MeshRefPointToFacets::Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const
+void MeshRefPointToFacets::Neighbours (FacetIndex ulFacetInd, float fMaxDist, MeshCollector& collect) const
 {
-    std::set<unsigned long> visited;
+    std::set<FacetIndex> visited;
     Base::Vector3f  clCenter = _rclMesh.GetFacet(ulFacetInd).GetGravityPoint();
 
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     SearchNeighbours(rFacets, ulFacetInd, clCenter, fMaxDist * fMaxDist, visited, collect);
 }
 
-void MeshRefPointToFacets::SearchNeighbours(const MeshFacetArray& rFacets, unsigned long index, const Base::Vector3f &rclCenter,
-                                            float fMaxDist2, std::set<unsigned long>& visited, MeshCollector& collect) const
+void MeshRefPointToFacets::SearchNeighbours(const MeshFacetArray& rFacets, FacetIndex index, const Base::Vector3f &rclCenter,
+                                            float fMaxDist2, std::set<FacetIndex>& visited, MeshCollector& collect) const
 {
     if (visited.find(index) != visited.end())
         return;
@@ -1812,61 +1784,61 @@ void MeshRefPointToFacets::SearchNeighbours(const MeshFacetArray& rFacets, unsig
     visited.insert(index);
     collect.Append(_rclMesh, index);
     for (int i = 0; i < 3; i++) {
-        const std::set<unsigned long> &f = (*this)[face._aulPoints[i]];
+        const std::set<FacetIndex> &f = (*this)[face._aulPoints[i]];
 
-        for (std::set<unsigned long>::const_iterator j = f.begin(); j != f.end(); ++j) {
+        for (std::set<FacetIndex>::const_iterator j = f.begin(); j != f.end(); ++j) {
             SearchNeighbours(rFacets, *j, rclCenter, fMaxDist2, visited, collect);
         }
     }
 }
 
 MeshFacetArray::_TConstIterator
-MeshRefPointToFacets::GetFacet (unsigned long index) const
+MeshRefPointToFacets::GetFacet (FacetIndex index) const
 {
     return _rclMesh.GetFacets().begin() + index;
 }
 
-const std::set<unsigned long>&
-MeshRefPointToFacets::operator[] (unsigned long pos) const
+const std::set<FacetIndex>&
+MeshRefPointToFacets::operator[] (PointIndex pos) const
 {
     return _map[pos];
 }
 
-std::vector<unsigned long>
-MeshRefPointToFacets::GetIndices(unsigned long pos1, unsigned long pos2) const
+std::vector<FacetIndex>
+MeshRefPointToFacets::GetIndices(PointIndex pos1, PointIndex pos2) const
 {
-    std::vector<unsigned long> intersection;
-    std::back_insert_iterator<std::vector<unsigned long> > result(intersection);
-    const std::set<unsigned long>& set1 = _map[pos1];
-    const std::set<unsigned long>& set2 = _map[pos2];
+    std::vector<FacetIndex> intersection;
+    std::back_insert_iterator<std::vector<FacetIndex> > result(intersection);
+    const std::set<FacetIndex>& set1 = _map[pos1];
+    const std::set<FacetIndex>& set2 = _map[pos2];
     std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), result);
     return intersection;
 }
 
-std::vector<unsigned long>
-MeshRefPointToFacets::GetIndices(unsigned long pos1, unsigned long pos2, unsigned long pos3) const
+std::vector<FacetIndex>
+MeshRefPointToFacets::GetIndices(PointIndex pos1, PointIndex pos2, PointIndex pos3) const
 {
-    std::vector<unsigned long> intersection;
-    std::back_insert_iterator<std::vector<unsigned long> > result(intersection);
-    std::vector<unsigned long> set1 = GetIndices(pos1, pos2);
-    const std::set<unsigned long>& set2 = _map[pos3];
+    std::vector<FacetIndex> intersection;
+    std::back_insert_iterator<std::vector<FacetIndex> > result(intersection);
+    std::vector<FacetIndex> set1 = GetIndices(pos1, pos2);
+    const std::set<FacetIndex>& set2 = _map[pos3];
     std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), result);
     return intersection;
 }
 
-void MeshRefPointToFacets::AddNeighbour(unsigned long pos, unsigned long facet)
+void MeshRefPointToFacets::AddNeighbour(PointIndex pos, FacetIndex facet)
 {
     _map[pos].insert(facet);
 }
 
-void MeshRefPointToFacets::RemoveNeighbour(unsigned long pos, unsigned long facet)
+void MeshRefPointToFacets::RemoveNeighbour(PointIndex pos, FacetIndex facet)
 {
     _map[pos].erase(facet);
 }
 
-void MeshRefPointToFacets::RemoveFacet(unsigned long facetIndex)
+void MeshRefPointToFacets::RemoveFacet(FacetIndex facetIndex)
 {
-    unsigned long p0, p1, p2;
+    PointIndex p0, p1, p2;
     _rclMesh.GetFacetPoints(facetIndex, p0, p1, p2);
 
     _map[p0].erase(facetIndex);
@@ -1876,7 +1848,7 @@ void MeshRefPointToFacets::RemoveFacet(unsigned long facetIndex)
 
 //----------------------------------------------------------------------------
 
-void MeshRefFacetToFacets::Rebuild (void)
+void MeshRefFacetToFacets::Rebuild ()
 {
     _map.clear();
 
@@ -1887,33 +1859,33 @@ void MeshRefFacetToFacets::Rebuild (void)
     MeshFacetArray::_TConstIterator pFBegin = rFacets.begin();
     for (MeshFacetArray::_TConstIterator pFIter = pFBegin; pFIter != rFacets.end(); ++pFIter) {
         for (int i = 0; i < 3; i++) {
-            const std::set<unsigned long>& faces = vertexFace[pFIter->_aulPoints[i]];
-            for (std::set<unsigned long>::const_iterator it = faces.begin(); it != faces.end(); ++it)
+            const std::set<FacetIndex>& faces = vertexFace[pFIter->_aulPoints[i]];
+            for (std::set<FacetIndex>::const_iterator it = faces.begin(); it != faces.end(); ++it)
                 _map[pFIter - pFBegin].insert(*it);
         }
     }
 }
 
-const std::set<unsigned long>&
-MeshRefFacetToFacets::operator[] (unsigned long pos) const
+const std::set<FacetIndex>&
+MeshRefFacetToFacets::operator[] (FacetIndex pos) const
 {
     return _map[pos];
 }
 
-std::vector<unsigned long>
-MeshRefFacetToFacets::GetIndices(unsigned long pos1, unsigned long pos2) const
+std::vector<FacetIndex>
+MeshRefFacetToFacets::GetIndices(FacetIndex pos1, FacetIndex pos2) const
 {
-    std::vector<unsigned long> intersection;
-    std::back_insert_iterator<std::vector<unsigned long> > result(intersection);
-    const std::set<unsigned long>& set1 = _map[pos1];
-    const std::set<unsigned long>& set2 = _map[pos2];
+    std::vector<FacetIndex> intersection;
+    std::back_insert_iterator<std::vector<FacetIndex> > result(intersection);
+    const std::set<FacetIndex>& set1 = _map[pos1];
+    const std::set<FacetIndex>& set2 = _map[pos2];
     std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), result);
     return intersection;
 }
 
 //----------------------------------------------------------------------------
 
-void MeshRefPointToPoints::Rebuild (void)
+void MeshRefPointToPoints::Rebuild ()
 {
     _map.clear();
 
@@ -1922,9 +1894,9 @@ void MeshRefPointToPoints::Rebuild (void)
 
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     for (MeshFacetArray::_TConstIterator pFIter = rFacets.begin(); pFIter != rFacets.end(); ++pFIter) {
-        unsigned long ulP0 = pFIter->_aulPoints[0];
-        unsigned long ulP1 = pFIter->_aulPoints[1];
-        unsigned long ulP2 = pFIter->_aulPoints[2];
+        PointIndex ulP0 = pFIter->_aulPoints[0];
+        PointIndex ulP1 = pFIter->_aulPoints[1];
+        PointIndex ulP2 = pFIter->_aulPoints[2];
 
         _map[ulP0].insert(ulP1);
         _map[ulP0].insert(ulP2);
@@ -1935,14 +1907,14 @@ void MeshRefPointToPoints::Rebuild (void)
     }
 }
 
-Base::Vector3f MeshRefPointToPoints::GetNormal(unsigned long pos) const
+Base::Vector3f MeshRefPointToPoints::GetNormal(PointIndex pos) const
 {
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     MeshCore::PlaneFit pf;
     pf.AddPoint(rPoints[pos]);
     MeshCore::MeshPoint center = rPoints[pos];
-    const std::set<unsigned long>& cv = _map[pos];
-    for (std::set<unsigned long>::const_iterator cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
+    const std::set<PointIndex>& cv = _map[pos];
+    for (std::set<PointIndex>::const_iterator cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
         pf.AddPoint(rPoints[*cv_it]);
         center += rPoints[*cv_it];
     }
@@ -1954,42 +1926,42 @@ Base::Vector3f MeshRefPointToPoints::GetNormal(unsigned long pos) const
     return normal;
 }
 
-float MeshRefPointToPoints::GetAverageEdgeLength(unsigned long index) const
+float MeshRefPointToPoints::GetAverageEdgeLength(PointIndex index) const
 {
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     float len=0.0f;
-    const std::set<unsigned long>& n = (*this)[index];
+    const std::set<PointIndex>& n = (*this)[index];
     const Base::Vector3f& p = rPoints[index];
-    for (std::set<unsigned long>::const_iterator it = n.begin(); it != n.end(); ++it) {
+    for (std::set<PointIndex>::const_iterator it = n.begin(); it != n.end(); ++it) {
         len += Base::Distance(p, rPoints[*it]);
     }
     return (len/n.size());
 }
 
-const std::set<unsigned long>&
-MeshRefPointToPoints::operator[] (unsigned long pos) const
+const std::set<PointIndex>&
+MeshRefPointToPoints::operator[] (PointIndex pos) const
 {
     return _map[pos];
 }
 
-void MeshRefPointToPoints::AddNeighbour(unsigned long pos, unsigned long facet)
+void MeshRefPointToPoints::AddNeighbour(PointIndex pos, PointIndex facet)
 {
     _map[pos].insert(facet);
 }
 
-void MeshRefPointToPoints::RemoveNeighbour(unsigned long pos, unsigned long facet)
+void MeshRefPointToPoints::RemoveNeighbour(PointIndex pos, PointIndex facet)
 {
     _map[pos].erase(facet);
 }
 
 //----------------------------------------------------------------------------
 
-void MeshRefEdgeToFacets::Rebuild (void)
+void MeshRefEdgeToFacets::Rebuild ()
 {
     _map.clear();
 
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
-    unsigned long index = 0;
+    FacetIndex index = 0;
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it, ++index) {
         for (int i=0; i<3; i++) {
             MeshEdge e;
@@ -1999,7 +1971,7 @@ void MeshRefEdgeToFacets::Rebuild (void)
                 _map.find(e);
             if (jt == _map.end()) {
                 _map[e].first = index;
-                _map[e].second = ULONG_MAX;
+                _map[e].second = FACET_INDEX_MAX;
             }
             else {
                 _map[e].second = index;
@@ -2008,7 +1980,7 @@ void MeshRefEdgeToFacets::Rebuild (void)
     }
 }
 
-const std::pair<unsigned long, unsigned long>&
+const std::pair<FacetIndex, FacetIndex>&
 MeshRefEdgeToFacets::operator[] (const MeshEdge& edge) const
 {
     return _map.find(edge)->second;
@@ -2016,7 +1988,7 @@ MeshRefEdgeToFacets::operator[] (const MeshEdge& edge) const
 
 //----------------------------------------------------------------------------
 
-void MeshRefNormalToPoints::Rebuild (void)
+void MeshRefNormalToPoints::Rebuild ()
 {
     _norm.clear();
 
@@ -2042,7 +2014,7 @@ void MeshRefNormalToPoints::Rebuild (void)
 }
 
 const Base::Vector3f&
-MeshRefNormalToPoints::operator[] (unsigned long pos) const
+MeshRefNormalToPoints::operator[] (PointIndex pos) const
 {
     return _norm[pos];
 }

@@ -89,8 +89,8 @@ Function .onInit
   ${endif}
   ${if} $0 != ""
    # check if the uninstaller was acidentally deleted
-   # if so don't bother the user if he really wants to install a new FreeCAD over an existing one
-   # because he won't have a chance to deny this
+   # if so, don't bother the user if they really want to install a new FreeCAD over an existing one
+   # because they won't have a chance to deny this
    StrCpy $4 $0 -16 # remove '\bin\FreeCAD.exe'
    # (for FileCheck the variables $0 and $1 cannot be used)
    !insertmacro FileCheck $5 "Uninstall-${APP_NAME}.exe" "$4" # macro from Utils.nsh
@@ -98,7 +98,7 @@ Function .onInit
     Goto ForceInstallation
    ${endif}
    # installing over an existing installation of the same FreeCAD release is not necessary
-   # if the users does this he most probably has a problem with FreeCAD that can better be solved
+   # if the users does this, they most probably have a problem with FreeCAD that can better be solved
    # by reinstalling FreeCAD
    # for beta and other test releases over-installing can even cause errors
    MessageBox MB_YESNO|MB_DEFBUTTON2|MB_ICONEXCLAMATION "$(AlreadyInstalled)" /SD IDNO IDYES ForceInstallation 

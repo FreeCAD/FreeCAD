@@ -20,22 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <Gui/Control.h>
+#include <Mod/Fem/App/FemSetNodesObject.h>
+#include <Mod/Fem/Gui/TaskDlgCreateNodeSet.h>
 
 #include "ViewProviderSetNodes.h"
-#include <Gui/Control.h>
-#include <Mod/Fem/Gui/TaskDlgCreateNodeSet.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
+
 
 using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetNodes, Gui::ViewProviderGeometryObject)
 
-bool ViewProviderSetNodes::doubleClicked(void)
+bool ViewProviderSetNodes::doubleClicked()
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(static_cast<Fem::FemSetNodesObject *>(getObject()));
     Gui::Control().showDialog(dlg);

@@ -23,11 +23,14 @@
 #ifndef DRAWINGGUI_QGCUSTOMSVG_H
 #define DRAWINGGUI_QGCUSTOMSVG_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsSvgItem>
 #include <QPointF>
-#include <QByteArray>
 #include <QSvgRenderer>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -52,6 +55,7 @@ public:
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual bool load(QByteArray *svgString);
+    virtual bool load(QString filename);
 
 protected:
     QSvgRenderer *m_svgRender;

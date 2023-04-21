@@ -7,379 +7,21 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>515</height>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Display</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
       <string>Sketch editing</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="4" column="0" colspan="2">
-       <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
-        <property name="toolTip">
-         <string>A dialog will pop up to input a value for new dimensional constraints</string>
-        </property>
-        <property name="text">
-         <string>Ask for value after creating a dimensional constraint</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowDialogOnDistanceConstraint</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Segments per geometry</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" colspan="2">
-       <widget class="Gui::PrefCheckBox" name="constraintMode">
-        <property name="toolTip">
-         <string>Current constraint creation tool will remain active after creation</string>
-        </property>
-        <property name="text">
-         <string>Constraint creation &quot;Continue Mode&quot;</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ContinuousConstraintMode</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="comboBox">
-        <property name="toolTip">
-         <string>Line pattern used for grid lines</string>
-        </property>
-        <property name="currentIndex">
-         <number>-1</number>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
-        <property name="toolTip">
-         <string>Base length units will not be displayed in constraints.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
-        </property>
-        <property name="text">
-         <string>Hide base length units for supported unit systems</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>HideUnits</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxDiaConstraint">
-        <property name="toolTip">
-         <string>Use Diameter as default constraint for arcs and circles instead of Radius.</string>
-        </property>
-        <property name="text">
-         <string>Use diameter as default constraint for arcs and circles</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DefaultDiaConstraint</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="minimumSize">
-         <size>
-          <width>182</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Font size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0" colspan="2">
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="baseSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="title">
-         <string>Visibility automation</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxTVHideDependent">
-           <property name="toolTip">
-            <string>When opening sketch, hide all features that depend on it</string>
-           </property>
-           <property name="text">
-            <string>Hide all objects that depend on the sketch</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>HideDependent</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxTVShowLinks">
-           <property name="toolTip">
-            <string>When opening sketch, show sources for external geometry links</string>
-           </property>
-           <property name="text">
-            <string>Show objects used for external geometry</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>ShowLinks</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxTVShowSupport">
-           <property name="toolTip">
-            <string>When opening sketch, show objects the sketch is attached to</string>
-           </property>
-           <property name="text">
-            <string>Show objects that the sketch is attached to</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>ShowSupport</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxTVRestoreCamera">
-           <property name="toolTip">
-            <string>When closing sketch, move camera back to where it was before sketch was opened</string>
-           </property>
-           <property name="text">
-            <string>Restore camera position after editing</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>RestoreCamera</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxTVForceOrtho">
-           <property name="toolTip">
-            <string>When entering edit mode, force orthographic view of camera.
-Works only when &quot;Restore camera position after editing&quot; is enabled.</string>
-           </property>
-           <property name="text">
-            <string>Force orthographic camera when entering edit</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>ForceOrtho</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
-           <property name="toolTip">
-            <string>Open a by default sketch in Section View mode.
-Then objects are only visible behind the sketch plane.</string>
-           </property>
-           <property name="text">
-            <string>Open sketch in Section View mode</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>SectionView</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Mod/Sketcher/General</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_9">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnTVApply">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>Applies current visibility automation settings to all sketches in open documents</string>
-           </property>
-           <property name="text">
-            <string>Apply to existing sketches</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
-        <property name="toolTip">
-         <string>Font size used for labels and constraints</string>
-        </property>
-        <property name="suffix">
-         <string>px</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>17</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>EditSketcherFontSize</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="Gui::PrefCheckBox" name="continueMode">
-        <property name="toolTip">
-         <string>Current sketcher creation tool will remain active after creation</string>
-        </property>
-        <property name="text">
-         <string>Geometry creation &quot;Continue Mode&quot;</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ContinuousCreationMode</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Grid line pattern</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
-        <property name="toolTip">
-         <string>Number of polygons for geometry approximation</string>
-        </property>
-        <property name="minimum">
-         <number>50</number>
-        </property>
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>SegmentsPerGeometry</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
+     <layout class="QGridLayout" name="gridLayout_1">
       <item row="1" column="0">
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="label_1">
         <property name="minimumSize">
          <size>
           <width>182</width>
@@ -389,12 +31,15 @@ Then objects are only visible behind the sketch plane.</string>
         <property name="text">
          <string>View scale ratio</string>
         </property>
+        <property name="buddy">
+         <cstring>viewScalingFactor</cstring>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="Gui::PrefDoubleSpinBox" name="viewScalingFactor">
         <property name="toolTip">
-         <string>The 3D view is scaled based on this factor</string>
+         <string>The 3D view is scaled based on this factor.</string>
         </property>
         <property name="inputMethodHints">
          <set>Qt::ImhPreferNumbers</set>
@@ -422,10 +67,415 @@ Then objects are only visible behind the sketch plane.</string>
         </property>
        </widget>
       </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
+        <property name="toolTip">
+         <string>The number of polygons used for geometry approximation.</string>
+        </property>
+        <property name="minimum">
+         <number>50</number>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SegmentsPerGeometry</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
+        <property name="toolTip">
+         <string>If checked, displays the name on dimensional constraints (if exists).</string>
+        </property>
+        <property name="text">
+         <string>Show dimensional constraint name with format</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowDimensionalName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
+        <property name="toolTip">
+         <string>The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</string>
+        </property>
+        <property name="text">
+         <string notr="true">%N = %V</string>
+        </property>
+        <property name="placeholderText">
+         <string>%N = %V</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DimensionalStringFormat</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Segments per geometry</string>
+        </property>
+        <property name="buddy">
+         <cstring>SegmentsPerGeometry</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="continueMode">
+        <property name="toolTip">
+         <string>The current sketcher creation tool will remain active after creation.</string>
+        </property>
+        <property name="text">
+         <string>Geometry creation &quot;Continue Mode&quot;</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ContinuousCreationMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
+        <property name="toolTip">
+         <string>Font size used for labels and constraints.</string>
+        </property>
+        <property name="suffix">
+         <string>px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>17</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EditSketcherFontSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
+        <property name="toolTip">
+         <string>Base length units will not be displayed in constraints or cursor coordinates.
+Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
+        </property>
+        <property name="text">
+         <string>Hide base length units for supported unit systems</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideUnits</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_0">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Font size</string>
+        </property>
+        <property name="buddy">
+         <cstring>EditSketcherFontSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="constraintMode">
+        <property name="toolTip">
+         <string>The current constraint creation tool will remain active after creation.</string>
+        </property>
+        <property name="text">
+         <string>Constraint creation &quot;Continue Mode&quot;</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ContinuousConstraintMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
+        <property name="toolTip">
+         <string>Cursor position coordinates will be displayed beside cursor while editing sketch.</string>
+        </property>
+        <property name="text">
+         <string>Show coordinates beside cursor while editing</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowCursorCoords</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
+        <property name="toolTip">
+         <string>A dialog will pop up to input a value for new dimensional constraints.</string>
+        </property>
+        <property name="text">
+         <string>Ask for value after creating a dimensional constraint</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowDialogOnDistanceConstraint</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
+        <property name="toolTip">
+         <string>Cursor coordinates will use the system decimals setting instead of the short form.</string>
+        </property>
+        <property name="text">
+         <string>Use system decimals setting for cursor coordinates</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseSystemDecimals</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Visibility automation</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVHideDependent">
+        <property name="toolTip">
+         <string>When opening a sketch, hide all features that depend on it.</string>
+        </property>
+        <property name="text">
+         <string>Hide all objects that depend on the sketch</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideDependent</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVShowLinks">
+        <property name="toolTip">
+         <string>When opening a sketch, show sources for external geometry links.</string>
+        </property>
+        <property name="text">
+         <string>Show objects used for external geometry</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowLinks</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVShowSupport">
+        <property name="toolTip">
+         <string>When opening a sketch, show objects the sketch is attached to.</string>
+        </property>
+        <property name="text">
+         <string>Show objects that the sketch is attached to</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowSupport</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVRestoreCamera">
+        <property name="toolTip">
+         <string>When closing a sketch, move camera back to where it was before the sketch was opened.</string>
+        </property>
+        <property name="text">
+         <string>Restore camera position after editing</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RestoreCamera</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVForceOrtho">
+        <property name="toolTip">
+         <string>When entering edit mode, force orthographic view of camera.
+Works only when &quot;Restore camera position after editing&quot; is enabled.</string>
+        </property>
+        <property name="text">
+         <string>Force orthographic camera when entering edit</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ForceOrtho</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
+        <property name="toolTip">
+         <string>Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</string>
+        </property>
+        <property name="text">
+         <string>Open sketch in Section View mode</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SectionView</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnTVApply">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Applies current visibility automation settings to all sketches in open documents.</string>
+        </property>
+        <property name="text">
+         <string>Apply to existing sketches</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -452,6 +502,11 @@ Then objects are only visible behind the sketch plane.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -459,9 +514,14 @@ Then objects are only visible behind the sketch plane.</string>
  </customwidgets>
  <tabstops>
   <tabstop>EditSketcherFontSize</tabstop>
-  <tabstop>comboBox</tabstop>
+  <tabstop>viewScalingFactor</tabstop>
+  <tabstop>SegmentsPerGeometry</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>
+  <tabstop>constraintMode</tabstop>
+  <tabstop>checkBoxHideUnits</tabstop>
+  <tabstop>checkBoxShowDimensionalName</tabstop>
+  <tabstop>prefDimensionalStringFormat</tabstop>
   <tabstop>checkBoxTVHideDependent</tabstop>
   <tabstop>checkBoxTVShowLinks</tabstop>
   <tabstop>checkBoxTVShowSupport</tabstop>

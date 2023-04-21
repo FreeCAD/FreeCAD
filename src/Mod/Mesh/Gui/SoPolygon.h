@@ -23,18 +23,19 @@
 #ifndef MESHGUI_SOPOLYGON_H
 #define MESHGUI_SOPOLYGON_H
 
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/nodes/SoShape.h>
+#ifndef MESH_GLOBAL_H
+# include <Mod/Mesh/MeshGlobal.h>
+#endif
+
 
 namespace MeshGui {
 
 class MeshGuiExport SoPolygon : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoPolygon);
 
@@ -48,11 +49,11 @@ public:
     SoSFBool  render;
 
 protected:
-    virtual ~SoPolygon() {}
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void rayPick (SoRayPickAction *action);
-    virtual void generatePrimitives(SoAction *action);
+    ~SoPolygon() override {}
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void rayPick (SoRayPickAction *action) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     void drawPolygon(const SbVec3f *,int32_t) const;

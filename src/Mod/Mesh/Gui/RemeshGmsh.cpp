@@ -20,35 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
-# include <QTextCursor>
 # include <QElapsedTimer>
+# include <QMessageBox>
+# include <QPointer>
+# include <QTextCursor>
 #endif
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObserver.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
+#include <Gui/ReportView.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
 #include "RemeshGmsh.h"
 #include "ui_RemeshGmsh.h"
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Widgets.h>
-#include <Gui/ReportView.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
+
 
 using namespace MeshGui;
 
 class GmshWidget::Private {
 public:
-    Private(QWidget* parent)
+    explicit Private(QWidget* parent)
       : gmsh(parent)
     {
         /* coverity[uninit_ctor] Members of ui are set in setupUI() */
@@ -77,17 +74,8 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
   , d(new Private(parent))
 {
-    connect(&d->gmsh, SIGNAL(started()), this, SLOT(started()));
-    connect(&d->gmsh, SIGNAL(finished(int, QProcess::ExitStatus)),
-            this, SLOT(finished(int, QProcess::ExitStatus)));
-    connect(&d->gmsh, SIGNAL(errorOccurred(QProcess::ProcessError)),
-            this, SLOT(errorOccurred(QProcess::ProcessError)));
-    connect(&d->gmsh, SIGNAL(readyReadStandardError()),
-            this, SLOT(readyReadStandardError()));
-    connect(&d->gmsh, SIGNAL(readyReadStandardOutput()),
-            this, SLOT(readyReadStandardOutput()));
-
     d->ui.setupUi(this);
+    setupConnections();
     d->ui.fileChooser->onRestore();
     d->syntax = new Gui::DockWnd::ReportHighlighter(d->ui.outputWindow);
     d->ui.outputWindow->setReadOnly(true);
@@ -116,6 +104,23 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
 GmshWidget::~GmshWidget()
 {
     d->ui.fileChooser->onSave();
+}
+
+void GmshWidget::setupConnections()
+{
+    connect(&d->gmsh, &QProcess::started, this, &GmshWidget::started);
+    connect(&d->gmsh, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this, &GmshWidget::finished);
+    connect(&d->gmsh, &QProcess::errorOccurred,
+            this, &GmshWidget::errorOccurred);
+    connect(&d->gmsh, &QProcess::readyReadStandardError,
+            this, &GmshWidget::readyReadStandardError);
+    connect(&d->gmsh, &QProcess::readyReadStandardOutput,
+            this, &GmshWidget::readyReadStandardOutput);
+    connect(d->ui.killButton, &QPushButton::clicked,
+            this, &GmshWidget::onKillButtonClicked);
+    connect(d->ui.clearButton, &QPushButton::clicked,
+            this, &GmshWidget::onClearButtonClicked);
 }
 
 void GmshWidget::changeEvent(QEvent *e)
@@ -206,7 +211,7 @@ void GmshWidget::readyReadStandardOutput()
     d->appendText(text, false);
 }
 
-void GmshWidget::on_killButton_clicked()
+void GmshWidget::onKillButtonClicked()
 {
     if (d->gmsh.state() == QProcess::Running) {
         d->gmsh.kill();
@@ -215,7 +220,7 @@ void GmshWidget::on_killButton_clicked()
     }
 }
 
-void GmshWidget::on_clearButton_clicked()
+void GmshWidget::onClearButtonClicked()
 {
     d->ui.outputWindow->clear();
 }
@@ -261,14 +266,14 @@ void GmshWidget::errorOccurred(QProcess::ProcessError error)
 
 void GmshWidget::reject()
 {
-    on_killButton_clicked();
+    onKillButtonClicked();
 }
 
 // -------------------------------------------------
 
 class RemeshGmsh::Private {
 public:
-    Private(Mesh::Feature* mesh)
+    explicit Private(Mesh::Feature* mesh)
       : mesh(mesh)
     {
     }
@@ -284,7 +289,7 @@ RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
   : GmshWidget(parent, fl)
   , d(new Private(mesh))
 {
-    // Copy mesh that is used each time when applying gmsh's remeshing function
+    // Copy mesh that is used each time when applying Gmsh's remeshing function
     d->copy = mesh->Mesh.getValue().getKernel();
     d->stlFile = App::Application::getTempFileName() + "mesh.stl";
     d->geoFile = App::Application::getTempFileName() + "mesh.geo";
@@ -313,15 +318,15 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
         int maxAngle = 120;
         int minAngle = 20;
 
-        // gmsh geo file
+        // Gmsh geo file
         Base::FileInfo geo(d->geoFile);
         Base::ofstream geoOut(geo, std::ios::out);
-        // Examples on how to use gmsh: https://sfepy.org/doc-devel/preprocessing.html
-        // http://gmsh.info//doc/texinfo/gmsh.html
+        // Examples on how to use Gmsh: https://sfepy.org/doc-devel/preprocessing.html
+        // https://gmsh.info//doc/texinfo/gmsh.html
         // https://docs.salome-platform.org/latest/gui/GMSHPLUGIN/gmsh_2d_3d_hypo_page.html
         geoOut << "// geo file for meshing with Gmsh meshing software created by FreeCAD\n"
             << "If(GMSH_MAJOR_VERSION < 4)\n"
-            << "   Error(\"Too old gmsh version %g.%g. At least 4.x is required\", GMSH_MAJOR_VERSION, GMSH_MINOR_VERSION);\n"
+            << "   Error(\"Too old Gmsh version %g.%g. At least 4.x is required\", GMSH_MAJOR_VERSION, GMSH_MINOR_VERSION);\n"
             << "   Exit;\n"
             << "EndIf\n"
             << "Merge \"" << stl.filePath() << "\";\n\n"
@@ -392,7 +397,7 @@ TaskRemeshGmsh::TaskRemeshGmsh(Mesh::Feature* mesh)
 {
     widget = new RemeshGmsh(mesh);
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

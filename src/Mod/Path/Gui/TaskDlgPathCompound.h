@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATHGUI_TaskDlgPathCompound_H
 #define PATHGUI_TaskDlgPathCompound_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Path/App/FeaturePath.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Path/App/FeaturePathCompound.h>
 
 #include "ViewProviderPathCompound.h"
+
 
 class Ui_TaskDlgPathCompound;
 
@@ -41,13 +40,13 @@ class TaskWidgetPathCompound : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=0);
-    ~TaskWidgetPathCompound();
+    explicit TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=nullptr);
+    ~TaskWidgetPathCompound() override;
 
-    std::vector<std::string> getList(void) const;
+    std::vector<std::string> getList() const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     QWidget* proxy;

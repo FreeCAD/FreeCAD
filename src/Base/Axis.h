@@ -24,8 +24,8 @@
 #ifndef BASE_AXIS_H
 #define BASE_AXIS_H
 
-#include "Vector3D.h"
 #include "Placement.h"
+#include "Vector3D.h"
 
 namespace Base {
 
@@ -36,14 +36,14 @@ class BaseExport Axis
 {
 public:
     /// default constructor
-    Axis(void);
+    Axis();
     Axis(const Axis&);
     Axis(const Vector3d& Orig, const Vector3d& Dir);
     /// Destruction
-    ~Axis () {}
+    ~Axis () = default;
 
-    const Vector3d& getBase(void) const {return _base;}
-    const Vector3d& getDirection(void) const {return _dir;}
+    const Vector3d& getBase() const {return _base;}
+    const Vector3d& getDirection() const {return _dir;}
     void setBase(const Vector3d& Orig) {_base=Orig;}
     void setDirection(const Vector3d& Dir) {_dir=Dir;}
 

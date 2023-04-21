@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : SMESH_Hypothesis.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
@@ -58,7 +58,7 @@ public:
     HYP_UNKNOWN_FATAL,//  --- all statuses below should be considered as fatal
                       //      for Add/RemoveHypothesis operations
     HYP_INCOMPATIBLE, // hypothesis does not fit algo
-    HYP_NOTCONFORM,   // not conform mesh is produced appling a hypothesis
+    HYP_NOTCONFORM,   // not conform mesh is produced applying a hypothesis
     HYP_ALREADY_EXIST,// several applicable hypothesis of same priority assigned
     HYP_BAD_DIM,      // bad dimension
     HYP_BAD_SUBSHAPE, // shape is neither the main one, nor its sub-shape, nor a group
@@ -119,7 +119,7 @@ public:
    * 
    * An auxiliary hypothesis is optional, i.e. an algorithm
    * can work without it and another hypothesis of the same
-   * dimention can be assigned to the shape
+   * dimension can be assigned to the shape
    */
   virtual bool IsAuxiliary() const
   { return GetType() == PARAM_ALGO && _param_algo_dim < 0; }

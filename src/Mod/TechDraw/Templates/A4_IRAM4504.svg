@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns:lc="http://www.librecad.org"
@@ -9,36 +7,13 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
-   version="1.1"
    id="svg131"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="A4_IRAM4504.svg">
+   version="1.1"
+   viewBox="0 0 210 297"
+   height="297mm"
+   width="210mm">
   <defs
      id="defs125" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="11.2"
-     inkscape:cx="296.50417"
-     inkscape:cy="197.52116"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     inkscape:window-width="1330"
-     inkscape:window-height="740"
-     inkscape:window-x="36"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     showguides="false" />
   <metadata
      id="metadata128">
     <rdf:RDF>
@@ -47,527 +22,477 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Capa 1"
-     inkscape:groupmode="layer"
      id="layer1">
     <g
-       transform="translate(1.4603138e-6,-9.0897083e-6)"
-       id="g107">
+       id="g107"
+       transform="translate(1.4603138e-6,-9.0897083e-6)">
       <rect
-         y="10.400646"
-         x="25.400631"
-         height="276.19873"
-         width="174.19873"
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.80126482;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
          id="rect927"
-         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.80126482;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill" />
+         width="174.19873"
+         height="276.19873"
+         x="25.400631"
+         y="10.400646" />
     </g>
     <g
-       transform="translate(1.4603138e-6,-9.0897083e-6)"
-       id="g123">
+       id="g123"
+       transform="translate(1.4603138e-6,-9.0897083e-6)">
       <path
-         inkscape:connector-curvature="0"
-         id="path923"
+         style="fill:none;stroke:#000000;stroke-width:0.80000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 25,235.6 H 200"
-         style="fill:none;stroke:#000000;stroke-width:0.80000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path923" />
       <path
-         inkscape:connector-curvature="0"
-         id="path929"
+         style="fill:none;stroke:#000000;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 51.2,287 V 236"
-         style="fill:none;stroke:#000000;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path929" />
       <path
-         inkscape:connector-curvature="0"
-         id="path929-3"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 71.1,287 V 236"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path929-3" />
       <path
-         inkscape:connector-curvature="0"
-         id="path929-3-6"
+         style="fill:none;stroke:#000000;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 145.2,287 V 236"
-         style="fill:none;stroke:#000000;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path929-3-6" />
       <path
-         inkscape:connector-curvature="0"
-         id="path976"
+         style="fill:none;stroke:#000000;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 51,252.8 H 200"
-         style="fill:none;stroke:#000000;stroke-width:0.40000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path976" />
       <path
-         inkscape:connector-curvature="0"
-         id="path929-3-5"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 81.1,253 V 236"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path929-3-5" />
       <path
-         inkscape:connector-curvature="0"
-         id="path929-3-5-3"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 100.1,253 V 236"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path929-3-5-3" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1027"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 51,240.15 h 49"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1027" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1027-5"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 51,244.4 h 49"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1027-5" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1027-6"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 51,248.65 h 49"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1027-6" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1027-2"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 51,263.9 H 71"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1027-2" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1027-2-9"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 51,272.9 H 71"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1027-2-9" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1080"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 145,278.4 h 55"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1080" />
       <path
-         inkscape:connector-curvature="0"
-         id="path1080-1"
+         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 145,269.9 h 55"
-         style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         id="path1080-1" />
     </g>
     <g
-       id="g1322"
-       lc:is_construction="false"
-       lc:is_locked="false"
-       lc:layername="0"
+       transform="translate(133.20302,221.08134)"
        style="fill:none;stroke:#000000;stroke-width:1"
-       transform="translate(133.20302,221.08134)">
+       lc:layername="0"
+       lc:is_locked="false"
+       lc:is_construction="false"
+       id="g1322">
       <g
          id="g285">
         <g
-           transform="translate(-79.441915,-124.04884)"
-           id="g1362">
+           id="g1362"
+           transform="translate(-79.441915,-124.04884)">
           <line
-             id="line1310"
-             y2="173.10699"
+             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+             x1="0"
+             y1="169.60699"
              x2="0"
-             y1="169.60699"
-             x1="0"
-             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none" />
+             y2="173.10699"
+             id="line1310" />
           <line
-             id="line1312"
-             y2="167.85699"
-             x2="7"
-             y1="174.85699"
+             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
              x1="7"
-             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none" />
-          <line
-             id="line1314"
+             y1="174.85699"
+             x2="7"
              y2="167.85699"
-             x2="7"
-             y1="169.60699"
-             x1="0"
-             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none" />
+             id="line1312" />
           <line
-             id="line1316"
-             y2="174.85699"
-             x2="7"
-             y1="173.10699"
+             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
              x1="0"
-             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none" />
+             y1="169.60699"
+             x2="7"
+             y2="167.85699"
+             id="line1314" />
+          <line
+             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+             x1="0"
+             y1="173.10699"
+             x2="7"
+             y2="174.85699"
+             id="line1316" />
           <circle
-             id="circle1318"
+             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+             cx="11.5"
+             cy="171.35699"
              r="3.5"
-             cy="171.35699"
-             cx="11.5"
-             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none" />
+             id="circle1318" />
           <circle
-             id="circle1320"
-             r="1.75"
-             cy="171.35699"
+             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
              cx="11.5"
-             style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none" />
+             cy="171.35699"
+             r="1.75"
+             id="circle1320" />
         </g>
       </g>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="-78.065361"
+         id="text149"
          y="21.846779"
-         id="text149"><tspan
-           sodipodi:role="line"
-           id="tspan147"
-           x="-78.065361"
+         x="-78.065361"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="21.846779"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">Dibujó</tspan></text>
+           x="-78.065361"
+           id="tspan147">Dibujó</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.70363045px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06759075"
-         x="-57.223892"
+         id="text149-8"
          y="17.886438"
-         id="text149-8"><tspan
-           sodipodi:role="line"
-           id="tspan147-3"
-           x="-57.223892"
+         x="-57.223892"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.70363px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0675908"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0675908"
            y="17.886438"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06759075">Fecha</tspan></text>
+           x="-57.223892"
+           id="tspan147-3">Fecha</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.70363045px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06759074"
-         x="-42.991306"
+         id="text149-0"
          y="17.884556"
-         id="text149-0"><tspan
-           sodipodi:role="line"
-           id="tspan147-1"
-           x="-42.991306"
+         x="-42.991306"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.70363px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0675907"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0675907"
            y="17.884556"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06759074">Nombre</tspan></text>
+           x="-42.991306"
+           id="tspan147-1">Nombre</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="-77.821724"
+         id="text149-7"
          y="26.311422"
-         id="text149-7"><tspan
-           sodipodi:role="line"
-           id="tspan147-8"
-           x="-77.821724"
+         x="-77.821724"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="26.311422"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">Revisó</tspan></text>
+           x="-77.821724"
+           id="tspan147-8">Revisó</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="-77.330345"
+         id="text149-9"
          y="30.175068"
-         id="text149-9"><tspan
-           sodipodi:role="line"
-           id="tspan147-15"
-           x="-77.330345"
+         x="-77.330345"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="30.175068"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">Aprobó</tspan></text>
+           x="-77.330345"
+           id="tspan147-15">Aprobó</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="-77.761192"
+         id="text149-4"
          y="34.429817"
-         id="text149-4"><tspan
-           sodipodi:role="line"
-           id="tspan147-9"
-           x="-77.761192"
+         x="-77.761192"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="34.429817"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">Escala</tspan></text>
+           x="-77.761192"
+           id="tspan147-9">Escala</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="-75.755585"
+         id="text149-2"
          y="54.703533"
-         id="text149-2"><tspan
-           sodipodi:role="line"
-           id="tspan147-5"
-           x="-75.755585"
+         x="-75.755585"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="54.703533"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">Tolerancia</tspan></text>
+           x="-75.755585"
+           id="tspan147-5">Tolerancia</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="-75.800209"
+         id="text149-74"
          y="60.496002"
-         id="text149-74"><tspan
-           sodipodi:role="line"
-           id="tspan147-99"
-           x="-75.800209"
+         x="-75.800209"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="60.496002"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">Rugosidad</tspan></text>
+           x="-75.800209"
+           id="tspan147-99">Rugosidad</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="19.950657"
+         id="text149-45"
          y="53.746075"
-         id="text149-45"><tspan
-           sodipodi:role="line"
-           id="tspan147-93"
-           x="19.950657"
+         x="19.950657"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="53.746075"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">N° de Plano</tspan></text>
+           x="19.950657"
+           id="tspan147-93">N° de Plano</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06409614"
-         x="22.21199"
+         id="text149-45-5"
          y="34.845268"
-         id="text149-45-5"><tspan
-           sodipodi:role="line"
-           id="tspan147-93-7"
-           x="22.21199"
+         x="22.21199"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0640961"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0640961"
            y="34.845268"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06409614">N° Plano Cliente</tspan></text>
+           x="22.21199"
+           id="tspan147-93-7">N° Plano Cliente</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.70363045px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06759074"
-         x="-28.537853"
+         id="text149-0-0"
          y="17.868631"
-         id="text149-0-0"><tspan
-           sodipodi:role="line"
-           id="tspan147-1-8"
-           x="-28.537853"
+         x="-28.537853"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.70363px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.0675907"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.0675907"
            y="17.868631"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.06759074">Cliente</tspan></text>
+           x="-28.537853"
+           id="tspan147-1-8">Cliente</tspan></text>
     </g>
     <text
-       freecad:editable="CLIENTE"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="122.41703"
+       id="text310"
        y="246.1622"
-       id="text310"><tspan
-         sodipodi:role="line"
-         id="tspan308"
-         x="122.41703"
+       x="122.41703"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="CLIENTE"><tspan
+         style="font-size:3.5px;stroke-width:0.264583"
          y="246.1622"
-         style="font-size:3.5px;stroke-width:0.26458332">CLIENTE</tspan></text>
+         x="122.41703"
+         id="tspan308">CLIENTE</tspan></text>
     <text
-       freecad:editable="EMPRESA"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="173.1131"
+       id="text314"
        y="245.21725"
-       id="text314"><tspan
-         sodipodi:role="line"
-         id="tspan312"
-         x="173.1131"
+       x="173.1131"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="EMPRESA"><tspan
+         style="font-size:3.5px;stroke-width:0.264583"
          y="245.21725"
-         style="font-size:3.5px;stroke-width:0.26458332">EMPRESA</tspan></text>
+         x="173.1131"
+         id="tspan312">EMPRESA</tspan></text>
     <text
-       freecad:editable="N° PLANO CLIENTE"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="171.54118"
+       id="text318"
        y="263.75064"
-       id="text318"><tspan
-         sodipodi:role="line"
-         id="tspan316"
-         x="171.54118"
+       x="171.54118"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="N° PLANO CLIENTE"><tspan
+         style="font-size:3.5px;stroke-width:0.264583"
          y="263.75064"
-         style="font-size:3.5px;stroke-width:0.26458332">PLANO CLIENTE</tspan></text>
+         x="171.54118"
+         id="tspan316">PLANO CLIENTE</tspan></text>
     <text
-       freecad:editable="N° PLANO"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="179.71353"
+       id="text322"
        y="275.22705"
-       id="text322"><tspan
-         sodipodi:role="line"
-         id="tspan320"
-         x="179.71353"
+       x="179.71353"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="N° PLANO"><tspan
+         style="font-size:3.5px;stroke-width:0.264583"
          y="275.22705"
-         style="font-size:3.5px;stroke-width:0.26458332">PLANO</tspan></text>
+         x="179.71353"
+         id="tspan320">PLANO</tspan></text>
     <text
-       freecad:editable="PLANO REEMPLAZANTE"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="144.64236"
+       id="text326"
        y="283.36926"
-       id="text326"><tspan
-         sodipodi:role="line"
-         id="tspan324"
-         x="144.64236"
+       x="144.64236"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="PLANO REEMPLAZANTE"><tspan
+         style="stroke-width:0.264583"
          y="283.36926"
-         style="stroke-width:0.26458332">REEMPLAZO</tspan></text>
+         x="144.64236"
+         id="tspan324">REEMPLAZO</tspan></text>
     <text
-       freecad:editable="DENOMINACION"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="107.44235"
+       id="text330"
        y="270.27304"
-       id="text330"><tspan
-         sodipodi:role="line"
-         id="tspan328"
-         x="107.44235"
+       x="107.44235"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="DENOMINACION"><tspan
+         style="stroke-width:0.264583"
          y="270.27304"
-         style="stroke-width:0.26458332">DENOMINACION</tspan></text>
+         x="107.44235"
+         id="tspan328">DENOMINACION</tspan></text>
     <text
-       freecad:editable="ESCALA"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="61.315426"
+       id="text334"
        y="260.8107"
-       id="text334"><tspan
-         sodipodi:role="line"
-         id="tspan332"
-         x="61.315426"
+       x="61.315426"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="ESCALA"><tspan
+         style="stroke-width:0.264583"
          y="260.8107"
-         style="stroke-width:0.26458332">ESCALA</tspan></text>
+         x="61.315426"
+         id="tspan332">ESCALA</tspan></text>
     <text
-       freecad:editable="ANOTACION1"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="25.296057"
+       id="text338"
        y="238.9334"
-       id="text338"><tspan
-         sodipodi:role="line"
-         id="tspan336"
-         x="25.296057"
+       x="25.296057"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="ANOTACION1"><tspan
+         style="font-size:2.5px;stroke-width:0.264583"
          y="238.9334"
-         style="font-size:2.5px;stroke-width:0.26458332">ANOTACION1</tspan></text>
+         x="25.296057"
+         id="tspan336">ANOTACION1</tspan></text>
     <text
-       freecad:editable="TOLERANCIA"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="61.104492"
+       id="text342"
        y="278.65863"
-       id="text342"><tspan
-         sodipodi:role="line"
-         id="tspan340"
-         x="61.104492"
+       x="61.104492"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="TOLERANCIA"><tspan
+         style="font-size:2.5px;stroke-width:0.264583"
          y="278.65863"
-         style="font-size:2.5px;stroke-width:0.26458332">TOLERANCIA</tspan></text>
+         x="61.104492"
+         id="tspan340">TOLERANCIA</tspan></text>
     <text
-       freecad:editable="RUGOSIDAD"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="61.304943"
+       id="text346"
        y="284.93948"
-       id="text346"><tspan
-         sodipodi:role="line"
-         id="tspan344"
-         x="61.304943"
+       x="61.304943"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="RUGOSIDAD"><tspan
+         style="font-size:2.5px;stroke-width:0.264583"
          y="284.93948"
-         style="font-size:2.5px;stroke-width:0.26458332">RUGOSIDAD</tspan></text>
+         x="61.304943"
+         id="tspan344">RUGOSIDAD</tspan></text>
     <text
-       freecad:editable="FECHA DE DIBUJO"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="75.367271"
+       id="text350"
        y="243.14519"
-       id="text350"><tspan
-         sodipodi:role="line"
-         id="tspan348"
-         x="75.367271"
+       x="75.367271"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="FECHA DE DIBUJO"><tspan
+         style="stroke-width:0.264583"
          y="243.14519"
-         style="stroke-width:0.26458332">FECHA1</tspan></text>
+         x="75.367271"
+         id="tspan348">FECHA1</tspan></text>
     <text
-       freecad:editable="FECHA DE REVISION"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="75.37133"
+       id="text354"
        y="247.42151"
-       id="text354"><tspan
-         sodipodi:role="line"
-         id="tspan352"
-         x="75.37133"
+       x="75.37133"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="FECHA DE REVISION"><tspan
+         style="stroke-width:0.264583"
          y="247.42151"
-         style="stroke-width:0.26458332">FECHA2</tspan></text>
+         x="75.37133"
+         id="tspan352">FECHA2</tspan></text>
     <text
-       freecad:editable="FECHA DE APROBACION"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="75.447929"
+       id="text358"
        y="251.56418"
-       id="text358"><tspan
-         sodipodi:role="line"
-         id="tspan356"
-         x="75.447929"
+       x="75.447929"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="FECHA DE APROBACION"><tspan
+         style="stroke-width:0.264583"
          y="251.56418"
-         style="stroke-width:0.26458332">FECHA3</tspan></text>
+         x="75.447929"
+         id="tspan356">FECHA3</tspan></text>
     <text
-       freecad:editable="NOMBRE DIBUJO"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="90.036415"
+       id="text362"
        y="243.11177"
-       id="text362"><tspan
-         sodipodi:role="line"
-         id="tspan360"
-         x="90.036415"
+       x="90.036415"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="NOMBRE DIBUJO"><tspan
+         style="stroke-width:0.264583"
          y="243.11177"
-         style="stroke-width:0.26458332">NOMBRE1</tspan></text>
+         x="90.036415"
+         id="tspan360">NOMBRE1</tspan></text>
     <text
-       freecad:editable="NOMBRE REVISION"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="90.136642"
+       id="text366"
        y="247.4549"
-       id="text366"><tspan
-         sodipodi:role="line"
-         id="tspan364"
-         x="90.136642"
+       x="90.136642"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="NOMBRE REVISION"><tspan
+         style="stroke-width:0.264583"
          y="247.4549"
-         style="stroke-width:0.26458332">NOMBRE2</tspan></text>
+         x="90.136642"
+         id="tspan364">NOMBRE2</tspan></text>
     <text
-       freecad:editable="NOMBRE APROBACION"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="90.170059"
+       id="text370"
        y="251.56416"
-       id="text370"><tspan
-         sodipodi:role="line"
-         id="tspan368"
-         x="90.170059"
+       x="90.170059"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="NOMBRE APROBACION"><tspan
+         style="stroke-width:0.264583"
          y="251.56416"
-         style="stroke-width:0.26458332">NOMBRE3</tspan></text>
+         x="90.170059"
+         id="tspan368">NOMBRE3</tspan></text>
     <text
-       freecad:editable="ANOTACION2"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="25.312035"
+       id="text89"
        y="242.86716"
-       id="text89"><tspan
-         sodipodi:role="line"
-         id="tspan87"
-         x="25.312035"
+       x="25.312035"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="ANOTACION2"><tspan
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
          y="242.86716"
-         style="text-align:start;text-anchor:start;stroke-width:0.26458332">ANOTACION2</tspan></text>
+         x="25.312035"
+         id="tspan87">ANOTACION2</tspan></text>
     <text
-       freecad:editable="ANOTACION3"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="25.295752"
+       id="text93"
        y="246.93227"
-       id="text93"><tspan
-         sodipodi:role="line"
-         id="tspan91"
-         x="25.295752"
+       x="25.295752"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="ANOTACION3"><tspan
+         style="stroke-width:0.264583"
          y="246.93227"
-         style="stroke-width:0.26458332">ANOTACION3</tspan></text>
+         x="25.295752"
+         id="tspan91">ANOTACION3</tspan></text>
     <text
-       freecad:editable="ANOTACION4"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="25.228933"
+       id="text97"
        y="250.83031"
-       id="text97"><tspan
-         sodipodi:role="line"
-         id="tspan95"
-         x="25.228933"
-         y="250.83031"
-         style="stroke-width:0.26458332">ANOTACION4</tspan></text>
-    <text
-       freecad:editable="ANOTACION5"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="25.228933"
-       y="254.96223"
-       id="text101"><tspan
-         sodipodi:role="line"
-         id="tspan99"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="ANOTACION4"><tspan
+         style="stroke-width:0.264583"
+         y="250.83031"
          x="25.228933"
+         id="tspan95">ANOTACION4</tspan></text>
+    <text
+       id="text101"
+       y="254.96223"
+       x="25.228933"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.5px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"
+       freecad:editable="ANOTACION5"><tspan
+         style="stroke-width:0.264583"
          y="254.96223"
-         style="stroke-width:0.26458332">ANOTACION5</tspan></text>
+         x="25.228933"
+         id="tspan99">ANOTACION5</tspan></text>
     <g
-       style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.34999999"
+       transform="translate(33.587392,274.99068)"
        id="freecad-logo"
-       transform="translate(33.587392,274.99068)">
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.34999999">
       <path
-         inkscape:connector-curvature="0"
-         d="m 0.1524,0.15254 v 8.8549 h 1.9744 v -3.4652 h 1.396 v -1.3661 h -1.396 v -1.4745 h 3.4391 v -2.5441 z"
-         id="path4213" />
+         id="path4213"
+         d="m 0.1524,0.15254 v 8.8549 h 1.9744 v -3.4652 h 1.396 v -1.3661 h -1.396 v -1.4745 h 3.4391 v -2.5441 z" />
       <path
-         inkscape:connector-curvature="0"
-         d="M 7.7927,3.4504 7.28555,3.2744 6.80168,2.0378 6.04053,2.0778 5.69335,3.3565 5.20745,3.58919 3.99555,3.05904 3.48367,3.62786 4.14259,4.77636 3.96253,5.28203 2.72593,5.7659 l 0.044064,0.76263 1.2787,0.34718 0.23269,0.4859 -0.53421,1.2104 0.56882,0.51188 1.1485,-0.65891 0.50973,0.18155 0.4798,1.2351 0.7667,-0.04258 0.34311,-1.2802 0.4859,-0.23269 1.2145,0.5357 0.51188,-0.56882 -0.65891,-1.1485 0.17748,-0.51122 1.2351,-0.4798 L 10.491274,5.34831 9.211074,5.0052 8.978384,4.5193 9.510014,3.3033 8.941204,2.79146 Z M 7.2212,4.6748 7.45696,4.81159 7.66122,4.99678 7.82475,5.21779 7.94238,5.46351 8.01154,5.7284 8.023,5.99986 7.98379,6.27125 7.89431,6.52889 7.75197,6.76723 7.57233,6.9689 7.35132,7.13243 7.1056,7.25006 6.84071,7.31922 6.56776,7.33475 l -0.2719,-0.04 -0.2576,-0.089 -0.2383,-0.143 -0.2002,-0.183 -0.165,-0.217 -0.1177,-0.246 -0.0676,-0.269 -0.0156,-0.273 L 5.273066,5.60335 5.36255,5.34571 5.5034,5.11144 5.68453,4.9057 5.90554,4.74218 6.15126,4.62455 6.42021,4.55687 6.69168,4.54541 6.96307,4.58462 7.22071,4.6741 Z"
-         id="path4215" />
+         id="path4215"
+         d="M 7.7927,3.4504 7.28555,3.2744 6.80168,2.0378 6.04053,2.0778 5.69335,3.3565 5.20745,3.58919 3.99555,3.05904 3.48367,3.62786 4.14259,4.77636 3.96253,5.28203 2.72593,5.7659 l 0.044064,0.76263 1.2787,0.34718 0.23269,0.4859 -0.53421,1.2104 0.56882,0.51188 1.1485,-0.65891 0.50973,0.18155 0.4798,1.2351 0.7667,-0.04258 0.34311,-1.2802 0.4859,-0.23269 1.2145,0.5357 0.51188,-0.56882 -0.65891,-1.1485 0.17748,-0.51122 1.2351,-0.4798 L 10.491274,5.34831 9.211074,5.0052 8.978384,4.5193 9.510014,3.3033 8.941204,2.79146 Z M 7.2212,4.6748 7.45696,4.81159 7.66122,4.99678 7.82475,5.21779 7.94238,5.46351 8.01154,5.7284 8.023,5.99986 7.98379,6.27125 7.89431,6.52889 7.75197,6.76723 7.57233,6.9689 7.35132,7.13243 7.1056,7.25006 6.84071,7.31922 6.56776,7.33475 l -0.2719,-0.04 -0.2576,-0.089 -0.2383,-0.143 -0.2002,-0.183 -0.165,-0.217 -0.1177,-0.246 -0.0676,-0.269 -0.0156,-0.273 L 5.273066,5.60335 5.36255,5.34571 5.5034,5.11144 5.68453,4.9057 5.90554,4.74218 6.15126,4.62455 6.42021,4.55687 6.69168,4.54541 6.96307,4.58462 7.22071,4.6741 Z" />
     </g>
   </g>
 </svg>

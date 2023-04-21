@@ -20,48 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
+# include <gp_Trsf.hxx>
 #endif
 
-
-//#include <strstream>
-//#include <Base/Console.h>
-//#include <Base/Writer.h>
-//#include <Base/Reader.h>
-//#include <Base/Exception.h>
-//#include <Base/FileInfo.h>
-//#include <Base/Stream.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
 
 #include "PartFeatureReference.h"
 
-using namespace Part;
 
+using namespace Part;
 
 PROPERTY_SOURCE(Part::FeatureReference, App::GeoFeature)
 
-
-FeatureReference::FeatureReference(void) 
+FeatureReference::FeatureReference()
 {
-    ADD_PROPERTY(Reference, (0));
+    ADD_PROPERTY(Reference, (nullptr));
 }
 
 FeatureReference::~FeatureReference()
 {
 }
 
-short FeatureReference::mustExecute(void) const
+short FeatureReference::mustExecute() const
 {
     return GeoFeature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *FeatureReference::execute(void)
+App::DocumentObjectExecReturn *FeatureReference::execute()
 {
     return App::DocumentObject::StdReturn;
 }

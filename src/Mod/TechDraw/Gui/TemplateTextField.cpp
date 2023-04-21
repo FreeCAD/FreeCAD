@@ -30,6 +30,7 @@
 #endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
 
 #include "DlgTemplateField.h"
 #include "TemplateTextField.h"

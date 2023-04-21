@@ -34,8 +34,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
 
-from FreeCAD import Units as U
 from draftutils.translate import translate
+from draftutils import utils
 from draftutils.utils import ANNOTATION_STYLE as DEFAULT
 
 param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -69,17 +69,16 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.doc = None
         self.styles = {}
         self.renamed = {}
+        self.current_style = None
         self.form = None
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Manage or create annotation styles"
-
         return {'Pixmap': ":icons/Draft_Annotation_Style.svg",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
                                               "Annotation styles..."),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                             _tip)}
+                                             "Manage or create annotation styles")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -87,8 +86,9 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         The document attribute is set here by the parent class.
         """
         super(AnnotationStyleEditor, self).Activated()
-        # reset rename table
+        # reset rename table and current style
         self.renamed = {}
+        self.current_style = None
 
         # load dialog
         ui_file = ":/ui/dialog_AnnotationStyleEditor.ui"
@@ -125,16 +125,10 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form.pushButtonRename.clicked.connect(self.on_rename)
         self.form.pushButtonImport.clicked.connect(self.on_import)
         self.form.pushButtonExport.clicked.connect(self.on_export)
-        for attr in DEFAULT.keys():
-            control = getattr(self.form, attr)
-            for signal in ("clicked", "textChanged",
-                           "valueChanged", "stateChanged",
-                           "currentIndexChanged"):
-                if hasattr(control, signal):
-                    getattr(control, signal).connect(self.update_style)
-                    break
+        self.form.buttonBox.accepted.connect(self.update_style)
 
         # show editor dialog
+        self.fill_editor()
         result = self.form.exec_()
 
         # process if OK was clicked
@@ -151,7 +145,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         meta = self.doc.Meta
         for key, value in meta.items():
             if key.startswith("Draft_Style_"):
-                styles[key[12:]] = json.loads(value)
+                styles[key[12:]] = self.repair_style(json.loads(value))
         return styles
 
     def save_meta(self, styles):
@@ -197,16 +191,14 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 if vobj.AnnotationStyle in styles.keys():
                     if vobj.AnnotationStyle in changedstyles:
                         # the style has changed
-                        for attr, attrvalue in styles[vobj.AnnotationStyle].items():
+                        for attr, value in styles[vobj.AnnotationStyle].items():
                             if hasattr(vobj, attr):
                                 try:
-                                    getattr(vobj,attr).setValue(attrvalue)
-                                except Exception:
-                                    try:
-                                        setattr(vobj,attr,attrvalue)
-                                    except Exception:
-                                        unitvalue = U.Quantity(attrvalue, U.Length).Value
-                                        setattr(vobj,attr,unitvalue)
+                                    if vobj.getTypeIdOfProperty(attr) == "App::PropertyColor":
+                                        value = value & 0xFFFFFF00
+                                    setattr(vobj, attr, value)
+                                except:
+                                    pass
                 else:
                     # the style has been removed
                     vobj.AnnotationStyle = ""
@@ -214,35 +206,46 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def on_style_changed(self, index):
         """Execute as a callback when the styles combobox changes."""
-        if index <= 1:
+        if index == 0:
             # nothing happens
             self.form.pushButtonDelete.setEnabled(False)
             self.form.pushButtonRename.setEnabled(False)
-            self.fill_editor(None)
-        if index == 1:
+        elif index == 1:
             # Add new... entry
             reply = QtGui.QInputDialog.getText(None,
                                                "Create new style",
                                                "Style name:")
             if reply[1]:
                 # OK or Enter pressed
-                name = reply[0]
-                if name in self.styles:
-                    reply = QtGui.QMessageBox.information(None,
-                                                          "Style exists",
-                                                          "This style name already exists")
+                name = reply[0].strip()
+                if name == "":
+                    QtGui.QMessageBox.information(None,
+                                                  "Style name required",
+                                                  "No style name specified")
+                    self.form.comboBoxStyles.setCurrentIndex(0)
+                elif name in self.styles:
+                    QtGui.QMessageBox.information(None,
+                                                  "Style exists",
+                                                  "This style name already exists")
+                    self.form.comboBoxStyles.setCurrentIndex(0)
                 else:
-                    # create new default style
-                    self.styles[name] = {}
-                    for key, val in DEFAULT.items():
-                        self.styles[name][key] = val[1]
+                    # create new style from current editor values
+                    self.styles[name] = self.get_editor_values()
                     self.form.comboBoxStyles.addItem(name)
                     self.form.comboBoxStyles.setCurrentIndex(self.form.comboBoxStyles.count() - 1)
-        elif index > 1:
+                    self.current_style = name
+            else:
+                # Cancel or Escape pressed
+                self.form.comboBoxStyles.setCurrentIndex(0)
+        else:
             # Existing style
+            if self.current_style is not None:
+                # save editor values to current style first
+                self.styles[self.current_style] = self.get_editor_values()
+            self.current_style = self.form.comboBoxStyles.itemText(index)
+            self.fill_editor(self.current_style)
             self.form.pushButtonDelete.setEnabled(True)
             self.form.pushButtonRename.setEnabled(True)
-            self.fill_editor(self.form.comboBoxStyles.itemText(index))
 
     def on_delete(self):
         """Execute as a callback when the delete button is pressed."""
@@ -284,54 +287,69 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 self.styles[newname] = value
                 self.renamed[style] = newname
 
-
     def on_import(self):
-        """imports styles from a json file"""
+        """Import styles from a json file."""
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("draft","Open styles file"),
             None,
             translate("draft","JSON file (*.json)"))
         if filename and filename[0]:
+            nstyles = {}
             with open(filename[0]) as f:
-                nstyles = json.load(f)
-                if nstyles:
-                    self.styles.update(nstyles)
-                    l1 = self.form.comboBoxStyles.itemText(0)
-                    l2 = self.form.comboBoxStyles.itemText(1)
-                    self.form.comboBoxStyles.clear()
-                    self.form.comboBoxStyles.addItem(l1)
-                    self.form.comboBoxStyles.addItem(l2)
-                    for style in self.styles.keys():
+                for key, val in json.load(f).items():
+                    nstyles[key] = self.repair_style(val)
+            if nstyles:
+                self.styles.update(nstyles)
+                for style in self.styles.keys():
+                    if self.form.comboBoxStyles.findText(style) == -1:
                         self.form.comboBoxStyles.addItem(style)
-                    print("Styles updated from "+filename[0])
-
+                self.fill_editor(self.current_style) # The current style may have changed.
+                print("Styles updated from " + filename[0])
 
     def on_export(self):
-        """exports styles to a json file"""
+        """Export styles to a json file."""
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             translate("draft","Save styles file"),
             None,
             translate("draft","JSON file (*.json)"))
         if filename and filename[0]:
+            self.update_style()
             with open(filename[0],"w") as f:
                 json.dump(self.styles,f,indent=4)
-            print("Styles saved to "+filename[0])
+            print("Styles saved to " + filename[0])
 
+    def repair_style(self, style):
+        """Repair a V0.19 or V0.20 style.
 
-    def fill_editor(self, style):
+        Some properties were missing or misspelled.
+        Some float values were wrongly stored as strings.
+        """
+        new = {}
+        for key, val in DEFAULT.items():
+            if style.get(key) is None:
+                new[key] = val[1]
+            elif type(style[key]) == type(val[1]):
+                new[key] = style[key]
+            elif isinstance(style[key], str):
+                new[key] = float(style[key].replace(",", "."))
+            else:
+                new[key] = val[1]
+        return new
+
+    def fill_editor(self, style=None):
         """Fill the editor fields with the contents of a style."""
-        if style is None:
+        if style is None or style == "":
             style = {}
             for key, val in DEFAULT.items():
                 style[key] = val[1]
-
-        if not isinstance(style, dict):
-            if style in self.styles:
-                style = self.styles[style]
-            else:
-                print("debug: unable to fill dialog from style", style)
+        elif isinstance(style, dict):
+            pass
+        elif isinstance(style, str) and style in self.styles:
+            style = self.styles[style]
+        else:
+            print("debug: unable to fill dialog from style", style)
 
         for key, value in style.items():
             control = getattr(self.form, key)
@@ -340,42 +358,52 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             elif DEFAULT[key][0] == "font":
                 control.setCurrentFont(QtGui.QFont(value))
             elif DEFAULT[key][0] == "color":
-                r = ((value >> 24) & 0xFF) / 255.0
-                g = ((value >> 16) & 0xFF) / 255.0
-                b = ((value >> 8) & 0xFF) / 255.0
-                color = QtGui.QColor.fromRgbF(r, g, b)
+                color = QtGui.QColor(utils.rgba_to_argb(value))
                 control.setProperty("color", color)
-            elif DEFAULT[key][0] in ["int", "float"]:
+            elif DEFAULT[key][0] == "int":
                 control.setValue(value)
+            elif DEFAULT[key][0] == "float":
+                if hasattr(control, "setText"):
+                    control.setText(App.Units.Quantity(value, App.Units.Length).UserString)
+                else:
+                    control.setValue(value)
             elif DEFAULT[key][0] == "bool":
                 control.setChecked(value)
             elif DEFAULT[key][0] == "index":
                 control.setCurrentIndex(value)
 
-    def update_style(self, arg=None):
+    def update_style(self):
         """Update the current style with the values from the editor."""
         index = self.form.comboBoxStyles.currentIndex()
         if index > 1:
-            values = {}
             style = self.form.comboBoxStyles.itemText(index)
-            for key in DEFAULT.keys():
-                control = getattr(self.form, key)
-                if DEFAULT[key][0] == "str":
-                    values[key] = control.text()
-                elif DEFAULT[key][0] == "font":
-                    values[key] = control.currentFont().family()
-                elif DEFAULT[key][0] == "color":
-                    values[key] = control.property("color").rgb() << 8
-                elif DEFAULT[key][0] in ["int", "float"]:
+            self.styles[style] = self.get_editor_values()
+
+    def get_editor_values(self):
+        values = {}
+        for key in DEFAULT.keys():
+            control = getattr(self.form, key)
+            if DEFAULT[key][0] == "str":
+                values[key] = control.text()
+            elif DEFAULT[key][0] == "font":
+                values[key] = control.currentFont().family()
+            elif DEFAULT[key][0] == "color":
+                values[key] = utils.argb_to_rgba(control.property("color").rgba())
+            elif DEFAULT[key][0] == "int":
+                values[key] = control.value()
+            elif DEFAULT[key][0] == "float":
+                if hasattr(control, "setText"):
+                    values[key] = App.Units.Quantity(control.text()).Value
+                else:
                     values[key] = control.value()
-                elif DEFAULT[key][0] == "bool":
-                    values[key] = control.isChecked()
-                elif DEFAULT[key][0] == "index":
-                    values[key] = control.currentIndex()
-            self.styles[style] = values
+            elif DEFAULT[key][0] == "bool":
+                values[key] = control.isChecked()
+            elif DEFAULT[key][0] == "index":
+                values[key] = control.currentIndex()
+        return values
 
     def get_annotations(self):
-        """Get all the objects that support annotation styles."""
+        """Get all objects that support annotation styles."""
         users = []
         for obj in self.doc.Objects:
             vobj = obj.ViewObject

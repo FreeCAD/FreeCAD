@@ -20,36 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_ViewProviderTextDocument_H
 #define GUI_ViewProviderTextDocument_H
 
-
-#include "ViewProviderDocumentObject.h"
 #include <QPointer>
+#include "ViewProviderDocumentObject.h"
+
 
 class QPlainTextEdit;
 
 namespace Gui {
 
 class GuiExport ViewProviderTextDocument : public ViewProviderDocumentObject {
-    PROPERTY_HEADER(Gui::ViewProviderTextDocument);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderTextDocument);
 public:
     ViewProviderTextDocument();
-    ~ViewProviderTextDocument() {}
+    ~ViewProviderTextDocument() override {}
 
     App::PropertyBool ReadOnly;
     App::PropertyFloat FontSize;
     App::PropertyFont FontName;
     App::PropertyEnumeration SyntaxHighlighter;
 
-    bool doubleClicked();
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    bool isShow() const { return true; }
+    bool doubleClicked() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool isShow() const override { return true; }
 
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
-    virtual MDIView *getMDIView() const;
+    MDIView *getMDIView() const override;
 
 private:
     bool activateView() const;

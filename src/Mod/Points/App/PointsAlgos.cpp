@@ -20,31 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#ifdef FC_OS_LINUX
-# include <unistd.h>
-#endif
+# ifdef FC_OS_LINUX
+#  include <unistd.h>
+# endif
+# include <memory>
 # include <sstream>
+
+# include <boost/lexical_cast.hpp>
+# include <boost/regex.hpp>
+# include <boost/algorithm/string.hpp>
+# include <boost/math/special_functions/fpclassify.hpp> // needed for compilation on some systems
 #endif
 
-
-#include "PointsAlgos.h"
-#include "Points.h"
-
+#include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
-#include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 
-#include <memory>
-#include <boost/regex.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
+#include "PointsAlgos.h"
+#include <E57Format.h>
+
 
 using namespace Points;
 
@@ -211,34 +210,40 @@ void AscReader::read(const std::string& filename)
 namespace Points {
 class Converter {
 public:
-    virtual ~Converter() {
-    }
-    virtual std::string toString(float) const = 0;
+    Converter() = default;
+    virtual ~Converter() = default;
+    virtual std::string toString(double) const = 0;
     virtual double toDouble(Base::InputStream&) const = 0;
     virtual int getSizeOf() const = 0;
+
+private:
+    Converter(const Converter&) = delete;
+    Converter(Converter&&) = delete;
+    Converter& operator= (const Converter&) = delete;
+    Converter& operator= (Converter&&) = delete;
 };
 template <typename T>
 class ConverterT : public Converter {
 public:
-    virtual std::string toString(float f) const {
+    std::string toString(double f) const override {
         T c = static_cast<T>(f);
         std::ostringstream oss;
-        oss.precision(6);
+        oss.precision(7);
         oss.setf(std::ostringstream::showpoint);
         oss << c;
         return oss.str();
     }
-    virtual double toDouble(Base::InputStream& str) const {
+    double toDouble(Base::InputStream& str) const override {
         T c;
         str >> c;
         return static_cast<double>(c);
     }
-    virtual int getSizeOf() const {
+    int getSizeOf() const override {
         return sizeof(T);
     }
 };
 
-typedef std::shared_ptr<Converter> ConverterPtr;
+using ConverterPtr = std::shared_ptr<Converter>;
 
 class DataStreambuf : public std::streambuf
 {
@@ -248,35 +253,35 @@ public:
         _end = data.size();
         _cur = 0;
     }
-    ~DataStreambuf() {
+    ~DataStreambuf() override {
     }
 
 protected:
-    virtual int_type uflow() {
+    int_type uflow() override {
         if (_cur == _end)
             return traits_type::eof();
 
         return static_cast<DataStreambuf::int_type>(_buffer[_cur++]) & 0x000000ff;
     }
-    virtual int_type underflow() {
+    int_type underflow() override {
         if (_cur == _end)
             return traits_type::eof();
 
         return static_cast<DataStreambuf::int_type>(_buffer[_cur]) & 0x000000ff;
     }
-    virtual int_type pbackfail(int_type ch) {
+    int_type pbackfail(int_type ch) override {
         if (_cur == _beg || (ch != traits_type::eof() && ch != _buffer[_cur-1]))
             return traits_type::eof();
 
         return static_cast<DataStreambuf::int_type>(_buffer[--_cur]) & 0x000000ff;
     }
-    virtual std::streamsize showmanyc() {
+    std::streamsize showmanyc() override {
         return _end - _cur;
     }
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
-        std::ios_base::openmode = 
-            std::ios::in | std::ios::out) {
+        std::ios_base::openmode =
+            std::ios::in | std::ios::out) override {
         int p_pos=-1;
         if (way == std::ios_base::beg)
             p_pos = _beg;
@@ -295,12 +300,18 @@ protected:
 
         return ((p_pos+off) - _beg);
     }
-    virtual pos_type seekpos(std::streambuf::pos_type pos,
+    pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
-        std::ios::in | std::ios::out) {
+        std::ios::in | std::ios::out) override {
         (void)which;
         return seekoff(pos, std::ios_base::beg);
     }
+
+private:
+    DataStreambuf(const DataStreambuf&) = delete;
+    DataStreambuf(DataStreambuf&&) = delete;
+    DataStreambuf& operator=(const DataStreambuf&) = delete;
+    DataStreambuf& operator=(DataStreambuf&&) = delete;
 
 private:
     const std::vector<char>& _buffer;
@@ -308,7 +319,7 @@ private:
 };
 
 //Taken from https://github.com/PointCloudLibrary/pcl/blob/master/io/src/lzf.cpp
-unsigned int 
+unsigned int
 lzfDecompress (const void *const in_data,  unsigned int in_len,
                     void             *out_data, unsigned int out_len)
 {
@@ -635,9 +646,9 @@ void PlyReader::read(const std::string& filename)
                 if (alpha != max_size)
                     a = data(i, alpha);
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
         else if (types[red] == "float") {
@@ -978,7 +989,7 @@ void PcdReader::read(const std::string& filename)
         std::vector<char> uncompressed(u);
         if (lzfDecompress(&compressed[0], c, &uncompressed[0], u) == u) {
             DataStreambuf ibuf(uncompressed);
-            std::istream istr(0);
+            std::istream istr(nullptr);
             istr.rdbuf(&ibuf);
             readBinary(true, istr, types, sizes, data);
         }
@@ -1078,34 +1089,20 @@ void PcdReader::read(const std::string& filename)
         if (types[rgba] == "U") {
             for (std::size_t i=0; i<numPoints; i++) {
                 uint32_t packed = static_cast<uint32_t>(data(i,rgba));
-                uint32_t a = (packed >> 24) & 0xff;
-                uint32_t r = (packed >> 16) & 0xff;
-                uint32_t g = (packed >> 8) & 0xff;
-                uint32_t b = packed & 0xff;
-                colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                App::Color col;
+                col.setPackedARGB(packed);
+                colors.emplace_back(col);
             }
         }
         else if (types[rgba] == "F") {
-            union RGBA {
-                uint32_t u;
-                float f;
-            };
-
-            union RGBA v;
+            static_assert(sizeof(float) == sizeof(uint32_t), "float and uint32_t have different sizes");
             for (std::size_t i=0; i<numPoints; i++) {
-                v.f = static_cast<float>(data(i,rgba));
-                uint32_t packed = v.u;
-                uint32_t a = (packed >> 24) & 0xff;
-                uint32_t r = (packed >> 16) & 0xff;
-                uint32_t g = (packed >> 8) & 0xff;
-                uint32_t b = packed & 0xff;
-                colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                float f = static_cast<float>(data(i,rgba));
+                uint32_t packed;
+                std::memcpy(&packed, &f, sizeof(packed));
+                App::Color col;
+                col.setPackedARGB(packed);
+                colors.emplace_back(col);
             }
         }
     }
@@ -1303,6 +1300,485 @@ void PcdReader::readBinary(bool transpose,
 
 // ----------------------------------------------------------------------------
 
+namespace {
+class E57ReaderImp
+{
+public:
+    E57ReaderImp(const std::string& filename, bool color, bool state, double distance)
+        : imfi(filename, "r")
+        , useColor{color}
+        , checkState{state}
+        , minDistance{distance}
+    {
+    }
+
+    void read()
+    {
+        e57::StructureNode root = imfi.root();
+        if (root.isDefined("data3D")) {
+            e57::VectorNode data3D(root.get("data3D"));
+            readData3D(data3D);
+        }
+    }
+
+    std::vector<App::Color> getColors() const
+    {
+        return colors;
+    }
+
+    std::vector<float> getItensity() const
+    {
+        return intensity;
+    }
+
+    const PointKernel& getPoints() const
+    {
+        return points;
+    }
+
+    const std::vector<Base::Vector3f>& getNormals() const
+    {
+        return normals;
+    }
+
+private:
+    void readData3D(const  e57::VectorNode& data3D)
+    {
+        for (int child = 0; child < data3D.childCount(); ++child) {
+            e57::StructureNode scan_data(data3D.get(child));
+            Base::Placement plm;
+            bool hasPlacement = getPlacement(scan_data, plm);
+
+            e57::CompressedVectorNode     cvn(scan_data.get("points"));
+            e57::StructureNode            prototype(cvn.prototype());
+            Proto proto = readProto(prototype);
+            processProto(cvn, proto, hasPlacement, plm);
+        }
+    }
+
+    struct Proto
+    {
+        bool inty = false;
+        bool inv_state = false;
+        unsigned cnt_xyz = 0;
+        unsigned cnt_nor = 0;
+        unsigned cnt_rgb = 0;
+
+        std::vector<double> xData;
+        std::vector<double> yData;
+        std::vector<double> zData;
+
+        std::vector<double> xNormal;
+        std::vector<double> yNormal;
+        std::vector<double> zNormal;
+
+        std::vector<unsigned> redData;
+        std::vector<unsigned> greenData;
+        std::vector<unsigned> blueData;
+
+        std::vector<double> intensity;
+        std::vector<int64_t> state;
+        std::vector<int64_t> nil;
+
+        std::vector<e57::SourceDestBuffer> sdb;
+    };
+
+    Proto readProto(const e57::StructureNode& prototype)
+    {
+        Proto proto;
+        resizeArrays(proto);
+
+        for (int i = 0; i < prototype.childCount(); ++i) {
+            e57::Node node(prototype.get(i));
+            if ((node.type() == e57::E57_FLOAT) || (node.type() == e57::E57_SCALED_INTEGER)) {
+                if (readCartesian(node, proto)) {
+
+                }
+                else if (readNormal(node, proto)) {
+
+                }
+                else if (readItensity(node, proto)) {
+
+                }
+                else {
+                    readOther(node, proto);
+                }
+            }
+            else if (node.type() == e57::E57_INTEGER) {
+                if (readColor(node, proto)) {
+
+                }
+                else if (readCartesianInvalidState(node, proto)) {
+
+                }
+                else {
+                    readOther(node, proto);
+                }
+            }
+        }
+
+        return proto;
+    }
+
+    bool readCartesian(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "cartesianX") {
+            proto.cnt_xyz++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.xData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "cartesianY") {
+            proto.cnt_xyz++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.yData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "cartesianZ") {
+            proto.cnt_xyz++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.zData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readNormal(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "nor:normalX") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.xNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "nor:normalY") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.yNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "nor:normalZ") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.zNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readCartesianInvalidState(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "cartesianInvalidState") {
+            proto.inv_state = true;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.state.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readColor(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "colorRed") {
+            proto.cnt_rgb++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.redData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "colorGreen") {
+            proto.cnt_rgb++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.greenData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "colorBlue") {
+            proto.cnt_rgb++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.blueData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readItensity(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "intensity") {
+            proto.inty = true;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.intensity.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    void readOther(const e57::Node& node, Proto& proto)
+    {
+        proto.sdb.emplace_back(
+                imfi
+                , node.elementName()
+                , proto.nil.data()
+                , buf_size
+                , true
+                , true
+
+        );
+    }
+
+    void processProto(e57::CompressedVectorNode& cvn, const Proto& proto, bool hasPlacement, const Base::Placement& plm)
+    {
+        if (proto.cnt_xyz != 3) {
+            throw Base::BadFormatError("Missing channels xyz");
+        }
+        unsigned count;
+        unsigned cnt_pts = 0;
+        Base::Vector3d pt, last;
+        e57::CompressedVectorReader cvr(cvn.reader(proto.sdb));
+        bool hasColor = (proto.cnt_rgb == 3) && useColor;
+        bool hasItensity = proto.inty;
+        bool hasNormal = (proto.cnt_nor == 3);
+        bool hasState = proto.inv_state && checkState;
+        bool filter = false;
+
+        while ((count = cvr.read())) {
+            for (size_t i = 0; i < count; ++i) {
+                filter = false;
+                if (hasState) {
+                    if (proto.state[i] != 0) { filter = true; }
+                }
+
+                pt = getCoord(proto, i, hasPlacement, plm);
+
+                if ((!filter) && (cnt_pts > 0)) {
+                    if (Base::Distance(last, pt) < minDistance) {
+                        filter = true;
+                    }
+                }
+                if (!filter) {
+                    cnt_pts++;
+                    points.push_back(pt);
+                    last = pt;
+                    if (hasColor) {
+                        colors.push_back(getColor(proto, i));
+                    }
+                    if (hasItensity) {
+                        intensity.push_back(proto.intensity[i]);
+                    }
+                    if (hasNormal) {
+                        normals.push_back(getNormal(proto, i, hasPlacement, plm.getRotation()));
+                    }
+                }
+            }
+        }
+    }
+
+    Base::Vector3d getCoord(const Proto& proto, size_t index, bool hasPlacement, const Base::Placement& plm) const
+    {
+        Base::Vector3d pt;
+        pt.x = proto.xData[index];
+        pt.y = proto.yData[index];
+        pt.z = proto.zData[index];
+        if (hasPlacement) {
+            plm.multVec(pt, pt);
+        }
+        return pt;
+    }
+
+    Base::Vector3f getNormal(const Proto& proto, size_t index, bool hasPlacement, const Base::Rotation& rot) const
+    {
+        Base::Vector3f pt;
+        pt.x = proto.xNormal[index];
+        pt.y = proto.yNormal[index];
+        pt.z = proto.zNormal[index];
+        if (hasPlacement) {
+            rot.multVec(pt, pt);
+        }
+        return pt;
+    }
+
+    App::Color getColor(const Proto& proto, size_t index) const
+    {
+        App::Color c;
+        c.r = static_cast<float>(proto.redData[index]) / 255.0f;
+        c.g = static_cast<float>(proto.greenData[index]) / 255.0f;
+        c.b = static_cast<float>(proto.blueData[index]) / 255.0f;
+        return c;
+    }
+
+    void resizeArrays(Proto& proto)
+    {
+        proto.xData.resize(buf_size);
+        proto.yData.resize(buf_size);
+        proto.zData.resize(buf_size);
+
+        proto.xNormal.resize(buf_size);
+        proto.yNormal.resize(buf_size);
+        proto.zNormal.resize(buf_size);
+
+        proto.redData.resize(buf_size);
+        proto.greenData.resize(buf_size);
+        proto.blueData.resize(buf_size);
+
+        proto.intensity.resize(buf_size);
+        proto.state.resize(buf_size);
+        proto.nil.resize(buf_size);
+    }
+
+    bool getPlacement(const e57::StructureNode& scan_data, Base::Placement& plm) const
+    {
+        bool hasPlacement{false};
+        if (scan_data.isDefined("pose")) {
+            e57::StructureNode pose(scan_data.get("pose"));
+            if (pose.isDefined("rotation")) {
+                e57::StructureNode rotNode(pose.get("rotation"));
+                double quaternion[4];
+                quaternion[0] = e57::FloatNode(rotNode.get("x")).value();
+                quaternion[1] = e57::FloatNode(rotNode.get("y")).value();
+                quaternion[2] = e57::FloatNode(rotNode.get("z")).value();
+                quaternion[3] = e57::FloatNode(rotNode.get("w")).value();
+                Base::Rotation rotate(quaternion);
+                plm.setRotation(rotate);
+                hasPlacement = true;
+            }
+            if (pose.isDefined("translation")) {
+                Base::Vector3d move;
+                e57::StructureNode transNode(pose.get("translation"));
+                move.x = e57::FloatNode(transNode.get("x")).value();
+                move.y = e57::FloatNode(transNode.get("y")).value();
+                move.z = e57::FloatNode(transNode.get("z")).value();
+                plm.setPosition(move);
+                hasPlacement = true;
+            }
+        }
+
+        return hasPlacement;
+    }
+
+private:
+    e57::ImageFile imfi;
+    bool useColor;
+    bool checkState;
+    double minDistance;
+    const size_t buf_size = 1024;
+    std::vector<App::Color> colors;
+    std::vector<float> intensity;
+    PointKernel points;
+    std::vector<Base::Vector3f> normals;
+};
+}
+
+E57Reader::E57Reader(const bool& Color, const bool& State, const float& Distance)
+{
+    useColor = Color;
+    checkState = State;
+    minDistance = Distance;
+}
+
+E57Reader::~E57Reader()
+{
+}
+
+void E57Reader::read(const std::string& filename)
+{
+    try {
+        E57ReaderImp reader(filename, useColor, checkState, minDistance);
+        reader.read();
+        points = reader.getPoints();
+        normals = reader.getNormals();
+        colors = reader.getColors();
+        intensity = reader.getItensity();
+    }
+    catch (const Base::BadFormatError&) {
+        throw;
+    }
+    catch (...) {
+        throw Base::BadFormatError("Reading E57 file failed");
+    }
+}
+
+// ----------------------------------------------------------------------------
+
 Writer::Writer(const PointKernel& p) : points(p)
 {
     width = p.size();
@@ -1378,9 +1854,9 @@ PlyWriter::~PlyWriter()
 void PlyWriter::write(const std::string& filename)
 {
     std::list<std::string> properties;
-    properties.push_back("float x");
-    properties.push_back("float y");
-    properties.push_back("float z");
+    properties.emplace_back("float x");
+    properties.emplace_back("float y");
+    properties.emplace_back("float z");
 
     ConverterPtr convert_float(new ConverterT<float>);
     ConverterPtr convert_uint(new ConverterT<uint32_t>);
@@ -1395,19 +1871,19 @@ void PlyWriter::write(const std::string& filename)
     bool hasNormals = (normals.size() == points.size());
 
     if (hasNormals) {
-        properties.push_back("float nx");
-        properties.push_back("float ny");
-        properties.push_back("float nz");
+        properties.emplace_back("float nx");
+        properties.emplace_back("float ny");
+        properties.emplace_back("float nz");
         converters.push_back(convert_float);
         converters.push_back(convert_float);
         converters.push_back(convert_float);
     }
 
     if (hasColors) {
-        properties.push_back("uchar red");
-        properties.push_back("uchar green");
-        properties.push_back("uchar blue");
-        properties.push_back("uchar alpha");
+        properties.emplace_back("uchar red");
+        properties.emplace_back("uchar green");
+        properties.emplace_back("uchar blue");
+        properties.emplace_back("uchar alpha");
         converters.push_back(convert_uint);
         converters.push_back(convert_uint);
         converters.push_back(convert_uint);
@@ -1415,7 +1891,7 @@ void PlyWriter::write(const std::string& filename)
     }
 
     if (hasIntensity) {
-        properties.push_back("float intensity");
+        properties.emplace_back("float intensity");
         converters.push_back(convert_float);
     }
 
@@ -1537,14 +2013,14 @@ PcdWriter::~PcdWriter()
 void PcdWriter::write(const std::string& filename)
 {
     std::list<std::string> fields;
-    fields.push_back("x");
-    fields.push_back("y");
-    fields.push_back("z");
+    fields.emplace_back("x");
+    fields.emplace_back("y");
+    fields.emplace_back("z");
 
     std::list<std::string> types;
-    types.push_back("F");
-    types.push_back("F");
-    types.push_back("F");
+    types.emplace_back("F");
+    types.emplace_back("F");
+    types.emplace_back("F");
 
     ConverterPtr convert_float(new ConverterT<float>);
     ConverterPtr convert_uint(new ConverterT<uint32_t>);
@@ -1559,33 +2035,33 @@ void PcdWriter::write(const std::string& filename)
     bool hasNormals = (normals.size() == points.size());
 
     if (hasNormals) {
-        fields.push_back("normal_x");
-        fields.push_back("normal_y");
-        fields.push_back("normal_z");
-        types.push_back("F");
-        types.push_back("F");
-        types.push_back("F");
+        fields.emplace_back("normal_x");
+        fields.emplace_back("normal_y");
+        fields.emplace_back("normal_z");
+        types.emplace_back("F");
+        types.emplace_back("F");
+        types.emplace_back("F");
         converters.push_back(convert_float);
         converters.push_back(convert_float);
         converters.push_back(convert_float);
     }
 
     if (hasColors) {
-        fields.push_back("rgba");
-        types.push_back("U");
+        fields.emplace_back("rgba");
+        types.emplace_back("U");
         converters.push_back(convert_uint);
     }
 
     if (hasIntensity) {
-        fields.push_back("intensity");
-        types.push_back("F");
+        fields.emplace_back("intensity");
+        types.emplace_back("F");
         converters.push_back(convert_float);
     }
 
     std::size_t numPoints = points.size();
     const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
 
-    Eigen::MatrixXf data(numPoints, fields.size());
+    Eigen::MatrixXd data(numPoints, fields.size());
 
     if (placement.isIdentity()) {
         for (std::size_t i=0; i<numPoints; i++) {
@@ -1633,14 +2109,8 @@ void PcdWriter::write(const std::string& filename)
 
     if (hasColors) {
         for (std::size_t i=0; i<numPoints; i++) {
-            App::Color c = colors[i];
             // http://docs.pointclouds.org/1.3.0/structpcl_1_1_r_g_b.html
-            uint32_t packed = static_cast<uint32_t>(c.a*255.0f + 0.5f) << 24 |
-                              static_cast<uint32_t>(c.r*255.0f + 0.5f) << 16 |
-                              static_cast<uint32_t>(c.g*255.0f + 0.5f) << 8  |
-                              static_cast<uint32_t>(c.b*255.0f + 0.5f);
-
-            data(i,col) = packed;
+            data(i,col) = colors[i].getPackedARGB();
         }
         col += 1;
     }
@@ -1696,7 +2166,7 @@ void PcdWriter::write(const std::string& filename)
 
     for (std::size_t r=0; r<numPoints; r++) {
         for (std::size_t c=0; c<col; c++) {
-            float value = data(r,c);
+            double value = data(r,c);
             if (boost::math::isnan(value))
                 out << "nan ";
             else

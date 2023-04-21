@@ -19,14 +19,13 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #ifndef PATH_VORONOIEDGE_H
 #define PATH_VORONOIEDGE_H
 
-#include <Base/Handle.h>
 #include <Base/BaseClass.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
 #include "Voronoi.h"
+
 
 namespace Path
 {
@@ -39,7 +38,7 @@ class PathExport VoronoiEdge
   TYPESYSTEM_HEADER();
 public:
 
-  VoronoiEdge(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
+  VoronoiEdge(Voronoi::diagram_type *dia = nullptr, long index = Voronoi::InvalidIndex);
   VoronoiEdge(Voronoi::diagram_type *dia, const Voronoi::diagram_type::edge_type *edge);
   ~VoronoiEdge();
 

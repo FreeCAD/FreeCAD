@@ -23,10 +23,10 @@
 #include "PreCompiled.h"
 
 #include "DrawViewCollection.h"
-
 // inclusion of the generated files (generated out of DrawViewCollectionPy.xml)
 #include <Mod/TechDraw/App/DrawViewCollectionPy.h>
 #include <Mod/TechDraw/App/DrawViewCollectionPy.cpp>
+
 
 using namespace TechDraw;
 
@@ -38,9 +38,7 @@ std::string DrawViewCollectionPy::representation(void) const
 PyObject* DrawViewCollectionPy::addView(PyObject* args)
 {
     PyObject *pcDocObj;
-
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
-        PyErr_SetString(PyExc_TypeError, "DrawViewCollectionPy::addView - Bad Arg - not DocumentObject");
+    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcDocObj)) {
         return nullptr;
     }
 
@@ -50,15 +48,13 @@ PyObject* DrawViewCollectionPy::addView(PyObject* args)
 
     int i = collect->addView(view);
 
-    return PyLong_FromLong((long) i);
+    return PyLong_FromLong(i);
 }
 
 PyObject* DrawViewCollectionPy::removeView(PyObject* args)
 {
     PyObject *pcDocObj;
-
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
-        PyErr_SetString(PyExc_TypeError, "DrawViewCollectionPy::removeView - Bad Arg - not DocumentObject");
+    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcDocObj)) {
         return nullptr;
     }
 
@@ -68,13 +64,13 @@ PyObject* DrawViewCollectionPy::removeView(PyObject* args)
 
     int i = collect->removeView(view);
 
-    return PyLong_FromLong((long) i);
+    return PyLong_FromLong(i);
 }
 
 
 PyObject *DrawViewCollectionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewCollectionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

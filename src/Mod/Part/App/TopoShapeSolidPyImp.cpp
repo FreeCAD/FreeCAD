@@ -20,49 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_Version.hxx>
-# include <BRepGProp.hxx>
-# include <BRepTools.hxx>
-# include <BRepOffset_MakeOffset.hxx>
-#if OCC_VERSION_HEX >= 0x060600
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepClass3d.hxx>
-#endif
+# include <BRepGProp.hxx>
+# include <BRepLib.hxx>
+# include <BRepOffset_MakeOffset.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PrincipalProps.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepLib.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shell.hxx>
 # include <TopoDS_CompSolid.hxx>
+# include <TopoDS_Shell.hxx>
+# include <TopoDS_Solid.hxx>
 # include <gp_Ax1.hxx>
-# include <gp_Pnt.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
-#include "TopoShape.h"
-#include "Tools.h"
 #include "OCCError.h"
+#include "Tools.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
 #include "TopoShapeShellPy.h"
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeSolidPy.cpp"
 
+
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeSolidPy::representation(void) const
+std::string TopoShapeSolidPy::representation() const
 {
     std::stringstream str;
     str << "<Solid object at " << getTopoShapePtr() << ">";
@@ -138,7 +134,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
-Py::Object TopoShapeSolidPy::getMass(void) const
+Py::Object TopoShapeSolidPy::getMass() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -146,7 +142,7 @@ Py::Object TopoShapeSolidPy::getMass(void) const
     return Py::Float(c);
 }
 
-Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
+Py::Object TopoShapeSolidPy::getCenterOfMass() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -154,7 +150,7 @@ Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
 
-Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
+Py::Object TopoShapeSolidPy::getMatrixOfInertia() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -168,7 +164,7 @@ Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
     return Py::Matrix(mat);
 }
 
-Py::Object TopoShapeSolidPy::getStaticMoments(void) const
+Py::Object TopoShapeSolidPy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -181,7 +177,7 @@ Py::Object TopoShapeSolidPy::getStaticMoments(void) const
     return tuple;
 }
 
-Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
+Py::Dict TopoShapeSolidPy::getPrincipalProperties() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -214,16 +210,12 @@ Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
     return dict;
 }
 
-Py::Object TopoShapeSolidPy::getOuterShell(void) const
+Py::Object TopoShapeSolidPy::getOuterShell() const
 {
     TopoDS_Shell shell;
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
-#if OCC_VERSION_HEX >= 0x060600
         shell = BRepClass3d::OuterShell(TopoDS::Solid(shape));
-#else
-        shell = BRepTools::OuterShell(TopoDS::Solid(shape));
-#endif
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
 }
 
@@ -232,7 +224,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     PyObject *p,*d;
     if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
                                       ,&Base::VectorPy::Type,&d))
-        return 0;
+        return nullptr;
     Base::Vector3d pnt = Py::Vector(p,false).toVector();
     Base::Vector3d dir = Py::Vector(d,false).toVector();
 
@@ -246,7 +238,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -255,7 +247,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     PyObject *p,*d;
     if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
                                       ,&Base::VectorPy::Type,&d))
-        return 0;
+        return nullptr;
     Base::Vector3d pnt = Py::Vector(p,false).toVector();
     Base::Vector3d dir = Py::Vector(d,false).toVector();
 
@@ -269,7 +261,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -318,7 +310,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
 
     if (!paramOK) {
         PyErr_SetString(PyExc_TypeError, "Wrong parameter");
-        return 0;
+        return nullptr;
     }
 
     try {
@@ -329,13 +321,13 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject *TopoShapeSolidPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeSolidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

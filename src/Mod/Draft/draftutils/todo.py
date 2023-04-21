@@ -34,8 +34,6 @@ to execute the instructions stored in internal lists.
 # \ingroup draftutils
 # \brief Provides the ToDo static class to run commands with a time delay.
 
-import six
-import sys
 import traceback
 import PySide.QtCore as QtCore
 
@@ -153,9 +151,6 @@ class ToDo:
 
         if ToDo.commitlist:
             for name, func in ToDo.commitlist:
-                if six.PY2:
-                    if isinstance(name, six.text_type):
-                        name = name.encode("utf8")
                 if _DEBUG_inner:
                     _msg("Debug: committing.\n"
                          "name: {}\n".format(name))

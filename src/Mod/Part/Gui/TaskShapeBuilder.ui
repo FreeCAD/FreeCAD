@@ -20,20 +20,6 @@
       <string>Create shape</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QRadioButton" name="radioButtonFaceFromVertex">
-        <property name="text">
-         <string>Face from vertices</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QRadioButton" name="radioButtonShellFromFace">
-        <property name="text">
-         <string>Shell from faces</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QRadioButton" name="radioButtonEdgeFromVertex">
         <property name="text">
@@ -41,10 +27,31 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="radioButtonWireFromEdge">
+        <property name="text">
+         <string>Wire from edges</string>
+        </property>
+       </widget>
+      </item>
+     <item row="2" column="0">
+       <widget class="QRadioButton" name="radioButtonFaceFromVertex">
+        <property name="text">
+         <string>Face from vertices</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QRadioButton" name="radioButtonFaceFromEdge">
         <property name="text">
          <string>Face from edges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QRadioButton" name="radioButtonShellFromFace">
+        <property name="text">
+         <string>Shell from faces</string>
         </property>
        </widget>
       </item>
@@ -89,6 +96,13 @@
       <item row="10" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
+         <widget class="QPushButton" name="selectButton">
+          <property name="text">
+           <string>Box selection...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -110,14 +124,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="radioButtonWireFromEdge">
-        <property name="text">
-         <string>Wire from edges</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="1" column="1">

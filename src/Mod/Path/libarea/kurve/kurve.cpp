@@ -22,7 +22,7 @@ namespace geoff_geometry {
 	}
 
 	SpanVertex::~SpanVertex() {
-#ifndef PEPSDLL 
+#ifndef PEPSDLL
 		// don't know what peps did about this?
 		for(int i = 0; i < SPANSTORAGE; i++) {
 			if(index[i] != NULL) {
@@ -33,7 +33,7 @@ namespace geoff_geometry {
 	}
 
 	const SpanVertex& SpanVertex::operator= (const SpanVertex& spv ){
-		/// 
+		///
 		if (this == &spv)
 			return *this;
 
@@ -85,7 +85,7 @@ namespace geoff_geometry {
 	void SpanVertex::Add(int offset, const SpanDataObject* Index ) {
 		index[offset] = Index;
 	}
-		
+
 	const SpanDataObject* SpanVertex::GetIndex(int offset) const{
 		return index[offset];
 	}
@@ -175,18 +175,21 @@ namespace geoff_geometry {
 	static int Split(double tolerance, double angle, double radius, int dir);
 	int Span::Split(double tolerance) {
 		// returns the number of divisions required to keep in tolerance
-		if(returnSpanProperties == false) this->SetProperties(true);
+		if(!returnSpanProperties)
+			this->SetProperties(true);
 		return geoff_geometry::Split(tolerance, angle, radius, dir);
 	}
 #if 0
 	int Span3d::Split(double tolerance) {
 		// returns the number of divisions required to keep in tolerance
-		if(returnSpanProperties == false) this->SetProperties(true);
+		if(!returnSpanProperties)
+			this->SetProperties(true);
 		return geoff_geometry::Split(tolerance, angle, radius, dir);
 	}
 #endif
 	static int Split(double tolerance, double angle, double radius, int dir) {
-		if(dir == LINEAR) return 0;	// straight span
+		if(dir == LINEAR)	// straight span
+		    return 0;
 		double cosa = 1 - tolerance / radius;
 		if(cosa > NEARLY_ONE) cosa = NEARLY_ONE;
 		cosa = 2 * cosa * cosa - 1 ;              /* double angle */
@@ -258,20 +261,20 @@ namespace geoff_geometry {
 			double dx0 = dx + radius;		// 0deg
 
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x + radius > max.x) max.x = pc.x + radius;	
+				if(pc.x + radius > max.x) max.x = pc.x + radius;
 			}
 			dx0 = dx - radius;				// 180deg
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x - radius < min.x) min.x = pc.x - radius;	
+				if(pc.x - radius < min.x) min.x = pc.x - radius;
 			}
 			double dy0 = dy + radius;		// 90deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y + radius > max.y) max.y = pc.y + radius;	
+				if(pc.y + radius > max.y) max.y = pc.y + radius;
 			}
 
 			dy0 = dy - radius;				// 270deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y - radius < min.y) min.y = pc.y - radius;	
+				if(pc.y - radius < min.y) min.y = pc.y - radius;
 			}
 		}
 	}
@@ -295,20 +298,20 @@ namespace geoff_geometry {
 			double dx0 = dx + radius;		// 0deg
 
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x + radius > max.x) max.x = pc.x + radius;	
+				if(pc.x + radius > max.x) max.x = pc.x + radius;
 			}
 			dx0 = dx - radius;				// 180deg
 			if( dir * (dx0 * dy1 - dx1 * dy) > 0) {
-				if(pc.x - radius < min.x) min.x = pc.x - radius;	
+				if(pc.x - radius < min.x) min.x = pc.x - radius;
 			}
 			double dy0 = dy + radius;		// 90deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y + radius > max.y) max.y = pc.y + radius;	
+				if(pc.y + radius > max.y) max.y = pc.y + radius;
 			}
 
 			dy0 = dy - radius;				// 270deg
 			if( dir * (dx * dy1 - dx1 * dy0) > 0) {
-				if(pc.y - radius < min.y) min.y = pc.y - radius;	
+				if(pc.y - radius < min.y) min.y = pc.y - radius;
 			}
 		}
 	}
@@ -320,14 +323,15 @@ namespace geoff_geometry {
 	}
 
 	Point Span::Near(const Point& p)const{
-		// returns the near point to span from p 
+		// returns the near point to span from p
 		if(this->dir == LINEAR) {
 			double t;
 			t = (Vector2d(this->p0, p) * this->vs);		// t parametrised 0 - line length
 			return this->vs * t + this->p0;
 		} else {
 			double r = p.Dist(this->pc);
-			if(r < geoff_geometry::TOLERANCE) return (p.Dist(this->p0) < p.Dist(this->p1))?this->p0 : this->p1;
+			if(r < geoff_geometry::TOLERANCE)
+			    return (p.Dist(this->p0) < p.Dist(this->p1))?this->p0 : this->p1;
 			return(p.Mid(this->pc, (r - this->radius) / r));
 		}
 	}
@@ -335,7 +339,8 @@ namespace geoff_geometry {
 		// returns the near point to span from p - returned point is always on the span
 		Point pn;
 		pn = Near(p);
-		if(this->OnSpan(pn) == true) return pn;
+		if(this->OnSpan(pn))
+		    return pn;
 
 		// return nearest endpoint
 		return (pn.Dist(p0) < pn.Dist(p1))?p0 : p1;
@@ -349,7 +354,8 @@ namespace geoff_geometry {
 			if(m.m_mirrored == -1) FAILURE(L"Don't know mirror - use IsMirrored method on object");
 			if(m.m_mirrored) dir = -dir;
 		}
-		if(setprops == true) SetProperties(true);
+		if(setprops)
+			SetProperties(true);
 	}
 
 #if 0
@@ -362,7 +368,8 @@ namespace geoff_geometry {
 			if(m.m_mirrored == -1) FAILURE(L"Don't know mirror - use IsMirrored method on object");
 			if(m.m_mirrored) dir = -dir;
 		}
-		if(setprops == true) SetProperties(true);
+		if(setprops)
+			SetProperties(true);
 	}
 #endif
 
@@ -390,8 +397,10 @@ namespace geoff_geometry {
 
 	Point Span::MidParam(double param)const {
 		/// returns a point which is 0-1 along span
-		if(fabs(param) < 0.00000000000001)return p0;
-		if(fabs(param - 1.0) < 0.00000000000001)return p1;
+		if(fabs(param) < 0.00000000000001)
+		    return p0;
+		if(fabs(param - 1.0) < 0.00000000000001)
+		    return p1;
 		return MidPerim(param * this->length);
 	}
 
@@ -555,7 +564,8 @@ return;
 
 	bool Kurve::Add(const Span& sp, bool AddNullSpans) {
 		// add a span, including ID
-		if(this->m_started == false) this->Start(sp.p0);
+		if(!this->m_started)
+			this->Start(sp.p0);
 		if(this->Add(sp.dir, sp.p1, sp.pc, AddNullSpans)) {
 			this->AddSpanID(sp.ID);
 			return true;
@@ -589,7 +599,8 @@ return;
 			Point pv, pcc;
 			Get(m_nVertices - 1, pv, pcc);
 			if(pv.Dist(p0) < geoff_geometry::TOLERANCE) {
-				if(!AddNullSpans)return false;
+				if(!AddNullSpans)
+				    return false;
 				span_type = LINEAR;				// linear span
 			}
 		}
@@ -599,7 +610,7 @@ return;
 			p = new SpanVertex;
 			m_spans.push_back(p);
 		}
-		else 
+		else
 			p = (SpanVertex*) m_spans[m_nVertices / SPANSTORAGE];
 
 		p->Add(m_nVertices % SPANSTORAGE, span_type, p0, pc);
@@ -630,7 +641,7 @@ return;
 	void Kurve::Add(const Kurve* k, bool AddNullSpans) {
 		Span sp;
 		Matrix m;
-		if(this->m_unit == false) {
+		if(!this->m_unit) {
 			m = *k;
 			Matrix im = this->Inverse();
 			m.Multiply(im);
@@ -641,7 +652,8 @@ return;
 			#ifndef PEPSDLL
 			const SpanDataObject* obj = k->GetIndex(i-1);
 			#endif
-			if(this->m_unit == false) sp.Transform(m);
+			if(!this->m_unit)
+				sp.Transform(m);
 
 			if(i == 1) {
 				// check if this is the same as last point in kurve
@@ -651,7 +663,7 @@ return;
 					Get(nSpans(), spLast, false, false);
 					if(spLast.p1.Dist(sp.p0) <= geoff_geometry::TOLERANCE) AddFirstVertex = false;
 				}
-				if(AddFirstVertex) { 
+				if(AddFirstVertex) {
 					Add(sp.p0, AddNullSpans);
 					#ifndef PEPSDLL
 					if(obj != NULL) {
@@ -661,7 +673,7 @@ return;
 					#endif
 				}
 			}
-			
+
 			Add(sp.dir, sp.p1, sp.pc, AddNullSpans);
 			#ifndef PEPSDLL
 				if(obj != NULL) {
@@ -716,7 +728,8 @@ return;
 		for(int i = 1; i <= nSpans(); i++) {
 			Span sp;
 			Get(i, sp, true);
-			if(igNoreNullSpans == true && sp.NullSpan == true) continue;
+			if(igNoreNullSpans && sp.NullSpan)
+				continue;
 			all->push_back(sp);
 		}
 	}
@@ -729,7 +742,7 @@ return;
 	int	Kurve::Get(int vertexnumber, Point& pe, Point& pc) const {
 		// returns spantype with end / centre by reference
 		if(vertexnumber < 0 || vertexnumber >= m_nVertices) FAILURE(getMessage(L"Kurve::Get - vertexNumber out of range"));
-		if(m_isReversed == true) {
+		if(m_isReversed) {
 			int revVertexnumber = m_nVertices - 1 - vertexnumber;
 			SpanVertex* p = (SpanVertex*)m_spans[revVertexnumber / SPANSTORAGE];
 			int offset = revVertexnumber % SPANSTORAGE;
@@ -751,14 +764,16 @@ return;
 	int	Kurve::GetSpanID(int vertexnumber) const {
 		// for spanID (wire offset)
 		if(vertexnumber < 0 || vertexnumber >= m_nVertices) FAILURE(getMessage(L"Kurve::Get - vertexNumber out of range"));
-		if(m_isReversed == true) vertexnumber = m_nVertices - 1 - vertexnumber;
+		if(m_isReversed)
+			vertexnumber = m_nVertices - 1 - vertexnumber;
 		SpanVertex* p = (SpanVertex*)m_spans[vertexnumber / SPANSTORAGE];
 		return p->GetSpanID(vertexnumber % SPANSTORAGE);
 	}
 	int Kurve::Get(int spannumber, Span& sp, bool returnSpanProperties, bool transform) const {
 		// returns span data and optional properties - the function returns as the span type
 		if(spannumber < 1 || spannumber > m_nVertices) FAILURE(getMessage(L"Kurve::Get - vertexNumber out of range"));
-		if(m_nVertices < 2) return -99;
+		if(m_nVertices < 2)
+		    return -99;
 
 		int spanVertexNumber = spannumber - 1;
 		if(m_isReversed) spanVertexNumber = m_nVertices - 1 - spanVertexNumber;
@@ -784,7 +799,8 @@ return;
 	int Kurve::Get(int spannumber, Span3d& sp, bool returnSpanProperties, bool transform) const {
 		// returns span data and optional properties - the function returns as the span type
 		if(spannumber < 1 || spannumber > m_nVertices) FAILURE(getMessage(L"Kurve::Get - vertexNumber out of range"));
-		if(m_nVertices < 2) return -99;
+		if(m_nVertices < 2)
+		    return -99;
 
 		int spanVertexNumber = spannumber - 1;
 		SpanVertex* p = (SpanVertex*)m_spans[spanVertexNumber / SPANSTORAGE];
@@ -835,7 +851,7 @@ return;
 				if(FNE(radius, radCheck, geoff_geometry::TOLERANCE)){
 					FAILURE(getMessage(L"Invalid Geometry - Radii mismatch - SetProperties"));
 				}
-				
+
 				length = 0.0;
 				angle = 0.0;
 				if(radius > geoff_geometry::TOLERANCE) {
@@ -950,7 +966,7 @@ return;
 
 		Matrix inv_mat = *this;
 		inv_mat.Inverse();
-		
+
 		Point tp = p;
 		if(!m_unit)	tp = tp.Transform(inv_mat); // Inverse transform point (rather than transform each vertex!)
 
@@ -974,27 +990,29 @@ return;
 		if(startSpanno == 1) {
 			Span spFirst;
 			this->Get(1, spFirst, false, true);
-			if(spFirst.p0 == *pNewStart) return;
+			if(spFirst.p0 == *pNewStart)
+			    return;
 		}
 		else if(startSpanno == this->nSpans()) {
 			Span spLast;
 			this->Get(this->nSpans(), spLast, false, true);
-			if(spLast.p1 == *pNewStart) return;
+			if(spLast.p1 == *pNewStart)
+			    return;
 		}
 		Kurve temp;
-		
+
 		bool wrapped = false;
 		int spanno = startSpanno;
 		Span sp;
 		for(int nSpans = 0; nSpans <= this->nSpans(); nSpans++)
 		{
 			this->Get(spanno, sp, false, true);
-			if(spanno == startSpanno && wrapped == false) {
+			if(spanno == startSpanno && !wrapped) {
 				temp.Start(*pNewStart);
 				temp.Add(sp.dir, sp.p1, sp.pc, true);
 			}
 			else {
-				if(nSpans == this->nSpans() && this->Closed() == true) {
+				if(nSpans == this->nSpans() && this->Closed()) {
 					sp.p1 = *pNewStart;
 				}
 				temp.Add(sp, true);
@@ -1003,7 +1021,8 @@ return;
 			spanno++;
 
 			if(spanno > this->nSpans()) {
-				if(this->Closed() == false) break;
+				if(!this->Closed())
+					break;
 				spanno = 1;
 				wrapped = true;
 			}
@@ -1018,15 +1037,17 @@ return;
 		if(endSpanno == 1) {
 			Span spFirst;
 			this->Get(1, spFirst, false, true);
-			if(spFirst.p0 == *pNewEnd) return;
+			if(spFirst.p0 == *pNewEnd)
+			    return;
 		}
 		else if(endSpanno == this->nSpans()) {
 			Span spLast;
 			this->Get(this->nSpans(), spLast, false, true);
-			if(spLast.p1 == *pNewEnd) return;
+			if(spLast.p1 == *pNewEnd)
+			    return;
 		}
 		Kurve temp;
-	
+
 		Span sp;
 
 		for(int spanno = 1; spanno != (endSpanno + 1); spanno++)
@@ -1069,7 +1090,7 @@ return;
 	void Kurve::StoreAllSpans(std::vector<Span>& kSpans)const {	// store all kurve spans in array, normally when fast access is reqd
 		Span span;
 		for(int i = 1; i <= this->nSpans(); i++) {
-			this->Get(i, span, true, false);					
+			this->Get(i, span, true, false);
 			kSpans.push_back(span);
 		}
 	}
@@ -1089,12 +1110,14 @@ return;
 
 	bool Kurve::operator==(const Kurve &k)const{
 		// k = kk (vertex check)
-		if(nSpans() != k.nSpans()) return false;
+		if(nSpans() != k.nSpans())
+		    return false;
 		spVertex thisvertex, vertex;
 		for(int i = 0; i <= nSpans(); i++) {
 			this->Get(i, thisvertex);
 			k.Get(i, vertex);
-			if(thisvertex != vertex) return false;
+			if(thisvertex != vertex)
+			    return false;
 		}
 		return true;
 	}
@@ -1120,7 +1143,7 @@ return;
 
 		if(Closed()) {
 			if(!GetScale(xscale)) FAILURE(getMessage(L"Differential Scale not allowed for this method"));	// differential scale
-			for(int i = 1; i < m_nVertices; i++) {			
+			for(int i = 1; i < m_nVertices; i++) {
 				if(Get(i, sp, true))
 					area += ( 0.5 * ((sp.pc.x - sp.p0.x) * (sp.pc.y + sp.p0.y) - (sp.pc.x - sp.p1.x) * (sp.pc.y + sp.p1.y) - sp.angle * sp.radius * sp.radius));
 				else
@@ -1191,13 +1214,14 @@ return;
 
 			for(int j = 0; j < (int)p0.size(); j++) all.push_back(p0[j]);
 		}
+		(void)totalPoints;
 		//FILE* d;
 		//d = fopen("\\temp\\test.txt", "w");
 		//		for(int l = 0; l < all.size(); l++) all[l].print(d, "all","\n");
 
 
 		for(int i = 0; i < (int)all.size(); i++) {
-			if(i == 0) 
+			if(i == 0)
 				p.push_back(all[0]);
 			else
 				if(all[i-1].Dist(all[i]) > geoff_geometry::TOLERANCE) p.push_back(all[i]);
@@ -1228,7 +1252,7 @@ return;
 						sp.SplitMatrix(nSplits, &m);
 						for(int j = 1; j < nSplits; j++) {
 							sp.p0 = sp.p0.Transform(m);
-							ko.Add(sp.p0);	
+							ko.Add(sp.p0);
 						}
 
 						sp.dir = LINEAR;
@@ -1241,7 +1265,7 @@ return;
 
 			sp.p0 = sp.p1;
 
-		}		
+		}
 		// copy kurve
 		if(changed) *this = ko;
 		return changed;
@@ -1250,7 +1274,8 @@ return;
 	void Kurve::Reverse() {
 		// reverse the direction of a kurve
 		int nSwaps = (m_nVertices - 1) / 2;
-		if(nSwaps == 0) return;
+		if(nSwaps == 0)
+		    return;
 		Point p0, pc0;			// near
 		Point pend, pcend;	// far
 
@@ -1313,7 +1338,8 @@ return;
 	int Kurve::Reduce(double tolerance) {
 		// remove spans that lie within tolerance
 		// returns the number of spans removed
-		if(nSpans() <= 2) return 0;								// too few spans for this method
+		if(nSpans() <= 2)								// too few spans for this method
+		    return 0;
 		Kurve kReduced;
 		kReduced = Matrix(*this);
 
@@ -1330,7 +1356,7 @@ return;
 		}
 		return m_nVertices - kReduced.m_nVertices;
 
-#else 
+#else
 		int dir1, dir2 = 0;
 		Point p0, p1, p2, pc0, pc1, pc2;
 		int vertex = 0;
@@ -1390,7 +1416,7 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
             Span span;
             Point ps,pe;
             int iStartSpanNr,iEndSpanNr,i;
-            
+
             // get start point and start spannumber
             if(fromSpanno == 0)
                   ps = Near(fromPt,iStartSpanNr);
@@ -1409,7 +1435,7 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
                   pe = span.p1;
                   iEndSpanNr = toSpanno;
             }
-            
+
             kPart.Start(ps);
             Get(iStartSpanNr,span,true,true);
 
@@ -1436,7 +1462,7 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
                         Get(i,span,true,true);
                         kPart.Add(span.dir,span.p1,span.pc);
                   }
-                  if(Closed() == false)
+                  if(!Closed())
                   {
                         Get(1,span,true,true);
                         kPart.Add(0,span.p0,Point(0.0,0.0)); // Add new span from kend to kstart
@@ -1466,9 +1492,9 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
 			Span sp;
 			this->Get(i, sp, true, true);
 			perim += sp.length;
-			if(fromPerim <= perim && k.m_started == false) {
+			if(fromPerim <= perim && !k.m_started) {
 				// start
-				if(FEQ(fromPerim, perim) == true)
+				if(FEQ(fromPerim, perim))
 					k.Start(sp.p0);
 				else {
 					double d = fromPerim - perimLast;
@@ -1478,16 +1504,17 @@ Kurve Kurve::Part(int fromSpanno, const Point& fromPt, int toSpanno, const Point
 
 			if(perim >= toPerim) {
 				// end
-				if(FEQ(toPerim, perim) == true)
+				if(FEQ(toPerim, perim))
 					k.Add(sp);
 				else {
 					double d = toPerim - perimLast;
 					sp.p1 = sp.MidPerim(d);
 					k.Add(sp);
-				}				
+				}
 				break;
 			}
-			if(k.m_started == true) k.Add(sp);
+			if(k.m_started)
+				k.Add(sp);
 			perimLast = perim;
 		}
 		return k;

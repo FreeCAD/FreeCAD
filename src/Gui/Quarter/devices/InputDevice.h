@@ -47,7 +47,7 @@ class QuarterWidget;
 class QUARTER_DLL_API InputDevice {
 public:
   InputDevice(QuarterWidget * quarter);
-  InputDevice(void);
+  InputDevice();
   virtual ~InputDevice() {}
 
   /*!

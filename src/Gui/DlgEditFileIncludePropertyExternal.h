@@ -39,13 +39,12 @@ class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal
     Q_OBJECT
 
 public:
-    DlgEditFileIncludePropertyExternal( App::PropertyFileIncluded& Prop, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
-    virtual ~DlgEditFileIncludePropertyExternal();
+    DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgEditFileIncludePropertyExternal() override;
 
-    int Do(void);
+    int processFile();
 
-protected Q_SLOTS:
-protected:
+private:
     App::PropertyFileIncluded& Prop;
 };
 

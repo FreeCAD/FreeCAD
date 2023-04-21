@@ -1,23 +1,24 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
-#                                                                         *
-#   This file is part of the FreeCAD CAx development system.              *
-#                                                                         *
-#   This program is free software; you can redistribute it and/or modify  *
-#   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#   as published by the Free Software Foundation; either version 2 of     *
-#   the License, or (at your option) any later version.                   *
-#   for detail see the LICENCE text file.                                 *
-#                                                                         *
-#   FreeCAD is distributed in the hope that it will be useful,            *
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#   GNU Library General Public License for more details.                  *
-#                                                                         *
-#   You should have received a copy of the GNU Library General Public     *
-#   License along with FreeCAD; if not, write to the Free Software        *
-#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#   USA                                                                   *
-#**************************************************************************
+#***************************************************************************
+#*   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
+
 from __future__ import division
 from math import pi
 import unittest
@@ -42,6 +43,18 @@ class TestFillet(unittest.TestCase):
         self.Body.addObject(self.Fillet)
         self.Doc.recompute()
         self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
+        #test UseAllEdges property
+        self.Fillet.UseAllEdges = True
+        self.Fillet.Base = (self.Box, ['']) # no subobjects, should still work
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
+        self.Fillet.Base = (self.Box, ['Face50']) # non-existent face, topo naming resilience
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
+        self.Fillet.UseAllEdges = False
+        self.Fillet.Base = (self.Box, ['Face1'])
+        self.Doc.recompute()
+        self.assertNotAlmostEqual(self.Fillet.Shape.Volume, 4/3 * pi * 5**3, places=3)
 
     def tearDown(self):
         #closing doc

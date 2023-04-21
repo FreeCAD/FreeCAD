@@ -25,6 +25,7 @@
 
 #include <vector>
 #include <Base/Vector3D.h>
+#include "Definitions.h"
 
 namespace MeshCore {
 
@@ -42,7 +43,7 @@ class MeshExport FacetCurvature
 {
 public:
     FacetCurvature(const MeshKernel& kernel, const MeshRefPointToFacets& search, float, unsigned long);
-    CurvatureInfo Compute(unsigned long index) const;
+    CurvatureInfo Compute(FacetIndex index) const;
 
 private:
     const MeshKernel& myKernel;
@@ -54,8 +55,8 @@ private:
 class MeshExport MeshCurvature
 {
 public:
-    MeshCurvature(const MeshKernel& kernel);
-    MeshCurvature(const MeshKernel& kernel, const std::vector<unsigned long>& segm);
+    explicit MeshCurvature(const MeshKernel& kernel);
+    MeshCurvature(const MeshKernel& kernel, const std::vector<FacetIndex>& segm);
     float GetRadius() const { return myRadius; }
     void SetRadius(float r) { myRadius = r; }
     void ComputePerFace(bool parallel);
@@ -66,7 +67,7 @@ private:
     const MeshKernel& myKernel;
     unsigned long myMinPoints;
     float myRadius;
-    std::vector<unsigned long> mySegment;
+    std::vector<FacetIndex> mySegment;
     std::vector<CurvatureInfo> myCurvature;
 };
 

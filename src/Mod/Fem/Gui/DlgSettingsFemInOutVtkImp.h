@@ -22,11 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
 #define FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
 
+#include <memory>
+
 #include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 
@@ -36,16 +38,16 @@ class DlgSettingsFemInOutVtkImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemInOutVtkImp( QWidget* parent = 0 );
-    ~DlgSettingsFemInOutVtkImp();
+    explicit DlgSettingsFemInOutVtkImp( QWidget* parent = nullptr );
+    ~DlgSettingsFemInOutVtkImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
-    Ui_DlgSettingsFemInOutVtk* ui;
+    std::unique_ptr<Ui_DlgSettingsFemInOutVtk> ui;
 };
 
 } // namespace FemGui

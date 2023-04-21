@@ -29,26 +29,11 @@
 # include <QTextStream>
 #endif
 
-#include <QMessageBox>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -56,8 +41,7 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "PreferencesGui.h"
-#include "MDIViewPage.h"
-#include "QGVPage.h"
+#include "ZVALUE.h"
 #include "QGIView.h"
 #include "TaskLeaderLine.h"
 #include "ViewProviderLeader.h"
@@ -73,60 +57,45 @@ const char* ViewProviderLeader::LineStyleEnums[] = { "NoLine",
                                                   "Dot",
                                                   "DashDot",
                                                   "DashDotDot",
-                                                  NULL };
+                                                  nullptr };
 
 //**************************************************************************
 // Construction/Destruction
 
 ViewProviderLeader::ViewProviderLeader()
 {
-    sPixmap = "actions/techdraw-LeaderLine";
+    sPixmap = "actions/TechDraw_LeaderLine";
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group, (App::PropertyType)(App::Prop_None), "Line width");
     LineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
-    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"Color of the Markup");
+    ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Line style");
+    ADD_PROPERTY_TYPE(Color, (getDefLineColor()), group, App::Prop_None, "Color of the Markup");
+
+    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 ViewProviderLeader::~ViewProviderLeader()
 {
 }
 
-void ViewProviderLeader::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
 bool ViewProviderLeader::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgLeaderLine(this));
-        return true;
-    } else {
+//    Base::Console().Message("VPL::setEdit(%d)\n", ModNum);
+    if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+
+    if (Gui::Control().activeDialog()) {
+        return false; //TaskPanel already open!
+    }
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgLeaderLine(this));
     return true;
 }
 
-void ViewProviderLeader::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderLeader::doubleClicked(void)
+bool ViewProviderLeader::doubleClicked()
 {
 //    Base::Console().Message("VPL::doubleClicked()\n");
     setEdit(ViewProvider::Default);
@@ -139,7 +108,7 @@ void ViewProviderLeader::updateData(const App::Property* p)
         if (p == &getFeature()->LeaderParent)  {
             App::DocumentObject* docObj = getFeature()->LeaderParent.getValue();
             TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(docObj);
-            if (dv != nullptr) {
+            if (dv) {
                 QGIView* qgiv = getQView();
                 if (qgiv) {
                     qgiv->onSourceChange(dv);
@@ -163,7 +132,7 @@ void ViewProviderLeader::onChanged(const App::Property* p)
     ViewProviderDrawingView::onChanged(p);
 }
 
-std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a ViewLeader are:
@@ -180,10 +149,9 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
             }
         }
         return temp;
-    } 
+    }
     catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return std::vector<App::DocumentObject*>();
     }
 }
 
@@ -197,17 +165,12 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
     return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
 }
 
-double ViewProviderLeader::getDefLineWeight(void)
+double ViewProviderLeader::getDefLineWeight()
 {
-    double result = 0.0;
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    result = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
-App::Color ViewProviderLeader::getDefLineColor(void)
+App::Color ViewProviderLeader::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
@@ -224,7 +187,7 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
     }
 
     // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger LineStyleProperty;
         // restore the PropertyInteger to be able to set its value
         LineStyleProperty.Restore(reader);
@@ -232,11 +195,15 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
     }
 
     // property LineStyle had the App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
         App::PropertyIntegerConstraint LineStyleProperty;
         // restore the PropertyIntegerConstraint to be able to set its value
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
+    }
+
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 
@@ -247,19 +214,18 @@ bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
     // get childs
     auto childs = claimChildren();
 
-    if (!childs.empty()) {
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage); 
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
+    if (childs.empty()) {
         return true;
     }
+
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
+    bodyMessageStream << qApp->translate("Std_Delete",
+        "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
+    QMessageBox::warning(Gui::getMainWindow(),
+        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+        QMessageBox::Ok);
+    return false;
 }
 
 bool ViewProviderLeader::canDelete(App::DocumentObject *obj) const

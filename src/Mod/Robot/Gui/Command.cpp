@@ -20,27 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
 #endif
 
-#include <App/Application.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
-#include <Gui/FileDialog.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryObject.h>
 
-#include "TrajectorySimulate.h"
 #include "TaskDlgSimulate.h"
+#include "TrajectorySimulate.h"
 
 
 using namespace std;
@@ -88,7 +84,7 @@ void CmdRobotSetHomePos::activated(int)
 
 }
 
-bool CmdRobotSetHomePos::isActive(void)
+bool CmdRobotSetHomePos::isActive()
 {
     return hasActiveDocument();
 }
@@ -142,7 +138,7 @@ void CmdRobotRestoreHomePos::activated(int)
 
 }
 
-bool CmdRobotRestoreHomePos::isActive(void)
+bool CmdRobotRestoreHomePos::isActive()
 {
     return hasActiveDocument();
 }
@@ -182,7 +178,7 @@ void CmdRobotConstraintAxle::activated(int)
 
 }
 
-bool CmdRobotConstraintAxle::isActive(void)
+bool CmdRobotConstraintAxle::isActive()
 {
     return hasActiveDocument();
 }
@@ -259,7 +255,7 @@ void CmdRobotSimulate::activated(int)
 #endif
 }
 
-bool CmdRobotSimulate::isActive(void)
+bool CmdRobotSimulate::isActive()
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -270,7 +266,7 @@ bool CmdRobotSimulate::isActive(void)
 
 
 
-void CreateRobotCommands(void)
+void CreateRobotCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

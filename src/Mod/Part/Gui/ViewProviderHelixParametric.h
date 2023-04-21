@@ -32,15 +32,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderHelixParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderHelixParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderHelixParametric);
 
 public:
     /// constructor
     ViewProviderHelixParametric();
     /// destructor
-    virtual ~ViewProviderHelixParametric();
-    std::vector<std::string> getDisplayModes(void) const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    ~ViewProviderHelixParametric() override;
+    std::vector<std::string> getDisplayModes(void) const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 private:
     ViewProviderSplineExtension extension;
@@ -48,15 +48,15 @@ private:
 
 class PartGuiExport ViewProviderSpiralParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderSpiralParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSpiralParametric);
 
 public:
     /// constructor
     ViewProviderSpiralParametric();
     /// destructor
-    virtual ~ViewProviderSpiralParametric();
-    std::vector<std::string> getDisplayModes(void) const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    ~ViewProviderSpiralParametric() override;
+    std::vector<std::string> getDisplayModes(void) const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 private:
     ViewProviderSplineExtension extension;

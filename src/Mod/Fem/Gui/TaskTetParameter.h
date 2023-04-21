@@ -55,10 +55,10 @@ class TaskTetParameter : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = 0);
-    ~TaskTetParameter();
+    explicit TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = nullptr);
+    ~TaskTetParameter() override;
 
-    void setInfo(void);
+    void setInfo();
     bool touched;
 
 private Q_SLOTS:
@@ -75,7 +75,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskTetParameter* ui;
+    std::unique_ptr<Ui_TaskTetParameter> ui;
 };
 
 } //namespace FemGui

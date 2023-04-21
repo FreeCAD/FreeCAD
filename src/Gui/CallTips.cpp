@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
 # include <QKeyEvent>
 # include <QLabel>
-# include <QTextCursor>
 # include <QPlainTextEdit>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
+# include <QTextCursor>
 # include <QToolTip>
 #endif
 
-#include <CXX/Objects.hxx>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 #include <App/Property.h>
 #include <App/PropertyContainer.h>
 #include <App/PropertyContainerPy.h>
@@ -42,10 +40,14 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentPy.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/DocumentPy.h>
+
 #include "CallTips.h"
+
 
 Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
 
@@ -64,7 +66,7 @@ public:
       : _var(var), _saveVal(var)
     { var = tmpVal; }
 
-    ~Temporary( void )
+    ~Temporary( )
     { _var = _saveVal; }
 
 private:
@@ -85,8 +87,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
-            this, SLOT(callTipItemActivated(QListWidgetItem *)));
+    connect(this, &QListWidget::itemActivated, this, &CallTipsList::callTipItemActivated);
 
     hideKeys.append(Qt::Key_Space);
     hideKeys.append(Qt::Key_Exclam);
@@ -214,19 +215,6 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         items.pop_front();
         if (!dict.hasKey(std::string(modname.toLatin1())))
             return tips; // unknown object
-#if 0
-        // get the Python object we need
-        Py::Object obj = dict.getItem(std::string(modname.toLatin1()));
-        while (!items.isEmpty()) {
-            QByteArray name = items.front().toLatin1();
-            std::string attr = name.constData();
-            items.pop_front();
-            if (obj.hasAttr(attr))
-                obj = obj.getAttr(attr);
-            else
-                return tips;
-        }
-#else
         // Don't use hasattr & getattr because if a property is bound to a method this will be executed twice.
         PyObject* code = Py_CompileString(static_cast<const char*>(context.toLatin1()), "<CallTipsList>", Py_eval_input);
         if (!code) {
@@ -234,7 +222,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             return tips;
         }
 
-        PyObject* eval = 0;
+        PyObject* eval = nullptr;
         if (PyCode_Check(code)) {
             eval = PyEval_EvalCode(code, dict.ptr(), dict.ptr());
         }
@@ -244,7 +232,6 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             return tips;
         }
         Py::Object obj(eval, true);
-#endif
 
         // Checks whether the type is a subclass of PyObjectBase because to get the doc string
         // of a member we must get it by its type instead of its instance otherwise we get the
@@ -255,11 +242,11 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         //Py::Object type = obj.type();
         Py::Object type(PyObject_Type(obj.ptr()), true);
         Py::Object inst = obj; // the object instance
-        union PyType_Object typeobj = {&Base::PyObjectBase::Type};
-        union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
-        union PyType_Object basetype = {&PyBaseObject_Type};
+        PyObject* typeobj = Base::getTypeAsObject(&Base::PyObjectBase::Type);
+        PyObject* typedoc = Base::getTypeAsObject(&App::DocumentObjectPy::Type);
+        PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
 
-        if (PyObject_IsSubclass(type.ptr(), typedoc.o) == 1) {
+        if (PyObject_IsSubclass(type.ptr(), typedoc) == 1) {
             // From the template Python object we don't query its type object because there we keep
             // a list of additional methods that we won't see otherwise. But to get the correct doc
             // strings we query the type's dict in the class itself.
@@ -269,26 +256,30 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
                 obj = type;
             }
         }
-        else if (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1) {
+        else if (PyObject_IsSubclass(type.ptr(), typeobj) == 1) {
             obj = type;
         }
-        else if (PyObject_IsInstance(obj.ptr(), basetype.o) == 1) {
+        else if (PyObject_IsInstance(obj.ptr(), basetype) == 1) {
             // New style class which can be a module, type, list, tuple, int, float, ...
             // Make sure it's not a type object
-            union PyType_Object typetype = {&PyType_Type};
-            if (PyObject_IsInstance(obj.ptr(), typetype.o) != 1) {
+            PyObject* typetype = Base::getTypeAsObject(&PyType_Type);
+            if (PyObject_IsInstance(obj.ptr(), typetype) != 1) {
+                // For wrapped objects with PySide2 use the object, not its type
+                // as otherwise attributes added at runtime won't be listed (e.g. MainWindowPy)
+                QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
+
                 // this should be now a user-defined Python class
                 // http://stackoverflow.com/questions/12233103/in-python-at-runtime-determine-if-an-object-is-a-class-old-and-new-type-instan
-                if (Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
+                if (!typestr.startsWith(QLatin1String("PySide")) && Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
                     obj = type;
                 }
             }
         }
 
         // If we have an instance of PyObjectBase then determine whether it's valid or not
-        if (PyObject_IsInstance(inst.ptr(), typeobj.o) == 1) {
-            Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
-            const_cast<CallTipsList*>(this)->validObject = baseobj->isValid();
+        if (PyObject_IsInstance(inst.ptr(), typeobj) == 1) {
+            auto baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
+            validObject = baseobj->isValid();
         }
         else {
             // PyObject_IsInstance might set an exception
@@ -299,8 +290,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we derive from PropertyContainerPy we can search for the properties in the
         // C++ twin class.
-        union PyType_Object proptypeobj = {&App::PropertyContainerPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), proptypeobj.o) == 1) {
+        PyObject* proptypeobj = Base::getTypeAsObject(&App::PropertyContainerPy::Type);
+        if (PyObject_IsSubclass(type.ptr(), proptypeobj) == 1) {
             // These are the attributes of the instance itself which are NOT accessible by
             // its type object
             extractTipsFromProperties(inst, tips);
@@ -308,33 +299,33 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we derive from App::DocumentPy we have direct access to the objects by their internal
         // names. So, we add these names to the list, too.
-        union PyType_Object appdoctypeobj = {&App::DocumentPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), appdoctypeobj.o) == 1) {
-            App::DocumentPy* docpy = (App::DocumentPy*)(inst.ptr());
-            App::Document* document = docpy->getDocumentPtr();
+        PyObject* appdoctypeobj = Base::getTypeAsObject(&App::DocumentPy::Type);
+        if (PyObject_IsSubclass(type.ptr(), appdoctypeobj) == 1) {
+            auto docpy = static_cast<App::DocumentPy*>(inst.ptr());
+            auto document = docpy->getDocumentPtr();
             // Make sure that the C++ object is alive
             if (document) {
                 std::vector<App::DocumentObject*> objects = document->getObjects();
                 Py::List list;
-                for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-                    list.append(Py::String((*it)->getNameInDocument()));
+                for (const auto & object : objects)
+                    list.append(Py::String(object->getNameInDocument()));
                 extractTipsFromObject(inst, list, tips);
             }
         }
 
         // If we derive from Gui::DocumentPy we have direct access to the objects by their internal
         // names. So, we add these names to the list, too.
-        union PyType_Object guidoctypeobj = {&Gui::DocumentPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), guidoctypeobj.o) == 1) {
-            Gui::DocumentPy* docpy = (Gui::DocumentPy*)(inst.ptr());
+        PyObject* guidoctypeobj = Base::getTypeAsObject(&Gui::DocumentPy::Type);
+        if (PyObject_IsSubclass(type.ptr(), guidoctypeobj) == 1) {
+            auto docpy = static_cast<Gui::DocumentPy*>(inst.ptr());
             if (docpy->getDocumentPtr()) {
                 App::Document* document = docpy->getDocumentPtr()->getDocument();
                 // Make sure that the C++ object is alive
                 if (document) {
                     std::vector<App::DocumentObject*> objects = document->getObjects();
                     Py::List list;
-                    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-                        list.append(Py::String((*it)->getNameInDocument()));
+                    for (const auto & object : objects)
+                        list.append(Py::String(object->getNameInDocument()));
                     extractTipsFromObject(inst, list, tips);
                 }
             }
@@ -379,8 +370,8 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             tip.name = str;
 
             if (attr.isCallable()) {
-                union PyType_Object basetype = {&PyBaseObject_Type};
-                if (PyObject_IsSubclass(attr.ptr(), basetype.o) == 1) {
+                PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
+                if (PyObject_IsSubclass(attr.ptr(), basetype) == 1) {
                     tip.type = CallTip::Class;
                 }
                 else {
@@ -436,22 +427,23 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
 void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, CallTip>& tips) const
 {
-    App::PropertyContainerPy* cont = (App::PropertyContainerPy*)(obj.ptr());
+    auto cont = static_cast<App::PropertyContainerPy*>(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
-    if (!container) return;
+    if (!container)
+        return;
     std::map<std::string,App::Property*> Map;
     container->getPropertyMap(Map);
 
-    for (std::map<std::string,App::Property*>::const_iterator It=Map.begin();It!=Map.end();++It) {
+    for (const auto & It : Map) {
         CallTip tip;
-        QString str = QString::fromLatin1(It->first.c_str());
+        QString str = QString::fromLatin1(It.first.c_str());
         tip.name = str;
         tip.type = CallTip::Property;
-        QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It->second));
+        QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It.second));
         // a point, mesh or shape property
-        if (It->second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
-            Py::Object data(It->second->getPyObject(), true);
+        if (It.second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
+            Py::Object data(It.second->getPyObject(), true);
             if (data.hasAttr("__doc__")) {
                 Py::Object help = data.getAttr("__doc__");
                 if (help.isString()) {
@@ -603,7 +595,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     // This is a trick to avoid to hide the tooltip window after the defined time span
     // of 10 seconds. We just filter out all timer events to keep the label visible.
     if (watched->inherits("QLabel")) {
-        QLabel* label = qobject_cast<QLabel*>(watched);
+        auto label = qobject_cast<QLabel*>(watched);
         // Ignore the timer events to prevent from being closed
         if (label->windowFlags() & Qt::ToolTip && event->type() == QEvent::Timer)
             return true;
@@ -614,7 +606,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     }
     else if (isVisible() && watched == textEdit) {
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent* ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
                 keyPressEvent(ke);
                 return true;
@@ -632,21 +624,21 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
                 // which in Qt 4.8 gives Key_Minus instead of Key_Underscore
             }
             else if (this->hideKeys.indexOf(ke->key()) > -1) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return false;
             }
             else if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return true;
             }
             else if (ke->key() == Qt::Key_Tab) {
                 // enable call completion for activating items
                 Temporary<bool> tmp( this->doCallCompletion, true ); //< previous state restored on scope exit
-                itemActivated( currentItem() );
+                Q_EMIT itemActivated( currentItem() );
                 return true;
             }
             else if (this->compKeys.indexOf(ke->key()) > -1) {
-                itemActivated(currentItem());
+                Q_EMIT itemActivated(currentItem());
                 return false;
             }
             else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control ||
@@ -657,7 +649,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
         }
         else if (event->type() == QEvent::KeyRelease) {
-            QKeyEvent* ke = (QKeyEvent*)event;
+            auto ke = static_cast<QKeyEvent*>(event);
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ||
                 ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
                 QList<QListWidgetItem *> items = selectedItems();
@@ -685,7 +677,8 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
 void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 {
     hide();
-    if (!item->isSelected()) return;
+    if (!item->isSelected())
+        return;
 
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();
@@ -702,7 +695,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     cursor.insertText( text );
 
     // get CallTip from item's UserRole-data
-    CallTip callTip = item->data(Qt::UserRole).value<CallTip>();
+    auto callTip = item->data(Qt::UserRole).value<CallTip>();
 
     // if call completion enabled and we've something callable (method or class constructor) ...
     if (this->doCallCompletion
@@ -714,9 +707,9 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
-      QRegExp argumentMatcher( QRegExp::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
-      argumentMatcher.setMinimal( true ); //< set regex non-greedy!
-      if (argumentMatcher.indexIn( callTip.description ) != -1)
+      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
+      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
+      if (argumentMatcher.match( callTip.description ).hasMatch())
       {
         // if arguments are needed, we just move the cursor one left, to between the parentheses.
         cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, 1 );

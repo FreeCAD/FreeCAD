@@ -63,6 +63,19 @@ def All():
 
     return suite
 
+def PrintAll():
+    # Registered tests
+    tests = FreeCAD.__unit_test__
+
+    suite = unittest.TestSuite()
+
+    FreeCAD.Console.PrintMessage("\nRegistered test units:\n\n")
+    for test in tests:
+        FreeCAD.Console.PrintMessage(("%s\n" % test))
+    FreeCAD.Console.PrintMessage("\nPlease choose one or use 0 for all\n")
+
+    return suite
+
 
 def TestText(s):
     s = unittest.defaultTestLoader.loadTestsFromName(s)
@@ -71,7 +84,7 @@ def TestText(s):
     # Flushing to make sure the stream is written to the console
     # before the wrapping process stops executing. Without this line
     # executing the tests from command line did not show stats
-    # and proper tarceback in some cases.
+    # and proper traceback in some cases.
     sys.stdout.flush()
     return retval
 

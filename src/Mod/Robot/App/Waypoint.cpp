@@ -20,25 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include "kdl_cp/chain.hpp"
 #endif
 
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/chainfksolver.hpp"
-#include "kdl_cp/chainfksolverpos_recursive.hpp"
-#include "kdl_cp/frames_io.hpp"
-#include "kdl_cp/chainiksolver.hpp"
-#include "kdl_cp/chainiksolvervel_pinv.hpp"
-#include "kdl_cp/chainjnttojacsolver.hpp"
-#include "kdl_cp/chainiksolverpos_nr.hpp"
+#include <Base/Writer.h>
 
 #include "Waypoint.h"
+
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
@@ -60,7 +51,7 @@ Waypoint::Waypoint(const char* name,
                    const Base::Placement &endPos,
                    WaypointType type,
                    float velocity,
-                   float accelaration,
+                   float acceleration,
                    bool cont,
                    unsigned int tool,
                    unsigned int base)
@@ -68,7 +59,7 @@ Waypoint::Waypoint(const char* name,
   : Name(name)
   , Type(type)
   , Velocity(velocity)
-  , Accelaration(accelaration)
+  , Acceleration(acceleration)
   , Cont(cont)
   , Tool(tool)
   , Base(base)
@@ -79,7 +70,7 @@ Waypoint::Waypoint(const char* name,
 Waypoint::Waypoint()
   : Type(UNDEF)
   , Velocity(1000.0)
-  , Accelaration(100.0)
+  , Acceleration(100.0)
   , Cont(false)
   , Tool(0)
   , Base(0)
@@ -90,7 +81,7 @@ Waypoint::~Waypoint()
 {
 }
 
-unsigned int Waypoint::getMemSize (void) const
+unsigned int Waypoint::getMemSize () const
 {
 	return 0;
 }
@@ -107,7 +98,7 @@ void Waypoint::Save (Writer &writer) const
                     << "Q2=\""   <<  EndPos.getRotation()[2] << "\" "
                     << "Q3=\""   <<  EndPos.getRotation()[3] << "\" "
                     << "vel=\""  <<  Velocity				 << "\" "
-                    << "acc=\""  <<  Accelaration	         << "\" "
+                    << "acc=\""  <<  Acceleration	         << "\" "
 					<< "cont=\"" <<  int((Cont)?1:0)         << "\" "
 					<< "tool=\"" <<  Tool                    << "\" "
 					<< "base=\"" <<  Base                    << "\" ";
@@ -139,7 +130,7 @@ void Waypoint::Restore(XMLReader &reader)
                                             reader.getAttributeAsFloat("Q3")));
 
     Velocity     = (float) reader.getAttributeAsFloat("vel");
-    Accelaration = (float) reader.getAttributeAsFloat("acc");
+    Acceleration = (float) reader.getAttributeAsFloat("acc");
     Cont         = (reader.getAttributeAsInteger("cont") != 0)?true:false;
     Tool         = reader.getAttributeAsInteger("tool");
     Base         = reader.getAttributeAsInteger("base");

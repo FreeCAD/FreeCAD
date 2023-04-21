@@ -20,12 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
+#endif
 
 #include "DlgSettingsImageImp.h"
 #include "ui_DlgSettingsImage.h"
-#include "SpinBox.h"
+
 
 using namespace Gui::Dialog;
 using namespace std;
@@ -41,6 +44,8 @@ DlgSettingsImageImp::DlgSettingsImageImp( QWidget* parent )
   , ui(new Ui_DlgSettingsImage)
 {
     ui->setupUi(this);
+    setupConnections();
+
     SbVec2s res = SoOffscreenRenderer::getMaximumResolution();
     ui->spinWidth->setMaximum((int)res[0]);
     ui->spinHeight->setMaximum((int)res[1]);
@@ -61,6 +66,22 @@ DlgSettingsImageImp::DlgSettingsImageImp( QWidget* parent )
 DlgSettingsImageImp::~DlgSettingsImageImp()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+void DlgSettingsImageImp::setupConnections()
+{
+    connect(ui->buttonRatioScreen, &QToolButton::clicked,
+            this, &DlgSettingsImageImp::onButtonRatioScreenClicked);
+    connect(ui->buttonRatio4x3, &QToolButton::clicked,
+            this, &DlgSettingsImageImp::onButtonRatio4x3Clicked);
+    connect(ui->buttonRatio16x9, &QToolButton::clicked,
+            this, &DlgSettingsImageImp::onButtonRatio16x9Clicked);
+    connect(ui->buttonRatio1x1, &QToolButton::clicked,
+            this, &DlgSettingsImageImp::onButtonRatio1x1Clicked);
+    connect(ui->standardSizeBox, qOverload<int>(&QComboBox::activated),
+            this, &DlgSettingsImageImp::onStandardSizeBoxActivated);
+    connect(ui->comboMethod, qOverload<int>(&QComboBox::activated),
+            this, &DlgSettingsImageImp::onComboMethodActivated);
 }
 
 void DlgSettingsImageImp::changeEvent(QEvent *e)
@@ -185,27 +206,27 @@ void DlgSettingsImageImp::adjustImageSize(float fRatio)
     }
 }
 
-void DlgSettingsImageImp::on_buttonRatioScreen_clicked()
+void DlgSettingsImageImp::onButtonRatioScreenClicked()
 {
     adjustImageSize(_fRatio);
 }
 
-void DlgSettingsImageImp::on_buttonRatio4x3_clicked()
+void DlgSettingsImageImp::onButtonRatio4x3Clicked()
 {
     adjustImageSize(4.0f/3.0f);
 }
 
-void DlgSettingsImageImp::on_buttonRatio16x9_clicked()
+void DlgSettingsImageImp::onButtonRatio16x9Clicked()
 {
     adjustImageSize(16.0f/9.0f);
 }
 
-void DlgSettingsImageImp::on_buttonRatio1x1_clicked()
+void DlgSettingsImageImp::onButtonRatio1x1Clicked()
 {
     adjustImageSize(1.0f);
 }
 
-void DlgSettingsImageImp::on_standardSizeBox_activated(int index)
+void DlgSettingsImageImp::onStandardSizeBoxActivated(int index)
 {
     if (index == 0) {
         // we have set the user data for the 1st item
@@ -216,15 +237,22 @@ void DlgSettingsImageImp::on_standardSizeBox_activated(int index)
     else {
         // try to extract from the string
         QString text = ui->standardSizeBox->itemText(index);
-        QRegExp rx(QLatin1String("\\b\\d{2,5}\\b"));
+        QRegularExpression rx(QLatin1String("\\b\\d{2,5}\\b"));
         int pos = 0;
-        pos = rx.indexIn(text, pos);
-        QString w = text.mid(pos, rx.matchedLength());
-        ui->spinWidth->setValue(w.toInt());
-        pos += rx.matchedLength();
-        pos = rx.indexIn(text, pos);
-        QString h = text.mid(pos, rx.matchedLength());
-        ui->spinHeight->setValue(h.toInt());
+        auto match = rx.match(text, pos);
+        if (match.hasMatch()) {
+            pos = match.capturedStart();
+            QString width = text.mid(pos, match.capturedLength());
+            ui->spinWidth->setValue(width.toInt());
+            pos += match.capturedLength();
+        }
+
+        match = rx.match(text, pos);
+        if (match.hasMatch()) {
+            pos = match.capturedStart();
+            QString height = text.mid(pos, match.capturedLength());
+            ui->spinHeight->setValue(height.toInt());
+        }
     }
 }
 
@@ -240,7 +268,7 @@ QByteArray DlgSettingsImageImp::method() const
     return ui->comboMethod->currentData().toByteArray();
 }
 
-void DlgSettingsImageImp::on_comboMethod_activated(int index)
+void DlgSettingsImageImp::onComboMethodActivated(int index)
 {
     QByteArray data = ui->comboMethod->itemData(index).toByteArray();
     if (data == QByteArray("GrabFramebuffer")) {

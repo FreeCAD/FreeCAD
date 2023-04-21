@@ -62,7 +62,7 @@ namespace geoff_geometry {
 	// *********************************************************************************************************
 	wostream& operator << (wostream& op, Point& p){
 		// for debug - print point to file
-		if(p.ok == false)
+		if(!p.ok)
 			op << L" ok=\"false\"";
 		else
 			op << L" x=\"" << p.x << L"\" y=\"" << p.y << L"\"";
@@ -71,7 +71,7 @@ namespace geoff_geometry {
 
 	wostream& operator <<(wostream& op, CLine& cl){
 		// for debug - print cline to file
-		if(cl.ok == false)
+		if(!cl.ok)
 			op << L"(CLine UNSET)";
 		else
 			op << L"sp=" << cl.p << L" v=" << cl.v;
@@ -80,7 +80,7 @@ namespace geoff_geometry {
 
 	wostream& operator <<(wostream& op, Plane& pl){
 		// for debug - print plane to file stream
-		if(pl.ok == false)
+		if(!pl.ok)
 			op << L"(Plane UNSET)";
 		else
 			op << L"d=" << pl.d << L" normal=" << pl.normal;
@@ -89,7 +89,7 @@ namespace geoff_geometry {
 
 	ostream& operator << (ostream& op, Point3d& p){
 		// for debug - print point to file
-//		if(p.ok == false)
+//		if(!p.ok)
 //			op << "ok=\"false\"";
 //		else
 			op << "x=\"" << p.x << "\" y=\"" << p.y << "\" z=" << p.z << "\"";
@@ -111,7 +111,7 @@ namespace geoff_geometry {
 
 	wostream& operator <<(wostream& op, Circle& c){
 		// for debug - print circle to file
-		if(c.ok == false)
+		if(!c.ok)
 			op << L"ok=\"false\"";
 		else
 			op << L" x=\"" << c.pc.x << L"\" y=\"" << c.pc.y << L"\" radius=\"" << c.radius << L"\"";
@@ -150,7 +150,8 @@ namespace geoff_geometry {
 
 	bool Point3d::operator==(const Point3d &p)const{
 		// p1 == p2 (uses TOLERANCE)
-		if(FNE(this->x, p.x, TOLERANCE) || FNE(this->y, p.y, TOLERANCE) || FNE(this->z, p.z, TOLERANCE)) return false;
+		if(FNE(this->x, p.x, TOLERANCE) || FNE(this->y, p.y, TOLERANCE) || FNE(this->z, p.z, TOLERANCE))
+		    return false;
 		return true;
 	}
 
@@ -179,7 +180,8 @@ namespace geoff_geometry {
 
 	bool Point::operator==(const Point &p) const{
 		// p1 == p2 (uses TOLERANCE)
-		if(FNE(this->x, p.x, TOLERANCE) || FNE(this->y, p.y, TOLERANCE)) return false;
+		if(FNE(this->x, p.x, TOLERANCE) || FNE(this->y, p.y, TOLERANCE))
+		    return false;
 		return true;
 	}
 
@@ -388,7 +390,8 @@ namespace geoff_geometry {
 	Circle Circle::Transform(Matrix& m) { // transform
 		Point p0 = this->pc;
 		double scale;
-		if(m.GetScale(scale) == false) FAILURE(getMessage(L"Differential Scale not allowed for this method"));
+		if(!m.GetScale(scale))
+			FAILURE(getMessage(L"Differential Scale not allowed for this method"));
 		return Circle(p0.Transform(m), radius * scale);
 	}
 
@@ -504,12 +507,15 @@ namespace geoff_geometry {
 		intof = s.Intof(normal);
 		double d = intof.Dist(c.pc);
 
-		if(fabs(d - c.radius) < TOLERANCE) return intof;						// tangent (near enough for non-large radius I suppose?)
+		if(fabs(d - c.radius) < TOLERANCE)						// tangent (near enough for non-large radius I suppose?)
+		    return intof;
 
-		if(d > c.radius + TOLERANCE) return INVALID_POINT;					// no intersection
+		if(d > c.radius + TOLERANCE)					// no intersection
+		    return INVALID_POINT;
 
 		double q = (c.radius - d) * (c.radius + d);
-		if(q < 0) return intof;												// line inside tolerance
+		if(q < 0)												// line inside tolerance
+		    return intof;
 
 		return Along(s, -(double)NF * sqrt(q), intof);						// 2 intersections (return near/far case)
 	}
@@ -545,20 +551,24 @@ namespace geoff_geometry {
 		// returns the number of intersctions
 		Vector2d v(c0.pc, c1.pc);
 		double d = 	v.normalise();
-		if(d < TOLERANCE)	return 0;									// co-incident circles
+		if(d < TOLERANCE)									// co-incident circles
+		    return 0;
 
 		double sum = fabs(c0.radius) + fabs(c1.radius);
 		double diff = fabs(fabs(c0.radius) - fabs(c1.radius));
-		if(d > sum + TOLERANCE || d < diff - TOLERANCE) return 0;
+		if(d > sum + TOLERANCE || d < diff - TOLERANCE)
+		    return 0;
 
 		// dist from centre of this circle to mid intersection
 		double d0 = 0.5 * (d + (c0.radius + c1.radius) * (c0.radius - c1.radius) / d);
-		if(d0 - c0.radius > TOLERANCE) return 0;						// circles don't intersect
+		if(d0 - c0.radius > TOLERANCE)						// circles don't intersect
+		    return 0;
 
 		double h = (c0.radius - d0) * (c0.radius + d0);				// half distance between intersects squared
 		if(h < 0) d0 = c0.radius;									// tangent
 		pLeft = v * d0 + c0.pc;										// mid-point of intersects
-		if(h < TOLERANCE_SQ) return 1;						// tangent
+		if(h < TOLERANCE_SQ)						// tangent
+		    return 1;
 		h = sqrt(h);
 
 		v = ~v;														// calculate 2 intersects
@@ -571,7 +581,8 @@ namespace geoff_geometry {
 	Circle	Tanto(int NF, CLine& s0, Point& p, double rad) {
 		// circle tanto a CLine thro' a point
 		double d = s0.Dist(p);
-		if(fabs(d) > rad + TOLERANCE) return INVALID_CIRCLE;	// point too far from line
+		if(fabs(d) > rad + TOLERANCE)	// point too far from line
+		    return INVALID_CIRCLE;
 		CLine s0offset = Parallel(RIGHTINT, s0, rad);
 
 		return Circle(Intof(NF, s0offset, Circle(p, rad)), rad);
@@ -590,11 +601,13 @@ namespace geoff_geometry {
 		double d =	  s1.v.gety() * (AT2 * s3.v.getx() - AT3 * s2.v.getx())
 			+ s2.v.gety() * (AT3 * s1.v.getx() - AT1 * s3.v.getx())
 			+ s3.v.gety() * (AT1 * s2.v.getx() - AT2 * s1.v.getx());
-		if(fabs(d) < UNIT_VECTOR_TOLERANCE) return INVALID_CIRCLE;
+		if(fabs(d) < UNIT_VECTOR_TOLERANCE)
+		    return INVALID_CIRCLE;
 		double radius =  (s1.v.gety() * (s2.v.getx() * s3c - s3.v.getx() * s2c)
 			+ s2.v.gety() * (s3.v.getx() * s1c - s1.v.getx() * s3c)
 			+ s3.v.gety() * (s1.v.getx() * s2c - s2.v.getx() * s1c)) / d ;
-		if(radius < TOLERANCE) return INVALID_CIRCLE;
+		if(radius < TOLERANCE)
+		    return INVALID_CIRCLE;
 
 		CLine Offs1	= Parallel(AT1, s1, radius);
 		CLine Offs2	= Parallel(AT2, s2, radius);
@@ -603,7 +616,8 @@ namespace geoff_geometry {
 		if(!p.ok) {
 			CLine Offs3	= Parallel(AT3, s3, radius);				// s1 & s2 parallel
 			p = Intof(Offs1, Offs3);
-			if(!p.ok) return INVALID_CIRCLE;						// 3 parallel lines
+			if(!p.ok)						// 3 parallel lines
+			    return INVALID_CIRCLE;
 		}
 		return Circle(p, radius);
 	}
@@ -614,7 +628,8 @@ namespace geoff_geometry {
 			double d = 0.5 * p0.Dist(p1);
 			Point pm = Mid(p0, p1);
 
-			if(d > rad + TOLERANCE) return INVALID_CIRCLE;
+			if(d > rad + TOLERANCE)
+			    return INVALID_CIRCLE;
 			else if(d > rad - TOLERANCE) {
 				// within tolerance of centre of 2 points
 				return Circle(pm, d);
@@ -634,13 +649,16 @@ namespace geoff_geometry {
 	Circle	Thro(const Point& p0, const Point& p1, const Point& p2) {
 		// circle thro 3 points
 		CLine s0(p0, p1);
-		if(!s0.ok) return Thro(p1,p2);		// p0 & p1 coincident
+		if(!s0.ok)		// p0 & p1 coincident
+		    return Thro(p1,p2);
 
 		CLine s1(p0, p2);
-		if(!s1.ok) return Thro(p0, p1);		// p0 & p2 coincident
+		if(!s1.ok)		// p0 & p2 coincident
+		    return Thro(p0, p1);
 
 		CLine s2(p2, p1);
-		if(!s2.ok) return Thro(p0, p2);		// p1 & p2 coincident
+		if(!s2.ok)		// p1 & p2 coincident
+		    return Thro(p0, p2);
 
 		Point p = Intof(Normal(s0, Mid(p0, p1)),  Normal(s1, Mid(p0, p2)));
 		return (p.ok)? Circle(p, p0.Dist(p)) : INVALID_CIRCLE;
@@ -707,7 +725,8 @@ namespace geoff_geometry {
 	double IncludedAngle(const Vector2d& v0, const Vector2d& v1, int dir) {
 		// returns the absolute included angle between 2 vectors in the direction of dir ( 1=acw  -1=cw)
 		double inc_ang = v0 * v1;
-		if(inc_ang > 1. - UNIT_VECTOR_TOLERANCE) return 0;
+		if(inc_ang > 1. - UNIT_VECTOR_TOLERANCE)
+		    return 0;
 		if(inc_ang < -1. + UNIT_VECTOR_TOLERANCE)
 			inc_ang = PI;  
 		else {									// dot product,   v1 . v2  =  cos ang
@@ -740,7 +759,8 @@ namespace geoff_geometry {
 		//						1 (LEFT)    = left turn
 		//					   -1 (RIGHT)   = right turn
 		double cp = v0 ^ v1;
-		if(fabs(cp) < cpTol) return TANGENT;
+		if(fabs(cp) < cpTol)
+		    return TANGENT;
 
 		return (cp > 0)?GEOFF_LEFT : GEOFF_RIGHT;
 	}
@@ -752,14 +772,16 @@ namespace geoff_geometry {
 		double epsilon = (geoff_geometry::UNITS == METRES)?1.0e-09 : 1.0e-06;
 		double epsilonsq = epsilon * epsilon;
 		if(fabs(a) < epsilon) {
-			if(fabs(b) < epsilon) return 0;		// invalid
+			if(fabs(b) < epsilon)		// invalid
+			    return 0;
 			x0 = - c / b;
 			return 1;
 		}
 		b /= a;
 		c /= a;
 		double s = b * b - 4 * c;
-		if(s < -epsilon) return 0;				// imaginary roots
+		if(s < -epsilon)				// imaginary roots
+		    return 0;
 		x0 = - 0.5 * b;
 		if(s > epsilonsq) {
 			s = 0.5 * sqrt(s);
@@ -781,7 +803,8 @@ namespace geoff_geometry {
 	Plane::Plane(const Point3d& p0, const Vector3d& v, bool normalise) {
 		// constructor plane from point & vector
 		normal = v;
-		if(normalise == true) normal.normalise();
+		if (normalise)
+			normal.normalise();
 		ok = (normal != NULL_VECTOR);
 		d = -(normal * Vector3d(p0));
 	}
@@ -810,7 +833,8 @@ namespace geoff_geometry {
 		// output intof
 		// method returns true for valid intersection
 		double den = l.v * this->normal;
-		if(fabs(den) < UNIT_VECTOR_TOLERANCE)	return false; // line is parallel to the plane, return false, even if the line lies on the plane
+		if(fabs(den) < UNIT_VECTOR_TOLERANCE) // line is parallel to the plane, return false, even if the line lies on the plane
+		    return false;
 
 		t = -(normal * Vector3d(l.p0) + d) / den;
 		intof = l.v * t + l.p0;
@@ -822,7 +846,8 @@ namespace geoff_geometry {
 		Vector3d d = this->normal ^ pl.normal;
 		d.normalise();
 		intof.ok = false;
-		if(d == NULL_VECTOR) return false;		// parallel planes
+		if(d == NULL_VECTOR)		// parallel planes
+		    return false;
 
 		intof.v = d;
 		intof.length = 1;

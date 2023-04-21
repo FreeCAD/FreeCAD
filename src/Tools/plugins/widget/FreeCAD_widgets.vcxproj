@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -14,21 +14,12 @@
     <ProjectGuid>{0FFD6565-C54C-3BE4-96B6-AAFB7DA921A1}</ProjectGuid>
     <RootNamespace>FreeCAD_widgets</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
-    <OutputDirectory>release\</OutputDirectory>
-    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
-    <CharacterSet>NotSet</CharacterSet>
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <IntermediateDirectory>release\</IntermediateDirectory>
-    <PrimaryOutput>FreeCAD_widgets</PrimaryOutput>
-  </PropertyGroup>
   <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <OutputDirectory>debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -36,69 +27,38 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>FreeCAD_widgetsd</PrimaryOutput>
   </PropertyGroup>
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>FreeCAD_widgets</PrimaryOutput>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
-  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="PropertySheets">
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
   </ImportGroup>
-  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="PropertySheets">
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">FreeCAD_widgetsd</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</IgnoreImportLibrary>
     <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\</OutDir>
     <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\</IntDir>
     <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">FreeCAD_widgets</TargetName>
     <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</IgnoreImportLibrary>
     <LinkIncremental Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">false</LinkIncremental>
-    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</OutDir>
-    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</IntDir>
-    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">FreeCAD_widgetsd</TargetName>
-    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</IgnoreImportLibrary>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">
-    <ClCompile>
-      <AdditionalIncludeDirectories>.;.;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtDesigner;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtUiPlugin;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtWidgets;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtGui;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtANGLE;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtXml;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtCore;release;/include;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>release\</AssemblerListingLocation>
-      <BrowseInformation>false</BrowseInformation>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>release\</ObjectFileName>
-      <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_NO_DEBUG;QT_PLUGIN;QT_DESIGNER_LIB;QT_UIPLUGIN_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessToFile>false</PreprocessToFile>
-      <ProgramDataBaseFileName></ProgramDataBaseFileName>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <WarningLevel>Level3</WarningLevel>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Designer.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Widgets.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Gui.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Xml.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <DataExecutionPrevention>true</DataExecutionPrevention>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <IgnoreImportLibrary>true</IgnoreImportLibrary>
-      <LinkDLL>true</LinkDLL>
-      <LinkIncremental>false</LinkIncremental>
-      <OutputFile>$(OutDir)\FreeCAD_widgets.dll</OutputFile>
-      <RandomizedBaseAddress>true</RandomizedBaseAddress>
-      <SubSystem>Windows</SubSystem>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Link>
-    <Midl>
-      <DefaultCharType>Unsigned</DefaultCharType>
-      <EnableErrorChecks>None</EnableErrorChecks>
-      <WarningLevel>0</WarningLevel>
-    </Midl>
-    <ResourceCompile>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_NO_DEBUG;QT_PLUGIN;QT_DESIGNER_LIB;QT_UIPLUGIN_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;.;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtDesigner;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtUiPlugin;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtWidgets;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtGui;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtANGLE;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtXml;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\include\QtCore;debug;/include;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtDesigner;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtUiPlugin;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtWidgets;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtGui;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtANGLE;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtXml;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtCore;debug;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -115,7 +75,7 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Designerd.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Widgetsd.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Guid.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Xmld.lib;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Designerd.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Widgetsd.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Guid.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Xmld.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -134,30 +94,71 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_PLUGIN;QT_DESIGNER_LIB;QT_UIPLUGIN_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;.;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtDesigner;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtUiPlugin;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtWidgets;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtGui;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtANGLE;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtXml;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\include\QtCore;release;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;QT_PLUGIN;QT_DESIGNER_LIB;QT_UIPLUGIN_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName></ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Designer.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Widgets.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Gui.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Xml.lib;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\FreeCAD_widgets.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;QT_PLUGIN;QT_DESIGNER_LIB;QT_UIPLUGIN_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_CORE_LIB;QDESIGNER_EXPORT_WIDGETS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="customwidgets.cpp" />
     <ClCompile Include="plugin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="customwidgets.h">
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">customwidgets.h;release\moc_predefs.h;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/release/moc_predefs.h -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtDesigner -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtUiPlugin -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtWidgets -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtGui -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtANGLE -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtXml -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt&quot; customwidgets.h -o release\moc_customwidgets.cpp</Command>
-      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC customwidgets.h</Message>
-      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_customwidgets.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">customwidgets.h;debug\moc_predefs.h;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/debug/moc_predefs.h -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtDesigner -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtUiPlugin -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtWidgets -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtGui -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtANGLE -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtXml -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt&quot; customwidgets.h -o debug\moc_customwidgets.cpp</Command>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">customwidgets.h;debug\moc_predefs.h;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/debug/moc_predefs.h -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtDesigner -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtUiPlugin -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtWidgets -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtGui -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtANGLE -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtXml -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt&quot; customwidgets.h -o debug\moc_customwidgets.cpp</Command>
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC customwidgets.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_customwidgets.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">customwidgets.h;release\moc_predefs.h;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/release/moc_predefs.h -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtDesigner -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtUiPlugin -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtWidgets -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtGui -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtANGLE -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtXml -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt&quot; customwidgets.h -o release\moc_customwidgets.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC customwidgets.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_customwidgets.cpp;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="plugin.h">
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">plugin.h;release\moc_predefs.h;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/release/moc_predefs.h -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtDesigner -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtUiPlugin -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtWidgets -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtGui -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtANGLE -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtXml -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt&quot; plugin.h -o release\moc_plugin.cpp</Command>
-      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC plugin.h</Message>
-      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_plugin.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">plugin.h;debug\moc_predefs.h;C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/debug/moc_predefs.h -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtDesigner -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtUiPlugin -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtWidgets -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtGui -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtANGLE -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtXml -IC:/Qt/Qt5.12.5/5.12.5/msvc2017_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt&quot; plugin.h -o debug\moc_plugin.cpp</Command>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">plugin.h;debug\moc_predefs.h;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/debug/moc_predefs.h -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtDesigner -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtUiPlugin -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtWidgets -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtGui -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtANGLE -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtXml -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt&quot; plugin.h -o debug\moc_plugin.cpp</Command>
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC plugin.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_plugin.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">plugin.h;release\moc_predefs.h;D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_PLUGIN -DQT_DESIGNER_LIB -DQT_UIPLUGIN_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB -DQDESIGNER_EXPORT_WIDGETS --compiler-flavor=msvc --include D:/FreeCADGit/src/Tools/plugins/widget/release/moc_predefs.h -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/mkspecs/win32-msvc -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCADGit/src/Tools/plugins/widget -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtDesigner -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtUiPlugin -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtWidgets -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtGui -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtANGLE -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtXml -ID:/FreeCAD-build/FreeCADLibs_1.1_x64_VC2019/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt&quot; plugin.h -o release\moc_plugin.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC plugin.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_plugin.cpp;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -175,19 +176,19 @@
     </ClCompile>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">cl -BxC:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">cl -BxD:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">Generate moc_predefs.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_predefs.h;%(Outputs)</Outputs>
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <FileType>Document</FileType>
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">cl -BxC:\Qt\Qt5.12.5\5.12.5\msvc2017_64\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E C:\Qt\Qt5.12.5\5.12.5\msvc2017_64\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">cl -BxD:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E D:\FreeCAD-build\FreeCADLibs_1.1_x64_VC2019\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">Generate moc_predefs.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_predefs.h;%(Outputs)</Outputs>
-      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

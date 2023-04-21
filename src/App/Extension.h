@@ -25,10 +25,7 @@
 #define APP_EXTENSION_H
 
 #include "PropertyContainer.h"
-#include "PropertyPythonObject.h"
-#include "ExtensionContainer.h"
-#include "Base/Interpreter.h"
-#include <CXX/Objects.hxx>
+#include <Base/SmartPtrPy.h>
 
 namespace App {
 
@@ -149,7 +146,7 @@ template<> void _class_::init(void){\
  *     EXTENSION_ADD_PROPERTY(MyProp, (0)) *
  *     initExtension(MyExtension::getExtensionClassTypeId());
  * }
- * typedef ExtensionPythonT<MyExtension> MyExtensionPython;
+ * using MyExtensionPython = ExtensionPythonT<MyExtension>;
  * @endcode
  *
  * The special python extension type created above is important, as only those python extensions
@@ -215,7 +212,7 @@ template<> void _class_::init(void){\
  * To ensure that your wrapper is used when a extension is created from python the extension type must
  * be exposed as follows:
  * @code
- * typedef ExtensionPythonT<MyExtensionPythonT<MyExtension>> MyExtensionPython;
+ * using MyExtensionPython = ExtensionPythonT<MyExtensionPythonT<MyExtension>>;
  * @endcode
  *
  * This boilerplate is absolutely necessary to allow overridable methods in python and it is the
@@ -244,7 +241,7 @@ public:
 
     bool isPythonExtension() {return m_isPythonExtension;}
 
-    virtual PyObject* getExtensionPyObject(void);
+    virtual PyObject* getExtensionPyObject();
 
 
     /** @name Access properties */
@@ -283,17 +280,22 @@ public:
     bool extensionIsDerivedFrom(const Base::Type type) const {return getExtensionTypeId().isDerivedFrom(type);}
 protected:
     static void initExtensionSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName,
-                                      Base::Type::instantiationMethod method=0);
+                                      Base::Type::instantiationMethod method=nullptr);
     //@}
 
     virtual void extensionOnChanged(const Property* p) {(void)(p);}
+
+    /// returns true if the property name change was handled by the extension.
+    virtual bool extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    /// returns true if the property type change was handled by the extension.
+    virtual bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
     friend class App::ExtensionContainer;
 
 protected:
     void initExtensionType(Base::Type type);
     bool m_isPythonExtension = false;
-    Py::Object ExtensionPythonObject;
+    Py::SmartPtr ExtensionPythonObject;
 
 private:
     Base::Type                    m_extensionType;
@@ -320,89 +322,6 @@ private:
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
     _EXTENSION_ADD_PROPERTY_TYPE(#_prop_, _prop_, _defaultval_, _group_,_type_,_Docu_)
 
-
-/**
- * Generic Python extension class which allows every extension derived
- * class to behave as a Python extension -- simply by subclassing.
- */
-template <class ExtensionT>
-class ExtensionPythonT : public ExtensionT
-{
-    EXTENSION_PROPERTY_HEADER(App::ExtensionPythonT<ExtensionT>);
-
-public:
-    typedef ExtensionT Inherited;
-
-    ExtensionPythonT() {
-        ExtensionT::m_isPythonExtension = true;
-        ExtensionT::initExtensionType(ExtensionPythonT::getExtensionClassTypeId());
-    }
-    virtual ~ExtensionPythonT() {
-    }
-};
-
-typedef ExtensionPythonT<App::Extension> ExtensionPython;
-
-// Helper macros to define python extensions
-#define EXTENSION_PROXY_FIRST(function) \
-    Base::PyGILStateLocker lock;\
-    Py::Object result;\
-    try {\
-        Property* proxy = this->getExtendedContainer()->getPropertyByName("Proxy");\
-        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {\
-            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();\
-            if (feature.hasAttr(std::string("function"))) {\
-                if (feature.hasAttr("__object__")) {\
-                    Py::Callable method(feature.getAttr(std::string("function")));
-
-
-
-
-#define EXTENSION_PROXY_SECOND(function)\
-                    result = method.apply(args);\
-                }\
-                else {\
-                    Py::Callable method(feature.getAttr(std::string("function")));
-
-#define EXTENSION_PROXY_THIRD()\
-                    result = method.apply(args);\
-                }\
-            }\
-        }\
-    }\
-    catch (Py::Exception&) {\
-        Base::PyException e;\
-        e.ReportException();\
-    }
-
-#define EXTENSION_PROXY_NOARG(function)\
-    EXTENSION_PROXY_FIRST(function) \
-    Py::Tuple args;\
-    EXTENSION_PROXY_SECOND(function) \
-    Py::Tuple args(1);\
-    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));\
-    EXTENSION_PROXY_THIRD()
-
-#define EXTENSION_PROXY_ONEARG(function, arg)\
-    EXTENSION_PROXY_FIRST(function) \
-    Py::Tuple args;\
-    args.setItem(0, arg); \
-    EXTENSION_PROXY_SECOND(function) \
-    Py::Tuple args(2);\
-    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));\
-    args.setItem(1, arg); \
-    EXTENSION_PROXY_THIRD()
-
-#define EXTENSION_PYTHON_OVERRIDE_VOID_NOARGS(function)\
-    virtual void function() override {\
-        EXTENSION_PROXY_NOARGS(function)\
-    };
-
-#define EXTENSION_PYTHON_OVERRIDE_OBJECT_NOARGS(function)\
-    virtual PyObject* function() override {\
-        EXTENSION_PROXY_NOARGS(function)\
-        return res.ptr();\
-    };
 
 } //App
 

@@ -51,88 +51,152 @@ class ArchWorkbench(FreeCADGui.Workbench):
         import Draft_rc
         import DraftTools
         import DraftGui
-        from draftguitools import gui_circulararray
-        from draftguitools import gui_polararray
-        from draftguitools import gui_orthoarray
-        from draftguitools import gui_arrays
         import Arch_rc
         import Arch
 
+        from ArchStructure import _ArchStructureGroupCommand
+        from ArchAxis import _ArchAxisGroupCommand
+        from ArchPanel import CommandPanelGroup
+        from ArchMaterial import _ArchMaterialToolsCommand
+        from ArchPipe import _ArchPipeGroupCommand
+
+        stru_group = _ArchStructureGroupCommand
+        axis_group = _ArchAxisGroupCommand
+        pan_group  = CommandPanelGroup
+        mat_group  = _ArchMaterialToolsCommand
+        pipe_group = _ArchPipeGroupCommand
+
         # Set up command lists
-        self.archtools = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",
-                          "Arch_CurtainWall","Arch_BuildingPart",
-                          "Arch_Project", "Arch_Site", "Arch_Building",
-                          "Arch_Floor", "Arch_Reference",
-                          "Arch_Window", "Arch_Roof", "Arch_AxisTools",
-                          "Arch_SectionPlane", "Arch_Space", "Arch_Stairs",
-                          "Arch_PanelTools", "Arch_Equipment",
-                          "Arch_Frame", "Arch_Fence", "Arch_Truss",
-                          "Arch_Profile","Arch_MaterialTools",
-                          "Arch_Schedule", "Arch_PipeTools",
-                          "Arch_CutPlane", "Arch_CutLine",
-                          "Arch_Add", "Arch_Remove", "Arch_Survey"]
-        self.utilities = ["Arch_Component", "Arch_CloneComponent",
-                          "Arch_SplitMesh", "Arch_MeshToShape",
-                          "Arch_SelectNonSolidMeshes", "Arch_RemoveShape",
-                          "Arch_CloseHoles", "Arch_MergeWalls", "Arch_Check",
-                          "Arch_ToggleIfcBrepFlag", "Arch_3Views",
-                          "Arch_IfcSpreadsheet", "Arch_ToggleSubs"]
+        self.archtools = ["Arch_Wall",
+                          ([QT_TRANSLATE_NOOP("Workbench", "Structure tools")],
+                              list(stru_group.GetCommands(stru_group))), # tuple len=2: submenu
+                          ("Arch_StructureTools", ),                     # tuple len=1: toolbar flyout
+                          "Arch_Rebar_Submenu",      # will be replaced or removed
+                          "Arch_Rebar",              # may be replaced
+                          "Arch_CurtainWall",
+                          "Arch_BuildingPart",
+                          "Arch_Project",
+                          "Arch_Site",
+                          "Arch_Building",
+                          "Arch_Floor",
+                          "Arch_Reference",
+                          "Arch_Window",
+                          "Arch_Roof",
+                          ([QT_TRANSLATE_NOOP("Workbench", "Axis tools")],
+                              list(axis_group.GetCommands(axis_group))),
+                          ("Arch_AxisTools", ),
+                          "Arch_SectionPlane",
+                          "Arch_Space",
+                          "Arch_Stairs",
+                          ([QT_TRANSLATE_NOOP("Workbench", "Panel tools")],
+                              list(pan_group.GetCommands(pan_group))),
+                          ("Arch_PanelTools", ),
+                          "Arch_Equipment",
+                          "Arch_Frame",
+                          "Arch_Fence",
+                          "Arch_Truss",
+                          "Arch_Profile",
+                          ([QT_TRANSLATE_NOOP("Workbench", "Material tools")],
+                              list(mat_group.GetCommands(mat_group))),
+                          ("Arch_MaterialTools", ),
+                          "Arch_Schedule",
+                          ([QT_TRANSLATE_NOOP("Workbench", "Pipe tools")],
+                              list(pipe_group.GetCommands(pipe_group))),
+                          ("Arch_PipeTools", ),
+                          "Arch_CutPlane",
+                          "Arch_CutLine",
+                          "Arch_Add",
+                          "Arch_Remove",
+                          "Arch_Survey"]
+
+        self.utilities = ["Arch_Component",
+                          "Arch_CloneComponent",
+                          "Arch_SplitMesh",
+                          "Arch_MeshToShape",
+                          "Arch_SelectNonSolidMeshes",
+                          "Arch_RemoveShape",
+                          "Arch_CloseHoles",
+                          "Arch_MergeWalls",
+                          "Arch_Check",
+                          "Arch_ToggleIfcBrepFlag",
+                          "Arch_3Views",
+                          "Arch_IfcSpreadsheet",
+                          "Arch_ToggleSubs"]
 
         # Add the rebar tools from the Reinforcement addon, if available
         try:
             import RebarTools
         except Exception:
-            pass
+            del self.archtools[3] # remove "Arch_Rebar_Submenu"
         else:
             class RebarGroupCommand:
                 def GetCommands(self):
                     return tuple(RebarTools.RebarCommands + ["Arch_Rebar"])
 
                 def GetResources(self):
-                    _tooltip = ("Create various types of rebars, "
-                                "including U-shaped, L-shaped, and stirrup")
-                    return {'MenuText': QT_TRANSLATE_NOOP("Arch", 'Rebar tools'),
-                            'ToolTip': QT_TRANSLATE_NOOP("Arch", _tooltip)}
+                    return {'MenuText': QT_TRANSLATE_NOOP("Arch_RebarTools", "Rebar tools"),
+                            'ToolTip': QT_TRANSLATE_NOOP("Arch_RebarTools",
+                                                         "Create various types of rebars, "
+                                                         "including U-shaped, L-shaped, and stirrup")}
 
                 def IsActive(self):
                     return not FreeCAD.ActiveDocument is None
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
-            self.archtools[2] = "Arch_RebarTools"
+            self.archtools[3] = ([QT_TRANSLATE_NOOP("Workbench", "Rebar tools")],
+                                    RebarTools.RebarCommands + ["Arch_Rebar"])
+            self.archtools[4] = ("Arch_RebarTools", )
 
         # Set up Draft command lists
         import draftutils.init_tools as it
         self.draft_drawing_commands = it.get_draft_drawing_commands()
         self.draft_annotation_commands = it.get_draft_annotation_commands()
         self.draft_modification_commands = it.get_draft_modification_commands()
+        self.draft_utility_commands = it.get_draft_utility_commands_menu()
         self.draft_context_commands = it.get_draft_context_commands()
-        self.draft_line_commands = it.get_draft_line_commands()
-        self.draft_utility_commands = it.get_draft_utility_commands()
+        self.draft_snap_commands = it.get_draft_snap_commands()
 
         # Set up toolbars
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Arch tools"), self.archtools)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.draft_drawing_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.draft_annotation_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.draft_modification_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Arch tools"),
+                        self.archtools)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
+                        self.draft_drawing_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
+                        self.draft_annotation_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
+                        self.draft_modification_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                        self.draft_snap_commands)
 
         # Set up menus
-        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Arch"),
-                         QT_TRANSLATE_NOOP("arch", "Utilities")],
-                        self.utilities)
-        self.appendMenu(QT_TRANSLATE_NOOP("arch", "&Arch"), self.archtools)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Arch"),
+                      QT_TRANSLATE_NOOP("Workbench", "Utilities")],
+                     self.utilities)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Arch")],
+                     self.archtools)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Creation")],
+                     self.draft_drawing_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Annotation")],
+                     self.draft_annotation_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Modification")],
+                     self.draft_modification_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Utilities")],
+                     self.draft_utility_commands)
 
-        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
-                         QT_TRANSLATE_NOOP("arch", "Creation")],
-                        self.draft_drawing_commands)
-        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
-                         QT_TRANSLATE_NOOP("arch", "Annotation")],
-                        self.draft_annotation_commands)
-        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
-                         QT_TRANSLATE_NOOP("arch", "Modification")],
-                        self.draft_modification_commands)
-        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
-                         QT_TRANSLATE_NOOP("arch", "Utilities")],
-                        self.draft_utility_commands
-                        + self.draft_context_commands)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
 

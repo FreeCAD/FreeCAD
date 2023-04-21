@@ -20,43 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Parab.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Parabola.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeArcOfParabola.hxx>
-# include <gp_Hypr.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfHyperbola.hxx>
+# include <GC_MakeArcOfParabola.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Ellipse.hxx>
+# include <Geom_Hyperbola.hxx>
+# include <Geom_Parabola.hxx>
 #endif
+
+#include <Base/VectorPy.h>
 
 #include "ArcPy.h"
 #include "ArcPy.cpp"
 #include "CirclePy.h"
 #include "EllipsePy.h"
-#include "ParabolaPy.h"
 #include "HyperbolaPy.h"
 #include "OCCError.h"
+#include "ParabolaPy.h"
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcPy::representation(void) const
+std::string ArcPy::representation() const
 {
     return "<Arc object>";
 }
@@ -77,7 +69,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast
                 (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
-            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -122,7 +114,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast
                 (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
-            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -147,7 +139,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast
                 (static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle());
-            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -172,7 +164,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast
                 (static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle());
-            GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -198,7 +190,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

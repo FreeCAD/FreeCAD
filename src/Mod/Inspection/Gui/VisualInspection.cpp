@@ -20,24 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
 #endif
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/PrefWidgets.h>
+#include <Gui/ViewProvider.h>
+
 #include "VisualInspection.h"
 #include "ui_VisualInspection.h"
 
-#include <Base/UnitsApi.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
 
 using namespace InspectionGui;
 
@@ -45,17 +44,17 @@ namespace InspectionGui {
 class SingleSelectionItem : public QTreeWidgetItem
 {
 public:
-    SingleSelectionItem (QTreeWidget* parent)
-        : QTreeWidgetItem(parent), _compItem(0)
+    explicit SingleSelectionItem (QTreeWidget* parent)
+        : QTreeWidgetItem(parent), _compItem(nullptr)
     {
     }
 
-    SingleSelectionItem (QTreeWidgetItem* parent)
-        : QTreeWidgetItem (parent), _compItem(0)
+    explicit SingleSelectionItem (QTreeWidgetItem* parent)
+        : QTreeWidgetItem (parent), _compItem(nullptr)
     {
     }
 
-    ~SingleSelectionItem ()
+    ~SingleSelectionItem () override
     {
     }
 
@@ -84,12 +83,12 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
-    connect(ui->treeWidgetActual, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
-            this, SLOT(onActivateItem(QTreeWidgetItem*)));
-    connect(ui->treeWidgetNominal, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
-            this, SLOT(onActivateItem(QTreeWidgetItem*)));
-    connect(ui->buttonBox, SIGNAL(helpRequested()),
-            Gui::getMainWindow(), SLOT(whatsThis()));
+    connect(ui->treeWidgetActual, &QTreeWidget::itemClicked,
+            this, &VisualInspection::onActivateItem);
+    connect(ui->treeWidgetNominal, &QTreeWidget::itemClicked,
+            this, &VisualInspection::onActivateItem);
+    connect(ui->buttonBox, &QDialogButtonBox::helpRequested,
+            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
 
     //FIXME: Not used yet
     ui->textLabel2->hide();
@@ -179,7 +178,7 @@ void VisualInspection::saveSettings()
 void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 {
     if (item) {
-        SingleSelectionItem* sel = (SingleSelectionItem*)item;
+        SingleSelectionItem* sel = static_cast<SingleSelectionItem*>(item);
         SingleSelectionItem* cmp = sel->getCompetitiveItem();
         if (cmp && cmp->checkState(0) == Qt::Checked)
             cmp->setCheckState(0, Qt::Unchecked);
@@ -210,7 +209,7 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 
 void VisualInspection::accept()
 {
-    onActivateItem(0);
+    onActivateItem(nullptr);
     if (buttonOk->isEnabled()) {
         QDialog::accept();
         saveSettings();

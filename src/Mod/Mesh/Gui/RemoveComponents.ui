@@ -26,41 +26,10 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="3" column="1" colspan="2">
-       <widget class="QCheckBox" name="cbSelectComp">
-        <property name="text">
-         <string>Select whole component</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="selectTriangle">
-        <property name="text">
-         <string>Pick triangle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QSpinBox" name="spSelectComp"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>&lt; faces than</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QPushButton" name="selectRegion">
         <property name="text">
          <string>Region</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="selectComponents">
-        <property name="text">
-         <string>Components</string>
         </property>
        </widget>
       </item>
@@ -97,7 +66,38 @@
         </property>
        </spacer>
       </item>
-     </layout>
+     <item row="2" column="0">
+       <widget class="QPushButton" name="selectComponents">
+        <property name="text">
+         <string>Components</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>&lt; faces than</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QSpinBox" name="spSelectComp"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="selectTriangle">
+        <property name="text">
+         <string>Pick triangle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <widget class="QCheckBox" name="cbSelectComp">
+        <property name="text">
+         <string>Select whole component</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">
@@ -112,43 +112,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="3" column="1" colspan="2">
-       <widget class="QCheckBox" name="cbDeselectComp">
-        <property name="text">
-         <string>Deselect whole component</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="deselectTriangle">
-        <property name="text">
-         <string>Pick triangle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QSpinBox" name="spDeselectComp"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>&gt; faces than</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>181</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <widget class="QPushButton" name="deselectRegion">
         <property name="text">
@@ -176,6 +139,19 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1" colspan="2">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>181</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="2" column="0">
        <widget class="QPushButton" name="deselectComponents">
         <property name="text">
@@ -183,7 +159,31 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="2" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>&gt; faces than</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QSpinBox" name="spDeselectComp"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="deselectTriangle">
+        <property name="text">
+         <string>Pick triangle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <widget class="QCheckBox" name="cbDeselectComp">
+        <property name="text">
+         <string>Deselect whole component</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">

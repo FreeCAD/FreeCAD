@@ -35,16 +35,13 @@
 # include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <stdio.h>
+#include <cstdio>
 #include <sstream>
-#include <iostream>
 
 // FreeCAD Base header
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
 #include <Base/Exception.h>
-#include <Base/Factory.h>
+#include <Base/Interpreter.h>
 
 // FreeCAD doc header
 #include <App/Application.h>
@@ -53,7 +50,7 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2021\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n"\
                        "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
                        "FreeCAD wouldn't be possible without FreeCAD community.\n"\
                        "  #####                 ####  ###   ####  \n" \
@@ -71,6 +68,13 @@ int main( int argc, char ** argv )
     // Make sure that we use '.' as decimal point
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
+
+#if defined(__MINGW32__)
+    const char* mingw_prefix = getenv("MINGW_PREFIX");
+    const char* py_home = getenv("PYTHONHOME");
+    if (!py_home && mingw_prefix)
+        _putenv_s("PYTHONHOME", mingw_prefix);
+#endif
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
@@ -101,7 +105,7 @@ int main( int argc, char ** argv )
         std::string appName = App::Application::Config()["ExeName"];
         std::stringstream msg;
         msg << "While initializing " << appName << " the following exception occurred: '" << e.what() << "'\n\n";
-        msg << "Python is searching for its runtime files in the following directories:\n" << Py_GetPath() << "\n\n";
+        msg << "Python is searching for its runtime files in the following directories:\n" << Py_EncodeLocale(Py_GetPath(),nullptr) << "\n\n";
         msg << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
         if ( pythonhome ) {

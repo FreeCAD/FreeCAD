@@ -22,12 +22,11 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cfloat>
-#endif
 
 #include "CoordinateSystem.h"
 #include "Exception.h"
+#include "Matrix.h"
+
 
 using namespace Base;
 
@@ -36,9 +35,7 @@ CoordinateSystem::CoordinateSystem()
 {
 }
 
-CoordinateSystem::~CoordinateSystem()
-{
-}
+CoordinateSystem::~CoordinateSystem() = default;
 
 void CoordinateSystem::setAxes(const Axis& v, const Vector3d& xd)
 {

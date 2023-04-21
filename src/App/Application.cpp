@@ -21,28 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <iostream>
-# include <sstream>
-# include <exception>
-# include <ios>
-# include <functional>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-# include <unistd.h>
-# include <pwd.h>
-# include <sys/types.h>
+#  include <unistd.h>
+#  include <pwd.h>
+#  include <sys/types.h>
 # elif defined(__MINGW32__)
-# define WINVER 0x502 // needed for SetDllDirectory
-# include <Windows.h>
+#  define WINVER 0x502 // needed for SetDllDirectory
+#  include <Windows.h>
 # endif
-# include <ctime>
-# include <csignal>
 # include <boost/program_options.hpp>
-# include <boost/filesystem.hpp>
+# include <boost/date_time/posix_time/posix_time.hpp>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -55,91 +46,83 @@
 #include <sys/sysctl.h>
 #endif
 
-#include "Application.h"
-#include "Document.h"
+#include <QDir>
+#include <QFileInfo>
+#include <QProcessEnvironment>
+#include <QStandardPaths>
+#include <LibraryVersions.h>
 
+#include <App/MaterialPy.h>
+#include <App/MetadataPy.h>
 // FreeCAD Base header
-#include <Base/Interpreter.h>
+#include <Base/AxisPy.h>
+#include <Base/BaseClass.h>
+#include <Base/BoundBoxPy.h>
+#include <Base/ConsoleObserver.h>
+#include <Base/CoordinateSystemPy.h>
 #include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/Factory.h>
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
-#include <Base/Type.h>
-#include <Base/BaseClass.h>
-#include <Base/Persistence.h>
-#include <Base/Reader.h>
+#include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
-#include <Base/CoordinateSystemPy.h>
-#include <Base/BoundBoxPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/Parameter.h>
+#include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
+#include <Base/PrecisionPy.h>
+#include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
-#include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
-#include <Base/UnitsApi.h>
-#include <Base/QuantityPy.h>
-#include <Base/UnitPy.h>
+#include <Base/Type.h>
 #include <Base/TypePy.h>
+#include <Base/UnitPy.h>
+#include <Base/UnitsApi.h>
+#include <Base/VectorPy.h>
 
-#include "GeoFeature.h"
+#include "Annotation.h"
+#include "Application.h"
+#include "ComplexGeoData.h"
+#include "DocumentObjectFileIncluded.h"
+#include "DocumentObjectGroup.h"
+#include "DocumentObjectGroupPy.h"
+#include "DocumentObserver.h"
+#include "DocumentPy.h"
+#include "ExpressionParser.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
-#include "ComplexGeoData.h"
+#include "GeoFeature.h"
+#include "GeoFeatureGroupExtension.h"
+#include "ImagePlane.h"
+#include "InventorObject.h"
+#include "Link.h"
+#include "LinkBaseExtensionPy.h"
+#include "MaterialObject.h"
+#include "MeasureDistance.h"
+#include "Origin.h"
+#include "OriginFeature.h"
+#include "OriginGroupExtension.h"
+#include "OriginGroupExtensionPy.h"
+#include "Part.h"
+#include "PartPy.h"
+#include "Placement.h"
+#include "ProgramOptionsUtilities.h"
 #include "Property.h"
 #include "PropertyContainer.h"
-#include "PropertyUnits.h"
+#include "PropertyExpressionEngine.h"
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
 #include "PropertyPythonObject.h"
-#include "PropertyExpressionEngine.h"
-#include "Document.h"
-#include "DocumentObjectGroup.h"
-#include "DocumentObjectFileIncluded.h"
-#include "InventorObject.h"
-#include "VRMLObject.h"
-#include "Annotation.h"
-#include "MeasureDistance.h"
-#include "Placement.h"
-#include "GeoFeatureGroupExtension.h"
-#include "OriginGroupExtension.h"
-#include "Part.h"
-#include "OriginFeature.h"
-#include "Origin.h"
-#include "MaterialObject.h"
 #include "TextDocument.h"
-#include "ExpressionParser.h"
 #include "Transactions.h"
-#include <App/MaterialPy.h>
-#include <Base/GeometryPyCXX.h>
-#include "Link.h"
-
-#include "DocumentPy.h"
-#include "DocumentObjectGroupPy.h"
-#include "LinkBaseExtensionPy.h"
-#include "OriginGroupExtensionPy.h"
-#include "PartPy.h"
+#include "VRMLObject.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
 // src/Build/Version.h. Or create your own from src/Build/Version.h.in!
 #include <Build/Version.h>
 #include "Branding.h"
-
-#include <boost/tokenizer.hpp>
-#include <boost/token_functions.hpp>
-#include <QDir>
-#include <QFileInfo>
-#include <QProcessEnvironment>
-
-using namespace App;
-using namespace std;
-using namespace boost;
-using namespace boost::program_options;
-namespace sp = std::placeholders;
 
 
 // scriptings (scripts are built-in but can be overridden by command line option)
@@ -159,25 +142,27 @@ namespace sp = std::placeholders;
 # include <new>
 #endif
 
-FC_LOG_LEVEL_INIT("App",true,true)
+FC_LOG_LEVEL_INIT("App", true, true)
 
-//using Base::GetConsole;
-using namespace Base;
 using namespace App;
+using namespace Base;
 using namespace std;
+using namespace boost;
+using namespace boost::program_options;
+using Base::FileInfo;
+namespace sp = std::placeholders;
 
 //==========================================================================
 // Application
 //==========================================================================
 
-ParameterManager *App::Application::_pcSysParamMngr;
-ParameterManager *App::Application::_pcUserParamMngr;
-Base::ConsoleObserverStd  *Application::_pConsoleObserverStd =0;
-Base::ConsoleObserverFile *Application::_pConsoleObserverFile =0;
+Base::Reference<ParameterManager> App::Application::_pcSysParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcUserParamMngr;
+Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
+Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
-AppExport std::map<std::string,std::string> Application::mConfig;
-BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
-BaseExport extern PyObject* Base::BaseExceptionFreeCADAbort;
+AppExport std::map<std::string, std::string> Application::mConfig;
+
 
 //**************************************************************************
 // Construction and destruction
@@ -192,7 +177,11 @@ PyDoc_STRVAR(FreeCAD_doc,
     );
 
 PyDoc_STRVAR(Console_doc,
-     "FreeCAD Console\n"
+    "FreeCAD Console module.\n\n"
+    "The Console module contains functions to manage log entries, messages,\n"
+    "warnings and errors.\n"
+    "There are also functions to get/set the status of the observers used as\n"
+    "logging interfaces."
     );
 
 PyDoc_STRVAR(Base_doc,
@@ -209,13 +198,13 @@ init_freecad_base_module(void)
     static struct PyModuleDef BaseModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADBase__", Base_doc, -1,
-        NULL, NULL, NULL, NULL, NULL
+        nullptr, nullptr, nullptr, nullptr, nullptr
     };
     return PyModule_Create(&BaseModuleDef);
 }
 
 // Set in inside Application
-static PyMethodDef* __AppMethods = nullptr;
+static PyMethodDef* ApplicationMethods = nullptr;
 
 PyMODINIT_FUNC
 init_freecad_module(void)
@@ -223,14 +212,26 @@ init_freecad_module(void)
     static struct PyModuleDef FreeCADModuleDef = {
         PyModuleDef_HEAD_INIT,
         "FreeCAD", FreeCAD_doc, -1,
-        __AppMethods,
-        NULL, NULL, NULL, NULL
+        ApplicationMethods,
+        nullptr, nullptr, nullptr, nullptr
     };
     return PyModule_Create(&FreeCADModuleDef);
 }
 
+PyMODINIT_FUNC
+init_image_module()
+{
+    static struct PyModuleDef ImageModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "Image", "", -1,
+        nullptr,
+        nullptr, nullptr, nullptr, nullptr
+    };
+    return PyModule_Create(&ImageModuleDef);
+}
+
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
+  : _mConfig(mConfig), _pActiveDoc(nullptr), _isRestoring(false),_allowPartial(false)
   , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
   , _activeTransactionGuard(0), _activeTransactionTmpName(false)
 {
@@ -238,12 +239,18 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
+    setupPythonTypes();
+}
 
+Application::~Application() = default;
+
+void Application::setupPythonTypes()
+{
     // setting up Python binding
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    __AppMethods = Application::Methods;
+    ApplicationMethods = Application::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();
@@ -255,10 +262,14 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
-        ConsoleSingleton::Methods,
-        NULL, NULL, NULL, NULL
+        Base::ConsoleSingleton::Methods,
+        nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
+
+    // fake Image module
+    PyObject* imageModule = init_image_module();
+    PyDict_SetItemString(modules, "Image", imageModule);
 
     // introducing additional classes
 
@@ -283,13 +294,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
     }
 
-    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
-    Py_INCREF(Base::BaseExceptionFreeCADError);
-    PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
+    setupPythonException(pBaseModule);
 
-    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, NULL);
-    Py_INCREF(Base::BaseExceptionFreeCADAbort);
-    PyModule_AddObject(pBaseModule, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
 
     // Python types
     Base::Interpreter().addType(&Base::VectorPy          ::Type,pBaseModule,"Vector");
@@ -300,8 +306,10 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
     Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
+    Base::Interpreter().addType(&Base::PrecisionPy       ::Type,pBaseModule,"Precision");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
+    Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
 
     // Add document types
     Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
@@ -327,7 +335,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Console", pConsoleModule);
 
     // Translate module
-    PyObject* pTranslateModule = (new Base::Translate)->module().ptr();
+    PyObject* pTranslateModule = Base::Interpreter().addModule(new Base::Translate);
     Py_INCREF(pTranslateModule);
     PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
@@ -336,7 +344,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         PyModuleDef_HEAD_INIT,
         "Units", "The Unit API", -1,
         Base::UnitsApi::Methods,
-        NULL, NULL, NULL, NULL
+        nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
     Base::Interpreter().addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
@@ -355,8 +363,53 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         pBaseModule,"Vector2d");
 }
 
-Application::~Application()
+void Application::setupPythonException(PyObject* module)
 {
+    // Define custom Python exception types
+    //
+    Base::PyExc_FC_GeneralError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
+    Py_INCREF(Base::PyExc_FC_GeneralError);
+    PyModule_AddObject(module, "FreeCADError", Base::PyExc_FC_GeneralError);
+
+    Base::PyExc_FC_FreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_FreeCADAbort);
+    PyModule_AddObject(module, "FreeCADAbort", Base::PyExc_FC_FreeCADAbort);
+
+    Base::PyExc_FC_XMLBaseException = PyErr_NewException("Base.XMLBaseException", PyExc_Exception, nullptr);
+    Py_INCREF(Base::PyExc_FC_XMLBaseException);
+    PyModule_AddObject(module, "XMLBaseException", Base::PyExc_FC_XMLBaseException);
+
+    Base::PyExc_FC_XMLParseException = PyErr_NewException("Base.XMLParseException", Base::PyExc_FC_XMLBaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_XMLParseException);
+    PyModule_AddObject(module, "XMLParseException", Base::PyExc_FC_XMLParseException);
+
+    Base::PyExc_FC_XMLAttributeError = PyErr_NewException("Base.XMLAttributeError", Base::PyExc_FC_XMLBaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_XMLAttributeError);
+    PyModule_AddObject(module, "XMLAttributeError", Base::PyExc_FC_XMLAttributeError);
+
+    Base::PyExc_FC_UnknownProgramOption = PyErr_NewException("Base.UnknownProgramOption", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_UnknownProgramOption);
+    PyModule_AddObject(module, "UnknownProgramOption", Base::PyExc_FC_UnknownProgramOption);
+
+    Base::PyExc_FC_BadFormatError = PyErr_NewException("Base.BadFormatError", Base::PyExc_FC_GeneralError, nullptr);
+    Py_INCREF(Base::PyExc_FC_BadFormatError);
+    PyModule_AddObject(module, "BadFormatError", Base::PyExc_FC_BadFormatError);
+
+    Base::PyExc_FC_BadGraphError = PyErr_NewException("Base.BadGraphError", Base::PyExc_FC_GeneralError, nullptr);
+    Py_INCREF(Base::PyExc_FC_BadGraphError);
+    PyModule_AddObject(module, "BadGraphError", Base::PyExc_FC_BadGraphError);
+
+    Base::PyExc_FC_ExpressionError = PyErr_NewException("Base.ExpressionError", Base::PyExc_FC_GeneralError, nullptr);
+    Py_INCREF(Base::PyExc_FC_ExpressionError);
+    PyModule_AddObject(module, "ExpressionError", Base::PyExc_FC_ExpressionError);
+
+    Base::PyExc_FC_ParserError = PyErr_NewException("Base.ParserError", Base::PyExc_FC_GeneralError, nullptr);
+    Py_INCREF(Base::PyExc_FC_ParserError);
+    PyModule_AddObject(module, "ParserError", Base::PyExc_FC_ParserError);
+
+    Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", Base::PyExc_FC_GeneralError, nullptr);
+    Py_INCREF(Base::PyExc_FC_CADKernelError);
+    PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
 }
 
 //**************************************************************************
@@ -365,33 +418,46 @@ Application::~Application()
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
-#if 1
     (void)OldName;
     (void)NewName;
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
-#else
-    std::map<std::string,Document*>::iterator pos;
-    pos = DocMap.find(OldName);
-
-    if (pos != DocMap.end()) {
-        Document* temp;
-        temp = pos->second;
-        DocMap.erase(pos);
-        DocMap[NewName] = temp;
-        signalRenameDocument(*temp);
-    }
-    else {
-        throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
-    }
-#endif
 }
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
 {
-    // get a valid name anyway!
-    if (!Name || Name[0] == '\0')
-        Name = "Unnamed";
-    string name = getUniqueDocumentName(Name, tempDoc);
+    auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
+        bool defaultName = (!Name || Name[0] == '\0');
+
+        // get a valid name anyway!
+        if (defaultName) {
+            Name = "Unnamed";
+        }
+
+        std::string userName;
+        if (UserName && UserName[0] != '\0') {
+            userName = UserName;
+        }
+        else {
+            userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
+
+            std::vector<std::string> names;
+            names.reserve(DocMap.size());
+            for (const auto& pos : DocMap) {
+                names.emplace_back(pos.second->Label.getValue());
+            }
+
+            if (!names.empty()) {
+                userName = Base::Tools::getUniqueName(userName, names);
+            }
+        }
+
+        return std::make_tuple(std::string(Name), userName);
+    };
+
+    auto tuple = getNameAndLabel(Name, UserName);
+    std::string name = std::get<0>(tuple);
+    std::string userName = std::get<1>(tuple);
+    name = getUniqueDocumentName(name.c_str(), tempDoc);
 
     // return the temporary document if it exists
     if (tempDoc) {
@@ -400,34 +466,16 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
             return it->second;
     }
 
-    std::string userName;
-    if (UserName && UserName[0] != '\0') {
-        userName = UserName;
-    }
-    else {
-        userName = Name;
-        std::vector<std::string> names;
-        names.reserve(DocMap.size());
-        std::map<string,Document*>::const_iterator pos;
-        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            names.push_back(pos->second->Label.getValue());
-        }
-
-        if (!names.empty())
-            userName = Base::Tools::getUniqueName(userName, names);
-    }
-
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    if (tempDoc)
-        newDoc->setStatus(Document::TempDoc, true);
+    newDoc->setStatus(Document::TempDoc, tempDoc);
 
     auto oldActiveDoc = _pActiveDoc;
-    auto doc = newDoc.get();
+    auto doc = newDoc.release(); // now owned by the Application
 
     // add the document to the internal list
-    DocMap[name] = newDoc.release(); // now owned by the Application
-    _pActiveDoc = DocMap[name];
+    DocMap[name] = doc;
+    _pActiveDoc = doc;
 
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
@@ -448,14 +496,13 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
     _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangePropertyEditor.connect(
-            std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
 
     // make sure that the active document is set in case no GUI is up
     {
         Base::PyGILStateLocker lock;
         Py::Object active(_pActiveDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
 
     signalNewDocument(*_pActiveDoc, createView);
@@ -484,9 +531,10 @@ bool Application::closeDocument(const char* name)
 
     // For exception-safety use a smart pointer
     if (_pActiveDoc == pos->second)
-        setActiveDocument((Document*)0);
+        setActiveDocument(static_cast<Document*>(nullptr));
     std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
+    DocFileMap.erase(FileInfo(delDoc->FileName.getValue()).filePath());
 
     _objCount = -1;
 
@@ -496,7 +544,7 @@ bool Application::closeDocument(const char* name)
     return true;
 }
 
-void Application::closeAllDocuments(void)
+void Application::closeAllDocuments()
 {
     Base::FlagToggler<bool> flag(_isClosingAll);
     std::map<std::string,Document*>::iterator pos;
@@ -511,7 +559,7 @@ App::Document* Application::getDocument(const char *Name) const
     pos = DocMap.find(Name);
 
     if (pos == DocMap.end())
-        return 0;
+        return nullptr;
 
     return pos->second;
 }
@@ -522,7 +570,7 @@ const char * Application::getDocumentName(const App::Document* doc) const
         if (it->second == doc)
             return it->first.c_str();
 
-    return 0;
+    return nullptr;
 }
 
 std::vector<App::Document*> Application::getDocuments() const
@@ -550,7 +598,7 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
     else {
         std::vector<std::string> names;
         names.reserve(DocMap.size());
-        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
+        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
             if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
                 names.push_back(pos->first);
         }
@@ -566,10 +614,12 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
         return -1;
     assert(FileName && FileName[0]);
     assert(objName && objName[0]);
-    auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
-    ret.first->second.emplace(objName);
+    if(!_docReloadAttempts[FileName].emplace(objName).second)
+        return -1;
+    auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
+    ret.first->second.emplace_back(objName);
     if(ret.second) {
-        _pendingDocs.push_back(ret.first->first.c_str());
+        _pendingDocs.emplace_back(ret.first->first.c_str());
         return 1;
     }
     return -1;
@@ -617,10 +667,45 @@ public:
 
 Document* Application::openDocument(const char * FileName, bool createView) {
     std::vector<std::string> filenames(1,FileName);
-    auto docs = openDocuments(filenames,0,0,0,createView);
-    if(docs.size())
+    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createView);
+    if(!docs.empty())
         return docs.front();
-    return 0;
+    return nullptr;
+}
+
+Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
+    if(!path || !path[0])
+        return nullptr;
+    if(DocFileMap.empty()) {
+        for(const auto &v : DocMap) {
+            const auto &file = v.second->FileName.getStrValue();
+            if(!file.empty())
+                DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
+        }
+    }
+    auto it = DocFileMap.find(FileInfo(path).filePath());
+    if(it != DocFileMap.end())
+        return it->second;
+
+    if (checkCanonical == PathMatchMode::MatchAbsolute)
+        return nullptr;
+
+    std::string filepath = FileInfo(path).filePath();
+    QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
+    for (const auto &v : DocMap) {
+        QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
+        if (canonicalPath == fi.canonicalFilePath()) {
+            if (checkCanonical == PathMatchMode::MatchCanonical)
+                return v.second;
+            bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
+            FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
+                    << (samePath?"":"  for file '") << (samePath?"":filepath.c_str()) << (samePath?"":"'\n")
+                    << "  with existing document '" << v.second->Label.getValue()
+                    << "' in path: '" << v.second->FileName.getValue() << "'");
+            break;
+        }
+    }
+    return nullptr;
 }
 
 std::vector<Document*> Application::openDocuments(const std::vector<std::string> &filenames,
@@ -640,6 +725,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
+    _docReloadAttempts.clear();
 
     signalStartOpenDocument();
 
@@ -647,120 +733,164 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     for (auto &name : filenames)
-        _pendingDocs.push_back(name.c_str());
+        _pendingDocs.emplace_back(name.c_str());
 
-    std::map<Document *, DocTiming> newDocs;
+    std::map<DocumentT, DocTiming> timings;
 
     FC_TIME_INIT(t);
 
-    for (std::size_t count=0;; ++count) {
-        const char *name = _pendingDocs.front();
-        _pendingDocs.pop_front();
-        bool isMainDoc = count < filenames.size();
+    std::vector<DocumentT> openedDocs;
 
-        try {
-            _objCount = -1;
-            std::set<std::string> objNames;
-            if (_allowPartial) {
-                auto it = _pendingDocMap.find(name);
-                if (it != _pendingDocMap.end())
-                    objNames.swap(it->second);
-            }
+    int pass = 0;
+    do {
+        std::set<App::DocumentT> newDocs;
+        for (std::size_t count=0;; ++count) {
+            std::string name = std::move(_pendingDocs.front());
+            _pendingDocs.pop_front();
+            bool isMainDoc = (pass == 0 && count < filenames.size());
 
-            FC_TIME_INIT(t1);
-            DocTiming timing;
+            try {
+                _objCount = -1;
+                std::vector<std::string> objNames;
+                if (_allowPartial) {
+                    auto it = _pendingDocMap.find(name);
+                    if (it != _pendingDocMap.end()) {
+                        if(isMainDoc)
+                            it->second.clear();
+                        else
+                            objNames.swap(it->second);
+                        _pendingDocMap.erase(it);
+                    }
+                }
 
-            const char *path = name;
-            const char *label = 0;
-            if (isMainDoc) {
-                if (paths && paths->size()>count)
-                    path = (*paths)[count].c_str();
+                FC_TIME_INIT(t1);
+                DocTiming timing;
 
-                if (labels && labels->size()>count)
-                    label = (*labels)[count].c_str();
-            }
+                const char *path = name.c_str();
+                const char *label = nullptr;
+                if (isMainDoc) {
+                    if (paths && paths->size()>count)
+                        path = (*paths)[count].c_str();
 
-            auto doc = openDocumentPrivate(path, name, label, isMainDoc, createView, objNames);
-            FC_DURATION_PLUS(timing.d1,t1);
-            if (doc)
-                newDocs.emplace(doc,timing);
+                    if (labels && labels->size()>count)
+                        label = (*labels)[count].c_str();
+                }
 
-            if (isMainDoc)
-                res[count] = doc;
-            _objCount = -1;
-        }
-        catch (const Base::Exception &e) {
-            if (!errs && isMainDoc)
-                throw;
-            if (errs && isMainDoc)
-                (*errs)[count] = e.what();
-            else
-                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
-        }
-        catch (const std::exception &e) {
-            if (!errs && isMainDoc)
-                throw;
-            if (errs && isMainDoc)
-                (*errs)[count] = e.what();
-            else
-                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
-        }
-        catch (...) {
-            if (errs) {
+                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createView, std::move(objNames));
+                FC_DURATION_PLUS(timing.d1,t1);
+                if (doc) {
+                    timings[doc].d1 += timing.d1;
+                    newDocs.emplace(doc);
+                }
+
                 if (isMainDoc)
-                    (*errs)[count] = "unknown error";
+                    res[count] = doc;
+                _objCount = -1;
             }
-            else {
-                _pendingDocs.clear();
+            catch (const Base::Exception &e) {
+                e.ReportException();
+                if (!errs && isMainDoc)
+                    throw;
+                if (errs && isMainDoc)
+                    (*errs)[count] = e.what();
+                else
+                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+            }
+            catch (const std::exception &e) {
+                if (!errs && isMainDoc)
+                    throw;
+                if (errs && isMainDoc)
+                    (*errs)[count] = e.what();
+                else
+                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+            }
+            catch (...) {
+                if (errs) {
+                    if (isMainDoc)
+                        (*errs)[count] = "unknown error";
+                }
+                else {
+                    _pendingDocs.clear();
+                    _pendingDocsReopen.clear();
+                    _pendingDocMap.clear();
+                    throw;
+                }
+            }
+
+            if (_pendingDocs.empty()) {
+                if(_pendingDocsReopen.empty())
+                    break;
+                _pendingDocs = std::move(_pendingDocsReopen);
                 _pendingDocsReopen.clear();
-                _pendingDocMap.clear();
-                throw;
+                for(const auto &file : _pendingDocs) {
+                    auto doc = getDocumentByPath(file.c_str());
+                    if(doc)
+                        closeDocument(doc->getName());
+                }
             }
         }
 
-        if (_pendingDocs.empty()) {
-            if (_pendingDocsReopen.empty())
-                break;
-            _allowPartial = false;
-            _pendingDocs.swap(_pendingDocsReopen);
+        ++pass;
+        _pendingDocMap.clear();
+
+        std::vector<Document*> docs;
+        docs.reserve(newDocs.size());
+        for(const auto &d : newDocs) {
+            auto doc = d.getDocument();
+            if(!doc)
+                continue;
+            // Notify PropertyXLink to attach newly opened documents and restore
+            // relevant external links
+            PropertyXLink::restoreDocument(*doc);
+            docs.push_back(doc);
         }
-    }
 
-    _pendingDocs.clear();
-    _pendingDocsReopen.clear();
-    _pendingDocMap.clear();
+        Base::SequencerLauncher seq("Postprocessing...", docs.size());
 
-    Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
-
-    std::vector<Document*> docs;
-    docs.reserve(newDocs.size());
-    for (auto &v : newDocs) {
-        // Notify PropertyXLink to attach newly opened documents and restore
-        // relevant external links
-        PropertyXLink::restoreDocument(*v.first);
-        docs.push_back(v.first);
-    }
-
-    // After external links has been restored, we can now sort the document
-    // according to their dependency order.
-    docs = Document::getDependentDocuments(docs, true);
-    for (auto it=docs.begin(); it!=docs.end();) {
-        Document *doc = *it;
-        // It is possible that the newly opened document depends on an existing
-        // document, which will be included with the above call to
-        // Document::getDependentDocuments(). Make sure to exclude that.
-        auto dit = newDocs.find(doc);
-        if (dit == newDocs.end()) {
-            it = docs.erase(it);
-            continue;
+        // After external links has been restored, we can now sort the document
+        // according to their dependency order.
+        try {
+            docs = Document::getDependentDocuments(docs, true);
+        } catch (Base::Exception &e) {
+            e.ReportException();
         }
-        ++it;
-        FC_TIME_INIT(t1);
-        // Finalize document restoring with the correct order
-        doc->afterRestore(true);
-        FC_DURATION_PLUS(dit->second.d2,t1);
-        seq.next();
-    }
+        for(auto it=docs.begin(); it!=docs.end();) {
+            auto doc = *it;
+
+            // It is possible that the newly opened document depends on an existing
+            // document, which will be included with the above call to
+            // Document::getDependentDocuments(). Make sure to exclude that.
+            if(!newDocs.count(doc)) {
+                it = docs.erase(it);
+                continue;
+            }
+
+            auto &timing = timings[doc];
+            FC_TIME_INIT(t1);
+            // Finalize document restoring with the correct order
+            if(doc->afterRestore(true)) {
+                openedDocs.emplace_back(doc);
+                it = docs.erase(it);
+            } else {
+                ++it;
+                // Here means this is a partial loaded document, and we need to
+                // reload it fully because of touched objects. The reason of
+                // reloading a partial document with touched object is because
+                // partial document is supposed to be readonly, while a
+                // 'touched' object requires recomputation. And an object may
+                // become touched during restoring if externally linked
+                // document time stamp mismatches with the stamp saved.
+                _pendingDocs.emplace_back(doc->FileName.getValue());
+                _pendingDocMap.erase(doc->FileName.getValue());
+            }
+            FC_DURATION_PLUS(timing.d2,t1);
+            seq.next();
+        }
+        // Close the document for reloading
+        for(const auto doc : docs)
+            closeDocument(doc->getName());
+
+    }while(!_pendingDocs.empty());
 
     // Set the active document using the first successfully restored main
     // document (i.e. documents explicitly asked for by caller).
@@ -771,14 +901,14 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         }
     }
 
-    for (auto doc : docs) {
-        auto &timing = newDocs[doc];
-        FC_DURATION_LOG(timing.d1, doc->getName() << " restore");
-        FC_DURATION_LOG(timing.d2, doc->getName() << " postprocess");
+    for (auto &doc : openedDocs) {
+        auto &timing = timings[doc];
+        FC_DURATION_LOG(timing.d1, doc.getDocumentName() << " restore");
+        FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
     }
     FC_TIME_LOG(t,"total");
-
     _isRestoring = false;
+
     signalFinishOpenDocument();
     return res;
 }
@@ -786,7 +916,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 Document* Application::openDocumentPrivate(const char * FileName,
         const char *propFileName, const char *label,
         bool isMainDoc, bool createView,
-        const std::set<std::string> &objNames)
+        std::vector<std::string> &&objNames)
 {
     FileInfo File(FileName);
 
@@ -797,55 +927,51 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 
     // Before creating a new document we check whether the document is already open
-    std::string filepath = File.filePath();
-    QString canonicalPath = QFileInfo(QString::fromUtf8(FileName)).canonicalFilePath();
-    for (std::map<std::string,Document*>::iterator it = DocMap.begin(); it != DocMap.end(); ++it) {
-        // get unique path separators
-        std::string fi = FileInfo(it->second->FileName.getValue()).filePath();
-        if (filepath != fi) {
-            if (canonicalPath == QFileInfo(QString::fromUtf8(fi.c_str())).canonicalFilePath()) {
-                bool samePath = (canonicalPath == QString::fromUtf8(FileName));
-                FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
-                        << (samePath?"":"  for file '") << (samePath?"":FileName) << (samePath?"":"'\n")
-                        << "  with existing document '" << it->second->Label.getValue()
-                        << "' in path: '" << it->second->FileName.getValue() << "'");
-            }
-            continue;
-        }
-        if(it->second->testStatus(App::Document::PartialDoc)
-                || it->second->testStatus(App::Document::PartialRestore)) {
+    auto doc = getDocumentByPath(File.filePath().c_str(), PathMatchMode::MatchCanonicalWarning);
+    if(doc) {
+        if(doc->testStatus(App::Document::PartialDoc)
+                || doc->testStatus(App::Document::PartialRestore)) {
             // Here means a document is already partially loaded, but the document
             // is requested again, either partial or not. We must check if the
             // document contains the required object
 
             if(isMainDoc) {
                 // Main document must be open fully, so close and reopen
-                closeDocument(it->first.c_str());
-                break;
-            }
-
-            if(_allowPartial) {
+                closeDocument(doc->getName());
+                doc = nullptr;
+            } else if(_allowPartial) {
                 bool reopen = false;
-                for(auto &name : objNames) {
-                    auto obj = it->second->getObject(name.c_str());
+                for(const auto &name : objNames) {
+                    auto obj = doc->getObject(name.c_str());
                     if(!obj || obj->testStatus(App::PartialObject)) {
                         reopen = true;
+                        // NOTE: We are about to reload this document with
+                        // extra objects. However, it is possible to repeat
+                        // this process several times, if it is linked by
+                        // multiple documents and each with a different set of
+                        // objects. To partially solve this problem, we do not
+                        // close and reopen the document immediately here, but
+                        // add it to _pendingDocsReopen to delay reloading.
+                        for(auto obj : doc->getObjects())
+                            objNames.emplace_back(obj->getNameInDocument());
+                        _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
                         break;
                     }
                 }
                 if(!reopen)
-                    return 0;
+                    return nullptr;
             }
-            auto &names = _pendingDocMap[FileName];
-            names.clear();
-            _pendingDocsReopen.push_back(FileName);
-            return 0;
+
+            if(doc) {
+                _pendingDocsReopen.emplace_back(FileName);
+                return nullptr;
+            }
         }
 
         if(!isMainDoc)
-            return 0;
-
-        return it->second;
+            return nullptr;
+        else if(doc)
+            return doc;
     }
 
     std::string name;
@@ -867,6 +993,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
     try {
         // read the document
         newDoc->restore(File.filePath().c_str(),true,objNames);
+        if(!DocFileMap.empty())
+            DocFileMap[FileInfo(newDoc->FileName.getValue()).filePath()] = newDoc;
         return newDoc;
     }
     // if the project file itself is corrupt then
@@ -886,7 +1014,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 }
 
-Document* Application::getActiveDocument(void) const
+Document* Application::getActiveDocument() const
 {
     return _pActiveDoc;
 }
@@ -914,7 +1042,7 @@ void Application::setActiveDocument(const char *Name)
 {
     // If no active document is set, resort to a default.
     if (*Name == '\0') {
-        _pActiveDoc = 0;
+        _pActiveDoc = nullptr;
         return;
     }
 
@@ -956,14 +1084,14 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-const char* Application::getHomePath(void) const
+std::string Application::getHomePath()
 {
-    return _mConfig["AppHomePath"].c_str();
+    return mConfig["AppHomePath"];
 }
 
-const char* Application::getExecutableName(void) const
+std::string Application::getExecutableName()
 {
-    return _mConfig["ExeName"].c_str();
+    return mConfig["ExeName"];
 }
 
 std::string Application::getTempPath()
@@ -976,6 +1104,16 @@ std::string Application::getTempFileName(const char* FileName)
     return Base::FileInfo::getTempFileName(FileName, getTempPath().c_str());
 }
 
+std::string Application::getUserCachePath()
+{
+    return mConfig["UserCachePath"];
+}
+
+std::string Application::getUserConfigPath()
+{
+    return mConfig["UserConfigPath"];
+}
+
 std::string Application::getUserAppDataDir()
 {
     return mConfig["UserAppData"];
@@ -983,56 +1121,77 @@ std::string Application::getUserAppDataDir()
 
 std::string Application::getUserMacroDir()
 {
-    std::string path("Macro/");
-    return mConfig["UserAppData"] + path;
+    return mConfig["UserMacroPath"];
 }
 
 std::string Application::getResourceDir()
 {
 #ifdef RESOURCEDIR
-    std::string path(RESOURCEDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(RESOURCEDIR).c_str();
     path.append("/");
-    QDir dir(QString::fromUtf8(RESOURCEDIR));
+    QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
-    else
-        return mConfig["AppHomePath"] + path;
+    return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"];
+#endif
+}
+
+std::string Application::getLibraryDir()
+{
+#ifdef LIBRARYDIR
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(LIBRARYDIR).c_str();
+    QDir dir(QString::fromStdString(path));
+    if (dir.isAbsolute())
+        return path;
+    return mConfig["AppHomePath"] + path;
+#else
+    return mConfig["AppHomePath"] + "lib";
 #endif
 }
 
 std::string Application::getHelpDir()
 {
 #ifdef DOCDIR
-    std::string path(DOCDIR);
+    // #6892: Conda may inject null characters => remove them
+    std::string path = std::string(DOCDIR).c_str();
     path.append("/");
-    QDir dir(QString::fromUtf8(DOCDIR));
+    QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
-    else
-        return mConfig["AppHomePath"] + path;
+    return mConfig["AppHomePath"] + path;
 #else
     return mConfig["DocPath"];
 #endif
 }
 
-int Application::checkLinkDepth(int depth, bool no_throw) {
-    if(_objCount<0) {
+int Application::checkLinkDepth(int depth, MessageOption option)
+{
+    if (_objCount < 0) {
         _objCount = 0;
-        for(auto &v : DocMap)
+        for (auto &v : DocMap) {
             _objCount += v.second->countObjects();
+        }
     }
-    if(depth > _objCount+2) {
+
+    if (depth > _objCount + 2) {
         const char *msg = "Link recursion limit reached. "
                 "Please check for cyclic reference.";
-        if(no_throw) {
+        switch (option) {
+        case MessageOption::Quiet:
+            return 0;
+        case MessageOption::Error:
             FC_ERR(msg);
             return 0;
-        }else
+        case MessageOption::Throw:
             throw Base::RuntimeError(msg);
+        }
     }
-    return _objCount+2;
+
+    return _objCount + 2;
 }
 
 std::set<DocumentObject *> Application::getLinksTo(
@@ -1062,45 +1221,45 @@ bool Application::hasLinksTo(const DocumentObject *obj) const {
     return !getLinksTo(obj,0,1).empty();
 }
 
-ParameterManager & Application::GetSystemParameter(void)
+ParameterManager & Application::GetSystemParameter()
 {
     return *_pcSysParamMngr;
 }
 
-ParameterManager & Application::GetUserParameter(void)
+ParameterManager & Application::GetUserParameter()
 {
     return *_pcUserParamMngr;
 }
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return it->second;
     else
-        return 0;
+        return nullptr;
 }
 
-const std::map<std::string,ParameterManager *> & Application::GetParameterSetList(void) const
+const std::map<std::string,Base::Reference<ParameterManager>> &
+Application::GetParameterSetList(void) const
 {
     return mpcPramManager;
 }
 
 void Application::AddParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
-    mpcPramManager[sName] = new ParameterManager();
+    mpcPramManager[sName] = ParameterManager::Create();
 }
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
-    delete it->second;
     mpcPramManager.erase(it);
 }
 
@@ -1119,7 +1278,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     cName.erase(0,pos+1);
 
     // test if name is valid
-    std::map<std::string,ParameterManager *>::iterator It = mpcPramManager.find(cTemp.c_str());
+    auto It = mpcPramManager.find(cTemp.c_str());
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1208,7 +1367,7 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
     return types;
 }
 
-std::vector<std::string> Application::getImportTypes(void) const
+std::vector<std::string> Application::getImportTypes() const
 {
     std::vector<std::string> types;
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
@@ -1239,7 +1398,7 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
     return moduleFilter;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(void) const
+std::map<std::string, std::string> Application::getImportFilters() const
 {
     std::map<std::string, std::string> filter;
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
@@ -1331,7 +1490,7 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
     return types;
 }
 
-std::vector<std::string> Application::getExportTypes(void) const
+std::vector<std::string> Application::getExportTypes() const
 {
     std::vector<std::string> types;
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
@@ -1362,7 +1521,7 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
     return moduleFilter;
 }
 
-std::map<std::string, std::string> Application::getExportFilters(void) const
+std::map<std::string, std::string> Application::getExportFilters() const
 {
     std::map<std::string, std::string> filter;
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
@@ -1463,6 +1622,7 @@ void Application::slotStartSaveDocument(const App::Document& doc, const std::str
 
 void Application::slotFinishSaveDocument(const App::Document& doc, const std::string& filename)
 {
+    DocFileMap.clear();
     this->signalFinishSaveDocument(doc, filename);
 }
 
@@ -1474,7 +1634,7 @@ void Application::slotChangePropertyEditor(const App::Document &doc, const App::
 //**************************************************************************
 // Init, Destruct and singleton
 
-Application * Application::_pcSingleton = 0;
+Application * Application::_pcSingleton = nullptr;
 
 int Application::_argc;
 char ** Application::_argv;
@@ -1497,35 +1657,32 @@ void Application::cleanupUnits()
     }
 }
 
-void Application::destruct(void)
+void Application::destruct()
 {
     // saving system parameter
-    Console().Log("Saving system parameter...\n");
+    Base::Console().Log("Saving system parameter...\n");
     _pcSysParamMngr->SaveDocument();
     // saving the User parameter
-    Console().Log("Saving system parameter...done\n");
-    Console().Log("Saving user parameter...\n");
+    Base::Console().Log("Saving system parameter...done\n");
+    Base::Console().Log("Saving user parameter...\n");
     _pcUserParamMngr->SaveDocument();
-    Console().Log("Saving user parameter...done\n");
+    Base::Console().Log("Saving user parameter...done\n");
 
     // now save all other parameter files
-    std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
-    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
+    auto& paramMgr = _pcSingleton->mpcPramManager;
+    for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
             if (it->second->HasSerializer()) {
-                Console().Log("Saving %s...\n", it->first.c_str());
+                Base::Console().Log("Saving %s...\n", it->first.c_str());
                 it->second->SaveDocument();
-                Console().Log("Saving %s...done\n", it->first.c_str());
+                Base::Console().Log("Saving %s...done\n", it->first.c_str());
             }
         }
-
-        // clean up
-        delete it->second;
     }
 
     paramMgr.clear();
-    _pcSysParamMngr = 0;
-    _pcUserParamMngr = 0;
+    _pcSysParamMngr = nullptr;
+    _pcUserParamMngr = nullptr;
 
 #ifdef FC_DEBUG
     // Do this only in debug mode for memory leak checkers
@@ -1541,23 +1698,23 @@ void Application::destruct(void)
 
     Base::Interpreter().finalize();
 
-    ScriptFactorySingleton::Destruct();
-    InterpreterSingleton::Destruct();
+    Base::ScriptFactorySingleton::Destruct();
+    Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
 }
 
-void Application::destructObserver(void)
+void Application::destructObserver()
 {
     if ( _pConsoleObserverFile ) {
-        Console().DetachObserver(_pConsoleObserverFile);
+        Base::Console().DetachObserver(_pConsoleObserverFile);
         delete _pConsoleObserverFile;
-        _pConsoleObserverFile = 0;
+        _pConsoleObserverFile = nullptr;
     }
     if ( _pConsoleObserverStd ) {
-        Console().DetachObserver(_pConsoleObserverStd);
+        Base::Console().DetachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
-        _pConsoleObserverStd = 0;
+        _pConsoleObserverStd = nullptr;
     }
 }
 
@@ -1589,21 +1746,26 @@ static void freecadNewHandler ()
 #include <string>
 #include <sstream>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 // This function produces a stack backtrace with demangled function & method names.
 void printBacktrace(size_t skip=0)
 {
+#if defined HAVE_BACKTRACE_SYMBOLS
     void *callstack[128];
     size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
     size_t nFrames = backtrace(callstack, nMaxFrames);
     char **symbols = backtrace_symbols(callstack, nFrames);
 
     for (size_t i = skip; i < nFrames; i++) {
-        char *demangled = NULL;
+        char *demangled = nullptr;
         int status = -1;
         Dl_info info;
         if (dladdr(callstack[i], &info) && info.dli_sname && info.dli_fname) {
             if (info.dli_sname[0] == '_') {
-                demangled = abi::__cxa_demangle(info.dli_sname, NULL, 0, &status);
+                demangled = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
             }
         }
 
@@ -1622,6 +1784,10 @@ void printBacktrace(size_t skip=0)
     }
 
     free(symbols);
+#else //HAVE_BACKTRACE_SYMBOLS
+    (void)skip;
+    std::cerr << "Cannot print the stacktrace because the C runtime library doesn't provide backtrace or backtrace_symbols\n";
+#endif
 }
 #endif
 
@@ -1631,7 +1797,11 @@ void segmentation_fault_handler(int sig)
     (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
+#if defined(FC_DEBUG)
+    abort();
+#else
     exit(1);
+#endif
 #else
     switch (sig) {
         case SIGSEGV:
@@ -1679,7 +1849,7 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        //throw Base::DivisionByZeroError("Division by zero!");
+        //throw Base::ZeroDivisionError("Division by zero!");
         Base::Console().Error("SEH exception (%u): Division by zero\n", code);
         return;
     }
@@ -1726,7 +1896,7 @@ void Application::init(int argc, char ** argv)
     }
 }
 
-void Application::initTypes(void)
+void Application::initTypes()
 {
     // Base types
     Base::Type                      ::init();
@@ -1740,183 +1910,555 @@ void Application::initTypes(void)
     Data::Segment                   ::init();
 
     // Properties
-    App ::Property                  ::init();
-    App ::PropertyContainer         ::init();
-    App ::PropertyLists             ::init();
-    App ::PropertyBool              ::init();
-    App ::PropertyBoolList          ::init();
-    App ::PropertyFloat             ::init();
-    App ::PropertyFloatList         ::init();
-    App ::PropertyFloatConstraint   ::init();
-    App ::PropertyPrecision         ::init();
-    App ::PropertyQuantity          ::init();
-    App ::PropertyQuantityConstraint::init();
-    App ::PropertyAngle             ::init();
-    App ::PropertyDistance          ::init();
-    App ::PropertyLength            ::init();
-    App ::PropertyArea              ::init();
-    App ::PropertyVolume            ::init();
-    App ::PropertyFrequency         ::init();
-    App ::PropertySpeed             ::init();
-    App ::PropertyAcceleration      ::init();
-    App ::PropertyForce             ::init();
-    App ::PropertyPressure          ::init();
-    App ::PropertyVacuumPermittivity::init();
-    App ::PropertyInteger           ::init();
-    App ::PropertyIntegerConstraint ::init();
-    App ::PropertyPercent           ::init();
-    App ::PropertyEnumeration       ::init();
-    App ::PropertyIntegerList       ::init();
-    App ::PropertyIntegerSet        ::init();
-    App ::PropertyMap               ::init();
-    App ::PropertyString            ::init();
-    App ::PropertyPersistentObject  ::init();
-    App ::PropertyUUID              ::init();
-    App ::PropertyFont              ::init();
-    App ::PropertyStringList        ::init();
-    App ::PropertyLinkBase          ::init();
-    App ::PropertyLinkListBase      ::init();
-    App ::PropertyLink              ::init();
-    App ::PropertyLinkChild         ::init();
-    App ::PropertyLinkGlobal        ::init();
-    App ::PropertyLinkHidden        ::init();
-    App ::PropertyLinkSub           ::init();
-    App ::PropertyLinkSubChild      ::init();
-    App ::PropertyLinkSubGlobal     ::init();
-    App ::PropertyLinkSubHidden     ::init();
-    App ::PropertyLinkList          ::init();
-    App ::PropertyLinkListChild     ::init();
-    App ::PropertyLinkListGlobal    ::init();
-    App ::PropertyLinkListHidden    ::init();
-    App ::PropertyLinkSubList       ::init();
-    App ::PropertyLinkSubListChild  ::init();
-    App ::PropertyLinkSubListGlobal ::init();
-    App ::PropertyLinkSubListHidden ::init();
-    App ::PropertyXLink             ::init();
-    App ::PropertyXLinkSub          ::init();
-    App ::PropertyXLinkSubList      ::init();
-    App ::PropertyXLinkList         ::init();
-    App ::PropertyXLinkContainer    ::init();
-    App ::PropertyMatrix            ::init();
-    App ::PropertyVector            ::init();
-    App ::PropertyVectorDistance    ::init();
-    App ::PropertyPosition          ::init();
-    App ::PropertyDirection         ::init();
-    App ::PropertyVectorList        ::init();
-    App ::PropertyPlacement         ::init();
-    App ::PropertyPlacementList     ::init();
-    App ::PropertyPlacementLink     ::init();
-    App ::PropertyGeometry          ::init();
-    App ::PropertyComplexGeoData    ::init();
-    App ::PropertyColor             ::init();
-    App ::PropertyColorList         ::init();
-    App ::PropertyMaterial          ::init();
-    App ::PropertyMaterialList      ::init();
-    App ::PropertyPath              ::init();
-    App ::PropertyFile              ::init();
-    App ::PropertyFileIncluded      ::init();
-    App ::PropertyPythonObject      ::init();
-    App ::PropertyExpressionContainer  ::init();
-    App ::PropertyExpressionEngine  ::init();
+    // Note: the order matters
+    App::Property                   ::init();
+    App::PropertyContainer          ::init();
+    App::PropertyLists              ::init();
+    App::PropertyBool               ::init();
+    App::PropertyBoolList           ::init();
+    App::PropertyFloat              ::init();
+    App::PropertyFloatList          ::init();
+    App::PropertyFloatConstraint    ::init();
+    App::PropertyPrecision          ::init();
+    App::PropertyQuantity           ::init();
+    App::PropertyQuantityConstraint ::init();
+    App::PropertyInteger            ::init();
+    App::PropertyIntegerConstraint  ::init();
+    App::PropertyPercent            ::init();
+    App::PropertyEnumeration        ::init();
+    App::PropertyIntegerList        ::init();
+    App::PropertyIntegerSet         ::init();
+    App::PropertyMap                ::init();
+    App::PropertyString             ::init();
+    App::PropertyPersistentObject   ::init();
+    App::PropertyUUID               ::init();
+    App::PropertyFont               ::init();
+    App::PropertyStringList         ::init();
+    App::PropertyLinkBase           ::init();
+    App::PropertyLinkListBase       ::init();
+    App::PropertyLink               ::init();
+    App::PropertyLinkChild          ::init();
+    App::PropertyLinkGlobal         ::init();
+    App::PropertyLinkHidden         ::init();
+    App::PropertyLinkSub            ::init();
+    App::PropertyLinkSubChild       ::init();
+    App::PropertyLinkSubGlobal      ::init();
+    App::PropertyLinkSubHidden      ::init();
+    App::PropertyLinkList           ::init();
+    App::PropertyLinkListChild      ::init();
+    App::PropertyLinkListGlobal     ::init();
+    App::PropertyLinkListHidden     ::init();
+    App::PropertyLinkSubList        ::init();
+    App::PropertyLinkSubListChild   ::init();
+    App::PropertyLinkSubListGlobal  ::init();
+    App::PropertyLinkSubListHidden  ::init();
+    App::PropertyXLink              ::init();
+    App::PropertyXLinkSub           ::init();
+    App::PropertyXLinkSubList       ::init();
+    App::PropertyXLinkList          ::init();
+    App::PropertyXLinkContainer     ::init();
+    App::PropertyMatrix             ::init();
+    App::PropertyVector             ::init();
+    App::PropertyVectorDistance     ::init();
+    App::PropertyPosition           ::init();
+    App::PropertyDirection          ::init();
+    App::PropertyVectorList         ::init();
+    App::PropertyPlacement          ::init();
+    App::PropertyPlacementList      ::init();
+    App::PropertyPlacementLink      ::init();
+    App::PropertyRotation           ::init();
+    App::PropertyGeometry           ::init();
+    App::PropertyComplexGeoData     ::init();
+    App::PropertyColor              ::init();
+    App::PropertyColorList          ::init();
+    App::PropertyMaterial           ::init();
+    App::PropertyMaterialList       ::init();
+    App::PropertyPath               ::init();
+    App::PropertyFile               ::init();
+    App::PropertyFileIncluded       ::init();
+    App::PropertyPythonObject       ::init();
+    App::PropertyExpressionContainer::init();
+    App::PropertyExpressionEngine   ::init();
+    // all know unit properties
+    App::PropertyAcceleration               ::init();
+    App::PropertyAmountOfSubstance          ::init();
+    App::PropertyAngle                      ::init();
+    App::PropertyArea                       ::init();
+    App::PropertyCompressiveStrength        ::init();
+    App::PropertyCurrentDensity             ::init();
+    App::PropertyDensity                    ::init();
+    App::PropertyDissipationRate            ::init();
+    App::PropertyDistance                   ::init();
+    App::PropertyDynamicViscosity           ::init();
+    App::PropertyElectricalCapacitance      ::init();
+    App::PropertyElectricalConductance      ::init();
+    App::PropertyElectricalConductivity     ::init();
+    App::PropertyElectricalInductance       ::init();
+    App::PropertyElectricalResistance       ::init();
+    App::PropertyElectricCharge             ::init();
+    App::PropertyElectricCurrent            ::init();
+    App::PropertyElectricPotential          ::init();
+    App::PropertyFrequency                  ::init();
+    App::PropertyForce                      ::init();
+    App::PropertyHeatFlux                   ::init();
+    App::PropertyInverseArea                ::init();
+    App::PropertyInverseLength              ::init();
+    App::PropertyInverseVolume              ::init();
+    App::PropertyKinematicViscosity         ::init();
+    App::PropertyLength                     ::init();
+    App::PropertyLuminousIntensity          ::init();
+    App::PropertyMagneticFieldStrength      ::init();
+    App::PropertyMagneticFlux               ::init();
+    App::PropertyMagneticFluxDensity        ::init();
+    App::PropertyMagnetization              ::init();
+    App::PropertyMass                       ::init();
+    App::PropertyPressure                   ::init();
+    App::PropertyPower                      ::init();
+    App::PropertyShearModulus               ::init();
+    App::PropertySpecificEnergy             ::init();
+    App::PropertySpecificHeat               ::init();
+    App::PropertySpeed                      ::init();
+    App::PropertyStiffness                  ::init();
+    App::PropertyStress                     ::init();
+    App::PropertyTemperature                ::init();
+    App::PropertyThermalConductivity        ::init();
+    App::PropertyThermalExpansionCoefficient::init();
+    App::PropertyThermalTransferCoefficient ::init();
+    App::PropertyTime                       ::init();
+    App::PropertyUltimateTensileStrength    ::init();
+    App::PropertyVacuumPermittivity         ::init();
+    App::PropertyVelocity                   ::init();
+    App::PropertyVolume                     ::init();
+    App::PropertyVolumeFlowRate             ::init();
+    App::PropertyVolumetricThermalExpansionCoefficient::init();
+    App::PropertyWork                       ::init();
+    App::PropertyYieldStrength              ::init();
+    App::PropertyYoungsModulus              ::init();
 
     // Extension classes
-    App ::Extension                     ::init();
-    App ::ExtensionContainer            ::init();
-    App ::DocumentObjectExtension       ::init();
-    App ::GroupExtension                ::init();
-    App ::GroupExtensionPython          ::init();
-    App ::GeoFeatureGroupExtension      ::init();
-    App ::GeoFeatureGroupExtensionPython::init();
-    App ::OriginGroupExtension          ::init();
-    App ::OriginGroupExtensionPython    ::init();
-    App ::LinkBaseExtension             ::init();
-    App ::LinkBaseExtensionPython       ::init();
-    App ::LinkExtension                 ::init();
-    App ::LinkExtensionPython           ::init();
+    App::Extension                     ::init();
+    App::ExtensionContainer            ::init();
+    App::DocumentObjectExtension       ::init();
+    App::GroupExtension                ::init();
+    App::GroupExtensionPython          ::init();
+    App::GeoFeatureGroupExtension      ::init();
+    App::GeoFeatureGroupExtensionPython::init();
+    App::OriginGroupExtension          ::init();
+    App::OriginGroupExtensionPython    ::init();
+    App::LinkBaseExtension             ::init();
+    App::LinkBaseExtensionPython       ::init();
+    App::LinkExtension                 ::init();
+    App::LinkExtensionPython           ::init();
 
     // Document classes
-    App ::TransactionalObject       ::init();
-    App ::DocumentObject            ::init();
-    App ::GeoFeature                ::init();
-    App ::FeatureTest               ::init();
-    App ::FeatureTestException      ::init();
-    App ::FeaturePython             ::init();
-    App ::GeometryPython            ::init();
-    App ::Document                  ::init();
-    App ::DocumentObjectGroup       ::init();
-    App ::DocumentObjectGroupPython ::init();
-    App ::DocumentObjectFileIncluded::init();
-    App ::InventorObject            ::init();
-    App ::VRMLObject                ::init();
-    App ::Annotation                ::init();
-    App ::AnnotationLabel           ::init();
-    App ::MeasureDistance           ::init();
-    App ::MaterialObject            ::init();
-    App ::MaterialObjectPython      ::init();
-    App ::TextDocument              ::init();
-    App ::Placement                 ::init();
-    App ::PlacementPython           ::init();
-    App ::OriginFeature             ::init();
-    App ::Plane                     ::init();
-    App ::Line                      ::init();
-    App ::Part                      ::init();
-    App ::Origin                    ::init();
-    App ::Link                      ::init();
-    App ::LinkPython                ::init();
-    App ::LinkElement               ::init();
-    App ::LinkElementPython         ::init();
-    App ::LinkGroup                 ::init();
-    App ::LinkGroupPython           ::init();
+    App::TransactionalObject       ::init();
+    App::DocumentObject            ::init();
+    App::GeoFeature                ::init();
+
+    // Test features
+    App::FeatureTest               ::init();
+    App::FeatureTestException      ::init();
+    App::FeatureTestColumn         ::init();
+    App::FeatureTestRow            ::init();
+    App::FeatureTestAbsAddress     ::init();
+    App::FeatureTestPlacement      ::init();
+    App::FeatureTestAttribute      ::init();
+
+    // Feature class
+    App::FeaturePython             ::init();
+    App::GeometryPython            ::init();
+    App::Document                  ::init();
+    App::DocumentObjectGroup       ::init();
+    App::DocumentObjectGroupPython ::init();
+    App::DocumentObjectFileIncluded::init();
+    Image::ImagePlane              ::init();
+    App::InventorObject            ::init();
+    App::VRMLObject                ::init();
+    App::Annotation                ::init();
+    App::AnnotationLabel           ::init();
+    App::MeasureDistance           ::init();
+    App::MaterialObject            ::init();
+    App::MaterialObjectPython      ::init();
+    App::TextDocument              ::init();
+    App::Placement                 ::init();
+    App::PlacementPython           ::init();
+    App::OriginFeature             ::init();
+    App::Plane                     ::init();
+    App::Line                      ::init();
+    App::Part                      ::init();
+    App::Origin                    ::init();
+    App::Link                      ::init();
+    App::LinkPython                ::init();
+    App::LinkElement               ::init();
+    App::LinkElementPython         ::init();
+    App::LinkGroup                 ::init();
+    App::LinkGroupPython           ::init();
 
     // Expression classes
-    App ::Expression                ::init();
-    App ::UnitExpression            ::init();
-    App ::NumberExpression          ::init();
-    App ::ConstantExpression        ::init();
-    App ::OperatorExpression        ::init();
-    App ::VariableExpression        ::init();
-    App ::ConditionalExpression     ::init();
-    App ::StringExpression          ::init();
-    App ::FunctionExpression        ::init();
-    App ::RangeExpression           ::init();
-    App ::PyObjectExpression        ::init();
+    App::Expression                ::init();
+    App::UnitExpression            ::init();
+    App::NumberExpression          ::init();
+    App::ConstantExpression        ::init();
+    App::OperatorExpression        ::init();
+    App::VariableExpression        ::init();
+    App::ConditionalExpression     ::init();
+    App::StringExpression          ::init();
+    App::FunctionExpression        ::init();
+    App::RangeExpression           ::init();
+    App::PyObjectExpression        ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
-    new ExceptionProducer<Base::AbortException>;
-    new ExceptionProducer<Base::XMLBaseException>;
-    new ExceptionProducer<Base::XMLParseException>;
-    new ExceptionProducer<Base::XMLAttributeError>;
-    new ExceptionProducer<Base::FileException>;
-    new ExceptionProducer<Base::FileSystemError>;
-    new ExceptionProducer<Base::BadFormatError>;
-    new ExceptionProducer<Base::MemoryException>;
-    new ExceptionProducer<Base::AccessViolation>;
-    new ExceptionProducer<Base::AbnormalProgramTermination>;
-    new ExceptionProducer<Base::UnknownProgramOption>;
-    new ExceptionProducer<Base::ProgramInformation>;
-    new ExceptionProducer<Base::TypeError>;
-    new ExceptionProducer<Base::ValueError>;
-    new ExceptionProducer<Base::IndexError>;
-    new ExceptionProducer<Base::NameError>;
-    new ExceptionProducer<Base::ImportError>;
-    new ExceptionProducer<Base::AttributeError>;
-    new ExceptionProducer<Base::RuntimeError>;
-    new ExceptionProducer<Base::BadGraphError>;
-    new ExceptionProducer<Base::NotImplementedError>;
-    new ExceptionProducer<Base::DivisionByZeroError>;
-    new ExceptionProducer<Base::ReferencesError>;
-    new ExceptionProducer<Base::ExpressionError>;
-    new ExceptionProducer<Base::ParserError>;
-    new ExceptionProducer<Base::UnicodeError>;
-    new ExceptionProducer<Base::OverflowError>;
-    new ExceptionProducer<Base::UnderflowError>;
-    new ExceptionProducer<Base::UnitsMismatchError>;
-    new ExceptionProducer<Base::CADKernelError>;
-    new ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::AbortException>;
+    new Base::ExceptionProducer<Base::XMLBaseException>;
+    new Base::ExceptionProducer<Base::XMLParseException>;
+    new Base::ExceptionProducer<Base::XMLAttributeError>;
+    new Base::ExceptionProducer<Base::FileException>;
+    new Base::ExceptionProducer<Base::FileSystemError>;
+    new Base::ExceptionProducer<Base::BadFormatError>;
+    new Base::ExceptionProducer<Base::MemoryException>;
+    new Base::ExceptionProducer<Base::AccessViolation>;
+    new Base::ExceptionProducer<Base::AbnormalProgramTermination>;
+    new Base::ExceptionProducer<Base::UnknownProgramOption>;
+    new Base::ExceptionProducer<Base::ProgramInformation>;
+    new Base::ExceptionProducer<Base::TypeError>;
+    new Base::ExceptionProducer<Base::ValueError>;
+    new Base::ExceptionProducer<Base::IndexError>;
+    new Base::ExceptionProducer<Base::NameError>;
+    new Base::ExceptionProducer<Base::ImportError>;
+    new Base::ExceptionProducer<Base::AttributeError>;
+    new Base::ExceptionProducer<Base::RuntimeError>;
+    new Base::ExceptionProducer<Base::BadGraphError>;
+    new Base::ExceptionProducer<Base::NotImplementedError>;
+    new Base::ExceptionProducer<Base::ZeroDivisionError>;
+    new Base::ExceptionProducer<Base::ReferenceError>;
+    new Base::ExceptionProducer<Base::ExpressionError>;
+    new Base::ExceptionProducer<Base::ParserError>;
+    new Base::ExceptionProducer<Base::UnicodeError>;
+    new Base::ExceptionProducer<Base::OverflowError>;
+    new Base::ExceptionProducer<Base::UnderflowError>;
+    new Base::ExceptionProducer<Base::UnitsMismatchError>;
+    new Base::ExceptionProducer<Base::CADKernelError>;
+    new Base::ExceptionProducer<Base::RestoreError>;
+}
+
+namespace {
+
+void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& vm)
+{
+    // Declare a group of options that will be
+    // allowed only on the command line
+    options_description generic("Generic options");
+    generic.add_options()
+    ("version,v", "Prints version string")
+    ("verbose", "Prints verbose version string")
+    ("help,h", "Prints help message")
+    ("console,c", "Starts in console mode")
+    ("response-file", value<string>(),"Can be specified with '@name', too")
+    ("dump-config", "Dumps configuration")
+    ("get-config", value<string>(), "Prints the value of the requested configuration key")
+    ("set-config", value< vector<string> >()->multitoken(), "Sets the value of a configuration key")
+    ("keep-deprecated-paths", "If set then config files are kept on the old location")
+    ;
+
+    // Declare a group of options that will be
+    // allowed both on the command line and in
+    // the config file
+    std::stringstream descr;
+    descr << "Writes " << exe << ".log to the user directory.";
+    boost::program_options::options_description config("Configuration");
+    config.add_options()
+    //("write-log,l", value<string>(), "write a log file")
+    ("write-log,l", descr.str().c_str())
+    ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
+    ("user-cfg,u", value<string>(),"User config file to load/save user settings")
+    ("system-cfg,s", value<string>(),"System config file to load/save system settings")
+    ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
+    ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
+    ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
+    ("single-instance", "Allow to run a single instance of the application")
+    ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
+    ;
+
+
+    // Hidden options, will be allowed both on the command line and
+    // in the config file, but will not be shown to the user.
+    boost::program_options::options_description hidden("Hidden options");
+    hidden.add_options()
+    ("input-file", boost::program_options::value< vector<string> >(), "input file")
+    ("output",     boost::program_options::value<string>(),"output file")
+    ("hidden",                                             "don't show the main window")
+    // this are to ignore for the window system (QApplication)
+    ("style",      boost::program_options::value< string >(), "set the application GUI style")
+    ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
+    ("session",    boost::program_options::value< string >(), "restore the application from an earlier session")
+    ("reverse",                                               "set the application's layout direction from right to left")
+    ("widgetcount",                                           "print debug messages about widgets")
+    ("graphicssystem", boost::program_options::value< string >(), "backend to be used for on-screen widgets and pixmaps")
+    ("display",    boost::program_options::value< string >(), "set the X-Server")
+    ("geometry ",  boost::program_options::value< string >(), "set the X-Window geometry")
+    ("font",       boost::program_options::value< string >(), "set the X-Window font")
+    ("fn",         boost::program_options::value< string >(), "set the X-Window font")
+    ("background", boost::program_options::value< string >(), "set the X-Window background color")
+    ("bg",         boost::program_options::value< string >(), "set the X-Window background color")
+    ("foreground", boost::program_options::value< string >(), "set the X-Window foreground color")
+    ("fg",         boost::program_options::value< string >(), "set the X-Window foreground color")
+    ("button",     boost::program_options::value< string >(), "set the X-Window button color")
+    ("btn",        boost::program_options::value< string >(), "set the X-Window button color")
+    ("name",       boost::program_options::value< string >(), "set the X-Window name")
+    ("title",      boost::program_options::value< string >(), "set the X-Window title")
+    ("visual",     boost::program_options::value< string >(), "set the X-Window to color scheme")
+    ("ncols",      boost::program_options::value< int    >(), "set the X-Window to color scheme")
+    ("cmap",                                                  "set the X-Window to color scheme")
+#if defined(FC_OS_MACOSX)
+    ("psn",        boost::program_options::value< string >(), "process serial number")
+#endif
+    ;
+
+    // Ignored options, will be safely ignored. Mostly used by underlying libs.
+    //boost::program_options::options_description x11("X11 options");
+    //x11.add_options()
+    //    ("display",  boost::program_options::value< string >(), "set the X-Server")
+    //    ;
+    //0000723: improper handling of qt specific command line arguments
+    std::vector<std::string> args;
+    bool merge=false;
+    for (int i=1; i<ac; i++) {
+        if (merge) {
+            merge = false;
+            args.back() += "=";
+            args.back() += av[i];
+        }
+        else {
+            args.emplace_back(av[i]);
+        }
+        if (strcmp(av[i],"-style") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-stylesheet") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-session") == 0) {
+            merge = true;
+        }
+        else if (strcmp(av[i],"-graphicssystem") == 0) {
+            merge = true;
+        }
+    }
+
+    // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
+    // Add some text to the constructor
+    options_description cmdline_options("Command-line options");
+    cmdline_options.add(generic).add(config).add(hidden);
+
+    boost::program_options::options_description config_file_options("Config");
+    config_file_options.add(config).add(hidden);
+
+    boost::program_options::options_description visible("Allowed options");
+    visible.add(generic).add(config);
+
+    boost::program_options::positional_options_description p;
+    p.add("input-file", -1);
+
+    try {
+        store( boost::program_options::command_line_parser(args).
+               options(cmdline_options).positional(p).extra_parser(Util::customSyntax).run(), vm);
+
+        std::ifstream ifs("FreeCAD.cfg");
+        if (ifs)
+            store(parse_config_file(ifs, config_file_options), vm);
+        notify(vm);
+    }
+    catch (const std::exception& e) {
+        std::stringstream str;
+        str << e.what() << endl << endl << visible << endl;
+        throw Base::UnknownProgramOption(str.str());
+    }
+    catch (...) {
+        std::stringstream str;
+        str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
+        throw Base::UnknownProgramOption(str.str());
+    }
+
+    if (vm.count("help")) {
+        std::stringstream str;
+        str << exe << endl << endl;
+        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
+        str << "Usage: " << exe << " [options] File1 File2 ..." << endl << endl;
+        str << visible << endl;
+        throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("response-file")) {
+        // Load the file and tokenize it
+        std::ifstream ifs(vm["response-file"].as<string>().c_str());
+        if (!ifs) {
+            Base::Console().Error("Could no open the response file\n");
+            std::stringstream str;
+            str << "Could no open the response file: '"
+                << vm["response-file"].as<string>() << "'" << endl;
+            throw Base::UnknownProgramOption(str.str());
+        }
+        // Read the whole file into a string
+        stringstream ss;
+        ss << ifs.rdbuf();
+        // Split the file content
+        char_separator<char> sep(" \n\r");
+        tokenizer<char_separator<char> > tok(ss.str(), sep);
+        vector<string> args;
+        copy(tok.begin(), tok.end(), back_inserter(args));
+        // Parse the file and store the options
+        store( boost::program_options::command_line_parser(args).
+               options(cmdline_options).positional(p).extra_parser(Util::customSyntax).run(), vm);
+    }
+}
+
+void processProgramOptions(const variables_map& vm, std::map<std::string,std::string>& mConfig)
+{
+    if (vm.count("version")) {
+        std::stringstream str;
+        str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
+            << " Revision: " << mConfig["BuildRevision"] << std::endl;
+        if (vm.count("verbose")) {
+            str << "\nLibrary versions:\n";
+            str << "boost    " << BOOST_LIB_VERSION << '\n';
+            str << "Coin3D   " << fcCoin3dVersion << '\n';
+            str << "Eigen3   " << fcEigen3Version << '\n';
+#ifdef OCC_VERSION_STRING_EXT
+            str << "OCC      " << OCC_VERSION_STRING_EXT << '\n';
+#endif
+            str << "Qt       " << QT_VERSION_STR << '\n';
+            str << "Python   " << PY_VERSION << '\n';
+            str << "PySide   " << fcPysideVersion << '\n';
+            str << "shiboken " << fcShibokenVersion << '\n';
+#ifdef SMESH_VERSION_STR
+            str << "SMESH    " << SMESH_VERSION_STR << '\n';
+#endif
+            str << "VTK      " << fcVtkVersion << '\n';
+            str << "xerces-c " << fcXercescVersion << '\n';
+        }
+        throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("console")) {
+        mConfig["Console"] = "1";
+        mConfig["RunMode"] = "Cmd";
+    }
+
+    if (vm.count("module-path")) {
+        vector<string> Mods = vm["module-path"].as< vector<string> >();
+        string temp;
+        for (vector<string>::const_iterator It = Mods.begin(); It != Mods.end(); ++It)
+            temp += *It + ";";
+        temp.erase(temp.end()-1);
+        mConfig["AdditionalModulePaths"] = temp;
+    }
+
+    if (vm.count("python-path")) {
+        vector<string> Paths = vm["python-path"].as< vector<string> >();
+        for (vector<string>::const_iterator It = Paths.begin(); It != Paths.end(); ++It)
+            Base::Interpreter().addPythonPath(It->c_str());
+    }
+
+    if (vm.count("input-file")) {
+        vector<string> files(vm["input-file"].as< vector<string> >());
+        int OpenFileCount=0;
+        for (vector<string>::const_iterator It = files.begin(); It != files.end(); ++It) {
+
+            //cout << "Input files are: "
+            //     << vm["input-file"].as< vector<string> >() << "\n";
+
+            std::ostringstream temp;
+            temp << "OpenFile" << OpenFileCount;
+            mConfig[temp.str()] = *It;
+            OpenFileCount++;
+        }
+        std::ostringstream buffer;
+        buffer << OpenFileCount;
+        mConfig["OpenFileCount"] = buffer.str();
+    }
+
+    if (vm.count("output")) {
+        string file = vm["output"].as<string>();
+        mConfig["SaveFile"] = file;
+    }
+
+    if (vm.count("hidden")) {
+        mConfig["StartHidden"] = "1";
+    }
+
+    if (vm.count("write-log")) {
+        mConfig["LoggingFile"] = "1";
+        //mConfig["LoggingFileName"] = vm["write-log"].as<string>();
+        mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
+    }
+
+    if (vm.count("log-file")) {
+        mConfig["LoggingFile"] = "1";
+        mConfig["LoggingFileName"] = vm["log-file"].as<string>();
+    }
+
+    if (vm.count("user-cfg")) {
+        mConfig["UserParameter"] = vm["user-cfg"].as<string>();
+    }
+
+    if (vm.count("system-cfg")) {
+        mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
+    }
+
+    if (vm.count("run-test")) {
+        string testCase = vm["run-test"].as<string>();
+        if ( "0" == testCase) {
+            testCase = "TestApp.All";
+        }
+        else if (testCase.empty()) {
+            testCase = "TestApp.PrintAll";
+        }
+        mConfig["TestCase"] = testCase;
+        mConfig["RunMode"] = "Internal";
+        mConfig["ScriptFileName"] = "FreeCADTest";
+        //sScriptName = FreeCADTest;
+    }
+
+    if (vm.count("single-instance")) {
+        mConfig["SingleInstance"] = "1";
+    }
+
+    if (vm.count("dump-config")) {
+        std::stringstream str;
+        for (std::map<std::string,std::string>::iterator it=mConfig.begin(); it != mConfig.end(); ++it) {
+            str << it->first << "=" << it->second << std::endl;
+        }
+        throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("get-config")) {
+        std::string configKey = vm["get-config"].as<string>();
+        std::stringstream str;
+        std::map<std::string,std::string>::iterator pos;
+        pos = mConfig.find(configKey);
+        if (pos != mConfig.end()) {
+            str << pos->second;
+        }
+        str << std::endl;
+        throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("set-config")) {
+        std::vector<std::string> configKeyValue = vm["set-config"].as< std::vector<std::string> >();
+        for (const auto& it : configKeyValue) {
+            auto pos = it.find('=');
+            if (pos != std::string::npos) {
+                std::string key = it.substr(0, pos);
+                std::string val = it.substr(pos + 1);
+                mConfig[key] = val;
+            }
+        }
+    }
+}
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1928,10 +2470,14 @@ void Application::initConfig(int argc, char ** argv)
     // We only set these keys if not yet defined. Therefore it suffices to search
     // only for 'BuildVersionMajor'.
     if (App::Application::Config().find("BuildVersionMajor") == App::Application::Config().end()) {
-        std::stringstream str; str << FCVersionMajor << "." << FCVersionMinor;
+        std::stringstream str;
+        str << FCVersionMajor
+            << "." << FCVersionMinor
+            << "." << FCVersionPoint;
         App::Application::Config()["ExeVersion"         ] = str.str();
         App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
         App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
+        App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
         App::Application::Config()["BuildRevision"      ] = FCRevision;
         App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
@@ -1957,6 +2503,13 @@ void Application::initConfig(int argc, char ** argv)
         }
     }
 
+    variables_map vm;
+    parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
+
+    if (vm.count("keep-deprecated-paths")) {
+        mConfig["KeepDeprecatedPaths"] = "1";
+    }
+
     // extract home paths
     ExtractUserPath();
 
@@ -1969,19 +2522,19 @@ void Application::initConfig(int argc, char ** argv)
     // init python
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
-    const char* pythonpath = Interpreter().init(argc,argv);
+    const char* pythonpath = Base::Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;
     else
         Base::Console().Warning("Encoding of Python paths failed\n");
 
-    // Parse the options that have impact on the init process
-    ParseOptions(argc,argv);
+    // Handle the options that have impact on the init process
+    processProgramOptions(vm, mConfig);
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    _pConsoleObserverStd = new ConsoleObserverStd();
-    Console().AttachObserver(_pConsoleObserverStd);
+    _pConsoleObserverStd = new Base::ConsoleObserverStd();
+    Base::Console().AttachObserver(_pConsoleObserverStd);
     if (mConfig["LoggingConsole"] != "1") {
         _pConsoleObserverStd->bMsg = false;
         _pConsoleObserverStd->bLog = false;
@@ -1989,32 +2542,36 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverStd->bErr = false;
     }
     if (mConfig["Verbose"] == "Strict")
-        Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
+        Base::Console().UnsetConsoleMode(Base::ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
-        _pConsoleObserverFile = new ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
-        Console().AttachObserver(_pConsoleObserverFile);
+        _pConsoleObserverFile = new Base::ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
+        Base::Console().AttachObserver(_pConsoleObserverFile);
     }
     else
-        _pConsoleObserverFile = 0;
+        _pConsoleObserverFile = nullptr;
 
     // Banner ===========================================================
     if (!(mConfig["RunMode"] == "Cmd")) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n%s",
+                              mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n",
+                              mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildRevision"].c_str());
     }
     LoadParameters();
@@ -2082,6 +2639,22 @@ void Application::initConfig(int argc, char ** argv)
 
     // capture path
     SaveEnv("PATH");
+
+    // Save version numbers of the libraries
+#ifdef OCC_VERSION_STRING_EXT
+    mConfig["OCC_VERSION"] = OCC_VERSION_STRING_EXT;
+#endif
+    mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
+    mConfig["PYTHON_VERSION"] = PY_VERSION;
+    mConfig["QT_VERSION"] = QT_VERSION_STR;
+    mConfig["EIGEN_VERSION"] = fcEigen3Version;
+    mConfig["PYSIDE_VERSION"] = fcPysideVersion;
+#ifdef SMESH_VERSION_STR
+    mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
+#endif
+    mConfig["XERCESC_VERSION"] = fcXercescVersion;
+
+
     logStatus();
 }
 
@@ -2092,23 +2665,24 @@ void Application::SaveEnv(const char* s)
         mConfig[s] = c;
 }
 
-void Application::initApplication(void)
+void Application::initApplication()
 {
     // interpreter and Init script ==========================================================
     // register scripts
-    new ScriptProducer( "CMakeVariables", CMakeVariables );
-    new ScriptProducer( "FreeCADInit",    FreeCADInit    );
-    new ScriptProducer( "FreeCADTest",    FreeCADTest    );
+    new Base::ScriptProducer( "CMakeVariables", CMakeVariables );
+    new Base::ScriptProducer( "FreeCADInit",    FreeCADInit    );
+    new Base::ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
     // creating the application
-    if (!(mConfig["Verbose"] == "Strict")) Console().Log("Create Application\n");
+    if (!(mConfig["Verbose"] == "Strict"))
+        Base::Console().Log("Create Application\n");
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
-    UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
     // In case we are using fractional inches, get user setting for min unit
     int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
@@ -2116,21 +2690,21 @@ void Application::initApplication(void)
 
 
 #if defined (_DEBUG)
-    Console().Log("Application is built with debug information\n");
+    Base::Console().Log("Application is built with debug information\n");
 #endif
 
     // starting the init script
-    Console().Log("Run App init script\n");
+    Base::Console().Log("Run App init script\n");
     try {
-        Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
-        Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
     }
     catch (const Base::Exception& e) {
         e.ReportException();
     }
 
     // seed randomizer
-    srand(time(0));
+    srand(time(nullptr));
 }
 
 std::list<std::string> Application::getCmdLineFiles()
@@ -2174,11 +2748,12 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 processed.push_back(*it);
             }
             else if (file.hasExtension("py")) {
-                try{
+                try {
+                    Base::Interpreter().addPythonPath(file.dirPath().c_str());
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
                     processed.push_back(*it);
                 }
-                catch(const PyException&) {
+                catch (const Base::PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
                     processed.push_back(*it);
@@ -2199,7 +2774,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
-                    Console().Warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
         }
@@ -2207,17 +2782,17 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
 
     return processed; // successfully processed files
 }
 
-void Application::processCmdLineFiles(void)
+void Application::processCmdLineFiles()
 {
     // process files passed to command line
     std::list<std::string> files = getCmdLineFiles();
@@ -2232,7 +2807,7 @@ void Application::processCmdLineFiles(void)
         // then execute it. This is to behave like the standard Python executable.
         Base::FileInfo file(files.front());
         if (!file.exists()) {
-            Interpreter().runString(files.front().c_str());
+            Base::Interpreter().runString(files.front().c_str());
             mConfig["RunMode"] = "Exit";
         }
     }
@@ -2254,14 +2829,14 @@ void Application::processCmdLineFiles(void)
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Console().Warning("File format not supported: %s \n", output.c_str());
+                Base::Console().Warning("File format not supported: %s \n", output.c_str());
             }
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
         }
     }
 }
@@ -2273,57 +2848,57 @@ void Application::runApplication()
 
     if (mConfig["RunMode"] == "Cmd") {
         // Run the commandline interface
-        Interpreter().runCommandLine("FreeCAD Console mode");
+        Base::Interpreter().runCommandLine("FreeCAD Console mode");
     }
     else if (mConfig["RunMode"] == "Internal") {
         // run internal script
-        Console().Log("Running internal script:\n");
-        Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
+        Base::Console().Log("Running internal script:\n");
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out
-        Console().Log("Exiting on purpose\n");
+        Base::Console().Log("Exiting on purpose\n");
     }
     else {
-        Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
+        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
     }
 }
 
 void Application::logStatus()
 {
-    time_t now;
-    time(&now);
-    Console().Log("Time = %s", ctime(&now));
+    std::string time_str = boost::posix_time::to_simple_string(
+        boost::posix_time::second_clock::local_time());
+    Base::Console().Log("Time = %s\n", time_str.c_str());
 
-    for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
-        Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
-    }
+    for (std::map<std::string, std::string>::iterator It = mConfig.begin(); It != mConfig.end();
+         ++It)
+        Base::Console().Log("%s = %s\n", It->first.c_str(), It->second.c_str());
 }
 
-void Application::LoadParameters(void)
+void Application::LoadParameters()
 {
     // Init parameter sets ===========================================================
     //
     if (mConfig.find("UserParameter") == mConfig.end())
-        mConfig["UserParameter"]   = mConfig["UserAppData"] + "user.cfg";
+        mConfig["UserParameter"]   = mConfig["UserConfigPath"] + "user.cfg";
     if (mConfig.find("SystemParameter") == mConfig.end())
-        mConfig["SystemParameter"] = mConfig["UserAppData"] + "system.cfg";
+        mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system.cfg";
 
     // create standard parameter sets
-    _pcSysParamMngr = new ParameterManager();
+    _pcSysParamMngr = ParameterManager::Create();
     _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
 
-    _pcUserParamMngr = new ParameterManager();
+    _pcUserParamMngr = ParameterManager::Create();
     _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
         if (_pcSysParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Console().Warning("   Parameter does not exist, writing initial one\n");
-                Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
-                                  "   configuration.\n");
+                Base::Console().Warning("   Parameter does not exist, writing initial one\n");
+                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                                        "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
+                                        "   configuration.\n");
             }
         }
     }
@@ -2354,10 +2929,10 @@ void Application::LoadParameters(void)
 
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Console().Warning("   User settings do not exist, writing initial one\n");
-                Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or your configuration was deleted or moved. The system defaults\n"
-                                  "   will be automatically generated for you.\n");
+                Base::Console().Warning("   User settings do not exist, writing initial one\n");
+                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                                        "   or your configuration was deleted or moved. The system defaults\n"
+                                        "   will be automatically generated for you.\n");
             }
         }
     }
@@ -2380,55 +2955,6 @@ namespace boost { namespace program_options {
 } }
 #endif
 
-pair<string, string> customSyntax(const string& s)
-{
-#if defined(FC_OS_MACOSX)
-    if (s.find("-psn_") == 0)
-        return make_pair(string("psn"), s.substr(5));
-#endif
-    if (s.find("-display") == 0)
-        return make_pair(string("display"), string("null"));
-    else if (s.find("-style") == 0)
-        return make_pair(string("style"), string("null"));
-    else if (s.find("-graphicssystem") == 0)
-        return make_pair(string("graphicssystem"), string("null"));
-    else if (s.find("-widgetcount") == 0)
-        return make_pair(string("widgetcount"), string(""));
-    else if (s.find("-geometry") == 0)
-        return make_pair(string("geometry"), string("null"));
-    else if (s.find("-font") == 0)
-        return make_pair(string("font"), string("null"));
-    else if (s.find("-fn") == 0)
-        return make_pair(string("fn"), string("null"));
-    else if (s.find("-background") == 0)
-        return make_pair(string("background"), string("null"));
-    else if (s.find("-bg") == 0)
-        return make_pair(string("bg"), string("null"));
-    else if (s.find("-foreground") == 0)
-        return make_pair(string("foreground"), string("null"));
-    else if (s.find("-fg") == 0)
-        return make_pair(string("fg"), string("null"));
-    else if (s.find("-button") == 0)
-        return make_pair(string("button"), string("null"));
-    else if (s.find("-btn") == 0)
-        return make_pair(string("btn"), string("null"));
-    else if (s.find("-name") == 0)
-        return make_pair(string("name"), string("null"));
-    else if (s.find("-title") == 0)
-        return make_pair(string("title"), string("null"));
-    else if (s.find("-visual") == 0)
-        return make_pair(string("visual"), string("null"));
-//  else if (s.find("-ncols") == 0)
-//    return make_pair(string("ncols"), boost::program_options::value<int>(1));
-//  else if (s.find("-cmap") == 0)
-//    return make_pair(string("cmap"), string("null"));
-    else if ('@' == s[0])
-        return std::make_pair(string("response-file"), s.substr(1));
-    else
-        return make_pair(string(), string());
-
-}
-
 // A helper function to simplify the main part.
 template<class T>
 ostream& operator<<(ostream& os, const vector<T>& v)
@@ -2437,493 +2963,302 @@ ostream& operator<<(ostream& os, const vector<T>& v)
     return os;
 }
 
-void Application::ParseOptions(int ac, char ** av)
+namespace {
+
+/*!
+ * \brief getUserHome
+ * Returns the user's home directory.
+ */
+QString getUserHome()
 {
-    // Declare a group of options that will be
-    // allowed only on the command line
-    options_description generic("Generic options");
-    generic.add_options()
-    ("version,v", "Prints version string")
-    ("help,h", "Prints help message")
-    ("console,c", "Starts in console mode")
-    ("response-file", value<string>(),"Can be specified with '@name', too")
-    ("dump-config", "Dumps configuration")
-    ("get-config", value<string>(), "Prints the value of the requested configuration key")
-    ;
-
-    // Declare a group of options that will be
-    // allowed both on the command line and in
-    // the config file
-    std::string descr("Writes a log file to:\n");
-    descr += mConfig["UserAppData"];
-    descr += mConfig["ExeName"];
-    descr += ".log";
-    boost::program_options::options_description config("Configuration");
-    config.add_options()
-    //("write-log,l", value<string>(), "write a log file")
-    ("write-log,l", descr.c_str())
-    ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
-    ("user-cfg,u", value<string>(),"User config file to load/save user settings")
-    ("system-cfg,s", value<string>(),"System config file to load/save system settings")
-    ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
-    ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
-    ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
-    ("single-instance", "Allow to run a single instance of the application")
-    ;
-
-
-    // Hidden options, will be allowed both on the command line and
-    // in the config file, but will not be shown to the user.
-    boost::program_options::options_description hidden("Hidden options");
-    hidden.add_options()
-    ("input-file", boost::program_options::value< vector<string> >(), "input file")
-    ("output",     boost::program_options::value<string>(),"output file")
-    ("hidden",                                             "don't show the main window")
-    // this are to ignore for the window system (QApplication)
-    ("style",      boost::program_options::value< string >(), "set the application GUI style")
-    ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
-    ("session",    boost::program_options::value< string >(), "restore the application from an earlier session")
-    ("reverse",                                               "set the application's layout direction from right to left")
-    ("widgetcount",                                           "print debug messages about widgets")
-    ("graphicssystem", boost::program_options::value< string >(), "backend to be used for on-screen widgets and pixmaps")
-    ("display",    boost::program_options::value< string >(), "set the X-Server")
-    ("geometry ",  boost::program_options::value< string >(), "set the X-Window geometry")
-    ("font",       boost::program_options::value< string >(), "set the X-Window font")
-    ("fn",         boost::program_options::value< string >(), "set the X-Window font")
-    ("background", boost::program_options::value< string >(), "set the X-Window background color")
-    ("bg",         boost::program_options::value< string >(), "set the X-Window background color")
-    ("foreground", boost::program_options::value< string >(), "set the X-Window foreground color")
-    ("fg",         boost::program_options::value< string >(), "set the X-Window foreground color")
-    ("button",     boost::program_options::value< string >(), "set the X-Window button color")
-    ("btn",        boost::program_options::value< string >(), "set the X-Window button color")
-    ("name",       boost::program_options::value< string >(), "set the X-Window name")
-    ("title",      boost::program_options::value< string >(), "set the X-Window title")
-    ("visual",     boost::program_options::value< string >(), "set the X-Window to color scheme")
-    ("ncols",      boost::program_options::value< int    >(), "set the X-Window to color scheme")
-    ("cmap",                                                  "set the X-Window to color scheme")
-#if defined(FC_OS_MACOSX)
-    ("psn",        boost::program_options::value< string >(), "process serial number")
+    QString path;
+#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
+    // Default paths for the user specific stuff
+    struct passwd pwd;
+    struct passwd *result;
+    const std::size_t buflen = 16384;
+    std::vector<char> buffer(buflen);
+    int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
+    Q_UNUSED(error)
+    if (!result)
+        throw Base::RuntimeError("Getting HOME path from system failed!");
+    path = QString::fromUtf8(result->pw_dir);
+#else
+    path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 #endif
-    ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlying libs.
-    //boost::program_options::options_description x11("X11 options");
-    //x11.add_options()
-    //    ("display",  boost::program_options::value< string >(), "set the X-Server")
-    //    ;
-    //0000723: improper handling of qt specific command line arguments
-    std::vector<std::string> args;
-    bool merge=false;
-    for (int i=1; i<ac; i++) {
-        if (merge) {
-            merge = false;
-            args.back() += "=";
-            args.back() += av[i];
-        }
-        else {
-            args.push_back(av[i]);
-        }
-        if (strcmp(av[i],"-style") == 0) {
-            merge = true;
-        }
-        else if (strcmp(av[i],"-stylesheet") == 0) {
-            merge = true;
-        }
-        else if (strcmp(av[i],"-session") == 0) {
-            merge = true;
-        }
-        else if (strcmp(av[i],"-graphicssystem") == 0) {
-            merge = true;
-        }
+    return path;
+}
+
+/*!
+ * \brief getOldGenericDataLocation
+ * Returns a directory location where persistent data shared across applications can be stored.
+ * This method returns the old non-XDG-compliant root path where to store config files and application data.
+ */
+#if defined(FC_OS_WIN32)
+QString getOldGenericDataLocation(QString home)
+{
+#if defined(FC_OS_WIN32)
+    WCHAR szPath[MAX_PATH];
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
+        return QString::fromStdString(converter.to_bytes(szPath));
+    }
+#elif defined(FC_OS_MACOSX)
+    QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
+    home = fi.absoluteFilePath();
+#endif
+
+    return home;
+}
+#endif
+
+/*!
+ * \brief getSubDirectories
+ * To a given path it adds the sub-directories where to store application specific files.
+ */
+void getSubDirectories(std::map<std::string,std::string>& mConfig, std::vector<std::string>& appData)
+{
+    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
+    // the path.
+    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
+        appData.push_back(mConfig["ExeVendor"]);
+    }
+    appData.push_back(mConfig["ExeName"]);
+}
+
+/*!
+ * \brief getOldDataLocation
+ * To a given path it adds the sub-directories where to store application specific files.
+ * On Linux or BSD a hidden directory (i.e. starting with a dot) is added.
+ */
+void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<std::string>& appData)
+{
+    // Actually the name of the directory where the parameters are stored should be the name of
+    // the application due to branding reasons.
+#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
+    // the path.
+    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
+        appData.push_back(std::string(".") + mConfig["ExeVendor"]);
+        appData.push_back(mConfig["ExeName"]);
+    } else {
+        appData.push_back(std::string(".") + mConfig["ExeName"]);
     }
 
-    // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
-    // Add some text to the constructor
-    options_description cmdline_options("Command-line options");
-    cmdline_options.add(generic).add(config).add(hidden);
+#elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
+    getSubDirectories(mConfig, appData);
+#endif
+}
 
-    boost::program_options::options_description config_file_options("Config");
-    config_file_options.add(config).add(hidden);
-
-    boost::program_options::options_description visible("Allowed options");
-    visible.add(generic).add(config);
-
-    boost::program_options::positional_options_description p;
-    p.add("input-file", -1);
-
-    variables_map vm;
-    try {
-        store( boost::program_options::command_line_parser(args).
-               options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
-
-        std::ifstream ifs("FreeCAD.cfg");
-        if (ifs)
-            store(parse_config_file(ifs, config_file_options), vm);
-        notify(vm);
+/*!
+ * \brief findUserHomePath
+ * If the passed path name is not empty it will be returned, otherwise
+ * the user home path of the system will be returned.
+ */
+QString findUserHomePath(const QString& userHome)
+{
+    if (userHome.isEmpty()) {
+        return getUserHome();
     }
-    catch (const std::exception& e) {
-        std::stringstream str;
-        str << e.what() << endl << endl << visible << endl;
-        throw UnknownProgramOption(str.str());
-    }
-    catch (...) {
-        std::stringstream str;
-        str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
-        throw UnknownProgramOption(str.str());
-    }
-
-    if (vm.count("help")) {
-        std::stringstream str;
-        str << mConfig["ExeName"] << endl << endl;
-        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
-        str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
-        str << visible << endl;
-        throw Base::ProgramInformation(str.str());
-    }
-
-    if (vm.count("response-file")) {
-        // Load the file and tokenize it
-        std::ifstream ifs(vm["response-file"].as<string>().c_str());
-        if (!ifs) {
-            Base::Console().Error("Could no open the response file\n");
-            std::stringstream str;
-            str << "Could no open the response file: '"
-                << vm["response-file"].as<string>() << "'" << endl;
-            throw Base::UnknownProgramOption(str.str());
-        }
-        // Read the whole file into a string
-        stringstream ss;
-        ss << ifs.rdbuf();
-        // Split the file content
-        char_separator<char> sep(" \n\r");
-        tokenizer<char_separator<char> > tok(ss.str(), sep);
-        vector<string> args;
-        copy(tok.begin(), tok.end(), back_inserter(args));
-        // Parse the file and store the options
-        store( boost::program_options::command_line_parser(args).
-               options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
-    }
-
-    if (vm.count("version")) {
-        std::stringstream str;
-        str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
-            << " Revision: " << mConfig["BuildRevision"] << std::endl;
-        throw Base::ProgramInformation(str.str());
-    }
-
-    if (vm.count("console")) {
-        mConfig["Console"] = "1";
-        mConfig["RunMode"] = "Cmd";
-    }
-
-    if (vm.count("module-path")) {
-        vector<string> Mods = vm["module-path"].as< vector<string> >();
-        string temp;
-        for (vector<string>::const_iterator It= Mods.begin();It != Mods.end();++It)
-            temp += *It + ";";
-        temp.erase(temp.end()-1);
-        mConfig["AdditionalModulePaths"] = temp;
-    }
-
-    if (vm.count("python-path")) {
-        vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It= Paths.begin();It != Paths.end();++It)
-            Base::Interpreter().addPythonPath(It->c_str());
-    }
-
-    if (vm.count("input-file")) {
-        vector<string> files(vm["input-file"].as< vector<string> >());
-        int OpenFileCount=0;
-        for (vector<string>::const_iterator It = files.begin();It != files.end();++It) {
-
-            //cout << "Input files are: "
-            //     << vm["input-file"].as< vector<string> >() << "\n";
-
-            std::ostringstream temp;
-            temp << "OpenFile" << OpenFileCount;
-            mConfig[temp.str()] = *It;
-            OpenFileCount++;
-        }
-        std::ostringstream buffer;
-        buffer << OpenFileCount;
-        mConfig["OpenFileCount"] = buffer.str();
-    }
-
-    if (vm.count("output")) {
-        string file = vm["output"].as<string>();
-        mConfig["SaveFile"] = file;
-    }
-
-    if (vm.count("hidden")) {
-        mConfig["StartHidden"] = "1";
-    }
-
-    if (vm.count("write-log")) {
-        mConfig["LoggingFile"] = "1";
-        //mConfig["LoggingFileName"] = vm["write-log"].as<string>();
-        mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
-    }
-
-    if (vm.count("log-file")) {
-        mConfig["LoggingFile"] = "1";
-        mConfig["LoggingFileName"] = vm["log-file"].as<string>();
-    }
-
-    if (vm.count("user-cfg")) {
-        mConfig["UserParameter"] = vm["user-cfg"].as<string>();
-    }
-
-    if (vm.count("system-cfg")) {
-        mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
-    }
-
-    if (vm.count("run-test")) {
-        string testCase = vm["run-test"].as<string>();
-        if ( "0" == testCase) {
-            testCase = "TestApp.All";
-        }
-        mConfig["TestCase"] = testCase;
-        mConfig["RunMode"] = "Internal";
-        mConfig["ScriptFileName"] = "FreeCADTest";
-        //sScriptName = FreeCADTest;
-    }
-
-    if (vm.count("single-instance")) {
-        mConfig["SingleInstance"] = "1";
-    }
-
-    if (vm.count("dump-config")) {
-        std::stringstream str;
-        for (std::map<std::string,std::string>::iterator it=mConfig.begin(); it != mConfig.end(); ++it) {
-            str << it->first << "=" << it->second << std::endl;
-        }
-        throw Base::ProgramInformation(str.str());
-    }
-
-    if (vm.count("get-config")) {
-        std::string configKey = vm["get-config"].as<string>();
-        std::stringstream str;
-        std::map<std::string,std::string>::iterator pos;
-        pos = mConfig.find(configKey);
-        if (pos != mConfig.end()) {
-            str << pos->second;
-        }
-        str << std::endl;
-        throw Base::ProgramInformation(str.str());
+    else {
+        return userHome;
     }
 }
 
-void Application::ExtractUserPath()
+/*!
+ * \brief findPath
+ * Returns the path where to store application files to.
+ * If \a customHome is not empty it will be used, otherwise a path starting from \a stdHome will be used.
+ */
+boost::filesystem::path findPath(const QString& stdHome, const QString& customHome,
+                                 const std::vector<std::string>& paths, bool create)
 {
-    // std paths
-    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
-    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+    QString dataPath = customHome;
+    if (dataPath.isEmpty()) {
+        dataPath = stdHome;
+    }
 
-    // Set application tmp. directory
-    mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
+    boost::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
 
-    // this is to support a portable version of FreeCAD
+    // If a custom user home path is given then don't modify it
+    if (customHome.isEmpty()) {
+        for (const auto& it : paths)
+            appData = appData / it;
+    }
+
+    // In order to write to our data path, we must create some directories, first.
+    if (create && !boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+        try {
+            boost::filesystem::create_directories(appData);
+        } catch (const boost::filesystem::filesystem_error& e) {
+            throw Base::FileSystemError("Could not create directories. Failed with: " + e.code().message());
+        }
+    }
+
+    return appData;
+}
+
+/*!
+ * \brief getCustomPaths
+ * Returns a tuple of path names where to store config, data and temp. files.
+ * The method therefore reads the environment variables:
+ * \list
+ * \li FREECAD_USER_HOME
+ * \li FREECAD_USER_DATA
+ * \li FREECAD_USER_TEMP
+ * \endlist
+ */
+std::tuple<QString, QString, QString> getCustomPaths()
+{
     QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
     QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
     QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
     QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
 
-    // verify env. variables
-    if (!userHome.isEmpty()) {
-        QDir dir(userHome);
-        if (dir.exists())
-            userHome = QDir::toNativeSeparators(dir.canonicalPath());
-        else
-            userHome.clear();
-    }
+    auto toNativePath = [](QString& path) {
+        if (!path.isEmpty()) {
+            QDir dir(path);
+            if (dir.exists())
+                path = QDir::toNativeSeparators(dir.canonicalPath());
+            else
+                path.clear();
+        }
+    };
 
-    if (!userData.isEmpty()) {
-        QDir dir(userData);
-        if (dir.exists())
-            userData = QDir::toNativeSeparators(dir.canonicalPath());
-        else
-            userData.clear();
-    }
-    else if (!userHome.isEmpty()) {
-        // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
+    // verify env. variables
+    toNativePath(userHome);
+    toNativePath(userData);
+    toNativePath(userTemp);
+
+    // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
+    if (!userHome.isEmpty() && userData.isEmpty()) {
         userData = userHome;
     }
 
-    // override temp directory if set by env. variable
-    if (!userTemp.isEmpty()) {
-        QDir dir(userTemp);
-        if (dir.exists()) {
-            userTemp = dir.canonicalPath();
-            userTemp += QDir::separator();
-            userTemp = QDir::toNativeSeparators(userTemp);
-            mConfig["AppTempPath"] = userTemp.toUtf8().data();
-        }
-    }
-    else if (!userHome.isEmpty()) {
-        // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
+    // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
+    if (!userHome.isEmpty() && userTemp.isEmpty()) {
         QDir dir(userHome);
         dir.mkdir(QString::fromLatin1("temp"));
         QFileInfo fi(dir, QString::fromLatin1("temp"));
-        QString tmp(fi.absoluteFilePath());
-        tmp += QDir::separator();
-        tmp = QDir::toNativeSeparators(tmp);
-        mConfig["AppTempPath"] = tmp.toUtf8().data();
+        userTemp = fi.absoluteFilePath();
     }
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
-    // Default paths for the user specific stuff
-    struct passwd *pwd = getpwuid(getuid());
-    if (pwd == NULL)
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    mConfig["UserHomePath"] = pwd->pw_dir;
-    if (!userHome.isEmpty()) {
-        mConfig["UserHomePath"] = userHome.toUtf8().data();
-    }
+    return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
+}
 
-    boost::filesystem::path appData(pwd->pw_dir);
-    if (!userData.isEmpty())
-        appData = userData.toUtf8().data();
+/*!
+ * \brief getCustomPaths
+ * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
+ * The method therefore reads the environment variables:
+ * \list
+ * \li XDG_CONFIG_HOME
+ * \li XDG_DATA_HOME
+ * \li XDG_CACHE_HOME
+ * \endlist
+ */
+std::tuple<QString, QString, QString, QString> getStandardPaths()
+{
+    QString configHome = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+    QString dataHome = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+    QString cacheHome = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 
-    if (!boost::filesystem::exists(appData)) {
-        // This should never ever happen
-        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-    }
+    // Keep the old behaviour
+#if defined(FC_OS_WIN32)
+    configHome = getOldGenericDataLocation(QString());
+    dataHome = configHome;
 
-    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-    // the path.
-    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData /= "." + mConfig["ExeVendor"];
-        appData /= mConfig["ExeName"];
-    } else {
-        appData /= "." + mConfig["ExeName"];
-    }
+    // On systems with non-7-bit-ASCII application data directories
+    // GetTempPathW will return a path in DOS format. This path will be
+    // accepted by boost's file_lock class.
+    // Since boost 1.76 there is now a version that accepts a wide string.
+#if (BOOST_VERSION < 107600)
+    tempPath = QString::fromStdString(Base::FileInfo::getTempPath());
+    cacheHome = tempPath;
+#endif
+#endif
 
-    // Actually the name of the directory where the parameters are stored should be the name of
-    // the application due to branding reasons.
-        
-    // In order to write to our data path, we must create some directories, first.
-    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
-        try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-        }
-    }
+    return std::make_tuple(configHome, dataHome, cacheHome, tempPath);
+}
+}
 
-    mConfig["UserAppData"] = appData.string() + PATHSEP;
+void Application::ExtractUserPath()
+{
+    bool keepDeprecatedPaths = mConfig.count("KeepDeprecatedPaths") > 0;
 
-#elif defined(FC_OS_MACOSX)
-    // Default paths for the user specific stuff on the platform
-    struct passwd *pwd = getpwuid(getuid());
-    if (pwd == NULL)
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    mConfig["UserHomePath"] = pwd->pw_dir;
-    if (!userHome.isEmpty()) {
-        mConfig["UserHomePath"] = userHome.toUtf8().data();
-    }
+    // std paths
+    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
+    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
 
-    boost::filesystem::path appData(pwd->pw_dir);
-    if (!userData.isEmpty())
-        appData = userData.toUtf8().data();
+    // this is to support a portable version of FreeCAD
+    auto paths = getCustomPaths();
+    QString customHome = std::get<0>(paths);
+    QString customData = std::get<1>(paths);
+    QString customTemp = std::get<2>(paths);
 
-    appData = appData / "Library" / "Preferences";
+    // get the system standard paths
+    auto stdPaths = getStandardPaths();
+    QString configHome = std::get<0>(stdPaths);
+    QString dataHome = std::get<1>(stdPaths);
+    QString cacheHome = std::get<2>(stdPaths);
+    QString tempPath = std::get<3>(stdPaths);
 
-    if (!boost::filesystem::exists(appData)) {
-        // This should never ever happen
-        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-    }
+    // User home path
+    //
+    QString homePath = findUserHomePath(customHome);
+    mConfig["UserHomePath"] = homePath.toUtf8().data();
 
-    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-    // the path.
-    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData /= mConfig["ExeVendor"];
-    }
-    appData /= mConfig["ExeName"];
-
-
-    // Actually the name of the directory where the parameters are stored should be the name of
-    // the application due to branding reasons.
-        
-    // In order to write to our data path, we must create some directories, first.
-    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
-        try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-        }
-    }
-
-    mConfig["UserAppData"] = appData.string() + PATHSEP;
-
-#elif defined(FC_OS_WIN32)
-    WCHAR szPath[MAX_PATH];
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    // Get the default path where we can save our documents. It seems that
-    // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
-    // which does the same.
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
-        mConfig["UserHomePath"] = converter.to_bytes(szPath);
+    // the old path name to save config and data files
+    std::vector<std::string> subdirs;
+    if (keepDeprecatedPaths) {
+        configHome = homePath;
+        dataHome = homePath;
+        cacheHome = homePath;
+        getOldDataLocation(mConfig, subdirs);
     }
     else {
-        mConfig["UserHomePath"] = mConfig["AppHomePath"];
+        getSubDirectories(mConfig, subdirs);
     }
 
-    if (!userHome.isEmpty()) {
-        mConfig["UserHomePath"] = userHome.toUtf8().data();
-    }
+    // User data path
+    //
+    boost::filesystem::path data = findPath(dataHome, customData, subdirs, true);
+    mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
 
-    // In the second step we want the directory where user settings of the application can be
-    // kept. There we create a directory with name of the vendor and a sub-directory with name
-    // of the application.
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
-        boost::filesystem::path appData(szPath);
-        if (!userData.isEmpty())
-            appData = userData.toStdWString();
 
-        if (!boost::filesystem::exists(appData)) {
-            // This should never ever happen
-            throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-        }
+    // User config path
+    //
+    boost::filesystem::path config = findPath(configHome, customHome, subdirs, true);
+    mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
 
-        // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-        // the path.
-        if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-            appData /= mConfig["ExeVendor"];
-        }
-        appData /= mConfig["ExeName"];
 
-        // Actually the name of the directory where the parameters are stored should be the name of
-        // the application due to branding reasons.
-            
-        // In order to write to our data path, we must create some directories, first.
-        if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
-            try {
-                boost::filesystem::create_directories(appData);
-            } catch (const boost::filesystem::filesystem_error& e) {
-                throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-            }
-        }
+    // User cache path
+    //
+    std::vector<std::string> cachedirs = subdirs;
+    cachedirs.emplace_back("Cache");
+    boost::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
+    mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
 
-        mConfig["UserAppData"] = converter.to_bytes(appData.wstring()) + PATHSEP;
 
-        // Create the default macro directory
-        boost::filesystem::path macroDir = converter.from_bytes(getUserMacroDir());
-        if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
-            try {
-                boost::filesystem::create_directories(macroDir);
-            } catch (const boost::filesystem::filesystem_error& e) {
-                throw Base::FileSystemError("Could not create macro directory. Failed with: " + e.code().message());
-            }
-        }
-    }
-#else
-# error "Implement ExtractUserPath() for your platform."
-#endif
+    // Set application tmp. directory
+    //
+    std::vector<std::string> empty;
+    boost::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
+    mConfig["AppTempPath"] = Base::FileInfo::pathToString(tmp) + PATHSEP;
+
+
+    // Set the default macro directory
+    //
+    std::vector<std::string> macrodirs = subdirs;
+    macrodirs.emplace_back("Macro");
+    boost::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
+    mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <sys/param.h>
 
 std::string Application::FindHomePath(const char* sCall)
@@ -2980,7 +3315,7 @@ std::string Application::FindHomePath(const char* sCall)
 #elif defined(FC_OS_MACOSX)
 #include <mach-o/dyld.h>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/param.h>
 
 std::string Application::FindHomePath(const char* call)

@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
 #include <Base/PlacementPy.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "FemMeshProperty.h"
 #include "FemMeshPy.h"
+
 
 using namespace Fem;
 
@@ -67,19 +63,29 @@ void PropertyFemMesh::setValue(const FemMesh& sh)
     hasSetValue();
 }
 
-const FemMesh &PropertyFemMesh::getValue(void)const
+const FemMesh &PropertyFemMesh::getValue()const
 {
     return *_FemMesh;
 }
 
 const Data::ComplexGeoData* PropertyFemMesh::getComplexData() const
 {
-    return (FemMesh*)_FemMesh;
+    return static_cast<FemMesh*>(_FemMesh);
 }
 
 Base::BoundBox3d PropertyFemMesh::getBoundingBox() const
 {
     return _FemMesh->getBoundBox();
+}
+
+void PropertyFemMesh::setTransform(const Base::Matrix4D &rclTrf)
+{
+    _FemMesh->setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyFemMesh::getTransform() const
+{
+    return _FemMesh->getTransform();
 }
 
 void PropertyFemMesh::transformGeometry(const Base::Matrix4D &rclMat)
@@ -89,7 +95,7 @@ void PropertyFemMesh::transformGeometry(const Base::Matrix4D &rclMat)
     hasSetValue();
 }
 
-PyObject *PropertyFemMesh::getPyObject(void)
+PyObject *PropertyFemMesh::getPyObject()
 {
     FemMeshPy* mesh = new FemMeshPy(&*_FemMesh);
     mesh->setConst();
@@ -113,7 +119,7 @@ void PropertyFemMesh::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyFemMesh::Copy(void) const
+App::Property *PropertyFemMesh::Copy() const
 {
     PropertyFemMesh *prop = new PropertyFemMesh();
     prop->_FemMesh = this->_FemMesh;
@@ -127,7 +133,7 @@ void PropertyFemMesh::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyFemMesh::getMemSize (void) const
+unsigned int PropertyFemMesh::getMemSize () const
 {
     return _FemMesh->getMemSize();
 }

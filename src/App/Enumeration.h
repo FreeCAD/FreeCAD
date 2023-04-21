@@ -24,15 +24,13 @@
 #ifndef BASE_ENUMERATION_H
 #define BASE_ENUMERATION_H
 
+#include <memory>
 #include <string>
 #include <vector>
-
-//#include <App/PropertyStandard.h>
+#include <FCGlobal.h>
 
 namespace App
 {
-    class PropertyEnumeration;
-
     /// A bidirectional string-integer mapping
     /*!
      * This is mainly intended for two purposes: working around the difficulty
@@ -53,144 +51,141 @@ namespace App
      */
     class AppExport Enumeration
     {
-        friend class App::PropertyEnumeration;
+    public:
+        class Object {
         public:
-            /// Constructs an empty Enumeration object
-            Enumeration();
+            virtual ~Object() = default;
+            virtual const char* data() const = 0;
+            virtual bool isEqual(const char*) const = 0;
+            virtual bool isCustom() const = 0;
+        };
 
-            /// Standard copy constructor
-            Enumeration(const Enumeration& other);
+    public:
+        /// Constructs an empty Enumeration object
+        Enumeration();
 
-            /// Constructs an Enumeration with a single element
-            Enumeration(const char *valStr);
+        /// Standard copy constructor
+        Enumeration(const Enumeration& other);
 
-            /// Constructs an Enumeration using val within list
-            Enumeration(const char **list, const char *valStr);
+        /// Constructs an Enumeration with a single element
+        explicit Enumeration(const char *valStr);
 
-            /// Standard destructor
-            ~Enumeration();
+        /// Constructs an Enumeration using val within list
+        Enumeration(const char **list, const char *valStr);
 
-            /** Sets the enumeration string list
-             * The list is a NULL terminated array of pointers to const
-             * char* strings.
-             * \code
-             * const char enums[] = {"Black","White","Other",NULL}
-             * \endcode
-             *
-             * If Enumeration was already valid, will attempt to preserve
-             * the string-representation value of the Enumeration
-             *
-             * Enumeration does not take ownership of the passed object
-             */
-            void setEnums(const char **plEnums);
+        /// Standard destructor
+        ~Enumeration();
 
-            /// Set all enum values as vector of strings
-            /*!
-             * This method causes the Enumeration to dynamically allocate
-             * it's own array of C Strings, which will be deleted by the
-             * destructor or subsequent calls to setEnums().  So, it is
-             * important to make sure the Enumeration stays in scope as
-             * long as values returned by getCStr are in use.
-             *
-             * If Enumeration was already valid, will attempt to preserve
-             * the string-representation value of the Enumeration
-             */
-            void setEnums(const std::vector<std::string> &values);
+        /** Sets the enumeration string list
+         * The list is a NULL terminated array of pointers to const
+         * char* strings.
+         * \code
+         * const char enums[] = {"Black","White","Other",NULL}
+         * \endcode
+         *
+         * If Enumeration was already valid, will attempt to preserve
+         * the string-representation value of the Enumeration
+         *
+         * Enumeration does not take ownership of the passed object
+         */
+        void setEnums(const char **plEnums);
 
-            /// Set the enum using a C string
-            void setValue(const char *value);
+        /// Set all enum values as vector of strings
+        /*!
+         * This method causes the Enumeration to dynamically allocate
+         * it's own array of C Strings, which will be deleted by the
+         * destructor or subsequent calls to setEnums().  So, it is
+         * important to make sure the Enumeration stays in scope as
+         * long as values returned by getCStr are in use.
+         *
+         * If Enumeration was already valid, will attempt to preserve
+         * the string-representation value of the Enumeration
+         */
+        void setEnums(const std::vector<std::string> &values);
 
-            /// Overload of setValue(const char *value)
-            void setValue(const std::string &value) {setValue(value.c_str());}
+        /// Set the enum using a C string
+        void setValue(const char *value);
 
-            /// Set the enum using a long
-            /*!
-             * if checkRange is set to true, throws Base::ValueError when
-             * values are set out of range
-             *
-             * Checks for boundaries via assert()
-             */
-            void setValue(long value, bool checkRange = false);
+        /// Overload of setValue(const char *value)
+        void setValue(const std::string &value) {setValue(value.c_str());}
 
-            /// Checks if the property is set to a certain string value
-            bool isValue(const char *value) const;
+        /// Set the enum using a long
+        /*!
+         * if checkRange is set to true, throws Base::ValueError when
+         * values are set out of range
+         *
+         * Checks for boundaries via assert()
+         */
+        void setValue(long value, bool checkRange = false);
 
-            /// Checks if a string is included in the enumeration
-            bool contains(const char *value) const;
+        /// Checks if the property is set to a certain string value
+        bool isValue(const char *value) const;
 
-            /// Return the value as C string
-            /*!
-             * Returns NULL if the enumeration is invalid.
-             */
-            const char * getCStr(void) const;
+        /// Checks if a string is included in the enumeration
+        bool contains(const char *value) const;
 
-            /// Return value as integer
-            /*!
-             * Returns -1 if the Enumeration isn't valid
-             */
-            int getInt(void) const;
+        /// Return the value as C string
+        /*!
+         * Returns NULL if the enumeration is invalid.
+         */
+        const char * getCStr() const;
 
-            /// get all possible enum values as vector of strings
-            std::vector<std::string> getEnumVector(void) const;
+        /// Return value as integer
+        /*!
+         * Returns -1 if the Enumeration isn't valid
+         */
+        int getInt() const;
 
-            /// get pointer to the enum list
-            const char ** getEnums(void) const;
+        /// get all possible enum values as vector of strings
+        std::vector<std::string> getEnumVector() const;
 
-            /// Returns true if the instance is in a usable state
-            bool isValid(void) const;
+        /// returns true if the enum list is non-empty, false otherwise
+        bool hasEnums() const;
 
-            /// Returns the highest usable integer value for this enum
-            /*!
-             * Returns -1 if the enumeration is not valid according to isValid()
-             */
-            int maxValue(void) const {return _maxVal;}
+        /// Returns true if the instance is in a usable state
+        bool isValid() const;
 
-            /// Assignment operator
-            Enumeration & operator=(const Enumeration &other);
+        /// Returns the highest usable integer value for this enum
+        /*!
+         * Returns -1 if the enumeration is not valid according to isValid()
+         */
+        int maxValue() const;
 
-            /// true iff our string representation matches other's
-            /*!
-             * Returns false if either Enumeration is not valid.
-             */
-            bool operator==(const Enumeration &other) const;
+        /// Returns true if any of the items is a user-defined string
+        bool isCustom() const;
 
-            /// true iff our string representation matches other
-            /*!
-             * Returns false if Enumeration is not valid.
-             */
-            bool operator==(const char *other) const;
-        protected:
-            /// Returns true if instance was not initialized via static string list
-            bool isCustom(void) const {return _ownEnumArray;}
+        /// Assignment operator
+        Enumeration & operator=(const Enumeration &other);
 
-            /// Updates _maxVal
-            void findMaxVal(void);
+        /// true iff our string representation matches other's
+        /*!
+         * Returns false if either Enumeration is not valid.
+         */
+        bool operator==(const Enumeration &other) const;
 
-            /// De-allocates memory used in _EnumArray
-            /*!
-             * Important to not call this unless this Enumeration owns array.
-             */
-            void tearDown(void);
+        /// true iff our string representation matches other
+        /*!
+         * Returns false if Enumeration is not valid.
+         */
+        bool operator==(const char *other) const;
+    protected:
 
-        private:
-            /// Handle to C Strings of possible enumeration values
-            const char **_EnumArray;
+        /// Number of items
+        int countItems() const;
 
-            /// Whether instance owns _EnumArray
-            bool _ownEnumArray;
+    private:
+        /// Handle to C Strings of possible enumeration values
+        using ObjectPtr = std::shared_ptr<Object>;
+        std::vector<ObjectPtr> enumArray;
 
-            /// Integer value of the enumeration
-            /*!
-             * This serves as an index into _EnumArray to get the string
-             * representation.
-             */
-            int _index;
+        /// Integer value of the enumeration
+        /*!
+         * This serves as an index into enumArray to get the string
+         * representation.
+         */
+        int _index;
 
-            /*! Cached result from findMaxVal()
-             * Value should either be the maximum allowable integer value for
-             * the Enumeration, or -1 if not initialized
-             */
-            int _maxVal;
+        friend class PropertyEnumeration;
     };  // class Enumeration
 }   // namespace App
 

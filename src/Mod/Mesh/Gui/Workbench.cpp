@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <qobject.h>
 # include <QGroupBox>
 # include <QLabel>
 #endif
 
-#include "Workbench.h"
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
 #include <Gui/Selection.h>
+#include <Gui/ToolBarManager.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
-#include "../App/MeshFeature.h"
+#include "Workbench.h"
+
 
 using namespace MeshGui;
 
@@ -45,7 +43,13 @@ using namespace MeshGui;
     qApp->translate("Workbench", "Analyze");
     qApp->translate("Workbench", "Boolean");
     qApp->translate("Workbench", "&Meshes");
+    qApp->translate("Workbench", "Cutting");
     qApp->translate("Workbench", "Mesh tools");
+    qApp->translate("Workbench", "Mesh modify");
+    qApp->translate("Workbench", "Mesh boolean");
+    qApp->translate("Workbench", "Mesh cutting");
+    qApp->translate("Workbench", "Mesh segmentation");
+    qApp->translate("Workbench", "Mesh analyze");
 #endif
 
 /// @namespace MeshGui @class Workbench
@@ -62,28 +66,28 @@ Workbench::~Workbench()
 class MeshInfoWatcher : public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
 {
 public:
-    MeshInfoWatcher() : TaskWatcher(0)
+    MeshInfoWatcher() : TaskWatcher(nullptr)
     {
         labelPoints = new QLabel();
-        labelPoints->setText(QString::fromLatin1("Number of points:"));
+        labelPoints->setText(tr("Number of points:"));
 
         labelFacets = new QLabel();
-        labelFacets->setText(QString::fromLatin1("Number of facets:"));
+        labelFacets->setText(tr("Number of facets:"));
 
         numPoints = new QLabel();
         numFacets = new QLabel();
 
         labelMin = new QLabel();
-        labelMin->setText(QString::fromLatin1("Minimum bound:"));
+        labelMin->setText(tr("Minimum bound:"));
 
         labelMax = new QLabel();
-        labelMax->setText(QString::fromLatin1("Maximum bound:"));
+        labelMax->setText(tr("Maximum bound:"));
 
         numMin = new QLabel();
         numMax = new QLabel();
 
         QGroupBox* box = new QGroupBox();
-        box->setTitle(QString::fromLatin1("Mesh info box"));
+        box->setTitle(tr("Mesh info box"));
         //box->setAutoFillBackground(true);
         QGridLayout* grid = new QGridLayout(box);
         grid->addWidget(labelPoints, 0, 0);
@@ -97,15 +101,15 @@ public:
         grid->addWidget(numMax, 3, 1);
 
         Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-            QPixmap(), QString::fromLatin1("Mesh info"), false, 0);
+            QPixmap(), tr("Mesh info"), false, nullptr);
         taskbox->groupLayout()->addWidget(box);
         Content.push_back(taskbox);
     }
-    bool shouldShow(void)
+    bool shouldShow(void) override
     {
         return true;
     }
-    void onSelectionChanged(const Gui::SelectionChanges&)
+    void onSelectionChanged(const Gui::SelectionChanges&) override
     {
         Base::BoundBox3d bbox;
         unsigned long countPoints=0, countFacets=0;
@@ -119,9 +123,9 @@ public:
         if (countPoints > 0) {
             numPoints->setText(QString::number(countPoints));
             numFacets->setText(QString::number(countFacets));
-            numMin->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
+            numMin->setText(tr("X: %1\tY: %2\tZ: %3")
                 .arg(bbox.MinX).arg(bbox.MinY).arg(bbox.MinZ));
-            numMax->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
+            numMax->setText(tr("X: %1\tY: %2\tZ: %3")
                 .arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
@@ -178,7 +182,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // analyze
     Gui::MenuItem* analyze = new Gui::MenuItem;
     analyze->setCommand("Analyze");
-    *analyze << "Mesh_Evaluation" << "Mesh_EvaluateFacet" << "Mesh_CurvatureInfo" << "Separator" 
+    *analyze << "Mesh_Evaluation" << "Mesh_EvaluateFacet" << "Mesh_CurvatureInfo" << "Separator"
              << "Mesh_EvaluateSolid" << "Mesh_BoundingBox";
 
     // boolean
@@ -239,17 +243,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    
+
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import" 
-          << "Mesh_Export" 
+    *mesh << "Mesh_Import"
+          << "Mesh_Export"
           << "Mesh_FromPartShape"
           << "Mesh_BuildRegularSolid";
-		  
+
     Gui::ToolBarItem* modifying = new Gui::ToolBarItem(root);
     modifying->setCommand("Mesh modify");
-    *modifying << "Mesh_HarmonizeNormals" 
+    *modifying << "Mesh_HarmonizeNormals"
                << "Mesh_FlipNormals"
                << "Mesh_FillupHoles"
                << "Mesh_FillInteractiveHole"
@@ -259,13 +263,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
                << "Mesh_RemeshGmsh"
                << "Mesh_Decimating"
                << "Mesh_Scale";
-			   
+
     Gui::ToolBarItem* boolean = new Gui::ToolBarItem(root);
     boolean->setCommand("Mesh boolean");
     *boolean << "Mesh_Union"
              << "Mesh_Intersection"
              << "Mesh_Difference";
-			 
+
     Gui::ToolBarItem* cutting = new Gui::ToolBarItem(root);
     cutting->setCommand("Mesh cutting");
     *cutting << "Mesh_PolyCut"
@@ -273,14 +277,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "Mesh_TrimByPlane"
              << "Mesh_SectionByPlane"
              << "Mesh_CrossSections";
-			 
+
     Gui::ToolBarItem* compseg = new Gui::ToolBarItem(root);
     compseg->setCommand("Mesh segmentation");
     *compseg << "Mesh_Merge"
              << "Mesh_SplitComponents"
              << "Mesh_Segmentation"
              << "Mesh_SegmentationBestFit";
-			 
+
     Gui::ToolBarItem* analyze = new Gui::ToolBarItem(root);
     analyze->setCommand("Mesh analyze");
     *analyze << "Mesh_Evaluation"
@@ -289,8 +293,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "Mesh_CurvatureInfo"
              << "Mesh_EvaluateSolid"
              << "Mesh_BoundingBox";
-		  
-		  
+
+
     return root;
 }
 

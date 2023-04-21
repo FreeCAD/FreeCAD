@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATION_H
 #define REVERSEENGINEERINGGUI_SEGMENTATION_H
 
+#include <memory>
+
 #include <QWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <App/DocumentObserver.h>
-#include <memory>
+
 
 // forward declarations
 namespace Mesh { class Feature; }
@@ -41,12 +42,12 @@ class Segmentation : public QWidget
     Q_OBJECT
 
 public:
-    Segmentation(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Segmentation();
+    explicit Segmentation(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~Segmentation() override;
     void accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_Segmentation> ui;
@@ -59,13 +60,13 @@ private:
 class TaskSegmentation : public Gui::TaskView::TaskDialog
 {
 public:
-    TaskSegmentation(Mesh::Feature* mesh);
-    ~TaskSegmentation();
+    explicit TaskSegmentation(Mesh::Feature* mesh);
+    ~TaskSegmentation() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

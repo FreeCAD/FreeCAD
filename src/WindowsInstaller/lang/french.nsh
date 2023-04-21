@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Cet assistant va vous guider tout au long de l'i
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Compilation des scripts Python..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Créer un raccourci sur le bureau"
-${LangFileString} TEXT_FINISH_WEBSITE "Consulter les dernières nouvelles, trucs et astuces sur le site freecadweb.org"
+${LangFileString} TEXT_FINISH_WEBSITE "Consulter les dernières nouvelles, trucs et astuces sur le site freecad.org"
 
 #${LangFileString} FileTypeTitle "Document FreeCAD"
 

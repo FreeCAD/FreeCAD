@@ -20,27 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
 # include <GC_MakeCircle.hxx>
+# include <Geom_Circle.hxx>
+# include <gp_Circ.hxx>
 #endif
 
-#include "OCCError.h"
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/CirclePy.cpp>
-
-#include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
+
+#include "CirclePy.h"
+#include "CirclePy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string CirclePy::representation(void) const
+std::string CirclePy::representation() const
 {
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
     gp_Ax1 axis = circle->Axis();
@@ -50,9 +49,9 @@ std::string CirclePy::representation(void) const
 
     std::stringstream str;
     str << "Circle (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")"; 
+    str << "Radius : " << fRad << ", ";
+    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")";
     str << ")";
 
     return str.str();
@@ -60,7 +59,7 @@ std::string CirclePy::representation(void) const
 
 PyObject *CirclePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of CirclePy and the Twin object 
+    // create a new instance of CirclePy and the Twin object
     Handle(Geom_Circle) circle = new Geom_Circle(gp_Circ());
     return new CirclePy(new GeomCircle(circle));
 }
@@ -71,7 +70,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     // circle and distance for offset
     PyObject *pCirc;
     double dist;
-    static char* keywords_cd[] = {"Circle","Distance",NULL};
+    static char* keywords_cd[] = {"Circle","Distance",nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(CirclePy::Type), &pCirc, &dist)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast
@@ -89,7 +88,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
 
     // center, normal and radius
     PyObject *pV1, *pV2, *pV3;
-    static char* keywords_cnr[] = {"Center","Normal","Radius",NULL};
+    static char* keywords_cnr[] = {"Center","Normal","Radius",nullptr};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!d", keywords_cnr,
                                         &(Base::VectorPy::Type), &pV1,
@@ -110,7 +109,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_c[] = {"Circle",NULL};
+    static char* keywords_c[] = {"Circle",nullptr};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(CirclePy::Type), &pCirc)) {
         CirclePy* pcCircle = static_cast<CirclePy*>(pCirc);
@@ -122,7 +121,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static char* keywords_ppp[] = {"Point1","Point2","Point3",NULL};
+    static char* keywords_ppp[] = {"Point1","Point2","Point3",nullptr};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
                                          &(Base::VectorPy::Type), &pV1,
@@ -145,7 +144,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     // default circle
-    static char* keywords_n[] = {NULL};
+    static char* keywords_n[] = {nullptr};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
@@ -162,10 +161,10 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float CirclePy::getRadius(void) const
+Py::Float CirclePy::getRadius() const
 {
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(getGeomCirclePtr()->handle());
-    return Py::Float(circle->Radius()); 
+    return Py::Float(circle->Radius());
 }
 
 void  CirclePy::setRadius(Py::Float arg)
@@ -176,10 +175,10 @@ void  CirclePy::setRadius(Py::Float arg)
 
 PyObject *CirclePy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CirclePy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

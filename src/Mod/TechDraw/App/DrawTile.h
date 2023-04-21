@@ -20,47 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTile_h_
-#define _TechDraw_DrawTile_h_
+#ifndef TechDraw_DrawTile_h_
+#define TechDraw_DrawTile_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
+
 
 namespace TechDraw
 {
 
 class TechDrawExport DrawTile : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawTile);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTile);
 
 public:
     DrawTile();
-    virtual ~DrawTile();
+    ~DrawTile() = default;
 
     App::PropertyLink         TileParent;           //eg DrawWeldSymbol
     App::PropertyIntegerConstraint TileRow;
     App::PropertyIntegerConstraint::Constraints  TileRowConstraints;
     App::PropertyInteger      TileColumn;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute(void) override;
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderTile";
     }
-    virtual PyObject *getPyObject(void);
+    PyObject *getPyObject(void) override;
     virtual DrawView* getParent(void) const;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
 };
 
-typedef App::FeaturePythonT<DrawTile> DrawTilePython;
+using DrawTilePython = App::FeaturePythonT<DrawTile>;
 
 } //namespace TechDraw
 #endif

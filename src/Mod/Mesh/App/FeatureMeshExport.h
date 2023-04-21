@@ -20,13 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_FEATUREMESHEXPORT_H
 #define MESH_FEATUREMESHEXPORT_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
+
+#ifndef MESH_GLOBAL_H
+# include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 namespace Mesh
 {
@@ -37,7 +39,7 @@ namespace Mesh
  */
 class MeshExport Export : public App::DocumentObject
 {
-    PROPERTY_HEADER(Mesh::Export);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Export);
 
 public:
     Export();
@@ -45,18 +47,18 @@ public:
     App::PropertyLink   Source;
     App::PropertyString FileName;
     App::PropertyString Format;
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "MeshGui::ViewProviderExport";
     }
 
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 };
 
 }
 
-#endif // MESH_FEATUREMESHEXPORT_H 
+#endif // MESH_FEATUREMESHEXPORT_H

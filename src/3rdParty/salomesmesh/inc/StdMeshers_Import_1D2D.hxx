@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  Module : SMESH
 //
 #ifndef _SMESH_Import_2D_HXX_

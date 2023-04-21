@@ -23,15 +23,16 @@
 #ifndef GUI_UTILITIES_H
 #define GUI_UTILITIES_H
 
-#include <Base/ViewProj.h>
-#include <Base/Converter.h>
-#include <App/Material.h>
 #include <vector>
+#include <App/Material.h>
+#include <Base/Converter.h>
+#include <Base/ViewProj.h>
 #include <Inventor/SbColor.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbViewVolume.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbViewVolume.h>
+
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -40,9 +41,9 @@ namespace Base {
 // Specialization for SbVec3f
 template <>
 struct vec_traits<SbVec3f> {
-    typedef SbVec3f vec_type;
-    typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = SbVec3f;
+    using float_type = float;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v[0], v[1], v[2]);
     }
@@ -53,9 +54,9 @@ private:
 // Specialization for SbVec3d
 template <>
 struct vec_traits<SbVec3d> {
-    typedef SbVec3d vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = SbVec3d;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v[0], v[1], v[2]);
     }
@@ -66,9 +67,9 @@ private:
 // Specialization for SbRotation
 template <>
 struct vec_traits<SbRotation> {
-    typedef SbRotation vec_type;
-    typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = SbRotation;
+    using float_type = float;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type,float_type> get() const {
         float_type q1,q2,q3,q4;
         v.getValue(q1,q2,q3,q4);
@@ -81,9 +82,9 @@ private:
 // Specialization for SbColor
 template <>
 struct vec_traits<SbColor> {
-    typedef SbColor vec_type;
-    typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = SbColor;
+    using float_type = float;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v[0], v[1], v[2]);
     }
@@ -94,9 +95,9 @@ private:
 // Specialization for Color
 template <>
 struct vec_traits<App::Color> {
-    typedef App::Color vec_type;
-    typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = App::Color;
+    using float_type = float;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.r, v.g, v.b);
     }
@@ -113,15 +114,15 @@ namespace Gui {
 class GuiExport ViewVolumeProjection : public Base::ViewProjMethod
 {
 public:
-    ViewVolumeProjection (const SbViewVolume &vv);
-    virtual ~ViewVolumeProjection(){}
+    explicit ViewVolumeProjection (const SbViewVolume &vv);
+    ~ViewVolumeProjection() override{}
 
-    Base::Vector3f operator()(const Base::Vector3f &rclPt) const;
-    Base::Vector3d operator()(const Base::Vector3d &rclPt) const;
-    Base::Vector3f inverse (const Base::Vector3f &rclPt) const;
-    Base::Vector3d inverse (const Base::Vector3d &rclPt) const;
+    Base::Vector3f operator()(const Base::Vector3f &rclPt) const override;
+    Base::Vector3d operator()(const Base::Vector3d &rclPt) const override;
+    Base::Vector3f inverse (const Base::Vector3f &rclPt) const override;
+    Base::Vector3d inverse (const Base::Vector3d &rclPt) const override;
 
-    Base::Matrix4D getProjectionMatrix () const;
+    Base::Matrix4D getProjectionMatrix () const override;
 
 protected:
     SbViewVolume viewVolume;
@@ -132,7 +133,7 @@ protected:
 class GuiExport Tessellator
 {
 public:
-    Tessellator(const std::vector<SbVec2f>&);
+    explicit Tessellator(const std::vector<SbVec2f>&);
     std::vector<int> tessellate() const;
 
 private:
@@ -145,7 +146,7 @@ private:
 class GuiExport ItemViewSelection
 {
 public:
-    ItemViewSelection(QAbstractItemView* view);
+    explicit ItemViewSelection(QAbstractItemView* view);
     void applyFrom(const std::vector<App::DocumentObject*> objs);
 
 private:

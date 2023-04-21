@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-#include "ExpressionBindingPy.h"
-#include "ExpressionBinding.h"
-#include "WidgetFactory.h"
-#include "QuantitySpinBox.h"
-#include "InputField.h"
+
 #include <App/DocumentObjectPy.h>
+
+#include "ExpressionBindingPy.h"
+#include "InputField.h"
+#include "PythonWrapper.h"
+#include "QuantitySpinBox.h"
+
 
 using namespace Gui;
 
@@ -43,38 +43,67 @@ void ExpressionBindingPy::init_type()
     behaviors().set_tp_new(PyMake);
     behaviors().readyType();
 
-    add_varargs_method("bind",&ExpressionBindingPy::bind,"Bind with an expression");
-    add_varargs_method("isBound",&ExpressionBindingPy::isBound,"Check if already bound with an expression");
-    add_varargs_method("apply",&ExpressionBindingPy::apply,"apply");
-    add_varargs_method("hasExpression",&ExpressionBindingPy::hasExpression,"hasExpression");
-    add_varargs_method("autoApply",&ExpressionBindingPy::autoApply,"autoApply");
-    add_varargs_method("setAutoApply",&ExpressionBindingPy::setAutoApply,"setAutoApply");
+    add_varargs_method("bind", &ExpressionBindingPy::bind, "Bind with an expression");
+    add_varargs_method("isBound", &ExpressionBindingPy::isBound, "Check if already bound with an expression");
+    add_varargs_method("apply", &ExpressionBindingPy::apply, "apply");
+    add_varargs_method("hasExpression", &ExpressionBindingPy::hasExpression, "hasExpression");
+    add_varargs_method("autoApply", &ExpressionBindingPy::autoApply, "autoApply");
+    add_varargs_method("setAutoApply", &ExpressionBindingPy::setAutoApply, "setAutoApply");
+}
+
+ExpressionBinding* ExpressionBindingPy::asBinding(QWidget* obj)
+{
+    ExpressionBinding* expr = nullptr;
+    if (obj) {
+        do {
+            auto qsb = qobject_cast<QuantitySpinBox*>(obj);
+            if (qsb) {
+                expr = qsb;
+                break;
+            }
+            auto usp = qobject_cast<UIntSpinBox*>(obj);
+            if (usp) {
+                expr = usp;
+                break;
+            }
+            auto isp = qobject_cast<IntSpinBox*>(obj);
+            if (isp) {
+                expr = isp;
+                break;
+            }
+            auto dsp = qobject_cast<DoubleSpinBox*>(obj);
+            if (dsp) {
+                expr = dsp;
+                break;
+            }
+            auto exp = qobject_cast<ExpLineEdit*>(obj);
+            if (exp) {
+                expr = exp;
+                break;
+            }
+            auto inp = qobject_cast<InputField*>(obj);
+            if (inp) {
+                expr = inp;
+                break;
+            }
+        }
+        while (false);
+    }
+
+    return expr;
 }
 
 PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyObject *)
 {
-    Py::Tuple tuple(args);
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args, "O", &pyObj))
+        return nullptr;
 
-    ExpressionBinding* expr = nullptr;
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
 
-    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(tuple.getItem(0)));
-    if (obj) {
-        do {
-            QuantitySpinBox* sb = qobject_cast<QuantitySpinBox*>(obj);
-            if (sb) {
-                expr = sb;
-                break;
-            }
-            InputField* le = qobject_cast<InputField*>(obj);
-            if (le) {
-                expr = le;
-                break;
-            }
-        }
-        while(false);
-    }
+    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
+    ExpressionBinding* expr = asBinding(obj);
 
     if (!expr) {
         PyErr_SetString(PyExc_TypeError, "Wrong type");
@@ -162,7 +191,7 @@ Py::Object ExpressionBindingPy::setAutoApply(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &b))
         throw Py::Exception();
 
-    bool value = PyObject_IsTrue(b) ? true : false;
+    bool value = Base::asBoolean(b);
     expr->setAutoApply(value);
     return Py::None();
 }

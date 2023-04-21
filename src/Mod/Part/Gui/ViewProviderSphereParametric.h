@@ -30,15 +30,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderSphereParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderSphereParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSphereParametric);
 
 public:
     /// constructor
     ViewProviderSphereParametric();
     /// destructor
-    virtual ~ViewProviderSphereParametric();
+    ~ViewProviderSphereParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes(void) const override;
 
 protected:
 
@@ -46,14 +46,14 @@ protected:
 
 class PartGuiExport ViewProviderEllipsoid : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderEllipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderEllipsoid);
 
 public:
     /// constructor
     ViewProviderEllipsoid();
     /// destructor
-    virtual ~ViewProviderEllipsoid();
-    std::vector<std::string> getDisplayModes(void) const;
+    ~ViewProviderEllipsoid() override;
+    std::vector<std::string> getDisplayModes(void) const override;
 };
 
 } // namespace PartGui

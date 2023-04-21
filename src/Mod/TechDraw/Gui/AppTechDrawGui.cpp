@@ -20,61 +20,61 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
-# include <QFontDatabase>
+#include <QFontDatabase>
 #endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
-
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
 
-#include "Workbench.h"
-#include "MDIViewPage.h"
-
-#include "DlgPrefsTechDrawGeneralImp.h"
-#include "DlgPrefsTechDrawScaleImp.h"
-#include "DlgPrefsTechDrawAnnotationImp.h"
-#include "DlgPrefsTechDrawDimensionsImp.h"
-#include "DlgPrefsTechDrawColorsImp.h"
 #include "DlgPrefsTechDrawAdvancedImp.h"
+#include "DlgPrefsTechDrawAnnotationImp.h"
+#include "DlgPrefsTechDrawColorsImp.h"
+#include "DlgPrefsTechDrawDimensionsImp.h"
+#include "DlgPrefsTechDrawGeneralImp.h"
 #include "DlgPrefsTechDrawHLRImp.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderDrawingView.h"
-#include "ViewProviderDimension.h"
+#include "DlgPrefsTechDrawScaleImp.h"
+#include "MDIViewPage.h"
+#include "ViewProviderAnnotation.h"
 #include "ViewProviderBalloon.h"
+#include "ViewProviderCosmeticExtension.h"
+#include "ViewProviderDimension.h"
+#include "ViewProviderDrawingView.h"
+#include "ViewProviderDrawingViewExtension.h"
+#include "ViewProviderGeomHatch.h"
+#include "ViewProviderHatch.h"
+#include "ViewProviderImage.h"
+#include "ViewProviderLeader.h"
+#include "ViewProviderPage.h"
+#include "ViewProviderPageExtension.h"
 #include "ViewProviderProjGroup.h"
 #include "ViewProviderProjGroupItem.h"
+#include "ViewProviderRichAnno.h"
+#include "ViewProviderSpreadsheet.h"
+#include "ViewProviderSymbol.h"
 #include "ViewProviderTemplate.h"
+#include "ViewProviderTemplateExtension.h"
+#include "ViewProviderTile.h"
+#include "ViewProviderViewClip.h"
 #include "ViewProviderViewPart.h"
 #include "ViewProviderViewSection.h"
-#include "ViewProviderAnnotation.h"
-#include "ViewProviderSymbol.h"
-#include "ViewProviderViewClip.h"
-#include "ViewProviderHatch.h"
-#include "ViewProviderGeomHatch.h"
-#include "ViewProviderSpreadsheet.h"
-#include "ViewProviderImage.h"
-#include "ViewProviderRichAnno.h"
-#include "ViewProviderLeader.h"
-#include "ViewProviderTile.h"
 #include "ViewProviderWeld.h"
-
-#include "ViewProviderCosmeticExtension.h"
+#include "Workbench.h"
 
 
 // use a different name to CreateCommand()
-void CreateTechDrawCommands(void);
-void CreateTechDrawCommandsDims(void);
-void CreateTechDrawCommandsDecorate(void);
-void CreateTechDrawCommandsAnnotate(void);
+void CreateTechDrawCommands();
+void CreateTechDrawCommandsDims();
+void CreateTechDrawCommandsDecorate();
+void CreateTechDrawCommandsAnnotate();
+void CreateTechDrawCommandsExtensionDims();
+void CreateTechDrawCommandsExtensions();
+void CreateTechDrawCommandsStack();
 
 void loadTechDrawResource()
 {
@@ -82,18 +82,25 @@ void loadTechDrawResource()
     Q_INIT_RESOURCE(TechDraw);
     Gui::Translator::instance()->refresh();
 
-    // add osifont
+    // add fonts
     std::string fontDir = App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/";
-    QString fontFile = Base::Tools::fromStdString(fontDir + "osifont-lgpl3fe.ttf");
-    QFontDatabase fontDB;
-    int rc = fontDB.addApplicationFont(fontFile);
-    if (rc) {
-        Base::Console().Log("TechDraw failed to load osifont file: %d from: %s\n",rc,qPrintable(fontFile));
+
+    std::vector<std::string> fontsAll(
+        {"osifont-lgpl3fe.ttf", "osifont-italic.ttf", "Y14.5-2018.ttf", "Y14.5-FreeCAD.ttf"});
+
+    for (auto& font : fontsAll) {
+        QString fontFile = Base::Tools::fromStdString(fontDir + font);
+        int rc = QFontDatabase::addApplicationFont(fontFile);
+        if (rc < 0) {
+            Base::Console().Warning(
+                "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
+        }
     }
 }
 
-namespace TechDrawGui {
-    extern PyObject* initModule();
+namespace TechDrawGui
+{
+extern PyObject* initModule();
 }
 
 /* Python entry */
@@ -101,15 +108,15 @@ PyMOD_INIT_FUNC(TechDrawGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     // load dependent module
     try {
         Base::Interpreter().loadModule("TechDraw");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = TechDrawGui::initModule();
 
@@ -120,9 +127,13 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsDims();
     CreateTechDrawCommandsDecorate();
     CreateTechDrawCommandsAnnotate();
+    CreateTechDrawCommandsExtensionDims();
+    CreateTechDrawCommandsExtensions();
+    CreateTechDrawCommandsStack();
 
     TechDrawGui::Workbench::init();
     TechDrawGui::MDIViewPage::init();
+    TechDrawGui::MDIViewPagePy::init_type();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
@@ -148,16 +159,21 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderTile::init();
     TechDrawGui::ViewProviderWeld::init();
 
+    TechDrawGui::ViewProviderPageExtension ::init();
+    //    TechDrawGui::ViewProviderPageExtensionPython::init();
+    TechDrawGui::ViewProviderDrawingViewExtension::init();
+    TechDrawGui::ViewProviderTemplateExtension::init();
+
     TechDrawGui::ViewProviderCosmeticExtension::init();
 
     // register preferences pages
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp> ("TechDraw");    //General
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp> ("TechDraw");      //Scale
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");  //Dimensions
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp> ("TechDraw"); //Annotation
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>("TechDraw");      //Colors
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp> ("TechDraw");        //HLR
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp> ("TechDraw");   //Advanced
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp>("TechDraw");   //General
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp>("TechDraw");     //Scale
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");//Dimensions
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp>("TechDraw");//Annotation
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>("TechDraw");    //Colors
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp>("TechDraw");       //HLR
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp>("TechDraw");  //Advanced
 
     // add resources and reloads the translators
     loadTechDrawResource();

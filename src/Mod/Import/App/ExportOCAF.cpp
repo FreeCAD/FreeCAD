@@ -20,81 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <gp_Trsf.hxx>
+# include <climits>
 # include <gp_Ax1.hxx>
-# include <NCollection_Vector.hxx>
-# include <BRepBuilderAPI_MakeShape.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Face.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx> // for Precision::Confusion()
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <climits>
+# include <gp_Trsf.hxx>
+# include <Quantity_ColorRGBA.hxx>
+# include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-# include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
+# include <TDataStd_Name.hxx>
 # include <TDF_Label.hxx>
 # include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPControl_Writer.hxx>
-# include <IGESCAFControl_Reader.hxx>
-# include <IGESCAFControl_Writer.hxx>
-# include <IGESControl_Controller.hxx>
-# include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
+# include <TDocStd_Document.hxx>
 # include <TopExp_Explorer.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
-# include <OSD_Exception.hxx>
-#if OCC_VERSION_HEX >= 0x060500
-# include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
-# endif
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_Location.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Part.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FeatureCompound.h>
-#include "ExportOCAF.h"
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
-
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
+#include <App/Part.h>
+#include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/PartFeature.h>
 
+#include "ExportOCAF.h"
+
+
+#if OCC_VERSION_HEX >= 0x070500
+// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
+#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+#else
+#   define OCC_COLOR_SPACE Quantity_TOC_RGB
+#endif
+
+static inline Quantity_ColorRGBA convertColor(const App::Color &c)
+{
+    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0 - c.a);
+}
 
 using namespace Import;
 
@@ -110,7 +78,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     if (keepExplicitPlacement) {
         // rootLabel = aShapeTool->NewShape();
         // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-        Interface_Static::SetIVal("write.step.assembly",2);
+        Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
     }
     else {
         rootLabel = TDF_TagSource::NewChild(pDoc->Main());
@@ -284,7 +252,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
 */
 
     // Add color information
-    Quantity_Color col;
+    Quantity_ColorRGBA col;
 
     std::set<int> face_index;
     TopTools_IndexedMapOfShape faces;
@@ -317,11 +285,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
 
                 if (!faceLabel.IsNull()) {
                     const App::Color& color = colors[index-1];
-                    Standard_Real mat[3];
-                    mat[0] = color.r;
-                    mat[1] = color.g;
-                    mat[2] = color.b;
-                    col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                    col = convertColor(color);
                     aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                 }
             }
@@ -330,11 +294,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     }
     else if (!colors.empty()) {
         App::Color color = colors.front();
-        Standard_Real mat[3];
-        mat[0] = color.r;
-        mat[1] = color.g;
-        mat[2] = color.b;
-        col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+        col = convertColor(color);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
 
@@ -400,7 +360,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
             TopoDS_Shape baseShape = part->Shape.getValue();
 
             // Add color information
-            Quantity_Color col;
+            Quantity_ColorRGBA col;
 
             std::set<int> face_index;
             TopTools_IndexedMapOfShape faces;
@@ -433,11 +393,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
 
                         if (!faceLabel.IsNull()) {
                             const App::Color& color = colors[index-1];
-                            Standard_Real mat[3];
-                            mat[0] = color.r;
-                            mat[1] = color.g;
-                            mat[2] = color.b;
-                            col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                            col = convertColor(color);
                             aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                         }
                     }
@@ -447,11 +403,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
             }
             else if (!colors.empty()) {
                 App::Color color = colors.front();
-                Standard_Real mat[3];
-                mat[0] = color.r;
-                mat[1] = color.g;
-                mat[2] = color.b;
-                col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                col = convertColor(color);
                 aColorTool->SetColor(label, col, XCAFDoc_ColorGen);
             }
         }

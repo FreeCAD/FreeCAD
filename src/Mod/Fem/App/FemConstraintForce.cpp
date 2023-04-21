@@ -21,23 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FemConstraintForce.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
@@ -46,7 +37,7 @@ PROPERTY_SOURCE(Fem::ConstraintForce, Fem::Constraint)
 ConstraintForce::ConstraintForce()
 {
     ADD_PROPERTY(Force,(0.0));
-    ADD_PROPERTY_TYPE(Direction,(0),"ConstraintForce",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"ConstraintForce",(App::PropertyType)(App::Prop_None),
                       "Element giving direction of constraint");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
@@ -57,7 +48,7 @@ ConstraintForce::ConstraintForce()
     Points.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintForce::execute(void)
+App::DocumentObjectExecReturn *ConstraintForce::execute()
 {
     return Constraint::execute();
 }
@@ -99,7 +90,7 @@ void ConstraintForce::onChanged(const App::Property* prop)
         }
     } else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
-        if (Direction.getValue() == NULL) {
+        if (!Direction.getValue()) {
             Base::Vector3d direction = NormalDirection.getValue();
             if (Reversed.getValue())
                 direction = -direction;

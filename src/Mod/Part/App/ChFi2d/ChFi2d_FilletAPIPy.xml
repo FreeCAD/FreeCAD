@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ChFi2d_FilletAPIPy"
+      PythonName="Part.ChFi2d.FilletAPI"
+      Twin="ChFi2d_FilletAPI"
+      TwinPointer="ChFi2d_FilletAPI"
+      Include="ChFi2d_FilletAPI.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+      <UserDocu>Algorithm that creates fillet edge</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+        <Documentation>
+            <UserDocu>Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="perform">
+        <Documentation>
+            <UserDocu>perform(radius) -> bool
+
+Constructs a fillet edge</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="numberOfResults">
+        <Documentation>
+            <UserDocu>Returns number of possible solutions</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="result">
+        <Documentation>
+            <UserDocu>result(point, solution=-1)
+
+Returns result (fillet edge, modified edge1, modified edge2)</UserDocu>
+        </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

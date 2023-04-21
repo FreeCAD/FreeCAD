@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
+# include <cassert>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -42,7 +42,7 @@ struct Base::TypeData
   TypeData(const char *theName,
            const Type type = Type::badType(),
            const Type theParent = Type::badType(),
-           Type::instantiationMethod method = 0
+           Type::instantiationMethod method = nullptr
           ):name(theName),parent(theParent),type(type),instMethod(method) { }
 
   std::string name;
@@ -78,13 +78,12 @@ Type::Type(const Type& type)
  * A destructor.
  * A more elaborate description of the destructor.
  */
-Type::~Type()
-{
-}
+Type::~Type() = default;
 
-void *Type::createInstance(void)
+void *Type::createInstance()
 {
-  return (typedata[index]->instMethod)();
+  instantiationMethod method = typedata[index]->instMethod;
+  return method ? (*method)() : nullptr;
 }
 
 
@@ -97,7 +96,7 @@ void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
   // now the type should be in the type map
   Type t = fromName(TypeName);
   if (t == badType())
-    return 0;
+    return nullptr;
 
   return t.createInstance();
 }
@@ -131,7 +130,7 @@ string Type::getModuleName(const char* ClassName)
     return string();
 }
 
-Type Type::badType(void)
+Type Type::badType()
 {
   Type bad;
   bad.index = 0;
@@ -142,7 +141,7 @@ Type Type::badType(void)
 const Type Type::createType(const Type parent, const char *name, instantiationMethod method)
 {
   Type newType;
-  newType.index = Type::typedata.size();
+  newType.index = static_cast<unsigned int>(Type::typedata.size());
   TypeData * typeData = new TypeData(name, newType, parent,method);
   Type::typedata.push_back(typeData);
 
@@ -153,7 +152,7 @@ const Type Type::createType(const Type parent, const char *name, instantiationMe
 }
 
 
-void Type::init(void)
+void Type::init()
 {
   assert(Type::typedata.size() == 0);
 
@@ -164,7 +163,7 @@ void Type::init(void)
 
 }
 
-void Type::destruct(void)
+void Type::destruct()
 {
   for(std::vector<TypeData*>::const_iterator it = typedata.begin();it!= typedata.end();++it)
     delete *it;
@@ -192,12 +191,12 @@ Type Type::fromKey(unsigned int key)
     return Type::badType();
 }
 
-const char *Type::getName(void) const
+const char *Type::getName() const
 {
   return typedata[index]->name.c_str();
 }
 
-const Type Type::getParent(void) const
+const Type Type::getParent() const
 {
   return typedata[index]->parent;
 }
@@ -230,7 +229,20 @@ int Type::getAllDerivedFrom(const Type type, std::vector<Type> & List)
   return cnt;
 }
 
-int Type::getNumTypes(void)
+int Type::getNumTypes()
 {
-  return typedata.size();
+  return static_cast<int>(typedata.size());
+}
+
+Type Type::getTypeIfDerivedFrom(const char* name , const Type parent, bool bLoadModule)
+{
+  if (bLoadModule)
+    importModule(name);
+
+  Type type = fromName(name);
+
+  if (type.isDerivedFrom(parent))
+    return type;
+  else
+    return Type::badType();
 }

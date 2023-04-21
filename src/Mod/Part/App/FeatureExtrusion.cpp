@@ -20,63 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <gp_Pln.hxx>
-# include <gp_Trsf.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepOffsetAPI_MakeOffset.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
+# include <BRepLib_FindSurface.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Trsf.hxx>
 # include <Precision.hxx>
-# include <ShapeAnalysis.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <BRepLib_FindSurface.hxx>
 #endif
 
-#include "FeatureExtrusion.h"
-#include <Base/Tools.h>
 #include <Base/Exception.h>
-#include "Part2DObject.h"
 
+#include "FeatureExtrusion.h"
+#include "ExtrusionHelper.h"
+#include "Part2DObject.h"
 
 
 using namespace Part;
 
-
 PROPERTY_SOURCE(Part::Extrusion, Part::Feature)
 
-const char* Extrusion::eDirModeStrings[]= {
+const char* Extrusion::eDirModeStrings[] = {
     "Custom",
     "Edge",
     "Normal",
-    NULL};
+    nullptr };
 
 Extrusion::Extrusion()
 {
-    ADD_PROPERTY_TYPE(Base,(0), "Extrude", App::Prop_None, "Shape to extrude");
-    ADD_PROPERTY_TYPE(Dir,(Base::Vector3d(0.0,0.0,1.0)), "Extrude", App::Prop_None, "Direction of extrusion (also magnitude, if both lengths are zero).");
+    ADD_PROPERTY_TYPE(Base, (nullptr), "Extrude", App::Prop_None, "Shape to extrude");
+    ADD_PROPERTY_TYPE(Dir, (Base::Vector3d(0.0, 0.0, 1.0)), "Extrude", App::Prop_None, "Direction of extrusion (also magnitude, if both lengths are zero).");
     ADD_PROPERTY_TYPE(DirMode, (dmCustom), "Extrude", App::Prop_None, "Sets, how Dir is updated.");
     DirMode.setEnums(eDirModeStrings);
-    ADD_PROPERTY_TYPE(DirLink,(nullptr), "Extrude", App::Prop_None, "Link to edge defining extrusion direction.");
-    ADD_PROPERTY_TYPE(LengthFwd,(0.0), "Extrude", App::Prop_None, "Length of extrusion along direction. If both LengthFwd and LengthRev are zero, magnitude of Dir is used.");
-    ADD_PROPERTY_TYPE(LengthRev,(0.0), "Extrude", App::Prop_None, "Length of additional extrusion, against direction.");
-    ADD_PROPERTY_TYPE(Solid,(false), "Extrude", App::Prop_None, "If true, extruding a wire yields a solid. If false, a shell.");
-    ADD_PROPERTY_TYPE(Reversed,(false), "Extrude", App::Prop_None, "Set to true to swap the direction of extrusion.");
-    ADD_PROPERTY_TYPE(Symmetric,(false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
-    ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
-    ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
-    ADD_PROPERTY_TYPE(FaceMakerClass,("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
+    ADD_PROPERTY_TYPE(DirLink, (nullptr), "Extrude", App::Prop_None, "Link to edge defining extrusion direction.");
+    ADD_PROPERTY_TYPE(LengthFwd, (0.0), "Extrude", App::Prop_None, "Length of extrusion along direction. If both LengthFwd and LengthRev are zero, magnitude of Dir is used.");
+    ADD_PROPERTY_TYPE(LengthRev, (0.0), "Extrude", App::Prop_None, "Length of additional extrusion, against direction.");
+    ADD_PROPERTY_TYPE(Solid, (false), "Extrude", App::Prop_None, "If true, extruding a wire yields a solid. If false, a shell.");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Extrude", App::Prop_None, "Set to true to swap the direction of extrusion.");
+    ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
+    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
+    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
 }
 
 short Extrusion::mustExecute() const
@@ -105,9 +97,10 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     auto linked = axisLink.getValue();
 
     TopoDS_Shape axEdge;
-    if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = Feature::getTopoShape(linked).getSubShape(axisLink.getSubValues()[0].c_str());
-    } else {
+    if (!axisLink.getSubValues().empty() && axisLink.getSubValues()[0].length() > 0) {
+        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
+    }
+    else {
         axEdge = Feature::getShape(linked);
     }
 
@@ -119,12 +112,13 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     BRepAdaptor_Curve crv(TopoDS::Edge(axEdge));
     gp_Pnt startpoint;
     gp_Pnt endpoint;
-    if (crv.GetType() == GeomAbs_Line){
+    if (crv.GetType() == GeomAbs_Line) {
         startpoint = crv.Value(crv.FirstParameter());
         endpoint = crv.Value(crv.LastParameter());
         if (axEdge.Orientation() == TopAbs_REVERSED)
             std::swap(startpoint, endpoint);
-    } else {
+    }
+    else {
         throw Base::TypeError("DirLink edge is not a line.");
     }
     basepoint.Set(startpoint.X(), startpoint.Y(), startpoint.Z());
@@ -137,26 +131,26 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 {
     Extrusion::ExtrusionParameters result;
     Base::Vector3d dir;
-    switch(this->DirMode.getValue()){
-        case dmCustom:
-            dir = this->Dir.getValue();
+    switch (this->DirMode.getValue()) {
+    case dmCustom:
+        dir = this->Dir.getValue();
         break;
-        case dmEdge:{
-            bool fetched;
-            Base::Vector3d base;
-            fetched = fetchAxisLink(this->DirLink, base, dir);
-            if (!fetched)
-                throw Base::ValueError("DirMode is set to use edge, but no edge is linked.");
-            this->Dir.setValue(dir);
-        }break;
-        case dmNormal:
-            dir = calculateShapeNormal(this->Base);
-            this->Dir.setValue(dir);
+    case dmEdge: {
+        bool fetched;
+        Base::Vector3d base;
+        fetched = fetchAxisLink(this->DirLink, base, dir);
+        if (!fetched)
+            throw Base::ValueError("DirMode is set to use edge, but no edge is linked.");
+        this->Dir.setValue(dir);
+    } break;
+    case dmNormal:
+        dir = calculateShapeNormal(this->Base);
+        this->Dir.setValue(dir);
         break;
-        default:
-            throw Base::ValueError("Unexpected enum value");
+    default:
+        throw Base::ValueError("Unexpected enum value");
     }
-    if(dir.Length() < Precision::Confusion())
+    if (dir.Length() < Precision::Confusion())
         throw Base::ValueError("Direction is zero-length");
     result.dir = gp_Dir(dir.x, dir.y, dir.z);
     if (this->Reversed.getValue())
@@ -164,12 +158,12 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
     result.lengthFwd = this->LengthFwd.getValue();
     result.lengthRev = this->LengthRev.getValue();
-    if(fabs(result.lengthFwd) < Precision::Confusion()
-            && fabs(result.lengthRev) < Precision::Confusion() ){
+    if (fabs(result.lengthFwd) < Precision::Confusion()
+        && fabs(result.lengthRev) < Precision::Confusion()) {
         result.lengthFwd = dir.Length();
     }
 
-    if (this->Symmetric.getValue()){
+    if (this->Symmetric.getValue()) {
         result.lengthRev = result.lengthFwd * 0.5;
         result.lengthFwd = result.lengthFwd * 0.5;
     }
@@ -180,10 +174,10 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
     result.solid = this->Solid.getValue();
 
     result.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleFwd) > M_PI * 0.5 - Precision::Angular() )
+    if (fabs(result.taperAngleFwd) > M_PI * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
     result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular() )
+    if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
 
     result.faceMakerClass = this->FaceMakerClass.getValue();
@@ -193,16 +187,16 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
 Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLink)
 {
-    App::DocumentObject* docobj = 0;
+    App::DocumentObject* docobj = nullptr;
     Base::Matrix4D mat;
-    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(),0,false, &mat,&docobj);
+    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(), nullptr, false, &mat, &docobj);
 
     if (!docobj)
         throw Base::ValueError("calculateShapeNormal: link is empty");
 
     //special case for sketches and the like: no matter what shape they have, use their local Z axis.
-    if (docobj->isDerivedFrom(Part::Part2DObject::getClassTypeId())){
-        Base::Vector3d OZ (0.0, 0.0, 1.0);
+    if (docobj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        Base::Vector3d OZ(0.0, 0.0, 1.0);
         Base::Vector3d result;
         Base::Rotation(mat).multVec(OZ, result);
         return result;
@@ -213,21 +207,21 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 
     //find plane
     BRepLib_FindSurface planeFinder(sh, -1, /*OnlyPlane=*/true);
-    if (! planeFinder.Found())
+    if (!planeFinder.Found())
         throw Base::ValueError("Can't find normal direction, because the shape is not on a plane.");
 
     //find plane normal and return result.
     GeomAdaptor_Surface surf(planeFinder.Surface());
     gp_Dir normal = surf.Plane().Axis().Direction();
 
-    //now se know the plane. But if there are faces, the
+    //now we know the plane. But if there are faces, the
     //plane normal direction is not dependent on face orientation (because findPlane only uses edges).
     //let's fix that.
     TopExp_Explorer ex(sh, TopAbs_FACE);
-    if(ex.More()) {
+    if (ex.More()) {
         BRepAdaptor_Surface surf(TopoDS::Face(ex.Current()));
         normal = surf.Plane().Axis().Direction();
-        if (ex.Current().Orientation() == TopAbs_REVERSED){
+        if (ex.Current().Orientation() == TopAbs_REVERSED) {
             normal.Reverse();
         }
     }
@@ -238,10 +232,10 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::ExtrusionParameters& params)
 {
     TopoDS_Shape result;
-    gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd+params.lengthRev);//total vector of extrusion
+    gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
 
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
-        std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
+        std::fabs(params.taperAngleRev) >= Precision::Angular()) {
         //Tapered extrusion!
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
@@ -253,7 +247,9 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         myShape = BRepBuilderAPI_Copy(myShape).Shape();
 
         std::list<TopoDS_Shape> drafts;
-        makeDraft(params, myShape, drafts);
+        bool isPartDesign = false; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
+        ExtrusionHelper::makeDraft(myShape, params.dir, params.lengthFwd, params.lengthRev,
+                                   params.taperAngleFwd, params.taperAngleRev, params.solid, drafts, isPartDesign);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }
@@ -279,9 +275,9 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         myShape = BRepBuilderAPI_Copy(myShape).Shape();
 
         //apply reverse part of extrusion by shifting the source shape
-        if (fabs(params.lengthRev)>Precision::Confusion() ){
+        if (fabs(params.lengthRev) > Precision::Confusion()) {
             gp_Trsf mov;
-            mov.SetTranslation(gp_Vec(params.dir)*(-params.lengthRev));
+            mov.SetTranslation(gp_Vec(params.dir) * (-params.lengthRev));
             TopLoc_Location loc(mov);
             myShape.Move(loc);
         }
@@ -290,9 +286,10 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         if (params.solid) {
             //test if we need to make faces from wires. If there are faces - we don't.
             TopExp_Explorer xp(myShape, TopAbs_FACE);
-            if (xp.More()){
+            if (xp.More()) {
                 //source shape has faces. Just extrude as-is.
-            } else {
+            }
+            else {
                 std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
 
                 if (myShape.ShapeType() == TopAbs_COMPOUND)
@@ -312,10 +309,9 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
     if (result.IsNull())
         throw NullShapeException("Result of extrusion is null shape.");
     return TopoShape(result);
-
 }
 
-App::DocumentObjectExecReturn *Extrusion::execute(void)
+App::DocumentObjectExecReturn* Extrusion::execute()
 {
     App::DocumentObject* link = Base.getValue();
     if (!link)
@@ -323,175 +319,12 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
     try {
         Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(Feature::getShape(link),params);
+        TopoShape result = extrudeShape(Feature::getShape(link), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
-    }
-}
-
-void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape& shape, std::list<TopoDS_Shape>& drafts)
-{
-    double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;
-    double distanceRev = tan(params.taperAngleRev)*params.lengthRev;
-
-    gp_Vec vecFwd = gp_Vec(params.dir)*params.lengthFwd;
-    gp_Vec vecRev = gp_Vec(params.dir.Reversed())*params.lengthRev;
-
-    bool bFwd = fabs(params.lengthFwd) > Precision::Confusion();
-    bool bRev = fabs(params.lengthRev) > Precision::Confusion();
-    bool bMid = !bFwd || !bRev || params.lengthFwd*params.lengthRev > 0.0; //include the source shape as loft section?
-
-    TopoDS_Wire sourceWire;
-    if (shape.IsNull())
-        Standard_Failure::Raise("Not a valid shape");
-    if (shape.ShapeType() == TopAbs_WIRE) {
-        ShapeFix_Wire aFix;
-        aFix.Load(TopoDS::Wire(shape));
-        aFix.FixReorder();
-        aFix.FixConnected();
-        aFix.FixClosed();
-        sourceWire = aFix.Wire();
-    }
-    else if (shape.ShapeType() == TopAbs_FACE) {
-        TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
-        sourceWire = outerWire;
-    }
-    else if (shape.ShapeType() == TopAbs_COMPOUND) {
-        TopoDS_Iterator it(shape);
-        for (; it.More(); it.Next()) {
-            makeDraft(params, it.Value(), drafts);
-        }
-    }
-    else {
-        Standard_Failure::Raise("Only a wire or a face is supported");
-    }
-
-    if (!sourceWire.IsNull()) {
-        std::list<TopoDS_Wire> list_of_sections;
-
-        // if the wire consists of a single edge which has applied a placement
-        // then this placement must be reset because otherwise the
-        // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement
-        // twice on the output shape
-        //
-        // count all edges of the wire
-        int numEdges = 0;
-        TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
-        while (xp.More()) {
-            numEdges++;
-            xp.Next();
-        }
-
-        auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Shape {
-            BRepOffsetAPI_MakeOffset mkOffset;
-#if OCC_VERSION_HEX >= 0x060800
-            mkOffset.Init(GeomAbs_Arc);
-#endif
-#if OCC_VERSION_HEX >= 0x070000
-            mkOffset.Init(GeomAbs_Intersection);
-#endif
-            gp_Trsf mat;
-            mat.SetTranslation(translation);
-            TopLoc_Location loc(mat);
-            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
-
-            TopoDS_Shape offsetShape;
-            if (fabs(offset)>Precision::Confusion()) {
-                TopLoc_Location wireLocation;
-                TopLoc_Location edgeLocation;
-                if (numEdges == 1) {
-                    wireLocation = movedSourceWire.Location();
-
-                    BRepBuilderAPI_MakeWire mkWire;
-                    TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
-                    while (xp.More()) {
-                        TopoDS_Edge edge = TopoDS::Edge(xp.Current());
-                        edgeLocation = edge.Location();
-                        edge.Location(TopLoc_Location());
-                        mkWire.Add(edge);
-                        xp.Next();
-                    }
-                    movedSourceWire = mkWire.Wire();
-                }
-                mkOffset.AddWire(movedSourceWire);
-                mkOffset.Perform(offset);
-
-                offsetShape = mkOffset.Shape();
-                offsetShape.Move(edgeLocation);
-                offsetShape.Move(wireLocation);
-            }
-            else {
-                //stupid OCC doesn't understand, what to do when offset value is zero =/
-                offsetShape = movedSourceWire;
-            }
-
-            return offsetShape;
-        };
-
-        //first. add wire for reversed part of extrusion
-        if (bRev){
-            TopoDS_Shape offsetShape = makeOffset(vecRev, distanceRev);
-            if (offsetShape.IsNull())
-                Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = offsetShape.ShapeType();
-            if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(offsetShape));
-            }
-            else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
-                list_of_sections.push_back(mkWire.Wire());
-            }
-            else {
-                Standard_Failure::Raise("Tapered shape type is not supported");
-            }
-        }
-
-        //next. Add source wire as middle section. Order is important.
-        if (bMid){
-            list_of_sections.push_back(sourceWire);
-        }
-
-        //finally. Forward extrusion offset wire.
-        if (bFwd){
-            TopoDS_Shape offsetShape = makeOffset(vecFwd, distanceFwd);
-            if (offsetShape.IsNull())
-                Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = offsetShape.ShapeType();
-            if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(offsetShape));
-            }
-            else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
-                list_of_sections.push_back(mkWire.Wire());
-            }
-            else {
-                Standard_Failure::Raise("Tapered shape type is not supported");
-            }
-        }
-
-        //make loft
-        BRepOffsetAPI_ThruSections mkGenerator(params.solid ? Standard_True : Standard_False, /*ruled=*/Standard_True);
-        for (std::list<TopoDS_Wire>::const_iterator it = list_of_sections.begin(); it != list_of_sections.end(); ++it) {
-            const TopoDS_Wire &wire = *it;
-            mkGenerator.AddWire(wire);
-        }
-
-        try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-            Base::SignalException se;
-#endif
-            mkGenerator.Build();
-            drafts.push_back(mkGenerator.Shape());
-        }
-        catch (Standard_Failure &){
-            throw;
-        }
-        catch (...) {
-            throw Base::CADKernelError("Unknown exception from BRepOffsetAPI_ThruSections");
-        }
     }
 }
 
@@ -501,15 +334,19 @@ TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerCheese)
 
 std::string FaceMakerExtrusion::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Part Extrude facemaker"));
+    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker", "Part Extrude facemaker"));
 }
 
 std::string FaceMakerExtrusion::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making faces with holes, does not support nesting."));
+    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker", "Supports making faces with holes, does not support nesting."));
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void FaceMakerExtrusion::Build(const Message_ProgressRange&)
+#else
 void FaceMakerExtrusion::Build()
+#endif
 {
     this->NotDone();
     this->myGenerated.Clear();
@@ -518,13 +355,14 @@ void FaceMakerExtrusion::Build()
     TopoDS_Shape inputShape;
     if (mySourceShapes.empty())
         throw Base::ValueError("No input shapes!");
-    if (mySourceShapes.size() == 1){
+    if (mySourceShapes.size() == 1) {
         inputShape = mySourceShapes[0];
-    } else {
+    }
+    else {
         TopoDS_Builder builder;
         TopoDS_Compound cmp;
         builder.MakeCompound(cmp);
-        for (const TopoDS_Shape& sh: mySourceShapes){
+        for (const TopoDS_Shape& sh : mySourceShapes) {
             builder.Add(cmp, sh);
         }
         inputShape = cmp;
@@ -538,23 +376,23 @@ void FaceMakerExtrusion::Build()
     if (mapOfWires.IsEmpty()) {
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(inputShape, TopAbs_EDGE, mapOfEdges);
-        for (int i=1; i<=mapOfEdges.Extent(); i++) {
+        for (int i = 1; i <= mapOfEdges.Extent(); i++) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mapOfEdges.FindKey(i)));
             wires.push_back(mkWire.Wire());
         }
     }
     else {
         wires.reserve(mapOfWires.Extent());
-        for (int i=1; i<=mapOfWires.Extent(); i++) {
+        for (int i = 1; i <= mapOfWires.Extent(); i++) {
             wires.push_back(TopoDS::Wire(mapOfWires.FindKey(i)));
         }
     }
 
     if (!wires.empty()) {
         //try {
-            TopoDS_Shape res = FaceMakerCheese::makeFace(wires);
-            if (!res.IsNull())
-                this->myShape = res;
+        TopoDS_Shape res = FaceMakerCheese::makeFace(wires);
+        if (!res.IsNull())
+            this->myShape = res;
         //}
         //catch (...) {
 
@@ -564,7 +402,6 @@ void FaceMakerExtrusion::Build()
     this->Done();
 
 }
-
 
 void Part::Extrusion::setupObject()
 {

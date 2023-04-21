@@ -22,19 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <vector>
+#endif
 
-#include <App/Application.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "ui_DlgPrefsTechDrawAnnotation.h"
-#include <Mod/TechDraw/App/LineGroup.h>
+#include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 
 
 using namespace TechDrawGui;
@@ -48,10 +46,10 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     ui->setupUi(this);
     ui->pdsbBalloonKink->setUnit(Base::Unit::Length);
     ui->pdsbBalloonKink->setMinimum(0);
-    
+
     // connect the LineGroup the update the tooltip if index changed
-    connect(ui->pcbLineGroup, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onLineGroupChanged(int)));
+    connect(ui->pcbLineGroup, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
@@ -65,6 +63,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->cbPrintCenterMarks->onSave();
     ui->cbPyramidOrtho->onSave();
     ui->cbSectionLineStd->onSave();
+    ui->cbComplexMarks->onSave();
     ui->cbShowCenterMarks->onSave();
     ui->pcbLineGroup->onSave();
     ui->pcbBalloonArrow->onSave();
@@ -98,11 +97,12 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     for (auto it = lgNames.begin(); it < lgNames.end(); ++it) {
         ui->pcbLineGroup->addItem(tr((*it).c_str()));
     }
- 
+
     ui->cbAutoHoriz->onRestore();
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
     ui->cbSectionLineStd->onRestore();
+    ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
     ui->pcbLineGroup->onRestore();
     ui->pcbBalloonArrow->onRestore();
@@ -133,7 +133,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
     }
 }
 
-int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow(void) const
+int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
 {
     return Preferences::balloonArrow();
 }
@@ -144,23 +144,23 @@ int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow(void) const
 void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
 {
     if (index == -1) { // there is no valid index yet
-        ui->pcbLineGroup->setToolTip(QString::fromStdString("Please select a Line Group"));
+        ui->pcbLineGroup->setToolTip(QObject::tr("Please select a Line Group"));
         return;
     }
-    // get the definition the the selected LineGroup (includes the name)
+    // get the definition of the selected LineGroup (includes the name)
     std::string lgRecord = LineGroup::getRecordFromFile(Preferences::lineGroupFile(), index);
     std::stringstream ss(lgRecord);
     std::vector<std::string> lgNames;
     while (std::getline(ss, lgRecord, ',')) {
         lgNames.push_back(lgRecord);
     }
-    // format the tooltip
-    std::stringstream TooltipText;
-    TooltipText << lgNames.at(0).substr(1) << " defines these line widths:\n"
-        << "thin: " << lgNames.at(1) << "\n"
-        << "graphic: " << lgNames.at(2) << "\n"
-        << "thick: " << lgNames.at(3);
-    ui->pcbLineGroup->setToolTip(QString::fromStdString(TooltipText.str()));
+    ui->pcbLineGroup->setToolTip(
+        QObject::tr("%1 defines these line widths:\n thin: %2\n graphic: %3\n "
+                    "thick: %4")
+            .arg(QString::fromStdString(lgNames.at(0).substr(1)),
+                 QString::fromStdString(lgNames.at(1)),
+                 QString::fromStdString(lgNames.at(2)),
+                 QString::fromStdString(lgNames.at(3))));
 }
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAnnotationImp.cpp>

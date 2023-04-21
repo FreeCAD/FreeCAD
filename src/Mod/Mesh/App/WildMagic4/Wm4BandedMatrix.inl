@@ -33,9 +33,9 @@ BandedMatrix<Real>::BandedMatrix (int iSize, int iLBands, int iUBands)
 template <class Real>
 BandedMatrix<Real>::BandedMatrix (const BandedMatrix& rkM)
 {
-    m_afDBand = 0;
-    m_aafLBand = 0;
-    m_aafUBand = 0;
+    m_afDBand = nullptr;
+    m_aafLBand = nullptr;
+    m_aafUBand = nullptr;
     *this = rkM;
 }
 //----------------------------------------------------------------------------
@@ -276,7 +276,7 @@ void BandedMatrix<Real>::Allocate ()
     }
     else
     {
-        m_aafLBand = 0;
+        m_aafLBand = nullptr;
     }
 
     if (m_iUBands > 0)
@@ -285,7 +285,7 @@ void BandedMatrix<Real>::Allocate ()
     }
     else
     {
-        m_aafUBand = 0;
+        m_aafUBand = nullptr;
     }
 
     int i;
@@ -317,7 +317,7 @@ void BandedMatrix<Real>::Deallocate ()
         }
 
         WM4_DELETE[] m_aafLBand;
-        m_aafLBand = 0;
+        m_aafLBand = nullptr;
     }
 
     if (m_aafUBand)
@@ -328,7 +328,7 @@ void BandedMatrix<Real>::Deallocate ()
         }
 
         WM4_DELETE[] m_aafUBand;
-        m_aafUBand = 0;
+        m_aafUBand = nullptr;
     }
 }
 //----------------------------------------------------------------------------

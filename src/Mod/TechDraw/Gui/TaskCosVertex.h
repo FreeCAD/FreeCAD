@@ -23,45 +23,33 @@
 #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
 #define TECHDRAWGUI_TASKCOSVERTEX_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
-
 #include "QGTracker.h"
 
-//TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-class Ui_TaskCosVertex;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
 class DrawPage;
 class DrawView;
+class DrawViewPart;
 class DrawCosVertex;
 }
 
 namespace TechDrawGui
 {
-class QGVPage;
+class QGSPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGICosVertex;
+class ViewProviderPage;
 class ViewProviderLeader;
+class Ui_TaskCosVertex;
 
 class TaskCosVertex : public QWidget
 {
@@ -70,32 +58,30 @@ class TaskCosVertex : public QWidget
 public:
     TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                   TechDraw::DrawPage* page);
-    ~TaskCosVertex();
+    ~TaskCosVertex() = default;
 
-public Q_SLOTS:
-    void onTrackerClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
+    void enableTaskButtons(bool button);
+
+public Q_SLOTS:
+    void onTrackerClicked(bool clicked);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 protected:
-    void changeEvent(QEvent *e);
-    void startTracker(void);
-    void removeTracker(void);
-    void abandonEditSession(void);
+    void changeEvent(QEvent *event) override;
+    void startTracker();
+    void removeTracker();
+    void abandonEditSession();
 
     void addCosVertex(QPointF qPos);
 
-    void blockButtons(bool b);
-    void setUiPrimary(void);
-    void updateUi(void);
-    void setEditCursor(QCursor c);
+    void setUiPrimary();
+    void updateUi();
+    void setEditCursor(QCursor cursor);
 
    QGIView* findParentQGIV();
 
@@ -104,10 +90,7 @@ private:
     bool blockUpdate;
 
     QGTracker* m_tracker;
-    
-    MDIViewPage* m_mdi;
-    QGraphicsScene* m_scene;
-    QGVPage* m_view;
+
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
     QGIView* m_qgParent;
@@ -119,10 +102,12 @@ private:
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    
+
     int m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;
+
+    ViewProviderPage* m_vpp;
 };
 
 class TaskDlgCosVertex : public Gui::TaskView::TaskDialog
@@ -132,24 +117,23 @@ class TaskDlgCosVertex : public Gui::TaskView::TaskDialog
 public:
     TaskDlgCosVertex(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page);
-    ~TaskDlgCosVertex();
+    ~TaskDlgCosVertex() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 protected:
 

@@ -20,22 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-# include <cinttypes>
-# include <iomanip>
-# include <boost/algorithm/string.hpp>
-# include <boost/lexical_cast.hpp>
 #endif
 
 #include <Base/Vector3D.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
+
 #include "Voronoi.h"
+
 
 using namespace Base;
 using namespace Path;
@@ -159,7 +152,7 @@ void Voronoi::addSegment(const Voronoi::segment_type &s) {
   pil.y(low(s).y() * vd->getScale());
   pih.x(high(s).x() * vd->getScale());
   pih.y(high(s).y() * vd->getScale());
-  vd->segments.push_back(segment_type(pil, pih));
+  vd->segments.emplace_back(pil, pih);
 }
 
 long Voronoi::numPoints() const {
@@ -186,7 +179,7 @@ long Voronoi::numVertices() const {
 void Voronoi::construct()
 {
   vd->clear();
-  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), (voronoi_diagram_type*)vd);
+  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), static_cast<voronoi_diagram_type*>(vd));
   vd->reIndex();
 }
 
@@ -198,7 +191,7 @@ void Voronoi::colorExterior(const Voronoi::diagram_type::edge_type *edge, std::s
   edge->color(colorValue);
   edge->twin()->color(colorValue);
   auto v = edge->vertex1();
-  if (v == NULL || !edge->is_primary()) {
+  if (!v || !edge->is_primary()) {
     return;
   }
   v->color(colorValue);

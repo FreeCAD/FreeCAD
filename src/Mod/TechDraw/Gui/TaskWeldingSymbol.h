@@ -23,15 +23,12 @@
 #ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
 #define TECHDRAWGUI_TASKWELDINGSYMBOL_H
 
-#include <QPushButton>
-
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
+class QPushButton;
 class Ui_TaskWeldingSymbol;
 
 namespace App {
@@ -55,6 +52,7 @@ class Face;
 
 namespace TechDrawGui
 {
+class QGSPage;
 class QGVPage;
 class QGIView;
 class QGILeaderLine;
@@ -77,7 +75,7 @@ public:
     std::string symbolPath;
     std::string symbolString;
     std::string tileName;
-    void init(void) {
+    void init() {
         toBeSaved = false;
         arrowSide = true;
         row = 0;
@@ -97,11 +95,19 @@ class TechDrawGuiExport TaskWeldingSymbol : public QWidget
     Q_OBJECT
 
 public:
-    TaskWeldingSymbol(TechDraw::DrawLeaderLine* baseFeat);
+    TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat);
     TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weldFeat);
     ~TaskWeldingSymbol();
 
+    virtual bool accept();
+    virtual bool reject();
+    void updateTask();
+    void saveButtons(QPushButton* btnOK,
+                     QPushButton* btnCancel);
+    void enableTaskButtons(bool enable);
+
 public Q_SLOTS:
+    void symbolDialog(const char* source);
     void onArrowSymbolCreateClicked();
     void onArrowSymbolClicked();
     void onOtherSymbolCreateClicked();
@@ -116,25 +122,14 @@ public Q_SLOTS:
     void onDirectorySelected(const QString& newDir);
     void onSymbolSelected(QString symbolPath, QString source);
 
-public:
-    virtual bool accept();
-    virtual bool reject();
-    void updateTask();
-    void saveButtons(QPushButton* btnOK,
-                     QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
-
-protected Q_SLOTS:
-
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *event);
     void setUiPrimary(void);
     void setUiEdit();
 
     TechDraw::DrawWeldSymbol* createWeldingSymbol(void);
     void updateWeldingSymbol(void);
 
-/*    std::vector<App::DocumentObject*> createTiles(void);*/
     void getTileFeats(void);
     void updateTiles(void);
 
@@ -150,8 +145,6 @@ private:
 
     TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawWeldSymbol* m_weldFeat;
-/*    TechDraw::DrawTileWeld*   m_arrowIn;    //save starting values*/
-/*    TechDraw::DrawTileWeld*   m_otherIn;*/
     TechDraw::DrawTileWeld*   m_arrowFeat;
     TechDraw::DrawTileWeld*   m_otherFeat;
 
@@ -176,28 +169,24 @@ class TaskDlgWeldingSymbol : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
-    TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
-    ~TaskDlgWeldingSymbol();
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
+    ~TaskDlgWeldingSymbol() override;
 
-public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
-
-protected:
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 private:
     TaskWeldingSymbol* widget;

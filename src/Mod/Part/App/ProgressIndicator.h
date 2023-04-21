@@ -20,14 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_PROGRESSINDICATOR_H
 #define PART_PROGRESSINDICATOR_H
 
+#include <memory>
+
 #include <Message_ProgressIndicator.hxx>
 #include <Standard_Version.hxx>
+
 #include <Base/Sequencer.h>
-#include <memory>
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace Part {
 

@@ -29,10 +29,6 @@ SET(DraftUtils_SRCS
     AppDraftUtilsPy.cpp
     PreCompiled.cpp
     PreCompiled.h
-    dxf.cpp
-    dxf.h
-    DraftDxf.cpp
-    DraftDxf.h
 )
 
 add_library(DraftUtils SHARED ${DraftUtils_SRCS})

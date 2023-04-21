@@ -20,20 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_CYLINDER_FIT_H
 #define MESH_CYLINDER_FIT_H
 
-#include "Approximation.h"
 #include <Eigen/Eigenvalues>
+
+#include "Approximation.h"
+
 
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
 
-typedef Eigen::Matrix<double,5,5,Eigen::RowMajor> Matrix5x5;
+using Matrix5x5 = Eigen::Matrix<double,5,5,Eigen::RowMajor>;
 
 /**
- * Best-fit cylinder for a given set of points. 
+ * Best-fit cylinder for a given set of points.
  * Doesn't expect points on any top or bottom end-planes, only points on the side surface
  */
 class MeshExport CylinderFit : public MeshCore::Approximation
@@ -52,7 +53,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~CylinderFit();
+    ~CylinderFit() override;
 
     /**
      * Set approximations before calling Fit()
@@ -87,7 +88,7 @@ public:
     /**
      * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
      * called FLOAT_MAX is returned.

@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_ViewProviderTrajectory_H
 #define ROBOT_ViewProviderTrajectory_H
 
-#include <Inventor/VRMLnodes/SoVRMLTransform.h>
-#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/SoFCSelection.h>
+#include <Gui/ViewProviderGeometryObject.h>
 
-class SoDragger;
-class SoJackDragger;
+
 class SoCoordinate3;
+class SoDragger;
 class SoDrawStyle;
+class SoJackDragger;
 class SoLineSet;
 
 namespace RobotGui

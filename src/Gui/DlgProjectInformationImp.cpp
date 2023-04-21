@@ -20,20 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QApplication>
+#include <QByteArray>
+#include <QDesktopServices>
+#include <QUrl>
+#endif
 
 #include <App/Document.h>
-#include <App/PropertyStandard.h>
+#include <App/License.h>
 
 #include "DlgProjectInformationImp.h"
 #include "ui_DlgProjectInformation.h"
-#include "Document.h"
 
-#include <QApplication>
-#include <QByteArray>
-#include <QUrl>
-#include <QDesktopServices>
+
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "All rights reserved");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution-ShareAlike");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution-NoDerivatives");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution-NonCommercial");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution-NonCommercial-ShareAlike");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution-NonCommercial-NoDerivatives");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Public Domain");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "FreeArt");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "CERN Open Hardware Licence strongly-reciprocal");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "CERN Open Hardware Licence weakly-reciprocal");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "CERN Open Hardware Licence permissive");
+    qApp->translate("Gui::Dialog::DlgSettingsDocument", "Other");
+#endif
 
 using namespace Gui::Dialog;
 
@@ -60,22 +76,14 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     ui->lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
     ui->lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
 
-    QList<QByteArray> rawLicenses; rawLicenses
-        << "All rights reserved"
-        << "Creative Commons Attribution"
-        << "Creative Commons Attribution-ShareAlike"
-        << "Creative Commons Attribution-NoDerivatives"
-        << "Creative Commons Attribution-NonCommercial"
-        << "Creative Commons Attribution-NonCommercial-ShareAlike"
-        << "Creative Commons Attribution-NonCommercial-NoDerivatives"
-        << "Public Domain"
-        << "FreeArt"
-        << "Other";
-    for (QList<QByteArray>::iterator it = rawLicenses.begin(); it != rawLicenses.end(); ++it) {
-        QString text = QApplication::translate("Gui::Dialog::DlgSettingsDocument", it->constData());
-        ui->comboLicense->addItem(text, *it);
+    // load comboBox with license names
+    for (const auto& item : App::licenseItems) {
+        const char* name {item.at(App::posnOfFullName)};
+        QString translated = QApplication::translate("Gui::Dialog::DlgSettingsDocument", name);
+        ui->comboLicense->addItem(translated, QByteArray(name));
     }
 
+    // set default position to match document
     int index = ui->comboLicense->findData(QByteArray(doc->License.getValue()));
     if (index >= 0) {
         ui->comboLicense->setCurrentIndex(index);
@@ -99,8 +107,10 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
 #endif
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText( text );
-    connect(ui->pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
-    connect(ui->comboLicense, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)));
+    connect(ui->pushButtonOpenURL, &QPushButton::clicked,
+            this, &DlgProjectInformationImp::open_url);
+    connect(ui->comboLicense, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgProjectInformationImp::onLicenseTypeChanged);
 }
 
 /**
@@ -120,10 +130,12 @@ void DlgProjectInformationImp::accept()
     _doc->CreatedBy.setValue(ui->lineEditCreator->text().toUtf8());
     _doc->LastModifiedBy.setValue(ui->lineEditCreator->text().toUtf8());
     _doc->Company.setValue(ui->lineEditCompany->text().toUtf8());
-    QByteArray license = ui->comboLicense->itemData(ui->comboLicense->currentIndex()).toByteArray();
-    if (license.isEmpty())
-        license = ui->comboLicense->itemText(ui->comboLicense->currentIndex()).toUtf8();
-    _doc->License.setValue(license);
+    QByteArray licenseName {ui->comboLicense->currentData().toByteArray()};
+    // Is this really necessary?
+    if (licenseName.isEmpty()) {
+        licenseName = ui->comboLicense->currentText().toUtf8();
+    }
+    _doc->License.setValue(licenseName);
     _doc->LicenseURL.setValue(ui->lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence through '\\n' string
@@ -141,38 +153,10 @@ void DlgProjectInformationImp::accept()
 
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 {
-    switch (index) {
-        case 0:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/All_rights_reserved"));
-            break;
-        case 1:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by/4.0/"));
-            break;
-        case 2:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-sa/4.0/"));
-            break;
-        case 3:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nd/4.0/"));
-            break;
-        case 4:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc/4.0/"));
-            break;
-        case 5:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
-            break;
-        case 6:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
-            break;
-        case 7:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/Public_domain"));
-            break;
-        case 8:
-            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
-            break;
-        default:
-            ui->lineEditLicenseURL->setText(QString::fromUtf8(_doc->LicenseURL.getValue()));
-            break;
-    }
+    const char* url {index >= 0 && index < App::countOfLicenses ? App::licenseItems.at(index).at(App::posnOfUrl)
+                                                  : _doc->LicenseURL.getValue()};
+
+    ui->lineEditLicenseURL->setText(QString::fromLatin1(url));
 }
 
 /**

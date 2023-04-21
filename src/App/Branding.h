@@ -25,10 +25,11 @@
 #define APP_BRANDING_H
 
 #include <string>
-#include <QMap>
-#include <QVector>
-#include <QString>
 #include <QDomDocument>
+#include <QMap>
+#include <QString>
+#include <QVector>
+
 
 class QIODevice;
 
@@ -37,7 +38,7 @@ namespace App {
 class Branding
 {
 public:
-    typedef QMap<std::string, std::string> XmlConfig;
+    using XmlConfig = QMap<std::string, std::string>;
     Branding();
 
     bool readFile(const QString& fn);

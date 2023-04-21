@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SONAVIGATIONDRAGGER_H
 #define SONAVIGATIONDRAGGER_H
 
@@ -39,10 +38,11 @@
 // rotTransRotatorFeedbackActive      XRotator.feedbackActive
 // (and similarly for parts of the YRotator and ZRotator)
 
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/draggers/SoDragger.h>
-#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+
 
 //class TranslateRadialDragger;
 class SoRotateCylindricalDragger;
@@ -105,20 +105,20 @@ class RotTransDragger : public SoDragger
    // and at the start/end of SoBaseKit::readInstance()
    // and on the new copy at the start/end of SoBaseKit::copy()
    // Returns the state of the node when this was called.
-   virtual SbBool setUpConnections( SbBool onOff,
-                        SbBool doItAlways = false);
+   SbBool setUpConnections( SbBool onOff,
+                        SbBool doItAlways = false) override;
 
    // This allows us to specify that certain parts do not
    // write out. We'll use this on the antiSquish and
    // surroundScale parts.
-   virtual void setDefaultOnNonWritingFields();
+   void setDefaultOnNonWritingFields() override;
 
   private:
 
    static const char NavigationDraggerLayout[];
 
    // Destructor.
-   ~RotTransDragger();
+   ~RotTransDragger() override;
 };
 
 #endif //SONAVIGATIONDRAGGER_H

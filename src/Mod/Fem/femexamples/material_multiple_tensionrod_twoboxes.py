@@ -22,48 +22,56 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.material_multiple_tensionrod_twoboxes import setup
-setup()
-
-"""
-
 import FreeCAD
 
-import Fem
-import ObjectsFem
 from BOPTools import SplitFeatures
 from CompoundTools import CompoundFilter
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+import Fem
+import ObjectsFem
 
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Multimaterial tension rod 2 boxes",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "pressure"],
-            "solvers": ["calculix"],
-            "material": "multimaterial",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Multimaterial tension rod 2 boxes",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "pressure"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "multimaterial",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.material_multiple_tensionrod_twoboxes import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry objects
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric objects
     # two boxes
     boxlow = doc.addObject("Part::Box", "BoxLower")
     boxupp = doc.addObject("Part::Box", "BoxUpper")
@@ -100,64 +108,54 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
-    # material
-    material_object_low = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterialLow")
-    )[0]
-    mat = material_object_low.Material
+    # materials
+    material_obj_low = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterialLow")
+    mat = material_obj_low.Material
     mat["Name"] = "Aluminium-Generic"
     mat["YoungsModulus"] = "70000 MPa"
     mat["PoissonRatio"] = "0.35"
-    mat["Density"] = "2700  kg/m^3"
-    material_object_low.Material = mat
-    material_object_low.References = [(boxlow, "Solid1")]
-    analysis.addObject(material_object_low)
+    material_obj_low.Material = mat
+    material_obj_low.References = [(boxlow, "Solid1")]
+    analysis.addObject(material_obj_low)
 
-    material_object_upp = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterialUpp")
-    )[0]
-    mat = material_object_upp.Material
+    material_obj_upp = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterialUpp")
+    mat = material_obj_upp.Material
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7980 kg/m^3"
-    material_object_upp.Material = mat
-    material_object_upp.References = [(boxupp, "Solid1")]
+    material_obj_upp.Material = mat
+    material_obj_upp.References = [(boxupp, "Solid1")]
+    analysis.addObject(material_obj_upp)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face5")]
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face5")]
+    analysis.addObject(con_fixed)
 
-    # pressure_constraint
-    pressure_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
-    )[0]
-    pressure_constraint.References = [(geom_obj, "Face11")]
-    pressure_constraint.Pressure = 1000.0
-    pressure_constraint.Reversed = False
+    # constraint pressure
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure.References = [(geom_obj, "Face11")]
+    con_pressure.Pressure = 1000.0
+    con_pressure.Reversed = False
+    analysis.addObject(con_pressure)
 
     # mesh
     from .meshes.mesh_boxes_2_vertikal_tetra10 import create_nodes, create_elements
@@ -168,9 +166,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

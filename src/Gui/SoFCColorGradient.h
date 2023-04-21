@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCCOLORGRADIENT_H
 #define GUI_SOFCCOLORGRADIENT_H
 
-#include <Inventor/nodes/SoSeparator.h>
-#include "SoFCColorBar.h"
-#include <App/ColorModel.h>
 #include <vector>
+#include <Inventor/SbBox2f.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+#include "SoFCColorBar.h"
+
 
 class SoCoordinate3;
 class SoMFString;
@@ -36,74 +37,72 @@ class SbVec2s;
 namespace Gui {
 
 class GuiExport SoFCColorGradient : public SoFCColorBarBase {
-  typedef SoFCColorBarBase inherited;
+  using inherited = SoFCColorBarBase;
 
   SO_NODE_HEADER(Gui::SoFCColorGradient);
 
 public:
-  static void initClass(void);
-  static void finish(void);
-  SoFCColorGradient(void);
+  static void initClass();
+  static void finish();
+  SoFCColorGradient();
 
   /**
    * Sets the range of the colorbar from the maximum \a fMax to the minimum \a fMin.
    * \a prec indicates the post decimal positions, \a prec should be in between 0 and 6.
    */
-  void setRange( float fMin, float fMax, int prec=3 );
+  void setRange( float fMin, float fMax, int prec=3 ) override;
   /**
    * Returns the associated color to the value \a fVal.
    */
-  App::Color getColor (float fVal) const { return _cColGrad.getColor(fVal); }
-  void setOutsideGrayed (bool bVal) { _cColGrad.setOutsideGrayed(bVal); }
+  App::Color getColor (float fVal) const override { return _cColGrad.getColor(fVal); }
+  void setOutsideGrayed (bool bVal) override { _cColGrad.setOutsideGrayed(bVal); }
   /**
    * Returns always true if the gradient is in mode to show colors to arbitrary values of \a fVal,
    * otherwise true is returned if \a fVal is within the specified parameter range, if not false is
    * returned.
    */
-  bool isVisible (float fVal) const;
+  bool isVisible (float fVal) const override;
   /** Returns the current minimum of the parameter range. */
-  float getMinValue (void) const { return _cColGrad.getMinValue(); }
+  float getMinValue () const override { return _cColGrad.getMinValue(); }
   /** Returns the current maximum of the parameter range. */
-  float getMaxValue (void) const { return _cColGrad.getMaxValue(); }
+  float getMaxValue () const override { return _cColGrad.getMaxValue(); }
   /**
    * Opens a dialog to customize the current settings of the color gradient bar.
-   * Returns true if the settings have been changed, false otherwise.
    */
-  bool customize();
+  void customize(SoFCColorBarBase*) override;
   /** Returns the name of the color bar. */
-  const char* getColorBarName() const { return "Color Gradient"; }
+  const char* getColorBarName() const override;
 
 protected:
   /**
    * Sets the current viewer size this color gradient is embedded into, to recalculate its new position.
    */
-  void setViewportSize( const SbVec2s& size );
+  void setViewportSize( const SbVec2s& size ) override;
 
-  virtual ~SoFCColorGradient();
+  ~SoFCColorGradient() override;
   /**
-   * Sets the color model of the underlying color gradient to \a tModel. \a tModel either can
-   * be \c TRIA, \c INVERSE_TRIA, \c GRAY or \c INVERSE_GRAY
+   * Sets the color model of the underlying color gradient to \a index.
    */
-  void setColorModel (App::ColorGradient::TColorModel tModel);
+  void setColorModel (std::size_t index);
   /**
    * Sets the color style of the underlying color gradient to \a tStyle. \a tStyle either can
    * be \c FLOW or \c ZERO_BASED
    */
-  void setColorStyle (App::ColorGradient::TStyle tStyle);
+  void setColorStyle (App::ColorBarStyle tStyle);
   /** Rebuild the gradient bar. */
   void rebuildGradient();
-  /** Returns a list of \a count labels within the ranhe [\a fMin, \a fMax].  */
+  /** Returns a list of \a count labels within the range [\a fMin, \a fMax].  */
   std::vector<float> getMarkerValues(float fMin, float fMax, int count) const;
 
 private:
   /** Sets the new labels. */
   void setMarkerLabel( const SoMFString& label );
+  void modifyPoints(const SbBox2f&);
 
 private:
   SoCoordinate3* coords;
   SoSeparator* labels;
-  float _fMaxX, _fMinX, _fMaxY, _fMinY;
-  bool  _bOutInvisible;
+  SbBox2f _bbox;
   int _precision;
   App::ColorGradient _cColGrad;
 };

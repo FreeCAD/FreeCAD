@@ -23,21 +23,27 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-#include <QItemDelegate>
-#include <QLineEdit>
+# include <QLineEdit>
+# include <QPainter>
 #endif
+
+#include <App/DocumentObject.h>
+#include <Base/Console.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
 
 #include "SpreadsheetDelegate.h"
 #include "LineEdit.h"
-#include <App/DocumentObject.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <Gui/ExpressionCompleter.h>
 
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
+
+using namespace Spreadsheet;
 using namespace SpreadsheetGui;
 
 SpreadsheetDelegate::SpreadsheetDelegate(Spreadsheet::Sheet * _sheet, QWidget *parent)
-    : QItemDelegate(parent)
+    : QStyledItemDelegate(parent)
     , sheet(_sheet)
 {
 }
@@ -46,27 +52,17 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
-    SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
-    editor->setIndex(index);
-
-    editor->setDocumentObject(sheet);
-    connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
-    return editor;
-}
-
-void SpreadsheetDelegate::commitAndCloseEditor()
-{
-    Gui::ExpressionLineEdit *editor = qobject_cast<Gui::ExpressionLineEdit *>(sender());
-    if (editor->completerActive()) {
-        editor->hideCompleter();
-        return;
+    App::CellAddress addr(index.row(),index.column());
+    App::Range range(addr,addr);
+    if(sheet && sheet->getCellBinding(range)) {
+        FC_ERR("Bound cell " << addr.toString() << " cannot be edited");
+        return nullptr;
     }
 
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=41694
-    // It looks like the slot commitAndCloseEditor() is not needed any more and even
-    // causes a crash when doing so because the LineEdit is still accessed after its destruction.
-    //Q_EMIT commitData(editor);
-    //Q_EMIT closeEditor(editor);
+    SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
+    editor->setDocumentObject(sheet);
+    connect(editor, &SpreadsheetGui::LineEdit::finishedWithKey, this, &SpreadsheetDelegate::onEditorFinishedWithKey);
+    return editor;
 }
 
 void SpreadsheetDelegate::setEditorData(QWidget *editor,
@@ -89,11 +85,53 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
     }
 }
 
+void SpreadsheetDelegate::onEditorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
+{
+    Q_EMIT finishedWithKey(key, modifiers);
+}
+
 QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
     Q_UNUSED(option);
     Q_UNUSED(index);
     return QSize();
+}
+
+static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &option,
+        unsigned flags, QColor color, Qt::PenStyle style)
+{
+    if(!flags)
+        return;
+    QPen pen(color);
+    pen.setWidth(2);
+    pen.setStyle(style);
+    painter->setPen(pen);
+
+    QRect rect = option.rect.adjusted(1,1,0,0);
+    if(flags == Sheet::BorderAll) {
+        painter->drawRect(rect.adjusted(0,0,-1,-1));
+        return;
+    }
+    if(flags & Sheet::BorderLeft)
+        painter->drawLine(rect.topLeft(), rect.bottomLeft());
+    if(flags & Sheet::BorderTop)
+        painter->drawLine(rect.topLeft(), rect.topRight());
+    if(flags & Sheet::BorderRight)
+        painter->drawLine(rect.topRight(), rect.bottomRight());
+    if(flags & Sheet::BorderBottom)
+        painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+}
+
+void SpreadsheetDelegate::paint(QPainter *painter,
+        const QStyleOptionViewItem &option, const QModelIndex &index ) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
+    if(!sheet)
+        return;
+    App::CellAddress addr(index.row(), index.column());
+    drawBorder(painter, option, sheet->getCellBindingBorder(addr), Qt::blue, Qt::SolidLine);
+    drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,true), Qt::green, Qt::DashLine);
+    drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,false), Qt::red, Qt::DashLine);
 }
 
 #include "moc_SpreadsheetDelegate.cpp"

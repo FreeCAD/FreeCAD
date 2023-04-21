@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMRECT_H
 #define DRAWINGGUI_QGCUSTOMRECT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
@@ -44,7 +46,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 133};
     int type() const { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

@@ -21,21 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SPREADSHEET_PRECOMPILED_H
 #define SPREADSHEET_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define SpreadsheetExport __declspec(dllexport)
-#else // for Linux
-# define SpreadsheetExport
-#endif
-
-
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning( disable : 4251 )
 # pragma warning( disable : 4275 )
@@ -45,34 +36,26 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
-// standard
-#include <iostream>
-#include <assert.h>
-#include <math.h>
-
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <deque>
+#include <iomanip>
+#include <map>
+#include <memory>
+#include <set>
+#include <sstream>
+#include <string>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+// boost
+#include <boost/regex.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range/adaptor/map.hpp>
+#include <boost/range/algorithm/copy.hpp>
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+// Qt
+#include <QLocale>
 
-#endif //_PreComp_
+#endif//_PreComp_
 
 #endif // SPREADSHEET_PRECOMPILED_H

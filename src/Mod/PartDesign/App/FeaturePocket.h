@@ -24,23 +24,17 @@
 #ifndef PARTDESIGN_Pocket_H
 #define PARTDESIGN_Pocket_H
 
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+#include "FeatureExtrude.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Pocket : public ProfileBased
+class PartDesignExport Pocket : public FeatureExtrude
 {
-    PROPERTY_HEADER(PartDesign::Pocket);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Pocket);
 
 public:
     Pocket();
-
-    App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
-    App::PropertyLength         Length2;
-    App::PropertyLength         Offset;
 
     /** @name methods override feature */
     //@{
@@ -54,16 +48,14 @@ public:
       * If Midplane is true, then the extrusion will extend for half of the length on both sides of the sketch plane
       * The created material will be cut out of the sketch support
       */
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPocket";
     }
     //@}
 private:
     static const char* TypeEnums[];
-
 };
 
 } //namespace PartDesign

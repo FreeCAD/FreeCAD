@@ -61,11 +61,9 @@ class OrthoArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_Array',
-             'MenuText': QT_TRANSLATE_NOOP("Draft", "Array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates copies of the selected object, and places the copies in an orthogonal pattern,\nmeaning the copies follow the specified direction in the X, Y, Z axes.\n\nThe array can be turned into a polar or a circular array by changing its type.")}
-        return d
+        return {"Pixmap": "Draft_Array",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Array"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Creates copies of the selected object, and places the copies in an orthogonal pattern,\nmeaning the copies follow the specified direction in the X, Y, Z axes.\n\nThe array can be turned into a polar or a circular array by changing its type.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -121,7 +119,7 @@ class OrthoArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(OrthoArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())

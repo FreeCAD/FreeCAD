@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint flow velocity document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## @package constraint_flowvelocity
@@ -40,44 +41,86 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
     def __init__(self, obj):
         super(ConstraintFlowVelocity, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyVelocity",
             "VelocityX",
             "Parameter",
-            "Body heat flux"
+            "Velocity in x-direction"
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "VelocityXFormula",
+            "Parameter",
+            "Velocity formula in x-direction"
         )
         obj.addProperty(
             "App::PropertyBool",
-            "VelocityXEnabled",
+            "VelocityXUnspecified",
             "Parameter",
-            "Body heat flux"
+            "Use velocity in x-direction"
         )
+        obj.VelocityXUnspecified = True
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyBool",
+            "VelocityXHasFormula",
+            "Parameter",
+            "Use formula for velocity in x-direction"
+        )
+
+        obj.addProperty(
+            "App::PropertyVelocity",
             "VelocityY",
             "Parameter",
-            "Body heat flux"
+            "Velocity in y-direction"
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "VelocityYFormula",
+            "Parameter",
+            "Velocity formula in y-direction"
         )
         obj.addProperty(
             "App::PropertyBool",
-            "VelocityYEnabled",
+            "VelocityYUnspecified",
             "Parameter",
-            "Body heat flux"
+            "Use velocity in y-direction"
         )
+        obj.VelocityYUnspecified = True
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyBool",
+            "VelocityYHasFormula",
+            "Parameter",
+            "Use formula for velocity in y-direction"
+        )
+
+        obj.addProperty(
+            "App::PropertyVelocity",
             "VelocityZ",
             "Parameter",
-            "Body heat flux"
+            "Velocity in z-direction"
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "VelocityZFormula",
+            "Parameter",
+            "Velocity formula in z-direction"
         )
         obj.addProperty(
             "App::PropertyBool",
-            "VelocityZEnabled",
+            "VelocityZUnspecified",
             "Parameter",
-            "Body heat flux"
+            "Use velocity in z-direction"
         )
+        obj.VelocityZUnspecified = True
+        obj.addProperty(
+            "App::PropertyBool",
+            "VelocityZHasFormula",
+            "Parameter",
+            "Use formula for velocity in z-direction"
+        )
+
         obj.addProperty(
             "App::PropertyBool",
             "NormalToBoundary",
             "Parameter",
-            "Body heat flux"
+            "Flow is in normal direction"
         )

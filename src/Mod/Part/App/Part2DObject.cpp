@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
@@ -44,18 +43,14 @@
 #define M_PI       3.14159265358979323846
 #endif
 
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <App/Property.h>
-#include <App/PropertyLinks.h>
-#include "Part2DObject.h"
-#include "Geometry.h"
-#include "DatumFeature.h"
-
 #include <App/FeaturePythonPyImp.h>
-#include <Mod/Part/App/Part2DObjectPy.h>
+#include <App/PropertyLinks.h>
+#include <Base/Reader.h>
+
+#include "Part2DObject.h"
+#include "Part2DObjectPy.h"
+#include "Geometry.h"
+
 
 using namespace Part;
 
@@ -80,7 +75,7 @@ App::DocumentObjectExecReturn *Part2DObject::execute(void)
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
 {
-    if (Support.getValues().size() > 0) {
+    if (!Support.getValues().empty()) {
         //part->transformPlacement(transform);
         positionBySupport();
     } else {
@@ -273,6 +268,9 @@ void Part2DObject::handleChangedPropertyType(Base::XMLReader &reader,
             static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
         }
         this->MapMode.setValue(Attacher::mmFlatFace);
+    }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

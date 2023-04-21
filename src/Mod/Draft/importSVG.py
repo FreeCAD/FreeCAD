@@ -21,7 +21,7 @@
 """Provides support for importing and exporting SVG files.
 
 It enables importing/exporting objects directly to/from the 3D document
-but doesn't handle the SVG output from the Drawing and TechDraw modules.
+but doesn't handle the SVG output from the TechDraw module.
 
 Currently it only reads the following entities:
 * paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.
@@ -718,7 +718,7 @@ class svgHandler(xml.sax.ContentHandler):
                 inks_doc_name = attrs.getValue('sodipodi:docname')
                 inks_full_ver = attrs.getValue('inkscape:version')
                 inks_ver_pars = re.search("\d+\.\d+", inks_full_ver)
-                if inks_ver_pars != None:
+                if inks_ver_pars is not None:
                     inks_ver_f = float(inks_ver_pars.group(0))
                 else:
                     inks_ver_f = 99.99
@@ -884,7 +884,7 @@ class svgHandler(xml.sax.ContentHandler):
                 p2 = Vector(float(p2[0]), -float(p2[1]), 0)
                 p3 = data["freecad:dimpoint"]
                 p3 = Vector(float(p3[0]), -float(p3[1]), 0)
-                obj = Draft.makeDimension(p1, p2, p3)
+                obj = Draft.make_dimension(p1, p2, p3)
                 self.applyTrans(obj)
                 self.format(obj)
                 self.lastdim = obj
@@ -1045,19 +1045,12 @@ class svgHandler(xml.sax.ContentHandler):
                             #                angle1 - 0 * swapaxis * d90,
                             #                angle1 + angledelta
                             #                       - 0 * swapaxis * d90)
-                            _precision = 10**(-1*Draft.precision())
-                            if swapaxis or xrotation > _precision:
-                                m3 = FreeCAD.Matrix()
-                                m3.move(vcenter)
-                                # 90
-                                rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                                # swapaxism = FreeCAD.Matrix(0, 1, 0, 0, 1, 0)
-                                if swapaxis:
-                                    m3 = m3.multiply(rot90)
-                                m3.rotateZ(math.radians(-xrotation))
-                                m3.move(vcenter.multiply(-1))
-                                e1a.transform(m3)
                             seg = e1a.toShape()
+                            if swapaxis:
+                                seg.rotate(vcenter, Vector(0, 0, 1), 90)
+                            _precision = 10**(-1*Draft.precision())
+                            if abs(xrotation) > _precision:
+                                seg.rotate(vcenter, Vector(0, 0, 1), -xrotation)
                             if sweepflag:
                                 seg.reverse()
                                 # DEBUG
@@ -1381,14 +1374,7 @@ class svgHandler(xml.sax.ContentHandler):
                 sh = Part.Ellipse(c, rx, ry).toShape()
             else:
                 sh = Part.Ellipse(c, ry, rx).toShape()
-                m3 = FreeCAD.Matrix()
-                m3.move(c)
-                # 90
-                rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                m3 = m3.multiply(rot90)
-                m3.move(c.multiply(-1))
-                sh.transformShape(m3)
-                # sh = sh.transformGeometry(m3)
+                sh.rotate(c, Vector(0, 0, 1), 90)
             if self.fill:
                 sh = Part.Wire([sh])
                 sh = Part.Face(sh)
@@ -1605,14 +1591,15 @@ class svgHandler(xml.sax.ContentHandler):
                 cy = 0
                 angle = argsplit[0]
                 if len(argsplit) >= 3:
+                    # Rotate around a non-origin centerpoint (note: SVG y axis is opposite FreeCAD y axis)
                     cx = argsplit[1]
                     cy = argsplit[2]
-                    m.move(Vector(cx, -cy, 0))
+                    m.move(Vector(-cx, cy, 0)) # Reposition for rotation
                 # Mirroring one axis is equal to changing the direction
                 # of rotation
                 m.rotateZ(math.radians(-angle))
                 if len(argsplit) >= 3:
-                    m.move(Vector(-cx, cy, 0))
+                    m.move(Vector(cx, -cy, 0)) # Reverse repositioning
             elif transformation == 'skewX':
                 _m = FreeCAD.Matrix(1,
                                     -math.tan(math.radians(argsplit[0])))
@@ -1642,32 +1629,6 @@ class svgHandler(xml.sax.ContentHandler):
         return m
     # getMatrix
 # class svgHandler
-
-
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'utf8', otherwise in 'latin1'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            _err("SVG error: couldn't determine character encoding")
-            decodedName = name
-    return decodedName
 
 
 def getContents(filename, tag, stringmode=False):

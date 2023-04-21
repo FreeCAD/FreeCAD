@@ -66,7 +66,7 @@ class Label(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Label, self).Activated(name="Label", noplanesetup=True)
+        super(Label, self).Activated(name="Label")
         self.ghost = None
         self.labeltype = utils.getParam("labeltype", "Custom")
         self.sel = Gui.Selection.getSelectionEx()
@@ -82,11 +82,11 @@ class Label(gui_base_original.Creator):
 
     def setmode(self, i):
         """Set the type of label, if it is associated to an object."""
-        self.labeltype = ["Custom", "Name", "Label", "Position",
-                          "Length", "Area", "Volume", "Tag", "Material"][i]
+        from draftobjects.label import get_label_types
+        self.labeltype = get_label_types()[i]
         utils.setParam("labeltype", self.labeltype)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Finish the command."""
         if self.ghost:
             self.ghost.finalize()

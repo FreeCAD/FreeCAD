@@ -28,11 +28,13 @@
 #endif
 
 #include <functional>
+
+#include "DocumentObserver.h"
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
-#include "DocumentObserver.h"
 #include <App/Document.h>
+
 
 using namespace Gui;
 namespace sp = std::placeholders;
@@ -202,7 +204,7 @@ std::string ViewProviderT::getAppDocumentPython() const
 
 ViewProviderDocumentObject* ViewProviderT::getViewProvider() const
 {
-    ViewProviderDocumentObject* obj = 0;
+    ViewProviderDocumentObject* obj = nullptr;
     Document* doc = getDocument();
     if (doc) {
         obj = dynamic_cast<ViewProviderDocumentObject*>(doc->getViewProviderByName(object.c_str()));
@@ -253,7 +255,7 @@ public:
     }
 
     Gui::Document* _document;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
 };
 
@@ -276,7 +278,12 @@ bool DocumentWeakPtrT::expired() const noexcept
     return (d->_document == nullptr);
 }
 
-Gui::Document* DocumentWeakPtrT::operator->() noexcept
+Gui::Document* DocumentWeakPtrT::operator*() const noexcept
+{
+    return d->_document;
+}
+
+Gui::Document* DocumentWeakPtrT::operator->() const noexcept
 {
     return d->_document;
 }
@@ -338,7 +345,7 @@ public:
 
     Gui::ViewProviderDocumentObject* object;
     bool indocument;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
@@ -376,7 +383,12 @@ ViewProviderWeakPtrT& ViewProviderWeakPtrT::operator= (ViewProviderDocumentObjec
     return *this;
 }
 
-ViewProviderDocumentObject* ViewProviderWeakPtrT::operator->() noexcept
+ViewProviderDocumentObject* ViewProviderWeakPtrT::operator*() const noexcept
+{
+    return d->get();
+}
+
+ViewProviderDocumentObject* ViewProviderWeakPtrT::operator->() const noexcept
 {
     return d->get();
 }
@@ -410,7 +422,7 @@ void DocumentObserver::attachDocument(Document* doc)
 {
     detachDocument();
 
-    if (doc == nullptr)
+    if (!doc)
         return;
 
     this->connectDocumentCreatedObject = doc->signalNewObject.connect(std::bind

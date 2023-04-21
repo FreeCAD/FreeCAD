@@ -20,23 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mod/Path/App/Path.h"
+#include "Base/GeometryPyCXX.h"
 
 // inclusion of the generated files (generated out of PathPy.xml)
 #include "PathPy.h"
 #include "PathPy.cpp"
 
-#include "Base/BoundBoxPy.h"
-#include "Base/GeometryPyCXX.h"
 #include "CommandPy.h"
+
 
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PathPy::representation(void) const
+std::string PathPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -57,7 +55,7 @@ PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=0;
+    PyObject *pcObj=nullptr;
     char *gcode;
     if (PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj)) {
         if (pcObj) {
@@ -86,7 +84,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 // Commands get/set
 
-Py::List PathPy::getCommands(void) const
+Py::List PathPy::getCommands() const
 {
     Py::List list;
     for(unsigned int i = 0; i < getToolpathPtr()->getSize(); i++)
@@ -107,7 +105,7 @@ void PathPy::setCommands(Py::List list)
     }
 }
 
-Py::Object PathPy::getCenter(void) const
+Py::Object PathPy::getCenter() const
 {
     return Py::Vector(getToolpathPtr()->getCenter());
 }
@@ -119,17 +117,17 @@ void PathPy::setCenter(Py::Object obj)
 
 // read-only attributes
 
-Py::Float PathPy::getLength(void) const
+Py::Float PathPy::getLength() const
 {
     return Py::Float(getToolpathPtr()->getLength());
 }
 
-Py::Long PathPy::getSize(void) const
+Py::Long PathPy::getSize() const
 {
     return Py::Long((long)getToolpathPtr()->getSize());
 }
 
-Py::Object PathPy::getBoundBox(void) const
+Py::Object PathPy::getBoundBox() const
 {
     return Py::BoundingBox(getToolpathPtr()->getBoundBox());
 }
@@ -164,7 +162,7 @@ PyObject* PathPy::addCommands(PyObject * args)
         }
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - command or list of commands expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - command or list of commands expected");
 }
 
 PyObject* PathPy::insertCommand(PyObject * args)
@@ -176,7 +174,7 @@ PyObject* PathPy::insertCommand(PyObject * args)
         getToolpathPtr()->insertCommand(cmd,pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected command and optional integer");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected command and optional integer");
 }
 
 PyObject* PathPy::deleteCommand(PyObject * args)
@@ -186,7 +184,7 @@ PyObject* PathPy::deleteCommand(PyObject * args)
         getToolpathPtr()->deleteCommand(pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected an integer (optional)");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
 PyObject* PathPy::getCycleTime(PyObject * args)
@@ -195,7 +193,7 @@ PyObject* PathPy::getCycleTime(PyObject * args)
     if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)){
         return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
     }
-    return 0;
+    return nullptr;
 }
 
 // GCode methods
@@ -211,7 +209,7 @@ PyObject* PathPy::toGCode(PyObject * args)
 
 PyObject* PathPy::setFromGCode(PyObject * args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         getToolpathPtr()->setFromGCode(gcode);
@@ -225,7 +223,7 @@ PyObject* PathPy::setFromGCode(PyObject * args)
 
 PyObject *PathPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

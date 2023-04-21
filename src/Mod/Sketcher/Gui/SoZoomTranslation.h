@@ -1,5 +1,5 @@
 /***************************************************************************
- *                                                                         *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,13 +24,14 @@
 #define SKETCHERGUI_SOZOOMTRANSLATION_H
 
 #include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoTransformation.h>
+
+#include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace SketcherGui {
 
 class SketcherGuiExport SoZoomTranslation : public SoTranslation {
-    typedef SoTranslation inherited;
+    using inherited = SoTranslation;
 
     SO_NODE_HEADER(SoZoomTranslation);
 
@@ -38,17 +39,20 @@ public:
     static void initClass();
     SoZoomTranslation();
     SoSFVec3f abPos;
+    float getScaleFactor() const { return scaleFactor;}
 
 protected:
-    virtual ~SoZoomTranslation() {};
-    virtual void doAction(SoAction * action);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    virtual void getMatrix(SoGetMatrixAction * action);
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-    virtual void callback(SoCallbackAction * action);
-    virtual void pick(SoPickAction * action);
-    float getScaleFactor(SoAction * action) const;
+    ~SoZoomTranslation() override {}
+    void doAction(SoAction * action) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+    void getMatrix(SoGetMatrixAction * action) override;
+    void GLRender(SoGLRenderAction *action) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
+    void callback(SoCallbackAction * action) override;
+    void pick(SoPickAction * action) override;
+    float calculateScaleFactor (SoAction * action) const;
+
+    mutable float scaleFactor;
 };
 
 }

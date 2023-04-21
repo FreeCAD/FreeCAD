@@ -26,30 +26,32 @@
       <string>Material</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Emissive color:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="textLabel3">
-        <property name="text">
-         <string>Specular color:</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="textLabel2">
         <property name="text">
          <string>Ambient color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::ColorButton" name="ambientColor">
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
@@ -60,10 +62,31 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1">
+       <widget class="Gui::ColorButton" name="diffuseColor">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Emissive color:</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="Gui::ColorButton" name="emissiveColor">
         <property name="text">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="textLabel3">
+        <property name="text">
+         <string>Specular color:</string>
         </property>
        </widget>
       </item>
@@ -79,7 +102,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -108,25 +140,14 @@
         <item>
          <widget class="QSpinBox" name="shininess">
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
+          </property>
+          <property name="singleStep">
+           <number>5</number>
           </property>
          </widget>
         </item>
        </layout>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::ColorButton" name="diffuseColor">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::ColorButton" name="ambientColor">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>

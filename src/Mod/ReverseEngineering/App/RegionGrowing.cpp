@@ -20,24 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <boost/math/special_functions/fpclassify.hpp>
+#endif
+
+#include <Mod/Points/App/Points.h>
 
 #include "RegionGrowing.h"
-#include <Mod/Points/App/Points.h>
-#include <Base/Exception.h>
-#include <boost/math/special_functions/fpclassify.hpp>
+
 
 #if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/passthrough.h>
-#include <pcl/point_types.h>
+# include <pcl/filters/passthrough.h>
+# include <pcl/point_types.h>
 #endif
 #if defined(HAVE_PCL_SEGMENTATION)
-#include <pcl/search/search.h>
-#include <pcl/search/kdtree.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/segmentation/region_growing.h>
-#include <pcl/filters/extract_indices.h>
+# include <pcl/search/search.h>
+# include <pcl/search/kdtree.h>
+# include <pcl/features/normal_3d.h>
+# include <pcl/segmentation/region_growing.h>
+# include <pcl/filters/extract_indices.h>
 
 using namespace std;
 using namespace Reen;

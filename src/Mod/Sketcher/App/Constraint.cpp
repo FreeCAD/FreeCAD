@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
 # include <QDateTime>
 #endif
 
-#include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Base/Tools.h>
-#include <App/Property.h>
-
 
 #include "Constraint.h"
 #include "ConstraintPy.h"
@@ -43,19 +40,16 @@ using namespace Base;
 
 TYPESYSTEM_SOURCE(Sketcher::Constraint, Base::Persistence)
 
-const int Constraint::GeoUndef = -2000;
-
 Constraint::Constraint()
 : Value(0.0),
   Type(None),
   AlignmentType(Undef),
-  Name(""),
-  First(GeoUndef),
-  FirstPos(none),
-  Second(GeoUndef),
-  SecondPos(none),
-  Third(GeoUndef),
-  ThirdPos(none),
+  First(GeoEnum::GeoUndef),
+  FirstPos(PointPos::none),
+  Second(GeoEnum::GeoUndef),
+  SecondPos(PointPos::none),
+  Third(GeoEnum::GeoUndef),
+  ThirdPos(PointPos::none),
   LabelDistance(10.f),
   LabelPosition(0.f),
   isDriving(true),
@@ -76,12 +70,12 @@ Constraint::Constraint()
     tag = gen();
 }
 
-Constraint *Constraint::clone(void) const
+Constraint *Constraint::clone() const
 {
     return new Constraint(*this);
 }
 
-Constraint *Constraint::copy(void) const
+Constraint *Constraint::copy() const
 {
     Constraint *temp = new Constraint();
     temp->Value = this->Value;
@@ -104,7 +98,7 @@ Constraint *Constraint::copy(void) const
     return temp;
 }
 
-PyObject *Constraint::getPyObject(void)
+PyObject *Constraint::getPyObject()
 {
     return new ConstraintPy(new Constraint(*this));
 }
@@ -142,7 +136,7 @@ Quantity Constraint::getPresentationValue() const
     return quantity;
 }
 
-unsigned int Constraint::getMemSize (void) const
+unsigned int Constraint::getMemSize () const
 {
     return 0;
 }
@@ -178,15 +172,15 @@ void Constraint::Restore(XMLReader &reader)
 {
     reader.readElement("Constrain");
     Name      = reader.getAttribute("Name");
-    Type      = (ConstraintType)  reader.getAttributeAsInteger("Type");
+    Type      = static_cast<ConstraintType>(reader.getAttributeAsInteger("Type"));
     Value     = reader.getAttributeAsFloat("Value");
     First     = reader.getAttributeAsInteger("First");
-    FirstPos  = (PointPos)  reader.getAttributeAsInteger("FirstPos");
+    FirstPos  = static_cast<PointPos>(reader.getAttributeAsInteger("FirstPos"));
     Second    = reader.getAttributeAsInteger("Second");
-    SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
+    SecondPos = static_cast<PointPos>(reader.getAttributeAsInteger("SecondPos"));
 
     if(this->Type==InternalAlignment) {
-        AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
+        AlignmentType = static_cast<InternalAlignmentType>(reader.getAttributeAsInteger("InternalAlignmentType"));
 
         if (reader.hasAttribute("InternalAlignmentIndex"))
             InternalAlignmentIndex = reader.getAttributeAsInteger("InternalAlignmentIndex");
@@ -198,7 +192,7 @@ void Constraint::Restore(XMLReader &reader)
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {
         Third    = reader.getAttributeAsInteger("Third");
-        ThirdPos = (PointPos)  reader.getAttributeAsInteger("ThirdPos");
+        ThirdPos = static_cast<PointPos>(reader.getAttributeAsInteger("ThirdPos"));
     }
 
     // Read the distance a constraint label has been moved
@@ -229,4 +223,14 @@ void Constraint::substituteIndex(int fromGeoId, int toGeoId)
     if (this->Third == fromGeoId) {
         this->Third = toGeoId;
     }
+}
+
+std::string Constraint::typeToString(ConstraintType type)
+{
+    return type2str[type];
+}
+
+std::string Constraint::internalAlignmentTypeToString(InternalAlignmentType alignment)
+{
+    return internalAlignmentType2str[alignment];
 }

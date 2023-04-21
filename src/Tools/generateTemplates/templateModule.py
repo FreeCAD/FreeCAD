@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Juergen Riegel 
 
-from . import template, templateModuleApp,templateModuleGui
-import generateBase.generateModel_Module
+from . import template, templateModuleApp
 
 class TemplateModule (template.ModelTemplate):
     def Generate(self):

@@ -20,26 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
 # include <QAction>
 # include <QCoreApplication>
 # include <QMenu>
 # include <QMessageBox>
 #endif
 
+#include <Gui/Control.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "TaskDlgMeshShapeNetgen.h"
 
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-
 
 using namespace FemGui;
-
 
 /* TRANSLATOR FemGui::ViewProviderFemMeshShapeNetgen */
 
@@ -58,7 +56,7 @@ ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen()
 
 void ViewProviderFemMeshShapeNetgen::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Meshing"), receiver, member);
+    QAction *act = menu->addAction(QObject::tr("Meshing"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
 

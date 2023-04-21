@@ -6,7 +6,7 @@ Compatible with NSIS 3.x
 
 # Do a Cyclic Redundancy Check to make sure the installer
 # was not corrupted by the download.
-CRCCheck force
+CRCCheck on
 
 # make it a Unicode installer
 Unicode true

@@ -20,26 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom2d_BezierCurve.hxx>
 # include <gp_Pnt2d.hxx>
-# include <TColStd_Array1OfReal.hxx>
 # include <TColgp_Array1OfPnt2d.hxx>
+# include <TColStd_Array1OfReal.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.cpp>
+#include "Geom2d/BezierCurve2dPy.h"
+#include "Geom2d/BezierCurve2dPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string BezierCurve2dPy::representation(void) const
+std::string BezierCurve2dPy::representation() const
 {
     return "<BezierCurve2d object>";
 }
@@ -59,7 +58,7 @@ int BezierCurve2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* BezierCurve2dPy::isRational(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsRational();
@@ -69,7 +68,7 @@ PyObject* BezierCurve2dPy::isRational(PyObject *args)
 PyObject* BezierCurve2dPy::isPeriodic(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
@@ -79,7 +78,7 @@ PyObject* BezierCurve2dPy::isPeriodic(PyObject *args)
 PyObject* BezierCurve2dPy::isClosed(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
@@ -90,7 +89,7 @@ PyObject* BezierCurve2dPy::increase(PyObject * args)
 {
     int degree;
     if (!PyArg_ParseTuple(args, "i", &degree))
-        return 0;
+        return nullptr;
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     curve->Increase(degree);
@@ -103,7 +102,7 @@ PyObject* BezierCurve2dPy::insertPoleAfter(PyObject * args)
     double weight=1.0;
     PyObject* p;
     if (!PyArg_ParseTuple(args, "iO!|d", &index, Base::Vector2dPy::type_object(), &p, &weight))
-        return 0;
+        return nullptr;
     Base::Vector2d vec = Py::toVector2d(p);
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
@@ -113,9 +112,8 @@ PyObject* BezierCurve2dPy::insertPoleAfter(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -125,7 +123,7 @@ PyObject* BezierCurve2dPy::insertPoleBefore(PyObject * args)
     double weight=1.0;
     PyObject* p;
     if (!PyArg_ParseTuple(args, "iO!|d", &index, Base::Vector2dPy::type_object(), &p, &weight))
-        return 0;
+        return nullptr;
     Base::Vector2d vec = Py::toVector2d(p);
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
@@ -135,9 +133,8 @@ PyObject* BezierCurve2dPy::insertPoleBefore(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -145,7 +142,7 @@ PyObject* BezierCurve2dPy::removePole(PyObject * args)
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -153,9 +150,8 @@ PyObject* BezierCurve2dPy::removePole(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -163,7 +159,7 @@ PyObject* BezierCurve2dPy::segment(PyObject * args)
 {
     double u1,u2;
     if (!PyArg_ParseTuple(args, "dd", &u1,&u2))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -171,9 +167,8 @@ PyObject* BezierCurve2dPy::segment(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -183,7 +178,7 @@ PyObject* BezierCurve2dPy::setPole(PyObject * args)
     double weight=-1.0;
     PyObject* p;
     if (!PyArg_ParseTuple(args, "iO!|d", &index, Base::Vector2dPy::type_object(), &p, &weight))
-        return 0;
+        return nullptr;
     Base::Vector2d vec = Py::toVector2d(p);
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
@@ -196,9 +191,8 @@ PyObject* BezierCurve2dPy::setPole(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -206,32 +200,25 @@ PyObject* BezierCurve2dPy::getPole(PyObject * args)
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
         Standard_OutOfRange_Raise_if
             (index < 1 || index > curve->NbPoles(), "Pole index out of range");
         gp_Pnt2d pnt = curve->Pole(index);
-
-        Py::Module module("__FreeCADBase__");
-        Py::Callable method(module.getAttr("Vector2d"));
-        Py::Tuple arg(2);
-        arg.setItem(0, Py::Float(pnt.X()));
-        arg.setItem(1, Py::Float(pnt.Y()));
-        return Py::new_reference_to(method.apply(arg));
+        return Py::new_reference_to(Base::Vector2dPy::create(pnt.X(), pnt.Y()));
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* BezierCurve2dPy::getPoles(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -239,22 +226,15 @@ PyObject* BezierCurve2dPy::getPoles(PyObject * args)
         curve->Poles(p);
         Py::List poles;
 
-        Py::Module module("__FreeCADBase__");
-        Py::Callable method(module.getAttr("Vector2d"));
-        Py::Tuple arg(2);
         for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
             gp_Pnt2d pnt = p(i);
-
-            arg.setItem(0, Py::Float(pnt.X()));
-            arg.setItem(1, Py::Float(pnt.Y()));
-            poles.append(method.apply(arg));
+            poles.append(Base::Vector2dPy::create(pnt.X(), pnt.Y()));
         }
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -262,7 +242,7 @@ PyObject* BezierCurve2dPy::setPoles(PyObject * args)
 {
     PyObject* plist;
     if (!PyArg_ParseTuple(args, "O", &plist))
-        return 0;
+        return nullptr;
     try {
         Py::Sequence list(plist);
         TColgp_Array1OfPnt2d poles(1,list.size());
@@ -277,9 +257,8 @@ PyObject* BezierCurve2dPy::setPoles(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -288,7 +267,7 @@ PyObject* BezierCurve2dPy::setWeight(PyObject * args)
     int index;
     double weight;
     if (!PyArg_ParseTuple(args, "id", &index,&weight))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -296,9 +275,8 @@ PyObject* BezierCurve2dPy::setWeight(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -306,7 +284,7 @@ PyObject* BezierCurve2dPy::getWeight(PyObject * args)
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -316,16 +294,15 @@ PyObject* BezierCurve2dPy::getWeight(PyObject * args)
         return Py_BuildValue("d", weight);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* BezierCurve2dPy::getWeights(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -338,9 +315,8 @@ PyObject* BezierCurve2dPy::getWeights(PyObject * args)
         return Py::new_reference_to(weights);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -348,7 +324,7 @@ PyObject* BezierCurve2dPy::getResolution(PyObject* args)
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))
-        return 0;
+        return nullptr;
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
             (getGeometry2dPtr()->handle());
@@ -357,66 +333,53 @@ PyObject* BezierCurve2dPy::getResolution(PyObject* args)
         return Py_BuildValue("d",utol);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
-Py::Long BezierCurve2dPy::getDegree(void) const
+Py::Long BezierCurve2dPy::getDegree() const
 {
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->Degree()); 
+    return Py::Long(curve->Degree());
 }
 
-Py::Long BezierCurve2dPy::getMaxDegree(void) const
+Py::Long BezierCurve2dPy::getMaxDegree() const
 {
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->MaxDegree()); 
+    return Py::Long(curve->MaxDegree());
 }
 
-Py::Long BezierCurve2dPy::getNbPoles(void) const
+Py::Long BezierCurve2dPy::getNbPoles() const
 {
     Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->NbPoles()); 
+    return Py::Long(curve->NbPoles());
 }
 
-Py::Object BezierCurve2dPy::getStartPoint(void) const
+Py::Object BezierCurve2dPy::getStartPoint() const
 {
     Handle(Geom2d_BezierCurve) c = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->StartPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
-Py::Object BezierCurve2dPy::getEndPoint(void) const
+Py::Object BezierCurve2dPy::getEndPoint() const
 {
     Handle(Geom2d_BezierCurve) c = Handle(Geom2d_BezierCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->EndPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 PyObject *BezierCurve2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int BezierCurve2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

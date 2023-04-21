@@ -1,60 +1,61 @@
-# -*- coding: utf-8 -*-
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
+# *   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-import codecs
+""" Utilities to work across different platforms, providers and python versions """
+
 import os
-import re
+import platform
 import shutil
-import sys
+import stat
+import subprocess
+import re
 import ctypes
+from typing import Optional, Any
 
-if sys.version_info.major < 3:
-    import urllib2
-    from urllib2 import URLError
-    from urlparse import urlparse
-else:
-    import urllib.request as urllib2
-    from urllib.error import URLError
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
-from PySide import QtGui, QtCore
-
-import FreeCAD
-import FreeCADGui
-
-# check for SSL support
-
-ssl_ctx = None
 try:
-    import ssl
+    from PySide import QtCore, QtWidgets
 except ImportError:
-    pass
+    QtCore = None
+    QtWidgets = None
+
+import addonmanager_freecad_interface as fci
+
+if fci.FreeCADGui:
+
+    # If the GUI is up, we can use the NetworkManager to handle our downloads. If there is no event
+    # loop running this is not possible, so fall back to requests (if available), or the native
+    # Python urllib.request (if requests is not available).
+    import NetworkManager  # Requires an event loop, so is only available with the GUI
 else:
     try:
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-    except AttributeError:
-        pass
-
+        import requests
+    except ImportError:
+        requests = None
+        import urllib.request
+        import ssl
 
 #  @package AddonManager_utilities
 #  \ingroup ADDONMANAGER
@@ -62,79 +63,51 @@ else:
 #  @{
 
 
-def translate(context, text, disambig=None):
-    "Main translation function"
+translate = fci.translate
 
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-    except AttributeError:
-        return QtGui.QApplication.translate(context, text, disambig)
-    else:
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+
+class ProcessInterrupted(RuntimeError):
+    """An interruption request was received and the process killed because of it."""
 
 
 def symlink(source, link_name):
-    "creates a symlink of a file, if possible"
+    """Creates a symlink of a file, if possible. Note that it fails on most modern Windows
+    installations"""
 
     if os.path.exists(link_name) or os.path.lexists(link_name):
-        # print("macro already exists")
         pass
     else:
         os_symlink = getattr(os, "symlink", None)
         if callable(os_symlink):
             os_symlink(source, link_name)
         else:
+            # NOTE: This does not work on most normal Windows 10 and later installations, unless
+            # developer mode is turned on. Make sure to catch any exception thrown and have a
+            # fallback plan.
             csl = ctypes.windll.kernel32.CreateSymbolicLinkW
             csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
             csl.restype = ctypes.c_ubyte
             flags = 1 if os.path.isdir(source) else 0
             # set the SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE flag
-            # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#joC5tFKhdXs2gGml.97)
+            # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10)
             flags += 2
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
 
 
-def urlopen(url):
-    """Opens an url with urllib2"""
-
-    timeout = 5
-
-    # Proxy an ssl configuration
-    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    if pref.GetBool("NoProxyCheck", True):
-        proxies = {}
-    else:
-        if pref.GetBool("SystemProxyCheck", False):
-            proxy = urllib2.getproxies()
-            proxies = {"http": proxy.get('http'), "https": proxy.get('http')}
-        elif pref.GetBool("UserProxyCheck", False):
-            proxy = pref.GetString("ProxyUrl", "")
-            proxies = {"http": proxy, "https": proxy}
-
-    if ssl_ctx:
-        handler = urllib2.HTTPSHandler(context=ssl_ctx)
-    else:
-        handler = {}
-    proxy_support = urllib2.ProxyHandler(proxies)
-    opener = urllib2.build_opener(proxy_support, handler)
-    urllib2.install_opener(opener)
-
-    # Url opening
-    req = urllib2.Request(url,
-                          headers={'User-Agent': "Magic Browser"})
+def rmdir(path: os.PathLike) -> bool:
     try:
-        u = urllib2.urlopen(req, timeout=timeout)
-    except Exception:
-        return None
-    else:
-        return u
+        shutil.rmtree(path, onerror=remove_readonly)
+    except (WindowsError, PermissionError, OSError):
+        return False
+    return True
 
 
-def getserver(url):
-    """returns the server part of an url"""
+def remove_readonly(func, path, _) -> None:
+    """Remove a read-only file."""
 
-    return '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 
 def update_macro_details(old_macro, new_macro):
@@ -146,180 +119,355 @@ def update_macro_details(old_macro, new_macro):
     """
 
     if old_macro.on_git and new_macro.on_git:
-        FreeCAD.Console.PrintWarning('The macro "{}" is present twice in github, please report'.format(old_macro.name))
+        fci.Console.PrintLog(
+            f'The macro "{old_macro.name}" is present twice in github, please report'
+        )
     # We don't report macros present twice on the wiki because a link to a
     # macro is considered as a macro. For example, 'Perpendicular To Wire'
     # appears twice, as of 2018-05-05).
     old_macro.on_wiki = new_macro.on_wiki
-    for attr in ['desc', 'url', 'code']:
+    for attr in ["desc", "url", "code"]:
         if not hasattr(old_macro, attr):
             setattr(old_macro, attr, getattr(new_macro, attr))
 
 
-def install_macro(macro, macro_repo_dir):
-    """Install a macro and all its related files
+def remove_directory_if_empty(dir_to_remove):
+    """Remove the directory if it is empty, with one exception: the directory returned by
+    FreeCAD.getUserMacroDir(True) will not be removed even if it is empty."""
 
-    Returns True if the macro was installed correctly.
-
-    Parameters
-    ----------
-    - macro: an addonmanager_macro.Macro instance
-    """
-
-    if not macro.code:
-        return False
-    macro_dir = FreeCAD.getUserMacroDir(True)
-    if not os.path.isdir(macro_dir):
-        try:
-            os.makedirs(macro_dir)
-        except OSError:
-            return False
-    macro_path = os.path.join(macro_dir, macro.filename)
-    try:
-        with codecs.open(macro_path, 'w', 'utf-8') as macrofile:
-            macrofile.write(macro.code)
-    except IOError:
-        return False
-    # Copy related files, which are supposed to be given relative to
-    # macro.src_filename.
-    base_dir = os.path.dirname(macro.src_filename)
-    for other_file in macro.other_files:
-        dst_dir = os.path.join(macro_dir, os.path.dirname(other_file))
-        if not os.path.isdir(dst_dir):
-            try:
-                os.makedirs(dst_dir)
-            except OSError:
-                return False
-        src_file = os.path.join(base_dir, other_file)
-        dst_file = os.path.join(macro_dir, other_file)
-        try:
-            shutil.copy(src_file, dst_file)
-        except IOError:
-            return False
-    return True
-
-
-def remove_macro(macro):
-    """Remove a macro and all its related files
-
-    Returns True if the macro was removed correctly.
-
-    Parameters
-    ----------
-    - macro: an addonmanager_macro.Macro instance
-    """
-
-    if not macro.is_installed():
-        # Macro not installed, nothing to do.
-        return True
-    macro_dir = FreeCAD.getUserMacroDir(True)
-    macro_path = os.path.join(macro_dir, macro.filename)
-    macro_path_with_macro_prefix = os.path.join(macro_dir, 'Macro_' + macro.filename)
-    if os.path.exists(macro_path):
-        os.remove(macro_path)
-    elif os.path.exists(macro_path_with_macro_prefix):
-        os.remove(macro_path_with_macro_prefix)
-    # Remove related files, which are supposed to be given relative to
-    # macro.src_filename.
-    for other_file in macro.other_files:
-        dst_file = os.path.join(macro_dir, other_file)
-        remove_directory_if_empty(os.path.dirname(dst_file))
-        os.remove(dst_file)
-    return True
-
-
-def remove_directory_if_empty(dir):
-    """Remove the directory if it is empty
-
-    Directory FreeCAD.getUserMacroDir(True) will not be removed even if empty.
-    """
-
-    if dir == FreeCAD.getUserMacroDir(True):
+    if dir_to_remove == fci.DataPaths().macro_dir:
         return
-    if not os.listdir(dir):
-        os.rmdir(dir)
+    if not os.listdir(dir_to_remove):
+        os.rmdir(dir_to_remove)
 
 
 def restart_freecad():
-    "Shuts down and restarts FreeCAD"
+    """Shuts down and restarts FreeCAD"""
 
-    args = QtGui.QApplication.arguments()[1:]
-    if FreeCADGui.getMainWindow().close():
-        QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(), args)
+    if not QtCore or not QtWidgets:
+        return
 
-
-def get_zip_url(baseurl):
-    "Returns the location of a zip file from a repo, if available"
-
-    url = getserver(baseurl).strip("/")
-    if url.endswith("github.com"):
-        return baseurl+"/archive/master.zip"
-    elif url.endswith("framagit.org") or url.endswith("gitlab.com"):
-        # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
-        reponame = baseurl.strip("/").split("/")[-1]
-        return baseurl+"/-/archive/master/"+reponame+"-master.zip"
-    else:
-        print("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", url)
-        return None
+    args = QtWidgets.QApplication.arguments()[1:]
+    if fci.FreeCADGui.getMainWindow().close():
+        QtCore.QProcess.startDetached(
+            QtWidgets.QApplication.applicationFilePath(), args
+        )
 
 
-def get_readme_url(url):
-    "Returns the location of a readme file"
+def get_zip_url(repo):
+    """Returns the location of a zip file from a repo, if available"""
 
-    if "github" in url or "framagit" in url or "gitlab" in url:
-        return url+"/raw/master/README.md"
-    else:
-        print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
-    return None
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
+        return f"{repo.url}/archive/{repo.branch}.zip"
+    if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
+        return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
+    fci.Console.PrintLog(
+        "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:"
+        + parsed_url.netloc
+        + "\n"
+    )
+    return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
 
 
-def get_desc_regex(url):
+def recognized_git_location(repo) -> bool:
+    """Returns whether this repo is based at a known git repo location: works with github, gitlab,
+    framagit, and salsa.debian.org"""
+
+    parsed_url = urlparse(repo.url)
+    return parsed_url.netloc in [
+        "github.com",
+        "gitlab.com",
+        "framagit.org",
+        "salsa.debian.org",
+    ]
+
+
+def construct_git_url(repo, filename):
+    """Returns a direct download link to a file in an online Git repo"""
+
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
+        return f"{repo.url}/raw/{repo.branch}/{filename}"
+    if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
+        return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    fci.Console.PrintLog(
+        "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
+        + parsed_url.netloc
+        + f" for file {filename}\n"
+    )
+    # Assume it's some kind of local GitLab instance...
+    return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+
+
+def get_readme_url(repo):
+    """Returns the location of a readme file"""
+
+    return construct_git_url(repo, "README.md")
+
+
+def get_metadata_url(url):
+    """Returns the location of a package.xml metadata file"""
+
+    return construct_git_url(url, "package.xml")
+
+
+def get_desc_regex(repo):
     """Returns a regex string that extracts a WB description to be displayed in the description
     panel of the Addon manager, if the README could not be found"""
 
-    if "github" in url:
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
-    elif "framagit" in url or "gitlab" in url:
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
-    print("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", url)
+    fci.Console.PrintLog(
+        "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
+        repo.url,
+        "\n",
+    )
+    return r'<meta.*?content="(.*?)".*?og:description.*?>'
+
+
+def get_readme_html_url(repo):
+    """Returns the location of a html file containing readme"""
+
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com":
+        return f"{repo.url}/blob/{repo.branch}/README.md"
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+        return f"{repo.url}/-/blob/{repo.branch}/README.md"
+    fci.Console.PrintLog(
+        "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
+    )
+    return f"{repo.url}/-/blob/{repo.branch}/README.md"
+
+
+def is_darkmode() -> bool:
+    """Heuristics to determine if we are in a darkmode stylesheet"""
+    pl = fci.FreeCADGui.getMainWindow().palette()
+    return pl.color(pl.Background).lightness() < 128
+
+
+def warning_color_string() -> str:
+    """A shade of red, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+    return "rgb(255,105,97)" if is_darkmode() else "rgb(215,0,21)"
+
+
+def bright_color_string() -> str:
+    """A shade of green, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+    return "rgb(48,219,91)" if is_darkmode() else "rgb(36,138,61)"
+
+
+def attention_color_string() -> str:
+    """A shade of orange, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+    return "rgb(255,179,64)" if is_darkmode() else "rgb(255,149,0)"
+
+
+def get_assigned_string_literal(line: str) -> Optional[str]:
+    """Look for a line of the form my_var = "A string literal" and return the string literal.
+    If the assignment is of a floating point value, that value is converted to a string
+    and returned. If neither is true, returns None."""
+
+    string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
+    _, _, after_equals = line.partition("=")
+    match = re.match(string_search_regex, after_equals)
+    if match:
+        return str(match.group(2))
+    if is_float(after_equals):
+        return str(after_equals).strip()
     return None
 
 
-def get_readme_html_url(url):
-    """Returns the location of a html file containing readme"""
+def get_macro_version_from_file(filename: str) -> str:
+    """Get the version of the macro from a local macro file. Supports strings, ints, and floats,
+    as well as a reference to __date__"""
 
-    if "github" in url:
-        return url + "/blob/master/README.md"
+    date = ""
+    with open(filename, errors="ignore", encoding="utf-8") as f:
+        line_counter = 0
+        max_lines_to_scan = 200
+        while line_counter < max_lines_to_scan:
+            line_counter += 1
+            line = f.readline()
+            if not line:  # EOF
+                break
+            if line.lower().startswith("__version__"):
+                match = get_assigned_string_literal(line)
+                if match:
+                    return match
+                if "__date__" in line.lower():
+                    # Don't do any real syntax checking, just assume the line is something
+                    # like __version__ = __date__
+                    if date:
+                        return date
+                    # pylint: disable=line-too-long,consider-using-f-string
+                    fci.Console.PrintWarning(
+                        translate(
+                            "AddonsInstaller",
+                            "Macro {} specified '__version__ = __date__' prior to setting a value for __date__".format(
+                                filename
+                            ),
+                        )
+                    )
+            elif line.lower().startswith("__date__"):
+                match = get_assigned_string_literal(line)
+                if match:
+                    date = match
+    return ""
+
+
+def update_macro_installation_details(repo) -> None:
+    """Determine if a given macro is installed, either in its plain name,
+    or prefixed with "Macro_" """
+    if repo is None or not hasattr(repo, "macro") or repo.macro is None:
+        fci.Console.PrintLog("Requested macro details for non-macro object\n")
+        return
+    test_file_one = os.path.join(fci.DataPaths().macro_dir, repo.macro.filename)
+    test_file_two = os.path.join(
+        fci.DataPaths().macro_dir, "Macro_" + repo.macro.filename
+    )
+    if os.path.exists(test_file_one):
+        repo.updated_timestamp = os.path.getmtime(test_file_one)
+        repo.installed_version = get_macro_version_from_file(test_file_one)
+    elif os.path.exists(test_file_two):
+        repo.updated_timestamp = os.path.getmtime(test_file_two)
+        repo.installed_version = get_macro_version_from_file(test_file_two)
     else:
-        print("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", url)
-        return None
+        return
 
 
-def get_readme_regex(url):
-    """Return a regex string that extracts the contents to be displayed in the description
-    panel of the Addon manager, from raw HTML data (the readme's html rendering usually)"""
+# Borrowed from Stack Overflow:
+# https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float
+def is_float(element: Any) -> bool:
+    """Determine whether a given item can be converted to a floating-point number"""
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
 
-    if ("github" in url):
-        return "<article.*?>(.*?)</article>"
+
+def get_python_exe() -> str:
+    """Find Python. In preference order
+    A) The value of the PythonExecutableForPip user preference
+    B) The executable located in the same bin directory as FreeCAD and called "python3"
+    C) The executable located in the same bin directory as FreeCAD and called "python"
+    D) The result of a shutil search for your system's "python3" executable
+    E) The result of a shutil search for your system's "python" executable"""
+    prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
+    fc_dir = fci.DataPaths().home_dir
+    if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
+        python_exe = os.path.join(fc_dir, "bin", "python3")
+        if "Windows" in platform.system():
+            python_exe += ".exe"
+
+    if not python_exe or not os.path.exists(python_exe):
+        python_exe = os.path.join(fc_dir, "bin", "python")
+        if "Windows" in platform.system():
+            python_exe += ".exe"
+
+    if not python_exe or not os.path.exists(python_exe):
+        python_exe = shutil.which("python3")
+
+    if not python_exe or not os.path.exists(python_exe):
+        python_exe = shutil.which("python")
+
+    if not python_exe or not os.path.exists(python_exe):
+        return ""
+
+    python_exe = python_exe.replace("/", os.path.sep)
+    prefs.SetString("PythonExecutableForPip", python_exe)
+    return python_exe
+
+
+def get_pip_target_directory():
+    # Get the default location to install new pip packages
+    major, minor, _ = platform.python_version_tuple()
+    vendor_path = os.path.join(
+        fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
+    )
+    return vendor_path
+
+
+def get_cache_file_name(file: str) -> str:
+    """Get the full path to a cache file with a given name."""
+    cache_path = fci.DataPaths().cache_dir
+    am_path = os.path.join(cache_path, "AddonManager")
+    os.makedirs(am_path, exist_ok=True)
+    return os.path.join(am_path, file)
+
+
+def blocking_get(url: str, method=None) -> bytes:
+    """Wrapper around three possible ways of accessing data, depending on the current run mode and
+    Python installation. Blocks until complete, and returns the text results of the call if it
+    succeeded, or an empty string if it failed, or returned no data. The method argument is
+    provided mainly for testing purposes."""
+    p = b""
+    if fci.FreeCADGui and method is None or method == "networkmanager":
+        NetworkManager.InitializeNetworkManager()
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        p = p.data()
+    elif requests and method is None or method == "requests":
+        response = requests.get(url)
+        if response.status_code == 200:
+            p = response.content
     else:
-        print("Debug: addonmanager_utilities.get_readme_regex: Unknown git host:", url)
-        return None
+        ctx = ssl.create_default_context()
+        with urllib.request.urlopen(url, context=ctx) as f:
+            p = f.read()
+    return p
 
 
-def fix_relative_links(text, base_url):
-    """Replace markdown image relative links with
-    absolute ones using the base URL"""
+def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
+    """Wrap subprocess call so it can be interrupted gracefully."""
+    creation_flags = 0
+    if hasattr(subprocess, "CREATE_NO_WINDOW"):
+        # Added in Python 3.7 -- only used on Windows
+        creation_flags = subprocess.CREATE_NO_WINDOW
+    try:
+        p = subprocess.Popen(
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=creation_flags,
+            text=True,
+            encoding="utf-8",
+        )
+    except OSError as e:
+        raise subprocess.CalledProcessError(-1, args, "", e.strerror)
+    stdout = ""
+    stderr = ""
+    return_code = None
+    while return_code is None:
+        try:
+            stdout, stderr = p.communicate(timeout=0.1)
+            return_code = p.returncode
+        except subprocess.TimeoutExpired:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                p.kill()
+                raise ProcessInterrupted()
+    if return_code is None or return_code != 0:
+        raise subprocess.CalledProcessError(
+            return_code if return_code is not None else -1, args, stdout, stderr
+        )
+    return subprocess.CompletedProcess(args, return_code, stdout, stderr)
 
-    new_text = ""
-    for line in text.splitlines():
-        for link in (re.findall(r"!\[.*?\]\((.*?)\)", line) +
-                     re.findall(r"src\s*=\s*[\"'](.+?)[\"']", line)):
-            parts = link.split('/')
-            if len(parts) < 2 or not re.match(r"^http|^www|^.+\.|^/", parts[0]):
-                newlink = os.path.join(base_url, link.lstrip('./'))
-                line = line.replace(link, newlink)
-                print("Debug: replaced " + link + " with " + newlink)
-        new_text = new_text + '\n' + line
-    return new_text
 
-#  @}
+def get_main_am_window():
+    windows = QtWidgets.QApplication.topLevelWidgets()
+    for widget in windows:
+        if widget.objectName() == "AddonManager_Main_Window":
+            return widget
+    # If there is no main AM window, we may be running unit tests: see if the Test Runner window
+    # exists:
+    for widget in windows:
+        if widget.objectName() == "TestGui__UnitTest":
+            return widget
+    # If we still didn't find it, try to locate the main FreeCAD window:
+    for widget in windows:
+        if hasattr(widget, "centralWidget"):
+            return widget.centralWidget()
+    # Why is this code even getting called?
+    return None

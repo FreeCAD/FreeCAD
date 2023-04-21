@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import traceback
 
 from PathScripts.PathUtils import loopdetect
@@ -31,13 +31,14 @@ from PathScripts.PathUtils import horizontalFaceLoop
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
     from PySide import QtGui
-else:
-    def translate(ctxt, txt):
-        return txt
+
+# translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
@@ -46,17 +47,22 @@ __url__ = "https://www.freecadweb.org"
 
 class _CommandSelectLoop:
     "the Path command to complete loop selection definition"
+
     def __init__(self):
         self.obj = None
         self.sub = []
         self.active = False
 
     def GetResources(self):
-        return {'Pixmap': 'Path_SelectLoop',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
-                'Accel': "P, L",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Complete loop selection from two edges"),
-                'CmdType': "ForEdit"}
+        return {
+            "Pixmap": "Path_SelectLoop",
+            "MenuText": QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
+            "Accel": "P, L",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_SelectLoop", "Complete loop selection from two edges"
+            ),
+            "CmdType": "ForEdit",
+        }
 
     def IsActive(self):
         if bool(FreeCADGui.Selection.getSelection()) is False:
@@ -68,24 +74,27 @@ class _CommandSelectLoop:
             self.obj = sel.Object
             self.sub = sel.SubElementNames
             if sel.SubObjects:
-                #self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+                # self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
                 self.active = True
             else:
                 self.active = False
             return self.active
         except Exception as exc:
-            PathLog.error(exc)
+            Path.Log.error(exc)
             traceback.print_exc(exc)
             return False
 
     def Activated(self):
         from PathScripts.PathUtils import horizontalEdgeLoop
         from PathScripts.PathUtils import horizontalFaceLoop
+
         sel = FreeCADGui.Selection.getSelectionEx()[0]
         obj = sel.Object
         edge1 = sel.SubObjects[0]
-        if 'Face' in sel.SubElementNames[0]:
-            loop = horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+        if "Face" in sel.SubElementNames[0]:
+            loop = horizontalFaceLoop(
+                sel.Object, sel.SubObjects[0], sel.SubElementNames
+            )
             if loop:
                 FreeCADGui.Selection.clearSelection()
                 FreeCADGui.Selection.addSelection(sel.Object, loop)
@@ -99,24 +108,28 @@ class _CommandSelectLoop:
         if loopwire:
             FreeCADGui.Selection.clearSelection()
             elist = obj.Shape.Edges
-            for e in elist:
-                for i in loopwire.Edges:
+            for i in loopwire.Edges:
+                for e in elist:
                     if e.hashCode() == i.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, "Edge" + str(elist.index(e) + 1))
+                        FreeCADGui.Selection.addSelection(
+                            obj, "Edge" + str(elist.index(e) + 1)
+                        )
         elif FreeCAD.GuiUp:
-            QtGui.QMessageBox.information(None,
-                    QtCore.QT_TRANSLATE_NOOP('Path_SelectLoop', 'Feature Completion'),
-                    QtCore.QT_TRANSLATE_NOOP('Path_SelectLoop', 'Closed loop detection failed.'))
+            QtGui.QMessageBox.information(
+                None,
+                QT_TRANSLATE_NOOP("Path_SelectLoop", "Feature Completion"),
+                QT_TRANSLATE_NOOP("Path_SelectLoop", "Closed loop detection failed."),
+            )
 
     def formsPartOfALoop(self, obj, sub, names):
         try:
-            if names[0][0:4] != 'Edge':
-                if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
+            if names[0][0:4] != "Edge":
+                if names[0][0:4] == "Face" and horizontalFaceLoop(obj, sub, names):
                     return True
                 return False
             if len(names) == 1 and horizontalEdgeLoop(obj, sub):
                 return True
-            if len(names) == 1 or names[1][0:4] != 'Edge':
+            if len(names) == 1 or names[1][0:4] != "Edge":
                 return False
             return True
         except Exception:
@@ -124,32 +137,42 @@ class _CommandSelectLoop:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
+    FreeCADGui.addCommand("Path_SelectLoop", _CommandSelectLoop())
 
 
 class _ToggleOperation:
     "command definition to toggle Operation Active state"
+
     def GetResources(self):
-        return {'Pixmap': 'Path_OpActive',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
-                'Accel': "P, X",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
-                'CmdType': "ForEdit"}
+        return {
+            "Pixmap": "Path_OpActive",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Path_OpActiveToggle", "Toggle the Active State of the Operation"
+            ),
+            "Accel": "P, X",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_OpActiveToggle", "Toggle the Active State of the Operation"
+            ),
+            "CmdType": "ForEdit",
+        }
 
     def IsActive(self):
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(PathScripts.PathDressup.baseOp(sel.Object).Proxy, PathScripts.PathOp.ObjectOp):
+                selProxy = Path.Dressup.Utils.baseOp(sel.Object).Proxy
+                if not isinstance(selProxy, Path.Op.Base.ObjectOp) and not isinstance(
+                    selProxy, Path.Op.Gui.Array.ObjectArray
+                ):
                     return False
             return True
-        except(IndexError, AttributeError):
+        except (IndexError, AttributeError):
             return False
 
     def Activated(self):
         for sel in FreeCADGui.Selection.getSelectionEx():
-            op = PathScripts.PathDressup.baseOp(sel.Object)
+            op = Path.Dressup.Utils.baseOp(sel.Object)
             op.Active = not op.Active
             op.ViewObject.Visibility = op.Active
 
@@ -157,26 +180,33 @@ class _ToggleOperation:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_OpActiveToggle', _ToggleOperation())
+    FreeCADGui.addCommand("Path_OpActiveToggle", _ToggleOperation())
 
 
 class _CopyOperation:
     "the Path Copy Operation command definition"
+
     def GetResources(self):
-        return {'Pixmap': 'Path_OpCopy',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
-                'CmdType': "ForEdit"}
+        return {
+            "Pixmap": "Path_OpCopy",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Path_OperationCopy", "Copy the operation in the job"
+            ),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_OperationCopy", "Copy the operation in the job"
+            ),
+            "CmdType": "ForEdit",
+        }
 
     def IsActive(self):
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, PathScripts.PathOp.ObjectOp):
+                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
                     return False
             return True
-        except(IndexError, AttributeError):
+        except (IndexError, AttributeError):
             return False
 
     def Activated(self):
@@ -186,27 +216,27 @@ class _CopyOperation:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_OperationCopy', _CopyOperation())
+    FreeCADGui.addCommand("Path_OperationCopy", _CopyOperation())
 
 
 # \c findShape() is referenced from Gui/Command.cpp and used by Path.Area commands.
 # Do not remove!
 def findShape(shape, subname=None, subtype=None):
-    '''To find a higher order shape containing the subshape with subname.
-        E.g. to find the wire containing 'Edge1' in shape,
-            findShape(shape,'Edge1','Wires')
-    '''
+    """To find a higher order shape containing the subshape with subname.
+    E.g. to find the wire containing 'Edge1' in shape,
+        findShape(shape,'Edge1','Wires')
+    """
     if not subname:
         return shape
     ret = shape.getElement(subname)
     if not subtype or not ret or ret.isNull():
         return ret
-    if subname.startswith('Face'):
-        tp = 'Faces'
-    elif subname.startswith('Edge'):
-        tp = 'Edges'
-    elif subname.startswith('Vertex'):
-        tp = 'Vertex'
+    if subname.startswith("Face"):
+        tp = "Faces"
+    elif subname.startswith("Edge"):
+        tp = "Edges"
+    elif subname.startswith("Vertex"):
+        tp = "Vertex"
     else:
         return ret
     for obj in getattr(shape, subtype):

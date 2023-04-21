@@ -20,51 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTS_POINTPROPERTIES_H
 #define POINTS_POINTPROPERTIES_H
 
 #include <vector>
 
-#include <Base/Vector3D.h>
+#include <App/PropertyStandard.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-
 #include "Points.h"
+
 
 namespace Points
 {
-
 
 /** Greyvalue property.
  */
 class PointsExport PropertyGreyValue : public App::PropertyFloat
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyGreyValue(void)
+    PropertyGreyValue()
     {
     }
-    virtual ~PropertyGreyValue()
+    ~PropertyGreyValue() override
     {
     }
 };
 
 class PointsExport PropertyGreyValueList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyGreyValueList();
-    virtual ~PropertyGreyValueList();
+    ~PropertyGreyValueList() override;
     
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     /** Sets the property 
      */
@@ -80,22 +76,22 @@ public:
     }
     void setValues (const std::vector<float>& values);
     
-    const std::vector<float> &getValues(void) const {
+    const std::vector<float> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
     
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
     
-    virtual App::Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
-    virtual unsigned int getMemSize (void) const;
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
 
     /** @name Modify */
     //@{
@@ -108,14 +104,14 @@ private:
 
 class PointsExport PropertyNormalList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyNormalList();
-    ~PropertyNormalList();
+    ~PropertyNormalList() override;
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     void setValue(const Base::Vector3f&);
     void setValue(float x, float y, float z);
@@ -130,23 +126,23 @@ public:
 
     void setValues (const std::vector<Base::Vector3f>& values);
 
-    const std::vector<Base::Vector3f> &getValues(void) const {
+    const std::vector<Base::Vector3f> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    virtual App::Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const override;
 
     /** @name Modify */
     //@{
@@ -169,7 +165,7 @@ struct PointsExport CurvatureInfo
  */
 class PointsExport PropertyCurvatureList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum { 
@@ -182,12 +178,12 @@ public:
 
 public:
     PropertyCurvatureList();
-    ~PropertyCurvatureList();
+    ~PropertyCurvatureList() override;
 
-    void setSize(int newSize) {
+    void setSize(int newSize) override {
         _lValueList.resize(newSize);
     }
-    int getSize(void) const {
+    int getSize() const override {
         return _lValueList.size();
     }
     void setValue(const CurvatureInfo&);
@@ -201,29 +197,29 @@ public:
     void  set1Value (const int idx, const CurvatureInfo& value) {
         _lValueList[idx] = value;
     }
-    const std::vector<CurvatureInfo> &getValues(void) const {
+    const std::vector<CurvatureInfo> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
     //@}
 
     /** @name Undo/Redo */
     //@{
     /// returns a new copy of the property (mainly for Undo/Redo and transactions)
-    App::Property *Copy(void) const;
+    App::Property *Copy() const override;
     /// paste the value from the property (mainly for Undo/Redo and transactions)
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
     //@}
 
     /** @name Modify */

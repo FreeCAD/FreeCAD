@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
 #define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
-#include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
@@ -61,7 +59,7 @@ public:
     //@}
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderDrawingView> ViewProviderDrawingViewPython;
+using ViewProviderDrawingViewPython = Gui::ViewProviderPythonFeatureT<ViewProviderDrawingView>;
 
 class DrawingGuiExport ViewProviderDrawingClip : public Gui::ViewProviderDocumentObjectGroup
 {

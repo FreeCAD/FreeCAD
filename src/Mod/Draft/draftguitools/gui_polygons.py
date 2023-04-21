@@ -68,6 +68,7 @@ class Polygon(gui_base_original.Creator):
             self.tanpoints = []
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Polygon")
             self.ui.extUi()
+            self.ui.isRelative.hide()
             self.ui.numFaces.show()
             self.ui.numFacesLabel.show()
             self.altdown = False
@@ -76,14 +77,21 @@ class Polygon(gui_base_original.Creator):
             self.call = self.view.addEventCallback("SoEvent", self.action)
             _msg(translate("draft", "Pick center point"))
 
-    def finish(self, closed=False, cont=False):
-        """Terminate the operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         super(Polygon, self).finish(self)
         if self.ui:
             self.arctrack.finalize()
             self.doc.recompute()
-            if self.ui.continueMode:
-                self.Activated()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -224,7 +232,7 @@ class Polygon(gui_base_original.Creator):
                         _cmd_list)
         else:
             # Insert a Draft polygon
-            _cmd = 'Draft.makePolygon'
+            _cmd = 'Draft.make_polygon'
             _cmd += '('
             _cmd += str(self.ui.numFaces.value()) + ', '
             _cmd += 'radius=' + str(self.rad) + ', '
@@ -241,7 +249,7 @@ class Polygon(gui_base_original.Creator):
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Polygon"),
                         _cmd_list)
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.

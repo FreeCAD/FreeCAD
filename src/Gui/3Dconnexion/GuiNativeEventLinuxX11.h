@@ -26,37 +26,31 @@
 #include "GuiAbstractNativeEvent.h"
 #include <vector>
 
-#if QT_VERSION >= 0x050000
-  #include <QAbstractNativeEventFilter>
-  #include <xcb/xcb.h>
-  #include <xcb/xproto.h>
-#endif
+#include <QAbstractNativeEventFilter>
+#include <xcb/xcb.h>
+#include <xcb/xproto.h>
 
 class QMainWindow;
 class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
-	class GUIApplicationNativeEventAware;
+    class GUIApplicationNativeEventAware;
 
-	class GuiNativeEvent : public GuiAbstractNativeEvent
-	{
-	Q_OBJECT
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override;
-		void initSpaceball(QMainWindow *window) override final;
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(const GuiNativeEvent&);
-		GuiNativeEvent& operator=(const GuiNativeEvent&);
+    class GuiNativeEvent : public GuiAbstractNativeEvent
+    {
+    Q_OBJECT
     public:
-  #if QT_VERSION >= 0x050000
+        GuiNativeEvent(GUIApplicationNativeEventAware *app);
+        ~GuiNativeEvent() override;
+        void initSpaceball(QMainWindow *window) override final;
+    private:
+        GuiNativeEvent();
+        GuiNativeEvent(const GuiNativeEvent&);
+        GuiNativeEvent& operator=(const GuiNativeEvent&);
+    public:
         static bool xcbEventFilter(void *message, long* result);
-  #else
-        bool x11EventFilter(XEvent *event);
-  #endif // if/else QT_VERSION >= 0x050000
-	};
+    };
 }
 
 #endif //GUINATIVEEVENT_H

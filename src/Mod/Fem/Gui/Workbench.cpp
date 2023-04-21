@@ -20,16 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <qobject.h>
 #endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
+#include <App/Application.h>
 #include <Gui/MenuManager.h>
+#include <Gui/ToolBarManager.h>
+#include <Mod/Fem/App/FemTools.h>
+
+#include "Workbench.h"
 
 
 using namespace FemGui;
@@ -73,6 +75,7 @@ using namespace FemGui;
     qApp->translate("Workbench", "Utilities");
 #endif
 
+
 /// @namespace FemGui @class Workbench
 TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
 
@@ -86,7 +89,7 @@ Workbench::~Workbench()
 
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
-    StdWorkbench::setupContextMenu( recipient, item );
+    StdWorkbench::setupContextMenu(recipient, item);
     *item
         << "Separator"
         << "FEM_MeshClear"
@@ -113,15 +116,16 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ElementGeometry2D"
         << "FEM_ElementFluid1D";
 
-    Gui::ToolBarItem* electrostat = new Gui::ToolBarItem(root);
-    electrostat->setCommand("Electrostatic Constraints");
-    *electrostat
-        << "FEM_ConstraintElectrostaticPotential";
+    Gui::ToolBarItem* electromag = new Gui::ToolBarItem(root);
+    electromag->setCommand("Electromagnetic Constraints");
+    *electromag
+        << "FEM_CompEmConstraints";
 
     Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
     fluid->setCommand("Fluid Constraints");
     *fluid
         << "FEM_ConstraintInitialFlowVelocity"
+        << "FEM_ConstraintInitialPressure"
         << "Separator"
         << "FEM_ConstraintFlowVelocity";
 
@@ -139,9 +143,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ConstraintDisplacement"
         << "FEM_ConstraintContact"
         << "FEM_ConstraintTie"
+        << "FEM_ConstraintSpring"
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
     Gui::ToolBarItem* thermal = new Gui::ToolBarItem(root);
@@ -153,8 +159,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ConstraintTemperature"
         << "FEM_ConstraintBodyHeatSource";
 
-     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
-     mesh->setCommand("Mesh");
+    Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
+    mesh->setCommand("Mesh");
 #ifdef FCWithNetgen
      *mesh
         << "FEM_MeshNetgenFromShape";
@@ -168,16 +174,22 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Separator"
         << "FEM_FEMMesh2Mesh";
 
-     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
-     solve->setCommand("Solve");
-     *solve
-        << "FEM_SolverCalculixCxxtools"
-        << "FEM_SolverCalculiX"
-        << "FEM_SolverElmer"
-        << "Separator"
-        << "FEM_EquationElasticity"
-        << "FEM_EquationElectricforce"
-        << "FEM_EquationElectrostatic"
+    Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
+    solve->setCommand("Solve");
+    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty())
+        *solve << "FEM_SolverCalculixCxxtools";
+    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty())
+        *solve << "FEM_SolverElmer";
+    // also check the multi-CPU Elmer build
+    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty())
+        *solve << "FEM_SolverElmer";
+    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty())
+        *solve << "FEM_SolverMystran";
+    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty())
+        *solve << "FEM_SolverZ88";
+    *solve << "Separator"
+        << "FEM_CompMechEquations"
+        << "FEM_CompEmEquations"
         << "FEM_EquationFlow"
         << "FEM_EquationFlux"
         << "FEM_EquationHeat"
@@ -185,8 +197,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_SolverControl"
         << "FEM_SolverRun";
 
-     Gui::ToolBarItem* results = new Gui::ToolBarItem(root);
-     results->setCommand("Results");
+    Gui::ToolBarItem* results = new Gui::ToolBarItem(root);
+    results->setCommand("Results");
      *results
         << "FEM_ResultsPurge"
         << "FEM_ResultShow";
@@ -200,6 +212,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_PostFilterClipScalar"
         << "FEM_PostFilterCutFunction"
         << "FEM_PostFilterClipRegion"
+        << "FEM_PostFilterContours"
         << "FEM_PostFilterDataAlongLine"
         << "FEM_PostFilterLinearizedStresses"
         << "FEM_PostFilterDataAtPoint"
@@ -207,11 +220,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_PostCreateFunctions";
 #endif
 
-     Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
-     utils->setCommand("Utilities");
+    Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
+    utils->setCommand("Utilities");
      *utils
         << "FEM_ClippingPlaneAdd"
-        << "FEM_ClippingPlaneRemoveAll";
+        << "FEM_ClippingPlaneRemoveAll"
+        << "FEM_Examples";
 
     return root;
 }
@@ -239,14 +253,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ElementFluid1D";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
-    elec->setCommand("&Electrostatic Constraints");
+    elec->setCommand("&Electromagnetic Constraints");
     *elec
-        << "FEM_ConstraintElectrostaticPotential";
+        << "FEM_ConstraintElectrostaticPotential"
+        << "FEM_ConstraintCurrentDensity"
+        << "FEM_ConstraintMagnetization";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");
     *fluid
         << "FEM_ConstraintInitialFlowVelocity"
+        << "FEM_ConstraintInitialPressure"
         << "Separator"
         << "FEM_ConstraintFlowVelocity";
 
@@ -264,9 +281,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ConstraintDisplacement"
         << "FEM_ConstraintContact"
         << "FEM_ConstraintTie"
+        << "FEM_ConstraintSpring"
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
     Gui::MenuItem* thermal = new Gui::MenuItem;
@@ -334,11 +353,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_SolverCalculixCxxtools"
         << "FEM_SolverCalculiX"
         << "FEM_SolverElmer"
+        << "FEM_SolverMystran"
         << "FEM_SolverZ88"
         << "Separator"
-        << "FEM_EquationElasticity"
-        << "FEM_EquationElectricforce"
-        << "FEM_EquationElectrostatic"
+        << "FEM_CompMechEquations"
+        << "FEM_CompEmEquations"
         << "FEM_EquationFlow"
         << "FEM_EquationFlux"
         << "FEM_EquationHeat"
@@ -362,6 +381,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_PostFilterClipScalar"
         << "FEM_PostFilterCutFunction"
         << "FEM_PostFilterClipRegion"
+        << "FEM_PostFilterContours"
         << "FEM_PostFilterDataAlongLine"
         << "FEM_PostFilterLinearizedStresses"
         << "FEM_PostFilterDataAtPoint"

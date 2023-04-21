@@ -24,6 +24,7 @@ macro(ConfigureCMakeVariables)
 
     # used as compiler defines
     set(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
+    set(LIBRARYDIR "${CMAKE_INSTALL_LIBDIR}")
     set(DOCDIR "${CMAKE_INSTALL_DOCDIR}")
 
     message(STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")

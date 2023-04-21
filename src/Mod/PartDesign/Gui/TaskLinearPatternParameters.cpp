@@ -24,38 +24,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QAction>
+# include <QMessageBox>
 # include <QTimer>
 #endif
 
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderOrigin.h>
-
-#include <Mod/PartDesign/App/FeatureLinearPattern.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
-#include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-
-#include "ReferenceSelection.h"
-#include "TaskMultiTransformParameters.h"
-#include "Utils.h"
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/FeatureLinearPattern.h>
 
 #include "ui_TaskLinearPatternParameters.h"
 #include "TaskLinearPatternParameters.h"
+#include "ReferenceSelection.h"
+#include "TaskMultiTransformParameters.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -87,8 +78,8 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
 {
     proxy = new QWidget(parentTask);
     ui->setupUi(proxy);
-    connect(ui->buttonOK, SIGNAL(pressed()),
-            parentTask, SLOT(onSubTaskButtonOK()));
+    connect(ui->buttonOK, &QToolButton::pressed,
+            parentTask, &TaskLinearPatternParameters::onSubTaskButtonOK);
     QMetaObject::connectSlotsByName(this);
 
     layout->addWidget(proxy);
@@ -101,14 +92,17 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
 
     selectionMode = none;
 
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
+    blockUpdate = false;
     setupUI();
 }
 
 void TaskLinearPatternParameters::connectSignals()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    connect(ui->buttonAddFeature, &QToolButton::toggled,
+            this, &TaskLinearPatternParameters::onButtonAddFeature);
+    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
+            this, &TaskLinearPatternParameters::onButtonRemoveFeature);
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -118,27 +112,27 @@ void TaskLinearPatternParameters::connectSignals()
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    connect(action, &QAction::triggered, this, &TaskLinearPatternParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskLinearPatternParameters::indexesMoved);
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, SIGNAL(timeout()),
-            this, SLOT(onUpdateViewTimer()));
+    connect(updateViewTimer, &QTimer::timeout,
+            this, &TaskLinearPatternParameters::onUpdateViewTimer);
 
-    connect(ui->comboDirection, SIGNAL(activated(int)),
-            this, SLOT(onDirectionChanged(int)));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckReverse(bool)));
-    connect(ui->spinLength, SIGNAL(valueChanged(double)),
-            this, SLOT(onLength(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
-            this, SLOT(onOccurrences(uint)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->comboDirection, qOverload<int>(&QComboBox::activated),
+            this, &TaskLinearPatternParameters::onDirectionChanged);
+    connect(ui->checkReverse, &QCheckBox::toggled,
+            this, &TaskLinearPatternParameters::onCheckReverse);
+    connect(ui->spinLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskLinearPatternParameters::onLength);
+    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
+            this, &TaskLinearPatternParameters::onOccurrences);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskLinearPatternParameters::onUpdateView);
 }
 
 void TaskLinearPatternParameters::setupUI()
@@ -150,7 +144,7 @@ void TaskLinearPatternParameters::setupUI()
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
         const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
+        if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -171,7 +165,7 @@ void TaskLinearPatternParameters::setupUI()
     ui->spinLength->setUnit(Base::Unit::Length);
     ui->spinLength->blockSignals(false);
     ui->spinOccurrences->setEnabled(true);
-    
+
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
@@ -327,19 +321,19 @@ void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     try{
-        if(dirLinks.getCurrentLink().getValue() == 0){
+        if (!dirLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, true);
+            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
         } else {
             exitSelectionMode();
             pcLinearPattern->Direction.Paste(dirLinks.getCurrentLink());
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(0,tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr,tr("Error"),QString::fromLatin1(e.what()));
     }
 
     kickUpdateViewTimer();

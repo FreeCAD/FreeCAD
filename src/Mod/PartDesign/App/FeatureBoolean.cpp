@@ -23,26 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Common.hxx>
-# include <gp_Trsf.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Ax1.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
-#include "Body.h"
-#include "FeatureBoolean.h"
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <App/Application.h>
-#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Base/Parameter.h>
 #include <Mod/Part/App/modelRefine.h>
+
+#include "FeatureBoolean.h"
+#include "Body.h"
+
 
 using namespace PartDesign;
 
@@ -50,7 +44,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",NULL};
+const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",nullptr};
 
 Boolean::Boolean()
 {
@@ -72,11 +66,11 @@ short Boolean::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Boolean::execute(void)
+App::DocumentObjectExecReturn *Boolean::execute()
 {
     // Get the operation type
     std::string type = Type.getValueAsString();
-   
+
     // Check the parameters
     const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
 
@@ -96,11 +90,11 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         auto feature = tools.back();
         if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
-        
+
         baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
         tools.pop_back();
     }
-        
+
     if (baseTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
 
@@ -163,7 +157,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 }
 
 void Boolean::onChanged(const App::Property* prop) {
-    
+
     if(strcmp(prop->getName(), "Group") == 0)
         touch();
 

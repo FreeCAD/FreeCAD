@@ -26,7 +26,10 @@
 Provides the data as IfcContexts, IfcProducts and IfcTypes.
 """
 
-import FreeCAD, os, json
+import os
+import json
+
+import FreeCAD
 
 ifcVersions = ["IFC4", "IFC2X3"]
 IfcVersion = ifcVersions[FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]

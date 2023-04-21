@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWING_WORKBENCH_H
 #define DRAWING_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+
 
 namespace DrawingGui {
 
 /**
  * @author Werner Mayer
  */
-class DrawingGuiExport Workbench : public Gui::StdWorkbench
+class Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 

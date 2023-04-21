@@ -24,17 +24,23 @@
 #ifndef _AppComplexGeoData_h_
 #define _AppComplexGeoData_h_
 
-#include <Base/Placement.h>
-#include <Base/Persistence.h>
+#include <algorithm>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
-#include <Base/BoundBox.h>
-#include <Base/Rotation.h>
+#include <Base/Persistence.h>
 
 #ifdef __GNUC__
-# include <stdint.h>
+# include <cstdint>
 #endif
 
+
+namespace Base
+{
+class Placement;
+class Rotation;
+template <class _Precision> class BoundBox3;
+using BoundBox3d = BoundBox3<double>;
+}
 
 namespace Data
 {
@@ -45,10 +51,10 @@ namespace Data
  */
 class AppExport Segment: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    virtual ~Segment(){}
+    ~Segment() override = default;
     virtual std::string getName() const=0;
 };
 
@@ -57,7 +63,7 @@ public:
  */
 class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     struct Line  {uint32_t I1; uint32_t I2;};
@@ -68,9 +74,9 @@ public:
     };
 
     /// Constructor
-    ComplexGeoData(void);
+    ComplexGeoData();
     /// Destructor
-    virtual ~ComplexGeoData();
+    ~ComplexGeoData() override;
 
     /** @name Subelement management */
     //@{
@@ -78,19 +84,19 @@ public:
      *  List of different subelement types
      *  its NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes(void) const=0;
+    virtual std::vector<const char*> getElementTypes() const=0;
     virtual unsigned long countSubElements(const char* Type) const=0;
     /// get the subelement by type and number
     virtual Segment* getSubElement(const char* Type, unsigned long) const=0;
     /// get subelement by combined name
     virtual Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
@@ -122,7 +128,7 @@ public:
      * This method has to be handled by the child classes.
      * the actual placement and matrix is not part of this class.
      */
-    virtual Base::Matrix4D getTransform(void) const = 0;
+    virtual Base::Matrix4D getTransform() const = 0;
     //@}
 
     /** @name Modification */
@@ -133,8 +139,10 @@ public:
 
     /** @name Getting basic geometric entities */
     //@{
+    /// Get the standard accuracy to be used with getPoints, getLines or getFaces
+    virtual double getAccuracy() const;
     /// Get the bound box
-    virtual Base::BoundBox3d getBoundBox(void)const=0;
+    virtual Base::BoundBox3d getBoundBox() const=0;
     /** Get point from line object intersection  */
     virtual Base::Vector3d getPointFromLineIntersection(
         const Base::Vector3f& base,
@@ -142,13 +150,13 @@ public:
     /** Get points from object with given accuracy */
     virtual void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     /** Get lines from object with given accuracy */
     virtual void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     /** Get faces from object with given accuracy */
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     /** Get the center of gravity
      * If this method is implemented then true is returned and the center of gravity.
      * The default implementation only returns false.
@@ -194,17 +202,59 @@ public:
 protected:
 
     /// from local to outside
-    inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
+    inline Base::Vector3d transformPointToOutside(const Base::Vector3f& vec) const
     {
-        return getTransform() * Base::Vector3d(vec.x,vec.y,vec.z);
+        return getTransform() * Base::Vector3d(static_cast<double>(vec.x),
+                                               static_cast<double>(vec.y),
+                                               static_cast<double>(vec.z));
+    }
+    /// from local to outside
+    template<typename Vec>
+    inline std::vector<Base::Vector3d> transformPointsToOutside(const std::vector<Vec>& input) const
+    {
+        std::vector<Base::Vector3d> output;
+        output.reserve(input.size());
+        Base::Matrix4D mat(getTransform());
+        std::transform(input.cbegin(), input.cend(), std::back_inserter(output), [&mat](const Vec& vec) {
+            return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                        static_cast<double>(vec.y),
+                                        static_cast<double>(vec.z));
+        });
+
+        return output;
+    }
+    inline Base::Vector3d transformVectorToOutside(const Base::Vector3f& vec) const
+    {
+        Base::Matrix4D mat(getTransform());
+        mat.setCol(3, Base::Vector3d());
+        return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                    static_cast<double>(vec.y),
+                                    static_cast<double>(vec.z));
+    }
+    template<typename Vec>
+    std::vector<Base::Vector3d> transformVectorsToOutside(const std::vector<Vec>& input) const
+    {
+        std::vector<Base::Vector3d> output;
+        output.reserve(input.size());
+        Base::Matrix4D mat(getTransform());
+        mat.setCol(3, Base::Vector3d());
+        std::transform(input.cbegin(), input.cend(), std::back_inserter(output), [&mat](const Vec& vec) {
+            return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                        static_cast<double>(vec.y),
+                                        static_cast<double>(vec.z));
+        });
+
+        return output;
     }
     /// from local to inside
-    inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
+    inline Base::Vector3f transformPointToInside(const Base::Vector3d& vec) const
     {
         Base::Matrix4D tmpM(getTransform());
         tmpM.inverse();
         Base::Vector3d tmp = tmpM * vec;
-        return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
+        return Base::Vector3f(static_cast<float>(tmp.x),
+                              static_cast<float>(tmp.y),
+                              static_cast<float>(tmp.z));
     }
 public:
     mutable long Tag;

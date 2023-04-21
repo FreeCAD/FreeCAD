@@ -74,7 +74,7 @@ class ApplyStyle(gui_base_original.Modifier):
                         _cmd_list.append(_cmd)
                 self.commit(translate("draft", "Change Style"),
                             _cmd_list)
-            super(ApplyStyle, self).finish()
+            self.finish()
 
     def formatGroup(self, group):
         """Format a group instead of simple object."""

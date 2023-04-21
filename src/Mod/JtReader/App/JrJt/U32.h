@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -30,26 +30,26 @@ using namespace std;
 
 struct U32
 {
-	U32(){};
+    U32(){};
 
-	U32(uint32_t ui) :_U32(ui){}
+    U32(uint32_t ui) :_U32(ui){}
 
-	U32(Context& cont)
-	{
-		read(cont);
-	}
+    U32(Context& cont)
+    {
+        read(cont);
+    }
 
-	inline operator uint32_t() const
-	{
-		return _U32;
-	}
+    inline operator uint32_t() const
+    {
+        return _U32;
+    }
 
-	inline void read(Context& cont)
-	{
-		cont.Strm.read((char*)&_U32, 4);
-	}
+    inline void read(Context& cont)
+    {
+        cont.Strm.read((char*)&_U32, 4);
+    }
 
-	uint32_t _U32;
+    uint32_t _U32;
 };
 
 

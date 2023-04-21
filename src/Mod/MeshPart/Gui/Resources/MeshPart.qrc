@@ -43,6 +43,11 @@
         <file>translations/MeshPart_val-ES.qm</file>
         <file>translations/MeshPart_ar.qm</file>
         <file>translations/MeshPart_vi.qm</file>
+        <file>translations/MeshPart_es-AR.qm</file>
+        <file>translations/MeshPart_bg.qm</file>
+        <file>translations/MeshPart_ka.qm</file>
+        <file>translations/MeshPart_sr-CS.qm</file>
+        <file>translations/MeshPart_be.qm</file>
     </qresource>
 </RCC>
 

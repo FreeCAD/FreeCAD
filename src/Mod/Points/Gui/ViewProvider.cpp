@@ -20,45 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Python.h>
+# include <limits>
+# include <boost/math/special_functions/fpclassify.hpp>
+
+# include <Inventor/errors/SoDebugError.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoIndexedPointSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoNormal.h>
-# include <Inventor/errors/SoDebugError.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoPointSet.h>
 #endif
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <limits>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui,...
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCSelection.h>
-#include <Gui/Window.h>
-
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Points/App/PointsFeature.h>
+#include <Mod/Points/App/Properties.h>
 
 #include "ViewProvider.h"
-#include "../App/Properties.h"
 
 
 using namespace PointsGui;
@@ -183,7 +171,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, colors->getSize());
 #endif
-                    // fallback 
+                    // fallback
                     setDisplayMaskMode("Point");
                 }
                 else {
@@ -229,7 +217,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of normals (%d).", numPoints, normals->getSize());
 #endif
-                    // fallback 
+                    // fallback
                     setDisplayMaskMode("Point");
                 }
                 else {
@@ -247,19 +235,19 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPoints::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Points");
+    StrList.emplace_back("Points");
 
     // FIXME: This way all display modes are added even if the points feature
     // doesn't support it.
     // For the future a more flexible way is needed to add new display modes
     // at a later time
 #if 1
-    StrList.push_back("Color");
-    StrList.push_back("Shaded");
-    StrList.push_back("Intensity");
+    StrList.emplace_back("Color");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Intensity");
 
 #else
     if (pcObject) {
@@ -327,7 +315,7 @@ void ViewProviderPoints::unsetEdit(int ModNum)
 void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
 {
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), clipPointsCallback);
     n->setHandled();
@@ -338,7 +326,7 @@ void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
     for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderPoints* that = static_cast<ViewProviderPoints*>(*it);
         if (that->getEditingMode() > -1) {
@@ -498,7 +486,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
                     remainValue.push_back( *jt );
                 else if (index != *pos)
                     remainValue.push_back( *jt );
-                else 
+                else
                     ++pos;
             }
 
@@ -650,8 +638,8 @@ template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProvide
 
 void ViewProviderPointsBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
-    SoCoordinate3 *pcPointsCoord=0;
-    SoPointSet *pcPoints=0;
+    SoCoordinate3 *pcPointsCoord=nullptr;
+    SoPointSet *pcPoints=nullptr;
 
     if (nodes.empty()) {
         pcPointsCoord = new SoCoordinate3();

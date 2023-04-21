@@ -43,20 +43,18 @@
 #pragma warning(disable : 4267)
 #endif
 
-#include <Quarter/devices/Mouse.h>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QWheelEvent>
+
 #include <Gui/SoMouseWheelEvent.h>
-
-#include <QtCore/QEvent>
-#include <QtCore/QSize>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QWheelEvent>
-
-#include <QGuiApplication>
-
 #include <Inventor/SbVec2s.h>
-#include <Inventor/events/SoEvents.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Quarter/QuarterWidget.h>
+#include <Inventor/events/SoEvents.h>
+
+#include "QuarterWidget.h"
+#include "devices/Mouse.h"
+
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -95,7 +93,7 @@ using namespace SIM::Coin3D::Quarter;
 #define PRIVATE(obj) obj->pimpl
 #define PUBLIC(obj) obj->publ
 
-Mouse::Mouse(void)
+Mouse::Mouse()
 {
   PRIVATE(this) = new MouseP(this);
 }
@@ -131,9 +129,9 @@ Mouse::translateEvent(QEvent * event)
     return PRIVATE(this)->mouseWheelEvent((QWheelEvent *) event);
   case QEvent::Resize:
     PRIVATE(this)->resizeEvent((QResizeEvent *) event);
-    return NULL;
+    return nullptr;
   default:
-    return NULL;
+    return nullptr;
   }
 }
 

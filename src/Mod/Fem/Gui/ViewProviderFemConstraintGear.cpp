@@ -21,27 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/SbMatrix.h>
-
 # include <QMessageBox>
+# include <Precision.hxx>
+# include <Inventor/SbMatrix.h>
+# include <Inventor/SbRotation.h>
+# include <Inventor/SbVec3f.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "ViewProviderFemConstraintGear.h"
-#include <Mod/Fem/App/FemConstraintGear.h>
-#include "TaskFemConstraintGear.h"
-#include "Gui/Control.h"
-
 #include <Base/Console.h>
+#include "Gui/Control.h"
+#include <Mod/Fem/App/FemConstraintGear.h>
+
+#include "ViewProviderFemConstraintGear.h"
+#include "TaskFemConstraintGear.h"
+
 
 using namespace FemGui;
 
@@ -66,11 +63,11 @@ bool ViewProviderFemConstraintGear::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFemConstraintGear *constrDlg = qobject_cast<TaskDlgFemConstraintGear *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = 0; // another constraint left open its task panel
+            constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
             // This case will occur in the ShaftWizard application
             checkForWizard();
-            if ((wizardWidget == NULL) || (wizardSubLayout == NULL)) {
+            if (!wizardWidget || !wizardSubLayout) {
                 // No shaft wizard is running
                 QMessageBox msgBox;
                 msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -82,7 +79,7 @@ bool ViewProviderFemConstraintGear::setEdit(int ModNum)
                     Gui::Control().reject();
                 else
                     return false;
-            } else if (constraintDialog != NULL) {
+            } else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;
@@ -104,7 +101,7 @@ bool ViewProviderFemConstraintGear::setEdit(int ModNum)
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);
+        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
     }
 }
 
@@ -113,7 +110,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
     Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(this->getObject());
 
     // Gets called whenever a property of the attached object changes
-    if (strcmp(prop->getName(),"BasePoint") == 0) {
+    if (prop == &pcConstraint->BasePoint) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
             Gui::coinRemoveAllChildren(pShapeSep);
@@ -122,7 +119,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             Base::Vector3d axis = pcConstraint->Axis.getValue();
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3d(0,1,0);
+                direction = Base::Vector3d(0, 1, 0);
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
@@ -139,13 +136,13 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             createPlacement(pShapeSep, SbVec3f(dia/2 * sin(angle), 0, dia/2 * cos(angle)), SbRotation(ax, dir));
             pShapeSep->addChild(createArrow(dia/2, dia/8));
         }
-    } else if (strcmp(prop->getName(),"Diameter") == 0) {
+    } else if (prop == &pcConstraint->Diameter) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
             Base::Vector3d axis = pcConstraint->Axis.getValue();
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3d(0,1,0);
+                direction = Base::Vector3d(0, 1, 0);
             double dia = pcConstraint->Diameter.getValue();
             double radius = pcConstraint->Radius.getValue();
             if (dia < 2 * radius)
@@ -161,7 +158,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(5));
             updateArrow(sep, 0, dia/2, dia/8);
         }
-    } else if ((strcmp(prop->getName(),"DirectionVector") == 0) || (strcmp(prop->getName(),"ForceAngle") == 0))  {
+    } else if ((prop == &pcConstraint->DirectionVector) || (prop == &pcConstraint->ForceAngle))  {
         // Note: "Reversed" also triggers "DirectionVector"
         if (pShapeSep->getNumChildren() > 0) {
             // Re-orient the symbol

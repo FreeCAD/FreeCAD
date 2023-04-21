@@ -154,7 +154,7 @@ class SMESHUtils_EXPORT SMESH_Block: public math_FunctionSetWithDerivatives
                        TopTools_IndexedMapOfOrientedShape& theShapeIDMap );
   // Initialize block geometry with theShell,
   // add sub-shapes of theBlock to theShapeIDMap so that they get
-  // IDs acoording to enum TShapeID
+  // IDs according to enum TShapeID
 
   bool LoadBlockShapes(const TopTools_IndexedMapOfOrientedShape& theShapeIDMap);
   // Initialize block geometry with shapes from theShapeIDMap
@@ -185,7 +185,7 @@ class SMESHUtils_EXPORT SMESH_Block: public math_FunctionSetWithDerivatives
                               const TopoDS_Vertex&        theVertex001,
                               TopTools_IndexedMapOfOrientedShape& theShapeIDMap );
   // add sub-shapes of theBlock to theShapeIDMap so that they get
-  // IDs acoording to enum TShapeID
+  // IDs according to enum TShapeID
 
 public:
   // ---------------------------------
@@ -314,7 +314,7 @@ public:
   // TFace, TEdge's and points for that face only
 
   // Note 2: curve adaptors need to have only Value(double), FirstParameter() and
-  // LastParameter() defined to be used by Block algoritms
+  // LastParameter() defined to be used by Block algorithms
 
   class SMESHUtils_EXPORT TEdge {
     int                myCoordInd;

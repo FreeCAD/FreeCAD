@@ -21,73 +21,64 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <QApplication>
 # include <QEvent>
 # include <QKeyEvent>
 #endif
 
 #include "LineEdit.h"
 
+
 using namespace SpreadsheetGui;
 
 LineEdit::LineEdit(QWidget *parent)
-    : Gui::ExpressionLineEdit(parent, false, true)
-    , current()
-    , deltaCol(0)
-    , deltaRow(0)
+    : Gui::ExpressionLineEdit(parent, false, '=', true)
+    , lastKeyPressed(0)
 {
+    setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+}
+
+bool LineEdit::eventFilter(QObject* object, QEvent* event)
+{
+    Q_UNUSED(object);
+    if (event && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Tab) {
+            // Special tab handling -- must be done via a QApplication event filter, otherwise the widget
+            // system will always grab the tab events
+            if (completerActive()) {
+                hideCompleter();
+                event->accept();
+                return true; // To make sure this tab press doesn't do anything else
+            }
+            else {
+                lastKeyPressed = keyEvent->key();
+                lastModifiers = keyEvent->modifiers();
+            }
+        }
+    }
+    return false; // We don't usually actually "handle" the tab event, we just keep track of it
 }
 
 bool LineEdit::event(QEvent *event)
 {
-    if (event && event->type() == QEvent::KeyPress) {
+    if (event && event->type() == QEvent::FocusIn) {
+        qApp->installEventFilter(this);
+    }
+    else if (event && event->type() == QEvent::FocusOut) {
+        qApp->removeEventFilter(this);
+        if (lastKeyPressed)
+            Q_EMIT finishedWithKey(lastKeyPressed, lastModifiers);
+        lastKeyPressed = 0;
+    }
+    else if (event && event->type() == QEvent::KeyPress && !completerActive()) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
-
-        if (kevent->key() == Qt::Key_Tab) {
-            if (kevent->modifiers() == 0) {
-                deltaCol = 1;
-                deltaRow = 0;
-                Q_EMIT returnPressed();
-                return true;
-            }
-        }
-        else if (kevent->key() == Qt::Key_Backtab) {
-            if (kevent->modifiers() == Qt::ShiftModifier) {
-                deltaCol = -1;
-                deltaRow = 0;
-                Q_EMIT returnPressed();
-                return true;
-            }
-        }
-        else if (kevent->key() == Qt::Key_Enter || kevent->key() == Qt::Key_Return) {
-            if (kevent->modifiers() == 0) {
-                deltaCol = 0;
-                deltaRow = 1;
-                Q_EMIT returnPressed();
-                return true;
-            }
-            else if (kevent->modifiers() == Qt::ShiftModifier) {
-                deltaCol = 0;
-                deltaRow = -1;
-                Q_EMIT returnPressed();
-                return true;
-            }
-        }
+        lastKeyPressed = kevent->key();
+        lastModifiers = kevent->modifiers();
     }
     return Gui::ExpressionLineEdit::event(event);
-}
-
-void LineEdit::setIndex(QModelIndex _current)
-{
-    current = _current;
-}
-
-QModelIndex LineEdit::next() const
-{
-    const QAbstractItemModel * m = current.model();
-
-    return m->index(qMin(qMax(0, current.row() + deltaRow), m->rowCount() - 1 ),
-                    qMin(qMax(0, current.column() + deltaCol), m->columnCount() - 1 ) );
 }
 
 #include "moc_LineEdit.cpp"

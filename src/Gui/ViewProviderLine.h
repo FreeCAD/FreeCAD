@@ -31,13 +31,13 @@ namespace Gui
 {
 
 class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
-    PROPERTY_HEADER(Gui::ViewProviderLine);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLine);
 public:
     /// Constructor
-    ViewProviderLine(void);
-    virtual ~ViewProviderLine();
+    ViewProviderLine();
+    ~ViewProviderLine() override;
 
-    virtual void attach ( App::DocumentObject * );
+    void attach ( App::DocumentObject * ) override;
 };
 
 } //namespace Gui

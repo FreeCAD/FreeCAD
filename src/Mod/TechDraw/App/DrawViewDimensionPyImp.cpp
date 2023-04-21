@@ -21,31 +21,30 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 
 #include "DrawViewDimension.h"
-
 // inclusion of the generated files (generated out of DrawViewDimensionPy.xml)
-#include <Base/VectorPy.h>
 #include <Mod/TechDraw/App/DrawViewDimensionPy.h>
 #include <Mod/TechDraw/App/DrawViewDimensionPy.cpp>
+
 
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawViewDimensionPy::representation(void) const
+std::string DrawViewDimensionPy::representation() const
 {
     return std::string("<DrawViewDimension object>");
 }
 
 PyObject* DrawViewDimensionPy::getRawValue(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     double val = dvd->getDimValue();
     PyObject* pyVal = PyFloat_FromDouble(val);
@@ -54,12 +53,10 @@ PyObject* DrawViewDimensionPy::getRawValue(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getText(PyObject* args)
 {
-    (void) args;
-//    PyObject* asShape = Py_False;
-//    PyObject* pagePos = Py_False;
-//    if (!PyArg_ParseTuple(args, "|OO", &asShape, &pagePos)) {
-//        return 0;
-//    }
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     std::string  textString = dvd->getFormattedDimensionValue();
 //TODO: check multiversion code!
@@ -69,55 +66,67 @@ PyObject* DrawViewDimensionPy::getText(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getLinearPoints(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     pointPair pts = dvd->getLinearPoints();
     Py::List ret;
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second()))));
     return Py::new_reference_to(ret);
 }
 
 PyObject* DrawViewDimensionPy::getArcPoints(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     arcPoints pts = dvd->getArcPoints();
     Py::List ret;
     ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.center))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.onCurve.first))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.onCurve.second))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.arcEnds.first))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.arcEnds.second))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.onCurve.first()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.onCurve.second()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.arcEnds.first()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.arcEnds.second()))));
     ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.midArc))));
     return Py::new_reference_to(ret);
 }
 
 PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     anglePoints pts = dvd->getAnglePoints();
     Py::List ret;
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.ends.first))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.ends.second))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.vertex))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.vertex()))));
     return Py::new_reference_to(ret);
 }
 
 PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     pointPair pts = dvd->getArrowPositions();
     Py::List ret;
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first))));
-    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first()))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second()))));
     return Py::new_reference_to(ret);
 }
 PyObject *DrawViewDimensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewDimensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

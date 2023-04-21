@@ -15,5 +15,17 @@
       <Author Licence="LGPL" Name="Eivind Kvedalen" EMail="eivind@kvedalen.name" />
       <UserDocu>Internal spreadsheet object</UserDocu>
     </Documentation>
+    <Sequence
+        sq_length="false"
+        sq_concat="false"
+        sq_repeat="false"
+        sq_item="false"
+        mp_subscript="true"
+        sq_ass_item="false"
+        mp_ass_subscript="false"
+        sq_contains="false"
+        sq_inplace_concat="false"
+        sq_inplace_repeat="false">
+    </Sequence>
   </PythonExport>
 </GenerateModel>

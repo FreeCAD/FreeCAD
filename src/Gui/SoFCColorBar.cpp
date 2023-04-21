@@ -20,13 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <Inventor/nodes/SoEventCallback.h>
+# include <boost/core/ignore_unused.hpp>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
+# include <Inventor/nodes/SoSwitch.h>
 # include <QApplication>
 # include <QMenu>
 #endif
@@ -35,6 +38,7 @@
 #include "SoFCColorGradient.h"
 #include "SoFCColorLegend.h"
 
+
 using namespace Gui;
 
 SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase)
@@ -42,7 +46,7 @@ SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase)
 /*!
   Constructor.
 */
-SoFCColorBarBase::SoFCColorBarBase(): _windowSize(0,0)
+SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBarBase);
 }
@@ -56,7 +60,7 @@ SoFCColorBarBase::~SoFCColorBarBase()
 }
 
 // doc from parent
-void SoFCColorBarBase::initClass(void)
+void SoFCColorBarBase::initClass()
 {
     SO_NODE_INIT_ABSTRACT_CLASS(SoFCColorBarBase,SoSeparator,"Separator");
 }
@@ -77,6 +81,75 @@ void SoFCColorBarBase::GLRenderBelowPath(SoGLRenderAction *  action)
     SoSeparator::GLRenderBelowPath(action);
 }
 
+void SoFCColorBarBase::setModified()
+{
+    _boxWidth = -1.0f;
+}
+
+float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
+{
+    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
+    if (fRatio >= 1.0f && _boxWidth >= 0.0f) {
+        return _boxWidth;
+    }
+
+    // These are the same camera settings for front nodes as defined in the 3d view
+    auto cam = new SoOrthographicCamera;
+    cam->position = SbVec3f(0, 0, 5); // the 5 is just a value > 0
+    cam->height = 10; // sets the coordinate range of the screen to [-5, +5]
+    cam->nearDistance = 0;
+    cam->farDistance = 10;
+
+    auto group = new SoGroup();
+    group->ref();
+    group->addChild(cam);
+    group->addChild(this);
+
+    SbViewportRegion vpr(size);
+    SoGetBoundingBoxAction bbact(vpr);
+    bbact.apply(group);
+    SbBox3f box = bbact.getBoundingBox();
+    SbVec3f minPt, maxPt;
+    box.getBounds(minPt, maxPt);
+    group->unref();
+
+    float boxWidth = maxPt[0] - minPt[0];
+    _boxWidth = boxWidth;
+    return boxWidth;
+}
+
+float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY, float& fMaxX, float& fMaxY)
+{
+    // ratio of window width / height
+    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
+
+    // The cam height is set in SoFCColorBarBase::getBoundingWidth to 10.
+    // Therefore the normalized coordinates are in the range [-5, +5] x [-5ratio, +5ratio] if ratio > 1
+    //  and [-5ratio, +5ratio] x [-5, +5] if ratio < 1.
+    // We don't want the whole height covered by the color bar (to have e.g space to the axis cross)
+    // thus we take as base 4.
+    float baseYValue = 4.0f;
+    float barWidth = 0.5f;
+
+    // we want the color bar at the rightmost position, therefore we take 5 as base
+    fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
+    fMaxX = fMinX + barWidth;
+    fMinY = -baseYValue;
+    fMaxY = baseYValue; // bar has the height of almost whole window height
+
+    if (fRatio < 1.0f) {
+        // must be adjusted to assure that the size of the bar doesn't shrink
+        fMinX /= fRatio;
+        fMaxX /= fRatio;
+        fMinY = -baseYValue / fRatio;
+        fMaxY = baseYValue / fRatio;
+    }
+
+    // get the bounding box width of the color bar and labels
+    float boxWidth = getBoundingWidth(size);
+    return boxWidth;
+}
+
 // --------------------------------------------------------------------------
 
 namespace Gui {
@@ -85,12 +158,11 @@ class SoFCColorBarProxyObject : public QObject
 {
 public:
     SoFCColorBarProxyObject(SoFCColorBar* b)
-        : QObject(0), bar(b) {}
-    ~SoFCColorBarProxyObject() {}
-    void customEvent(QEvent *)
+        : QObject(nullptr), bar(b) {}
+    ~SoFCColorBarProxyObject() override {}
+    void customEvent(QEvent *) override
     {
-        if (bar->customize())
-            bar->Notify(0);
+        bar->customize(bar->getActiveBar());
         this->deleteLater();
     }
 
@@ -107,11 +179,6 @@ SO_NODE_SOURCE(SoFCColorBar)
 SoFCColorBar::SoFCColorBar()
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBar);
-
-    _fMaxX = 0;
-    _fMinX = 0;
-    _fMaxY = 0;
-    _fMinY = 0;
 
 //  SoEventCallback * cb = new SoEventCallback;
 //  cb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallback, this);
@@ -137,7 +204,7 @@ SoFCColorBar::~SoFCColorBar()
 }
 
 // doc from parent
-void SoFCColorBar::initClass(void)
+void SoFCColorBar::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCColorBar,SoFCColorBarBase,"Separator");
 }
@@ -155,18 +222,7 @@ SoFCColorBarBase* SoFCColorBar::getActiveBar() const
 
 void SoFCColorBar::setViewportSize( const SbVec2s& size )
 {
-    // don't know why the parameter range isn't between [-1,+1]
-    float fRatio = ((float)size[0])/((float)size[1]);
-    _fMinX=  4.0f, _fMaxX=4.5f;
-    _fMinY= -4.0f, _fMaxY=4.0f;
-    if (fRatio > 1.0f) {
-        _fMinX = 4.0f * fRatio;
-        _fMaxX = _fMinX+0.5f;
-    }
-    else if (fRatio < 1.0f) {
-        _fMinY =  -4.0f / fRatio;
-        _fMaxY =   4.0f / fRatio;
-    }
+    boost::ignore_unused(size);
 }
 
 void SoFCColorBar::setRange( float fMin, float fMax, int prec )
@@ -186,19 +242,29 @@ bool SoFCColorBar::isVisible (float fVal) const
     return this->getActiveBar()->isVisible(fVal);
 }
 
-float SoFCColorBar::getMinValue (void) const
+float SoFCColorBar::getMinValue () const
 {
     return this->getActiveBar()->getMinValue();
 }
 
-float SoFCColorBar::getMaxValue (void) const
+float SoFCColorBar::getMaxValue () const
 {
     return this->getActiveBar()->getMaxValue();
 }
 
-bool SoFCColorBar::customize()
+void SoFCColorBar::triggerChange(SoFCColorBarBase*)
 {
-    return this->getActiveBar()->customize();
+    Notify(0);
+}
+
+void SoFCColorBar::customize(SoFCColorBarBase* child)
+{
+    try {
+        return child->customize(this);
+    }
+    catch (const Base::ValueError& e) {
+        e.ReportException();
+    }
 }
 
 App::Color SoFCColorBar::getColor( float fVal ) const
@@ -210,7 +276,7 @@ void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
 {
     const SoEvent * event = node->getEvent();
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
+        const auto e = static_cast<const SoMouseButtonEvent*>(event);
         if ((e->getButton() == SoMouseButtonEvent::BUTTON2)) {
             if (e->getState() == SoButtonEvent::UP) {
                 // do nothing here
@@ -225,29 +291,10 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 
     // check for mouse button events
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
-
-        // calculate the mouse position relative to the colorbar
-        //
-        const SbViewportRegion&  vp = action->getViewportRegion();
-        float fRatio = vp.getViewportAspectRatio();
-        SbVec2f pos = event->getNormalizedPosition(vp);
-        float pX,pY; pos.getValue(pX,pY);
-
-        pX = pX*10.0f-5.0f;
-        pY = pY*10.0f-5.0f;
-
-        // now calculate the real points respecting aspect ratio information
-        //
-        if (fRatio > 1.0f) {
-            pX = pX * fRatio;
-        }
-        else if (fRatio < 1.0f) {
-            pY = pY / fRatio;
-        }
+        const auto e = static_cast<const SoMouseButtonEvent*>(event);
 
         // check if the cursor is near to the color bar
-        if (_fMinX > pX || pX > _fMaxX || _fMinY > pY || pY > _fMaxY)
+        if (!action->getPickedPoint())
             return; // not inside the rectangle
 
         // left mouse pressed
@@ -272,7 +319,7 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
                 QMenu menu;
                 int i=0;
                 for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it) {
-                    QAction* item = menu.addAction(QLatin1String((*it)->getColorBarName()));
+                    QAction* item = menu.addAction(QObject::tr((*it)->getColorBarName()));
                     item->setCheckable(true);
                     item->setChecked((*it) == current);
                     item->setData(QVariant(i++));

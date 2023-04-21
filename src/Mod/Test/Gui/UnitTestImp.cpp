@@ -20,27 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QStyleFactory>
 #endif
 
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/MainWindow.h>
+
 #include "UnitTestImp.h"
 #include "ui_UnitTest.h"
-#include "UnitTestPy.h"
 
 
 using namespace TestGui;
 
-
 /* TRANSLATOR TestGui::UnitTestDialog */
 
-UnitTestDialog* UnitTestDialog::_instance=0;
+UnitTestDialog* UnitTestDialog::_instance=nullptr;
 
 /**
  * Creates and returns the one and only instance of this dialog.
@@ -58,9 +54,9 @@ UnitTestDialog* UnitTestDialog::instance()
  */
 void UnitTestDialog::destruct ()
 {
-    if (_instance != 0) {
+    if (_instance) {
         UnitTestDialog *pTmp = _instance;
-        _instance = 0;
+        _instance = nullptr;
         delete pTmp;
     }
 }
@@ -70,7 +66,7 @@ void UnitTestDialog::destruct ()
  */
 bool UnitTestDialog::hasInstance()
 {
-    return _instance != 0;
+    return _instance != nullptr;
 }
 
 /**
@@ -85,6 +81,8 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
   , ui(new Ui_UnitTest)
 {
     ui->setupUi(this);
+    setupConnections();
+
     setProgressColor(QColor(40,210,43)); // a darker green
     ui->progressBar->setAlignment(Qt::AlignCenter);
 
@@ -99,6 +97,19 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
  */
 UnitTestDialog::~UnitTestDialog()
 {
+}
+
+void UnitTestDialog::setupConnections()
+{
+    connect(ui->treeViewFailure, &QTreeWidget::itemDoubleClicked,
+            this, &UnitTestDialog::onTreeViewFailureItemDoubleClicked);
+    connect(ui->helpButton, &QPushButton::clicked,
+            this, &UnitTestDialog::onHelpButtonClicked);
+    connect(ui->aboutButton, &QPushButton::clicked,
+            this, &UnitTestDialog::onAboutButtonClicked);
+    connect(ui->startButton, &QPushButton::clicked,
+            this, &UnitTestDialog::onStartButtonClicked);
+
 }
 
 /**
@@ -122,7 +133,7 @@ void UnitTestDialog::setProgressColor(const QColor& col)
 /**
  * Opens a dialog to display a detailed description about the error.
  */
-void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item, int column)
+void UnitTestDialog::onTreeViewFailureItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
     Q_UNUSED(column);
 
@@ -139,6 +150,9 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
         lines.erase(lines.begin()+20, lines.end());
         text = lines.join(QLatin1String("\n"));
     }
+    if (text.size() > 1000) {
+        text = text.left(1000);
+    }
 
     msgBox.setText(text);
     msgBox.exec();
@@ -147,7 +161,7 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
 /**
  * Shows the help dialog.
  */
-void UnitTestDialog::on_helpButton_clicked()
+void UnitTestDialog::onHelpButtonClicked()
 {
     QMessageBox::information(this, tr("Help"), tr(
         "Enter the name of a callable object which, when called, will return a TestCase.\n"
@@ -159,7 +173,7 @@ void UnitTestDialog::on_helpButton_clicked()
 /**
  * Shows the about dialog.
  */
-void UnitTestDialog::on_aboutButton_clicked()
+void UnitTestDialog::onAboutButtonClicked()
 {
     QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr(
         "Copyright (c) Werner Mayer\n\n"
@@ -170,7 +184,7 @@ void UnitTestDialog::on_aboutButton_clicked()
 /**
  * Runs the unit tests.
  */
-void UnitTestDialog::on_startButton_clicked()
+void UnitTestDialog::onStartButtonClicked()
 {
     reset();
     setProgressColor(QColor(40,210,43)); // a darker green
@@ -191,6 +205,12 @@ void UnitTestDialog::on_startButton_clicked()
     }
     catch (const Base::Exception& e) {
         showErrorDialog("Exception", e.what());
+    }
+    catch (const std::exception& e) {
+        showErrorDialog("C++ standard exception", e.what());
+    }
+    catch (...) {
+        showErrorDialog("Unknown exception", "Unknown exception raised");
     }
     ui->startButton->setEnabled(true);
 }
@@ -270,6 +290,19 @@ QString UnitTestDialog::getUnitTest() const
 }
 
 /**
+ * Runs the currently selected test and closes the dialog afterwards.
+ * It returns true if all tests have passed and false otherwise.
+ */
+bool UnitTestDialog::runCurrentTest()
+{
+    clearErrorList();
+    onStartButtonClicked();
+    int count = ui->treeViewFailure->topLevelItemCount();
+    reject();
+    return (count == 0);
+}
+
+/**
  * Sets the text in the status bar.
  */
 void UnitTestDialog::setStatusText(const QString& text)
@@ -297,7 +330,7 @@ void UnitTestDialog::setProgressFraction(float fraction, const QString& color)
 }
 
 /**
- * Emtpies the error listview.
+ * Empties the error listview.
  */
 void UnitTestDialog::clearErrorList()
 {

@@ -22,34 +22,25 @@
 
 #include "PreCompiled.h"
 
-
-#ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
-#endif
-
-#include "Base/Exception.h"
 #include "Base/GeometryPyCXX.h"
 #include "Base/Vector3D.h"
 #include "Base/VectorPy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiCell.h"
-#include "Mod/Path/App/VoronoiCellPy.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
-#include "Mod/Path/App/VoronoiPy.h"
-#include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 
-#include "Mod/Path/App/VoronoiPy.cpp"
+#include "VoronoiPy.h"
+#include "VoronoiPy.cpp"
+#include "VoronoiCellPy.h"
+#include "VoronoiEdgePy.h"
+#include "VoronoiVertexPy.h"
+
 
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string VoronoiPy::representation(void) const
+std::string VoronoiPy::representation() const
 {
   std::stringstream ss;
   ss.precision(5);
-  ss << "Voronoi("
+  ss << "VoronoiDiagram("
     << "{" << getVoronoiPtr()->numSegments() << ", " << getVoronoiPtr()->numPoints() << "}"
     << " -> "
     << "{" << getVoronoiPtr()->numCells() << ", " << getVoronoiPtr()->numEdges() << ", " << getVoronoiPtr()->numVertices() << "}"
@@ -92,7 +83,7 @@ Voronoi::point_type getPointFromPy(PyObject *obj) {
 }
 
 PyObject* VoronoiPy::addPoint(PyObject *args) {
-  PyObject *obj = 0;
+  PyObject *obj = nullptr;
   if (PyArg_ParseTuple(args, "O", &obj)) {
     getVoronoiPtr()->addPoint(getPointFromPy(obj));
   }
@@ -101,8 +92,8 @@ PyObject* VoronoiPy::addPoint(PyObject *args) {
 }
 
 PyObject* VoronoiPy::addSegment(PyObject *args) {
-  PyObject *objBegin = 0;
-  PyObject *objEnd   = 0;
+  PyObject *objBegin = nullptr;
+  PyObject *objEnd   = nullptr;
 
   if (PyArg_ParseTuple(args, "OO", &objBegin, &objEnd)) {
     auto p0 = getPointFromPy(objBegin);
@@ -147,7 +138,7 @@ PyObject* VoronoiPy::numVertices(PyObject *args)
   return PyLong_FromLong(getVoronoiPtr()->numVertices());
 }
 
-Py::List VoronoiPy::getVertices(void) const {
+Py::List VoronoiPy::getVertices() const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numVertices(); ++i) {
     list.append(Py::asObject(new VoronoiVertexPy(getVoronoiPtr()->create<VoronoiVertex>(i))));
@@ -155,7 +146,7 @@ Py::List VoronoiPy::getVertices(void) const {
   return list;
 }
 
-Py::List VoronoiPy::getEdges(void) const {
+Py::List VoronoiPy::getEdges() const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numEdges(); ++i) {
     list.append(Py::asObject(new VoronoiEdgePy(getVoronoiPtr()->create<VoronoiEdge>(i))));
@@ -163,7 +154,7 @@ Py::List VoronoiPy::getEdges(void) const {
   return list;
 }
 
-Py::List VoronoiPy::getCells(void) const {
+Py::List VoronoiPy::getCells() const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numCells(); ++i) {
     list.append(Py::asObject(new VoronoiCellPy(getVoronoiPtr()->create<VoronoiCell>(i))));
@@ -171,8 +162,8 @@ Py::List VoronoiPy::getCells(void) const {
   return list;
 }
 
-typedef std::map<uintptr_t,bool> exterior_map_t;
-typedef std::map<int32_t, std::set<int32_t> > coordinate_map_t;
+using exterior_map_t = std::map<uintptr_t,bool>;
+using coordinate_map_t = std::map<int32_t, std::set<int32_t> >;
 
 #define VORONOI_USE_EXTERIOR_CACHE 1
 
@@ -192,7 +183,7 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 #endif
       Py_DECREF(arglist);
       Py_DECREF(vx);
-      if (result == NULL) {
+      if (!result) {
         bail = true;
       } else {
         rc = result == Py_True;
@@ -212,7 +203,7 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 
 PyObject* VoronoiPy::colorExterior(PyObject *args) {
   Voronoi::color_type color = 0;
-  PyObject *callback = 0;
+  PyObject *callback = nullptr;
   if (!PyArg_ParseTuple(args, "k|O", &color, &callback)) {
     throw  Py::RuntimeError("colorExterior requires an integer (color) argument");
   }
@@ -241,7 +232,7 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
           }
         }
         if (bail) {
-          return NULL;
+          return nullptr;
         }
       }
     }
@@ -338,7 +329,7 @@ PyObject* VoronoiPy::numSegments(PyObject *args)
 
 PyObject *VoronoiPy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

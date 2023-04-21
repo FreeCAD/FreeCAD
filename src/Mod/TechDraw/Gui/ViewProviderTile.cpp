@@ -20,23 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/Selection.h>
-
 #include "ViewProviderTile.h"
 
 using namespace TechDrawGui;
@@ -53,30 +39,6 @@ ViewProviderTile::ViewProviderTile()
 
 ViewProviderTile::~ViewProviderTile()
 {
-}
-
-void ViewProviderTile::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderTile::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderTile::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
-void ViewProviderTile::updateData(const App::Property* prop)
-{
-    ViewProviderDocumentObject::updateData(prop);
 }
 
 //TechDraw::DrawTile* ViewProviderTile::getViewObject() const

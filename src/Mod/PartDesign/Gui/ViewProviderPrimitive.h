@@ -24,33 +24,31 @@
 #ifndef PARTGUI_ViewProviderPrimitive_H
 #define PARTGUI_ViewProviderPrimitive_H
 
-#include "ViewProvider.h"
 #include "ViewProviderAddSub.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPrimitive : public ViewProviderAddSub
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPrimitive);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPrimitive);
 
 public:
     /// constructor
     ViewProviderPrimitive();
     /// destructor
-    virtual ~ViewProviderPrimitive();
-    
-    virtual void attach(App::DocumentObject*);
-    virtual void updateData(const App::Property*);
-    
+    ~ViewProviderPrimitive() override;
+
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property*) override;
+
 protected:
-    virtual QIcon getIcon(void) const;
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual bool  setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    
+    QIcon getIcon(void) const override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool  setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+
     void updateAddSubShapeIndicator();
-    
+
     std::string                 displayMode;
 };
 

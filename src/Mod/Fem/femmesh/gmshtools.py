@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 
 import os
 import subprocess
-import sys
 
 import FreeCAD
 from FreeCAD import Console
@@ -319,8 +318,7 @@ class GmshTools():
                 p1 = subprocess.Popen(["which", "gmsh"], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     output = p1.stdout.read()
-                    if sys.version_info.major >= 3:
-                        output = output.decode("utf-8")
+                    output = output.decode("utf-8")
                     gmsh_path = output.split("\n")[0]
                 elif p1.wait() == 1:
                     error_message = (
@@ -330,6 +328,13 @@ class GmshTools():
                     )
                     Console.PrintError(error_message)
                     raise GmshError(error_message)
+                self.gmsh_bin = gmsh_path
+            elif system() == "Darwin":
+                # https://forum.freecadweb.org/viewtopic.php?f=13&t=73041&p=642026#p642022
+                gmsh_path = "/Applications/Gmsh.app/Contents/MacOS/gmsh"
+                FreeCAD.ParamGet(
+                    "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+                ).SetString("gmshBinaryPath", gmsh_path)
                 self.gmsh_bin = gmsh_path
             else:
                 error_message = (
@@ -389,11 +394,11 @@ class GmshTools():
                     self.group_elements[ge] = new_group_elements[ge]
                 else:
                     Console.PrintError("  A group with this name exists already.\n")
-        else:
-            Console.PrintMessage("  No Group meshing for analysis.\n")
+        # else:
+        #    Console.PrintMessage("  No Group meshing for analysis.\n")
 
-        if self.group_elements:
-            Console.PrintMessage("  {}\n".format(self.group_elements))
+        # if self.group_elements:
+        #    Console.PrintMessage("  {}\n".format(self.group_elements))
 
     def get_gmsh_version(self):
         self.get_gmsh_command()
@@ -412,7 +417,7 @@ class GmshTools():
                 shell=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                universal_newlines=True
             )
         except Exception as e:
             Console.PrintMessage(str(e) + "\n")
@@ -424,9 +429,10 @@ class GmshTools():
             Console.PrintError("Gmsh: StdErr:\n" + gmsh_stderr + "\n")
 
         from re import search
-        # TODO fix pep8
+        # use raw string mode to get pep8 quiet
         # https://stackoverflow.com/q/61497292
-        match = search("^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
+        # https://github.com/MathSci/fecon236/issues/6
+        match = search(r"^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
         # return (major, minor, patch), fullmessage
         if match:
             mess = found_message + "\n\n" + gmsh_stdout
@@ -441,7 +447,7 @@ class GmshTools():
             # print("  No mesh regions.")
             pass
         else:
-            Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
+            # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
@@ -455,17 +461,7 @@ class GmshTools():
                     or femutils.is_of_type(part, "FeatureXOR")
                 )
             ):
-                error_message = (
-                    "  The mesh to shape is a boolean split tools Compound "
-                    "and the mesh has mesh region list. "
-                    "Gmsh could return unexpected meshes in such circumstances. "
-                    "It is strongly recommended to extract the shape to mesh "
-                    "from the Compound and use this one."
-                )
-                Console.PrintError(error_message + "\n")
-                # TODO: no gui popup because FreeCAD will be in a endless output loop
-                #       as long as the pop up is on --> maybe find a better solution for
-                #       either of both --> thus the pop up is in task panel
+                self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
@@ -534,8 +530,8 @@ class GmshTools():
                 ele_shape = geomtools.get_element(self.part_obj, eleml)
                 ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-            Console.PrintMessage("  {}\n".format(self.ele_length_map))
-            Console.PrintMessage("  {}\n".format(self.ele_node_map))
+            # Console.PrintMessage("  {}\n".format(self.ele_length_map))
+            # Console.PrintMessage("  {}\n".format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer
@@ -547,16 +543,11 @@ class GmshTools():
             # print("  No mesh boundary layer setting document object.")
             pass
         else:
-            Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
+            # Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-                err = (
-                    "Gmsh could return unexpected meshes for a boolean split tools Compound. "
-                    "It is strongly recommended to extract the shape to mesh "
-                    "from the Compound and use this one."
-                )
-                Console.PrintError(err + "\n")
+                self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
@@ -732,6 +723,13 @@ class GmshTools():
         geo = open(self.temp_file_geo, "w")
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
+
+        cpu_count = os.cpu_count()
+        if cpu_count is not None and cpu_count > 1:
+            geo.write("// enable multi-core processing\n")
+            geo.write(f"General.NumThreads = {cpu_count};\n")
+            geo.write("\n")
+
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file
         geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
@@ -913,9 +911,7 @@ class GmshTools():
                 stderr=subprocess.PIPE
             )
             output, error = p.communicate()
-            if sys.version_info.major >= 3:
-                # output = output.decode("utf-8")
-                error = error.decode("utf-8")
+            error = error.decode("utf-8")
             # stdout is still cut at some point
             # but the warnings are in stderr and thus printed :-)
             # print(output)
@@ -948,6 +944,17 @@ class GmshTools():
             Console.PrintMessage("  New mesh was added to the mesh object.\n")
         else:
             Console.PrintError("No mesh was created.\n")
+
+    def outputCompoundWarning(self):
+        error_message = (
+            "The mesh to shape is a Boolean Split Tools compound "
+            "and the mesh has mesh region list.\n"
+            "Gmsh could return unexpected meshes in such circumstances.\n"
+            "If this is the case, use the part workbench and "
+            "apply a Compound Filter on the compound.\n"
+            "Use the Compound Filter as input for the mesh."
+        )
+        Console.PrintWarning(error_message + "\n")
 
 ##  @}
 
@@ -1010,7 +1017,7 @@ for len in max_mesh_sizes:
 """
 TODO
 class GmshTools should be splittet in two classes
-one class should only collect the mesh parameter from mesh object and his childs
+one class should only collect the mesh parameter from mesh object and its childs
 a second class only uses the collected parameter,
 writes the input file runs gmsh reads back the unv and returns a FemMesh
 gmsh binary will be collected in the second class

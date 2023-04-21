@@ -35,8 +35,8 @@ namespace Gui {
 class GuiExport ViewParams: public ParameterGrp::ObserverType {
 public:
     ViewParams();
-    virtual ~ViewParams();
-    void OnChange(Base::Subject<const char*> &, const char* sReason);
+    ~ViewParams() override;
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override;
     static ViewParams *instance();
 
     ParameterGrp::handle getHandle() {
@@ -54,12 +54,15 @@ public:
     FC_VIEW_PARAM(MarkerSize,int,Int,9) \
     FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFF00) \
     FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,421075455UL) \
+    FC_VIEW_PARAM(DefaultShapeVertexColor,unsigned long,Unsigned,421075455UL) \
     FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCC00) \
+    FC_VIEW_PARAM(DefaultShapeTransparency,int,Int,0)        \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
     FC_VIEW_PARAM(DefaultShapePointSize,int,Int,2) \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
+    FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

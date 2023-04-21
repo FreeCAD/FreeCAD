@@ -25,6 +25,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <QDialog>
 
 class SoGroup;
 class SoTexture2;
@@ -39,18 +40,18 @@ class GuiExport TextureMapping : public QDialog
     Q_OBJECT
 
 public:
-    TextureMapping(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~TextureMapping();
-    void accept();
-    void reject();
+    explicit TextureMapping(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~TextureMapping() override;
+    void accept() override;
+    void reject() override;
 
-private Q_SLOTS:
-    void on_fileChooser_fileNameSelected(const QString&);
-    void on_checkEnv_toggled(bool);
+private:
+    void onFileChooserFileNameSelected(const QString&);
+    void onCheckEnvToggled(bool);
 
 protected:
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent *e);
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
 
 private:
     SoGroup* grp;
@@ -66,13 +67,13 @@ class TaskTextureMapping : public Gui::TaskView::TaskDialog
 
 public:
     TaskTextureMapping();
-    ~TaskTextureMapping();
+    ~TaskTextureMapping() override;
 
 public:
-    bool accept();
-    bool reject();
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Close; }
 
 private:

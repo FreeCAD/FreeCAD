@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_DrawTemplate_h_
-#define _TECHDRAW_DrawTemplate_h_
+#ifndef TECHDRAW_DrawTemplate_h_
+#define TECHDRAW_DrawTemplate_h_
 
 #include <App/DocumentObject.h>
-
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDraw
 {
@@ -36,22 +36,20 @@ class DrawPage;
 
 class TechDrawExport DrawTemplate : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawTemplate);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTemplate);
 
 public:
     DrawTemplate(); /// Constructor
-    ~DrawTemplate();
+    ~DrawTemplate() override;
 
     // Page Physical Properties
     App::PropertyLength Width;
     App::PropertyLength Height;
     App::PropertyEnumeration Orientation;
-    //App::PropertyString PaperSize;
 
     App::PropertyMap EditableTexts;
 
 public:
-
     /// Returns template width in mm
     virtual double getWidth() const;
     /// Returns template height in mm
@@ -59,36 +57,23 @@ public:
 
     virtual DrawPage* getParentPage() const;
 
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    //@}
-
-
-    virtual short mustExecute() const;
-
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override{
         return "TechDrawGui::ViewProviderTemplate";
     }
 
     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
-
-protected:
-    void onChanged(const App::Property* prop);
+    virtual PyObject *getPyObject(void) override;
 
 private:
     static const char* OrientationEnums[];
 
 };
 
-typedef App::FeaturePythonT<DrawTemplate> DrawTemplatePython;
+using DrawTemplatePython = App::FeaturePythonT<DrawTemplate>;
 
 } //namespace TechDraw
 
 
 
-#endif //_TECHDRAW_DrawTemplate_h_
+#endif //TECHDRAW_DrawTemplate_h_

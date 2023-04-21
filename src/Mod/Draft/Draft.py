@@ -91,7 +91,9 @@ from draftutils.utils import (string_encode_coin,
                               svg_patterns,
                               svgpatterns,
                               get_rgb,
-                              getrgb)
+                              getrgb,
+                              argb_to_rgba,
+                              rgba_to_argb)
 
 from draftfunctions.svg import (get_svg,
                                 getSVG)
@@ -104,6 +106,7 @@ from draftutils.gui_utils import (get3DView,
                                   autogroup,
                                   removeHidden,
                                   remove_hidden,
+                                  get_diffuse_color,
                                   formatObject,
                                   format_object,
                                   getSelection,
@@ -120,9 +123,11 @@ from draftutils.gui_utils import (dim_symbol,
                                   dim_dash,
                                   dimDash)
 
-from draftutils.groups import (get_group_names,
+from draftutils.groups import (is_group,
+                               get_group_names,
                                getGroupNames,
                                ungroup,
+                               get_windows,
                                get_group_contents,
                                getGroupContents,
                                get_movable_children,
@@ -214,11 +219,7 @@ from draftmake.make_circle import (make_circle,
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
 
-# drawing: obsolete since Drawing was replaced by TechDraw
-from draftobjects.drawingview import (DrawingView,
-                                      _DrawingView)
-from draftmake.make_drawingview import (make_drawing_view,
-                                        makeDrawingView)
+
 
 # ellipse
 from draftobjects.ellipse import (Ellipse,
@@ -347,6 +348,8 @@ from draftobjects.shapestring import (ShapeString,
                                       _ShapeString)
 from draftmake.make_shapestring import (make_shapestring,
                                         makeShapeString)
+if App.GuiUp:
+    from draftviewproviders.view_shapestring import ViewProviderShapeString
 
 # shape 2d view
 from draftobjects.shape2dview import (Shape2DView,
@@ -421,5 +424,10 @@ from draftmake.make_text import (make_text,
 if App.GuiUp:
     from draftviewproviders.view_text import (ViewProviderText,
                                               ViewProviderDraftText)
+
+from draftobjects.hatch import (Hatch)
+from draftmake.make_hatch import (make_hatch)
+if App.GuiUp:
+    from draftviewproviders.view_hatch import (ViewProviderDraftHatch)
 
 ## @}

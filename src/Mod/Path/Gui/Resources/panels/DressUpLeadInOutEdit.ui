@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskPanel</class>
- <widget class="QWidget" name="TaskPanel">
+ <class>Path_DressupLeadInOut</class>
+ <widget class="QWidget" name="Path_DressupLeadInOut">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>LeadInOut</string>
+   <string notr="true">LeadInOut</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -36,8 +36,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>363</width>
-        <height>403</height>
+        <width>365</width>
+        <height>406</height>
        </rect>
       </property>
       <attribute name="label">
@@ -142,21 +142,6 @@
                     <height>16777215</height>
                    </size>
                   </property>
-                  <item>
-                   <property name="text">
-                    <string>Arc</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Tangent</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Perpendicular</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>
@@ -237,21 +222,6 @@
                     <height>16777215</height>
                    </size>
                   </property>
-                  <item>
-                   <property name="text">
-                    <string>Arc</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Tangent</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Perpendicular</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>
@@ -314,16 +284,6 @@
                 <height>16777215</height>
                </size>
               </property>
-              <item>
-               <property name="text">
-                <string>Radius</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Center</string>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>

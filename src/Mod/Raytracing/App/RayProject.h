@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _RayProject_h_
 #define _RayProject_h_
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
+#include <Mod/Raytracing/RaytracingGlobal.h>
+
 
 namespace Raytracing
 {
@@ -37,10 +35,9 @@ class Property;
 
 /** Base class of all Feature classes in FreeCAD
  */
-//class RayFeature: public Part::PartFeature
-class AppRaytracingExport RayProject: public App::DocumentObjectGroup
+class RaytracingExport RayProject: public App::DocumentObjectGroup
 {
-    PROPERTY_HEADER(Raytracing::RayProject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::RayProject);
 
 public:
     /// Constructor
@@ -54,13 +51,13 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    const char* getViewProviderName(void) const {
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
+    const char* getViewProviderName(void) const override {
         return "RaytracingGui::ViewProviderPovray";
     }
     /// get called after a document has been fully restored
-    virtual void onDocumentRestored();
+    void onDocumentRestored() override;
     //@}
 
 

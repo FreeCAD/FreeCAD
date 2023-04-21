@@ -23,12 +23,14 @@
 #ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 #define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 
-#include <QObject>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
+#include <QObject>
 #include <QPointF>
 
 #include "QGIHighlight.h"
+
 
 //a movable, selectable surrogate for detail highlights in QGIVPart
 
@@ -52,7 +54,6 @@ Q_SIGNALS:
     void positionChange(QPointF p);
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 

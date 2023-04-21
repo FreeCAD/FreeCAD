@@ -26,34 +26,47 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="buttonGroup1">
      <property name="title">
-      <string>Failures and errors</string>
+      <string>Test</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QHBoxLayout">
       <property name="margin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="0">
-       <widget class="QTreeWidget" name="treeViewFailure">
-        <property name="rootIsDecorated">
+      <item>
+       <widget class="QLabel" name="textLabelTest">
+        <property name="text">
+         <string>Select test name:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboTests">
+        <property name="sizePolicy">
+         <sizepolicy>
+          <hsizetype>3</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="duplicatesEnabled">
          <bool>false</bool>
         </property>
-        <column>
-         <property name="text">
-          <string>Description</string>
-         </property>
-        </column>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item rowspan="3" row="0" column="1">
+  <item rowspan="3" row="0" column="1">
     <layout class="QVBoxLayout">
      <property name="margin">
       <number>0</number>
@@ -150,19 +163,6 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QLabel" name="textLabelStatus">
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="text">
-      <string>Idle</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox1">
      <property name="title">
@@ -182,42 +182,15 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="7">
-       <widget class="QLabel" name="textLabelRemCt">
+      <item row="1" column="0">
+       <widget class="QLabel" name="textLabelRun">
         <property name="text">
-         <string notr="true">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignVCenter</set>
+         <string>Run:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="6">
-       <widget class="QLabel" name="textLabelRem">
-        <property name="text">
-         <string>Remaining:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="5">
-       <widget class="QLabel" name="textLabelErrCt">
-        <property name="text">
-         <string notr="true">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QLabel" name="textLabelErr">
-        <property name="text">
-         <string>Errors:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="textLabelFailCt">
+     <item row="1" column="1">
+       <widget class="QLabel" name="textLabelRunCt">
         <property name="text">
          <string notr="true">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</string>
         </property>
@@ -233,8 +206,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="textLabelRunCt">
+      <item row="1" column="3">
+       <widget class="QLabel" name="textLabelFailCt">
         <property name="text">
          <string notr="true">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</string>
         </property>
@@ -243,57 +216,84 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="textLabelRun">
+      <item row="1" column="4">
+       <widget class="QLabel" name="textLabelErr">
         <property name="text">
-         <string>Run:</string>
+         <string>Errors:</string>
         </property>
        </widget>
       </item>
-     </layout>
+      <item row="1" column="5">
+       <widget class="QLabel" name="textLabelErrCt">
+        <property name="text">
+         <string notr="true">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="QLabel" name="textLabelRem">
+        <property name="text">
+         <string>Remaining:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="7">
+       <widget class="QLabel" name="textLabelRemCt">
+        <property name="text">
+         <string notr="true">&lt;font color="#0000ff"&gt;0&lt;/font&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="buttonGroup1">
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox2">
      <property name="title">
-      <string>Test</string>
+      <string>Failures and errors</string>
      </property>
-     <layout class="QHBoxLayout">
+     <layout class="QGridLayout">
       <property name="margin">
-       <number>5</number>
+       <number>9</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item>
-       <widget class="QLabel" name="textLabelTest">
-        <property name="text">
-         <string>Select test name:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboTests">
-        <property name="sizePolicy">
-         <sizepolicy>
-          <hsizetype>3</hsizetype>
-          <vsizetype>0</vsizetype>
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <property name="duplicatesEnabled">
+      <item row="0" column="0">
+       <widget class="QTreeWidget" name="treeViewFailure">
+        <property name="rootIsDecorated">
          <bool>false</bool>
         </property>
+        <column>
+         <property name="text">
+          <string>Description</string>
+         </property>
+        </column>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-  </layout>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="textLabelStatus">
+     <property name="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <property name="text">
+      <string>Idle</string>
+     </property>
+    </widget>
+   </item>
+   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>

@@ -20,31 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Parab.hxx>
-# include <Geom_Parabola.hxx>
 # include <GC_MakeArcOfParabola.hxx>
-# include <gce_MakeParab.hxx>
+# include <Geom_Parabola.hxx>
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Geometry.h"
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.cpp>
-#include <Mod/Part/App/ParabolaPy.h>
+#include "ArcOfParabolaPy.h"
+#include "ArcOfParabolaPy.cpp"
+#include "ParabolaPy.h"
 #include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfParabolaPy::representation(void) const
+std::string ArcOfParabolaPy::representation() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfParabolaPtr()->handle());
@@ -56,22 +50,22 @@ std::string ArcOfParabolaPy::representation(void) const
     Standard_Real fFocal = parabola->Focal();
     Standard_Real u1 = trim->FirstParameter();
     Standard_Real u2 = trim->LastParameter();
-    
+
     gp_Dir normal = parabola->Axis().Direction();
     gp_Dir xdir = parabola->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(loc, normal); // this is a reference XY for the parabola
-    
+
     Standard_Real fAngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
+
 
     std::stringstream str;
     str << "ArcOfParabola (";
-    str << "Focal : " << fFocal << ", "; 
+    str << "Focal : " << fFocal << ", ";
     str << "AngleXU : " << fAngleXU << ", ";
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
+    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), ";
+    str << "Parameter : (" << u1 << ", " << u2 << ")";
     str << ")";
 
     return str.str();
@@ -79,7 +73,7 @@ std::string ArcOfParabolaPy::representation(void) const
 
 PyObject *ArcOfParabolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ArcOfParabolaPy and the Twin object 
+    // create a new instance of ArcOfParabolaPy and the Twin object
     return new ArcOfParabolaPy(new GeomArcOfParabola);
 }
 
@@ -93,7 +87,7 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast
                 (static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle());
-            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -111,16 +105,16 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfParabola constructor expects an parabola curve and a parameter range");
     return -1;
 }
 
-Py::Float ArcOfParabolaPy::getFocal(void) const
+Py::Float ArcOfParabolaPy::getFocal() const
 {
-    return Py::Float(getGeomArcOfParabolaPtr()->getFocal()); 
+    return Py::Float(getGeomArcOfParabolaPtr()->getFocal());
 }
 
 void  ArcOfParabolaPy::setFocal(Py::Float arg)
@@ -128,7 +122,7 @@ void  ArcOfParabolaPy::setFocal(Py::Float arg)
     getGeomArcOfParabolaPtr()->setFocal((double)arg);
 }
 
-Py::Object ArcOfParabolaPy::getParabola(void) const
+Py::Object ArcOfParabolaPy::getParabola() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfParabolaPtr()->handle());
@@ -138,10 +132,10 @@ Py::Object ArcOfParabolaPy::getParabola(void) const
 
 PyObject *ArcOfParabolaPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfParabolaPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

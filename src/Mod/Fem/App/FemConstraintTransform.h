@@ -29,13 +29,13 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintTransform : public Fem::Constraint
+class FemExport ConstraintTransform : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintTransform);
 
 public:
     /// Constructor
-    ConstraintTransform(void);
+    ConstraintTransform();
 
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyLinkSubList RefDispl;
@@ -44,21 +44,23 @@ public:
     App::PropertyVectorList Normals;
     App::PropertyVector BasePoint;
     App::PropertyVector Axis;
-    App::PropertyFloat X_rot;
-    App::PropertyFloat Y_rot;
-    App::PropertyFloat Z_rot;
+    App::PropertyAngle X_rot;
+    App::PropertyAngle Y_rot;
+    App::PropertyAngle Z_rot;
     App::PropertyEnumeration TransformType;
     //etc
 /* */
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 };
 

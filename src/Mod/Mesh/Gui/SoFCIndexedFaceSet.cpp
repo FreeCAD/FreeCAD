@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
+#  define GL_GLEXT_PROTOTYPES 1
 # endif
 #endif
 
@@ -33,17 +32,20 @@
 # include <algorithm>
 # include <climits>
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
-# include <OpenGL/glext.h>
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glext.h>
+#  include <OpenGL/glu.h>
 # else
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
+#  include <GL/gl.h>
+#  include <GL/glext.h>
+#  include <GL/glu.h>
 # endif
 # include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/elements/SoCoordinateElement.h>
+# include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoGLLazyElement.h>
 # include <Inventor/elements/SoMaterialBindingElement.h>
@@ -51,20 +53,18 @@
 # include <Inventor/elements/SoProjectionMatrixElement.h>
 # include <Inventor/elements/SoViewingMatrixElement.h>
 # include <Inventor/errors/SoDebugError.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 #endif
-
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoContextHandler.h>
 
+#include <Gui/GLBuffer.h>
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
-#include <Gui/GLBuffer.h>
+
 #include "SoFCIndexedFaceSet.h"
 
+
 #define RENDER_GL_VAO
-//#define RENDER_GLARRAYS
-
-
 
 using namespace MeshGui;
 
@@ -96,7 +96,7 @@ private:
 MeshRenderer::Private::Private()
   : vertices(GL_ARRAY_BUFFER)
   , indices(GL_ELEMENT_ARRAY_BUFFER)
-  , pcolors(0)
+  , pcolors(nullptr)
   , matbinding(SoMaterialBindingElement::OVERALL)
   , initialized(false)
 {
@@ -168,12 +168,12 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     indices.bind();
 
     if (matbinding != SoMaterialBindingElement::OVERALL)
-        glInterleavedArrays(GL_C4F_N3F_V3F, 0, 0);
+        glInterleavedArrays(GL_C4F_N3F_V3F, 0, nullptr);
     else
-        glInterleavedArrays(GL_N3F_V3F, 0, 0);
+        glInterleavedArrays(GL_N3F_V3F, 0, nullptr);
 
     glDrawElements(mode, indices.size() / sizeof(uint32_t),
-                   GL_UNSIGNED_INT, NULL);
+                   GL_UNSIGNED_INT, nullptr);
 
     vertices.release();
     indices.release();
@@ -255,30 +255,6 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction*,
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 {
-#if 0 // use Inventor's coordIndex saves memory but the rendering is very slow then
-    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-    PFNGLPRIMITIVERESTARTINDEXPROC glPrimitiveRestartIndex = (PFNGLPRIMITIVERESTARTINDEXPROC)
-        cc_glglue_getprocaddress(glue, "glPrimitiveRestartIndex");
-
-    int cnt = coordIndex.getNum();
-
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-    // https://www.opengl.org/discussion_boards/archive/index.php/t-180767.html
-    // https://www.khronos.org/opengl/wiki/Vertex_Rendering#Primitive_Restart
-    glPrimitiveRestartIndex(0xffffffff);
-    glEnable(GL_PRIMITIVE_RESTART);
-    //glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, coordIndex.getValues(0));
-
-    glDisable(GL_PRIMITIVE_RESTART);
-    //glDisable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-#else // Needs more memory but makes it very fast
     (void)action;
     int cnt = index_array.size();
 
@@ -293,7 +269,7 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-#endif
+
 }
 
 void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *)
@@ -382,7 +358,7 @@ void MeshRenderer::generateGLArrays(SoGLRenderAction* action, SoMaterialBindingE
 // ================================================
 // drawCoords (every 4th vertex)             | 20.0
 // renderCoordsGLArray (all vertexes)        | 20.0
-// 
+//
 void MeshRenderer::renderCoordsGLArray(SoGLRenderAction *action)
 {
     p->renderCoordsGLArray(action);
@@ -429,7 +405,7 @@ bool MeshRenderer::matchMaterial(SoState* state) const
     // the buffer doesn't contain color information
     if (matbind == SoMaterialBindingElement::OVERALL)
         return true;
-    const SbColor * pcolors = 0;
+    const SbColor * pcolors = nullptr;
     SoGLLazyElement* gl = SoGLLazyElement::getInstance(state);
     if (gl) {
         pcolors = gl->getDiffusePointer();
@@ -489,7 +465,7 @@ void SoFCIndexedFaceSet::initClass()
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
   : renderTriangleLimit(UINT_MAX)
-  , selectBuf(0)
+  , selectBuf(nullptr)
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
     SO_NODE_ADD_FIELD(updateGLArray, (false));
@@ -561,7 +537,7 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
     SbBool mode = Gui::SoFCInteractiveElement::get(state);
 
     unsigned int num = this->coordIndex.getNum()/4;
-    if (mode == false || num <= this->renderTriangleLimit) {
+    if (!mode || num <= this->renderTriangleLimit) {
 #ifdef RENDER_GLARRAYS
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
@@ -639,7 +615,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
                                     const SoTextureCoordinateBundle * const /*texcoords*/,
                                     const int32_t * /*texindices*/)
 {
-    const SbVec3f * coords3d = 0;
+    const SbVec3f * coords3d = nullptr;
     coords3d = vertexlist->getArrayPtr3();
 
     int mod = numindices/(4*this->renderTriangleLimit)+1;
@@ -716,8 +692,8 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
     const int32_t * cindices;
-    const SbColor * pcolors = 0;
-    const float * transp = 0;
+    const SbColor * pcolors = nullptr;
+    const float * transp = nullptr;
     int numindices, numcolors = 0, numtransp = 0;
     const int32_t * nindices;
     const int32_t * tindices;
@@ -905,7 +881,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
 {
     if (action->getTypeId() == Gui::SoGLSelectAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -915,7 +892,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);
@@ -927,7 +905,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
     }
     else if (action->getTypeId() == Gui::SoVisibleFaceAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -937,7 +916,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);
@@ -963,8 +943,8 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     int bufSize = 5*(this->coordIndex.getNum()/4); // make the buffer big enough
     this->selectBuf = new GLuint[bufSize];
 
-    SbMatrix view = SoViewingMatrixElement::get(action->getState());
-    SbMatrix proj = SoProjectionMatrixElement::get(action->getState());
+    SbMatrix view = SoViewingMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
+    SbMatrix proj = SoProjectionMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
 
     glSelectBuffer(bufSize, selectBuf);
     glRenderMode(GL_SELECT);
@@ -972,15 +952,13 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     glInitNames();
     glPushName(-1);
 
-    //double mp[16];
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT,viewport);
     glMatrixMode(GL_PROJECTION);
-    //glGetDoublev(GL_PROJECTION_MATRIX ,mp);
+
     glPushMatrix();
     glLoadIdentity();
-    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1#post1259884
-    //gluPickMatrix(x, y, w, h, viewport);
+
     if (w > 0 && h > 0) {
         glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w, (viewport[3] - 2 * (y - viewport[1])) / h, 0);
         glScalef(viewport[2] / w, viewport[3] / h, 1.0);
@@ -1013,7 +991,7 @@ void SoFCIndexedFaceSet::stopSelection(SoAction * action)
     }
 
     delete [] selectBuf;
-    selectBuf = 0;
+    selectBuf = nullptr;
     std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);
@@ -1046,8 +1024,8 @@ void SoFCIndexedFaceSet::renderSelectionGeometry(const SbVec3f * coords3d)
 
 void SoFCIndexedFaceSet::startVisibility(SoAction * action)
 {
-    SbMatrix view = SoViewingMatrixElement::get(action->getState());
-    SbMatrix proj = SoProjectionMatrixElement::get(action->getState());
+    SbMatrix view = SoViewingMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
+    SbMatrix proj = SoProjectionMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -1070,11 +1048,6 @@ void SoFCIndexedFaceSet::stopVisibility(SoAction * /*action*/)
 
 void SoFCIndexedFaceSet::renderVisibleFaces(const SbVec3f * coords3d)
 {
-    //GLint redBits, greenBits, blueBits;
-
-    //glGetIntegerv (GL_RED_BITS, &redBits);
-    //glGetIntegerv (GL_GREEN_BITS, &greenBits);
-    //glGetIntegerv (GL_BLUE_BITS, &blueBits);
     glDisable (GL_BLEND);
     glDisable (GL_DITHER);
     glDisable (GL_FOG);

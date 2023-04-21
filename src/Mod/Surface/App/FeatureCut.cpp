@@ -22,20 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <Precision.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include "FeatureCut.h"
-#include <BRepAlgoAPI_Cut.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+
 
 using namespace Surface;
 
@@ -43,7 +34,7 @@ PROPERTY_SOURCE(Surface::Cut, Part::Feature)
 
 Cut::Cut()
 {
-    ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
+    ADD_PROPERTY(ShapeList,(nullptr,"TopoDS_Shape"));
     ShapeList.setScope(App::LinkScope::Global);
 }
 
@@ -56,7 +47,7 @@ short Cut::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Cut::execute(void)
+App::DocumentObjectExecReturn *Cut::execute()
 {
     //Perform error checking
 
@@ -95,7 +86,7 @@ App::DocumentObjectExecReturn *Cut::execute(void)
         }
 
         this->Shape.setValue(aCutShape);
-        return 0;
+        return nullptr;
     }
     catch (Standard_Failure& e) {
 

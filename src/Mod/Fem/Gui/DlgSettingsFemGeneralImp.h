@@ -22,12 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMGENERALIMP_H
 #define FEMGUI_DLGSETTINGSFEMGENERALIMP_H
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+#include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 class Ui_DlgSettingsFemGeneralImp;
@@ -36,13 +36,13 @@ class DlgSettingsFemGeneralImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemGeneralImp( QWidget* parent = 0 );
-    ~DlgSettingsFemGeneralImp();
+    explicit DlgSettingsFemGeneralImp( QWidget* parent = nullptr );
+    ~DlgSettingsFemGeneralImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemGeneralImp> ui;

@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskRobotMessages_H
 #define GUI_TASKVIEW_TaskRobotMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskRobotMessages;
@@ -50,8 +46,8 @@ class TaskRobotMessages : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskRobotMessages(Robot::RobotObject *pcRobotObject,QWidget *parent = 0);
-    ~TaskRobotMessages();
+    explicit TaskRobotMessages(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
+    ~TaskRobotMessages() override;
 
 private Q_SLOTS:
     

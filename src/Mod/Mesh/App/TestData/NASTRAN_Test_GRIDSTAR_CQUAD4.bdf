@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------
+$       Nastran case control file                                               
+$ Part of the FreeCAD unit test system.
+$ This cases uses the high-prevision 16-char width GRID* element with no
+$ delimiter.
+$-------------------------------------------------------------------------------
+$       Exec control section                                                    
+$-------------------------------------------------------------------------------
+ID    TESTCASE,Nastran
+APP   DISP    
+SOL   1       
+TIME  20      
+CEND
+$-------------------------------------------------------------------------------
+$       Case control section                                                    
+$-------------------------------------------------------------------------------
+MAXLINES    = 1000000
+TITLE    = TESTCASE                                   
+SUBTITLE = Test case for FreeCAD Mesh NASTRAN input         
+
+GRID*    1                              0.00000000000000-1.
+*        0.
+GRID*    2                              1.00000000000000-1.
+*        0.
+GRID*    3                              0.000000000000001.
+*        0.
+GRID*    4                              1.000000000000001.
+*        0.
+CQUAD4  1       400     1       2       4       3       

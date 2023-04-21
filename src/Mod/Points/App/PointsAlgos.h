@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _PointsAlgos_h_
 #define _PointsAlgos_h_
 
+#include <Eigen/Core>
+
 #include "Points.h"
 #include "Properties.h"
-#include <Eigen/Core>
+
 
 namespace Points
 {
@@ -76,16 +77,16 @@ class AscReader : public Reader
 {
 public:
     AscReader();
-    ~AscReader();
-    void read(const std::string& filename);
+    ~AscReader() override;
+    void read(const std::string& filename) override;
 };
 
 class PlyReader : public Reader
 {
 public:
     PlyReader();
-    ~PlyReader();
-    void read(const std::string& filename);
+    ~PlyReader() override;
+    void read(const std::string& filename) override;
 
 private:
     std::size_t readHeader(std::istream&, std::string& format, std::size_t& offset,
@@ -102,8 +103,8 @@ class PcdReader : public Reader
 {
 public:
     PcdReader();
-    ~PcdReader();
-    void read(const std::string& filename);
+    ~PcdReader() override;
+    void read(const std::string& filename) override;
 
 private:
     std::size_t readHeader(std::istream&, std::string& format, std::vector<std::string>& fields,
@@ -115,10 +116,21 @@ private:
         Eigen::MatrixXd& data);
 };
 
+class E57Reader : public Reader
+{
+public:
+    E57Reader(const bool& Color, const bool& State, const float& Distance);
+    ~E57Reader() override;
+    void read(const std::string& filename) override;
+protected:
+    bool useColor, checkState;
+    float minDistance;
+};
+
 class Writer
 {
 public:
-    Writer(const PointKernel&);
+    explicit Writer(const PointKernel&);
     virtual ~Writer();
     virtual void write(const std::string& filename) = 0;
 
@@ -141,28 +153,28 @@ protected:
 class AscWriter : public Writer
 {
 public:
-    AscWriter(const PointKernel&);
-    ~AscWriter();
-    void write(const std::string& filename);
+    explicit AscWriter(const PointKernel&);
+    ~AscWriter() override;
+    void write(const std::string& filename) override;
 };
 
 class PlyWriter : public Writer
 {
 public:
-    PlyWriter(const PointKernel&);
-    ~PlyWriter();
-    void write(const std::string& filename);
+    explicit PlyWriter(const PointKernel&);
+    ~PlyWriter() override;
+    void write(const std::string& filename) override;
 };
 
 class PcdWriter : public Writer
 {
 public:
-    PcdWriter(const PointKernel&);
-    ~PcdWriter();
-    void write(const std::string& filename);
+    explicit PcdWriter(const PointKernel&);
+    ~PcdWriter() override;
+    void write(const std::string& filename) override;
 };
 
 } // namespace Points
 
 
-#endif 
+#endif

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QContextMenuEvent>
@@ -30,17 +29,14 @@
 # include <QTextCursor>
 #endif
 
+#include <Base/Parameter.h>
+
 #include "PythonEditor.h"
-#include "PythonDebugger.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Macro.h"
-#include "FileDialog.h"
-#include "DlgEditorImp.h"
+#include "PythonDebugger.h"
 
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 
 using namespace Gui;
 
@@ -76,22 +72,19 @@ PythonEditor::PythonEditor(QWidget* parent)
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
     // set acelerators
-    QShortcut* comment = new QShortcut(this);
-    comment->setKey(Qt::ALT + Qt::Key_C);
+    auto comment = new QShortcut(this);
+    comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
 
-    QShortcut* uncomment = new QShortcut(this);
-    uncomment->setKey(Qt::ALT + Qt::Key_U);
+    auto uncomment = new QShortcut(this);
+    uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
 
-    connect(comment, SIGNAL(activated()),
-            this, SLOT(onComment()));
-    connect(uncomment, SIGNAL(activated()),
-            this, SLOT(onUncomment()));
+    connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
+    connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
 }
 
 /** Destroys the object and frees any allocated resources */
 PythonEditor::~PythonEditor()
 {
-    getWindowParameter()->Detach( this );
     delete d;
 }
 
@@ -157,8 +150,8 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* menu = createStandardContextMenu();
     if (!isReadOnly()) {
         menu->addSeparator();
-        menu->addAction( tr("Comment"), this, SLOT( onComment() ), Qt::ALT + Qt::Key_C );
-        menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), Qt::ALT + Qt::Key_U );
+        menu->addAction( tr("Comment"), this, &PythonEditor::onComment, QKeySequence(QString::fromLatin1("ALT+C")));
+        menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment, QKeySequence(QString::fromLatin1("ALT+U")));
     }
 
     menu->exec(e->globalPos());
@@ -227,16 +220,18 @@ public:
                  << QLatin1String("def") << QLatin1String("del")
                  << QLatin1String("elif") << QLatin1String("else")
                  << QLatin1String("except") << QLatin1String("exec")
-                 << QLatin1String("finally") << QLatin1String("for")
-                 << QLatin1String("from") << QLatin1String("global")
-                 << QLatin1String("if") << QLatin1String("import")
-                 << QLatin1String("in") << QLatin1String("is")
-                 << QLatin1String("lambda") << QLatin1String("None")
+                 << QLatin1String("False") << QLatin1String("finally")
+                 << QLatin1String("for") << QLatin1String("from")
+                 << QLatin1String("global") << QLatin1String("if")
+                 << QLatin1String("import") << QLatin1String("in")
+                 << QLatin1String("is") << QLatin1String("lambda")
+                 << QLatin1String("None") << QLatin1String("nonlocal")
                  << QLatin1String("not") << QLatin1String("or")
                  << QLatin1String("pass") << QLatin1String("print")
                  << QLatin1String("raise") << QLatin1String("return")
-                 << QLatin1String("try") << QLatin1String("while")
-                 << QLatin1String("with") << QLatin1String("yield");
+                 << QLatin1String("True") << QLatin1String("try")
+                 << QLatin1String("while") << QLatin1String("with")
+                 << QLatin1String("yield");
     }
 
     QStringList keywords;

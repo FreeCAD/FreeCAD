@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Verrete guidati nell'installazione di $(^NameDA)
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Compilazione degli script Python in corso..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Crea icona sul desktop"
-${LangFileString} TEXT_FINISH_WEBSITE "Visitate freecadweb.org per ultime novità, aiuto e suggerimenti"
+${LangFileString} TEXT_FINISH_WEBSITE "Visitate freecad.org per ultime novità, aiuto e suggerimenti"
 
 #${LangFileString} FileTypeTitle "Documento di FreeCAD"
 

@@ -20,23 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QTextStream>
+# include <QTreeWidget>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopoDS_Iterator.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
+# include <TopoDS_Iterator.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include "ui_TaskLoft.h"
-#include "TaskLoft.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -44,12 +43,10 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskLoft.h"
+#include "ui_TaskLoft.h"
 
 
 using namespace PartGui;
@@ -80,10 +77,10 @@ LoftWidget::LoftWidget(QWidget* parent)
     d->ui.selector->setAvailableLabel(tr("Available profiles"));
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
 
-    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &LoftWidget::onCurrentItemChanged);
+    connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &LoftWidget::onCurrentItemChanged);
 
     findShapes();
 }
@@ -97,13 +94,18 @@ void LoftWidget::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui)
+        return;
     d->document = activeDoc->getName();
 
-    std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        TopoDS_Shape shape = (*it)->Shape.getValue();
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+        if (topoShape.isNull()) {
+            continue;
+        }
+        TopoDS_Shape shape = topoShape.getShape();
         if (shape.IsNull()) continue;
 
         // also allow compounds with a single face, wire or vertex or
@@ -143,7 +145,6 @@ void LoftWidget::findShapes()
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
@@ -194,7 +195,7 @@ bool LoftWidget::accept()
             "App.getDocument('%5').ActiveObject.Solid=%2\n"
             "App.getDocument('%5').ActiveObject.Ruled=%3\n"
             "App.getDocument('%5').ActiveObject.Closed=%4\n"
-            ).arg(list).arg(solid).arg(ruled).arg(closed).arg(QString::fromLatin1(d->document.c_str()));
+            ).arg(list, solid, ruled, closed, QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc)
@@ -253,7 +254,7 @@ TaskLoft::TaskLoft()
     widget = new LoftWidget();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Loft"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

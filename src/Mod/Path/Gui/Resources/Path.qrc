@@ -14,6 +14,7 @@
         <file>icons/Path_BStep.svg</file>
         <file>icons/Path_BStop.svg</file>
         <file>icons/Path_BaseGeometry.svg</file>
+        <file>icons/Path_Camotics.svg</file>
         <file>icons/Path_Comment.svg</file>
         <file>icons/Path_Compound.svg</file>
         <file>icons/Path_Contour.svg</file>
@@ -85,7 +86,6 @@
         <file>icons/edge-join-round.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/AxisMapEdit.ui</file>
-        <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
@@ -105,6 +105,7 @@
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageDiametersEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageOpAdaptiveEdit.ui</file>
         <file>panels/PageOpCustomEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>
         <file>panels/PageOpDrillingEdit.ui</file>
@@ -128,8 +129,7 @@
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
         <file>panels/ToolBitSelector.ui</file>
-        <file>panels/ToolEditor.ui</file>
-        <file>panels/ToolLibraryEditor.ui</file>
+        <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
         <file>preferences/Advanced.ui</file>
@@ -172,5 +172,10 @@
         <file>translations/Path_vi.qm</file>
         <file>translations/Path_zh-CN.qm</file>
         <file>translations/Path_zh-TW.qm</file>
+        <file>translations/Path_es-AR.qm</file>
+        <file>translations/Path_bg.qm</file>
+        <file>translations/Path_ka.qm</file>
+        <file>translations/Path_sr-CS.qm</file>
+        <file>translations/Path_be.qm</file>
     </qresource>
 </RCC>

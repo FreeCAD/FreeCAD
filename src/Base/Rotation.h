@@ -25,6 +25,9 @@
 #define BASE_ROTATION_H
 
 #include "Vector3D.h"
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 
@@ -47,7 +50,7 @@ public:
 
     /** Methods to get or set rotations. */
     //@{
-    const double * getValue(void) const;
+    const double * getValue() const;
     void getValue(double & q0, double & q1, double & q2, double & q3) const;
     void setValue(const double q0, const double q1, const double q2, const double q3);
     /// If not a null quaternion then \a axis will be normalized
@@ -63,14 +66,64 @@ public:
     void setYawPitchRoll(double y, double p, double r);
     /// Euler angles in yaw,pitch,roll notation
     void getYawPitchRoll(double& y, double& p, double& r) const;
+
+    enum EulerSequence
+    {
+        Invalid,
+
+        //! Classic Euler angles, alias to Intrinsic_ZXZ
+        EulerAngles,
+
+        //! Yaw Pitch Roll (or nautical) angles, alias to Intrinsic_ZYX
+        YawPitchRoll,
+
+        // Tait-Bryan angles (using three different axes)
+        Extrinsic_XYZ,
+        Extrinsic_XZY,
+        Extrinsic_YZX,
+        Extrinsic_YXZ,
+        Extrinsic_ZXY,
+        Extrinsic_ZYX,
+
+        Intrinsic_XYZ,
+        Intrinsic_XZY,
+        Intrinsic_YZX,
+        Intrinsic_YXZ,
+        Intrinsic_ZXY,
+        Intrinsic_ZYX,
+
+        // Proper Euler angles (using two different axes, first and third the same)
+        Extrinsic_XYX,
+        Extrinsic_XZX,
+        Extrinsic_YZY,
+        Extrinsic_YXY,
+        Extrinsic_ZYZ,
+        Extrinsic_ZXZ,
+
+        Intrinsic_XYX,
+        Intrinsic_XZX,
+        Intrinsic_YZY,
+        Intrinsic_YXY,
+        Intrinsic_ZXZ,
+        Intrinsic_ZYZ,
+
+        EulerSequenceLast,
+    };
+    static const char *eulerSequenceName(EulerSequence seq);
+    static EulerSequence eulerSequenceFromName(const char *name);
+    void getEulerAngles(EulerSequence seq, double &alpha, double &beta, double &gamma) const;
+    void setEulerAngles(EulerSequence seq, double alpha, double beta, double gamma);
     bool isIdentity() const;
+    bool isIdentity(double tol) const;
     bool isNull() const;
+    bool isSame(const Rotation&) const;
+    bool isSame(const Rotation&, double tol) const;
     //@}
 
     /** Invert rotations. */
     //@{
-    Rotation & invert(void);
-    Rotation inverse(void) const;
+    Rotation & invert();
+    Rotation inverse() const;
     //@}
 
     /** Operators. */
@@ -83,16 +136,19 @@ public:
     const double & operator [] (unsigned short usIndex) const{return quat[usIndex];}
     void operator = (const Rotation&);
 
+    Rotation& multRight(const Base::Rotation& q);
+    Rotation& multLeft(const Base::Rotation& q);
+
     void multVec(const Vector3d & src, Vector3d & dst) const;
     Vector3d multVec(const Vector3d & src) const;
+    void multVec(const Vector3f & src, Vector3f & dst) const;
+    Vector3f multVec(const Vector3f & src) const;
     void scaleAngle(const double scaleFactor);
-    bool isSame(const Rotation&) const;
-    bool isSame(const Rotation&, double tol) const;
     //@}
 
     /** Specialty constructors */
     static Rotation slerp(const Rotation & rot0, const Rotation & rot1, double t);
-    static Rotation identity(void);
+    static Rotation identity();
 
     /**
      * @brief makeRotationByAxes(xdir, ydir, zdir, priorityOrder): creates a rotation

@@ -38,14 +38,14 @@
 #include "CXX/WrapPython.h"
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
-PyObject py_object_initializer = 
+PyObject py_object_initializer =
     {
     _PyObject_EXTRA_INIT
-    1, 
+    1,
     NULL    // type must be init'ed by user
     };
 

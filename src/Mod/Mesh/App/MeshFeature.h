@@ -20,17 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_FEATURE_H
 #define MESH_FEATURE_H
 
-#include <App/GeoFeature.h>
+#include <App/GeoFeature.h> // must be before FeatureCustom.h
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 
 #include "Core/MeshKernel.h"
+
 #include "Mesh.h"
 #include "MeshProperties.h"
+
 
 namespace Base{
   class XMLReader;
@@ -53,12 +54,12 @@ class MeshFeaturePy;
  */
 class MeshExport Feature : public App::GeoFeature
 {
-    PROPERTY_HEADER(Mesh::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Feature);
 
 public:
     /// Constructor
-    Feature(void);
-    virtual ~Feature();
+    Feature();
+    ~Feature() override;
 
     /** @name Properties */
     //@{
@@ -69,27 +70,27 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
+    App::DocumentObjectExecReturn *execute() override;
+    void onChanged(const App::Property* prop) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "MeshGui::ViewProviderMeshFaceSet";
     }
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override {
         return &Mesh;
     }
 
     /// handles the MeshPy object
-    virtual PyObject* getPyObject(void);
+    PyObject* getPyObject() override;
 };
 
-typedef App::FeatureCustomT<Feature> FeatureCustom;
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeatureCustom = App::FeatureCustomT<Feature>;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 } //namespace Mesh
 
 
 
-#endif 
+#endif

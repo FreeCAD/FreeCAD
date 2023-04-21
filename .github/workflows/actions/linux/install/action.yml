@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+name: install
+description: "Linux: install application"
+
+inputs:
+  builddir:
+    description: "Directory where build is stored"
+    required: true
+  logFile:
+    description: "Path for log file"
+    required: true
+  errorFile:
+    description: "Path to error file"
+    required: true
+  reportFile:
+    description: "Path for report file"
+    required: true
+  extraParameters:
+    description: "Extra parameters to CMake install"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install
+      id: install
+      shell: bash
+      run: |
+        (stdbuf -oL -eL sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }}) \
+        2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
+    - name: Write report
+      shell: bash
+      if: always()
+      run: |
+        if [ ${{ steps.install.outcome }} == 'success' ]
+        then
+          echo "<details><summary>:heavy_check_mark: CMake install succeeded</summary>" >> ${{ inputs.reportFile }}
+        else
+          echo "<details><summary>:fire: CMake install failed</summary>" >> ${{ inputs.reportFile }}
+        fi
+        echo "" >> ${{ inputs.reportFile }}
+        echo "Install Error Log (stderr output):" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        cat ${{ inputs.errorFile }} >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        echo "Install Error Log (stdout output trimmed to the last 100 Lines):" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        tail -n 100 ${{ inputs.logFile }} >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        echo "</details>">> ${{ inputs.reportFile }}
+        echo "" >> ${{ inputs.reportFile }}

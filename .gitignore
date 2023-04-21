@@ -1,16 +1,22 @@
 # file types to ignore
-
+.*
+!/.gitignore
+!/.clang-format
+!/.git-blame-ignore-revs
+!/.gitattributes
 *.DS_Store
 *.pyc
 *.obj
 *.lib
 *.pch
 *.vcproj
+*.kdev4
 *.exp
 *.dep
 *.manifest
 *.o
 *.orig
+*.output
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake
@@ -34,10 +40,10 @@ install_manifest.txt
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
 OpenSCAD_rc.py
-/\.idea/
-.tags
 tags
-/\.vscode/
 
 # crowdin file
 src/Tools/freecad.zip
+tsupdate_stderr.log
+tsupdate_stdout.log
+files_to_translate.txt

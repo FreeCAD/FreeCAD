@@ -20,32 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_RectangularTrimmedSurface.hxx>
-# include <Geom_Curve.hxx>
 #endif
 
-#include "Mod/Part/App/Geometry.h"
 #include "OCCError.h"
 
 // inclusion of the generated files (generated out of RectangularTrimmedSurfacePy.xml)
+#include "GeometryCurvePy.h"
 #include "RectangularTrimmedSurfacePy.h"
 #include "RectangularTrimmedSurfacePy.cpp"
-#include "GeometryCurvePy.h"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string RectangularTrimmedSurfacePy::representation(void) const
+std::string RectangularTrimmedSurfacePy::representation() const
 {
     return std::string("<RectangularTrimmedSurface object>");
 }
 
 PyObject *RectangularTrimmedSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
-    // create a new instance of RectangularTrimmedSurfacePy and the Twin object 
+    // create a new instance of RectangularTrimmedSurfacePy and the Twin object
     return new RectangularTrimmedSurfacePy(new GeomTrimmedSurface);
 }
 
@@ -61,8 +59,8 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surf)->
                 getGeomSurfacePtr()->handle()),
             u1, u2, v1, v2,
-            PyObject_IsTrue(usense) ? Standard_True : Standard_False,
-            PyObject_IsTrue(vsense) ? Standard_True : Standard_False
+            Base::asBoolean(usense),
+            Base::asBoolean(vsense)
         ));
         return 0;
     }
@@ -72,8 +70,8 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject *utrim=Py_False, *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!ddO!|O!",&(Part::GeometrySurfacePy::Type),&surf,
                          &param1,&param2,&PyBool_Type,&utrim,&PyBool_Type,&sense)) {
-        Standard_Boolean UTrim = PyObject_IsTrue(utrim) ? Standard_True : Standard_False;
-        Standard_Boolean Sense = PyObject_IsTrue(sense) ? Standard_True : Standard_False;
+        Standard_Boolean UTrim = Base::asBoolean(utrim);
+        Standard_Boolean Sense = Base::asBoolean(sense);
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
             Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surf)->
                 getGeomSurfacePtr()->handle()),
@@ -123,10 +121,10 @@ Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
 
 PyObject *RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int RectangularTrimmedSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

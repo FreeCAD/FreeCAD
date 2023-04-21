@@ -32,15 +32,15 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintInitialTemperature : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintInitialTemperature);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintInitialTemperature);
 
 public:
     ViewProviderFemConstraintInitialTemperature();
-    virtual ~ViewProviderFemConstraintInitialTemperature();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintInitialTemperature() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

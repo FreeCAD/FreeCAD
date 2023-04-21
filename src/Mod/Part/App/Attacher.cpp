@@ -22,50 +22,50 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
-# include <gp_Pln.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepGProp.hxx>
+# include <BRepIntCurveSurface_Inter.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <Geom_Plane.hxx>
+# include <GeomAdaptor.hxx>
+# include <GeomAPI.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <gp_Ax1.hxx>
-# include <gp_Pnt.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Elips.hxx>
-# include <gp_Parab.hxx>
 # include <gp_Hypr.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_Curve.hxx>
-# include <Geom2dAPI_InterCurveCurve.hxx>
-# include <Geom2dAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI.hxx>
-# include <GeomAdaptor.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepIntCurveSurface_Inter.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <ShapeExtend_Explorer.hxx>
+# include <gp_Parab.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PGProps.hxx>
 # include <GProp_PrincipalProps.hxx>
-# include <BRepGProp.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 #endif
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/OriginFeature.h>
+#include <Base/Console.h>
 
 #include "Attacher.h"
 #include "AttachExtension.h"
-#include <Base/Console.h>
-#include <App/OriginFeature.h>
-#include <App/Application.h>
-#include <App/Document.h>
+#include "Tools.h"
+
 
 using namespace Part;
 using namespace Attacher;
@@ -132,7 +132,7 @@ const char* AttachEngine::eMapModeStrings[]= {
     "OYZ",
     "OYX",
 
-    NULL};
+    nullptr};
 
 //this list must be in sync with eRefType enum.
 //These strings are used only by Py interface of Attacher. Strings for use in Gui are in Mod/Part/Gui/AttacherTexts.cpp
@@ -160,7 +160,7 @@ const char* AttachEngine::eRefTypeStrings[]= {
     "Object",
     "Solid",
     "Wire",
-    NULL
+    nullptr
 };
 
 
@@ -398,7 +398,7 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
                 }
             }
             if (score > 0){
-                if(mlist.size() == 0)
+                if(mlist.empty())
                     mlist.push_back(eMapMode(iMode));
                 else if (mlist.back() != eMapMode(iMode))
                     mlist.push_back(eMapMode(iMode));
@@ -413,7 +413,7 @@ void AttachEngine::EnableAllSupportedModes()
     this->modeEnabled.resize(mmDummy_NumberOfModes,false);
     assert(modeRefTypes.size() > 0);
     for (std::size_t i = 0; i < this->modeEnabled.size(); i++) {
-        modeEnabled[i] = modeRefTypes[i].size() > 0;
+        modeEnabled[i] = !modeRefTypes[i].empty();
     }
 }
 
@@ -432,7 +432,8 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
     case TopAbs_COMPOUND:{
         const TopoDS_Compound &cmpd = TopoDS::Compound(sh);
         TopoDS_Iterator it (cmpd, Standard_False, Standard_False);//don't mess with placements, to hopefully increase speed
-        if (! it.More()) return rtAnything;//empty compound
+        if (! it.More())//empty compound
+            return rtAnything;
         const TopoDS_Shape &sh1 = it.Value();
         it.Next();
         if (it.More()){
@@ -493,10 +494,8 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
         case GeomAbs_BezierCurve:
         case GeomAbs_BSplineCurve:
         case GeomAbs_OtherCurve:
-#if OCC_VERSION_HEX >= 0x070000
         case GeomAbs_OffsetCurve:
-#endif
-            return rtCurve;
+        return rtCurve;
         }
     }break;
     case TopAbs_WIRE:
@@ -989,7 +988,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
     std::vector<eRefType> types;
     readLinks(this->references, parts, shapes, copiedShapeStorage, types);
 
-    if (parts.size() == 0)
+    if (parts.empty())
         throw ExceptionCancel();
 
 
@@ -1011,7 +1010,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         //should have been filtered out already!
         break;
     case mmTranslate:{
-        if (shapes.size() < 1)
+        if (shapes.empty())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
         const TopoDS_Shape &sh = *shapes[0];
         if (sh.IsNull())
@@ -1117,7 +1116,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         SketchBasePoint = gpr.CentreOfMass();
     }break;
     case mmFlatFace:{
-        if (shapes.size() < 1)
+        if (shapes.empty())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (needed one planar face).");
 
         const TopoDS_Face &face = TopoDS::Face(*(shapes[0]));
@@ -1177,7 +1176,6 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         if (vertex.IsNull())
             throw Base::ValueError("Null vertex in AttachEngine3D::calculateAttachedPlacement()!");
 
-        BRepAdaptor_Surface surf (face);
         Handle (Geom_Surface) hSurf = BRep_Tool::Surface(face);
         gp_Pnt p = BRep_Tool::Pnt(vertex);
 
@@ -1185,19 +1183,33 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         double u, v;
         if (projector.NbPoints()==0)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: projecting point onto surface failed.");
+
         projector.LowerDistanceParameters(u, v);
-
-        BRepLProp_SLProps prop(surf,u,v,1, Precision::Confusion());
-        SketchNormal = prop.Normal();
-
+        BRepAdaptor_Surface surf(face);
+        BRepLProp_SLProps prop(surf, u, v, 1, Precision::Confusion());
         gp_Dir dirX;
-        prop.TangentU(dirX); //if normal is defined, this should be defined too
+        Standard_Boolean done;
+
+        Tools::getNormal(face, u, v, Precision::Confusion(), SketchNormal, done);
+
+        if (!done)
+            throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: finding normal to surface at projected point failed.");
+
+        // if getNormal succeeds, at least one of the tangent is defined
+        if (prop.IsTangentUDefined()) {
+            prop.TangentU(dirX);
+            if (face.Orientation() == TopAbs_REVERSED)
+                dirX.Reverse();
+        }
+        // here the orientation of dirX is managed by SketchNormal orientation
+        else {
+            gp_Dir dirY;
+            prop.TangentV(dirY);
+            dirX = dirY.Crossed(SketchNormal);
+        }
+
         SketchXAxis = gp_Vec(dirX).Reversed();//yields upside-down sketches less often.
 
-        if (face.Orientation() == TopAbs_REVERSED) {
-            SketchNormal.Reverse();
-            SketchXAxis.Reverse();
-        }
         if (bThruVertex) {
             SketchBasePoint = p;
         } else {
@@ -1210,7 +1222,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
     case mmFrenetTB:
     case mmRevolutionSection:
     case mmConcentric: {//all alignments to point on curve
-        if (shapes.size() < 1)
+        if (shapes.empty())
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subshapes specified (need one edge, and an optional vertex).");
 
         bool bThruVertex = false;
@@ -1744,7 +1756,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         std::vector<eRefType> types;
         readLinks(this->references, parts, shapes, copiedShapeStorage, types);
 
-        if (parts.size() == 0)
+        if (parts.empty())
             throw ExceptionCancel();
 
 

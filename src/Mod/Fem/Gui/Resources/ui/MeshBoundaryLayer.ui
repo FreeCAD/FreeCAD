@@ -47,25 +47,25 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>1.0</string>
+           <string>0 mm</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
           <property name="min_thickness" stdset="0">
            <size>
             <width>80</width>
             <height>20</height>
            </size>
-          </property>
-          <property name="singleStep" stdset="0">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="maximum" stdset="0">
-           <double>1000000000.000000000000000</double>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
           </property>
           <property name="decimals" stdset="0">
            <number>2</number>

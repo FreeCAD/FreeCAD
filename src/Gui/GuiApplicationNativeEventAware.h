@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUIAPPLICATIONNATIVEEVENTAWARE_H
 #define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
 #include <QApplication>
 #include <vector>
+
 
 class QMainWindow;
 
@@ -40,7 +39,7 @@ namespace Gui
         Q_OBJECT
     public:
         GUIApplicationNativeEventAware(int &argc, char *argv[]);
-        ~GUIApplicationNativeEventAware();
+        ~GUIApplicationNativeEventAware() override;
         void initSpaceball(QMainWindow *window);
         bool isSpaceballPresent() const {return spaceballPresent;}
         void setSpaceballPresent(bool present) {spaceballPresent = present;}

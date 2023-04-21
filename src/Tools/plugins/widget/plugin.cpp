@@ -1715,27 +1715,3 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     return cw;
 }
 
-//QString CustomWidgetPlugin::domXml() const
-//{
-//    return QLatin1String("<widget class=\"AnalogClock\" name=\"analogClock\">\n"
-//                         " <property name=\"geometry\">\n"
-//                         "  <rect>\n"
-//                         "   <x>0</x>\n"
-//                         "   <y>0</y>\n"
-//                         "   <width>100</width>\n"
-//                         "   <height>100</height>\n"
-//                         "  </rect>\n"
-//                         " </property>\n"
-//                         " <property name=\"toolTip\" >\n"
-//                         "  <string>The current time</string>\n"
-//                         " </property>\n"
-//                         " <property name=\"whatsThis\" >\n"
-//                         "  <string>The analog clock widget displays "
-//                         "the current time.</string>\n"
-//                         " </property>\n"
-//                         "</widget>\n");
-//}
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(containerextension, CustomWidgetPlugin)
-#endif

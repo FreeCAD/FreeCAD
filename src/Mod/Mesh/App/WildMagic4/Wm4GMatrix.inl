@@ -20,16 +20,16 @@ namespace Wm4
 template <class Real>
 GMatrix<Real>::GMatrix (int iRows, int iCols)
 {
-    m_afData = 0;
-    m_aafEntry = 0;
+    m_afData = nullptr;
+    m_aafEntry = nullptr;
     SetSize(iRows,iCols);
 }
 //----------------------------------------------------------------------------
 template <class Real>
 GMatrix<Real>::GMatrix (int iRows, int iCols, const Real* afEntry)
 {
-    m_afData = 0;
-    m_aafEntry = 0;
+    m_afData = nullptr;
+    m_aafEntry = nullptr;
     SetMatrix(iRows,iCols,afEntry);
 }
 //----------------------------------------------------------------------------
@@ -47,8 +47,8 @@ GMatrix<Real>::GMatrix (const GMatrix& rkM)
     m_iRows = 0;
     m_iCols = 0;
     m_iQuantity = 0;
-    m_afData = 0;
-    m_aafEntry = 0;
+    m_afData = nullptr;
+    m_aafEntry = nullptr;
     *this = rkM;
 }
 //----------------------------------------------------------------------------
@@ -99,8 +99,8 @@ void GMatrix<Real>::SetSize (int iRows, int iCols)
         m_iRows = 0;
         m_iCols = 0;
         m_iQuantity = 0;
-        m_afData = 0;
-        m_aafEntry = 0;
+        m_afData = nullptr;
+        m_aafEntry = nullptr;
     }
 }
 //----------------------------------------------------------------------------
@@ -239,8 +239,8 @@ void GMatrix<Real>::SetMatrix (int iRows, int iCols, const Real* afData)
         m_iRows = 0;
         m_iCols = 0;
         m_iQuantity = 0;
-        m_afData = 0;
-        m_aafEntry = 0;
+        m_afData = nullptr;
+        m_aafEntry = nullptr;
     }
 }
 //----------------------------------------------------------------------------
@@ -311,8 +311,8 @@ GMatrix<Real>& GMatrix<Real>::operator= (const GMatrix& rkM)
         m_iRows = 0;
         m_iCols = 0;
         m_iQuantity = 0;
-        m_afData = 0;
-        m_aafEntry = 0;
+        m_afData = nullptr;
+        m_aafEntry = nullptr;
     }
     return *this;
 }

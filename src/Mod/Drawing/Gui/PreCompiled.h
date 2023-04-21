@@ -20,25 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_PRECOMPILED_H
 #define DRAWINGGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-//# define DrawingAppExport __declspec(dllimport)
-# define DrawingExport      __declspec(dllimport)
-# define PartExport         __declspec(dllimport)
-# define DrawingGuiExport   __declspec(dllexport)
-# define SpreadsheetExport  __declspec(dllimport)
-#else // for Linux
-# define DrawingExport
-# define PartExport
-# define DrawingGuiExport
-# define SpreadsheetExport
-#endif
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
@@ -46,34 +31,38 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
 // STL
+#include <cmath>
+#include <sstream>
 #include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
-
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+// Qt
+#include <QAction>
+#include <QApplication>
+#include <QCheckBox>
+#include <QContextMenuEvent>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QGLWidget>
+#include <QGraphicsRectItem>
+#include <QGraphicsSvgItem>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QMenu>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QPrintPreviewDialog>
+#include <QRegExp>
+#include <QTimer>
+#include <QWheelEvent>
 
 #endif //_PreComp_
 

@@ -20,13 +20,11 @@
 #*                                                                         *
 #***************************************************************************
 
-from __future__ import print_function
-import sys
 import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -75,6 +73,24 @@ class CommandArchSchedule:
             return False
 
 
+class _ArchScheduleDocObserver:
+
+    "doc observer to monitor all recomputes"
+
+    # https://forum.freecad.org/viewtopic.php?style=3&p=553377#p553377
+
+    def __init__(self, doc, schedule):
+        self.doc = doc
+        self.schedule = schedule
+
+    def slotRecomputedDocument(self, doc):
+        if doc != self.doc:
+            return
+        try:
+            self.schedule.Proxy.execute(self.schedule)
+        except:
+            pass
+
 
 class _ArchSchedule:
 
@@ -89,6 +105,18 @@ class _ArchSchedule:
     def onDocumentRestored(self,obj):
 
         self.setProperties(obj)
+        if hasattr(obj, "Result"):
+            self.update_properties_0v21(obj)
+
+    def update_properties_0v21(self,obj):
+        sp = obj.Result
+        if sp is not None:
+            self.setSchedulePropertySpreadsheet(sp, obj)
+        obj.removeProperty("Result")
+        from draftutils.messages import _wrn
+        _wrn("v0.21, " + obj.Label + ", " + translate("Arch", "removed property 'Result', and added property 'AutoUpdate'"))
+        if sp is not None:
+            _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "added property 'Schedule'"))
 
     def setProperties(self,obj):
 
@@ -104,19 +132,67 @@ class _ArchSchedule:
             obj.addProperty("App::PropertyStringList","Filter",            "Arch",QT_TRANSLATE_NOOP("App::Property","The filter column"))
         if not "CreateSpreadsheet" in obj.PropertiesList:
             obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Arch",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
-        if not "Result" in obj.PropertiesList:
-            obj.addProperty("App::PropertyLink",      "Result",            "Arch",QT_TRANSLATE_NOOP("App::Property","The spreadsheet to print the results to"))
         if not "DetailedResults" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "DetailedResults", "Arch",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Arch",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+        if not "AutoUpdate" in obj.PropertiesList:
+            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Arch",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"))
+            obj.AutoUpdate = True
+
+        # To add the doc observer:
+        self.onChanged(obj,"AutoUpdate")
+
+    def setSchedulePropertySpreadsheet(self, sp, obj):
+        if not hasattr(sp, "Schedule"):
+            sp.addProperty(
+                "App::PropertyLink",
+                "Schedule",
+                "Arch",
+                QT_TRANSLATE_NOOP("App::Property", "The Arch Schedule that uses this spreadsheet"))
+        sp.Schedule = obj
+
+    def getSpreadSheet(self, obj, force=False):
+
+        """Get the spreadsheet and store it in self.spreadsheet.
+
+        If force is True the spreadsheet is created if required.
+        """
+        try: # Required as self.spreadsheet may get deleted.
+            if getattr(self, "spreadsheet", None) is not None \
+                    and getattr(self.spreadsheet, "Schedule", None) == obj:
+                return self.spreadsheet
+        except:
+            pass
+        else:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.TypeId == "Spreadsheet::Sheet" \
+                        and getattr(o, "Schedule", None) == obj:
+                    self.spreadsheet = o
+                    return self.spreadsheet
+            if force:
+                self.spreadsheet = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet", "Result")
+                self.setSchedulePropertySpreadsheet(self.spreadsheet, obj)
+                return self.spreadsheet
+            else:
+                return None
 
     def onChanged(self,obj,prop):
 
-        if (prop == "CreateSpreadsheet"):
-            if hasattr(obj,"CreateSpreadsheet") and obj.CreateSpreadsheet:
-                if not obj.Result:
-                    import Spreadsheet
-                    sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
-                    obj.Result = sp
+        if prop == "CreateSpreadsheet":
+            if obj.CreateSpreadsheet:
+                self.getSpreadSheet(obj, force=True)
+            else:
+                sp = self.getSpreadSheet(obj)
+                if sp is not None:
+                    FreeCAD.ActiveDocument.removeObject(sp.Name)
+                    self.spreadsheet = None
+        elif prop == "AutoUpdate":
+            if obj.AutoUpdate:
+                if getattr(self, "docObserver", None) is None:
+                    self.docObserver = _ArchScheduleDocObserver(FreeCAD.ActiveDocument, obj)
+                    FreeCAD.addDocumentObserver(self.docObserver)
+            elif getattr(self, "docObserver", None) is not None:
+                FreeCAD.removeDocumentObserver(self.docObserver)
+                self.docObserver = None
 
     def setSpreadsheetData(self,obj,force=False):
 
@@ -128,25 +204,26 @@ class _ArchSchedule:
             return
         if not self.data:
             return
-        if not obj.Result:
-            if obj.CreateSpreadsheet or force:
-                import Spreadsheet
-                sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
-                obj.Result = sp
-            else:
-                return
-        # clear spreadsheet
-        obj.Result.clearAll()
+        if not (obj.CreateSpreadsheet or force):
+            return
+        sp = self.getSpreadSheet(obj, force=True)
+        sp.clearAll()
+        # clearAll removes the custom property, we need to re-add it:
+        self.setSchedulePropertySpreadsheet(sp, obj)
         # set headers
-        obj.Result.set("A1","Description")
-        obj.Result.set("B1","Value")
-        obj.Result.set("C1","Unit")
-        obj.Result.setStyle('A1:C1', 'bold', 'add')
+        sp.set("A1","Description")
+        sp.set("B1","Value")
+        sp.set("C1","Unit")
+        sp.setStyle('A1:C1', 'bold', 'add')
         # write contents
         for k,v in self.data.items():
-            obj.Result.set(k,v)
+            sp.set(k,v)
         # recompute
-        obj.Result.recompute()
+        sp.recompute()
+        sp.purgeTouched()   # Remove the confusing blue checkmark from the spreadsheet.
+        for o in sp.InList: # Also recompute TechDraw views.
+            o.TypeId == "TechDraw::DrawViewSpreadsheet"
+            o.recompute()
 
     def execute(self,obj):
 
@@ -159,9 +236,6 @@ class _ArchSchedule:
             # different number of items in each column
             if len(obj.Description) != len(p):
                 return
-        if not hasattr(obj,"Result"):
-            # silently fail on old schedule objects
-            return
 
         self.data = {} # store all results in self.data, so it lives even without spreadsheet
         li = 1 # row index - starts at 2 to leave 2 blank rows for the title
@@ -172,11 +246,7 @@ class _ArchSchedule:
                 # blank line
                 continue
             # write description
-            if sys.version_info.major >= 3:
-                # use unicode for python3
-                self.data["A"+str(li)] = obj.Description[i]
-            else:
-                self.data["A"+str(li)] = obj.Description[i].encode("utf8")
+            self.data["A"+str(li)] = obj.Description[i]
             if verbose:
                 l= "OPERATION: "+obj.Description[i]
                 print("")
@@ -192,7 +262,7 @@ class _ArchSchedule:
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
-                    objs = [o for o in objs if o != None]
+                    objs = [o for o in objs if o is not None]
                 else:
                     objs = FreeCAD.ActiveDocument.Objects
                 if len(objs) == 1:
@@ -201,9 +271,8 @@ class _ArchSchedule:
                         objs = objs[0].Group
                 objs = Draft.get_group_contents(objs)
                 objs = Arch.pruneIncluded(objs,strict=True)
-                # remove the schedule object and its result from the list
-                objs = [o for o in objs if not o == obj]
-                objs = [o for o in objs if not o == obj.Result]
+                # Remove all schedules and spreadsheets:
+                objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
                 if obj.Filter[i]:
                     # apply filters
                     nobjs = []
@@ -261,8 +330,6 @@ class _ArchSchedule:
                     q = None
                     if obj.Unit[i]:
                         unit = obj.Unit[i]
-                        if sys.version_info.major < 3:
-                            unit = unit.encode("utf8")
                         unit = unit.replace("2","^2")
                         unit = unit.replace("3","^3")
                         unit = unit.replace("²","^2")
@@ -325,10 +392,6 @@ class _ArchSchedule:
                         self.data["C"+str(li)] = unit
                     else:
                         self.data["B"+str(li)] = str(val)
-                    if obj.DetailedResults:
-                        # additional blank line...
-                        li += 1
-                        self.data["A"+str(li)] = " "
                     if verbose:
                         if tp and unit:
                             v = fs.format(FreeCAD.Units.Quantity(val,tp).getValueAs(unit).Value)
@@ -356,6 +419,9 @@ class _ViewProviderArchSchedule:
         vobj.Proxy = self
 
     def getIcon(self):
+        if self.Object.AutoUpdate is False:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
         import Arch_rc
         return ":/icons/Arch_Schedule.svg"
 
@@ -365,22 +431,51 @@ class _ViewProviderArchSchedule:
     def attach(self, vobj):
         self.Object = vobj.Object
 
-    def setEdit(self,vobj,mode=0):
-        if hasattr(self,"taskd"):
-            if self.taskd:
-                self.taskd.form.hide()
+    def setEdit(self, vobj, mode=0):
+        if mode != 0:
+            return None
+
         self.taskd = ArchScheduleTaskPanel(vobj.Object)
         return True
 
-    def doubleClicked(self,vobj):
-        self.setEdit(vobj)
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-    def unsetEdit(self,vobj,mode):
         return True
+
+    def doubleClicked(self, vobj):
+        self.edit()
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        if self.Object.CreateSpreadsheet is True:
+            msg = translate("Arch", "Remove spreadsheet")
+        else:
+            msg = translate("Arch", "Attach spreadsheet")
+        actionToggleSpreadsheet = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"),
+                                                msg,
+                                                menu)
+        QtCore.QObject.connect(actionToggleSpreadsheet,
+                               QtCore.SIGNAL("triggered()"),
+                               self.toggleSpreadsheet)
+        menu.addAction(actionToggleSpreadsheet)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def toggleSpreadsheet(self):
+        self.Object.CreateSpreadsheet = not self.Object.CreateSpreadsheet
 
     def claimChildren(self):
         if hasattr(self,"Object"):
-            return [self.Object.Result]
+            return [self.Object.Proxy.getSpreadSheet(self.Object)]
 
     def __getstate__(self):
         return None
@@ -396,15 +491,6 @@ class _ViewProviderArchSchedule:
 
     def setDisplayMode(self,mode):
         return mode
-
-    def setupContextMenu(self,vobj,menu):
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"),"Attach spreadsheet",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.attachSpreadsheet)
-        menu.addAction(action1)
-
-    def attachSpreadsheet(self):
-        if hasattr(self,"Object"):
-            self.Object.Proxy.setSpreadsheetData(self.Object,force=True)
 
 
 class ArchScheduleTaskPanel:
@@ -454,8 +540,6 @@ class ArchScheduleTaskPanel:
         self.form.list.clearContents()
 
         if self.obj:
-            if not obj.Description:
-                return
             for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
                 if len(obj.Description) != len(p):
                     return
@@ -504,8 +588,6 @@ class ArchScheduleTaskPanel:
         filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
         if filename:
             filename = filename[0]
-            if sys.version_info.major < 3:
-                filename = filename.encode("utf8")
             self.form.list.clearContents()
             import csv
             with open(filename,'r') as csvfile:
@@ -542,8 +624,6 @@ class ArchScheduleTaskPanel:
         if filename:
             filt = filename[1]
             filename = filename[0]
-            if sys.version_info.major < 3:
-                filename = filename.encode("utf8")
             # add missing extension
             if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".tsv")) and (not filename.lower().endswith(".md")):
                 if "csv" in filt:
@@ -643,6 +723,7 @@ class ArchScheduleTaskPanel:
         # commit values
         self.writeValues()
         self.form.hide()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def reject(self):
@@ -650,6 +731,7 @@ class ArchScheduleTaskPanel:
         """Close dialog without saving"""
 
         self.form.hide()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def writeValues(self):
@@ -663,9 +745,7 @@ class ArchScheduleTaskPanel:
             if FreeCAD.GuiUp:
                 _ViewProviderArchSchedule(self.obj.ViewObject)
             if hasattr(self.obj,"CreateSpreadsheet") and self.obj.CreateSpreadsheet:
-                import Spreadsheet
-                sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
-                self.obj.Result = sp
+                self.obj.Proxy.getSpreadSheet(self.obj, force=True)
         lists = [ [], [], [], [], [] ]
         for i in range(self.form.list.rowCount()):
             for j in range(5):
@@ -683,6 +763,7 @@ class ArchScheduleTaskPanel:
         self.obj.Label = self.form.lineEditName.text()
         self.obj.DetailedResults = self.form.checkDetailed.isChecked()
         self.obj.CreateSpreadsheet = self.form.checkSpreadsheet.isChecked()
+        self.obj.AutoUpdate = self.form.checkAutoUpdate.isChecked()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

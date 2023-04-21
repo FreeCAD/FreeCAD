@@ -22,59 +22,67 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.ccx_cantilever_prescribeddisplacement import setup
-setup()
-
-"""
-
-import FreeCAD
-
 import ObjectsFem
 
-from .ccx_cantilever_faceload import setup_cantileverbase
-
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .ccx_cantilever_base_solid import setup_cantilever_base_solid
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "CCX cantilever prescibed displacement",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "displacement"],
-            "solvers": ["calculix", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "CCX cantilever prescibed displacement",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "displacement"],
+        "solvers": ["calculix", "ccxtools", "elmer"],
+        "material": "solid",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.ccx_cantilever_prescribeddisplacement import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever
-    # apply a prescribed displacement of 250 mm in -z on the front end face
 
     if solvertype == "z88":
         # constraint displacement is not supported for Z88
         # pass a not valid solver name for z88, thus no solver is created
         solvertype = "z88_not_valid"
 
-    doc = setup_cantileverbase(doc, solvertype)
+    # init FreeCAD document
+    if doc is None:
+        doc = init_doc()
 
-    # displacement_constraint
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    )[0]
-    displacement_constraint.References = [(doc.Box, "Face2")]
-    displacement_constraint.zFix = False
-    displacement_constraint.zFree = False
-    displacement_constraint.zDisplacement = -250.0
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # setup CalculiX cantilever
+    # apply a prescribed displacement of 250 mm in -z on the front end face
+    doc = setup_cantilever_base_solid(doc, solvertype)
+    analysis = doc.Analysis
+    geom_obj = doc.Box
+
+    # constraint displacement
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
+    con_disp.References = [(geom_obj, "Face2")]
+    con_disp.zFix = False
+    con_disp.zFree = False
+    con_disp.zDisplacement = -250.0
+    analysis.addObject(con_disp)
 
     doc.recompute()
     return doc

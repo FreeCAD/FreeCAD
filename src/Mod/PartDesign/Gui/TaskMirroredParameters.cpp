@@ -24,35 +24,25 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QAction>
+# include <QMessageBox>
 #endif
 
-#include <Base/Console.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
-#include <Mod/PartDesign/App/FeatureMirrored.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-
-#include "ReferenceSelection.h"
-#include "TaskMultiTransformParameters.h"
-#include "Utils.h"
+#include <Mod/PartDesign/App/FeatureMirrored.h>
 
 #include "ui_TaskMirroredParameters.h"
 #include "TaskMirroredParameters.h"
-
+#include "ReferenceSelection.h"
+#include "TaskMultiTransformParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -84,8 +74,8 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
 {
     proxy = new QWidget(parentTask);
     ui->setupUi(proxy);
-    connect(ui->buttonOK, SIGNAL(pressed()),
-            parentTask, SLOT(onSubTaskButtonOK()));
+    connect(ui->buttonOK, &QToolButton::pressed,
+            parentTask, &TaskMirroredParameters::onSubTaskButtonOK);
     QMetaObject::connectSlotsByName(this);
 
     layout->addWidget(proxy);
@@ -104,8 +94,8 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
 
 void TaskMirroredParameters::setupUI()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    connect(ui->buttonAddFeature, &QToolButton::toggled, this, &TaskMirroredParameters::onButtonAddFeature);
+    connect(ui->buttonRemoveFeature, &QToolButton::toggled, this, &TaskMirroredParameters::onButtonRemoveFeature);
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -115,15 +105,15 @@ void TaskMirroredParameters::setupUI()
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    connect(action, &QAction::triggered, this, &TaskMirroredParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskMirroredParameters::indexesMoved);
 
-    connect(ui->comboPlane, SIGNAL(activated(int)),
-            this, SLOT(onPlaneChanged(int)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->comboPlane, qOverload<int>(&QComboBox::activated),
+            this, &TaskMirroredParameters::onPlaneChanged);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskMirroredParameters::onUpdateView);
 
     // Get the feature data
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
@@ -132,7 +122,7 @@ void TaskMirroredParameters::setupUI()
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
         const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
+        if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -149,7 +139,7 @@ void TaskMirroredParameters::setupUI()
         this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
     }
     else {
-        this->fillPlanesCombo(planeLinks, NULL);
+        this->fillPlanesCombo(planeLinks, nullptr);
     }
 
     //show the parts coordinate system planes for selection
@@ -215,7 +205,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
             if (!selObj)
                     return;
-            
+
             if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
                 setupTransaction();
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
@@ -240,19 +230,19 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
     setupTransaction();
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     try{
-        if(planeLinks.getCurrentLink().getValue() == 0){
+        if (!planeLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(false, true);
+            addReferenceSelectionGate(AllowSelection::FACE | AllowSelection::PLANAR);
         } else {
             exitSelectionMode();
             pcMirrored->MirrorPlane.Paste(planeLinks.getCurrentLink());
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(0,tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr,tr("Error"),QString::fromLatin1(e.what()));
     }
 
     recomputeFeature();
@@ -275,7 +265,7 @@ void TaskMirroredParameters::onUpdateView(bool on)
     }
 }
 
-void TaskMirroredParameters::onFeatureDeleted(void)
+void TaskMirroredParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();

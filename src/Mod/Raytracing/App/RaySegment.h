@@ -20,32 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _RaySegment_h_
 #define _RaySegment_h_
 
-
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
+#include <Mod/Raytracing/RaytracingGlobal.h>
 
 
 namespace Raytracing
 {
 
-
 /** Base class of all View Features in the drawing module
  */
-class AppRaytracingExport RaySegment: public App::DocumentObject
+class RaytracingExport RaySegment: public App::DocumentObject
 {
-  PROPERTY_HEADER(Raytracing::RaySegment);
+  PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::RaySegment);
 
 public:
     /// Constructor
     RaySegment(void);
-    virtual ~RaySegment();
+    ~RaySegment() override;
 
     App::PropertyString Result;
 
@@ -53,10 +48,10 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
     
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const { 
+    const char* getViewProviderName(void) const override {
         return "Gui::ViewProviderDocumentObject"; 
     }
     //@}

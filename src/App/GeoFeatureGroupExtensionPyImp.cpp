@@ -24,8 +24,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/GeoFeatureGroupExtension.h"
-
 // inclusion of the generated files (generated out of GeoFeatureGroupExtensionPy.xml)
 #include "GeoFeatureGroupExtensionPy.h"
 #include "GeoFeatureGroupExtensionPy.cpp"
@@ -33,7 +31,7 @@
 using namespace App;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeoFeatureGroupExtensionPy::representation(void) const
+std::string GeoFeatureGroupExtensionPy::representation() const
 {
     return std::string("<GeoFeatureGroup object>");
 }
@@ -41,7 +39,7 @@ std::string GeoFeatureGroupExtensionPy::representation(void) const
 
 PyObject *GeoFeatureGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeoFeatureGroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -28,31 +28,32 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 namespace Part { class Offset; }
-namespace PartGui { 
+namespace PartGui {
 
 class OffsetWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    OffsetWidget(Part::Offset*, QWidget* parent = 0);
-    ~OffsetWidget();
+    explicit OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
+    ~OffsetWidget() override;
 
     bool accept();
     bool reject();
     Part::Offset* getObject() const;
 
-private Q_SLOTS:
-    void on_spinOffset_valueChanged(double);
-    void on_modeType_activated(int);
-    void on_joinType_activated(int);
-    void on_intersection_toggled(bool);
-    void on_selfIntersection_toggled(bool);
-    void on_fillOffset_toggled(bool);
-    void on_updateView_toggled(bool);
+private:
+    void setupConnections();
+    void onSpinOffsetValueChanged(double);
+    void onModeTypeActivated(int);
+    void onJoinTypeActivated(int);
+    void onIntersectionToggled(bool);
+    void onSelfIntersectionToggled(bool);
+    void onFillOffsetToggled(bool);
+    void onUpdateViewToggled(bool);
 
 private:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -64,17 +65,17 @@ class TaskOffset : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskOffset(Part::Offset*);
-    ~TaskOffset();
+    explicit TaskOffset(Part::Offset*);
+    ~TaskOffset() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
     Part::Offset* getObject() const;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

@@ -23,54 +23,49 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintTemperature_H
 #define GUI_TASKVIEW_TaskFemConstraintTemperature_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <memory>
+#include <QObject>
 
-#include "TaskFemConstraint.h"
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
+
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintTemperature.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintTemperature;
 
 namespace FemGui {
-class TaskFemConstraintTemperature : public TaskFemConstraint
+class TaskFemConstraintTemperature : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent = 0);
-    ~TaskFemConstraintTemperature();
-    const std::string getReferences() const;
-    double get_temperature()const;
-    double get_cflux() const;
-    std::string get_constraint_type(void) const;
+    explicit TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent = nullptr);
+    ~TaskFemConstraintTemperature() override;
+    const std::string getReferences() const override;
+    std::string get_temperature() const;
+    std::string get_cflux() const;
+    std::string get_constraint_type() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
-    void onTempCfluxChanged(double val);
+    void onReferenceDeleted();
     void Temp();
     void Flux();
-    void addToSelection();
-    void removeFromSelection();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();
-    Ui_TaskFemConstraintTemperature* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintTemperature> ui;
 };
 
 class TaskDlgFemConstraintTemperature : public TaskDlgFemConstraint
@@ -78,10 +73,10 @@ class TaskDlgFemConstraintTemperature : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

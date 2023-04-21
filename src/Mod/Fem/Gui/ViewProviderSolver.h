@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_ViewProviderSolver_H
 #define FEM_ViewProviderSolver_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Fem/FemGlobal.h>
+
 
 class SoCoordinate3;
 class SoDrawStyle;
@@ -38,28 +37,30 @@ class SoMaterialBinding;
 namespace FemGui
 {
 
-
-
 class FemGuiExport ViewProviderSolver : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderSolver);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSolver);
 
 public:
     /// constructor
     ViewProviderSolver();
 
     /// destructor
-    ~ViewProviderSolver();
+    ~ViewProviderSolver() override;
 
     // shows solid in the tree
-    virtual bool isShow(void) const {
+    bool isShow() const override {
         return Visibility.getValue();
     }
     /// A list of all possible display modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
+
+    // handling when object is deleted
+    bool onDelete(const std::vector<std::string>&) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderSolver> ViewProviderSolverPython;
+using ViewProviderSolverPython = Gui::ViewProviderPythonFeatureT<ViewProviderSolver>;
 
 } //namespace FemGui
 

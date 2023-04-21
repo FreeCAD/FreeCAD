@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/translations"> 
+    <qresource prefix="/translations">
         <file>qt_de.qm</file>
         <file>qt_es-ES.qm</file>
         <file>qt_fr.qm</file>
@@ -18,9 +18,11 @@
         <file>qtbase_it.qm</file>
         <file>qtbase_ja.qm</file>
         <file>qtbase_ko.qm</file>
+        <file>qtbase_pl.qm</file>
         <file>qtbase_ru.qm</file>
         <file>qtbase_sk.qm</file>
         <file>qtbase_uk.qm</file>
+        <file>qtmultimedia_pl.qm</file>
         <file>FreeCAD_af.qm</file>
         <file>FreeCAD_de.qm</file>
         <file>FreeCAD_fi.qm</file>
@@ -58,5 +60,11 @@
         <file>FreeCAD_val-ES.qm</file>
         <file>FreeCAD_ar.qm</file>
         <file>FreeCAD_vi.qm</file>
+        <file>FreeCAD_es-AR.qm</file>
+        <file>FreeCAD_bg.qm</file>
+        <file>FreeCAD_ka.qm</file>
+        <file>FreeCAD_sr-CS.qm</file>
+        <file>FreeCAD_be.qm</file>
+
     </qresource>
-</RCC> 
+</RCC>

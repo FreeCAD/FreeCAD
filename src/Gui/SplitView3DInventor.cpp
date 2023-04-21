@@ -20,24 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qfileinfo.h>
-# include <qsplitter.h>
+# include <QSplitter>
+# include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
 #endif
 
+#include <Base/Builder3D.h>
+#include <Base/Interpreter.h>
+
 #include "SplitView3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "SoFCSelectionAction.h"
-#include "Document.h"
 #include "Application.h"
+#include "Camera.h"
+#include "Document.h"
 #include "NavigationStyle.h"
+#include "SoFCSelectionAction.h"
+#include "View3DInventorViewer.h"
 #include "View3DPy.h"
+#include "View3DSettings.h"
 
 
 using namespace Gui;
@@ -47,19 +50,18 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView)
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
-    _viewerPy = 0;
+    _viewerPy = nullptr;
     // important for highlighting
     setMouseTracking(true);
 }
 
 AbstractSplitView::~AbstractSplitView()
 {
-    hGrp->Detach(this);
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
         delete *it;
     }
     if (_viewerPy) {
-        static_cast<AbstractSplitViewPy*>(_viewerPy)->_view = 0;
+        Base::PyGILStateLocker lock;
         Py_DECREF(_viewerPy);
     }
 }
@@ -67,9 +69,22 @@ AbstractSplitView::~AbstractSplitView()
 void AbstractSplitView::deleteSelf()
 {
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-        (*it)->setSceneGraph(0);
+        (*it)->setSceneGraph(nullptr);
     }
     MDIView::deleteSelf();
+}
+
+void AbstractSplitView::setDocumentOfViewers(Gui::Document* document)
+{
+    for (auto view : _viewer) {
+        view->setDocument(document);
+    }
+}
+
+void AbstractSplitView::viewAll()
+{
+    for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+        (*it)->viewAll();
 }
 
 bool AbstractSplitView::containsViewProvider(const ViewProvider* vp) const
@@ -84,222 +99,30 @@ bool AbstractSplitView::containsViewProvider(const ViewProvider* vp) const
 
 void AbstractSplitView::setupSettings()
 {
-    // attach Parameter Observer
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->Attach(this);
-
-    // apply the user settings
-    OnChange(*hGrp,"EyeDistance");
-    OnChange(*hGrp,"CornerCoordSystem");
-    OnChange(*hGrp,"UseAutoRotation");
-    OnChange(*hGrp,"Gradient");
-    OnChange(*hGrp,"BackgroundColor");
-    OnChange(*hGrp,"BackgroundColor2");
-    OnChange(*hGrp,"BackgroundColor3");
-    OnChange(*hGrp,"BackgroundColor4");
-    OnChange(*hGrp,"UseBackgroundColorMid");
-    OnChange(*hGrp,"ShowFPS");
-    OnChange(*hGrp,"UseVBO");
-    OnChange(*hGrp,"Orthographic");
-    OnChange(*hGrp,"HeadlightColor");
-    OnChange(*hGrp,"HeadlightDirection");
-    OnChange(*hGrp,"HeadlightIntensity");
-    OnChange(*hGrp,"EnableBacklight");
-    OnChange(*hGrp,"BacklightColor");
-    OnChange(*hGrp,"BacklightDirection");
-    OnChange(*hGrp,"BacklightIntensity");
-    OnChange(*hGrp,"NavigationStyle");
-    OnChange(*hGrp,"OrbitStyle");
-    OnChange(*hGrp,"Sensitivity");
-    OnChange(*hGrp,"ResetCursorPosition");
-    OnChange(*hGrp,"PickRadius");
+    viewSettings = std::make_unique<View3DSettings>(App::GetApplication().GetParameterGroupByPath
+                                   ("User parameter:BaseApp/Preferences/View"), _viewer);
+    // tmp. disabled will be activated after redesign of 3d viewer
+    // check whether the simple or the Full Mouse model is used
+    viewSettings->ignoreNavigationStyle = true;
+    // Disable VBO for split screen as this leads to random crashes
+    viewSettings->ignoreVBO = true;
+    viewSettings->ignoreTransparent = true;
+    viewSettings->ignoreRenderCache = true;
+    viewSettings->ignoreDimensions = true;
+    viewSettings->applySettings();
 }
 
 View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const
 {
-    return (_viewer.size() > n ? _viewer[n] : 0);
+    return (_viewer.size() > n ? _viewer[n] : nullptr);
 }
 
-/// Observer message from the ParameterGrp
-void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
-{
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
-        float transparency;
-        SbColor headlightColor;
-        headlightColor.setPackedValue((uint32_t)headlight, transparency);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getHeadlight()->color.setValue(headlightColor);
-    }
-    else if (strcmp(Reason,"HeadlightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->getHeadlight()->direction.setValue(x,y,z);
-        }
-    }
-    else if (strcmp(Reason,"HeadlightIntensity") == 0) {
-        long value = rGrp.GetInt("HeadlightIntensity", 100);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getHeadlight()->intensity.setValue((float)value/100.0f);
-    }
-    else if (strcmp(Reason,"EnableBacklight") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setBacklight(rGrp.GetBool("EnableBacklight", false));
-    }
-    else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
-        float transparency;
-        SbColor backlightColor;
-        backlightColor.setPackedValue((uint32_t)backlight, transparency);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getBacklight()->color.setValue(backlightColor);
-    }
-    else if (strcmp(Reason,"BacklightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->getBacklight()->direction.setValue(x,y,z);
-        }
-    }
-    else if (strcmp(Reason,"BacklightIntensity") == 0) {
-        long value = rGrp.GetInt("BacklightIntensity", 100);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getBacklight()->intensity.setValue((float)value/100.0f);
-    }
-    else if (strcmp(Reason,"EnablePreselection") == 0) {
-        SoFCEnableHighlightAction cAct(rGrp.GetBool("EnablePreselection", true));
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            cAct.apply((*it)->getSceneGraph());
-    }
-    else if (strcmp(Reason,"EnableSelection") == 0) {
-        SoFCEnableSelectionAction cAct(rGrp.GetBool("EnableSelection", true));
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            cAct.apply((*it)->getSceneGraph());
-    }
-    else if (strcmp(Reason,"HighlightColor") == 0) {
-        float transparency;
-        SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        SoSFColor col; col.setValue(highlightColor);
-        SoFCHighlightColorAction cAct(col);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            cAct.apply((*it)->getSceneGraph());
-    }
-    else if (strcmp(Reason,"SelectionColor") == 0) {
-        float transparency;
-        SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = rGrp.GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        SoSFColor col; col.setValue(selectionColor);
-        SoFCSelectionColorAction cAct(col);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            cAct.apply((*it)->getSceneGraph());
-    }
-    else if (strcmp(Reason,"NavigationStyle") == 0) {
-        // tmp. disabled will be activated after redesign of 3d viewer
-        // check whether the simple or the Full Mouse model is used
-        //std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
-        //Base::Type type = Base::Type::fromName(model.c_str());
-        //for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-        //    (*it)->setNavigationType(type);
-    }
-    else if (strcmp(Reason,"OrbitStyle") == 0) {
-        int style = rGrp.GetInt("OrbitStyle",1);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
-    }
-    else if (strcmp(Reason,"Sensitivity") == 0) {
-        float val = rGrp.GetFloat("Sensitivity",2.0f);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->navigationStyle()->setSensitivity(val);
-    }
-    else if (strcmp(Reason,"ResetCursorPosition") == 0) {
-        bool on = rGrp.GetBool("ResetCursorPosition",false);
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->navigationStyle()->setResetCursorPosition(on);
-    }
-    else if (strcmp(Reason,"EyeDistance") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
-    }
-    else if (strcmp(Reason,"CornerCoordSystem") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
-    }
-    else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
-    }
-    else if (strcmp(Reason,"Gradient") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setGradientBackground((rGrp.GetBool("Gradient",true)));
-    }
-    else if (strcmp(Reason,"ShowFPS") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
-    }
-    else if (strcmp(Reason,"UseVBO") == 0) {
-        // Disable VBO for split screen as this leads to random crashes
-        //for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-        //    (*it)->setEnabledVBO(rGrp.GetBool("UseVBO",false));
-    }
-
-    else if (strcmp(Reason,"Orthographic") == 0) {
-        // check whether a perspective or orthogrphic camera should be set
-        if (rGrp.GetBool("Orthographic", true)) {
-            for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->setCameraType(SoOrthographicCamera::getClassTypeId());
-        }
-        else {
-            for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->setCameraType(SoPerspectiveCamera::getClassTypeId());
-        }
-    }
-    else if (strcmp(Reason, "PickRadius") == 0) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
-    }
-    else {
-        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
-        float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
-        r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
-        r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
-        r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
-        r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            (*it)->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
-            if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
-                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
-            else
-                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
-        }
-    }
-}
-
-void AbstractSplitView::onUpdate(void)
+void AbstractSplitView::onUpdate()
 {
     update();
 }
 
-const char *AbstractSplitView::getName(void) const
+const char *AbstractSplitView::getName() const
 {
     return "SplitView3DInventor";
 }
@@ -307,8 +130,7 @@ const char *AbstractSplitView::getName(void) const
 bool AbstractSplitView::onMsg(const char* pMsg, const char**)
 {
     if (strcmp("ViewFit",pMsg) == 0 ) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->viewAll();
+        viewAll();
         return true;
     }
     else if (strcmp("ViewBottom",pMsg) == 0) {
@@ -413,7 +235,7 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
     //_viewer->getWidget()->setCursor(aCursor);
 }
 
-PyObject *AbstractSplitView::getPyObject(void)
+PyObject *AbstractSplitView::getPyObject()
 {
     if (!_viewerPy)
         _viewerPy = new AbstractSplitViewPy(this);
@@ -439,6 +261,8 @@ void AbstractSplitViewPy::init_type()
     behaviors().doc("Python binding class for the Inventor viewer class");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
     behaviors().supportSequenceType();
 
     add_varargs_method("fitAll",&AbstractSplitViewPy::fitAll,"fitAll()");
@@ -452,10 +276,12 @@ void AbstractSplitViewPy::init_type()
     add_varargs_method("viewIsometric",&AbstractSplitViewPy::viewIsometric,"viewIsometric()");
     add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
     add_varargs_method("close",&AbstractSplitViewPy::close,"close()");
+    add_varargs_method("cast_to_base", &AbstractSplitViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
 }
 
 AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
-  : _view(vi)
+  : base(vi)
 {
 }
 
@@ -463,30 +289,61 @@ AbstractSplitViewPy::~AbstractSplitViewPy()
 {
 }
 
-void AbstractSplitViewPy::testExistence()
+Py::Object AbstractSplitViewPy::cast_to_base(const Py::Tuple&)
 {
-    if (!(_view && _view->getViewer(0)))
-        throw Py::RuntimeError("Object already deleted");
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
 
 Py::Object AbstractSplitViewPy::repr()
 {
-    std::string s;
     std::ostringstream s_out;
-    if (!_view)
+    if (!getSplitViewPtr())
         throw Py::RuntimeError("Cannot print representation of deleted object");
     s_out << "AbstractSplitView";
     return Py::String(s_out.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object AbstractSplitViewPy::getattr(const char * attr)
+{
+    getSplitViewPtr();
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (const auto& it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
+}
+
+AbstractSplitView* AbstractSplitViewPy::getSplitViewPtr()
+{
+    auto view = qobject_cast<AbstractSplitView*>(base.getMDIViewPtr());
+    if (!(view && view->getViewer(0)))
+        throw Py::RuntimeError("Object already deleted");
+    return view;
 }
 
 Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewFit", 0);
+        getSplitViewPtr()->onMsg("ViewFit", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -504,10 +361,9 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewBottom", 0);
+        getSplitViewPtr()->onMsg("ViewBottom", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -526,10 +382,9 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewFront", 0);
+        getSplitViewPtr()->onMsg("ViewFront", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -548,10 +403,9 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewLeft", 0);
+        getSplitViewPtr()->onMsg("ViewLeft", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -570,10 +424,9 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewRear", 0);
+        getSplitViewPtr()->onMsg("ViewRear", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -592,10 +445,9 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewRight", 0);
+        getSplitViewPtr()->onMsg("ViewRight", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -614,10 +466,9 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewTop", 0);
+        getSplitViewPtr()->onMsg("ViewTop", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -636,10 +487,9 @@ Py::Object AbstractSplitViewPy::viewIsometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewAxo", 0);
+        getSplitViewPtr()->onMsg("ViewAxo", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -659,10 +509,9 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     int viewIndex;
     if (!PyArg_ParseTuple(args.ptr(), "i", &viewIndex))
         throw Py::Exception();
-    testExistence();
 
     try {
-        Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
+        Gui::View3DInventorViewer* view = getSplitViewPtr()->getViewer(viewIndex);
         if (!view)
             throw Py::IndexError("Index out of range");
         return Py::asObject(view->getPyObject());
@@ -673,36 +522,39 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
+    catch (const Py::Exception&) {
+        // re-throw
+        throw;
+    }
     catch(...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
-Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
+Py::Object AbstractSplitViewPy::sequence_item(Py_ssize_t viewIndex)
 {
-    testExistence();
-    if (viewIndex >= _view->getSize() || viewIndex < 0)
+    AbstractSplitView* view = getSplitViewPtr();
+    if (viewIndex >= view->getSize() || viewIndex < 0)
         throw Py::IndexError("Index out of range");
-    PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
+    PyObject* viewer = view->getViewer(viewIndex)->getPyObject();
     return Py::asObject(viewer);
 }
 
-int AbstractSplitViewPy::sequence_length()
+PyCxx_ssize_t AbstractSplitViewPy::sequence_length()
 {
-    testExistence();
-    return _view->getSize();
+    AbstractSplitView* view = getSplitViewPtr();
+    return view->getSize();
 }
 
 Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
-    _view->close();
-    if (_view->parentWidget())
-        _view->parentWidget()->deleteLater();
-    _view = 0;
+    AbstractSplitView* view = getSplitViewPtr();
+    view->close();
+    if (view->parentWidget())
+        view->parentWidget()->deleteLater();
 
     return Py::None();
 }
@@ -714,10 +566,6 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView)
 SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)
 {
-    // attach parameter Observer
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->Attach(this);
-
     //anti-aliasing settings
     bool smoothing = false;
     bool glformat = false;
@@ -726,9 +574,6 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 
     if (samples > 1) {
         glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-        f.setSampleBuffers(true);
-#endif
         f.setSamples(samples);
     }
     else if (samples > 0) {
@@ -739,7 +584,7 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     while (views < 2)
         views ++;
 
-    QSplitter* mainSplitter = 0;
+    QSplitter* mainSplitter = nullptr;
 
     // if views < 3 show them as a row
     if (views <= 3) {
@@ -753,8 +598,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     }
     else {
         mainSplitter = new QSplitter(Qt::Vertical, this);
-        QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        auto topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        auto botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
 
         if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, topSplitter));
@@ -784,6 +629,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     mainSplitter->show();
     setCentralWidget(mainSplitter);
 
+    setDocumentOfViewers(pcDocument);
+
     // apply the user settings
     setupSettings();
 }
@@ -791,3 +638,5 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 SplitView3DInventor::~SplitView3DInventor()
 {
 }
+
+#include "moc_SplitView3DInventor.cpp"

@@ -20,20 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
-#include "TaskDlgCreateNodeSet.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+
+#include "TaskDlgCreateNodeSet.h"
 #include "ViewProviderFemMesh.h"
 
 
@@ -45,8 +40,8 @@ using namespace FemGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgCreateNodeSet::TaskDlgCreateNodeSet(Fem::FemSetNodesObject *obj)
-    : TaskDialog(),FemSetNodesObject(obj)
+TaskDlgCreateNodeSet::TaskDlgCreateNodeSet(Fem::FemSetNodesObject* obj)
+    : TaskDialog(), FemSetNodesObject(obj)
 {
     name    = new TaskObjectName(obj);
     param   = new TaskCreateNodeSet(obj);
@@ -81,7 +76,7 @@ bool TaskDlgCreateNodeSet::accept()
         //    doc->resetEdit();
         param->MeshViewProvider->resetHighlightNodes();
         FemSetNodesObject->Label.setValue(name->name);
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
         return true;
     }
@@ -95,12 +90,12 @@ bool TaskDlgCreateNodeSet::accept()
 bool TaskDlgCreateNodeSet::reject()
 {
     FemSetNodesObject->execute();
-        //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        //if(doc)
-        //    doc->resetEdit();
+    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    //if(doc)
+    //    doc->resetEdit();
     param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
 }
@@ -109,6 +104,5 @@ void TaskDlgCreateNodeSet::helpRequested()
 {
 
 }
-
 
 #include "moc_TaskDlgCreateNodeSet.cpp"

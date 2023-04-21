@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,35 +31,22 @@
 # else
 #  include <GL/gl.h>
 # endif
-# include <float.h>
 # include <algorithm>
-# include <Python.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/SoPrimitiveVertex.h>
-# include <Inventor/actions/SoCallbackAction.h>
+# include <cfloat>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/bundles/SoTextureCoordinateBundle.h>
-# include <Inventor/elements/SoOverrideElement.h>
+# include <Inventor/details/SoPointDetail.h>
 # include <Inventor/elements/SoCoordinateElement.h>
-# include <Inventor/elements/SoGLCoordinateElement.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
 # include <Inventor/errors/SoDebugError.h>
-# include <Inventor/errors/SoReadError.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
 # include <Inventor/misc/SoState.h>
 #endif
 
-#include "SoBrepPointSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/SoFCSelectionAction.h>
+
+#include "SoBrepPointSet.h"
+
 
 using namespace PartGui;
 
@@ -101,40 +87,40 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
             if(ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             } else
                 renderHighlight(action,ctx);
         }else{
             if(!action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
             if(ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             } else
                 renderHighlight(action,ctx);
             if(action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
         }
         return;
     }
 
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size()) {
+    if(ctx && !ctx->selectionIndex.empty()) {
         if(ctx->isSelectAll()) {
-            if(ctx2 && ctx2->selectionIndex.size()) {
+            if(ctx2 && !ctx2->selectionIndex.empty()) {
                 ctx2->selectionColor = ctx->selectionColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             }else
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
             if(action->isRenderingDelayedPaths())
                 renderHighlight(action,ctx);
             return;
         }
         if(!action->isRenderingDelayedPaths())
-            renderSelection(action,ctx); 
+            renderSelection(action,ctx);
     }
-    if(ctx2 && ctx2->selectionIndex.size())
+    if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
     else
         inherited::GLRender(action);
@@ -143,7 +129,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 //#if !defined(FC_OS_WIN32)
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size())
+    if(ctx && !ctx->selectionIndex.empty())
         renderSelection(action,ctx);
     if(action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
@@ -347,7 +333,7 @@ void SoBrepPointSet::doAction(SoAction* action)
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
                 selCounter.checkAction(selaction,ctx);
                 ctx->selectionColor = selaction->getColor();
-                if(ctx->isSelectAll()) 
+                if(ctx->isSelectAll())
                     ctx->selectionIndex.clear();
                 if(ctx->selectionIndex.insert(index).second)
                     touch();

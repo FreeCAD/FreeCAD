@@ -23,19 +23,15 @@
 #ifndef TECHDRAWGUI_QGIRICHANNO_H
 #define TECHDRAWGUI_QGIRICHANNO_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
-#include <QFont>
-#include <QPointF>
-#include <QPen>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Base/Vector3D.h>
-#include "QGILeaderLine.h"
+#include <QFont>
+#include <QGraphicsItem>
+#include <QPen>
+#include <QStyleOptionGraphicsItem>
+
+#include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawRichAnno;
@@ -61,16 +57,14 @@ class TechDrawGuiExport QGIRichAnno : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 233};
 
-    explicit QGIRichAnno(QGraphicsItem* myParent = nullptr,
-                           TechDraw::DrawRichAnno* lead = nullptr);
+    explicit QGIRichAnno();
     ~QGIRichAnno() = default;
 
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
@@ -92,11 +86,11 @@ public Q_SLOTS:
 
 protected:
     virtual void draw() override;
-    virtual QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
     void setLineSpacing(int lineSpacing);
     double prefPointSize(void);
     QFont prefFont(void);
+
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     bool m_isExporting;
     QGCustomText* m_text;

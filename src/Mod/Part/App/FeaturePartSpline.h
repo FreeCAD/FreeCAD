@@ -20,24 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTSPLINE_H
 #define PART_FEATUREPARTSPLINE_H
 
 #include "PartFeature.h"
+
 
 namespace Part
 {
 
 class PartExport Spline :public Part::Feature
 {
-    PROPERTY_HEADER(Part::Spline);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Spline);
 
 public:
     Spline();
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderSpline";
     }
 };

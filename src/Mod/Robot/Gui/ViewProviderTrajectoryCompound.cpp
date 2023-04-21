@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ViewProviderTrajectoryCompound.h"
 #include <Gui/Control.h>
 #include <Mod/Robot/Gui/TaskDlgTrajectoryCompound.h>
 #include <Mod/Robot/App/TrajectoryCompound.h>
+
+#include "ViewProviderTrajectoryCompound.h"
+
 
 using namespace Gui;
 using namespace RobotGui;
@@ -60,7 +58,7 @@ void ViewProviderTrajectoryCompound::unsetEdit(int)
 
 }
 
-std::vector<App::DocumentObject*> ViewProviderTrajectoryCompound::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderTrajectoryCompound::claimChildren()const
 {
     return std::vector<App::DocumentObject*>(static_cast<Robot::TrajectoryCompound *>(getObject())->Source.getValues());
 }

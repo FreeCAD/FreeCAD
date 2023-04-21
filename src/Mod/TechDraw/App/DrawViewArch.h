@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewArch_h_
-#define _DrawViewArch_h_
+#ifndef DrawViewArch_h_
+#define DrawViewArch_h_
 
 #include <App/DocumentObject.h>
-#include <Base/BoundBox.h>
-#include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
+#include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewSymbol.h"
+
 
 namespace TechDraw
 {
@@ -39,12 +40,12 @@ class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 
 public:
     /// Constructor
-    DrawViewArch(void);
-    virtual ~DrawViewArch();
+    DrawViewArch();
+    ~DrawViewArch() = default;
 
     App::PropertyLink         Source;
     App::PropertyBool         AllOn;
-    App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
+    App::PropertyEnumeration  RenderMode; // "Wireframe", "Solid"
     App::PropertyBool         FillSpaces;
     App::PropertyBool         ShowHidden;
     App::PropertyBool         ShowFill;
@@ -56,22 +57,22 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderArch";
     }
 
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
 
 
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
-    std::string getSVGHead(void);
-    std::string getSVGTail(void);
+    std::string getSVGHead();
+    std::string getSVGTail();
 
 private:
     static const char* RenderModeEnums[];

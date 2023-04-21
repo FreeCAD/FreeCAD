@@ -23,28 +23,25 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "PropertyPythonObject.h"
-#include "DocumentObjectPy.h"
-#include "DocumentObject.h"
-#include <Base/Base64.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <iostream>
 #include <boost/regex.hpp>
+
+#include <Base/Base64.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
+
+#include "PropertyPythonObject.h"
+#include "DocumentObject.h"
+
 
 using namespace App;
 
 
 TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property)
 
-PropertyPythonObject::PropertyPythonObject()
-{
-}
+PropertyPythonObject::PropertyPythonObject() = default;
 
 PropertyPythonObject::~PropertyPythonObject()
 {
@@ -67,7 +64,7 @@ Py::Object PropertyPythonObject::getValue() const
     return object;
 }
 
-PyObject *PropertyPythonObject::getPyObject(void)
+PyObject *PropertyPythonObject::getPyObject()
 {
     return Py::new_reference_to(this->object);
 }
@@ -139,7 +136,9 @@ void PropertyPythonObject::fromString(const std::string& repr)
             state.apply(args);
         }
         else if (this->object.hasAttr("__dict__")) {
-            this->object.setAttr("__dict__", res);
+            if (!res.isNone()) {
+                this->object.setAttr("__dict__", res);
+            }
         }
         else {
             this->object = res;
@@ -350,12 +349,12 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 load_json = true;
             }
             else if (boost::regex_search(start, end, what, pickle)) {
-                std::string nam = std::string(what[1].first, what[1].second);
-                std::string cls = std::string(what[2].first, what[2].second);
-                Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
+                std::string name = std::string(what[1].first, what[1].second);
+                std::string type = std::string(what[2].first, what[2].second);
+                Py::Module mod(PyImport_ImportModule(name.c_str()),true);
                 if (mod.isNull())
                     throw Py::Exception();
-                this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
+                this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
             }
@@ -401,12 +400,12 @@ void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
-unsigned int PropertyPythonObject::getMemSize (void) const
+unsigned int PropertyPythonObject::getMemSize () const
 {
     return sizeof(Py::Object);
 }
 
-Property *PropertyPythonObject::Copy(void) const
+Property *PropertyPythonObject::Copy() const
 {
     PropertyPythonObject *p = new PropertyPythonObject();
     Base::PyGILStateLocker lock;

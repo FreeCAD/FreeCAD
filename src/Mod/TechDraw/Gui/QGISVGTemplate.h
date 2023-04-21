@@ -23,15 +23,17 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 
-QT_BEGIN_NAMESPACE
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
 class QFile;
 class QString;
-QT_END_NAMESPACE
 
-namespace TechDraw {
+namespace TechDraw
+{
 class DrawSVGTemplate;
 }
 
@@ -39,35 +41,38 @@ class DrawSVGTemplate;
 
 namespace TechDrawGui
 {
+class QGSPage;
 
-class TechDrawGuiExport QGISVGTemplate : public QGITemplate
+class TechDrawGuiExport QGISVGTemplate: public QGITemplate
 {
     Q_OBJECT
 
 public:
-    QGISVGTemplate(QGraphicsScene *scene);
-    virtual ~QGISVGTemplate();
+    explicit QGISVGTemplate(QGSPage* scene);
+    ~QGISVGTemplate() override;
 
-    enum {Type = QGraphicsItem::UserType + 153};
-    int type() const { return Type; }
+    enum
+    {
+        Type = QGraphicsItem::UserType + 153
+    };
+    int type() const override { return Type; }
 
-    void draw();
-    virtual void updateView(bool update = false);
+    void draw() override;
+    void updateView(bool update = false) override;
 
-    TechDraw::DrawSVGTemplate *getSVGTemplate();
+    TechDraw::DrawSVGTemplate* getSVGTemplate();
 
 protected:
-    void openFile(const QFile &file);
-    void load (const QString & fileName);
+    void openFile(const QFile& file);
+    void load(const QByteArray& svgCode);
     void createClickHandles(void);
 
 protected:
     bool firstTime;
-    QGraphicsSvgItem *m_svgItem;
-    QSvgRenderer *m_svgRender;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-};  // class QGISVGTemplate
+    QGraphicsSvgItem* m_svgItem;
+    QSvgRenderer* m_svgRender;
+};// class QGISVGTemplate
 
-}
+}// namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+#endif// DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H

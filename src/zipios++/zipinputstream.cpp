@@ -14,9 +14,9 @@ using std::istream;
 namespace zipios {
 
 ZipInputStream::ZipInputStream( std::istream &is, std::streampos pos ) 
-  : std::istream( 0 ), 
+  : std::istream( nullptr ), 
 // SGIs basic_ifstream calls istream with 0, but calls basic_ios constructor first??
-    ifs( 0 )
+    ifs( nullptr )
 {
   izf = new ZipInputStreambuf( is.rdbuf(), pos ) ;
 //  this->rdbuf( izf ) ; is replaced by:
@@ -24,8 +24,8 @@ ZipInputStream::ZipInputStream( std::istream &is, std::streampos pos )
 }
 
 ZipInputStream::ZipInputStream( const std::string &filename, std::streampos pos )
-  : std::istream( 0 ),
-    ifs( 0 )
+  : std::istream( nullptr ),
+    ifs( nullptr )
 {
 #if defined(_WIN32) && defined(ZIPIOS_UTF8)
   std::wstring wsname = Base::FileInfo(filename).toStdWString();

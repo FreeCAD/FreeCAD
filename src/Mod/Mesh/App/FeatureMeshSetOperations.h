@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_SETOPERATIONS_H
 #define FEATURE_MESH_SETOPERATIONS_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
 
 #include "MeshFeature.h"
-
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 
 
 namespace Mesh
@@ -42,7 +38,7 @@ namespace Mesh
  */
 class SetOperations : public Mesh::Feature
 {
-    PROPERTY_HEADER(Mesh::SetOperations);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::SetOperations);
 
 public:
     SetOperations();
@@ -54,11 +50,11 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 };
 
 }
 
-#endif // FEATURE_MESH_SEGMENT_H 
+#endif // FEATURE_MESH_SEGMENT_H

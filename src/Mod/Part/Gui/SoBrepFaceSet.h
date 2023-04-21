@@ -23,22 +23,18 @@
 #ifndef PARTGUI_SOBREPFACESET_H
 #define PARTGUI_SOBREPFACESET_H
 
-#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <Gui/SoFCSelectionContext.h>
+#include <Mod/Part/PartGlobal.h>
+
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-// #define RENDER_GLARRAYS
 
 namespace PartGui {
 
@@ -63,7 +59,7 @@ namespace PartGui {
  * Example:
  * Let's say you have a shape with two faces. When meshing face 1 it creates 10 triangles and face 2 creates 5 triangles. Then
  * the partIndex attribute would be the array [10,5].
- * 
+ *
  * Highlighting/selection:
  * The highlightIndex now defines which part of the shape must be highlighted. So, in the above example it can have the values
  * 0, 1, or -1 (i.e. no highlighting). The highlightIndex is a SoSFInt32 field because only one part can be highlighted at a
@@ -76,7 +72,7 @@ namespace PartGui {
  * As an example how to use the class correctly see ViewProviderPartExt::updateVisual().
  */
 class PartGuiExport SoBrepFaceSet : public SoIndexedFaceSet {
-    typedef SoIndexedFaceSet inherited;
+    using inherited = SoIndexedFaceSet;
 
     SO_NODE_HEADER(SoBrepFaceSet);
 
@@ -87,18 +83,18 @@ public:
     SoMFInt32 partIndex;
 
 protected:
-    virtual ~SoBrepFaceSet();
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void doAction(SoAction* action); 
-    virtual SoDetail * createTriangleDetail(
+    ~SoBrepFaceSet() override;
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void doAction(SoAction* action) override;
+    SoDetail * createTriangleDetail(
         SoRayPickAction * action,
         const SoPrimitiveVertex * v1,
         const SoPrimitiveVertex * v2,
         const SoPrimitiveVertex * v3,
-        SoPickedPoint * pp);
-    virtual void generatePrimitives(SoAction * action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+        SoPickedPoint * pp) override;
+    void generatePrimitives(SoAction * action) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
     enum Binding {
@@ -130,8 +126,8 @@ private:
                      const int mbind,
                      SbBool texture);
 
-    typedef Gui::SoFCSelectionContextEx SelContext;
-    typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
+    using SelContext = Gui::SoFCSelectionContextEx;
+    using SelContextPtr = Gui::SoFCSelectionContextExPtr;
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);

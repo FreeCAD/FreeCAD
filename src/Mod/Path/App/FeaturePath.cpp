@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/DocumentObjectPy.h>
 
 #include "FeaturePath.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+
 
 using namespace Path;
 
@@ -44,7 +41,7 @@ Feature::~Feature()
 {
 }
 
-short Feature::mustExecute(void) const
+short Feature::mustExecute() const
 {
     return App::GeoFeature::mustExecute();
 }
@@ -55,7 +52,7 @@ PyObject *Feature::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new App::DocumentObjectPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 void Feature::onChanged(const App::Property* prop)
@@ -68,7 +65,7 @@ void Feature::onChanged(const App::Property* prop)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeaturePython, Path::Feature)
-template<> const char* Path::FeaturePython::getViewProviderName(void) const {
+template<> const char* Path::FeaturePython::getViewProviderName() const {
     return "PathGui::ViewProviderPathPython";
 }
 /// @endcond

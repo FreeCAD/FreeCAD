@@ -370,7 +370,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Drawing.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_AutoGroup_off.svg</dc:identifier>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:contributor>
           <cc:Agent>

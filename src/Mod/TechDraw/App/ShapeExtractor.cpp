@@ -24,38 +24,28 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <BRep_Builder.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepTools.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
 
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepTools.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GroupExtension.h>
-#include <App/Part.h>
 #include <App/Link.h>
-
-#include <Base/BoundBox.h>
+#include <App/Part.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
-
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/Part/App/FeaturePartCircle.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
 
@@ -69,7 +59,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     }
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
-        if (gex != nullptr) {
+        if (gex) {
             std::vector<App::DocumentObject*> objs = gex->Group.getValues();
             for (auto& d: objs) {
                 if (is2dObject(d)) {
@@ -101,7 +91,6 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links)
 {
 //    Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
-    TopoDS_Shape result;
     std::vector<TopoDS_Shape> sourceShapes;
 
     for (auto& l:links) {
@@ -115,19 +104,10 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         } else {
             auto shape = Part::Feature::getShape(l);
             if(!shape.IsNull()) {
-    //            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
-                if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
-                    //do we need to apply placement here too??
-                    sourceShapes.push_back(shape);
-                } else {                                                  //complex shape
-                    std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
-                    if (!drawable.empty()) {
-                        sourceShapes.insert(sourceShapes.end(),drawable.begin(),drawable.end());
-                    }
-                }
+                sourceShapes.push_back(shape);
             } else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
-                sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+                sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
             }
         }
     }
@@ -137,29 +117,39 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     builder.MakeCompound(comp);
     bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.IsNull() || Part::TopoShape(s).isInfinite()) {
-            continue;    // has no shape or the shape is infinite
+        if (s.IsNull()) {
+            continue;
+        } else if (s.ShapeType() < TopAbs_SOLID) {
+            //clean up composite shapes
+            TopoDS_Shape cleanShape = stripInfiniteShapes(s);
+            if (!cleanShape.IsNull()) {
+                builder.Add(comp, cleanShape);
+                found = true;
+            }
+        } else if (Part::TopoShape(s).isInfinite()) {
+            continue;    //simple shape is infinite
+        } else {
+            //a simple shape - add to compound
+            builder.Add(comp, s);
+            found = true;
         }
-        found = true;
-        BRepBuilderAPI_Copy BuilderCopy(s);
-        TopoDS_Shape shape = BuilderCopy.Shape();
-        builder.Add(comp, shape);
     }
     //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
-    if (!found) {
-        Base::Console().Error("SE::getSourceShapes - source shape is empty!\n");
-    } else {
-        result = comp;
+    if (found) {
+//    BRepTools::Write(comp, "SEResult.brep");            //debug
+        return comp;
     }
-    return result;
+
+    Base::Console().Error("ShapeExtractor failed to get shape.\n");
+    return TopoDS_Shape();
 }
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 {
-//    Base::Console().Message("SE::getXShapes(%X) - %s\n", xLink, xLink->getNameInDocument());
+//    Base::Console().Message("SE::getXShapes() - %s\n", xLink->getNameInDocument());
     std::vector<TopoDS_Shape> xSourceShapes;
-    if (xLink == nullptr) {
+    if (!xLink) {
         return xSourceShapes;
     }
 
@@ -179,6 +169,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
     Base::Matrix4D netTransform;
     if (!children.empty()) {
         for (auto& l:children) {
+            Base::Console().Message("SE::getXShapes - processing a child\n");
             bool childNeedsTransform = false;
             Base::Placement childPlm;
             Base::Matrix4D childScale;
@@ -194,23 +185,20 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 }
             }
             auto shape = Part::Feature::getShape(l);
+            Part::TopoShape ts(shape);
+            if (ts.isInfinite()) {
+                shape = stripInfiniteShapes(shape);
+                ts = Part::TopoShape(shape);
+            }
             if(!shape.IsNull()) {
                 if (needsTransform || childNeedsTransform) {
                     // Multiplication is associative, but the braces show the idea of combining the two transforms:
                     // ( link placement and scale ) combined to ( child placement and scale )
                     netTransform = (linkPlm.toMatrix() * linkScale) * (childPlm.toMatrix() * childScale);
-                    Part::TopoShape ts(shape);
                     ts.transformGeometry(netTransform);
                     shape = ts.getShape();
                 }
-                if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
-                    xSourceShapes.push_back(shape);
-                } else {                                                  //complex shape
-                    std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
-                    if (!drawable.empty()) {
-                        xSourceShapes.insert(xSourceShapes.end(),drawable.begin(),drawable.end());
-                    }
-                }
+                xSourceShapes.push_back(shape);
             } else {
                 Base::Console().Message("SE::getXShapes - no shape from getXShape\n");
             }
@@ -218,25 +206,21 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
     } else {
         int depth = 1;   //0 is default value, related to recursion of Links???
         App::DocumentObject* link = xLink->getLink(depth);
-        if (link != nullptr) {
+        if (link) {
             auto shape = Part::Feature::getShape(link);
+            Part::TopoShape ts(shape);
+            if (ts.isInfinite()) {
+                shape = stripInfiniteShapes(shape);
+                ts = Part::TopoShape(shape);
+            }
             if(!shape.IsNull()) {
                 if (needsTransform) {
                     // Transform is just link placement and scale, no child objects
                     netTransform = linkPlm.toMatrix() * linkScale;
-                    Part::TopoShape ts(shape);
                     ts.transformGeometry(netTransform);
                     shape = ts.getShape();
                 }
-
-                if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
-                    xSourceShapes.push_back(shape);
-                } else {                                                  //complex shape
-                    std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
-                    if (!drawable.empty()) {
-                        xSourceShapes.insert(xSourceShapes.end(),drawable.begin(),drawable.end());
-                    }
-                }
+                xSourceShapes.push_back(shape);
             }
         }
     }
@@ -254,40 +238,51 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
     App::Property* sProp = docObj->getPropertyByName("Shape");
     if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         const Part::Feature* pf = static_cast<const Part::Feature*>(docObj);
-        Part::TopoShape ts = pf->Shape.getShape();
-        ts.setPlacement(pf->globalPlacement());
-        result.push_back(ts.getShape());
-    } else if (gex != nullptr) {           //is a group extension
+        Part::TopoShape ts(pf->Shape.getShape());
+
+        //ts might be garbage, better check
+        try {
+            if (!ts.isNull()) {
+                ts.setPlacement(pf->globalPlacement());
+                result.push_back(ts.getShape());
+            }
+        }
+        catch (Standard_Failure& e) {
+            Base::Console().Error("ShapeExtractor - %s encountered OCC error: %s \n", docObj->getNameInDocument(), e.GetMessageString());
+            return result;
+        }
+        catch (...) {
+            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", docObj->getNameInDocument());
+            return result;
+        }
+
+    } else if (gex) {           //is a group extension
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();
         std::vector<TopoDS_Shape> shapes;
         for (auto& d: objs) {
             shapes = getShapesFromObject(d);
             if (!shapes.empty()) {
-                result.insert(result.end(),shapes.begin(),shapes.end());
+                result.insert(result.end(), shapes.begin(), shapes.end());
             }
         }
     //the next 2 bits are mostly for Arch module objects
-    } else if (gProp != nullptr) {       //has a Group property
+    } else if (gProp) {       //has a Group property
         App::PropertyLinkList* list = dynamic_cast<App::PropertyLinkList*>(gProp);
-        if (list != nullptr) {
+        if (list) {
             std::vector<App::DocumentObject*> objs = list->getValues();
             std::vector<TopoDS_Shape> shapes;
             for (auto& d: objs) {
                 shapes = getShapesFromObject(d);
                 if (!shapes.empty()) {
-                    result.insert(result.end(),shapes.begin(),shapes.end());
+                    result.insert(result.end(), shapes.begin(), shapes.end());
                 }
             }
-        } else {
-                Base::Console().Log("SE::getShapesFromObject - Group is not a PropertyLinkList!\n");
         }
-    } else if (sProp != nullptr) {       //has a Shape property
+    } else if (sProp) {       //has a Shape property
         Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
-        if (shape != nullptr) {
+        if (shape) {
             TopoDS_Shape occShape = shape->getValue();
             result.push_back(occShape);
-        } else {
-            Base::Console().Log("SE::getShapesFromObject - Shape is not a PropertyPartShape!\n");
         }
     }
     return result;
@@ -316,59 +311,30 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
     return baseShape;
 }
 
-std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Shape shapeIn)
+//inShape is a compound
+//The shapes of datum features (Axis, Plan and CS) are infinite
+//Infinite shapes can not be projected, so they need to be removed.
+TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
 {
-//    Base::Console().Message("SE::extractDrawableShapes()\n");
-    std::vector<TopoDS_Shape> result;
-    std::vector<TopoDS_Shape> extShapes;            //extracted Shapes (solids mostly)
-    std::vector<TopoDS_Shape> extEdges;             //extracted loose Edges
-    if (shapeIn.ShapeType() == TopAbs_COMPOUND) {          //Compound is most general shape type
-        //getSolids from Compound
-        TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
-        for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
-            TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
-            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
-                extShapes.push_back(s);
-            }
-        }
-        //get edges not part of a solid
-        //???? should this look for Faces(Wires?) before Edges?
-        TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
-        for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
-            TopoDS_Shape s = expEdge.Current();
-            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
-                extEdges.push_back(s);
-            }
-        }
-    } else if (shapeIn.ShapeType() == TopAbs_COMPSOLID) {
-        //get Solids from compSolid
-        TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
-        for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
-            TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
-            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
-                extShapes.push_back(s);
-            }
-        }
-        //vs using 2d geom as construction geom?
-        //get edges not part of a solid
-        //???? should this look for Faces(Wires?) before Edges?
-        TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
-        for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
-            TopoDS_Shape s = expEdge.Current();
-            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
-                extEdges.push_back(s);
-            }
-        }
-    } else {
-        //not a Compound or a CompSolid just push_back shape_In)
-        extShapes.push_back(shapeIn);
-    }
+//    Base::Console().Message("SE::stripInfiniteShapes()\n");
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
 
-    result = extShapes;
-    if (!extEdges.empty()) {
-        result.insert(std::end(result), std::begin(extEdges), std::end(extEdges));
+    TopoDS_Iterator it(inShape);
+    for (; it.More(); it.Next()) {
+        TopoDS_Shape s = it.Value();
+        if (s.ShapeType() < TopAbs_SOLID) {
+            //look inside composite shapes
+            s = stripInfiniteShapes(s);
+        } else if (Part::TopoShape(s).isInfinite()) {
+            continue;
+        } else {
+            //simple shape
+        }
+        builder.Add(comp, s);
     }
-    return result;
+    return TopoDS_Shape(std::move(comp));
 }
 
 bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
@@ -400,64 +366,61 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 
 bool ShapeExtractor::isPointType(App::DocumentObject* obj)
 {
-    bool result = false;
-    Base::Type t = obj->getTypeId();
-    if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-        result = true;
-    } else if (isDraftPoint(obj)) {
-        result = true;
+//    Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
+    if (obj) {
+        Base::Type t = obj->getTypeId();
+        if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
+            return true;
+        } else if (isDraftPoint(obj)) {
+            return true;
+        }
     }
-    return result;
+    return false;
 }
 
 bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::isDraftPoint()\n");
-    bool result = false;
     //if the docObj doesn't have a Proxy property, it definitely isn't a Draft point
     App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
-    if (proxy != nullptr) {
+    if (proxy) {
         std::string  pp = proxy->toString();
 //        Base::Console().Message("SE::isDraftPoint - pp: %s\n", pp.c_str());
         if (pp.find("Point") != std::string::npos) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
 //    Base::Console().Message("SE::getLocation3dFromFeat()\n");
-    Base::Vector3d result(0.0, 0.0, 0.0);
     if (!isPointType(obj)) {
-        return result;
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
 //    if (isDraftPoint(obj) {
 //        //Draft Points are not necc. Part::PartFeature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     Part::Feature* pf = dynamic_cast<Part::Feature*>(obj);
-    if (pf != nullptr) {
+    if (pf) {
         Part::TopoShape pts = pf->Shape.getShape();
         pts.setPlacement(pf->globalPlacement());
         TopoDS_Shape ts = pts.getShape();
         if (ts.ShapeType() == TopAbs_VERTEX)  {
             TopoDS_Vertex v = TopoDS::Vertex(ts);
-            result = DrawUtil::vertex2Vector(v);
+            return DrawUtil::vertex2Vector(v);
         }
     }
 
 //    Base::Console().Message("SE::getLocation3dFromFeat - returns: %s\n",
 //                            DrawUtil::formatVector(result).c_str());
-    return result;
+    return Base::Vector3d(0.0, 0.0, 0.0);
 }
 
-bool ShapeExtractor::prefAdd2d(void)
+bool ShapeExtractor::prefAdd2d()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("ShowLoose2d", false);
-    return result;
+    return Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);
 }
 

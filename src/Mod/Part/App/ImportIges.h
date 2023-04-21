@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_IMPORT_IGES_H
 #define PART_IMPORT_IGES_H
 
-#include <TopoDS_Shape.hxx>
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace App {
 class Document;

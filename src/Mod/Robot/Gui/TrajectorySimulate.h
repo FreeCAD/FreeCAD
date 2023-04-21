@@ -20,19 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TrajectorySimulate_H
 #define GUI_TASKVIEW_TrajectorySimulate_H
 
-
-#include <QDialog>
 #include <memory>
+#include <QDialog>
 
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/Robot6Axis.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Trajectory.h>
 #include <Mod/Robot/App/Simulation.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
 
 #include "ViewProviderRobotObject.h"
 
@@ -46,23 +42,23 @@ class TrajectorySimulate : public QDialog
     Q_OBJECT
 
 public:
-    TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = 0);
-    ~TrajectorySimulate();
+    TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = nullptr);
+    ~TrajectorySimulate() override;
 
 private Q_SLOTS:
-    void start(void);
-    void stop(void);
-    void run(void);
-    void back(void);
-    void forward(void);
-    void end(void);
+    void start();
+    void stop();
+    void run();
+    void back();
+    void forward();
+    void end();
 
-    void timerDone(void);
+    void timerDone();
     void valueChanged ( int value );
     void valueChanged ( double d );
 
 protected:
-    void setTo(void);
+    void setTo();
 
     QTimer *timer;
 

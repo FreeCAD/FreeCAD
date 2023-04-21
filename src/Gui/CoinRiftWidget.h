@@ -38,7 +38,6 @@
 
 // defines which method to use to render
 #define USE_SO_OFFSCREEN_RENDERER
-//#define USE_FRAMEBUFFER
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
 # ifdef USE_FRAMEBUFFER
@@ -66,7 +65,6 @@
 #include <OVR.h>
 #include <OVR_Kernel.h>
 #include <OVR_Version.h>
-//#include <OVR_CAPI_GL.h>
 #include <../Src/OVR_CAPI_GL.h>
 #include <../Src/CAPI/GL/CAPI_GL_Util.h> // For framebuffer functions.
 
@@ -75,8 +73,6 @@
 class CoinRiftWidget : public QGLWidget
 {
     ovrHmd hmd;
-    //ovrHmdDesc hmdDesc;
-    //ovrEyeType eyes[2];
     ovrEyeRenderDesc eyeRenderDesc[2];
     ovrTexture eyeTexture[2];
 

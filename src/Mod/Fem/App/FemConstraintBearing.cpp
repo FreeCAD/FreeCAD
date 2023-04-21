@@ -21,23 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopoDS.hxx>
 #endif
+
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FemConstraintBearing.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
@@ -45,7 +40,7 @@ PROPERTY_SOURCE(Fem::ConstraintBearing, Fem::Constraint)
 
 ConstraintBearing::ConstraintBearing()
 {
-    ADD_PROPERTY_TYPE(Location,(0),"ConstraintBearing",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Location,(nullptr),"ConstraintBearing",(App::PropertyType)(App::Prop_None),
                       "Element giving axial location of constraint");
     ADD_PROPERTY(Dist,(0.0));
     ADD_PROPERTY(AxialFree,(0));
@@ -57,15 +52,14 @@ ConstraintBearing::ConstraintBearing()
                       "Axis of bearing seat");
 }
 
-App::DocumentObjectExecReturn *ConstraintBearing::execute(void)
+App::DocumentObjectExecReturn *ConstraintBearing::execute()
 {
     return Constraint::execute();
 }
 
 void ConstraintBearing::onChanged(const App::Property* prop)
 {
-    //Base::Console().Error("ConstraintBearing: onChanged %s\n", prop->getName());
-    // Note: If we call this at the end, then the symbol ist not oriented correctly initially
+    // Note: If we call this at the end, then the symbol is not oriented correctly initially
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
 
@@ -80,7 +74,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
         Height.setValue(height);
         // Update base point
         base = base + axis * height/2;
-        if (Location.getValue() != NULL) {
+        if (Location.getValue()) {
             base = getBasePoint(base, axis, Location, Dist.getValue());
         }
         BasePoint.setValue(base);
@@ -88,7 +82,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
     } else if ((prop == &Location) || (prop == &Dist)) {
         App::DocumentObject* obj = Location.getValue();
         std::vector<std::string> names = Location.getSubValues();
-        if (names.size() == 0) {
+        if (names.empty()) {
             return;
         }
         std::string subName = names.front();

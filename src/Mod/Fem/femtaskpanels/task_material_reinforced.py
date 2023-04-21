@@ -29,7 +29,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief task panel for reinforced material object
 
-import sys
 from PySide import QtCore
 from PySide import QtGui
 
@@ -37,8 +36,7 @@ import FreeCAD
 import FreeCADGui
 
 
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 class _TaskPanel:
@@ -46,8 +44,7 @@ class _TaskPanel:
     The editmode TaskPanel for MaterialReinforced objects
     """
 
-    if sys.version_info.major >= 3:
-        unicode = str
+    unicode = str
 
     def __init__(self, obj):
 
@@ -125,7 +122,6 @@ class _TaskPanel:
                 self.card_path_m
             )
             index = self.parameterWidget.cb_materials_m.findData(self.card_path_m)
-            # print(index)
             # fill input fields and set the current material in the cb widget
             self.choose_material_m(index)
         else:
@@ -165,7 +161,6 @@ class _TaskPanel:
                 "We will use this material.\n"
             )
             index = self.parameterWidget.cb_materials_r.findData(self.card_path_r)
-            # print(index)
             # fill input fields and set the current material in the cb widget
             self.choose_material_r(index)
 
@@ -339,7 +334,6 @@ class _TaskPanel:
                         "The found material card will be used.\n"
                     )
                     index = self.parameterWidget.cb_materials_m.findData(self.card_path_m)
-                    # print(index)
                     # set the current material in the cb widget
                 self.choose_material_m(index)
             else:
@@ -392,7 +386,6 @@ class _TaskPanel:
                         "The found material card will be used.\n"
                     )
                     index = self.parameterWidget.cb_materials_r.findData(self.card_path_r)
-                    # print(index)
                     # set the current material in the cb widget
                 self.choose_material_r(index)
             else:
@@ -432,4 +425,4 @@ class _TaskPanel:
             self.parameterWidget.cb_materials_r.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
             # the whole card path is added to the combo box to make it unique
             # see def choose_material:
-            # for assignment of self.card_path the path form the parameterWidget ist used
+            # for assignment of self.card_path the path form the parameterWidget is used

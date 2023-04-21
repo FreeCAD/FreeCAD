@@ -7,92 +7,62 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>108</height>
+    <height>48</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QLabel" name="labelConstrainStatus">
+    <widget class="Gui::StatefulLabel" name="labelConstrainStatus">
      <property name="text">
-      <string>Undefined degrees of freedom</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+      <string>DOF</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelSolverStatus">
+    <widget class="Gui::UrlLabel" name="labelConstrainStatusLink">
      <property name="text">
-      <string>Not solved yet</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+      <string>Link</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="Gui::PrefCheckBox" name="autoRemoveRedundants">
+    <widget class="QToolButton" name="manualUpdate">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="toolTip">
-      <string>New constraints that would be redundant will automatically be removed</string>
+      <string>Forces recomputation of active document</string>
      </property>
      <property name="text">
-      <string>Auto remove redundants</string>
+      <string/>
      </property>
-     <property name="checked">
-      <bool>false</bool>
+     <property name="icon">
+      <iconset>
+       <normaloff>:/icons/view-refresh.svg</normaloff>:/icons/view-refresh.svg</iconset>
      </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>AutoRemoveRedundants</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher</cstring>
+     <property name="popupMode">
+      <enum>QToolButton::MenuButtonPopup</enum>
      </property>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="Gui::PrefCheckBox" name="autoUpdate">
-       <property name="toolTip">
-        <string>Executes a recomputation of active document after every sketch action</string>
-       </property>
-       <property name="text">
-        <string>Auto update</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>AutoRecompute</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher</cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="manualUpdate">
-       <property name="toolTip">
-        <string>Forces recomputation of active document</string>
-       </property>
-       <property name="text">
-        <string>Update</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::StatefulLabel</class>
+   <extends>QLabel</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

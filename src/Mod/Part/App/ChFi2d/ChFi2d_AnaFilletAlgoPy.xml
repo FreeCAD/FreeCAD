@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ChFi2d_AnaFilletAlgoPy"
+      PythonName="Part.ChFi2d.AnaFilletAlgo"
+      Twin="ChFi2d_AnaFilletAlgo"
+      TwinPointer="ChFi2d_AnaFilletAlgo"
+      Include="ChFi2d_AnaFilletAlgo.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+      <UserDocu>An analytical algorithm for calculation of the fillets.
+It is implemented for segments and arcs of circle only.</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+        <Documentation>
+            <UserDocu>Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="perform">
+        <Documentation>
+            <UserDocu>perform(radius) -> bool
+
+Constructs a fillet edge</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="result">
+        <Documentation>
+            <UserDocu>result()
+
+Returns result (fillet edge, modified edge1, modified edge2)</UserDocu>
+        </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

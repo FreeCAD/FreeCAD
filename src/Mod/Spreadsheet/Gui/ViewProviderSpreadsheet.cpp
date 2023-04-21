@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jrgen Riegel (juergen.riegel@web.de)               *
- *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
+ *   Copyright (c) 2011 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,42 +21,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QFile>
-# include <QFileInfo>
-# include <QImage>
-# include <QString>
-# include <QMdiSubWindow>
+# include <sstream>
 # include <QMenu>
+# include <QString>
 #endif
 
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
+
 #include "ViewProviderSpreadsheet.h"
+#include "ViewProviderSpreadsheetPy.h"
 #include "SpreadsheetView.h"
 
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <sstream>
 
 using namespace Base;
 using namespace Gui;
 using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
-
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
@@ -81,7 +70,7 @@ void ViewProviderSheet::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderSheet::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Spreadsheet");
+    StrList.emplace_back("Spreadsheet");
     return StrList;
 }
 
@@ -152,7 +141,7 @@ void ViewProviderSheet::beforeDelete()
     if(!view)
         return;
     if(view==Gui::getMainWindow()->activeWindow())
-        getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
+        getDocument()->setActiveView(nullptr,Gui::View3DInventor::getClassTypeId());
     Gui::getMainWindow()->removeWindow(view);
 }
 
@@ -180,4 +169,23 @@ void ViewProviderSheet::updateData(const App::Property* prop)
 {
     if (view)
         view->updateCell(prop);
+}
+
+PyObject *ViewProviderSheet::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderSpreadsheetPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui::ViewProviderSheet)
+/// @endcond
+
+// explicit template instantiation
+template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
 }

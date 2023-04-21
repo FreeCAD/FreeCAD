@@ -7,7 +7,7 @@
 import codecs, os
 
 ext=[".cpp", ".cxx", ".cc", ".c", ".hpp", ".hxx", ".hh", ".h", ".inl", ".inc", ".py"]
-flt=['__init__.py', '_rc.py', 'CxImage',
+flt=['__init__.py', '_rc.py',
      'coin_header_includes.h',
      'CxxDebug.hxx',
      'IndirectPythonInterface.hxx',

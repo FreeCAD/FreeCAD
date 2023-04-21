@@ -21,54 +21,60 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.frequency_beamsimple import setup
-setup()
-
-"""
-# simple frequency analysis
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=58959#p506565
-
 import FreeCAD
 
 import Fem
 import ObjectsFem
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Frequency Analysis Simple Beam",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "frequency"
-            }
-    return info
+    return {
+        "name": "Frequency Analysis Simple Beam",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "solid",
+        "equations": ["frequency"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.frequency_beamsimple import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=58959#p506565
+
+simple frequency analysis
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup simple beam frequency
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric object
     geom_obj = doc.addObject("Part::Box", "Box")
     geom_obj.Length = 3000
     geom_obj.Width = 100
     geom_obj.Height = 50
     doc.recompute()
-
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
@@ -78,74 +84,69 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "frequency"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.01
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "frequency"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+        solver_obj.EigenmodesCount = 10
+        solver_obj.EigenmodeHighLimit = 1000000.0
+        solver_obj.EigenmodeLowLimit = 0.01
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
+    material_obj = analysis.addObject(
         ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
     )[0]
-    mat = material_object.Material
+    mat = material_obj.Material
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
-    # displacement_constraint 1
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="Fix_XYZ")
-    )[0]
-    displacement_constraint.References = [(doc.Box, "Edge4")]
-    displacement_constraint.xFix = True
-    displacement_constraint.xFree = False
-    displacement_constraint.xDisplacement = 0.0
-    displacement_constraint.yFix = True
-    displacement_constraint.yFree = False
-    displacement_constraint.yDisplacement = 0.0
-    displacement_constraint.zFix = True
-    displacement_constraint.zFree = False
-    displacement_constraint.zDisplacement = 0.0
+    # constraint displacement xyz
+    con_disp_xyz = ObjectsFem.makeConstraintDisplacement(doc, "Fix_XYZ")
+    con_disp_xyz.References = [(doc.Box, "Edge4")]
+    con_disp_xyz.xFix = True
+    con_disp_xyz.xFree = False
+    con_disp_xyz.xDisplacement = 0.0
+    con_disp_xyz.yFix = True
+    con_disp_xyz.yFree = False
+    con_disp_xyz.yDisplacement = 0.0
+    con_disp_xyz.zFix = True
+    con_disp_xyz.zFree = False
+    con_disp_xyz.zDisplacement = 0.0
+    analysis.addObject(con_disp_xyz)
 
-    # displacement_constraint 2
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="Fix_YZ")
-    )[0]
-    displacement_constraint.References = [(doc.Box, "Edge8")]
-    displacement_constraint.xFix = False
-    displacement_constraint.xFree = True
-    displacement_constraint.xDisplacement = 0.0
-    displacement_constraint.yFix = True
-    displacement_constraint.yFree = False
-    displacement_constraint.yDisplacement = 0.0
-    displacement_constraint.zFix = True
-    displacement_constraint.zFree = False
-    displacement_constraint.zDisplacement = 0.0
+    # constraint displacement yz
+    con_disp_yz = ObjectsFem.makeConstraintDisplacement(doc, "Fix_YZ")
+    con_disp_yz.References = [(doc.Box, "Edge8")]
+    con_disp_yz.xFix = False
+    con_disp_yz.xFree = True
+    con_disp_yz.xDisplacement = 0.0
+    con_disp_yz.yFix = True
+    con_disp_yz.yFree = False
+    con_disp_yz.yDisplacement = 0.0
+    con_disp_yz.zFix = True
+    con_disp_yz.zFree = False
+    con_disp_yz.zDisplacement = 0.0
+    analysis.addObject(con_disp_yz)
 
     # mesh
     from .meshes.mesh_beamsimple_tetra10 import create_nodes, create_elements
-
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -153,7 +154,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, mesh_name))[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

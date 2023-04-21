@@ -20,26 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <qobject.h>
 # include <QDir>
+# include <qobject.h>
 # include <QFileInfo>
 # include <QMessageBox>
 #endif
 
-#include "Workbench.h"
 #include <App/Application.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MenuManager.h>
+#include <Gui/ToolBarManager.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskWatcher.h>
 
+#include "Workbench.h"
 #include "TaskWatcher.h"
 
 
@@ -92,28 +90,28 @@ void Workbench::activated()
     const char* RobotAndTrac[] = {
         "Robot_InsertWaypoint",
         "Robot_InsertWaypointPreselect",
-        0};
+        nullptr};
 
     const char* Robot[] = {
         "Robot_AddToolShape",
         "Robot_SetHomePos",
         "Robot_RestoreHomePos",
-        0};
+        nullptr};
 
     const char* Empty[] = {
         "Robot_InsertKukaIR500",
         "Robot_InsertKukaIR16",
         "Robot_InsertKukaIR210",
         "Robot_InsertKukaIR125",
-        0};
+        nullptr};
 
     const char* TracSingle[] = {
         "Robot_TrajectoryDressUp",
-        0};
+        nullptr};
 
     const char* TracMore[] = {
         "Robot_TrajectoryCompound",
-        0};
+        nullptr};
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 

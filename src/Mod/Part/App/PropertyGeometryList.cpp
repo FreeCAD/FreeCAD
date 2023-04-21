@@ -20,24 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Geometry.h"
-#include "GeometryPy.h"
 
 #include "PropertyGeometryList.h"
+#include "GeometryPy.h"
 #include "Part2DObject.h"
 
 
@@ -75,7 +65,7 @@ void PropertyGeometryList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyGeometryList::getSize(void) const
+int PropertyGeometryList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -119,7 +109,7 @@ void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue
     if(idx>=(int)_lValueList.size())
         throw Base::IndexError("Index out of bound");
     aboutToSetValue();
-    if(idx < 0) 
+    if(idx < 0)
         _lValueList.push_back(lValue.release());
     else {
         delete _lValueList[idx];
@@ -128,7 +118,7 @@ void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue
     hasSetValue();
 }
 
-PyObject *PropertyGeometryList::getPyObject(void)
+PyObject *PropertyGeometryList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -174,6 +164,28 @@ void PropertyGeometryList::setPyObject(PyObject *value)
     }
 }
 
+void PropertyGeometryList::trySaveGeometry(Geometry * geom, Base::Writer &writer) const
+{
+    // Not all geometry classes implement Save() and throw an exception instead
+    try {
+        geom->Save(writer);
+    }
+    catch (const Base::NotImplementedError& e) {
+        Base::Console().Warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+    }
+}
+
+void PropertyGeometryList::tryRestoreGeometry(Geometry * geom, Base::XMLReader &reader)
+{
+    // Not all geometry classes implement Restore() and throw an exception instead
+    try {
+        geom->Restore(reader);
+    }
+    catch (const Base::NotImplementedError& e) {
+        Base::Console().Warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+    }
+}
+
 void PropertyGeometryList::Save(Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
@@ -182,7 +194,7 @@ void PropertyGeometryList::Save(Writer &writer) const
         writer.Stream() << writer.ind() << "<Geometry  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
         writer.incInd();
-        _lValueList[i]->Save(writer);
+        trySaveGeometry(_lValueList[i], writer);
         writer.decInd();
         writer.Stream() << writer.ind() << "</Geometry>" << endl;
     }
@@ -202,8 +214,8 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
-        Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
-        newG->Restore(reader);
+        Geometry *newG = static_cast<Geometry *>(Base::Type::fromName(TypeName).createInstance());
+        tryRestoreGeometry(newG, reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
             Base::Console().Error("Geometry \"%s\" within a PropertyGeometryList was subject to a partial restore.\n",reader.localName());
@@ -229,7 +241,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     setValues(std::move(values));
 }
 
-App::Property *PropertyGeometryList::Copy(void) const
+App::Property *PropertyGeometryList::Copy() const
 {
     PropertyGeometryList *p = new PropertyGeometryList();
     p->setValues(_lValueList);
@@ -242,7 +254,7 @@ void PropertyGeometryList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyGeometryList::getMemSize(void) const
+unsigned int PropertyGeometryList::getMemSize() const
 {
     int size = sizeof(PropertyGeometryList);
     for (int i = 0; i < getSize(); i++)

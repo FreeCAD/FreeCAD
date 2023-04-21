@@ -20,64 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 # include <iterator>
-# include <Geom_Surface.hxx>
-# include <Geom_RectangularTrimmedSurface.hxx>
-# include <GeomAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <gp_Ax3.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Cylinder.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
+# include <Bnd_Box.hxx>
+# include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepLib_MakeWire.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepGProp.hxx>
 # include <BRepLib_FuseEdges.hxx>
+# include <BRepLib_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Geom_Conic.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
+# include <Geom_Surface.hxx>
+# include <GeomAdaptor_Surface.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <gp_Ax3.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Pln.hxx>
+# include <GProp_GProps.hxx>
+# include <ShapeAnalysis_Curve.hxx>
+# include <ShapeAnalysis_Shell.hxx>
 # include <ShapeBuild_ReShape.hxx>
 # include <ShapeFix_Face.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
-# include <BRep_Builder.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_Edge.hxx>
-# include <ShapeAnalysis_Curve.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <TColgp_SequenceOfPnt.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
 # include <Standard_Version.hxx>
+# include <TColgp_Array2OfPnt.hxx>
+# include <TColgp_SequenceOfPnt.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
 #endif // _PreComp_
 
-#include <Base/Tools.h>
-
 #include <Base/Console.h>
-#include <Base/Tools.h>
 
 #include "modelRefine.h"
 
 
 using namespace ModelRefine;
-
 
 
 void ModelRefine::getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges)
@@ -627,7 +622,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
     static TopoDS_Face dummy;
     std::vector<EdgeVectorType> boundaries;
     boundarySplit(faces, boundaries);
-    if (boundaries.size() < 1)
+    if (boundaries.empty())
         return dummy;
 
     //make wires
@@ -643,7 +638,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
             return dummy;
         allWires.push_back(wireMaker.Wire());
     }
-    if (allWires.size() < 1)
+    if (allWires.empty())
         return dummy;
 
     // Sort wires by size, that is, the innermost wire comes last
@@ -826,14 +821,22 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
     if (surfaceOne.IsNull() || surfaceTwo.IsNull())
         return false;
 
-    if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
-    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational()) return false;
-    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
-    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
-    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
-    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed()) return false;
-    if (surfaceOne->UDegree() != surfaceTwo->UDegree()) return false;
-    if (surfaceOne->VDegree() != surfaceTwo->VDegree()) return false;
+    if (surfaceOne->IsURational() != surfaceTwo->IsURational())
+        return false;
+    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational())
+        return false;
+    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic())
+        return false;
+    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic())
+        return false;
+    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed())
+        return false;
+    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed())
+        return false;
+    if (surfaceOne->UDegree() != surfaceTwo->UDegree())
+        return false;
+    if (surfaceOne->VDegree() != surfaceTwo->VDegree())
+        return false;
 
     //pole test
     int uPoleCountOne(surfaceOne->NbUPoles());
@@ -1034,6 +1037,7 @@ bool FaceUniter::process()
     typeObjects.push_back(&getBSplineObject());
     //add more face types.
 
+    bool checkFinalShell = false;
     ModelRefine::FaceTypeSplitter splitter;
     splitter.addShell(workShell);
     std::vector<FaceTypedBase *>::iterator typeIt;
@@ -1061,6 +1065,11 @@ bool FaceUniter::process()
                 TopoDS_Face newFace = (*typeIt)->buildFace(adjacencySplitter.getGroup(adjacentIndex));
                 if (!newFace.IsNull())
                 {
+                    // the created face should have the same orientation as the input faces
+                    const FaceVectorType& faces = adjacencySplitter.getGroup(adjacentIndex);
+                    if (!faces.empty() && newFace.Orientation() != faces[0].Orientation()) {
+                        checkFinalShell = true;
+                    }
                     facesToSew.push_back(newFace);
                     if (facesToRemove.capacity() <= facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size())
                         facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
@@ -1080,7 +1089,7 @@ bool FaceUniter::process()
             }
         }
     }
-    if (facesToSew.size() > 0)
+    if (!facesToSew.empty())
     {
         modifiedSignal = true;
         workShell = ModelRefine::removeFaces(workShell, facesToRemove);
@@ -1141,6 +1150,19 @@ bool FaceUniter::process()
             faceFixer.Perform();
         }
         workShell = TopoDS::Shell(edgeFuse.Shape());
+
+        // A difference of orientation between original and fused faces was previously detected
+        if (checkFinalShell) {
+            ShapeAnalysis_Shell check;
+            check.LoadShells(workShell);
+            if (!check.HasFreeEdges()) {
+                // the shell is a solid, make sure that volume is positive
+                GProp_GProps props;
+                BRepGProp::VolumeProperties(workShell, props);
+                if (props.Mass() < 0)
+                    workShell = TopoDS::Shell(workShell.Reversed());
+            }
+        }
         // update the list of modifications
         TopTools_DataMapOfShapeShape faceMap;
         edgeFuse.Faces(faceMap);
@@ -1195,7 +1217,11 @@ Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape&
     Build();
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void Part::BRepBuilderAPI_RefineModel::Build(const Message_ProgressRange&)
+#else
 void Part::BRepBuilderAPI_RefineModel::Build()
+#endif
 {
     if (myShape.IsNull())
         Standard_Failure::Raise("Cannot remove splitter from empty shape");
@@ -1222,16 +1248,6 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             }
         }
         myShape = mkSolid.Solid();
-
-#if OCC_VERSION_HEX <= 0x060700
-        // With occ 6.7 and older it can happen that a solid is flipped.
-        // In this case it must be reversed
-        GProp_GProps props;
-        BRepGProp::VolumeProperties(myShape, props);
-        if (props.Mass() < 0) {
-            myShape.Reverse();
-        }
-#endif
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);

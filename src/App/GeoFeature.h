@@ -28,7 +28,6 @@
 #include "PropertyGeo.h"
 
 
-
 namespace App
 {
 
@@ -37,14 +36,14 @@ namespace App
  */
 class AppExport GeoFeature : public App::DocumentObject
 {
-    PROPERTY_HEADER(App::GeoFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeature);
 
 public:
     PropertyPlacement Placement;
 
     /// Constructor
-    GeoFeature(void);
-    virtual ~GeoFeature();
+    GeoFeature();
+    ~GeoFeature() override;
 
     /**
      * @brief transformPlacement applies transform to placement of this shape.
@@ -65,7 +64,7 @@ public:
      * @brief getPyObject returns the Python binding object
      * @return the Python binding object
      */
-    virtual PyObject* getPyObject(void);
+    PyObject* getPyObject() override;
 
     /// Specify the type of element name to return when calling getElementName() 
     enum ElementNameType {
@@ -106,7 +105,7 @@ public:
     static DocumentObject *resolveElement(App::DocumentObject *obj, 
             const char *subname, std::pair<std::string,std::string> &elementName, 
             bool append=false, ElementNameType type=Normal,
-            const DocumentObject *filter=0,const char **element=0, GeoFeature **geo=0);
+            const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
     /**
      * @brief Calculates the placement in the global reference coordinate system

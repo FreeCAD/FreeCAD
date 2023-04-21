@@ -20,54 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Tool.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <Poly_Triangulation.hxx>
-# include <TopoDS_Face.hxx>
-# include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoNode.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
+# include <sstream>
 # include <vector>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QApplication>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
 # include <QMessageBox>
+
+# include <Inventor/SoInput.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoNode.h>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Material.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
-#include <Gui/FileDialog.h>
-#include <Gui/View.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
+#include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-
-#include <Mod/Raytracing/App/RayFeature.h>
-#include <Mod/Raytracing/App/RaySegment.h>
-#include <Mod/Raytracing/App/RayProject.h>
-#include <Mod/Raytracing/App/LuxProject.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Raytracing/App/LuxProject.h>
+#include <Mod/Raytracing/App/RayFeature.h>
+#include <Mod/Raytracing/App/RayProject.h>
 
 #include "FreeCADpov.h"
-
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 //===========================================================================
@@ -89,7 +78,7 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
 
 void CmdRaytracingWriteCamera::activated(int)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -193,7 +182,8 @@ void CmdRaytracingWritePart::activated(int)
     // name of the objects in the pov file
     std::string Name = "Part";
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (obj.empty()) return;
+    if (obj.empty())
+        return;
 
     std::stringstream out;
     //Raytracing.writePartFile(App.document().GetActiveFeature().getShape())
@@ -228,7 +218,7 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
 
 void CmdRaytracingWriteView::activated(int)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -325,7 +315,7 @@ CmdRaytracingNewPovrayProject::CmdRaytracingNewPovrayProject()
 
 void CmdRaytracingNewPovrayProject::activated(int iMsg)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -351,8 +341,8 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
         return;
     }
 
-    QAction* a = pcAction->actions()[iMsg];
-    QFileInfo tfi(a->property("Template").toString());
+    const QList<QAction*> actions = pcAction->actions();
+    QFileInfo tfi(actions.at(iMsg)->property("Template").toString());
     if (tfi.isReadable()) {
         try {
             openCommand("Create POV-Ray project");
@@ -406,7 +396,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     _pcAction = pcAction;
     languageChange();
     if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 
@@ -610,7 +600,7 @@ void CmdRaytracingRender::activated(int)
     std::string renderer;
     if (renderType == Raytracing::RayProject::getClassTypeId()) {
         renderer = hGrp->GetASCII("PovrayExecutable", "");
-        if (renderer == "") {
+        if (renderer.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray not found"),
                 QObject::tr("Please set the path to the POV-Ray executable in the preferences."));
             return;
@@ -624,7 +614,7 @@ void CmdRaytracingRender::activated(int)
         }
     } else {
         renderer = hGrp->GetASCII("LuxrenderExecutable", "");
-        if (renderer == "") {
+        if (renderer.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Luxrender not found"),
                 QObject::tr("Please set the path to the luxrender or luxconsole executable in the preferences."));
             return;
@@ -638,7 +628,7 @@ void CmdRaytracingRender::activated(int)
         }
     }
 
-    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, renderType);
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(nullptr, renderType);
 
     if (renderType == Raytracing::RayProject::getClassTypeId()) {
         Raytracing::RayProject* proj = static_cast<Raytracing::RayProject*>(Sel[0].getObject());
@@ -678,11 +668,8 @@ void CmdRaytracingRender::activated(int)
             }
             openCommand("Render project");
             int width = hGrp->GetInt("OutputWidth", 800);
-            std::stringstream w;
-            w << width;
             int height = hGrp->GetInt("OutputHeight", 600);
-            std::stringstream h;
-            h << height;
+
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
             doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'rb')",Sel[0].getFeatName());
             doCommand(Doc,"import os,subprocess,tempfile");
@@ -691,12 +678,30 @@ void CmdRaytracingRender::activated(int)
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
             doCommand(Doc,"os.close(fd)");
+
+            renderer = Base::Tools::escapeEncodeFilename(renderer);
+            std::stringstream str;
+            str << "proc = subprocess.Popen(["
+                << "\"" << renderer << "\", ";
+            std::istringstream istr(par);
+            std::string s;
+            while (std::getline(istr, s, ' ')) {
+                s = Base::Tools::escapeEncodeString(s);
+                str << "\"" << s << "\", ";
+            }
+
+            str << "\"+W" << width  << "\", "
+                << "\"+H" << height << "\", "
+                << "\"+O" << imageFile.data() << "\"";
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
-            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),imageFile.data());
-#else
-            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),imageFile.data());
+            str << ", \"/EXIT\", \"/RENDER\"";
 #endif
+            str << ", TempFile])\n"
+                << "proc.communicate()";
+
+            doCommand(Doc, str.str().c_str());
+
             if (utf8Name != imageFile) {
                 imageFile = utf8Name;
                 if (QFile::exists(fn))
@@ -756,7 +761,7 @@ CmdRaytracingNewLuxProject::CmdRaytracingNewLuxProject()
 
 void CmdRaytracingNewLuxProject::activated(int iMsg)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -782,8 +787,8 @@ void CmdRaytracingNewLuxProject::activated(int iMsg)
         return;
     }
 
-    QAction* a = pcAction->actions()[iMsg];
-    QFileInfo tfi(a->property("Template").toString());
+    const QList<QAction*> actions = pcAction->actions();
+    QFileInfo tfi(actions.at(iMsg)->property("Template").toString());
     if (tfi.isReadable()) {
         try {
             openCommand("Create LuxRender project");
@@ -833,7 +838,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
     _pcAction = pcAction;
     languageChange();
     if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 

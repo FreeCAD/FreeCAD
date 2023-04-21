@@ -20,36 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
 # include <QFile>
+# include <QGraphicsScene>
+# include <QGraphicsSvgItem>
+# include <QGraphicsView>
+# include <QMessageBox>
+# include <QMouseEvent>
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
 # include <QProcess>
 # include <QSvgRenderer>
-# include <QGraphicsSvgItem>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QGraphicsScene>
-# include <QGraphicsView>
 # include <QScrollBar>
 # include <QThread>
-# include <QProcess>
-# include <boost_bind_bind.hpp>
 #endif
-#include "GraphicsViewZoom.h"
-#include "FileDialog.h"
 
-
-#include "GraphvizView.h"
-#include "Application.h"
-#include "MainWindow.h"
 #include <App/Application.h>
 #include <App/Document.h>
+
+#include "GraphvizView.h"
+#include "GraphicsViewZoom.h"
+#include "FileDialog.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -67,12 +64,12 @@ namespace Gui {
 class GraphvizWorker : public QThread {
     Q_OBJECT
 public:
-    GraphvizWorker(QObject * parent = 0)
+    explicit GraphvizWorker(QObject * parent = nullptr)
         : QThread(parent)
     {
     }
 
-    virtual ~GraphvizWorker()
+    ~GraphvizWorker() override
     {
         dotProc.moveToThread(this);
         unflattenProc.moveToThread(this);
@@ -90,10 +87,10 @@ public:
         // causes some problems with Qt5.
         run();
         // Can't use the finished() signal of QThread
-        emitFinished();
+        Q_EMIT emitFinished();
     }
 
-    void run() {
+    void run() override {
         QByteArray preprocessed = str;
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -143,7 +140,7 @@ class GraphvizGraphicsView final : public QGraphicsView
 {
   public:
     GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent);
-    ~GraphvizGraphicsView() = default;
+    ~GraphvizGraphicsView() override = default;
 
     GraphvizGraphicsView(const GraphvizGraphicsView&) = delete;
     GraphvizGraphicsView(GraphvizGraphicsView&&) = delete;
@@ -167,8 +164,7 @@ GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* paren
 
 void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
 {
-  if(e && e->button() == Qt::LeftButton)
-  {
+  if (e && e->button() == Qt::LeftButton) {
     isPanning = true;
     panStart = e->pos();
     e->accept();
@@ -182,20 +178,14 @@ void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
 
 void GraphvizGraphicsView::mouseMoveEvent(QMouseEvent *e)
 {
-  if(e == nullptr)
-  {
+  if (!e)
     return;
-  }
 
-  if(isPanning)
-  {
-    auto* horizontalScrollbar = horizontalScrollBar();
-    auto* verticalScrollbar = verticalScrollBar();
-    if(horizontalScrollbar == nullptr ||
-       verticalScrollbar   == nullptr)
-    {
+  if (isPanning) {
+    auto *horizontalScrollbar = horizontalScrollBar();
+    auto *verticalScrollbar = verticalScrollBar();
+    if (!horizontalScrollbar || !verticalScrollbar)
       return;
-    }
 
     auto direction = e->pos() - panStart;
     horizontalScrollbar->setValue(horizontalScrollbar->value() - direction.x());
@@ -229,7 +219,7 @@ void GraphvizGraphicsView::mouseReleaseEvent(QMouseEvent* e)
 /* TRANSLATOR Gui::GraphvizView */
 
 GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
-  : MDIView(0, parent)
+  : MDIView(nullptr, parent)
   , doc(_doc)
   , nPending(0)
 {
@@ -258,10 +248,10 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
 
     // Create worker thread
     thread = new GraphvizWorker(this);
-    connect(thread, SIGNAL(emitFinished()), this, SLOT(done()));
-    connect(thread, SIGNAL(finished()), this, SLOT(done()));
-    connect(thread, SIGNAL(error()), this, SLOT(error()));
-    connect(thread, SIGNAL(svgFileRead(const QByteArray &)), this, SLOT(svgFileRead(const QByteArray &)));
+    connect(thread, &GraphvizWorker::emitFinished, this, &GraphvizView::done);
+    connect(thread, &GraphvizWorker::finished, this, &GraphvizView::done);
+    connect(thread, &GraphvizWorker::error, this, &GraphvizView::error);
+    connect(thread, &GraphvizWorker::svgFileRead, this, &GraphvizView::svgFileRead);
 
     // Connect signal from document
     recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
@@ -566,8 +556,8 @@ void GraphvizView::printPreview()
     printer.setPageOrientation(QPageLayout::Landscape);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&GraphvizView::print));
     dlg.exec();
 }
 

@@ -131,7 +131,7 @@
     <message>
       <location filename="TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Če ni priložena vaši FreeCAD različici, namestite paket FreeCAD dokumentacije, s katerim dobite vmesnik dokumentacije, pomoč o delovnih okoljih in dokumentacijo posameznih ukazov brez internetne povezave.</translation>
+      <translation>Če ni priložena vaši FreeCAD različici, namestite paket FreeCAD dokumentacije, s katerim dobite zvezdišča dokumentacije, pomoč o delovnih okoljih in dokumentacijo o posameznih ukazih, vse brez spletne povezave.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="68"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Če je označno, bodo zadnje objave s FreeCAD foruma prikazane v zavihku aktivnosti</translation>
+      <translation>Če je označno, bodo zadnje objave s FreeCAD foruma prikazane v zavihku dogajanja</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
@@ -312,7 +312,7 @@ Z ločevanjem poti z znaki ";;", lahko dodate več map</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Prikaže nasvete v zavihku Dokumenti, znotraj Začetnega okna</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>

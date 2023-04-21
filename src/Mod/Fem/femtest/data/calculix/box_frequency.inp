@@ -425,31 +425,26 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialSolid
 Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
-** Young's modulus unit is MPa = N/mm2
-** Density's unit is t/mm^3
+** see information about units at file end
 ** FreeCAD material name: Steel-Generic
 ** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
-200000, 0.300
+200000,0.3
 *DENSITY
-7.900e-09
+7.9E-09
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP
 *FREQUENCY
 10,0.01,1000000.0
@@ -457,19 +452,16 @@ Evolumes
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
 S, E
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.17.9749 (Git)
 **   written on    --> Sun Jan 22 14:32:18 2017
 **   file name     --> cube_static.fcstd
@@ -479,7 +471,7 @@ S, E
 ***********************************************************
 **  About units:
 **  See ccx manual, ccx does not know about any unit.
-**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  Golden rule: The user must make sure that the numbers they provide have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
 **  The unit system which is used at Guido Dhondt's company: mm, N, s, K
@@ -493,9 +485,9 @@ S, E
 **
 **  This leads to:
 **  Force: N
-**  Pressure: N/mm^2
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
 **  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
-**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
 **

@@ -27,14 +27,15 @@
 # include <sstream>
 #endif
 
-// inclution of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPy.cpp"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 
 // returns a string which represent the object e.g. when printed in python
-std::string ViewProviderExtensionPy::representation(void) const
+std::string ViewProviderExtensionPy::representation() const
 {
     return std::string("<view provider extension>");
 }
@@ -56,7 +57,7 @@ PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)
         }
     }
 
-    ext->setIgnoreOverlayIcon(PyObject_IsTrue(ignore) ? true : false);
+    ext->setIgnoreOverlayIcon(Base::asBoolean(ignore));
     Py_Return;
 }
 
@@ -82,7 +83,7 @@ PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args)
 
 PyObject *ViewProviderExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)

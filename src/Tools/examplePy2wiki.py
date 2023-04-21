@@ -37,28 +37,28 @@ def Process(line):
 
 def main():
 
-	try:
-		opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["help", "verbose",  "in-file=","out-file="])
-	except getopt.GetoptError:
-		# print help information and exit:
-		sys.stderr.write(Usage)
-		sys.exit(2)
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["help", "verbose",  "in-file=","out-file="])
+    except getopt.GetoptError:
+        # print help information and exit:
+        sys.stderr.write(Usage)
+        sys.exit(2)
 
-	# checking on the options
-	for o, a in opts:
-		if o in ("-h", "--help"):
-			sys.stderr.write(Usage)
-			sys.exit()
-		if o in ("-o", "--out-file"):
-			outfile = open(a,'w')
-		if o in ("-i", "--in-file"):
-		    infile = open(a,'r')
-	
+    # checking on the options
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            sys.stderr.write(Usage)
+            sys.exit()
+        if o in ("-o", "--out-file"):
+            outfile = open(a,'w')
+        if o in ("-i", "--in-file"):
+            infile = open(a,'r')
+    
 
-	lines = infile.readlines()
-	for l in lines:
-	    outfile.write(Process(l))
-	    #print l
-		
+    lines = infile.readlines()
+    for l in lines:
+        outfile.write(Process(l))
+        #print l
+        
 if __name__ == "__main__":
-	main()
+    main()

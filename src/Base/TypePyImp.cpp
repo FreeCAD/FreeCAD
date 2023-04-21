@@ -24,13 +24,15 @@
 #include "PreCompiled.h"
 
 #include "Type.h"
+#include "BaseClassPy.h"
+#include "BindingManager.h"
 #include "TypePy.h"
 #include "TypePy.cpp"
 
 using namespace Base;
 
 // returns a string which represent the object e.g. when printed in python
-std::string TypePy::representation(void) const
+std::string TypePy::representation() const
 {
     std::stringstream str;
     str << "<class '" << getBaseTypePtr()->getName() << "'>";
@@ -167,48 +169,91 @@ PyObject*  TypePy::getAllDerived(PyObject *args)
     return Py::new_reference_to(res);
 }
 
+namespace {
+static void deallocPyObject(PyObject* py)
+{
+    Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
+    Base::BaseClass* base = static_cast<Base::BaseClass*>(pybase->getTwinPointer());
+    if (Base::BindingManager::instance().retrieveWrapper(base) == py) {
+        Base::BindingManager::instance().releaseWrapper(base, py);
+        delete base;
+    }
+
+    Base::PyObjectBase::PyDestructor(py);
+}
+
+static PyObject* createPyObject(Base::BaseClass* base)
+{
+    PyObject* py = base->getPyObject();
+
+    if (PyObject_TypeCheck(py, &Base::PyObjectBase::Type)) {
+        // if the Python wrapper is a sub-class of PyObjectBase then
+        // check if the C++ object must be added to the list of tracked objects
+        Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
+        if (base == pybase->getTwinPointer()) {
+            // steal a reference because at this point the counter is at 2
+            Py_DECREF(py);
+            Py_TYPE(py)->tp_dealloc = deallocPyObject;
+            Base::BindingManager::instance().registerWrapper(base, py);
+        }
+        else {
+            // The Python wrapper creates its own copy of the C++ object
+            delete base;
+        }
+    }
+    else {
+        // if the Python wrapper is not a sub-class of PyObjectBase then
+        // immediately destroy the C++ object
+        delete base;
+    }
+    return py;
+}
+
+}
+
 PyObject* TypePy::createInstance (PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(getBaseTypePtr()->createInstance());
-    if (!base) {
-        Py_Return;
-    }
+    Py::String name(getBaseTypePtr()->getName());
+    Py::TupleN tuple(name);
 
-    //TODO: At the moment "base" will never be destroyed and causes a memory leak
-    return base->getPyObject();
+    return createInstanceByName(tuple.ptr());
 }
 
 PyObject* TypePy::createInstanceByName (PyObject *args)
 {
-    const char* type;
+    const char* name;
     PyObject* load = Py_False;
-    if (!PyArg_ParseTuple(args, "s|O!", &type, &PyBool_Type, &load))
+    if (!PyArg_ParseTuple(args, "s|O!", &name, &PyBool_Type, &load))
         return nullptr;
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>
-                                (Base::Type::createInstanceByName(type, PyObject_IsTrue(load) ? true : false));
-    if (!base) {
+    bool loadModule = Base::asBoolean(load);
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(name, Base::BaseClass::getClassTypeId(), loadModule);
+    if (type.isBad())
         Py_Return;
-    }
 
-    //TODO: At the moment "base" will never be destroyed and causes a memory leak
-    return base->getPyObject();
+    void* typeInstance = type.createInstance();
+    if (!typeInstance)
+        Py_Return;
+
+    Base::BaseClass* base = static_cast<Base::BaseClass*>(typeInstance);
+
+    return createPyObject(base);
 }
 
-Py::String TypePy::getName(void) const
+Py::String TypePy::getName() const
 {
     return Py::String(std::string(getBaseTypePtr()->getName()));
 }
 
-Py::Long TypePy::getKey(void) const
+Py::Long TypePy::getKey() const
 {
     return Py::Long(static_cast<long>(getBaseTypePtr()->getKey()));
 }
 
-Py::String TypePy::getModule(void) const
+Py::String TypePy::getModule() const
 {
     std::string module(getBaseTypePtr()->getName());
     std::string::size_type pos = module.find_first_of("::");
@@ -223,7 +268,7 @@ Py::String TypePy::getModule(void) const
 
 PyObject *TypePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TypePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

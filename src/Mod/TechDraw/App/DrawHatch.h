@@ -20,14 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawHatch_h_
-#define _TechDraw_DrawHatch_h_
+#ifndef TechDraw_DrawHatch_h_
+#define TechDraw_DrawHatch_h_
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/Material.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+
+namespace App {
+class Color;
+}
 
 namespace TechDraw
 {
@@ -39,43 +43,44 @@ class TechDrawExport DrawHatch : public App::DocumentObject
 
 public:
     DrawHatch();
-    virtual ~DrawHatch();
+    ~DrawHatch() override = default;
 
     App::PropertyLinkSub     Source;       // the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyFileIncluded SvgIncluded;
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
 
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderHatch";
     }
-    virtual void unsetupObject(void) override;
+    void setupObject() override;
+    void unsetupObject() override;
 
     //return PyObject as DrawHatchPy
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    DrawViewPart* getSourceView(void) const;
+    DrawViewPart* getSourceView() const;
     bool affectsFace(int i);
     bool removeSub(std::string toRemove);
     bool removeSub(int i);
-    bool empty(void);
-    static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
-    static std::string prefSvgHatch(void);
-    static App::Color prefSvgHatchColor(void);
-    
+    bool empty();
+    static bool faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs);
+    static std::string prefSvgHatch();
+    static App::Color prefSvgHatchColor();
+
+    bool isSvgHatch() const;
+    bool isBitmapHatch() const;
+
 protected:
     void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
-    void setupSvgIncluded(void);
-    void replaceSvgIncluded(std::string newSvgFile);
+    void replaceFileIncluded(std::string newSvgFile);
 
 private:
 
 };
 
-typedef App::FeaturePythonT<DrawHatch> DrawHatchPython;
+using DrawHatchPython = App::FeaturePythonT<DrawHatch>;
 
 } //namespace TechDraw
 #endif

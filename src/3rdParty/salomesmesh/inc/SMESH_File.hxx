@@ -87,7 +87,7 @@ public:
   bool getInts(std::vector<int>& ids);
 
   // ------------------------
-  // Writting a binary file
+  // Writing a binary file
   // ------------------------
 
   bool openForWriting(); // binary writing only

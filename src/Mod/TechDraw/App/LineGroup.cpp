@@ -23,17 +23,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
-#include <iomanip>
-#include <stdexcept>
+# include <fstream>
+# include <iomanip>
+# include <sstream>
+# include <stdexcept>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
 
-#include "Preferences.h"
 #include "LineGroup.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
 
@@ -53,7 +55,7 @@ LineGroup::~LineGroup()
 {
 }
 
-void LineGroup::init(void)
+void LineGroup::init()
 {
     m_name    = "Default";
     m_thin    = 0.35;
@@ -64,17 +66,16 @@ void LineGroup::init(void)
 
 double LineGroup::getWeight(std::string s)
 {
-    double result = 0.55;
     if (s == "Thin") {
-       result = m_thin;
+       return m_thin;
     } else if (s == "Graphic") {
-       result = m_graphic;
+       return m_graphic;
     } else if (s == "Thick") {
-       result = m_thick;
+       return m_thick;
     } else if (s == "Extra") {
-       result = m_extra;
+       return m_extra;
     }
-    return result;
+    return 0.55;
 }
 
 void LineGroup::setWeight(std::string s, double weight)
@@ -92,12 +93,12 @@ void LineGroup::setWeight(std::string s, double weight)
 
 void LineGroup::dump(const char* title)
 {
-    Base::Console().Message( "DUMP: %s\n",title);
+    Base::Console().Message( "DUMP: %s\n", title);
     Base::Console().Message( "Name: %s\n", m_name.c_str());
     Base::Console().Message( "Thin: %.3f\n", m_thin);
-    Base::Console().Message( "Graphic: %.3f\n",m_graphic);
-    Base::Console().Message( "Thick: %.3f\n",m_thick);
-    Base::Console().Message( "Extra: %.3f\n",m_extra);
+    Base::Console().Message( "Graphic: %.3f\n", m_graphic);
+    Base::Console().Message( "Thick: %.3f\n", m_thick);
+    Base::Console().Message( "Extra: %.3f\n", m_extra);
 }
 
 //static support function: split comma separated string of values into vector of numbers
@@ -108,7 +109,7 @@ std::vector<double> LineGroup::split(std::string line)
     std::string           cell;
     bool nameCell = true;
 
-    while(std::getline(lineStream,cell, ','))
+    while(std::getline(lineStream, cell, ','))
     {
         if (nameCell) {
             nameCell = false;
@@ -118,7 +119,7 @@ std::vector<double> LineGroup::split(std::string line)
             result.push_back(std::stod(cell));
         }
         catch (const std::invalid_argument& ia) {
-            Base::Console().Warning("Invalid number in cell: %s (%s) \n",cell.c_str(),ia.what());
+            Base::Console().Warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
             result.push_back(0.0);
         }
     }
@@ -129,10 +130,10 @@ std::vector<double> LineGroup::split(std::string line)
 std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
 {
     std::string record;
-    std::ifstream inFile;
-    inFile.open (parmFile, std::ifstream::in);
+    Base::FileInfo fi(parmFile);
+    Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
+        Base::Console().Message( "Cannot open LineGroup file: %s\n", parmFile.c_str());
         return record;
     }
     // parse file to get the groupNumber'th line
@@ -169,23 +170,27 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
     if (values.size() < 4) {
         Base::Console().Error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
     } else {
-        lg->setWeight("Thin",values[0]);
-        lg->setWeight("Graphic",values[1]);
-        lg->setWeight("Thick",values[2]);
-        lg->setWeight("Extra",values[3]);
+        lg->setWeight("Thin", values[0]);
+        lg->setWeight("Graphic", values[1]);
+        lg->setWeight("Thick", values[2]);
+        lg->setWeight("Extra", values[3]);
     }
     return lg;
 }
 
-//valid weight names: Thick, Thin, Graphic, Extra
-double LineGroup::getDefaultWidth(std::string weightName, int groupNumber)
+/**
+ * @brief Returns the default line width given a weight name and group number.
+ *
+ * @param weightName can be "Thick", "Thin", "Graphic" or "Extra"
+ * @param lineGroupNumber if -1 will then use groupNumber in preferences. Default value is -1.
+ * @return the default line width.
+ */
+double LineGroup::getDefaultWidth(std::string weightName, int lineGroupNumber)
 {
-    //default line weights
-    int lgNumber = groupNumber;
-    if (lgNumber == -1) {
-        lgNumber = Preferences::lineGroup();
+    if (lineGroupNumber == -1) {
+        lineGroupNumber = Preferences::lineGroup();
     }
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lineGroupNumber);
 
     double weight = lg->getWeight(weightName);
     delete lg;
@@ -196,8 +201,8 @@ double LineGroup::getDefaultWidth(std::string weightName, int groupNumber)
 std::string LineGroup::getGroupNamesFromFile(std::string FileName)
 {
     std::string record;
-    std::ifstream inFile;
-    inFile.open(FileName, std::ifstream::in);
+    Base::FileInfo fi(FileName);
+    Base::ifstream inFile(fi, std::ifstream::in);
     if (!inFile.is_open()) {
         Base::Console().Message("Cannot open LineGroup file: %s\n", FileName.c_str());
         return record;
@@ -208,7 +213,7 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
         std::getline(inFile, line);
         std::string nameTag = line.substr(0, 1);
         std::string found;
-        unsigned long int commaPos;
+        std::size_t commaPos;
         if (nameTag == "*") {
             commaPos = line.find(',', 1);
             if (commaPos != std::string::npos) {

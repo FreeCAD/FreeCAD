@@ -20,27 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemResultObject_H
 #define Fem_FemResultObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
-#include "FemResultObject.h"
+#include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class AppFemExport FemResultObject : public App::DocumentObject
+class FemExport FemResultObject : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::FemResultObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemResultObject);
 
 public:
     /// Constructor
-    FemResultObject(void);
-    virtual ~FemResultObject();
+    FemResultObject();
+    ~FemResultObject() override;
 
     App::PropertyIntegerList NodeNumbers;
     /// Link to the corresponding mesh
@@ -51,22 +49,18 @@ public:
     App::PropertyFloatList Stats;
     /// Displacement vectors of analysis
 
-
-
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderResult";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
-
-
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 };
 
-typedef App::FeaturePythonT<FemResultObject> FemResultObjectPython;
+using FemResultObjectPython = App::FeaturePythonT<FemResultObject>;
 
 
 } //namespace Fem

@@ -36,9 +36,9 @@
 //-----------------------------------------------------------------------------
 
 #ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
-#define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+# define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
 
-#include "CXX/WrapPython.h"
+# include "CXX/WrapPython.h"
 #include "CXX/Config.hxx"
 
 namespace Py
@@ -48,41 +48,13 @@ bool InitialisePythonIndirectInterface();
 //
 //    Wrap Exception variables as function calls
 //
-PYCXX_EXPORT PyObject * _Exc_Exception();
-PYCXX_EXPORT PyObject * _Exc_StandardError();
-PYCXX_EXPORT PyObject * _Exc_ArithmeticError();
-PYCXX_EXPORT PyObject * _Exc_LookupError();
+PYCXX_EXPORT PyObject * _Exc_BaseException();
 
-PYCXX_EXPORT PyObject * _Exc_AssertionError();
-PYCXX_EXPORT PyObject * _Exc_AttributeError();
-PYCXX_EXPORT PyObject * _Exc_EOFError();
-PYCXX_EXPORT PyObject * _Exc_FloatingPointError();
-PYCXX_EXPORT PyObject * _Exc_EnvironmentError();
-PYCXX_EXPORT PyObject * _Exc_IOError();
-PYCXX_EXPORT PyObject * _Exc_OSError();
-PYCXX_EXPORT PyObject * _Exc_ImportError();
-PYCXX_EXPORT PyObject * _Exc_IndexError();
-PYCXX_EXPORT PyObject * _Exc_KeyError();
-PYCXX_EXPORT PyObject * _Exc_KeyboardInterrupt();
-PYCXX_EXPORT PyObject * _Exc_MemoryError();
-PYCXX_EXPORT PyObject * _Exc_NameError();
-PYCXX_EXPORT PyObject * _Exc_OverflowError();
-PYCXX_EXPORT PyObject * _Exc_RuntimeError();
-PYCXX_EXPORT PyObject * _Exc_NotImplementedError();
-PYCXX_EXPORT PyObject * _Exc_SyntaxError();
-PYCXX_EXPORT PyObject * _Exc_SystemError();
-PYCXX_EXPORT PyObject * _Exc_SystemExit();
-PYCXX_EXPORT PyObject * _Exc_TypeError();
-PYCXX_EXPORT PyObject * _Exc_ValueError();
-PYCXX_EXPORT PyObject * _Exc_ZeroDivisionError();
-#ifdef MS_WINDOWS
-PYCXX_EXPORT PyObject * _Exc_WindowsError();
-#endif
+# define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+    PYCXX_EXPORT PyObject * _Exc_##eclass();
 
-PYCXX_EXPORT PyObject * _Exc_IndentationError();
-PYCXX_EXPORT PyObject * _Exc_TabError();
-PYCXX_EXPORT PyObject * _Exc_UnboundLocalError();
-PYCXX_EXPORT PyObject * _Exc_UnicodeError();
+# include "CXX/Python3/cxx_standard_exceptions.hxx"
+# undef PYCXX_STANDARD_EXCEPTION
 
 //
 //    Wrap Object variables as function calls
@@ -107,8 +79,13 @@ PYCXX_EXPORT bool _Class_Check( PyObject *op );
 PYCXX_EXPORT PyTypeObject * _Instance_Type();
 PYCXX_EXPORT bool _Instance_Check( PyObject *op );
 
+# if !defined( Py_LIMITED_API )
 PYCXX_EXPORT PyTypeObject * _Method_Type();
 PYCXX_EXPORT bool _Method_Check( PyObject *op );
+
+PYCXX_EXPORT PyTypeObject * _Function_Type();
+PYCXX_EXPORT bool _Function_Check( PyObject *op );
+# endif
 
 PYCXX_EXPORT PyTypeObject * _Complex_Type();
 PYCXX_EXPORT bool _Complex_Check( PyObject *op );
@@ -124,9 +101,6 @@ PYCXX_EXPORT bool _Float_Check( PyObject *op );
 
 PYCXX_EXPORT PyTypeObject * _Frame_Type();
 PYCXX_EXPORT bool _Frame_Check( PyObject *op );
-
-PYCXX_EXPORT PyTypeObject * _Function_Type();
-PYCXX_EXPORT bool _Function_Check( PyObject *op );
 
 PYCXX_EXPORT PyTypeObject * _Bool_Type();
 PYCXX_EXPORT bool _Boolean_Check( PyObject *op );
@@ -167,18 +141,23 @@ PYCXX_EXPORT bool _TraceBack_Check( PyObject *v );
 PYCXX_EXPORT PyTypeObject * _Tuple_Type();
 PYCXX_EXPORT bool _Tuple_Check( PyObject *op );
 
+# if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
 PYCXX_EXPORT int &_Py_DebugFlag();
 PYCXX_EXPORT int &_Py_InteractiveFlag();
 PYCXX_EXPORT int &_Py_OptimizeFlag();
 PYCXX_EXPORT int &_Py_NoSiteFlag();
 PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
-PYCXX_EXPORT int &_Py_UnicodeFlag();
+
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+PYCXX_EXPORT const char *__Py_PackageContext();
+#  else
+PYCXX_EXPORT char *__Py_PackageContext();
+#  endif
+# endif
 
 PYCXX_EXPORT void _XINCREF( PyObject *op );
 PYCXX_EXPORT void _XDECREF( PyObject *op );
-
-PYCXX_EXPORT const char *__Py_PackageContext();
 }
 
 #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

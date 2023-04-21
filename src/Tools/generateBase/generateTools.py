@@ -2,40 +2,24 @@
 # -*- coding: utf-8 -*-
 # (c) 2007 Jürgen Riegel 
 
-from __future__ import print_function # this allows py2 to print(str1,str2) correctly
-
-import os, errno
-
-
-def temporary_exec(text, globals, locals):
-    """this function is a dirty hack to allow using the copier from
-       python2 and python3. Once the support of python2 has stopped
-       feel free to remove this function and use the std exec function 
-       instead"""
-    # maybe this should be fixed by rewriting the generators.
-    if sys.version_info[0] < 3:
-        from .__exec_old import __exec_old__
-        __exec_old__(text, globals, locals)
-    else:
-        from .__exec_new import __exec_new__
-        __exec_new__(text, globals, locals)
+import os
 
 
 def ensureDir(path,mode=0o777):
-	try: 
-		os.makedirs(path,mode)
-	except OSError as err:
-		# https://docs.python.org/3/tutorial/errors.html
-		#  raise an error unless it's about an already existing directory
-		print("Dir Exist")
-		#if errno != 17 or not os.path.isdir(path):
-		#	raise
-			
+    try: 
+        os.makedirs(path,mode)
+    except OSError as err:
+        # https://docs.python.org/3/tutorial/errors.html
+        #  raise an error unless it's about an already existing directory
+        print("Dir Exist")
+        #if errno != 17 or not os.path.isdir(path):
+        #	raise
+            
 def convertMultilineString(str):
-	str = str.replace('\n','\\n')
-	str = str.replace('"','\\"')
-	return str	
-	
+    str = str.replace('\n','\\n')
+    str = str.replace('"','\\"')
+    return str	
+    
 "Yet Another Python Templating Utility, Version 1.2"
 
 import sys
@@ -63,7 +47,7 @@ class copier:
             # uncomment for debug: print ('!!! replacing',match.group(1))
             expr = self.preproc(match.group(1), 'eval')
             try: return str(eval(expr, self.globals, self.locals))
-            except: return str(self.handle(expr))
+            except Exception: return str(self.handle(expr))
         block = self.locals['_bl']
         if last is None: last = len(block)
         while i<last:
@@ -92,7 +76,7 @@ class copier:
                 stat = self.preproc(stat, 'exec')
                 stat = '%s _cb(%s,%s)' % (stat,i+1,j)
                 # for debugging, uncomment...: print("-> Executing: {"+stat+"}")
-                temporary_exec(stat, self.globals, self.locals)
+                exec(stat, self.globals, self.locals)
                 i=j+1
             else:       # normal line, just copy with substitution
                 try:
@@ -100,12 +84,15 @@ class copier:
                 except TypeError:
                     self.ouf.write(self.regex.sub(repl, line))
                 i=i+1
-    def __init__(self, regex=_never, dict={},
+    def __init__(self, regex=_never, dict=None,
             restat=_never, restend=_never, recont=_never, 
             preproc=identity, handle=nohandle, ouf=sys.stdout):
         "Initialize self's attributes"
         self.regex   = regex
-        self.globals = dict
+        if dict is not None:
+            self.globals = dict
+        else:
+            self.globals = {}
         self.globals['sys'] = sys
         self.locals  = { '_cb':self.copyblock }
         self.restat  = restat

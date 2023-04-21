@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,24 +20,17 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-/* 
- *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com> 
- */
-
 
 #ifndef PATH_FeaturePathShape_H
 #define PATH_FeaturePathShape_H
 
 #include <App/DocumentObject.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
-#include "Mod/Part/App/PropertyTopoShape.h"
+#include <App/PropertyGeo.h>
 
-#include "PropertyPath.h"
-#include "FeaturePath.h"
 #include "FeatureArea.h"
-#include "Area.h"
+#include "FeaturePath.h"
+
 
 namespace Path
 {
@@ -47,9 +41,9 @@ class PathExport FeatureShape : public Path::Feature
 
 public:
     /// Constructor
-    FeatureShape(void);
+    FeatureShape();
     virtual ~FeatureShape();
-    
+
     // Part::PropertyPartShape Shape;
     App::PropertyLinkList Sources;
     App::PropertyVector StartPoint;
@@ -58,21 +52,21 @@ public:
 
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PathGui::ViewProviderPathShape";
     }
-    
+
 protected:
     /// get called by the container when a property has changed
     //virtual void onChanged (const App::Property* prop);
 
 };
 
-typedef App::FeaturePythonT<FeatureShape> FeatureShapePython;
+using FeatureShapePython = App::FeaturePythonT<FeatureShape>;
 
 } //namespace Path
 

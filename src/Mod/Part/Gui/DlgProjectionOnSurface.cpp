@@ -21,49 +21,40 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <TopoDS_Face.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepProj_Projection.hxx>
-# include <TopoDS_Builder.hxx>
-# include <TopoDS_Edge.hxx>
+# include <gp_Ax1.hxx>
 # include <ShapeAnalysis.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GeomProjLib.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include "ShapeFix_Edge.hxx"
-# include <BRepBuilderAPI_MakeFace.hxx>
 # include <ShapeFix_Face.hxx>
-# include <BRepCheck_Analyzer.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <ShapeFix_Wireframe.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Builder.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
 #endif
+
+#include <App/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/Application.h>
+#include <Gui/SelectionObject.h>
+#include <Inventor/SbVec3d.h>
 
 #include "DlgProjectionOnSurface.h"
 #include "ui_DlgProjectionOnSurface.h"
-
-#include <Gui/BitmapFactory.h>
-
-#include "Gui/MainWindow.h"
-#include "Gui/MDIView.h"
-#include "Gui/View3DInventor.h"
-#include "Gui/View3DInventorViewer.h"
-#include "Inventor/SbVec3d.h"
-#include "Gui/Application.h"
-
 #include "ViewProviderExt.h"
-
-
-
 
 
 using namespace PartGui;
@@ -75,24 +66,29 @@ public:
   bool canSelect;
 
   EdgeSelection()
-    : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    : Gui::SelectionFilterGate(nullPointer())
   {
     canSelect = false;
   }
-  ~EdgeSelection() {}
+  ~EdgeSelection() override {}
 
-  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
+  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
-    if (!aPart) return false;
-    if (!sSubName) return false;
+    if (!aPart)
+        return false;
+    if (!sSubName)
+        return false;
     std::string subName(sSubName);
-    if (subName.empty()) return false;
+    if (subName.empty())
+        return false;
 
     auto subShape = aPart->Shape.getShape().getSubShape(sSubName);
-    if (subShape.IsNull()) return false;
+    if (subShape.IsNull())
+        return false;
     auto type = subShape.ShapeType();
-    if (type != TopAbs_EDGE) return false;
+    if (type != TopAbs_EDGE)
+        return false;
     return true;
   }
 };
@@ -104,24 +100,29 @@ public:
   bool canSelect;
 
   FaceSelection()
-    : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    : Gui::SelectionFilterGate(nullPointer())
   {
     canSelect = false;
   }
-  ~FaceSelection() {}
+  ~FaceSelection() override {}
 
-  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
+  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
-    if (!aPart) return false;
-    if (!sSubName) return false;
+    if (!aPart)
+        return false;
+    if (!sSubName)
+        return false;
     std::string subName(sSubName);
-    if (subName.empty()) return false;
+    if (subName.empty())
+        return false;
 
-    auto subShape = aPart->Shape.getShape().getSubShape(sSubName);
-    if (subShape.IsNull()) return false;
+    auto subShape = aPart->Shape.getShape().getSubShape(sSubName, true);
+    if (subShape.IsNull())
+        return false;
     auto type = subShape.ShapeType();
-    if (type != TopAbs_FACE) return false;
+    if (type != TopAbs_FACE)
+        return false;
     return true;
   }
 };
@@ -136,6 +137,8 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
   , filterFace(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->pushButtonAddEdge->setCheckable(true);
     ui->pushButtonAddFace->setCheckable(true);
     ui->pushButtonAddProjFace->setCheckable(true);
@@ -169,14 +172,14 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
       throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
     }
     m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
-    on_radioButtonShowAll_clicked();
+    onRadioButtonShowAllClicked();
     m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
 
 DlgProjectionOnSurface::~DlgProjectionOnSurface()
 {
   delete ui;
-  for ( auto it : m_projectionSurfaceVec)
+  for (const auto& it : m_projectionSurfaceVec)
   {
     try {
       higlight_object(it.partFeature, it.partName, false, 0);
@@ -191,11 +194,46 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
       vp->Transparency.setValue(it.transparency);
     }
   }
-  for (auto it : m_shapeVec)
+  for (const auto& it : m_shapeVec)
   {
-    higlight_object(it.partFeature, it.partName, false, 0);
+    try {
+      higlight_object(it.partFeature, it.partName, false, 0);
+    }
+    catch (Standard_NoSuchObject& e) {
+      Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s", e.GetMessageString());
+    }
   }
   Gui::Selection().rmvSelectionGate();
+}
+
+void PartGui::DlgProjectionOnSurface::setupConnections()
+{
+    connect(ui->pushButtonAddFace, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddFaceClicked);
+    connect(ui->pushButtonAddEdge, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddEdgeClicked);
+    connect(ui->pushButtonGetCurrentCamDir, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonGetCurrentCamDirClicked);
+    connect(ui->pushButtonDirX, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonDirXClicked);
+    connect(ui->pushButtonDirY, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonDirYClicked);
+    connect(ui->pushButtonDirZ, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonDirZClicked);
+    connect(ui->pushButtonAddProjFace, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddProjFaceClicked);
+    connect(ui->radioButtonShowAll, &QRadioButton::clicked,
+            this, &DlgProjectionOnSurface::onRadioButtonShowAllClicked);
+    connect(ui->radioButtonFaces, &QRadioButton::clicked,
+            this, &DlgProjectionOnSurface::onRadioButtonFacesClicked);
+    connect(ui->radioButtonEdges, &QRadioButton::clicked,
+            this, &DlgProjectionOnSurface::onRadioButtonEdgesClicked);
+    connect(ui->doubleSpinBoxExtrudeHeight, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgProjectionOnSurface::onDoubleSpinBoxExtrudeHeightValueChanged);
+    connect(ui->pushButtonAddWire, &QPushButton::clicked,
+            this, &DlgProjectionOnSurface::onPushButtonAddWireClicked);
+    connect(ui->doubleSpinBoxSolidDepth, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgProjectionOnSurface::onDoubleSpinBoxSolidDepthValueChanged);
 }
 
 void PartGui::DlgProjectionOnSurface::slotDeletedDocument(const App::Document& Doc)
@@ -213,19 +251,19 @@ void PartGui::DlgProjectionOnSurface::slotDeletedObject(const App::DocumentObjec
   }
 }
 
-void PartGui::DlgProjectionOnSurface::apply(void)
+void PartGui::DlgProjectionOnSurface::apply()
 {
   if (m_partDocument)
     m_partDocument->commitTransaction();
 }
 
-void PartGui::DlgProjectionOnSurface::reject(void)
+void PartGui::DlgProjectionOnSurface::reject()
 {
   if (m_partDocument)
     m_partDocument->abortTransaction();
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddFace_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddFaceClicked()
 {
   if ( ui->pushButtonAddFace->isChecked() )
   {
@@ -246,7 +284,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddFace_clicked()
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddEdgeClicked()
 {
   if (ui->pushButtonAddEdge->isChecked())
   {
@@ -258,7 +296,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
       Gui::Selection().addSelectionGate(filterEdge);
     }
     ui->radioButtonEdges->setChecked(true);
-    on_radioButtonEdges_clicked();
+    onRadioButtonEdgesClicked();
   }
   else
   {
@@ -269,22 +307,22 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddEdge_clicked()
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonGetCurrentCamDir_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonGetCurrentCamDirClicked()
 {
   get_camera_direction();
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonDirX_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonDirXClicked()
 {
   set_xyz_dir_spinbox(ui->doubleSpinBoxDirX);
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonDirY_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonDirYClicked()
 {
   set_xyz_dir_spinbox(ui->doubleSpinBoxDirY);
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonDirZ_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonDirZClicked()
 {
   set_xyz_dir_spinbox(ui->doubleSpinBoxDirZ);
 }
@@ -305,7 +343,7 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
     {
       m_projectionSurfaceVec.clear();
       store_current_selected_parts(m_projectionSurfaceVec, 0xffff0000);
-      if (m_projectionSurfaceVec.size())
+      if (!m_projectionSurfaceVec.empty())
       {
         PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(m_projectionSurfaceVec.back().partFeature));
         if (vp)
@@ -316,17 +354,18 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
       }
 
       ui->pushButtonAddProjFace->setChecked(false);
-      on_pushButtonAddProjFace_clicked();
+      onPushButtonAddProjFaceClicked();
     }
   }
 }
 
-void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
+void PartGui::DlgProjectionOnSurface::get_camera_direction()
 {
   auto mainWindow = Gui::getMainWindow();
 
   auto mdiObject = dynamic_cast<Gui::View3DInventor*>(mainWindow->activeWindow());
-  if (!mdiObject) return;
+  if (!mdiObject)
+      return;
   auto camerRotation = mdiObject->getViewer()->getCameraOrientation();
 
   SbVec3f lookAt(0, 0, -1);
@@ -342,9 +381,10 @@ void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
 
 void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, const unsigned int iColor)
 {
-  if (!m_partDocument) return;
+  if (!m_partDocument)
+      return;
   std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
-  if (selObj.size())
+  if (!selObj.empty())
   {
     for (auto it = selObj.begin(); it != selObj.end(); ++it)
     {
@@ -364,12 +404,11 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           currentShapeStore.is_selectable = vp->Selectable.getValue();
           currentShapeStore.transparency = vp->Transparency.getValue();
         }
-        if (it->getSubNames().size() )
+        if (!it->getSubNames().empty() )
         {
           auto parentShape = currentShapeStore.inputShape;
           for (auto itName = selObj.front().getSubNames().begin(); itName != selObj.front().getSubNames().end(); ++itName)
           {
-            std::string parentName = aPart->getNameInDocument();
             auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
 
             transform_shape_to_global_position(currentShape, aPart);
@@ -396,7 +435,8 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
 
 bool PartGui::DlgProjectionOnSurface::store_part_in_vector(SShapeStore& iCurrentShape, std::vector<SShapeStore>& iStoreVec)
 {
-  if (iCurrentShape.inputShape.IsNull()) return false;
+  if (iCurrentShape.inputShape.IsNull())
+      return false;
   auto currentType = iCurrentShape.inputShape.ShapeType();
   for ( auto it = iStoreVec.begin(); it != iStoreVec.end(); ++it)
   {
@@ -432,7 +472,7 @@ bool PartGui::DlgProjectionOnSurface::store_part_in_vector(SShapeStore& iCurrent
   auto valZ = ui->doubleSpinBoxDirZ->value();
 
   iCurrentShape.aProjectionDir = gp_Dir(valX, valY, valZ);
-  if ( m_projectionSurfaceVec.size() )
+  if ( !m_projectionSurfaceVec.empty() )
   {
     iCurrentShape.surfaceToProject = m_projectionSurfaceVec.front().aFace;
   }
@@ -444,18 +484,19 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 {
   try
   {
-    if (iCurrentShape.empty()) return;
+    if (iCurrentShape.empty())
+        return;
     for ( auto &itCurrentShape : iCurrentShape )
     {
       if (m_projectionSurfaceVec.empty()) continue;;
-      if (itCurrentShape.aProjectedEdgeVec.size()) continue;;
+      if (!itCurrentShape.aProjectedEdgeVec.empty()) continue;;
       if (!itCurrentShape.aProjectedFace.IsNull()) continue;;
-      if (itCurrentShape.aProjectedWireVec.size()) continue;;
+      if (!itCurrentShape.aProjectedWireVec.empty()) continue;;
 
       if (!itCurrentShape.aFace.IsNull())
       {
         get_all_wire_from_face(itCurrentShape);
-        for (auto itWire : itCurrentShape.aWireVec)
+        for (const auto& itWire : itCurrentShape.aWireVec)
         {
           BRepProj_Projection aProjection(itWire, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
           double minDistance = std::numeric_limits<double>::max();
@@ -507,21 +548,22 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 
 TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<SShapeStore>& iShapeVec)
 {
-  if (iShapeVec.empty()) return TopoDS_Shape();
+  if (iShapeVec.empty())
+      return TopoDS_Shape();
 
   TopoDS_Compound aCompound;
   TopoDS_Builder aBuilder;
   aBuilder.MakeCompound(aCompound);
 
-  for (auto it : iShapeVec)
+  for (const auto& it : iShapeVec)
   {
     if ( m_currentShowType == "edges" )
     {
-      for (auto it2 : it.aProjectedEdgeVec)
+      for (const auto& it2 : it.aProjectedEdgeVec)
       {
         aBuilder.Add(aCompound, it2);
       }
-      for (auto it2 : it.aProjectedWireVec)
+      for (const auto& it2 : it.aProjectedWireVec)
       {
         aBuilder.Add(aCompound, it2);
       }
@@ -531,7 +573,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
     {
       if (it.aProjectedFace.IsNull())
       {
-        for (auto it2 : it.aProjectedWireVec)
+        for (const auto& it2 : it.aProjectedWireVec)
         {
           if (!it2.IsNull())
           {
@@ -552,17 +594,17 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       {
         aBuilder.Add(aCompound, it.aProjectedFace);
       }
-      else if (it.aProjectedWireVec.size())
+      else if (!it.aProjectedWireVec.empty())
       {
-        for ( auto itWire : it.aProjectedWireVec )
+        for (const auto& itWire : it.aProjectedWireVec )
         {
           if ( itWire.IsNull() ) continue;
           aBuilder.Add(aCompound, itWire);
         }
       }
-      else if (it.aProjectedEdgeVec.size())
+      else if (!it.aProjectedEdgeVec.empty())
       {
-        for (auto itEdge : it.aProjectedEdgeVec)
+        for (const auto& itEdge : it.aProjectedEdgeVec)
         {
           if (itEdge.IsNull()) continue;
           aBuilder.Add(aCompound, itEdge);
@@ -575,11 +617,13 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
 
 void PartGui::DlgProjectionOnSurface::show_projected_shapes(const std::vector<SShapeStore>& iShapeStoreVec)
 {
-  if (!m_projectionObject) return;
+  if (!m_projectionObject)
+      return;
   auto aCompound = create_compound(iShapeStoreVec);
   if ( aCompound.IsNull() )
   {
-    if (!m_partDocument) return;
+    if (!m_partDocument)
+        return;
     m_projectionObject->Shape.setValue(TopoDS_Shape());
     return;
   }
@@ -619,7 +663,8 @@ void PartGui::DlgProjectionOnSurface::enable_ui_elements(const std::vector<QWidg
 
 void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObject, const std::string& iShapeName, bool iHighlight, const unsigned int iColor)
 {
-  if (!iCurrentObject) return;
+  if (!iCurrentObject)
+      return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
   auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str(), true);
 
@@ -629,8 +674,10 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
   auto currentShapeType = currentShape.ShapeType();
   TopTools_IndexedMapOfShape anIndices;
   TopExp::MapShapes(partenShape, currentShapeType, anIndices);
-  if (anIndices.IsEmpty()) return;
-  if (!anIndices.Contains(currentShape)) return;
+  if (anIndices.IsEmpty())
+      return;
+  if (!anIndices.Contains(currentShape))
+      return;
   auto index = anIndices.FindIndex(currentShape);
 
   //set color
@@ -692,7 +739,8 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
 {
   try
   {
-    if (iCurrentShape.empty()) return;
+    if (iCurrentShape.empty())
+        return;
 
     for ( auto &itCurrentShape : iCurrentShape )
     {
@@ -704,7 +752,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
 
       //create a wire of all edges in parametric space on the surface of the face to projected
       // --> otherwise BRepBuilderAPI_MakeFace can not make a face from the wire!
-      for (auto itWireVec : itCurrentShape.aProjectedWireVec)
+      for (const auto& itWireVec : itCurrentShape.aProjectedWireVec)
       {
         std::vector<TopoDS_Shape> edgeVec;
         for (TopExp_Explorer aExplorer(itWireVec, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
@@ -800,14 +848,15 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   Handle(TopTools_HSequenceOfShape) aWireHandle;
   Handle(TopTools_HSequenceOfShape) aWireWireHandle;
 
-  for (auto it : iEdgeVec)
+  for (const auto& it : iEdgeVec)
   {
     shapeList->Append(it);
   }
 
   shapeAnalyzer.ConnectEdgesToWires(shapeList, 0.0001, false, aWireHandle);
   shapeAnalyzer.ConnectWiresToWires(aWireHandle, 0.0001, false, aWireWireHandle);
-  if (!aWireWireHandle) return TopoDS_Wire();
+  if (!aWireWireHandle)
+      return TopoDS_Wire();
   for (auto it = 1; it <= aWireWireHandle->Length(); ++it)
   {
     auto aShape = TopoDS::Wire(aWireWireHandle->Value(it));
@@ -829,7 +878,8 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
 {
   try
   {
-    if (iCurrentShape.empty()) return;
+    if (iCurrentShape.empty())
+        return;
 
     for ( auto &itCurrentShape : iCurrentShape )
     {
@@ -839,7 +889,8 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
 
       gp_Vec directionToExtrude(itCurrentShape.aProjectionDir.XYZ());
       directionToExtrude.Reverse();
-      if (height == 0) return;
+      if (height == 0)
+          return;
       directionToExtrude.Multiply(height);
       BRepPrimAPI_MakePrism extrude(itCurrentShape.aProjectedFace, directionToExtrude);
       itCurrentShape.aProjectedSolid = extrude.Shape();
@@ -856,11 +907,15 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
 
 void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iCurrentShape, const TopoDS_Shape& iParentShape, std::vector<SShapeStore>& iStoreVec, const unsigned int iColor)
 {
-  if (m_currentSelection != "add_wire") return;
-  if (iParentShape.IsNull()) return;
-  if (iCurrentShape.inputShape.IsNull()) return;
+  if (m_currentSelection != "add_wire")
+      return;
+  if (iParentShape.IsNull())
+      return;
+  if (iCurrentShape.inputShape.IsNull())
+      return;
   auto currentType = iCurrentShape.inputShape.ShapeType();
-  if (currentType != TopAbs_EDGE) return;
+  if (currentType != TopAbs_EDGE)
+      return;
 
   std::vector<TopoDS_Wire> aWireVec;
   for (TopExp_Explorer aExplorer(iParentShape, TopAbs_WIRE); aExplorer.More(); aExplorer.Next())
@@ -869,7 +924,7 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
   }
 
   std::vector<TopoDS_Edge> edgeVec;
-  for ( auto it : aWireVec )
+  for (const auto& it : aWireVec )
   {
     bool edgeExists = false;
     for (TopExp_Explorer aExplorer(it, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
@@ -882,15 +937,18 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
     edgeVec.clear();
   }
 
-  if (edgeVec.empty()) return;
+  if (edgeVec.empty())
+      return;
   TopTools_IndexedMapOfShape indexMap;
   TopExp::MapShapes(iParentShape, TopAbs_EDGE, indexMap);
-  if (indexMap.IsEmpty()) return;
+  if (indexMap.IsEmpty())
+      return;
 
-  for ( auto it : edgeVec )
+  for (const auto& it : edgeVec )
   {
     if ( it.IsSame(iCurrentShape.inputShape)) continue;
-    if (!indexMap.Contains(it)) return;
+    if (!indexMap.Contains(it))
+        return;
     auto index = indexMap.FindIndex(it);
     auto newEdgeObject = iCurrentShape;
     newEdgeObject.inputShape = it;
@@ -952,7 +1010,7 @@ void PartGui::DlgProjectionOnSurface::transform_shape_to_global_position(TopoDS_
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddProjFace_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddProjFaceClicked()
 {
   if (ui->pushButtonAddProjFace->isChecked())
   {
@@ -972,32 +1030,32 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddProjFace_clicked()
     filterFace = nullptr;
   }
 }
-void PartGui::DlgProjectionOnSurface::on_radioButtonShowAll_clicked()
+void PartGui::DlgProjectionOnSurface::onRadioButtonShowAllClicked()
 {
   m_currentShowType = "all";
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_radioButtonFaces_clicked()
+void PartGui::DlgProjectionOnSurface::onRadioButtonFacesClicked()
 {
   m_currentShowType = "faces";
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_radioButtonEdges_clicked()
+void PartGui::DlgProjectionOnSurface::onRadioButtonEdgesClicked()
 {
   m_currentShowType = "edges";
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxExtrudeHeight_valueChanged(double arg1)
+void PartGui::DlgProjectionOnSurface::onDoubleSpinBoxExtrudeHeightValueChanged(double arg1)
 {
   Q_UNUSED(arg1);
   create_face_extrude(m_shapeVec);
   show_projected_shapes(m_shapeVec);
 }
 
-void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
+void PartGui::DlgProjectionOnSurface::onPushButtonAddWireClicked()
 {
   if (ui->pushButtonAddWire->isChecked())
   {
@@ -1009,7 +1067,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
       Gui::Selection().addSelectionGate(filterEdge);
     }
     ui->radioButtonEdges->setChecked(true);
-    on_radioButtonEdges_clicked();
+    onRadioButtonEdgesClicked();
   }
   else
   {
@@ -1020,7 +1078,7 @@ void PartGui::DlgProjectionOnSurface::on_pushButtonAddWire_clicked()
   }
 }
 
-void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(double arg1)
+void PartGui::DlgProjectionOnSurface::onDoubleSpinBoxSolidDepthValueChanged(double arg1)
 {
   auto valX = ui->doubleSpinBoxDirX->value();
   auto valY = ui->doubleSpinBoxDirY->value();
@@ -1044,7 +1102,7 @@ TaskProjectionOnSurface::TaskProjectionOnSurface()
   widget = new DlgProjectionOnSurface();
   taskbox = new Gui::TaskView::TaskBox(
     Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
-    widget->windowTitle(), true, 0);
+    widget->windowTitle(), true, nullptr);
   taskbox->groupLayout()->addWidget(widget);
   Content.push_back(taskbox);
 }

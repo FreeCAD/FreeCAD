@@ -21,40 +21,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/LineGroup.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "PreferencesGui.h"
-#include "MDIViewPage.h"
-#include "QGVPage.h"
+#include "ZVALUE.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
@@ -68,7 +49,7 @@ const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
                                                   "Dot",
                                                   "DashDot",
                                                   "DashDotDot",
-                                                  NULL };
+                                                  nullptr };
 
 //**************************************************************************
 // Construction/Destruction
@@ -79,50 +60,19 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
     static const char *group = "Frame Format";
 
-    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group,(App::PropertyType)(App::Prop_None), "Frame line width");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group, (App::PropertyType)(App::Prop_None), "Frame line width");
     LineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Frame line style");
     ADD_PROPERTY_TYPE(LineColor, (getDefLineColor()), group, App::Prop_None, "The color of the frame");
 
+    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
 {
 }
 
-void ViewProviderRichAnno::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-bool ViewProviderRichAnno::setEdit(int ModNum)
-{
-//    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog()) { //TaskPanel already open!
-            return false;
-        }
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgRichAnno(this));
-        return true;
-    } else {
-        return ViewProviderDrawingView::setEdit(ModNum);
-    }
-    return true;
-}
-
-void ViewProviderRichAnno::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderRichAnno::doubleClicked(void)
+bool ViewProviderRichAnno::doubleClicked()
 {
 //    Base::Console().Message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
@@ -132,7 +82,7 @@ bool ViewProviderRichAnno::doubleClicked(void)
 void ViewProviderRichAnno::updateData(const App::Property* p)
 {
     // only if there is a frame we can enable the frame line parameters
-    if (getViewObject() != nullptr) {
+    if (getViewObject()) {
         if (getViewObject()->ShowFrame.getValue()) {
             LineWidth.setStatus(App::Property::ReadOnly, false);
             LineStyle.setStatus(App::Property::ReadOnly, false);
@@ -144,6 +94,15 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
             LineColor.setStatus(App::Property::ReadOnly, true);
         }
     }
+
+    if (p == &(getViewObject()->AnnoParent)) {
+//        Base::Console().Message("VPRA::updateData(AnnoParent) - vpp: %X\n", getViewProviderPage());
+        if (getViewProviderPage() &&
+            getViewProviderPage()->getQGSPage()) {
+            getViewProviderPage()->getQGSPage()->setRichAnnoGroups();
+        }
+    }
+
     ViewProviderDrawingView::updateData(p);
 }
 
@@ -171,12 +130,12 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
     return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-App::Color ViewProviderRichAnno::getDefLineColor(void)
+App::Color ViewProviderRichAnno::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
 
-std::string ViewProviderRichAnno::getDefFont(void)
+std::string ViewProviderRichAnno::getDefFont()
 {
     return Preferences::labelFont();
 }
@@ -186,14 +145,9 @@ double ViewProviderRichAnno::getDefFontSize()
     return Preferences::dimFontSizeMM();
 }
 
-double ViewProviderRichAnno::getDefLineWeight(void)
+double ViewProviderRichAnno::getDefLineWeight()
 {
-    double result = 0.0;
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    result = lg->getWeight("Graphics");
-    delete lg;
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Graphics");
 }
 
 void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
@@ -208,7 +162,7 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 
     // property LineStyle had App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger LineStyleProperty;
         // restore the PropertyInteger to be able to set its value
         LineStyleProperty.Restore(reader);
@@ -216,11 +170,15 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 
     // property LineStyle had App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
         App::PropertyIntegerConstraint LineStyleProperty;
         // restore the PropertyIntegerConstraint to be able to set its value
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
+    }
+
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

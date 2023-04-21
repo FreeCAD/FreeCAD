@@ -20,33 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Vec.hxx>
-# include <QFileInfo>
-# include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoNode.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
 # include <vector>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <QFileInfo>
+# include <gp_Vec.hxx>
+
+# include <Inventor/SoInput.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoNode.h>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/EditorView.h>
-#include <Gui/TextEdit.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View.h>
-
+#include <Gui/TextEdit.h>
 #include <Mod/Raytracing/App/PovTools.h>
 #include <Mod/Raytracing/App/LuxTools.h>
+
 #include "PovrayHighlighter.h"
+
 
 namespace RaytracingGui {
 class Module : public Py::ExtensionModule<Module>
@@ -69,7 +64,7 @@ public:
         initialize("This module is the RaytracingGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object open(const Py::Tuple& args)
@@ -116,7 +111,7 @@ private:
             throw Py::Exception();
         try {
             std::string out;
-            const char* ppReturn=0;
+            const char* ppReturn=nullptr;
 
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
             if (doc) {
@@ -187,7 +182,7 @@ private:
             throw Py::Exception();
         try {
             std::string out;
-            const char* ppReturn=0;
+            const char* ppReturn=nullptr;
 
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
             if (doc) {
@@ -249,7 +244,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace RaytracingGui

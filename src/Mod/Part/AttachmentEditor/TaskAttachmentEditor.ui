@@ -140,6 +140,25 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetX">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>5</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local space of object being attached.</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="labelOffset2">
         <property name="sizePolicy">
@@ -217,51 +236,6 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="labelPitch">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Around y-axis:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="labelRoll">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Around z-axis:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetX">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>5</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Note: The placement is expressed in local space of object being attached.</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll">
         <property name="sizePolicy">
@@ -294,6 +268,19 @@ Note: The placement is expressed in local space of object being attached.</strin
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelPitch">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Around y-axis:</string>
+        </property>
+       </widget>
+      </item>
       <item row="5" column="1">
        <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch">
         <property name="sizePolicy">
@@ -323,6 +310,19 @@ Note: The placement is expressed in local space of object being attached.</strin
         </property>
         <property name="value" stdset="0">
          <double>0.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelRoll">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Around z-axis:</string>
         </property>
        </widget>
       </item>

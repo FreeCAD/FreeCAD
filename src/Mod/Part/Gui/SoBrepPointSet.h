@@ -23,17 +23,12 @@
 #ifndef PARTGUI_SOBREPPOINTSET_H
 #define PARTGUI_SOBREPPOINTSET_H
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <Gui/SoFCSelectionContext.h>
+#include <Mod/Part/PartGlobal.h>
+
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -42,7 +37,7 @@ class SoTextureCoordinateBundle;
 namespace PartGui {
 
 class PartGuiExport SoBrepPointSet : public SoPointSet {
-    typedef SoPointSet inherited;
+    using inherited = SoPointSet;
 
     SO_NODE_HEADER(SoBrepPointSet);
 
@@ -51,16 +46,16 @@ public:
     SoBrepPointSet();
 
 protected:
-    virtual ~SoBrepPointSet() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void doAction(SoAction* action); 
+    ~SoBrepPointSet() override {}
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void doAction(SoAction* action) override;
 
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
-    typedef Gui::SoFCSelectionContext SelContext;
-    typedef Gui::SoFCSelectionContextPtr SelContextPtr;
+    using SelContext = Gui::SoFCSelectionContext;
+    using SelContextPtr = Gui::SoFCSelectionContextPtr;
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 

@@ -33,10 +33,21 @@ class DocumentBasicCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("CreateTest")
 
+  def testAccessByNameOrID(self):
+    obj = self.Doc.addObject("App::DocumentObject", "MyName")
+
+    with self.assertRaises(TypeError):
+      self.Doc.getObject([1])
+
+    self.assertEqual(self.Doc.getObject(obj.Name), obj)
+    self.assertEqual(self.Doc.getObject("Unknown"), None)
+    self.assertEqual(self.Doc.getObject(obj.ID), obj)
+    self.assertEqual(self.Doc.getObject(obj.ID+1), None)
+
   def testCreateDestroy(self):
     #FIXME: Causes somehow a ref count error but it's _not_ FreeCAD.getDocument()!!!
     #If we remove the whole method no error appears.
-    self.failUnless(FreeCAD.getDocument("CreateTest")!= None,"Creating Document failed")
+    self.failUnless(FreeCAD.getDocument("CreateTest") is not None,"Creating Document failed")
 
   def testAddition(self):
     # Cannot write a real test case for that but when debugging the
@@ -192,6 +203,41 @@ class DocumentBasicCases(unittest.TestCase):
     with self.assertRaises(ValueError):
       obj.myEnumeration = enumeration_choices[0]
 
+    obj.myEnumeration = enumeration_choices
+    obj.myEnumeration = 0
+    self.Doc.openTransaction("Modify enum")
+    obj.myEnumeration = 1
+    self.assertTrue(obj.myEnumeration, enumeration_choices[1])
+    self.Doc.commitTransaction()
+    self.Doc.undo()
+    self.assertTrue(obj.myEnumeration, enumeration_choices[0])
+
+  def testWrongTypes(self):
+    with self.assertRaises(TypeError):
+      self.Doc.addObject("App::DocumentObjectExtension")
+
+    class Feature:
+      pass
+    with self.assertRaises(TypeError):
+      self.Doc.addObject(type="App::DocumentObjectExtension", objProxy=Feature(), attach=True)
+
+    ext = FreeCAD.Base.TypeId.fromName("App::DocumentObjectExtension")
+    self.assertEqual(ext.createInstance(), None)
+
+    obj = self.Doc.addObject("App::FeaturePython", "Object")
+    with self.assertRaises(TypeError):
+      obj.addProperty("App::DocumentObjectExtension", "Property")
+
+    with self.assertRaises(TypeError):
+      self.Doc.findObjects(Type="App::DocumentObjectExtension")
+
+    e = FreeCAD.Base.TypeId.fromName("App::LinkExtensionPython")
+    self.assertIsNone(e.createInstance())
+
+    if FreeCAD.GuiUp:
+      obj = self.Doc.addObject("App::DocumentObject", viewType="App::Extension")
+      self.assertIsNone(obj.ViewObject)
+
   def testMem(self):
     self.Doc.MemSize
 
@@ -211,6 +257,28 @@ class DocumentBasicCases(unittest.TestCase):
     obj.PlmList = [plm]
     cpy = self.Doc.copyObject(obj)
     self.assertListEqual(obj.PlmList, cpy.PlmList)
+
+  def testRawAxis(self):
+    obj = self.Doc.addObject("App::FeaturePython","Label")
+    obj.addProperty("App::PropertyPlacement", "Plm")
+    obj.addProperty("App::PropertyRotation", "Rot")
+    obj.Plm.Rotation.Axis = (1,2,3)
+    obj.Rot.Axis = (3,2,1)
+
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+    obj = self.Doc.ActiveObject
+
+    self.assertEqual(obj.Plm.Rotation.RawAxis.x, 1)
+    self.assertEqual(obj.Plm.Rotation.RawAxis.y, 2)
+    self.assertEqual(obj.Plm.Rotation.RawAxis.z, 3)
+
+    self.assertEqual(obj.Rot.RawAxis.x, 3)
+    self.assertEqual(obj.Rot.RawAxis.y, 2)
+    self.assertEqual(obj.Rot.RawAxis.z, 1)
 
   def testAddRemove(self):
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
@@ -237,6 +305,48 @@ class DocumentBasicCases(unittest.TestCase):
     else:
       self.failUnless(False)
     del L2
+
+  def testSubObject(self):
+    obj = self.Doc.addObject("App::Origin", "Origin")
+    self.Doc.recompute()
+
+    res = obj.getSubObject("X_Axis", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    res = obj.getSubObject("Y_Axis", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(0,1,0)), 0.0)
+
+    res = obj.getSubObject("Z_Axis", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(0,0,1)), 0.0)
+
+    res = obj.getSubObject("XY_Plane", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(0,0,1)), 0.0)
+
+    res = obj.getSubObject("XZ_Plane", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(0,-1,0)), 0.0)
+
+    res = obj.getSubObject("YZ_Plane", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    res = obj.getSubObject("YZ_Plane", retType=3)
+    self.assertEqual(res.multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    res = obj.getSubObject("YZ_Plane", retType=4)
+    self.assertEqual(res.multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    self.assertEqual(obj.getSubObject(("XY_Plane", "YZ_Plane"), retType=4)[0], obj.getSubObject("XY_Plane", retType=4))
+    self.assertEqual(obj.getSubObject(("XY_Plane", "YZ_Plane"), retType=4)[1], obj.getSubObject("YZ_Plane", retType=4))
+
+    # Create a second origin object
+    obj2 = self.Doc.addObject("App::Origin", "Origin2")
+    self.Doc.recompute()
+
+    # Use the names of the origin's out-list
+    for i in obj2.OutList:
+        self.assertEqual(obj2.getSubObject(i.Name, retType=1).Name, i.Name)
+    # Add a '.' to the names
+    for i in obj2.OutList:
+        self.assertEqual(obj2.getSubObject(i.Name + '.', retType=1).Name, i.Name)
 
   def testExtensions(self):
     #we try to create a normal python object and add an extension to it
@@ -333,6 +443,44 @@ class DocumentBasicCases(unittest.TestCase):
     o2.Placement = FreeCAD.Placement()
     self.assertEqual(o1.Link, o3)
 
+  def testProp_NonePropertyLink(self):
+    obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
+    obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
+    obj1.addProperty("App::PropertyLink", "Link", "Base", "Link to another feature", FreeCAD.PropertyType.Prop_None, False, False)
+    obj1.Link = obj2
+    self.assertEqual(obj1.MustExecute, True)
+
+  def testProp_OutputPropertyLink(self):
+    obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
+    obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
+    obj1.addProperty("App::PropertyLink", "Link", "Base", "Link to another feature", FreeCAD.PropertyType.Prop_Output, False, False)
+    obj1.Link = obj2
+    self.assertEqual(obj1.MustExecute, False)
+
+  def testAttributeOfDynamicProperty(self):
+    obj = self.Doc.addObject("App::FeaturePython", "Obj")
+    # Prop_NoPersist is the enum with the highest value
+    max_value = FreeCAD.PropertyType.Prop_NoPersist
+    list_of_types = []
+    for i in range(0, max_value + 1):
+      obj.addProperty("App::PropertyString", "String" + str(i), "", "", i)
+      list_of_types.append(obj.getTypeOfProperty("String" + str(i)))
+
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+
+    obj = self.Doc.ActiveObject
+    for i in range(0, max_value):
+      types = obj.getTypeOfProperty("String" + str(i))
+      self.assertEqual(list_of_types[i], types)
+
+    # A property with flag Prop_NoPersist won't be saved to the file
+    with self.assertRaises(AttributeError):
+      obj.getTypeOfProperty("String" + str(max_value))
+
   def testNotification_Issue2902Part2(self):
     o = self.Doc.addObject("App::FeatureTest","test")
 
@@ -378,6 +526,27 @@ class DocumentBasicCases(unittest.TestCase):
 
     self.assertEqual(ext.Link, obj)
     self.assertNotEqual(ext.Link, sli)
+
+  def testIssue4823(self):
+    # https://forum.freecadweb.org/viewtopic.php?f=3&t=52775
+    # The issue was only visible in GUI mode and it crashed in the tree view
+    obj = self.Doc.addObject("App::Origin")
+    self.Doc.removeObject(obj.Name)
+
+  def testSamePropertyOfLinkAndLinkedObject(self):
+    # See also https://github.com/FreeCAD/FreeCAD/pull/6787
+    test = self.Doc.addObject("App::FeaturePython", "Python")
+    link = self.Doc.addObject("App::Link", "Link")
+    test.addProperty("App::PropertyFloat", "Test")
+    link.addProperty("App::PropertyFloat", "Test")
+    link.LinkedObject = test
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+    self.assertIn("Test", self.Doc.Python.PropertiesList)
+    self.assertIn("Test", self.Doc.Link.PropertiesList)
 
   def tearDown(self):
     #closing doc
@@ -938,7 +1107,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first group and then the object
     self.Doc.openTransaction("Remove")
@@ -946,7 +1115,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Label_2")
     self.Doc.commitTransaction()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first object and then the group in two transactions
     self.Doc.openTransaction("Remove")
@@ -958,7 +1127,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first object and then the group in one transaction
     self.Doc.openTransaction("Remove")
@@ -968,7 +1137,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
     # FIXME: See bug #1820554
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Add a second object to the group
     L3 = self.Doc.addObject("App::FeatureTest","Label_3")
@@ -981,8 +1150,8 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Group")
     self.Doc.commitTransaction()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_3") != None)
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_3") is not None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     self.Doc.UndoMode = 0
 
@@ -1325,7 +1494,7 @@ class DocumentPropertyCases(unittest.TestCase):
     # testing the up and downstream stuff
     props=self.Obj.supportedProperties()
     for i in props:
-        self.Obj.addProperty(i,i)
+        self.Obj.addProperty(i,i.replace(':','_'))
     tempPath = tempfile.gettempdir()
     tempFile = tempPath + os.sep + "PropertyTests.FCStd"
     self.Doc.saveAs(tempFile)
@@ -1379,8 +1548,6 @@ class DocumentPropertyCases(unittest.TestCase):
 class DocumentExpressionCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument()
-    self.Obj1 = self.Doc.addObject("App::FeatureTest","Test")
-    self.Obj2 = self.Doc.addObject("App::FeatureTest","Test")
 
   def assertAlmostEqual (self, v1, v2) :
     if (math.fabs(v2-v1) > 1E-12) :
@@ -1388,6 +1555,8 @@ class DocumentExpressionCases(unittest.TestCase):
 
 
   def testExpression(self):
+    self.Obj1 = self.Doc.addObject("App::FeatureTest","Test")
+    self.Obj2 = self.Doc.addObject("App::FeatureTest","Test")
     # set the object twice to test that the backlinks are removed when overwriting the expression
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
@@ -1406,6 +1575,63 @@ class DocumentExpressionCases(unittest.TestCase):
     # must not raise a topological error
     self.assertEqual(self.Doc.recompute(), 2)
 
+    # add test for issue #6948
+    self.Obj3 = self.Doc.addObject("App::FeatureTest", "Test")
+    self.Obj3.setExpression('Float', u'2*(5%3)')
+    self.Doc.recompute()
+    self.assertEqual(self.Obj3.Float, 4)
+    self.assertEqual(self.Obj3.evalExpression(self.Obj3.ExpressionEngine[0][1]), 4)
+
+
+  def testIssue4649(self):
+      class Cls():
+          def __init__(self, obj):
+              self.MonitorChanges = False
+              obj.Proxy = self
+              obj.addProperty('App::PropertyFloat', "propA", "group")
+              obj.addProperty('App::PropertyFloat', "propB", "group")
+              self.MonitorChanges = True
+              obj.setExpression("propB", '6*9')
+          def onChanged(self, obj, prop):
+              print("onChanged",self, obj, prop)
+              if (self.MonitorChanges and prop == "propA"):
+                  print('Removing expression...')
+                  obj.setExpression("propB", None)
+
+      obj = self.Doc.addObject("App::DocumentObjectGroupPython", "Obj")
+      Cls(obj)
+      self.Doc.UndoMode = 1
+      self.Doc.openTransaction("Expression")
+      obj.setExpression("propA", '42')
+      self.Doc.recompute()
+      self.Doc.commitTransaction()
+      self.assertTrue(('propB', None) in obj.ExpressionEngine)
+      self.assertTrue(('propA', "42") in obj.ExpressionEngine)
+
+      self.Doc.undo()
+      self.assertFalse(('propB', None) in obj.ExpressionEngine)
+      self.assertFalse(('propA', "42") in obj.ExpressionEngine)
+
+      self.Doc.redo()
+      self.assertTrue(('propB', None) in obj.ExpressionEngine)
+      self.assertTrue(('propA', "42") in obj.ExpressionEngine)
+
+      self.Doc.recompute()
+      obj.ExpressionEngine
+
+      TempPath = tempfile.gettempdir()
+      SaveName = TempPath + os.sep + "ExpressionTests.FCStd"
+      self.Doc.saveAs(SaveName)
+      FreeCAD.closeDocument(self.Doc.Name)
+      self.Doc = FreeCAD.openDocument(SaveName)
+
+  def testCyclicDependencyOnPlacement(self):
+    obj = self.Doc.addObject("App::FeaturePython","Python")
+    obj.addProperty("App::PropertyPlacement", "Placement")
+    obj.setExpression('.Placement.Base.x', '.Placement.Base.y + 10mm')
+    with self.assertRaises(RuntimeError):
+      obj.setExpression('.Placement.Base.y', '.Placement.Base.x + 10mm')
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument(self.Doc.Name)
@@ -1416,6 +1642,9 @@ class DocumentObserverCases(unittest.TestCase):
   class Observer():
 
     def __init__(self):
+      self.clear()
+
+    def clear(self):
       self.signal = []
       self.parameter = []
       self.parameter2 = []
@@ -1531,6 +1760,9 @@ class DocumentObserverCases(unittest.TestCase):
   class GuiObserver():
 
     def __init__(self):
+      self.clear()
+
+    def clear(self):
       self.signal = []
       self.parameter = []
       self.parameter2 = []
@@ -1582,9 +1814,7 @@ class DocumentObserverCases(unittest.TestCase):
 
   def testRemoveObserver(self):
     FreeCAD.removeDocumentObserver(self.Obs)
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
     self.Doc1 = FreeCAD.newDocument("Observer")
     FreeCAD.closeDocument(self.Doc1.Name)
     self.assertEqual(len(self.Obs.signal), 0)
@@ -1666,9 +1896,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.assertEqual(self.Obs.signal.count('DocOpenTransaction'),1)
     self.assertTrue(self.Obs.parameter[0] is self.Doc2)
     self.assertEqual(self.Obs.parameter2[0], 'test')
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     self.Doc2.commitTransaction()
     self.assertEqual(self.Obs.signal.pop(), 'DocCommitTransaction')
@@ -1684,33 +1912,25 @@ class DocumentObserverCases(unittest.TestCase):
     self.assertTrue(self.Obs.parameter[0] is self.Doc2)
     self.assertEqual(self.Obs.parameter2[0], 'test2')
     # there will be other signals because of the addObject()
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     self.Doc2.abortTransaction()
     self.assertEqual(self.Obs.signal.pop(), 'DocAbortTransaction')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
     # there will be other signals because of aborting the above addObject()
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     self.Doc2.undo()
     self.assertEqual(self.Obs.signal.pop(), 'DocUndo')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
     # there will be other signals because undoing the above addObject()
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     self.Doc2.redo()
     self.assertEqual(self.Obs.signal.pop(), 'DocRedo')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
     # there will be other signals because redoing the above addObject()
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     self.Doc1.Comment = 'test comment'
     self.assertEqual(self.Obs.signal.pop(0), 'DocBeforeChange')
@@ -1738,17 +1958,13 @@ class DocumentObserverCases(unittest.TestCase):
     #testing signal on object changes
 
     self.Doc1 = FreeCAD.newDocument("Observer1")
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     obj = self.Doc1.addObject("App::DocumentObject","obj")
     self.failUnless(self.Obs.signal.pop() == 'ObjCreated')
     self.failUnless(self.Obs.parameter.pop() is obj)
     #there are multiple object change signals
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     obj.Label = "myobj"
     self.failUnless(self.Obs.signal.pop(0) == 'ObjBeforeChange')
@@ -1779,9 +1995,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     pyobj = self.Doc1.addObject("App::FeaturePython","pyobj")
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
     pyobj.addProperty("App::PropertyLength","Prop","Group","test property")
     self.failUnless(self.Obs.signal.pop() == 'ObjAddDynProp')
     self.failUnless(self.Obs.parameter.pop() is pyobj)
@@ -1808,23 +2022,17 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter.pop(0) is pyobj)
     self.failUnless(self.Obs.parameter2.pop(0) == 'App::GroupExtensionPython')
     #a proxy property was changed, hence those events are also in the signal list
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     FreeCAD.closeDocument(self.Doc1.Name)
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
   def testUndoDisabledDocument(self):
 
     # testing document level signals
     self.Doc1 = FreeCAD.newDocument("Observer1");
     self.Doc1.UndoMode = 0
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
     self.Doc1.openTransaction('test')
     self.Doc1.commitTransaction()
@@ -1833,9 +2041,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     FreeCAD.closeDocument(self.Doc1.Name)
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
 
   def testGuiObserver(self):
 
@@ -1851,9 +2057,7 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.Gui.addDocumentObserver(self.GuiObs)
     self.Doc1 = FreeCAD.newDocument("Observer1");
     self.GuiDoc1 = FreeCAD.Gui.getDocument(self.Doc1.Name)
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocCreated')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocActivated')
@@ -1866,9 +2070,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.signal.pop() == 'DocRelabled')
     self.failUnless(self.Obs.parameter.pop() is self.Doc1)
     #not interested in the change signals
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocRelabled')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
@@ -1885,16 +2087,12 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.signal.pop() == 'ObjCreated')
     self.failUnless(self.Obs.parameter.pop() is obj)
     #there are multiple object change signals
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
     self.failUnless(self.GuiObs.signal.pop() == "ObjCreated")
     self.failUnless(self.GuiObs.parameter.pop() is obj.ViewObject)
 
     # There are object change signals, caused by sync of obj.Visibility. Same below.
-    self.GuiObs.signal = []
-    self.GuiObs.parameter = []
-    self.GuiObs.parameter2 = []
+    self.GuiObs.clear()
 
     obj.ViewObject.Visibility = False
     self.failUnless(self.Obs.signal.pop() == "ObjChanged")
@@ -1950,9 +2148,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
     self.failUnless(self.Obs.parameter2.pop() == 'Gui::ViewProviderGroupExtensionPython')
     #a proxy property was changed, hence those events are also in the signal list (but of GUI observer)
-    self.GuiObs.signal = []
-    self.GuiObs.parameter = []
-    self.GuiObs.parameter2 = []
+    self.GuiObs.clear()
 
     vo = obj.ViewObject
     FreeCAD.ActiveDocument.removeObject(obj.Name)
@@ -1964,16 +2160,276 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
     FreeCAD.closeDocument(self.Doc1.Name)
-    self.Obs.signal = []
-    self.Obs.parameter = []
-    self.Obs.parameter2 = []
+    self.Obs.clear()
     self.failUnless(self.GuiObs.signal.pop() == 'DocDeleted')
     self.failUnless(self.GuiObs.parameter.pop() is self.GuiDoc1)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
     FreeCAD.Gui.removeDocumentObserver(self.GuiObs)
+    self.GuiObs.clear()
 
   def tearDown(self):
     #closing doc
     FreeCAD.removeDocumentObserver(self.Obs)
+    self.Obs.clear()
     self.Obs = None
+
+class FeatureTestColumn(unittest.TestCase):
+    def setUp(self):
+        doc = FreeCAD.newDocument("TestColumn")
+        self.obj = doc.addObject("App::FeatureTestColumn", "Column")
+
+    def testEmpty(self):
+        value = self.obj.Value
+        self.obj.Column = ""
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def testA(self):
+        self.obj.Column = "A"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 0)
+
+    def testZ(self):
+        self.obj.Column = "Z"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 25)
+
+    def testAA(self):
+        self.obj.Column = "AA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 26)
+
+    def testAB(self):
+        self.obj.Column = "AB"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 27)
+
+    def testAZ(self):
+        self.obj.Column = "AZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 51)
+
+    def testBA(self):
+        self.obj.Column = "BA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 52)
+
+    def testCB(self):
+        self.obj.Column = "CB"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 79)
+
+    def testZA(self):
+        self.obj.Column = "ZA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 676)
+
+    def testZZ(self):
+        self.obj.Column = "ZZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 701)
+
+    def testAAA(self):
+        self.obj.Column = "AAA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 702)
+
+    def testAAZ(self):
+        self.obj.Column = "AAZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 727)
+
+    def testCBA(self):
+        self.obj.Column = "CBA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 2080)
+
+    def testAZA(self):
+        self.obj.Column = "AZA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 1352)
+
+    def testZZA(self):
+        self.obj.Column = "ZZA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 18252)
+
+    def testZZZ(self):
+        self.obj.Column = "ZZZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 18277)
+
+    def testALL(self):
+        self.obj.Column = "ALL"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 999)
+
+    def testAb(self):
+        value = self.obj.Value
+        self.obj.Column = "Ab"
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def testABCD(self):
+        value = self.obj.Value
+        self.obj.Column = "ABCD"
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def testEmptySilent(self):
+        self.obj.Column = ""
+        self.obj.Silent = True
+        self.assertTrue(self.obj.recompute())
+        self.assertEqual(self.obj.Value, -1)
+
+    def testAbSilent(self):
+        self.obj.Column = "Ab"
+        self.obj.Silent = True
+        self.assertTrue(self.obj.recompute())
+        self.assertEqual(self.obj.Value, -1)
+
+    def testABCDSilent(self):
+        self.obj.Column = "ABCD"
+        self.obj.Silent = True
+        self.assertTrue(self.obj.recompute())
+        self.assertEqual(self.obj.Value, -1)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestColumn")
+
+
+
+class FeatureTestRow(unittest.TestCase):
+    def setUp(self):
+        doc = FreeCAD.newDocument("TestRow")
+        self.obj = doc.addObject("App::FeatureTestRow", "Row")
+
+    def testEmpty(self):
+        self.obj.Silent = True
+        self.obj.Row = ""
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def testA(self):
+        self.obj.Silent = True
+        self.obj.Row = "A"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def testException(self):
+        value = self.obj.Value
+        self.obj.Row = "A"
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def test0(self):
+        self.obj.Silent = True
+        self.obj.Row = "0"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def test1(self):
+        self.obj.Silent = True
+        self.obj.Row = "1"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 0)
+
+    def test16384(self):
+        self.obj.Silent = True
+        self.obj.Row = "16384"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 16383)
+
+    def test16385(self):
+        self.obj.Silent = True
+        self.obj.Row = "16385"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestRow")
+
+
+
+class FeatureTestAbsAddress(unittest.TestCase):
+    def setUp(self):
+        doc = FreeCAD.newDocument("TestAbsAddress")
+        self.obj = doc.addObject("App::FeatureTestAbsAddress", "Cell")
+
+    def testAbsoluteA12(self):
+        self.obj.Address = "$A$12"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteA13(self):
+        self.obj.Address = "A$13"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteAA13(self):
+        self.obj.Address = "AA$13"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteZZ12(self):
+        self.obj.Address = "$ZZ$12"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteABC1(self):
+        self.obj.Address = "$ABC1"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testAbsoluteABC2(self):
+        self.obj.Address = "ABC$2"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testRelative(self):
+        self.obj.Address = "A1"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testInvalid(self):
+        self.obj.Address = "A"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testEmpty(self):
+        self.obj.Address = ""
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestAbsAddress")
+
+
+class FeatureTestAttribute(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestAttribute")
+        self.doc.UndoMode = 0
+
+    def testValidAttribute(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        obj.Attribute = "Name"
+        self.doc.recompute()
+        self.assertIn("Up-to-date", obj.State)
+
+    def testInvalidAttribute(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        obj.Attribute = "Name123"
+        self.doc.recompute()
+        self.assertIn("Invalid", obj.State)
+        self.assertIn("Touched", obj.State)
+
+    def testRemoval(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        self.assertEqual(self.doc.removeObject("Attribute"), None)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestAttribute")

@@ -21,14 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
 #include <QObject>
 #include <QVBoxLayout>
+
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Fem/FemGlobal.h>
+
 
 class SoFontStyle;
 class SoText2;
@@ -44,12 +46,12 @@ class TaskFemConstraint;
 
 class FemGuiExport ViewProviderFemConstraint : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraint);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraint);
 
 public:
     /// Constructor
-    ViewProviderFemConstraint(void);
-    virtual ~ViewProviderFemConstraint();
+    ViewProviderFemConstraint();
+    ~ViewProviderFemConstraint() override;
 
     // Display properties
     App::PropertyColor          TextColor;
@@ -59,45 +61,70 @@ public:
     App::PropertyFloat          DistFactor;
     App::PropertyBool           Mirror;
 
-    void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property *prop) override
+    {
+        Gui::ViewProviderGeometryObject::updateData(prop);
+    }
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char *ModeName) override;
 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren()const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+
+    /// Highlight the references that have been selected
+    virtual void highlightReferences(const bool /* on */) {}
 
     static std::string gethideMeshShowPartStr();
     static std::string gethideMeshShowPartStr(const std::string showConstr);
 
 protected:
-    void onChanged(const App::Property* prop);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    void onChanged(const App::Property* prop) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
-    static void createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r);
-    static void updatePlacement(const SoSeparator* sep, const int idx, const SbVec3f &base, const SbRotation &r);
-    static void createCone(SoSeparator* sep, const double height, const double radius);
-    static SoSeparator* createCone(const double height, const double radius);
-    static void updateCone(const SoNode* node, const int idx, const double height, const double radius);
-    static void createCylinder(SoSeparator* sep, const double height, const double radius);
-    static SoSeparator* createCylinder(const double height, const double radius);
-    static void updateCylinder(const SoNode* node, const int idx, const double height, const double radius);
-    static void createCube(SoSeparator* sep, const double width, const double length, const double height);
-    static SoSeparator* createCube(const double width, const double length, const double height);
-    static void updateCube(const SoNode* node, const int idx, const double width, const double length, const double height);
-    static void createArrow(SoSeparator* sep, const double length, const double radius);
-    static SoSeparator* createArrow(const double length, const double radius);
-    static void updateArrow(const SoNode* node, const int idx, const double length, const double radius);
-    static void createFixed(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator* createFixed(const double height, const double width, const bool gap = false);
-    static void updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
-    static void createDisplacement(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator* createDisplacement(const double height, const double width, const bool gap = false);
-    static void updateDisplacement(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
-    static void createRotation(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator* createRotation(const double height, const double width, const bool gap = false);
-    static void updateRotation(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
+    static void createPlacement(SoSeparator *sep, const SbVec3f &base, const SbRotation &r);
+    static void updatePlacement(const SoSeparator *sep, const int idx, const SbVec3f &base,
+                                const SbRotation &r);
+    static void createCone(SoSeparator *sep, const double height, const double radius);
+    static SoSeparator *createCone(const double height, const double radius);
+    static void updateCone(const SoNode *node, const int idx, const double height,
+                           const double radius);
+    static void createCylinder(SoSeparator *sep, const double height, const double radius);
+    static SoSeparator *createCylinder(const double height, const double radius);
+    static void updateCylinder(const SoNode *node, const int idx, const double height,
+                               const double radius);
+    static void createCube(SoSeparator *sep, const double width, const double length,
+                           const double height);
+    static SoSeparator *createCube(const double width, const double length, const double height);
+    static void updateCube(const SoNode *node, const int idx, const double width,
+                           const double length, const double height);
+    static void createArrow(SoSeparator *sep, const double length, const double radius);
+    static SoSeparator *createArrow(const double length, const double radius);
+    static void updateArrow(const SoNode *node, const int idx, const double length,
+                            const double radius);
+    static void createSpring(SoSeparator *sep, const double length, const double width);
+    static SoSeparator *createSpring(const double length, const double width);
+    static void updateSpring(const SoNode *node, const int idx, const double length,
+                             const double width);
+    static void createFixed(SoSeparator *sep, const double height, const double width,
+                            const bool gap = false);
+    static SoSeparator *createFixed(const double height, const double width,
+                                    const bool gap = false);
+    static void updateFixed(const SoNode *node, const int idx, const double height,
+                            const double width, const bool gap = false);
+    static void createDisplacement(SoSeparator *sep, const double height, const double width,
+                                   const bool gap = false);
+    static SoSeparator *createDisplacement(const double height, const double width,
+                                           const bool gap = false);
+    static void updateDisplacement(const SoNode *node, const int idx, const double height,
+                                   const double width, const bool gap = false);
+    static void createRotation(SoSeparator *sep, const double height, const double width,
+                               const bool gap = false);
+    static SoSeparator *createRotation(const double height, const double width,
+                                       const bool gap = false);
+    static void updateRotation(const SoNode *node, const int idx, const double height,
+                               const double width, const bool gap = false);
 
 private:
     SoFontStyle      * pFont;
@@ -119,7 +146,7 @@ protected:
     static QObject* findChildByName(const QObject* parent, const QString& name);
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint> ViewProviderFemConstraintPython;
+using ViewProviderFemConstraintPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
 
 
 } //namespace FemGui

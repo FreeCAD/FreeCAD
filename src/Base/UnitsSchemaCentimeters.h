@@ -24,10 +24,9 @@
 #ifndef BASE_UNITSSCHEMACENTIMETERS_H
 #define BASE_UNITSSCHEMACENTIMETERS_H
 
-
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
+
 
 namespace Base {
 
@@ -37,7 +36,9 @@ namespace Base {
 class UnitsSchemaCentimeters: public UnitsSchema
 {
 public:
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
+
+    std::string getBasicLengthUnit() const override { return std::string("cm"); }
 };
 
 } // namespace Base

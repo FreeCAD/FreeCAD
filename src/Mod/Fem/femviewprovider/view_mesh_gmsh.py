@@ -33,9 +33,9 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
+from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type
-# from . import view_base_femobject
 
 
 # TODO use VPBaseFemObject from view_base_femobject
@@ -63,21 +63,21 @@ class VPMeshGmsh:
 
     def setEdit(self, vobj, mode):
         # hide all FEM meshes and VTK FemPost* objects
-        for o in vobj.Object.Document.Objects:
+        for obj in vobj.Object.Document.Objects:
             if (
-                o.isDerivedFrom("Fem::FemMeshObject")
-                or o.isDerivedFrom("Fem::FemPostPipeline")
-                or o.isDerivedFrom("Fem::FemPostClipFilter")
-                or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
-                or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
-                or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
-                or o.isDerivedFrom("Fem::FemPostCutFilter")
-                or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                or o.isDerivedFrom("Fem::FemPostPlaneFunction")
-                or o.isDerivedFrom("Fem::FemPostSphereFunction")
+                obj.isDerivedFrom("Fem::FemMeshObject")
+                or obj.isDerivedFrom("Fem::FemPostClipFilter")
+                or obj.isDerivedFrom("Fem::FemPostContoursFilter")
+                or obj.isDerivedFrom("Fem::FemPostCutFilter")
+                or obj.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                or obj.isDerivedFrom("Fem::FemPostDataAtPointFilter")
+                or obj.isDerivedFrom("Fem::FemPostPipeline")
+                or obj.isDerivedFrom("Fem::FemPostPlaneFunction")
+                or obj.isDerivedFrom("Fem::FemPostScalarClipFilter")
+                or obj.isDerivedFrom("Fem::FemPostSphereFunction")
+                or obj.isDerivedFrom("Fem::FemPostWarpVectorFilter")
             ):
-                o.ViewObject.hide()
+                obj.ViewObject.hide()
         # show the mesh we like to edit
         self.ViewObject.show()
         # show task panel
@@ -114,8 +114,8 @@ class VPMeshGmsh:
             found_an_analysis = False
             for o in gui_doc.Document.Objects:
                 if o.isDerivedFrom("Fem::FemAnalysisPython"):
-                        found_an_analysis = True
-                        break
+                    found_an_analysis = True
+                    break
             if found_an_analysis:
                 if FemGui.getActiveAnalysis() is not None:
                     if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
@@ -204,11 +204,25 @@ class VPMeshGmsh:
     def onDelete(self, feature, subelements):
         children = self.claimChildren()
         if len(children) > 0:
-            try:
-                for obj in children:
-                    obj.ViewObject.show()
-            except Exception as err:
-                FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
+            # issue a warning
+            message_text = (
+                "The mesh contains submesh objects, therefore the\n"
+                "following referencing objects might be lost:\n"
+            )
+            for obj in children:
+                message_text += "\n" + obj.Label
+            message_text += "\n\nAre you sure you want to continue?"
+            reply = QtGui.QMessageBox.warning(
+                None,
+                "Object dependencies",
+                message_text,
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                QtGui.QMessageBox.No
+            )
+            if reply == QtGui.QMessageBox.Yes:
+                return True
+            else:
+                return False
         return True
 
     def canDragObjects(self):

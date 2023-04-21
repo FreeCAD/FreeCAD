@@ -32,7 +32,7 @@ namespace Dialog {
 class Ui_DlgReportView;
 
 /** The DlgReportViewImp class implements the available settings for the
- * report output window to change.
+ * Report View to change.
  * \author Werner Mayer
  */
 class DlgReportViewImp : public PreferencePage
@@ -40,14 +40,14 @@ class DlgReportViewImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgReportViewImp( QWidget* parent = 0 );
-    ~DlgReportViewImp();
+    explicit DlgReportViewImp( QWidget* parent = nullptr );
+    ~DlgReportViewImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgReportView> ui;

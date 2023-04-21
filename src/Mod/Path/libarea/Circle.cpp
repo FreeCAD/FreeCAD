@@ -93,11 +93,14 @@ bool Circle::LineIsOn(const Point& p0, const Point& p1, double accuracy)
 {
 	// checks the points are on the arc, to the given accuracy, and the mid point of the line.
 
-	if(!PointIsOn(p0, accuracy))return false;
-	if(!PointIsOn(p1, accuracy))return false;
+	if(!PointIsOn(p0, accuracy))
+	    return false;
+	if(!PointIsOn(p1, accuracy))
+	    return false;
 
 	Point mid = Point((p0 + p1)/2);
-	if(!PointIsOn(mid, accuracy))return false;
+	if(!PointIsOn(mid, accuracy))
+	    return false;
 
 	return true;
 }

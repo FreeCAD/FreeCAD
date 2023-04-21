@@ -30,32 +30,22 @@
 # endif
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-//#include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Base/Parameter.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawViewMulti.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "PreferencesGui.h"
@@ -74,7 +64,7 @@ const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
                                                   "Dot",
                                                   "DashDot",
                                                   "DashDotDot",
-                                                  NULL };
+                                                  nullptr };
 
 //**************************************************************************
 // Construction/Destruction
@@ -86,53 +76,50 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
+    static const char *sgroup = "Section Line";
 
     //default line weights
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
-    double weight = lg->getWeight("Thick");
-    ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
+    double weight = TechDraw::LineGroup::getDefaultWidth("Thick");
+    ADD_PROPERTY_TYPE(LineWidth, (weight), group, App::Prop_None, "The thickness of visible lines (line groups xx.2");
 
-    weight = lg->getWeight("Thin");
-    ADD_PROPERTY_TYPE(HiddenWidth,(weight),group,App::Prop_None,"The thickness of hidden lines, if enabled (line groups xx.1)");
+    weight = TechDraw::LineGroup::getDefaultWidth("Thin");
+    ADD_PROPERTY_TYPE(HiddenWidth, (weight), group, App::Prop_None, "The thickness of hidden lines, if enabled (line groups xx.1)");
 
-    weight = lg->getWeight("Graphic");
-    ADD_PROPERTY_TYPE(IsoWidth,(weight),group,App::Prop_None,"The thickness of isoparameter lines, if enabled");
+    weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
+    ADD_PROPERTY_TYPE(IsoWidth, (weight), group, App::Prop_None, "The thickness of isoparameter lines, if enabled");
 
-    weight = lg->getWeight("Extra");
-    ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
-    delete lg;                            //Coverity CID 174664
+    weight = TechDraw::LineGroup::getDefaultWidth("Extra");
+    ADD_PROPERTY_TYPE(ExtraWidth, (weight), group, App::Prop_None, "The thickness of LineGroup Extra lines, if enabled");
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    double defScale = Preferences::getPreferenceGroup("Decorations")->GetFloat("CenterMarkScale", 0.50);
+    bool   defShowCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
 
-    double defScale = hGrp->GetFloat("CenterMarkScale",0.50);
-    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
-    
     //decorations
-    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
-    ADD_PROPERTY_TYPE(VertCenterLine ,(false),dgroup,App::Prop_None,"Show a vertical centerline through view");
-    ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters),dgroup,App::Prop_None,"Center marks on/off");
-    ADD_PROPERTY_TYPE(CenterScale,(defScale),dgroup,App::Prop_None,"Center mark size adjustment, if enabled");
+    ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
+    ADD_PROPERTY_TYPE(VertCenterLine ,(false), dgroup, App::Prop_None, "Show a vertical centerline through view");
+    ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters), dgroup, App::Prop_None, "Center marks on/off");
+    ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
-    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
-    
+    ADD_PROPERTY_TYPE(SectionLineMarks, (PreferencesGui::sectionLineMarks()), sgroup, App::Prop_None,
+                        "Show marks at direction changes for ComplexSection");
+
     //properties that affect Detail Highlights
     HighlightLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None,
                         "Set highlight line style if applicable");
-    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None,
                         "Set highlight line color if applicable");
-    ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
+    ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
-    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup,App::Prop_None,"Temporarily show invisible lines");
+    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup, App::Prop_None, "Temporarily show invisible lines");
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -140,13 +127,18 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 }
 
-void ViewProviderViewPart::updateData(const App::Property* prop)
-{
-    ViewProviderDrawingView::updateData(prop);
-}
-
 void ViewProviderViewPart::onChanged(const App::Property* prop)
 {
+    if (auto part = getViewPart(); part && part->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId()) &&
+        prop == &(HighlightAdjust)) {
+        auto detail = static_cast<DrawViewDetail*>(getViewPart());
+        auto baseDvp = dynamic_cast<DrawViewPart*>(detail->BaseView.getValue());
+        if (baseDvp) {
+            baseDvp->requestPaint();
+        }
+        return;
+    }
+
     if (prop == &(LineWidth)   ||
         prop == &(HiddenWidth) ||
         prop == &(IsoWidth) ||
@@ -157,6 +149,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(ShowSectionLine)  ||
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
+        prop == &(SectionLineMarks) ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine)  ||
@@ -176,30 +169,16 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
-    if (dvm != nullptr) {
+    if (dvm) {
         sPixmap = "TechDraw_TreeMulti";
-    } else if (dvd != nullptr) {
+    } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
 }
 
-void ViewProviderViewPart::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewPart::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-
-std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a ViewPart are:
@@ -240,57 +219,37 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
       }
       return temp;
     } catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return std::vector<App::DocumentObject*>();
     }
 }
 bool ViewProviderViewPart::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        TechDraw::DrawViewPart* dvp = getViewObject();
-        TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
-        if (dvd != nullptr) { 
-            // clear the selection (convenience)
-            Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new TaskDlgDetail(dvd));
-//            Gui::Selection().clearSelection();
-// flush any lingering gui objects
-            Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                          dvd->getNameInDocument());
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                          dvd->getNameInDocument());
-
-//Gui.ActiveDocument.resetEdit()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')            
-            return true;
-        }
-    } else {
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+
+    if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+        return false;
+    }
+    TechDraw::DrawViewPart* dvp = getViewObject();
+    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
+    if (dvd) {
+        if (!dvd->BaseView.getValue()) {
+            Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgDetail(dvd));
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelection(dvd->getDocument()->getName(),
+                                        dvd->getNameInDocument());
+    }
+
     return true;
 }
 
-void ViewProviderViewPart::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderViewPart::doubleClicked(void)
+bool ViewProviderViewPart::doubleClicked()
 {
     setEdit(ViewProvider::Default);
     return true;
@@ -334,6 +293,9 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
         ExtraWidthProperty.Restore(reader);
         ExtraWidth.setValue(ExtraWidthProperty.getValue());
     }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
@@ -347,7 +309,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
     auto viewLeader = getViewObject()->getLeaders();
-    
+
     if (!viewSection.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has a section view that would become broken.");
@@ -385,25 +347,21 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
     return true;
 }
 
-App::Color ViewProviderViewPart::prefSectionColor(void)
+App::Color ViewProviderViewPart::prefSectionColor()
 {
     return PreferencesGui::sectionLineColor();
 }
 
-App::Color ViewProviderViewPart::prefHighlightColor(void)
+App::Color ViewProviderViewPart::prefHighlightColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("HighlightColor", 0x00000000));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("HighlightColor", 0x00000000));
     return fcColor;
 }
 
-int ViewProviderViewPart::prefHighlightStyle(void)
+int ViewProviderViewPart::prefHighlightStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    return hGrp->GetInt("HighlightStyle", 2);
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
 
 

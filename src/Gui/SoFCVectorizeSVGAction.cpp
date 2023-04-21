@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <qglobal.h>
 # include <iomanip>
 # include <ios>
+# include <Inventor/SbBSPTree.h>
 #endif
-#include <Inventor/SbBasic.h>
-#include <Inventor/SbBSPTree.h>
 
-#include <qglobal.h>
 #include <Base/FileInfo.h>
-#include <Base/Console.h>
+
 #include "SoFCVectorizeSVGAction.h"
+
 
 using namespace Gui;
 
@@ -57,7 +57,7 @@ public:
 
 class SoVectorizePoint : public SoVectorizeItem {
 public:
-    SoVectorizePoint(void) {
+    SoVectorizePoint() {
         this->type = POINT;
         this->vidx = 0;
         this->size = 1.0f;
@@ -70,7 +70,7 @@ public:
 
 class SoVectorizeTriangle : public SoVectorizeItem {
 public:
-    SoVectorizeTriangle(void) {
+    SoVectorizeTriangle() {
         this->type = TRIANGLE;
     }
     int vidx[3];      // indices to BSPtree coordinates
@@ -79,7 +79,7 @@ public:
 
 class SoVectorizeLine : public SoVectorizeItem {
 public:
-    SoVectorizeLine(void) {
+    SoVectorizeLine() {
         this->type = LINE;
         vidx[0] = 0;
         vidx[1] = 0;
@@ -96,7 +96,7 @@ public:
 
 class SoVectorizeText : public SoVectorizeItem {
 public:
-    SoVectorizeText(void) {
+    SoVectorizeText() {
         this->type = TEXT;
         this->fontsize = 10;
         this->col = 0;
@@ -119,9 +119,9 @@ public:
 
 class SoVectorizeImage : public SoVectorizeItem {
 public:
-    SoVectorizeImage(void) {
+    SoVectorizeImage() {
         this->type = IMAGE;
-        this->image.data = 0;
+        this->image.data = nullptr;
         this->image.nc = 0;
     }
 
@@ -158,7 +158,7 @@ SbBool SoSVGVectorOutput::openFile (const char *filename)
     return this->file.is_open();
 }
 
-void SoSVGVectorOutput::closeFile (void)
+void SoSVGVectorOutput::closeFile ()
 {
     if (this->file.is_open())
         this->file.close();
@@ -256,45 +256,46 @@ Separator {
 }
 
 <?xml version="1.0"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"
-	"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-	<defs>
-		<linearGradient id="red" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="35" y2="80">
-			<stop offset="0" stop-color="rgb(255,0,0)" stop-opacity="1"/>
-			<stop offset="1" stop-color="rgb(255,0,0)" stop-opacity="0"/>
-		</linearGradient>
-		<linearGradient id="blue" gradientUnits="userSpaceOnUse" x1="100" y1="50" x2="0" y2="50">
-			<stop offset="0" stop-color="rgb(0,0,255)" stop-opacity="1"/>
-			<stop offset="1" stop-color="rgb(0,0,255)" stop-opacity="0"/>
-		</linearGradient>
-		<linearGradient id="yellow" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="40" y2="20">
-			<stop offset="0" stop-color="rgb(255,255,0)" stop-opacity="1"/>
-			<stop offset="1" stop-color="rgb(255,255,0)" stop-opacity="0"/>
-		</linearGradient>
-		<path id="triangle1" d="M0 0 L100 50 L0 100 z"/>
+    <defs>
+        <linearGradient id="red" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="35" y2="80">
+            <stop offset="0" stop-color="rgb(255,0,0)" stop-opacity="1"/>
+            <stop offset="1" stop-color="rgb(255,0,0)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="blue" gradientUnits="userSpaceOnUse" x1="100" y1="50" x2="0" y2="50">
+            <stop offset="0" stop-color="rgb(0,0,255)" stop-opacity="1"/>
+            <stop offset="1" stop-color="rgb(0,0,255)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="yellow" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="40" y2="20">
+            <stop offset="0" stop-color="rgb(255,255,0)" stop-opacity="1"/>
+            <stop offset="1" stop-color="rgb(255,255,0)" stop-opacity="0"/>
+        </linearGradient>
+        <path id="triangle1" d="M0 0 L100 50 L0 100 z"/>
 <filter id="colorAdd">
-	<feComposite in="SourceGraphic" in2="BackgroundImage" operator="arithmetic" k2="1" k3="1"/>
+    <feComposite in="SourceGraphic" in2="BackgroundImage" operator="arithmetic" k2="1" k3="1"/>
 </filter>
 <filter id="Matrix1">
-	<feColorMatrix type="matrix" values="
-	1 0 0 0 0
-	0 1 0 0 0
-	0 0 1 0 0
-	1 1 1 1 0
-	0 0 0 0 1
-	"/>
+    <feColorMatrix type="matrix" values="
+    1 0 0 0 0
+    0 1 0 0 0
+    0 0 1 0 0
+    1 1 1 1 0
+    0 0 0 0 1
+    "/>
 </filter>
 </defs>
 <g filter="url(#Matrix1)">
-	<use xlink:href="#triangle1" fill="url(#blue)"/>
-	<use xlink:href="#triangle1" fill="url(#yellow)" filter="url(#colorAdd)"/>
-	<use xlink:href="#triangle1" fill="url(#red)" filter="url(#colorAdd)"/>
+    <use xlink:href="#triangle1" fill="url(#blue)"/>
+    <use xlink:href="#triangle1" fill="url(#yellow)" filter="url(#colorAdd)"/>
+    <use xlink:href="#triangle1" fill="url(#red)" filter="url(#colorAdd)"/>
 </g>
 </svg>
 */
 void SoFCVectorizeSVGActionP::printTriangle(const SbVec3f * v, const SbColor * c) const
 {
-    if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2]) return;
+    if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2])
+        return;
     uint32_t cc = c->getPackedValue();
 
     std::ostream& str = publ->getSVGOutput()->getFileStream();
@@ -372,7 +373,7 @@ void SoFCVectorizeSVGActionP::printImage(const SoVectorizeImage * item) const
 
 SO_ACTION_SOURCE(SoFCVectorizeSVGAction)
 
-void SoFCVectorizeSVGAction::initClass(void)
+void SoFCVectorizeSVGAction::initClass()
 {
     SO_ACTION_INIT_CLASS(SoFCVectorizeSVGAction, SoVectorizeAction);
 }
@@ -393,12 +394,12 @@ SoFCVectorizeSVGAction::~SoFCVectorizeSVGAction()
 }
 
 SoSVGVectorOutput *
-SoFCVectorizeSVGAction::getSVGOutput(void) const
+SoFCVectorizeSVGAction::getSVGOutput() const
 {
     return static_cast<SoSVGVectorOutput*>(SoVectorizeAction::getOutput());
 }
 
-void SoFCVectorizeSVGAction::printHeader(void) const
+void SoFCVectorizeSVGAction::printHeader() const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
     str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
@@ -420,18 +421,18 @@ void SoFCVectorizeSVGAction::printHeader(void) const
     str << "<g>" << std::endl;
 }
 
-void SoFCVectorizeSVGAction::printFooter(void) const
+void SoFCVectorizeSVGAction::printFooter() const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
     str << "</g>" << std::endl;
     str << "</svg>";
 }
 
-void SoFCVectorizeSVGAction::printViewport(void) const
+void SoFCVectorizeSVGAction::printViewport() const
 {
 }
 
-void SoFCVectorizeSVGAction::printBackground(void) const
+void SoFCVectorizeSVGAction::printBackground() const
 {
     if (!getBackgroundState()) {
         return;

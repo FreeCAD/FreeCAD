@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef WEB_SERVER_H
 #define WEB_SERVER_H
 
 #include <QByteArray>
-#include <QObject>
 #include <QEvent>
+#include <QObject>
 #include <QTcpSocket>
 #include <QTcpServer>
-#include <CXX/Objects.hxx>
 
 
 namespace Web {
@@ -52,9 +50,9 @@ private:
 class FirewallPython : public Firewall
 {
 public:
-    FirewallPython(const Py::Object&);
-    virtual ~FirewallPython();
-    virtual bool filter(const QByteArray&) const;
+    explicit FirewallPython(const Py::Object&);
+    ~FirewallPython() override;
+    bool filter(const QByteArray&) const override;
 
 private:
     Py::Object obj;
@@ -64,7 +62,7 @@ class ServerEvent : public QEvent
 {
 public:
     ServerEvent(QTcpSocket* socket, const QByteArray&);
-    ~ServerEvent();
+    ~ServerEvent() override;
 
     QTcpSocket* socket() const;
     const QByteArray& request() const;
@@ -82,19 +80,24 @@ class AppServer : public QTcpServer
     Q_OBJECT
 
 public:
-    AppServer(QObject* parent = 0);
-    static std::string runPython(const QByteArray&);
-
-    void incomingConnection(qintptr socket);
+    explicit AppServer(bool direct = false, QObject* parent = nullptr);
 
 protected:
-    void customEvent(QEvent* e);
+    void incomingConnection(qintptr socket) override;
+    void customEvent(QEvent* e) override;
+
+private:
+    std::string handleRequest(QByteArray);
+    static std::string runPython(const QByteArray&);
+    std::string getRequest(const std::string&) const;
 
 private Q_SLOTS:
     void readClient();
     void discardClient();
 
 private:
+    bool direct;
+    Py::Object module;
 };
 
 }

@@ -36,7 +36,7 @@ class StdCmdDescription : public Command
 {
 public:
   StdCmdDescription();
-  ~StdCmdDescription();
+  ~StdCmdDescription() override;
 
   static bool inDescriptionMode();
   static void enterDescriptionMode();
@@ -45,8 +45,8 @@ public:
   static void setSource( const QString& );
 
 protected:
-  Action* createAction(void);
-  void activated(int iMsg);
+  Action* createAction() override;
+  void activated(int iMsg) override;
 
 private:
   static bool _descrMode;

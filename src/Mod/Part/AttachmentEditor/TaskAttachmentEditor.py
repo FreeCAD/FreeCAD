@@ -53,13 +53,7 @@ try:
 except AttributeError:
     def _fromUtf8(s):
         return s
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+translate = App.Qt.translate
 #--------------------------/translation-related code ----------------------------------------
 
 def linkSubList_convertToOldStyle(references):
@@ -90,11 +84,11 @@ def LinkFromStr(strlink, document):
 
     subname = ''
     if feature is None:
-        raise ValueError(_translate('AttachmentEditor',"No object named {name}",None).format(name= pieces[0]))
+        raise ValueError(translate('AttachmentEditor',"No object named {}",None).format(pieces[0]))
     if len(pieces) == 2:
         subname = pieces[1]
     elif len(pieces) > 2:
-        raise ValueError(_translate('AttachmentEditor',"Failed to parse link (more than one colon encountered)",None))
+        raise ValueError(translate('AttachmentEditor',"Failed to parse link (more than one colon encountered)",None))
 
     return (feature,str(subname)) #wrap in str to remove unicode, which confuses assignment to PropertyLinkSubList.
 
@@ -206,21 +200,21 @@ class AttachmentEditorTaskPanel(FrozenClass):
             if not movable:
                 if self.callback_Cancel:
                     self.callback_Cancel()
-                raise ValueError(_translate('AttachmentEditor',"Object {name} is neither movable nor attachable, can't edit attachment",None)
-                                 .format(name= self.obj.Label))
+                raise ValueError(translate('AttachmentEditor',"Object {} is neither movable nor attachable, can't edit attachment",None)
+                                 .format(self.obj.Label))
 
             self.obj_is_attachable = False
             self.attacher = Part.AttachEngine()
 
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate('AttachmentEditor',
-                         "{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric."
+            mb.setText(translate('AttachmentEditor',
+                         "{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric."
                          ,None)
-                       .format(obj= obj_to_attach.Label))
-            mb.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
+                       .format(obj_to_attach.Label))
+            mb.setWindowTitle(translate('AttachmentEditor',"Attachment",None))
             btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-            btnOK = mb.addButton(_translate('AttachmentEditor',"Continue",None),QtGui.QMessageBox.ButtonRole.ActionRole)
+            btnOK = mb.addButton(translate('AttachmentEditor',"Continue",None),QtGui.QMessageBox.ButtonRole.ActionRole)
             mb.setDefaultButton(btnOK)
             mb.exec_()
             if mb.clickedButton() is btnAbort:
@@ -231,7 +225,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         import os
         self.form=uic.loadUi(os.path.dirname(__file__) + os.path.sep + 'TaskAttachmentEditor.ui')
         self.form.setWindowIcon(QtGui.QIcon(':/icons/tools/Part_Attachment.svg'))
-        self.form.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
+        self.form.setWindowTitle(translate('AttachmentEditor',"Attachment",None))
 
         self.form.attachmentOffsetX.setProperty("unit", "mm")
         self.form.attachmentOffsetY.setProperty("unit", "mm")
@@ -275,7 +269,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         QtCore.QObject.connect(self.form.listOfModes, QtCore.SIGNAL('itemSelectionChanged()'), self.modeSelected)
 
         if self.create_transaction:
-            self.obj.Document.openTransaction(_translate('AttachmentEditor',"Edit attachment of {feat}",None).format(feat= self.obj.Name))
+            self.obj.Document.openTransaction(translate('AttachmentEditor',"Edit attachment of {}",None).format(self.obj.Name))
 
 
         self.readParameters()
@@ -320,7 +314,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 self.writeParameters()
             if self.create_transaction:
                 self.obj.Document.commitTransaction()
-                self.obj.Document.openTransaction(_translate('AttachmentEditor',"Edit attachment of {feat}",None).format(feat= self.obj.Name))
+                self.obj.Document.openTransaction(translate('AttachmentEditor',"Edit attachment of {}",None).format(self.obj.Name))
             self.updatePreview()
             if self.callback_Apply:
                 self.callback_Apply()
@@ -365,10 +359,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if i > -1:
             # assign the selected reference
             if objname == self.obj.Name:
-                self.form.message.setText(_translate('AttachmentEditor',"Ignored. Can't attach object to itself!",None))
+                self.form.message.setText(translate('AttachmentEditor',"Ignored. Can't attach object to itself!",None))
                 return
             if App.getDocument(docname).getObject(objname) in getAllDependent(self.obj):
-                self.form.message.setText(_translate('AttachmentEditor',"{obj1} depends on object being attached, can't use it for attachment",None).format(obj1= objname))
+                self.form.message.setText(translate('AttachmentEditor',"{} depends on object being attached, can't use it for attachment",None).format(objname))
                 return
 
             self.refLines[i].setText( StrFromLink(App.getDocument(docname).getObject(objname), subname) )
@@ -508,10 +502,9 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 listlistrefs = sugr['reachableModes'][m]
                 if len(listlistrefs) == 1:
                     listrefs_userfriendly = [self.attacher.getRefTypeInfo(t)['UserFriendlyName'] for t in listlistrefs[0]]
-                    txt = _translate('AttachmentEditor',"{mode} (add {morerefs})",None).format(mode= txt,
-                                                           morerefs= u"+".join(listrefs_userfriendly))
+                    txt = translate('AttachmentEditor',"{} (add {})",None).format(txt, u"+".join(listrefs_userfriendly))
                 else:
-                    txt = _translate('AttachmentEditor',"{mode} (add more references)",None).format(mode= txt)
+                    txt = translate('AttachmentEditor',"{} (add more references)",None).format(txt)
                 item.setText(txt)
                 item.setData(self.KEYmode,m)
                 item.setData(self.KEYon,True)
@@ -541,7 +534,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 tip = mi['BriefDocu']
                 if (m != 'Deactivated'):
                     tip += u"\n\n"
-                    tip += _translate('AttachmentEditor', "Reference combinations:", None) + u" \n\n".join(cmb)
+                    tip += translate('AttachmentEditor', "Reference combinations:", None) + u" \n\n".join(cmb)
 
                 item.setToolTip(tip)
 
@@ -557,12 +550,12 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 btn = self.refButtons[i]
                 btn.setCheckable(True)
                 btn.setChecked(self.i_active_ref == i)
-                typ = _translate('AttachmentEditor',"Reference{i}",None).format(i= str(i+1))
+                typ = translate('AttachmentEditor',"Reference{}",None).format(str(i+1))
                 if self.last_sugr is not None:
                     typestr = self.last_sugr['references_Types']
                     if i < len(typestr):
                         typ = self.attacher.getRefTypeInfo(typestr[i])['UserFriendlyName']
-                btn.setText(_translate('AttachmentEditor',"Selecting...",None) if self.i_active_ref == i else typ)
+                btn.setText(translate('AttachmentEditor',"Selecting...",None) if self.i_active_ref == i else typ)
         finally:
             self.block = old_selfblock
 
@@ -586,7 +579,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.parseAllRefLines()
             self.last_sugr = self.attacher.suggestModes()
             if self.last_sugr['message'] == 'LinkBroken':
-                raise ValueError(_translate('AttachmentEditor',"Failed to resolve links. {err}",None).format(err= self.last_sugr['error']))
+                raise ValueError(translate('AttachmentEditor',"Failed to resolve links. {}",None).format(self.last_sugr['error']))
 
             self.updateListOfModes()
 
@@ -594,22 +587,22 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
             new_plm = self.attacher.calculateAttachedPlacement(self.obj.Placement)
             if new_plm is None:
-                self.form.message.setText(_translate('AttachmentEditor',"Not attached",None))
+                self.form.message.setText(translate('AttachmentEditor',"Not attached",None))
             else:
-                self.form.message.setText(    _translate('AttachmentEditor',"Attached with mode {mode}",None)
-                                              .format(  mode=   self.attacher.getModeInfo(self.getCurrentMode())['UserFriendlyName']  )    )
+                self.form.message.setText(translate('AttachmentEditor',"Attached with mode {}",None)
+                                          .format(self.attacher.getModeInfo(self.getCurrentMode())['UserFriendlyName']))
                 if PlacementsFuzzyCompare(self.obj.Placement, new_plm) == False:
                     # assign only if placement changed. this avoids touching the object
                     # when entering and exiting dialog without changing anything
                     self.obj.Placement = new_plm
         except Exception as err:
-            self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))
+            self.form.message.setText(translate('AttachmentEditor',"Error: {}",None).format(str(err)))
 
         if new_plm is not None:
-            self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset (in local coordinates):",None))
+            self.form.groupBox_AttachmentOffset.setTitle(translate('AttachmentEditor',"Attachment Offset (in local coordinates):",None))
             self.form.groupBox_AttachmentOffset.setEnabled(True)
         else:
-            self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset (inactive - not attached):",None))
+            self.form.groupBox_AttachmentOffset.setTitle(translate('AttachmentEditor',"Attachment Offset (inactive - not attached):",None))
             self.form.groupBox_AttachmentOffset.setEnabled(False)
 
     def cleanUp(self):

@@ -20,29 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Parab2d.hxx>
-# include <Geom2d_Parabola.hxx>
 # include <GCE2d_MakeArcOfParabola.hxx>
+# include <Geom2d_Parabola.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Parab2d.hxx>
 #endif
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include "Geom2d/ArcOfParabola2dPy.h"
+#include "Geom2d/ArcOfParabola2dPy.cpp"
+#include "Geom2d/Parabola2dPy.h"
+#include "OCCError.h"
 
-#include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfParabola2dPy::representation(void) const
+std::string ArcOfParabola2dPy::representation() const
 {
     return "<ArcOfParabola2d object>";
 }
@@ -63,7 +60,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast
                 (static_cast<Parabola2dPy*>(o)->getGeom2dParabolaPtr()->handle());
-            GCE2d_MakeArcOfParabola arc(parabola->Parab2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GCE2d_MakeArcOfParabola arc(parabola->Parab2d(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -73,7 +70,7 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -82,14 +79,14 @@ int ArcOfParabola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfParabola2d constructor expects an parabola curve and a parameter range");
     return -1;
 }
 
-Py::Float ArcOfParabola2dPy::getFocal(void) const
+Py::Float ArcOfParabola2dPy::getFocal() const
 {
     return Py::Float(getGeom2dArcOfParabolaPtr()->getFocal());
 }
@@ -99,7 +96,7 @@ void  ArcOfParabola2dPy::setFocal(Py::Float arg)
     getGeom2dArcOfParabolaPtr()->setFocal((double)arg);
 }
 
-Py::Object ArcOfParabola2dPy::getParabola(void) const
+Py::Object ArcOfParabola2dPy::getParabola() const
 {
     Handle(Geom2d_TrimmedCurve) trim = Handle(Geom2d_TrimmedCurve)::DownCast
         (getGeom2dArcOfParabolaPtr()->handle());
@@ -109,10 +106,10 @@ Py::Object ArcOfParabola2dPy::getParabola(void) const
 
 PyObject *ArcOfParabola2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfParabola2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

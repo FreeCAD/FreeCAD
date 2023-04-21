@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
@@ -55,7 +56,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace _TEMPLATE_Gui

@@ -94,7 +94,6 @@ class Rotate(gui_base_original.Modifier):
         self.step = 0
         self.center = None
         self.ui.rotateSetCenterUi()
-        self.ui.modUi()
         self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _msg(translate("draft", "Pick rotation center"))
@@ -231,33 +230,47 @@ class Rotate(gui_base_original.Modifier):
         if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
             self.extendedCopy = True
         else:
-            self.finish(cont=True)
+            self.finish(cont=None)
 
     def set_ghosts(self):
         """Set the ghost to display."""
+        for ghost in self.ghosts:
+            ghost.remove()
         if self.ui.isSubelementMode.isChecked():
-            return self.set_subelement_ghosts()
-        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+            self.ghosts = self.get_subelement_ghosts()
+        else:
+            self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+        if self.center:
+            for ghost in self.ghosts:
+                ghost.center(self.center)
 
-    def set_subelement_ghosts(self):
-        """Set ghost for the subelements (vertices, edges)."""
+    def get_subelement_ghosts(self):
+        """Get ghost for the subelements (vertices, edges)."""
         import Part
 
-        for obj in self.selected_subelements:
-            for subelement in obj.SubObjects:
-                if (isinstance(subelement, Part.Vertex)
-                        or isinstance(subelement, Part.Edge)):
-                    self.ghosts.append(trackers.ghostTracker(subelement))
+        ghosts = []
+        for sel in Gui.Selection.getSelectionEx("", 0):
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                if "Vertex" in sub or "Edge" in sub:
+                    shape = Part.getShape(sel.Object, sub, needSubElement=True, retType=0)
+                    ghosts.append(trackers.ghostTracker(shape))
+        return ghosts
 
-    def finish(self, closed=False, cont=False):
-        """Finish the rotate operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         if self.arctrack:
             self.arctrack.finalize()
         for ghost in self.ghosts:
             ghost.finalize()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                todo.ToDo.delayAfter(self.Activated, [])
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            todo.ToDo.delayAfter(self.Activated, [])
         super(Rotate, self).finish()
         if self.doc:
             self.doc.recompute()
@@ -271,6 +284,7 @@ class Rotate(gui_base_original.Modifier):
 
     def rotate_subelements(self, is_copy):
         """Rotate the subelements."""
+        Gui.addModule("Draft")
         try:
             if is_copy:
                 self.commit(translate("draft", "Copy"),
@@ -305,7 +319,7 @@ class Rotate(gui_base_original.Modifier):
                 arguments.append(_cmd)
 
         all_args = ', '.join(arguments)
-        command.append('Draft.copyRotatedEdges([' + all_args + '])')
+        command.append('Draft.copy_rotated_edges([' + all_args + '])')
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
@@ -321,7 +335,7 @@ class Rotate(gui_base_original.Modifier):
             for index, subelement in enumerate(obj.SubObjects):
                 if isinstance(subelement, Part.Vertex):
                     _vertex_index = int(obj.SubElementNames[index][V:]) - 1
-                    _cmd = 'Draft.rotateVertex'
+                    _cmd = 'Draft.rotate_vertex'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -333,7 +347,7 @@ class Rotate(gui_base_original.Modifier):
                     command.append(_cmd)
                 elif isinstance(subelement, Part.Edge):
                     _edge_index = int(obj.SubElementNames[index][E:]) - 1
-                    _cmd = 'Draft.rotateEdge'
+                    _cmd = 'Draft.rotate_edge'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -412,7 +426,7 @@ class Rotate(gui_base_original.Modifier):
         else:
             self.angle = math.radians(rad)
             self.rotate(self.ui.isCopy.isChecked())
-            self.finish(cont=True)
+            self.finish(cont=None)
 
 
 Gui.addCommand('Draft_Rotate', Rotate())

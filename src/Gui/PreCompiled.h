@@ -33,7 +33,7 @@
 #endif
 #endif
 
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #pragma warning( disable : 4251 )
 #pragma warning( disable : 4273 )
@@ -45,13 +45,13 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <fcntl.h>
-#include <ctype.h>
+#include <cctype>
 #include <typeinfo>
-#include <float.h>
-#include <limits.h>
+#include <cfloat>
+#include <climits>
 
 #ifdef FC_OS_WIN32
 #include <Windows.h>
@@ -63,8 +63,8 @@
 #include <iostream>
 #include <iomanip>
 
-
 // STL
+#include <atomic>
 #include <vector>
 #include <map>
 #include <string>
@@ -80,21 +80,25 @@
 #include <tuple>
 
 // Boost
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/program_options.hpp>
-#include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
+#include <boost_signals2.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/core/ignore_unused.hpp>
+#include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
+#include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/program_options.hpp>
+#include <boost/utility.hpp>
 
+// Xerces
+#include <xercesc/util/TranscodingException.hpp>
+#include <xercesc/util/XMLString.hpp>
 
-// Python
-#include <Python.h>
-
+// Keep this order to avoid compiler warnings
+#include "QtAll.h"
 #include "InventorAll.h"
-#include "Qt4All.h"
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

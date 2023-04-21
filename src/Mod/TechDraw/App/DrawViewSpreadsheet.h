@@ -20,32 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-
-#ifndef _DrawViewSpreadsheet_h_
-#define _DrawViewSpreadsheet_h_
-
+#ifndef DrawViewSpreadsheet_h_
+#define DrawViewSpreadsheet_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewSymbol.h"
+
 
 namespace TechDraw
 {
 
-
 class TechDrawExport DrawViewSpreadsheet : public TechDraw::DrawViewSymbol
 {
-    PROPERTY_HEADER(TechDraw::DrawViewSpreadsheet);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSpreadsheet);
 
 public:
-    DrawViewSpreadsheet(void);
-    virtual ~DrawViewSpreadsheet();
+    DrawViewSpreadsheet();
+    ~DrawViewSpreadsheet() override;
     App::PropertyLink         Source;
     App::PropertyString       CellStart;
     App::PropertyString       CellEnd;
@@ -55,26 +50,26 @@ public:
     App::PropertyFloat        TextSize;
 
 
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute() const;
-    std::string getSheetImage(void);
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    std::string getSheetImage();
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSpreadsheet";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    std::vector<std::string> getAvailColumns(void);
-    std::string getSVGHead(void);
-    std::string getSVGTail(void);
+    void onChanged(const App::Property* prop) override;
+    std::vector<std::string> getAvailColumns();
+    std::string getSVGHead();
+    std::string getSVGTail();
     int colInList(const std::vector<std::string>& list,
                    const std::string& toFind);
 
 private:
 };
 
-typedef App::FeaturePythonT<DrawViewSpreadsheet> DrawViewSpreadsheetPython;
+using DrawViewSpreadsheetPython = App::FeaturePythonT<DrawViewSpreadsheet>;
 
 
 } //namespace TechDraw

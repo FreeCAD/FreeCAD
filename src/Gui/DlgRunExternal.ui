@@ -62,7 +62,7 @@
     </layout>
    </item>
    <item row="1" column="0">
-    <widget class="QWidget" name="extensionWidget" native="true">
+    <widget class="QWidget" name="extensionWidget">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>6</number>
@@ -84,7 +84,7 @@
         <item>
          <widget class="QPushButton" name="chooseProgram">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>

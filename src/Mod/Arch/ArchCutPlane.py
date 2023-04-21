@@ -20,11 +20,13 @@
 #*                                                                           *
 #*****************************************************************************
 
-import FreeCAD,ArchCommands
+import FreeCAD
+import Draft
+import ArchCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -61,11 +63,11 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
     if cutVolume:
         obj = FreeCAD.ActiveDocument.addObject("Part::Feature","CutVolume")
         obj.Shape = cutVolume
-        obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
-        obj.ViewObject.Transparency = 75
         if "Additions" in archObject.Object.PropertiesList:
-            return ArchCommands.removeComponents(obj,archObject.Object)
+            ArchCommands.removeComponents(obj, archObject.Object) # Also changes the obj colors.
+            return None
         else:
+            Draft.format_object(obj, archObject.Object)
             cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut","CutPlane")
             cutObj.Base = archObject.Object
             cutObj.Tool = obj
@@ -75,9 +77,9 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
 class _CommandCutLine:
     "the Arch CutPlane command definition"
     def GetResources(self):
-       return {'Pixmap'  : 'Arch_CutLine',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut with a line"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut an object with a line with normal workplane")}
+        return {"Pixmap": "Arch_CutLine",
+                "MenuText": QtCore.QT_TRANSLATE_NOOP("Arch_CutLine", "Cut with line"),
+                "ToolTip": QtCore.QT_TRANSLATE_NOOP("Arch_CutLine", "Cut an object with a line")}
 
     def IsActive(self):
         return len(FreeCADGui.Selection.getSelection()) > 1
@@ -119,7 +121,7 @@ class _CutPlaneTaskPanel:
         self.linecut=linecut
         self.plan=None
         if linecut:
-            self.plan=plan=getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
+            self.plan = getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
         else :
             self.plan = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 

@@ -795,7 +795,7 @@ bool SMESH_MesherHelper::CheckNodeUV(const TopoDS_Face&   F,
 
 //=======================================================================
 //function : GetProjector
-//purpose  : Return projector intitialized by given face without location, which is returned
+//purpose  : Return projector initialized by given face without location, which is returned
 //=======================================================================
 
 GeomAPI_ProjectPointOnSurf& SMESH_MesherHelper::GetProjector(const TopoDS_Face& F,

@@ -57,7 +57,6 @@ Eedges
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=M0F0
 1,
 *ELSET,ELSET=M0F1
@@ -85,61 +84,53 @@ Eedges
 
 ***********************************************************
 ** Materials
-** written by write_materials function
-** Young's modulus unit is MPa = N/mm2
-** Density's unit is t/mm^3
-** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3
-** Specific Heat unit is kJ/t/K = mm^2/s^2/K
+** see information about units at file end
 ** FreeCAD material name: Water
 ** FluidMaterial
 *MATERIAL, NAME=FluidMaterial
 *DENSITY
-9.980e-10
+9.98E-10
 *FLUID CONSTANTS
-4.182e+06, 1.003e-09
+4182000000,1.003E-09
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *FLUID SECTION, ELSET=M0F0, TYPE=PIPE INOUT, MATERIAL=FluidMaterial
 *FLUID SECTION, ELSET=M0F1, TYPE=PIPE ENTRANCE, MATERIAL=FluidMaterial
-31416.0,25133.0
+31416,25133
 *FLUID SECTION, ELSET=M0F2, TYPE=PIPE MANNING, MATERIAL=FluidMaterial
-31416.0,50.0,0.002
+31416,50,0.002
 *FLUID SECTION, ELSET=M0F3, TYPE=PIPE BEND, MATERIAL=FluidMaterial
-31416.0,1.5,45.0,0.4
+31416,1.5,45,0.4
 *FLUID SECTION, ELSET=M0F4, TYPE=PIPE ENLARGEMENT, MATERIAL=FluidMaterial
-31416.0,70686.0
+31416,70686
 *FLUID SECTION, ELSET=M0F5, TYPE=PIPE MANNING, MATERIAL=FluidMaterial
-70686.0,75.0,0.002
+70686,75,0.002
 *FLUID SECTION, ELSET=M0F6, TYPE=PIPE CONTRACTION, MATERIAL=FluidMaterial
-70686.0,17671.0
+70686,17671
 *FLUID SECTION, ELSET=M0F7, TYPE=PIPE MANNING, MATERIAL=FluidMaterial
-17671.0,37.5,0.002
+17671,37.5,0.002
 *FLUID SECTION, ELSET=M0F8, TYPE=PIPE GATE VALVE, MATERIAL=FluidMaterial
-17671.0,0.5
+17671,0.5
 *FLUID SECTION, ELSET=M0F9, TYPE=PIPE ENLARGEMENT, MATERIAL=FluidMaterial
-17671.0,1e+12
+17671,1000000000000
 *FLUID SECTION, ELSET=M0F10, TYPE=PIPE INOUT, MATERIAL=FluidMaterial
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP, INC=2000
 *COUPLED TEMPERATURE-DISPLACEMENT, STEADY STATE
 1.0,1.0
 
 ***********************************************************
 ** Self weight Constraint
-** written by write_constraints_selfweight function
 ** ConstraintSelfWeight
 *DLOAD
-Eall,GRAV,9806,0.0,0.0,-1.0
+Eall,GRAV,9806,0,0,-1
 
 
 ***********************************************************
 ** FluidSection constraints
-** written by write_constraints_fluidsection function
 ** ElementFluid1D
 **Fluid Section Inlet 
 *BOUNDARY 
@@ -160,17 +151,14 @@ Eall,GRAV,9806,0.0,0.0,-1.0
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE, OUTPUT=2d
 MF, PS
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.17.11265 (Git)
 **   written on    --> Fri Jun  9 11:49:27 2017
 **   file name     --> Resevoir_rev1.fcstd
@@ -180,7 +168,7 @@ MF, PS
 ***********************************************************
 **  About units:
 **  See ccx manual, ccx does not know about any unit.
-**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  Golden rule: The user must make sure that the numbers they provide have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
 **  The unit system which is used at Guido Dhondt's company: mm, N, s, K
@@ -194,9 +182,9 @@ MF, PS
 **
 **  This leads to:
 **  Force: N
-**  Pressure: N/mm^2
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
 **  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
-**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
 **

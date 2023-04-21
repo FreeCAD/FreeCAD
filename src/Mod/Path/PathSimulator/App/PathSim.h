@@ -20,19 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATHSIMULATOR_PathSim_H
 #define PATHSIMULATOR_PathSim_H
 
-// Exporting of App classes
-
-#include <Base/Persistence.h>
-#include <Base/Vector3D.h>
-#include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
+
 #include <Mod/Path/App/Command.h>
 #include <Mod/Part/App/TopoShape.h>
+
 #include "VolSim.h"
+
 
 using namespace Path;
 

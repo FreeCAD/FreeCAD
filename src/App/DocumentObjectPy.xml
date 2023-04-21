@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport 
-		Father="ExtensionContainerPy" 
-		Name="DocumentObjectPy" 
-		Twin="DocumentObject" 
-		TwinPointer="DocumentObject" 
-		Include="App/DocumentObject.h" 
-		Namespace="App" 
-		FatherInclude="App/ExtensionContainerPy.h" 
-		FatherNamespace="App">
-		<Documentation>
-			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-			<UserDocu>This is the father of all classes handled by the document</UserDocu>
-		</Documentation>
+    <PythonExport 
+        Father="ExtensionContainerPy" 
+        Name="DocumentObjectPy" 
+        Twin="DocumentObject" 
+        TwinPointer="DocumentObject" 
+        Include="App/DocumentObject.h" 
+        Namespace="App" 
+        FatherInclude="App/ExtensionContainerPy.h" 
+        FatherNamespace="App">
+        <Documentation>
+            <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+            <UserDocu>This is the father of all classes handled by the document</UserDocu>
+        </Documentation>
         <Methode Name="addProperty">
             <Documentation>
                 <UserDocu>
@@ -36,15 +36,15 @@
             </Documentation>
         </Methode>
         <Methode Name="touch">
-			<Documentation>
-				<UserDocu>Mark the object as changed (touched)</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="purgeTouched">
-			<Documentation>
-				<UserDocu>Mark the object as unchanged</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>Mark the object as changed (touched)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="purgeTouched">
+            <Documentation>
+                <UserDocu>Mark the object as unchanged</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="enforceRecompute">
             <Documentation>
                 <UserDocu>Mark the object for recompute</UserDocu>
@@ -55,7 +55,12 @@
                 <UserDocu>Register an expression for a property</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="evalExpression">
+        <Methode Name="clearExpression">
+            <Documentation>
+                <UserDocu>Clear the expression for a property</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="evalExpression" Class="true">
             <Documentation>
                 <UserDocu>Evaluate an expression</UserDocu>
             </Documentation>
@@ -142,27 +147,27 @@ containing the accumulated transformation matrix
                 </UserDocu>
             </Documentation>
         </Methode>
-		<Methode Name="setElementVisible">
-			<Documentation>
+        <Methode Name="setElementVisible">
+            <Documentation>
                 <UserDocu>
 setElementVisible(element,visible): Set the visibility of a child element
 Return -1 if element visibility is not supported, 0 if element not found, 1 if success
                 </UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="isElementVisible">
-			<Documentation>
+            </Documentation>
+        </Methode>
+        <Methode Name="isElementVisible">
+            <Documentation>
                 <UserDocu>
 isElementVisible(element): Check if a child element is visible
 Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
                 </UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="hasChildElement">
-			<Documentation>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasChildElement">
+            <Documentation>
                 <UserDocu>Return true to indicate the object having child elements</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="getParentGroup">
             <Documentation>
                 <UserDocu>Returns the group the object is in or None if it is not part of a group. 
@@ -244,11 +249,11 @@ Return tuple(obj,newElementName,oldElementName)
         <Parameter Name="FullName" Type="String"/>
     </Attribute>
     <Attribute Name="Name" ReadOnly="true">
-			<Documentation>
-				<UserDocu>Return the internal name of this object</UserDocu>
-			</Documentation>
-			<Parameter Name="Name" Type="String"/>
-		</Attribute>
+            <Documentation>
+                <UserDocu>Return the internal name of this object</UserDocu>
+            </Documentation>
+            <Parameter Name="Name" Type="String"/>
+        </Attribute>
                 <Attribute Name="Document" ReadOnly="true">
                         <Documentation>
                                 <UserDocu>Return the document this object is part of</UserDocu>
@@ -256,54 +261,54 @@ Return tuple(obj,newElementName,oldElementName)
                         <Parameter Name="Document" Type="Object"/>
                 </Attribute>
                 <Attribute Name="State" ReadOnly="true">
-			<Documentation>
-				<UserDocu>State of the object in the document</UserDocu>
-			</Documentation>
-			<Parameter Name="State" Type="List"/>
-		</Attribute>
-		<Attribute Name="ViewObject" ReadOnly="true">
-			<Documentation>
-				<UserDocu>If the GUI is loaded the associated view provider is returned
+            <Documentation>
+                <UserDocu>State of the object in the document</UserDocu>
+            </Documentation>
+            <Parameter Name="State" Type="List"/>
+        </Attribute>
+        <Attribute Name="ViewObject" ReadOnly="true">
+            <Documentation>
+                <UserDocu>If the GUI is loaded the associated view provider is returned
 or None if the GUI is not up</UserDocu>
-			</Documentation>
-			<Parameter Name="ViewObject" Type="Object"/>
-		</Attribute>
-		<CustomAttributes />
-		<Attribute Name="MustExecute" ReadOnly="true">
-			<Documentation>
+            </Documentation>
+            <Parameter Name="ViewObject" Type="Object"/>
+        </Attribute>
+        <CustomAttributes />
+        <Attribute Name="MustExecute" ReadOnly="true">
+            <Documentation>
                 <UserDocu>Check if the object must be recomputed</UserDocu>
-			</Documentation>
-			<Parameter Name="MustExecute" Type="Boolean"/>
-		</Attribute>
-		<Attribute Name="ID" ReadOnly="true">
-			<Documentation>
+            </Documentation>
+            <Parameter Name="MustExecute" Type="Boolean"/>
+        </Attribute>
+        <Attribute Name="ID" ReadOnly="true">
+            <Documentation>
                 <UserDocu>The unique identifier (among its document) of this object</UserDocu>
-			</Documentation>
-			<Parameter Name="ID" Type="Int"/>
-		</Attribute>
-		<Attribute Name="Removing" ReadOnly="true">
-			<Documentation>
+            </Documentation>
+            <Parameter Name="ID" Type="Int"/>
+        </Attribute>
+        <Attribute Name="Removing" ReadOnly="true">
+            <Documentation>
                 <UserDocu>Indicate if the object is being removed</UserDocu>
-			</Documentation>
-			<Parameter Name="Removing" Type="Boolean"/>
-		</Attribute>
+            </Documentation>
+            <Parameter Name="Removing" Type="Boolean"/>
+        </Attribute>
         <Attribute Name="Parents" ReadOnly="true">
             <Documentation>
                 <UserDocu>A List of tuple(parent,subname) holding all parents to this object</UserDocu>
             </Documentation>
-			<Parameter Name="Parents" Type="List"/>
+            <Parameter Name="Parents" Type="List"/>
         </Attribute>
         <Attribute Name="OldLabel" ReadOnly="true">
             <Documentation>
                 <UserDocu>Contains the old label before change</UserDocu>
             </Documentation>
-			<Parameter Name="OldLabel" Type="String"/>
+            <Parameter Name="OldLabel" Type="String"/>
         </Attribute>
         <Attribute Name="NoTouch">
             <Documentation>
                 <UserDocu>Enable/disable no touch on any property change</UserDocu>
             </Documentation>
-			<Parameter Name="NoTouch" Type="Boolean"/>
+            <Parameter Name="NoTouch" Type="Boolean"/>
         </Attribute>
-	</PythonExport>
+    </PythonExport>
 </GenerateModel>

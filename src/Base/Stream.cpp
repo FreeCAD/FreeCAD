@@ -26,11 +26,7 @@
 #ifndef _PreComp_
 # include <QBuffer>
 # include <QByteArray>
-# include <QDataStream>
 # include <QIODevice>
-# include <cstdlib>
-# include <string>
-# include <cstdio>
 # include <cstring>
 #ifdef __GNUC__
 # include <cstdint>
@@ -40,7 +36,7 @@
 #include "Stream.h"
 #include "Swap.h"
 #include <CXX/Objects.hxx>
-#include <Python.h>
+
 
 using namespace Base;
 
@@ -48,9 +44,7 @@ Stream::Stream() : _swap(false)
 {
 }
 
-Stream::~Stream()
-{
-}
+Stream::~Stream() = default;
 
 Stream::ByteOrder Stream::byteOrder() const
 {
@@ -66,9 +60,7 @@ OutputStream::OutputStream(std::ostream &rout) : _out(rout)
 {
 }
 
-OutputStream::~OutputStream()
-{
-}
+OutputStream::~OutputStream() = default;
 
 OutputStream& OutputStream::operator << (bool b)
 {
@@ -148,9 +140,7 @@ InputStream::InputStream(std::istream &rin) : _in(rin)
 {
 }
 
-InputStream::~InputStream()
-{
-}
+InputStream::~InputStream() = default;
 
 InputStream& InputStream::operator >> (bool& b)
 {
@@ -243,7 +233,7 @@ std::streambuf::int_type
 ByteArrayOStreambuf::overflow(std::streambuf::int_type c)
 {
     if (c != EOF) {
-        char z = c;
+        char z = static_cast<char>(c);
         if (_buffer->write (&z, 1) != 1) {
             return EOF;
         }
@@ -301,9 +291,7 @@ ByteArrayIStreambuf::ByteArrayIStreambuf(const QByteArray& data) : _buffer(data)
     _cur = 0;
 }
 
-ByteArrayIStreambuf::~ByteArrayIStreambuf()
-{
-}
+ByteArrayIStreambuf::~ByteArrayIStreambuf() = default;
 
 ByteArrayIStreambuf::int_type ByteArrayIStreambuf::underflow()
 {
@@ -371,15 +359,13 @@ IODeviceOStreambuf::IODeviceOStreambuf(QIODevice* dev) : device(dev)
 {
 }
 
-IODeviceOStreambuf::~IODeviceOStreambuf()
-{
-}
+IODeviceOStreambuf::~IODeviceOStreambuf() = default;
 
 std::streambuf::int_type
 IODeviceOStreambuf::overflow(std::streambuf::int_type c)
 {
     if (c != EOF) {
-        char z = c;
+        char z = static_cast<char>(c);
         if (device->write (&z, 1) != 1) {
             return EOF;
         }
@@ -430,16 +416,14 @@ IODeviceOStreambuf::seekpos(std::streambuf::pos_type pos,
 
 // ----------------------------------------------------------------------
 
-IODeviceIStreambuf::IODeviceIStreambuf(QIODevice* dev) : device(dev)
+IODeviceIStreambuf::IODeviceIStreambuf(QIODevice* dev) : device(dev), buffer{}
 {
     setg (buffer+pbSize,     // beginning of putback area
           buffer+pbSize,     // read position
           buffer+pbSize);    // end position
 }
 
-IODeviceIStreambuf::~IODeviceIStreambuf()
-{
-}
+IODeviceIStreambuf::~IODeviceIStreambuf() = default;
 
 std::streambuf::int_type
 IODeviceIStreambuf::underflow()
@@ -605,7 +589,7 @@ PyStreambuf::overflow(PyStreambuf::int_type ch)
 #ifdef PYSTREAM_BUFFERED
     sync();
     if (ch != traits_type::eof()) {
-        *pptr() = ch;
+        *pptr() = static_cast<char>(ch);
         pbump(1);
         return ch;
     }
@@ -750,9 +734,7 @@ Streambuf::Streambuf(const std::string& data)
     _cur = _beg;
 }
 
-Streambuf::~Streambuf()
-{
-}
+Streambuf::~Streambuf() = default;
 
 Streambuf::int_type Streambuf::underflow()
 {

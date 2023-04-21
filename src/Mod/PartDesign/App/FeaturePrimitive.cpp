@@ -23,34 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepPrim_Cylinder.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBuilderAPI_GTransform.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+# include <BRepPrimAPI_MakeBox.hxx>
+# include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeCylinder.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeTorus.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepPrim_Cylinder.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <QObject>
-# include <math.h>
 #endif
 
-
-#include "FeaturePrimitive.h"
-#include "DatumPoint.h"
-#include "DatumCS.h"
-#include "FeaturePy.h"
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <App/Document.h>
-#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+
+#include "FeaturePrimitive.h"
+#include "FeaturePy.h"
 
 using namespace PartDesign;
 
@@ -165,7 +159,7 @@ void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const 
 # pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
+PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)//explicit bombs
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
 
 #if defined(__clang__)
@@ -195,7 +189,7 @@ Box::Box()
     primitiveType = FeaturePrimitive::Box;
 }
 
-App::DocumentObjectExecReturn* Box::execute(void)
+App::DocumentObjectExecReturn* Box::execute()
 {
     double L = Length.getValue();
     double W = Width.getValue();
@@ -248,7 +242,7 @@ Cylinder::Cylinder()
     primitiveType = FeaturePrimitive::Cylinder;
 }
 
-App::DocumentObjectExecReturn* Cylinder::execute(void)
+App::DocumentObjectExecReturn* Cylinder::execute()
 {
     // Build a cylinder
     if (Radius.getValue() < Precision::Confusion())
@@ -305,7 +299,7 @@ Sphere::Sphere()
     primitiveType = FeaturePrimitive::Sphere;
 }
 
-App::DocumentObjectExecReturn* Sphere::execute(void)
+App::DocumentObjectExecReturn* Sphere::execute()
 {
    // Build a sphere
     if (Radius.getValue() < Precision::Confusion())
@@ -355,7 +349,7 @@ Cone::Cone()
     primitiveType = FeaturePrimitive::Cone;
 }
 
-App::DocumentObjectExecReturn* Cone::execute(void)
+App::DocumentObjectExecReturn* Cone::execute()
 {
     if (Radius1.getValue() < 0.0)
         return new App::DocumentObjectExecReturn("Radius of cone cannot be negative");
@@ -417,7 +411,7 @@ Ellipsoid::Ellipsoid()
     primitiveType = FeaturePrimitive::Ellipsoid;
 }
 
-App::DocumentObjectExecReturn* Ellipsoid::execute(void)
+App::DocumentObjectExecReturn* Ellipsoid::execute()
 {
     // Build a sphere
     if (Radius1.getValue() < Precision::Confusion())
@@ -502,7 +496,7 @@ Torus::Torus()
     primitiveType = FeaturePrimitive::Torus;
 }
 
-App::DocumentObjectExecReturn* Torus::execute(void)
+App::DocumentObjectExecReturn* Torus::execute()
 {
     if (Radius1.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
@@ -566,7 +560,7 @@ Prism::Prism()
     primitiveType = FeaturePrimitive::Prism;
 }
 
-App::DocumentObjectExecReturn* Prism::execute(void)
+App::DocumentObjectExecReturn* Prism::execute()
 {
     // Build a prism
     if (Polygon.getValue() < 3)
@@ -635,7 +629,7 @@ Wedge::Wedge()
     primitiveType = FeaturePrimitive::Wedge;
 }
 
-App::DocumentObjectExecReturn* Wedge::execute(void)
+App::DocumentObjectExecReturn* Wedge::execute()
 {
     double xmin = Xmin.getValue();
     double ymin = Ymin.getValue();

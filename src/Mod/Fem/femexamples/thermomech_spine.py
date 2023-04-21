@@ -22,46 +22,53 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.thermomech_spine import setup
-setup()
-
-"""
-
 import FreeCAD
 
 import Fem
 import ObjectsFem
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Thermomech Spine",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "initial temperature", "temperature", "heatflux"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "thermomechanical"
-            }
-    return info
+    return {
+        "name": "Thermomech Spine",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "initial temperature", "temperature", "heatflux"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "solid",
+        "equations": ["thermomechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.thermomech_spine import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric object
     geom_obj = doc.addObject("Part::Box", "Box")
     geom_obj.Height = 25.4
     geom_obj.Width = 25.4
@@ -77,36 +84,31 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     # should be possible with elmer too
     # elif solvertype == "elmer":
     #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "thermomech"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = True
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsThermoMechMaximum = 2000
-        solver_object.IterationsControlParameterTimeUse = True
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "thermomech"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = True
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsThermoMechMaximum = 2000
+        solver_obj.IterationsControlParameterTimeUse = True
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
+    mat = material_obj.Material
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
@@ -114,39 +116,37 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["ThermalConductivity"] = "43.27 W/m/K"  # SvdW: Change to Ansys model values
     mat["ThermalExpansionCoefficient"] = "12 um/m/K"
     mat["SpecificHeat"] = "500 J/kg/K"  # SvdW: Change to Ansys model values
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
-    )[0]
-    fixed_constraint.References = [(geom_obj, "Face1")]
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
+    con_fixed.References = [(geom_obj, "Face1")]
+    analysis.addObject(con_fixed)
 
-    # initialtemperature_constraint
-    initialtemperature_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintInitialTemperature(doc, "FemConstraintInitialTemperature")
-    )[0]
-    initialtemperature_constraint.initialTemperature = 300.0
+    # constraint initialtemperature
+    name_inittemp = "FemConstraintInitialTemperature"
+    con_inittemp = ObjectsFem.makeConstraintInitialTemperature(doc, name_inittemp)
+    con_inittemp.initialTemperature = 300.0
+    analysis.addObject(con_inittemp)
 
-    # temperature_constraint
-    temperature_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintTemperature(doc, "FemConstraintTemperature")
-    )[0]
-    temperature_constraint.References = [(geom_obj, "Face1")]
-    temperature_constraint.Temperature = 310.93
+    # constraint temperature
+    con_temp = ObjectsFem.makeConstraintTemperature(doc, "FemConstraintTemperature")
+    con_temp.References = [(geom_obj, "Face1")]
+    con_temp.Temperature = 310.93
+    analysis.addObject(con_temp)
 
-    # heatflux_constraint
-    heatflux_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintHeatflux(doc, "FemConstraintHeatflux")
-    )[0]
-    heatflux_constraint.References = [
+    # constraint heatflux
+    con_heatflux = ObjectsFem.makeConstraintHeatflux(doc, "FemConstraintHeatflux")
+    con_heatflux.References = [
         (geom_obj, "Face3"),
         (geom_obj, "Face4"),
         (geom_obj, "Face5"),
         (geom_obj, "Face6")
     ]
-    heatflux_constraint.AmbientTemp = 255.3722
-    heatflux_constraint.FilmCoef = 5.678
+    con_heatflux.AmbientTemp = 255.3722
+    con_heatflux.FilmCoef = 5.678
+    analysis.addObject(con_heatflux)
 
     # mesh
     from .meshes.mesh_thermomech_spine_tetra10 import create_nodes, create_elements
@@ -157,9 +157,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

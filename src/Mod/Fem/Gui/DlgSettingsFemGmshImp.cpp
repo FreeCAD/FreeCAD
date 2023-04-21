@@ -22,21 +22,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMessageBox>
+#endif
 
 #include "DlgSettingsFemGmshImp.h"
 #include "ui_DlgSettingsFemGmsh.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemGmshImp::DlgSettingsFemGmshImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemGmshImp)
+DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemGmshImp)
 {
     ui->setupUi(this);
+
+    connect(ui->fc_gmsh_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemGmshImp::onfileNameChanged);
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp()
@@ -59,13 +63,22 @@ void DlgSettingsFemGmshImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemGmshImp::changeEvent(QEvent *e)
+void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemGmshImp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this, tr("File does not exist"),
+                              tr("The specified executable \n'%1'\n does not exist!\n"
+                                 "Specify another file please.").arg(FileName));
     }
 }
 

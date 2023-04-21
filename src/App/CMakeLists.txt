@@ -12,6 +12,10 @@ IF(RESOURCEDIR)
     add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
 ENDIF(RESOURCEDIR)
 
+IF(LIBRARYDIR)
+    add_definitions(-DLIBRARYDIR="${LIBRARYDIR}")
+ENDIF(LIBRARYDIR)
+
 IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
@@ -21,7 +25,7 @@ ENDIF(DOCDIR)
 
 # -----------------------------------------------------------------------------
 
-#write relevant cmake variables to a file for later access with python. Exported are all variables 
+#write relevant cmake variables to a file for later access with python. Exported are all variables
 #starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we
 #use a python list for export.
 set(_vars "const char CMakeVariables[] =\"cmake = [")
@@ -48,6 +52,7 @@ fc_copy_file_if_different(
 # -----------------------------------------------------------------------------
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -60,27 +65,17 @@ include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
+    fmt::fmt
 )
 
-if (BUILD_QT5)
-    include_directories(
-        ${Qt5Core_INCLUDE_DIRS}
-        ${Qt5Xml_INCLUDE_DIRS}
-    )
-    list(APPEND FreeCADApp_LIBS
-         ${Qt5Core_LIBRARIES}
-         ${Qt5Xml_LIBRARIES}
-    )
-else()
-    include_directories(
-        ${QT_QTCORE_INCLUDE_DIR}
-        ${QT_QTXML_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADApp_LIBS
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTXML_LIBRARY}
-    )
-endif()
+include_directories(
+    ${QtCore_INCLUDE_DIRS}
+    ${QtXml_INCLUDE_DIRS}
+)
+list(APPEND FreeCADApp_LIBS
+        ${QtCore_LIBRARIES}
+        ${QtXml_LIBRARIES}
+)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
@@ -92,6 +87,7 @@ generate_from_xml(LinkBaseExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
 generate_from_xml(GeoFeatureGroupExtensionPy)
+generate_from_xml(MetadataPy)
 generate_from_xml(OriginGroupExtensionPy)
 generate_from_xml(PartPy)
 
@@ -108,6 +104,7 @@ SET(FreeCADApp_XML_SRCS
     DocumentObjectExtensionPy.xml
     GroupExtensionPy.xml
     LinkBaseExtensionPy.xml
+    MetadataPy.xml
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
     GeoFeaturePy.xml
@@ -132,6 +129,7 @@ SET(Document_CPP_SRCS
     DocumentObjectExtensionPyImp.cpp
     ExtensionContainer.cpp
     ExtensionContainerPyImp.cpp
+    Graphviz.cpp
     GroupExtension.cpp
     GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
@@ -143,11 +141,13 @@ SET(Document_CPP_SRCS
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
     Expression.cpp
+    ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
     GeoFeatureGroupExtensionPyImp.cpp
     GeoFeatureGroupExtension.cpp
+    ImagePlane.cpp
     OriginGroupExtensionPyImp.cpp
     OriginGroupExtension.cpp
     PartPyImp.cpp
@@ -167,6 +167,7 @@ SET(Document_CPP_SRCS
     TextDocument.cpp
     Link.cpp
     LinkBaseExtensionPyImp.cpp
+    License.h
 )
 
 SET(Document_HPP_SRCS
@@ -183,6 +184,7 @@ SET(Document_HPP_SRCS
     DocumentObserverPython.h
     Expression.h
     ExpressionParser.h
+    ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
@@ -191,6 +193,7 @@ SET(Document_HPP_SRCS
     FeatureTest.h
     GeoFeature.h
     GeoFeatureGroupExtension.h
+    ImagePlane.h
     OriginGroupExtension.h
     Part.h
     Origin.h
@@ -255,12 +258,18 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
+    Color.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
     Enumeration.cpp
+    IndexedName.cpp
+    MappedElement.cpp
+    MappedName.cpp
     Material.cpp
     MaterialPyImp.cpp
+    Metadata.cpp
+    MetadataPyImp.cpp
 )
 
 SET(FreeCADApp_HPP_SRCS
@@ -269,10 +278,16 @@ SET(FreeCADApp_HPP_SRCS
     Application.h
     AutoTransaction.h
     Branding.h
+    Color.h
     ColorModel.h
     ComplexGeoData.h
+    ElementMap.h
     Enumeration.h
+    IndexedName.h
+    MappedName.h
+    MappedElement.h
     Material.h
+    Metadata.h
 )
 
 SET(FreeCADApp_SRCS
@@ -291,7 +306,6 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
-
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
 add_dependencies(FreeCADApp fc_version)

@@ -1,20 +1,17 @@
 #include "JtReader.h"
 
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include <assert.h>
-#include <stdint.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
-
-#include "TOC_Entry.h"
 #include "GUID.h"
-#include "UChar.h"
 #include "I32.h"
-#include "TOC_Entry.h"
 #include "LodHandler.h"
-#include "Segment_Header.h"
 #include "Element_Header.h"
+#include "Segment_Header.h"
+#include "TOC_Entry.h"
+#include "UChar.h"
 
 
 using namespace std;

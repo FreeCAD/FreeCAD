@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#include "GeometryDefaultExtension.h"
 
 #include "GeometryBoolExtensionPy.h"
 #include "GeometryBoolExtensionPy.cpp"
 
+
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryBoolExtensionPy::representation(void) const
+std::string GeometryBoolExtensionPy::representation() const
 {
     std::stringstream str;
     bool val = getGeometryBoolExtensionPtr()->getValue();
     str << "<GeometryBoolExtension (" ;
 
-    if(getGeometryBoolExtensionPtr()->getName().size()>0)
+    if(!getGeometryBoolExtensionPtr()->getName().empty())
         str << "\'" << getGeometryBoolExtensionPtr()->getName() << "\', ";
 
     str << (val?"True":"False") << ") >";
@@ -64,14 +62,14 @@ int GeometryBoolExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     PyObject* val;
     if (PyArg_ParseTuple(args, "O!", &PyBool_Type, &val)) {
-        this->getGeometryBoolExtensionPtr()->setValue(PyObject_IsTrue(val) ? true : false);
+        this->getGeometryBoolExtensionPtr()->setValue(Base::asBoolean(val));
         return 0;
     }
 
     PyErr_Clear();
     char * pystr;
     if (PyArg_ParseTuple(args, "O!s", &PyBool_Type, &val, &pystr)) {
-        this->getGeometryBoolExtensionPtr()->setValue(PyObject_IsTrue(val) ? true : false);
+        this->getGeometryBoolExtensionPtr()->setValue(Base::asBoolean(val));
         this->getGeometryBoolExtensionPtr()->setName(pystr);
         return 0;
     }
@@ -83,7 +81,7 @@ int GeometryBoolExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Boolean GeometryBoolExtensionPy::getValue(void) const
+Py::Boolean GeometryBoolExtensionPy::getValue() const
 {
     return Py::Boolean(this->getGeometryBoolExtensionPtr()->getValue());
 }
@@ -95,7 +93,7 @@ void GeometryBoolExtensionPy::setValue(Py::Boolean value)
 
 PyObject *GeometryBoolExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometryBoolExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

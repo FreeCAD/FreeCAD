@@ -26,16 +26,7 @@
 
 #include <FCConfig.h>
 
-
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-#   define    MeshExport __declspec(dllexport)
-#else // for Linux
-#   define    MeshExport
-#endif
-
-
-// here get the warnings of too long specifiers disabled (needed for VC6)
+// point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #   pragma warning( disable : 4251 )
 #   pragma warning( disable : 4503 )
@@ -47,11 +38,12 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <cmath>
-#include <float.h>
+#include <cfloat>
 #include <fcntl.h>
+#include <fstream>
 #include <ios>
 
 #ifdef FC_USE_GTS
@@ -59,7 +51,6 @@
 #endif
 // STL
 #include <algorithm>
-#include <bitset>
 #include <iostream>
 #include <iomanip>
 #include <list>
@@ -71,17 +62,28 @@
 #include <string>
 #include <vector>
 
-// FIXME: Causes problem with boost/numeric/bindings/lapack/syev.hpp(117)
-#ifdef FC_OS_WIN32
-//# include <windows.h>
-#include <io.h>
-#endif
-
+// boost
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/core/ignore_unused.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/regex.hpp>
 
-// Python
-#include <Python.h>
-
+// Xerces
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XercesVersion.hpp>
+#include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
+#include <xercesc/framework/StdOutFormatTarget.hpp>
+#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc/framework/LocalFileInputSource.hpp>
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/util/XMLUni.hpp>
+#include <xercesc/util/XMLUniDefs.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/sax/ErrorHandler.hpp>
+#include <xercesc/sax/SAXParseException.hpp>
 
 #endif //_PreComp_
 

@@ -25,48 +25,29 @@
 #define GUI_TREE_H
 
 #include <unordered_map>
-#include <QTreeWidget>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
+#include <QTreeWidget>
 
+#include <App/Application.h>
+#include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
-#include <App/Document.h>
-#include <App/Application.h>
-
 #include <Gui/DockWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/TreeItemMode.h>
 
 class QLineEdit;
 
 namespace Gui {
 
+class TreeParams;
 class ViewProviderDocumentObject;
 class DocumentObjectItem;
 class DocumentObjectData;
-typedef std::shared_ptr<DocumentObjectData> DocumentObjectDataPtr;
+using DocumentObjectDataPtr = std::shared_ptr<DocumentObjectData>;
 
 class DocumentItem;
-
-/// highlight modes for the tree items
-enum class HighlightMode {
-    Underlined,
-    Italic,
-    Overlined,
-    Bold,
-    Blue,
-    LightBlue,
-    UserDefined
-};
-
-/// highlight modes for the tree items
-enum class TreeItemMode {
-    ExpandItem,
-    ExpandPath,
-    CollapseItem,
-    ToggleItem
-};
-
 
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
@@ -76,9 +57,10 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
     Q_OBJECT
 
 public:
-    TreeWidget(const char *name, QWidget* parent=0);
-    ~TreeWidget();
+    explicit TreeWidget(const char *name, QWidget* parent=nullptr);
+    ~TreeWidget() override;
 
+    static void setupResizableColumn(TreeWidget *tree=0);
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *linked);
@@ -98,7 +80,7 @@ public:
      * This function can return the non-group parent of the selected object,
      * which Gui::Selection() cannot provide.
      */
-    static std::vector<SelInfo> getSelection(App::Document *doc=0);
+    static std::vector<SelInfo> getSelection(App::Document *doc=nullptr);
 
     static TreeWidget *instance();
 
@@ -108,7 +90,7 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
-    virtual void selectAll() override;
+    void selectAll() override;
 
     const char *getTreeName() const;
 
@@ -129,7 +111,9 @@ public:
     void startItemSearch(QLineEdit*);
     void itemSearch(const QString &text, bool select);
 
-    void synchronizeSelectionCheckBoxes();
+    static void synchronizeSelectionCheckBoxes();
+
+    QList<QTreeWidgetItem *> childrenOfItem(const QTreeWidgetItem &item) const;
 
 protected:
     /// Observer message from the Selection
@@ -142,7 +126,6 @@ protected:
     bool dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data,
                       Qt::DropAction action) override;
     Qt::DropActions supportedDropActions () const override;
-    QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const override;
     void dragEnterEvent(QDragEnterEvent * event) override;
     void dragLeaveEvent(QDragLeaveEvent * event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
@@ -164,6 +147,7 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onSelectDependents();
     void onSkipRecompute(bool on);
     void onAllowPartialRecompute(bool on);
     void onReloadDoc();
@@ -173,16 +157,16 @@ protected Q_SLOTS:
     void onPreSelectTimer();
     void onSelectTimer();
     void onShowHidden();
-    void onHideInTree();
+    void onToggleVisibilityInTree();
     void onSearchObjects();
 
 private Q_SLOTS:
-    void onItemSelectionChanged(void);
+    void onItemSelectionChanged();
     void onItemChanged(QTreeWidgetItem*, int);
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
-    void onUpdateStatus(void);
+    void onUpdateStatus();
 
 Q_SIGNALS:
     void emitSearchObjects();
@@ -208,16 +192,20 @@ private:
     void updateChildren(App::DocumentObject *obj,
             const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
+    bool CheckForDependents();
+    void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+
 private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* selectDependentsAction;
     QAction* skipRecomputeAction;
     QAction* allowPartialRecomputeAction;
     QAction* markRecomputeAction;
     QAction* recomputeObjectAction;
     QAction* showHiddenAction;
-    QAction* hideInTreeAction;
+    QAction* toggleVisibilityInTreeAction;
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;
@@ -252,8 +240,9 @@ private:
 
     friend class DocumentItem;
     friend class DocumentObjectItem;
+    friend class TreeParams;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectNewDocument;
     Connection connectDelDocument;
     Connection connectRenDocument;
@@ -272,10 +261,10 @@ class DocumentItem : public QTreeWidgetItem, public Base::Persistence
 {
 public:
     DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent);
-    ~DocumentItem();
+    ~DocumentItem() override;
 
     Gui::Document* document() const;
-    void clearSelection(DocumentObjectItem *exclude=0);
+    void clearSelection(DocumentObjectItem *exclude=nullptr);
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
     void updateItemSelection(DocumentObjectItem *);
@@ -287,7 +276,7 @@ public:
     };
     void selectItems(SelectionReason reason=SR_SELECT);
 
-    void testStatus(void);
+    void testStatus();
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
@@ -305,12 +294,12 @@ public:
 
     bool isObjectShowable(App::DocumentObject *obj);
 
-    virtual unsigned int getMemSize (void) const override;
-    virtual void Save (Base::Writer &) const override;
-    virtual void Restore(Base::XMLReader &) override;
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &) const override;
+    void Restore(Base::XMLReader &) override;
 
     class ExpandInfo;
-    typedef std::shared_ptr<ExpandInfo> ExpandInfoPtr;
+    using ExpandInfoPtr = std::shared_ptr<ExpandInfo>;
 
 protected:
     /** Adds a view provider to the document item.
@@ -333,7 +322,7 @@ protected:
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
     bool createNewItem(const Gui::ViewProviderDocumentObject&,
-                    QTreeWidgetItem *parent=0, int index=-1,
+                    QTreeWidgetItem *parent=nullptr, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
     int findRootIndex(App::DocumentObject *childObj);
@@ -345,7 +334,7 @@ protected:
 
     App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
 
-    typedef std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
+    using ViewParentMap = std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> >;
     void populateParents(const ViewProvider *vp, ViewParentMap &);
 
 private:
@@ -358,7 +347,7 @@ private:
     ExpandInfoPtr _ExpandInfo;
     void restoreItemExpansion(const ExpandInfoPtr &, DocumentObjectItem *);
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
@@ -385,14 +374,14 @@ class DocumentObjectItem : public QTreeWidgetItem
 {
 public:
     DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjectDataPtr data);
-    ~DocumentObjectItem();
+    ~DocumentObjectItem() override;
 
     Gui::ViewProviderDocumentObject* object() const;
     void testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2);
     void testStatus(bool resetStatus);
     void displayStatusInfo();
     void setExpandedStatus(bool);
-    void setData(int column, int role, const QVariant & value);
+    void setData(int column, int role, const QVariant & value) override;
     bool isChildOfItem(DocumentObjectItem*);
 
     void restoreBackground();
@@ -408,21 +397,24 @@ public:
 
     // return the owner, and full qualified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
-            DocumentObjectItem *parent = 0) const;
+            DocumentObjectItem *parent = nullptr) const;
 
     // return the immediate descendent of the common ancestor of this item and
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,
             DocumentObjectItem *cousin,
-            App::DocumentObject **topParent=0,
-            std::string *topSubname=0) const;
+            App::DocumentObject **topParent=nullptr,
+            std::string *topSubname=nullptr) const;
 
     // return the top most linked group owner's name, and subname.  This method
     // is necessary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
+    const std::vector<std::string>& getSubNames() const {
+        return mySubs;
+    }
 
     void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
 
@@ -445,7 +437,7 @@ private:
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
     std::vector<std::string> mySubs;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     int previousStatus;
     int selected;
     bool populated;
@@ -459,10 +451,10 @@ class TreePanel : public QWidget
     Q_OBJECT
 
 public:
-    TreePanel(const char *name, QWidget* parent=nullptr);
-    virtual ~TreePanel();
+    explicit TreePanel(const char *name, QWidget* parent=nullptr);
+    ~TreePanel() override;
 
-    bool eventFilter(QObject *obj, QEvent *ev);
+    bool eventFilter(QObject *obj, QEvent *ev) override;
 
 private Q_SLOTS:
     void accept();
@@ -484,8 +476,8 @@ class TreeDockWidget : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=0);
-    ~TreeDockWidget();
+    explicit TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
+    ~TreeDockWidget() override;
 };
 
 
@@ -495,77 +487,11 @@ public:
 class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
-    TreeWidgetEditDelegate(QObject* parent=0);
-    virtual QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &, const QModelIndex &index) const;
+    explicit TreeWidgetEditDelegate(QObject* parent=nullptr);
+    QWidget* createEditor(QWidget *parent,
+            const QStyleOptionViewItem &, const QModelIndex &index) const override;
 };
 
-
-/** Helper class to read/write tree view options
- *
- * The parameters are stored under group "User parameter:BaseApp/Preferences/TreeView".
- * Call TreeParams::Instance()->ParamName/setParamName() to get/set parameter.
- * To add a new parameter, add a new line under FC_TREEPARAM_DEFS using macro
- *
- * @code
- *      FC_TREEPARAM_DEF(parameter_name, c_type, parameter_type, default_value)
- * @endcode
- *
- * If there is special handling on parameter change, use FC_TREEPARAM_DEF2()
- * instead, and add a function with the following signature in Tree.cpp,
- *
- * @code
- *      void TreeParams:on<ParamName>Changed()
- * @endcode
- */
-class GuiExport TreeParams : public ParameterGrp::ObserverType {
-public:
-    TreeParams();
-    void OnChange(Base::Subject<const char*> &, const char* sReason);
-    static TreeParams *Instance();
-
-#define FC_TREEPARAM_DEFS \
-    FC_TREEPARAM_DEF2(SyncSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF2(CheckBoxesSelection,bool,Bool,false) \
-    FC_TREEPARAM_DEF(SyncView,bool,Bool,true) \
-    FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
-    FC_TREEPARAM_DEF(RecordSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF2(DocumentMode,int,Int,2) \
-    FC_TREEPARAM_DEF(StatusTimeout,int,Int,100) \
-    FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
-    FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
-    FC_TREEPARAM_DEF(PreSelectionDelay,int,Int,700) \
-    FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
-    FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
-    FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
-    FC_TREEPARAM_DEF(Indentation,int,Int,0) \
-
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    _type _name() const {return _##_name;} \
-    void set##_name(_type);\
-
-#undef FC_TREEPARAM_DEF2
-#define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
-    FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    void on##_name##Changed();\
-
-    FC_TREEPARAM_DEFS
-
-private:
-
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    _type _##_name;
-
-#undef FC_TREEPARAM_DEF2
-#define FC_TREEPARAM_DEF2 FC_TREEPARAM_DEF
-
-    FC_TREEPARAM_DEFS
-
-    ParameterGrp::handle handle;
-};
 
 }
 

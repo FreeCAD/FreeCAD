@@ -22,26 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
-//#include <QGraphicsScene>
-//#include <QGraphicsSceneHoverEvent>
-//#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QPainter>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include "Rez.h"
+#include "QGIDecoration.h"
+#include "QGICMark.h"
 #include "PreferencesGui.h"
 #include "ZVALUE.h"
-#include "DrawGuiUtil.h"
-#include "QGICMark.h"
-#include "QGIDecoration.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -49,13 +40,14 @@ using namespace TechDraw;
 QGIDecoration::QGIDecoration() :
     m_colCurrent(Qt::black),
     m_styleCurrent(Qt::SolidLine),
-    m_brushCurrent(Qt::SolidPattern)
+    m_brushCurrent(Qt::SolidPattern),
+    m_dragState(DECORNODRAG)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setWidth(1.0);
 }
@@ -116,7 +108,7 @@ void QGIDecoration::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
     cmItem->setParentItem(this);
-    cmItem->setPos(x,y);
+    cmItem->setPos(x, y);
     cmItem->setThick(2.0);
     cmItem->setSize(40.0);
     cmItem->setZValue(ZVALUE::VERTEX);
@@ -124,7 +116,37 @@ void QGIDecoration::makeMark(double x, double y)
 
 void QGIDecoration::makeMark(Base::Vector3d v)
 {
-    makeMark(v.x,v.y);
+    makeMark(v.x, v.y);
 }
 
+void QGIDecoration::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGID::mousePressEvent() - %s\n", getViewName());
+    m_dragState = DECORDRAGSTARTED;
 
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void QGIDecoration::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (m_dragState == DECORDRAGSTARTED) {
+        m_dragState = DECORDRAGGING;
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void QGIDecoration::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGID::mouseReleaseEvent() - %s\n", getViewName());
+    if (m_dragState == DECORDRAGGING) {
+        onDragFinished();
+    }
+    m_dragState = DECORNODRAG;
+
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void QGIDecoration::onDragFinished()
+{
+    //override this
+}

@@ -20,24 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QPixmap>
+# include <QStyle>
 #endif
 
-#include <App/DocumentObjectGroup.h>
-#include <App/Document.h>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderMaterialObject.h"
 #include "Application.h"
-#include "Command.h"
-#include "BitmapFactory.h"
 #include "Document.h"
-#include "Tree.h"
 
 
 using namespace Gui;
@@ -58,7 +50,7 @@ ViewProviderMaterialObject::~ViewProviderMaterialObject()
 {
 }
 
-bool ViewProviderMaterialObject::doubleClicked(void)
+bool ViewProviderMaterialObject::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;

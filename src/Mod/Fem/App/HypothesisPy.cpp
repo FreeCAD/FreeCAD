@@ -21,55 +21,57 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+// HypothesisPy.h must be included as first file to avoid compiler warning,
+// see: https://forum.freecadweb.org/viewtopic.php?p=633192#p633192
 #include "HypothesisPy.h"
 
 #ifndef _PreComp_
 # include <sstream>
-
+# include <SMESH_Version.h> // needed for SMESH_VERSION_MAJOR
 # include <StdMeshers_Arithmetic1D.hxx>
 # include <StdMeshers_AutomaticLength.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_UseExisting_1D2D.hxx>
 # include <StdMeshers_CompositeSegment_1D.hxx>
 # include <StdMeshers_Deflection1D.hxx>
 # include <StdMeshers_Hexa_3D.hxx>
 # include <StdMeshers_LayerDistribution.hxx>
 # include <StdMeshers_LengthFromEdges.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
 # include <StdMeshers_MaxElementVolume.hxx>
+# include <StdMeshers_MaxLength.hxx>
 # include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_NotConformAllowed.hxx>
 # include <StdMeshers_NumberOfLayers.hxx>
 # include <StdMeshers_NumberOfSegments.hxx>
 # include <StdMeshers_Prism_3D.hxx>
 # include <StdMeshers_Projection_1D.hxx>
 # include <StdMeshers_Projection_2D.hxx>
 # include <StdMeshers_Projection_3D.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
 # include <StdMeshers_QuadraticMesh.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
 # include <StdMeshers_RadialPrism_3D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
 # include <StdMeshers_SegmentAroundVertex_0D.hxx>
 # include <StdMeshers_ProjectionSource1D.hxx>
 # include <StdMeshers_ProjectionSource2D.hxx>
 # include <StdMeshers_ProjectionSource3D.hxx>
 # include <StdMeshers_SegmentLengthAroundVertex.hxx>
 # include <StdMeshers_StartEndLength.hxx>
-# include <StdMeshers_CompositeHexa_3D.hxx>
+# include <StdMeshers_UseExisting_1D2D.hxx>
 # if SMESH_VERSION_MAJOR < 7
 #  include <StdMeshers_TrianglePreference.hxx>
 # endif
 #endif
 
-#include "FemMeshPy.h"
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
+#include "FemMeshPy.h"
+
 
 using namespace Fem;
-
 
 HypothesisPy::HypothesisPy(std::shared_ptr<SMESH_Hypothesis> h)
   : hyp(h)
@@ -135,7 +137,7 @@ Py::Object SMESH_HypothesisPy<T>::repr()
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setLibName(const Py::Tuple& args)
 {
-    std::string libName = (std::string)Py::String(args[0]);
+    std::string libName = static_cast<std::string>(Py::String(args[0]));
     hypothesis<SMESH_Hypothesis>()->SetLibName(libName.c_str());
     return Py::None();
 }
@@ -153,7 +155,7 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
-    std::string paramName = (std::string)Py::String(args[0]);
+    std::string paramName = static_cast<std::string>(Py::String(args[0]));
     hypothesis<SMESH_Hypothesis>()->SetParameters(paramName.c_str());
     return Py::None();
 }
@@ -171,7 +173,7 @@ Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    std::string paramName = (std::string)Py::String(args[0]);
+    std::string paramName = static_cast<std::string>(Py::String(args[0]));
     hypothesis<SMESH_Hypothesis>()->SetLastParameters(paramName.c_str());
     return Py::None();
 }
@@ -221,7 +223,7 @@ PyObject *SMESH_HypothesisPy<T>::PyMake(struct _typeobject * /*type*/, PyObject 
     int hypId;
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "iO!",&hypId,&(FemMeshPy::Type),&obj))
-        return 0;
+        return nullptr;
     FemMesh* mesh = static_cast<FemMeshPy*>(obj)->getFemMeshPtr();
 #if SMESH_VERSION_MAJOR >= 9
     return new T(hypId, mesh->getGenerator());
@@ -294,7 +296,7 @@ StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, SMESH_
 }
 #else
 StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, int /*studyId*/, SMESH_Gen* /*gen*/)
-  : SMESH_HypothesisPyBase(0)
+  : SMESH_HypothesisPyBase(nullptr)
 {
 }
 #endif
@@ -318,8 +320,8 @@ Py::Object StdMeshers_AutomaticLengthPy::getFineness(const Py::Tuple& args)
 }
 
 namespace Py {
-    typedef ExtensionObject<Fem::FemMeshPy>         FemMesh;
-    typedef ExtensionObject<Part::TopoShapePy>      TopoShape;
+    using FemMesh = ExtensionObject<Fem::FemMeshPy>;
+    using TopoShape = ExtensionObject<Part::TopoShapePy>;
     template<> bool FemMesh::accepts (PyObject *pyob) const
     {
         return (pyob && PyObject_TypeCheck(pyob, &(Fem::FemMeshPy::Type)));

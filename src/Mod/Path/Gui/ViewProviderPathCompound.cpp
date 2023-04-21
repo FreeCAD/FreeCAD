@@ -20,16 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
-
-#include <Mod/Path/App/FeaturePathCompound.h>
+#include <Gui/Control.h>
 
 #include "TaskDlgPathCompound.h"
 
@@ -55,7 +49,7 @@ void ViewProviderPathCompound::unsetEdit(int ModNum)
     Gui::Control().closeDialog();
 }
 
-std::vector<App::DocumentObject*> ViewProviderPathCompound::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderPathCompound::claimChildren()const
 {
     return std::vector<App::DocumentObject*>(static_cast<Path::FeatureCompound *>(getObject())->Group.getValues());
 }

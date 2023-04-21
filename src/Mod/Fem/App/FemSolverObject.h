@@ -26,34 +26,35 @@
 #define Fem_FemSolverObject_H
 
 #include <App/FeaturePython.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class AppFemExport FemSolverObject : public App::DocumentObject
+class FemExport FemSolverObject : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::FemSolverObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSolverObject);
 
 public:
     /// Constructor
-    FemSolverObject(void);
-    virtual ~FemSolverObject();
+    FemSolverObject();
+    ~FemSolverObject() override;
 
     // Attributes are implemented in the FemSolverObjectPython
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderSolver";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
 };
 
-typedef App::FeaturePythonT<FemSolverObject> FemSolverObjectPython;
+using FemSolverObjectPython = App::FeaturePythonT<FemSolverObject>;
 
 } //namespace Fem
 

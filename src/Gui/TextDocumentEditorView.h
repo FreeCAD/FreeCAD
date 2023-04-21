@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
 #define GUI_TEXTDOCUMENTEDITORVIEW_H
 
 #include <string>
-#include <boost_signals2.hpp>
 #include <QPlainTextEdit>
 
 #include <App/TextDocument.h>
 #include <Gui/MDIView.h>
-#include <Gui/Window.h>
 
 
 namespace Gui {
@@ -43,7 +40,7 @@ public:
     TextDocumentEditorView(
             App::TextDocument* textDocument,
             QPlainTextEdit* editor, QWidget* parent);
-    ~TextDocumentEditorView();
+    ~TextDocumentEditorView() override;
     const char *getName() const override { return "TextDocumentEditorView"; }
     bool onMsg(const char* msg, const char**) override;
     bool onHasMsg(const char* msg) const override;
@@ -53,8 +50,8 @@ public:
 
     QPlainTextEdit* getEditor() const { return editor; }
     App::TextDocument* getTextObject() const { return textDocument; }
-    QStringList undoActions() const;
-    QStringList redoActions() const;
+    QStringList undoActions() const override;
+    QStringList redoActions() const override;
 
 protected:
     void showEvent(QShowEvent*) override;

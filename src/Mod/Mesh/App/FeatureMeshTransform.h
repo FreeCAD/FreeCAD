@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_TRANSFORM_H
 #define FEATURE_MESH_TRANSFORM_H
 
-#include "MeshFeature.h"
-
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+
+#include "MeshFeature.h"
 
 
 namespace Mesh
@@ -40,7 +38,7 @@ namespace Mesh
  */
 class Transform : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Transform);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Transform);
 
 public:
   Transform();
@@ -52,14 +50,14 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute() override;
   /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const { 
-    return "MeshGui::ViewProviderMeshTransform"; 
+  const char* getViewProviderName() const override {
+    return "MeshGui::ViewProviderMeshTransform";
   }
   //@}
 };
 
 }
 
-#endif // FEATURE_MESH_TRANSFORM_H 
+#endif // FEATURE_MESH_TRANSFORM_H

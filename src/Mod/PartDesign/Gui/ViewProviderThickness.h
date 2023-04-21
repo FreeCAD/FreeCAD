@@ -31,19 +31,21 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderThickness : public ViewProviderDressUp
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderThickness);
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderThickness)
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderThickness);
 
 public:
     /// constructor
     ViewProviderThickness()
-        { sPixmap = "PartDesign_Thickness.svg"; }
+        { sPixmap = "PartDesign_Thickness.svg";
+          menuName = tr("Thickness parameters"); }
 
     /// return "Thickness"
-    virtual const std::string & featureName() const;
+    const std::string & featureName() const override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 };
 
 } // namespace PartDesignGui

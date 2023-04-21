@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_APPROXIMATION_H
 #define MESH_APPROXIMATION_H
 
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Eigen.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ImplicitSurface.h>
+#ifndef MESH_GLOBAL_H
+# include <Mod/Mesh/MeshGlobal.h>
+#endif
 #include <algorithm>
 #include <list>
 #include <set>
 #include <vector>
 
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 #include <Base/BoundBox.h>
+#include <Base/Matrix.h>
+#include <Base/Vector3D.h>
+
 
 namespace Wm4
 {
@@ -50,19 +50,19 @@ template <class Real>
 class PolynomialSurface : public ImplicitSurface<Real>
 {
 public:
-  PolynomialSurface (const Real afCoeff[6])
+  explicit PolynomialSurface (const Real afCoeff[6])
   { for (int i=0; i<6; i++) m_afCoeff[i] = afCoeff[i]; }
 
   virtual ~PolynomialSurface () {}
 
   // the function
   virtual Real F (const Vector3<Real>& rkP) const
-  { 
-    return ( m_afCoeff[0]*rkP.X()*rkP.X() + 
-             m_afCoeff[1]*rkP.Y()*rkP.Y() + 
-             m_afCoeff[2]*rkP.X()         + 
-             m_afCoeff[3]*rkP.Y()         + 
-             m_afCoeff[4]*rkP.X()*rkP.Y() + 
+  {
+    return ( m_afCoeff[0]*rkP.X()*rkP.X() +
+             m_afCoeff[1]*rkP.Y()*rkP.Y() +
+             m_afCoeff[2]*rkP.X()         +
+             m_afCoeff[3]*rkP.Y()         +
+             m_afCoeff[4]*rkP.X()*rkP.Y() +
              m_afCoeff[5]-rkP.Z())        ;
   }
 
@@ -144,7 +144,7 @@ public:
      * Determines the number of the current added points.
      * @return Number of points
      */
-    unsigned long CountPoints() const;
+    std::size_t CountPoints() const;
     /**
      * Deletes the inserted points and frees any allocated resources.
      */
@@ -155,7 +155,7 @@ public:
      */
     float GetLastResult() const;
     /**
-     * Pure virtual function to fit the geometry to the given points. This function 
+     * Pure virtual function to fit the geometry to the given points. This function
      * must be implemented by every subclass.
      */
     virtual float Fit() = 0;
@@ -191,7 +191,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~PlaneFit();
+    ~PlaneFit() override;
     Base::Vector3f GetBase() const;
     Base::Vector3f GetDirU() const;
     Base::Vector3f GetDirV() const;
@@ -204,11 +204,11 @@ public:
      * Fit a plane into the given points. We must have at least three non-collinear points
      * to succeed. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
-    /** 
+    float Fit() override;
+    /**
      * Returns the distance from the point \a rcPoint to the fitted plane. If Fit() has not been
      * called FLOAT_MAX is returned.
-     */ 
+     */
     float GetDistanceToPlane(const Base::Vector3f &rcPoint) const;
     /**
      * Returns the standard deviation from the points to the fitted plane. If Fit() has not been
@@ -252,9 +252,9 @@ protected:
 
 /**
  * Approximation of a quadratic surface into a given set of points. The implicit form of the surface
- * is defined by F(x,y,z) = a * x^2 + b * y^2 + c * z^2 + 
+ * is defined by F(x,y,z) = a * x^2 + b * y^2 + c * z^2 +
  *                       2d * x * y + 2e * x * z + 2f * y * z +
- *                          g * x + h * y + * i * z + k 
+ *                          g * x + h * y + * i * z + k
  *                        = 0
  * Depending on the parameters (a,..,k) this surface defines a sphere, ellipsoid, cylinder, cone
  * and so on.
@@ -271,13 +271,13 @@ public:
     /**
      * Destruction
      */
-    virtual ~QuadraticFit(){}
+    ~QuadraticFit() override{}
     /**
      * Get the quadric coefficients
      * @param ulIndex Number of coefficient (0..9)
      * @return double value of coefficient
      */
-    double GetCoeff(unsigned long ulIndex) const;
+    double GetCoeff(std::size_t ulIndex) const;
     /**
      * Get the quadric coefficients as reference to the
      * internal array
@@ -288,7 +288,7 @@ public:
      * Invocation of fitting algorithm
      * @return float Quality of fit.
      */
-    float Fit();
+    float Fit() override;
 
     void CalcZValues(double x, double y, double &dZ1, double &dZ2) const;
     /**
@@ -346,12 +346,12 @@ public:
     /**
      * Destruction
      */
-    virtual ~SurfaceFit(){}
+    ~SurfaceFit() override{}
 
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
                           Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfcurv1);
-    float Fit();
+    float Fit() override;
     double Value(double x, double y) const;
     void GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const;
     /**
@@ -390,7 +390,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~CylinderFit();
+    ~CylinderFit() override;
     float GetRadius() const;
     Base::Vector3f GetBase() const;
     void SetInitialValues(const Base::Vector3f&, const Base::Vector3f&);
@@ -406,7 +406,7 @@ public:
     /**
      * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
      * called FLOAT_MAX is returned.
@@ -449,13 +449,13 @@ public:
     /**
      * Destruction
      */
-    virtual ~SphereFit();
+    ~SphereFit() override;
     float GetRadius() const;
     Base::Vector3f GetCenter() const;
     /**
      * Fit a sphere into the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
      * called FLOAT_MAX is returned.
@@ -489,13 +489,13 @@ public:
     /**
      * WildMagic library uses function with this interface
      */
-    typedef double (*Function)(double,double,double);
+    using Function = double (*)(double,double,double);
     /**
      * The constructor expects an array of quadric coefficients.
      * @param pKoef Pointer to the quadric coefficients
      *        (double [10])
      */
-    FunctionContainer(const double *pKoef)
+    explicit FunctionContainer(const double *pKoef)
     {
         Assign( pKoef );
         pImplSurf = new Wm4::QuadricSurface<double>( dKoeff );
@@ -511,11 +511,11 @@ public:
             dKoeff[ ct ] = pKoef[ ct ];
     }
     /**
-     * Destruktor. Deletes the ImpicitSurface instance
+     * Destructor. Deletes the ImpicitSurface instance
      * of the WildMagic library
      */
     ~FunctionContainer(){ delete pImplSurf; }
-    /** 
+    /**
      * Access to the quadric coefficients
      * @param idx Index to coefficient
      * @return double& coefficient
@@ -534,7 +534,7 @@ public:
      * @param dDistance Gives distances from the point to the quadric.
      * @return bool Success = true, otherwise false
      */
-    bool CurvatureInfo(double x, double y, double z, 
+    bool CurvatureInfo(double x, double y, double z,
                        double &rfCurv0, double &rfCurv1,
                        Wm4::Vector3<double> &rkDir0,  Wm4::Vector3<double> &rkDir1, double &dDistance)
     {
@@ -566,7 +566,7 @@ public:
         double dQuot = Fz(x,y,z);
         double zx = - ( Fx(x,y,z) / dQuot );
         double zy = - ( Fy(x,y,z) / dQuot );
-        
+
         double zxx = - ( 2.0 * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
         double zyy = - ( 2.0 * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
         double zxy = - ( dKoeff[6] * zx * zy + dKoeff[7] + dKoeff[8] * zy + dKoeff[9] * zx ) / dQuot;
@@ -584,59 +584,59 @@ public:
     }
 
     //+++++++++ Quadric +++++++++++++++++++++++++++++++++++++++
-    double F  ( double x, double y, double z ) 
+    double F  ( double x, double y, double z )
     {
         return (dKoeff[0] + dKoeff[1]*x + dKoeff[2]*y + dKoeff[3]*z +
                 dKoeff[4]*x*x + dKoeff[5]*y*y + dKoeff[6]*z*z +
                 dKoeff[7]*x*y + dKoeff[8]*x*z + dKoeff[9]*y*z);
     }
-  
+
     //+++++++++ 1. derivations ++++++++++++++++++++++++++++++++
     double Fx ( double x, double y, double z )
     {
         return( dKoeff[1] + 2.0*dKoeff[4]*x + dKoeff[7]*y + dKoeff[8]*z );
     }
-    double Fy ( double x, double y, double z ) 
+    double Fy ( double x, double y, double z )
     {
         return( dKoeff[2] + 2.0*dKoeff[5]*y + dKoeff[7]*x + dKoeff[9]*z );
     }
-    double Fz ( double x, double y, double z ) 
+    double Fz ( double x, double y, double z )
     {
         return( dKoeff[3] + 2.0*dKoeff[6]*z + dKoeff[8]*x + dKoeff[9]*y );
     }
 
     //+++++++++ 2. derivations ++++++++++++++++++++++++++++++++
-    double Fxx( double x, double y, double z ) 
+    double Fxx( double x, double y, double z )
     {
         (void)x; (void)y; (void)z;
         return( 2.0*dKoeff[4] );
     }
-    double Fxy( double x, double y, double z ) 
+    double Fxy( double x, double y, double z )
     {
         (void)x; (void)y; (void)z;
         return( dKoeff[7] );
     }
-    double Fxz( double x, double y, double z ) 
+    double Fxz( double x, double y, double z )
     {
         (void)x; (void)y; (void)z;
         return( dKoeff[8] );
     }
-    double Fyy( double x, double y, double z ) 
+    double Fyy( double x, double y, double z )
     {
         (void)x; (void)y; (void)z;
         return( 2.0*dKoeff[5] );
     }
-    double Fyz( double x, double y, double z ) 
+    double Fyz( double x, double y, double z )
     {
         (void)x; (void)y; (void)z;
         return( dKoeff[9] );
     }
-    double Fzz( double x, double y, double z ) 
+    double Fzz( double x, double y, double z )
     {
         (void)x; (void)y; (void)z;
         return( 2.0*dKoeff[6] );
     }
-   
+
 protected:
     double dKoeff[ 10 ];     /**< Coefficients of quadric */
     Wm4::ImplicitSurface<double> *pImplSurf;  /**< Access to the WildMagic library */
@@ -659,8 +659,8 @@ public:
     /**
      * Destruction
      */
-    virtual ~PolynomialFit();
-    float Fit();
+    ~PolynomialFit() override;
+    float Fit() override;
     float Value(float x, float y) const;
 
 protected:

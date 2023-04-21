@@ -20,43 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Standard_math.hxx>
+# include <algorithm>
 # include <QDoubleValidator>
 # include <QLocale>
 # include <QMessageBox>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <algorithm>
 #endif
 
-#include "ui_TaskSketcherValidation.h"
-#include "TaskSketcherValidation.h"
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/Geometry.h>
 #include <App/Document.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "ui_TaskSketcherValidation.h"
+#include "TaskSketcherValidation.h"
+
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -64,11 +53,14 @@ using namespace Gui::TaskView;
 /* TRANSLATOR SketcherGui::SketcherValidation */
 
 SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent)
-: QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), sketchAnalyser(Obj), coincidenceRoot(0)
+: QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), sketchAnalyser(Obj), coincidenceRoot(nullptr)
 {
     ui->setupUi(this);
+    setupConnections();
+
     ui->fixButton->setEnabled(false);
     ui->fixConstraint->setEnabled(false);
+    ui->fixDegenerated->setEnabled(false);
     ui->swapReversed->setEnabled(false);
     ui->checkBoxIgnoreConstruction->setEnabled(true);
     double tolerances[8] = {
@@ -97,6 +89,34 @@ SketcherValidation::~SketcherValidation()
     hidePoints();
 }
 
+void SketcherValidation::setupConnections()
+{
+    connect(ui->findButton, &QPushButton::clicked,
+            this, &SketcherValidation::onFindButtonClicked);
+    connect(ui->fixButton, &QPushButton::clicked,
+            this, &SketcherValidation::onFixButtonClicked);
+    connect(ui->highlightButton, &QPushButton::clicked,
+            this, &SketcherValidation::onHighlightButtonClicked);
+    connect(ui->findConstraint, &QPushButton::clicked,
+            this, &SketcherValidation::onFindConstraintClicked);
+    connect(ui->fixConstraint, &QPushButton::clicked,
+            this, &SketcherValidation::onFixConstraintClicked);
+    connect(ui->findReversed, &QPushButton::clicked,
+            this, &SketcherValidation::onFindReversedClicked);
+    connect(ui->swapReversed, &QPushButton::clicked,
+            this, &SketcherValidation::onSwapReversedClicked);
+    connect(ui->orientLockEnable, &QPushButton::clicked,
+            this, &SketcherValidation::onOrientLockEnableClicked);
+    connect(ui->orientLockDisable, &QPushButton::clicked,
+            this, &SketcherValidation::onOrientLockDisableClicked);
+    connect(ui->delConstrExtr, &QPushButton::clicked,
+            this, &SketcherValidation::onDelConstrExtrClicked);
+    connect(ui->findDegenerated, &QPushButton::clicked,
+            this, &SketcherValidation::onFindDegeneratedClicked);
+    connect(ui->fixDegenerated, &QPushButton::clicked,
+            this, &SketcherValidation::onFixDegeneratedClicked);
+}
+
 void SketcherValidation::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -105,8 +125,11 @@ void SketcherValidation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void SketcherValidation::on_findButton_clicked()
+void SketcherValidation::onFindButtonClicked()
 {
+    if (sketch.expired())
+        return;
+
     double prec = Precision::Confusion();
     bool ok;
     double conv;
@@ -148,8 +171,11 @@ void SketcherValidation::on_findButton_clicked()
     }
 }
 
-void SketcherValidation::on_fixButton_clicked()
+void SketcherValidation::onFixButtonClicked()
 {
+    if (sketch.expired())
+        return;
+
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("add coincident constraint");
@@ -165,8 +191,11 @@ void SketcherValidation::on_fixButton_clicked()
     doc->recompute();
 }
 
-void SketcherValidation::on_highlightButton_clicked()
+void SketcherValidation::onHighlightButtonClicked()
 {
+    if (sketch.expired())
+        return;
+
     std::vector<Base::Vector3d> points;
 
     points = sketchAnalyser.getOpenVertices();
@@ -176,8 +205,11 @@ void SketcherValidation::on_highlightButton_clicked()
         showPoints(points);
 }
 
-void SketcherValidation::on_findConstraint_clicked()
+void SketcherValidation::onFindConstraintClicked()
 {
+    if (sketch.expired())
+        return;
+
     if (sketch->evaluateConstraints()) {
         QMessageBox::information(this, tr("No invalid constraints"),
             tr("No invalid constraints found"));
@@ -190,14 +222,20 @@ void SketcherValidation::on_findConstraint_clicked()
     }
 }
 
-void SketcherValidation::on_fixConstraint_clicked()
+void SketcherValidation::onFixConstraintClicked()
 {
+    if (sketch.expired())
+        return;
+
     sketch->validateConstraints();
     ui->fixConstraint->setEnabled(false);
 }
 
-void SketcherValidation::on_findReversed_clicked()
+void SketcherValidation::onFindReversedClicked()
 {
+    if (sketch.expired())
+        return;
+
     std::vector<Base::Vector3d> points;
     const std::vector<Part::Geometry *>& geom = sketch->getExternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
@@ -212,7 +250,7 @@ void SketcherValidation::on_findReversed_clicked()
         }
     }
     hidePoints();
-    if(points.size()>0){
+    if(!points.empty()){
         int nc = sketch->port_reversedExternalArcs(/*justAnalyze=*/true);
         showPoints(points);
         if(nc>0){
@@ -239,8 +277,11 @@ void SketcherValidation::on_findReversed_clicked()
     }
 }
 
-void SketcherValidation::on_swapReversed_clicked()
+void SketcherValidation::onSwapReversedClicked()
 {
+    if (sketch.expired())
+        return;
+
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Sketch porting");
 
@@ -253,8 +294,11 @@ void SketcherValidation::on_swapReversed_clicked()
     doc->commitTransaction();
 }
 
-void SketcherValidation::on_orientLockEnable_clicked()
+void SketcherValidation::onOrientLockEnableClicked()
 {
+    if (sketch.expired())
+        return;
+
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Constraint orientation lock");
 
@@ -267,8 +311,11 @@ void SketcherValidation::on_orientLockEnable_clicked()
     doc->commitTransaction();
 }
 
-void SketcherValidation::on_orientLockDisable_clicked()
+void SketcherValidation::onOrientLockDisableClicked()
 {
+    if (sketch.expired())
+        return;
+
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Constraint orientation unlock");
 
@@ -282,14 +329,18 @@ void SketcherValidation::on_orientLockDisable_clicked()
     doc->commitTransaction();
 }
 
-void SketcherValidation::on_delConstrExtr_clicked()
+void SketcherValidation::onDelConstrExtrClicked()
 {
+    if (sketch.expired())
+        return;
+
     int reply;
     reply =  QMessageBox::question(this,
                         tr("Delete constraints to external geom."),
                         tr("You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?"),
                         QMessageBox::No|QMessageBox::Yes,QMessageBox::No);
-    if(reply!=QMessageBox::Yes) return;
+    if(reply!=QMessageBox::Yes)
+        return;
 
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Delete constraints");
@@ -337,21 +388,28 @@ void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
     }
     coords->point.finishEditing();
 
-    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch);
-    vp->getRoot()->addChild(coincidenceRoot);
+    if (!sketch.expired()) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch.get());
+        vp->getRoot()->addChild(coincidenceRoot);
+    }
 }
 
 void SketcherValidation::hidePoints()
 {
     if (coincidenceRoot) {
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch);
-        vp->getRoot()->removeChild(coincidenceRoot);
-        coincidenceRoot = 0;
+        if (!sketch.expired()) {
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch.get());
+            vp->getRoot()->removeChild(coincidenceRoot);
+        }
+        coincidenceRoot = nullptr;
     }
 }
 
-void SketcherValidation::on_findDegenerated_clicked()
+void SketcherValidation::onFindDegeneratedClicked()
 {
+    if (sketch.expired())
+        return;
+
     double prec = Precision::Confusion();
     int count = sketchAnalyser.detectDegeneratedGeometries(prec);
 
@@ -367,8 +425,11 @@ void SketcherValidation::on_findDegenerated_clicked()
     }
 }
 
-void SketcherValidation::on_fixDegenerated_clicked()
+void SketcherValidation::onFixDegeneratedClicked()
 {
+    if (sketch.expired())
+        return;
+
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Remove degenerated geometry");
@@ -391,7 +452,7 @@ TaskSketcherValidation::TaskSketcherValidation(Sketcher::SketchObject* Obj)
 {
     QWidget* widget = new SketcherValidation(Obj);
     Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

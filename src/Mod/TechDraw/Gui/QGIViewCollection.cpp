@@ -21,24 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QContextMenuEvent>
-# include <QGraphicsScene>
-# include <QGraphicsSceneMouseEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QPainter>
-#endif
 
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-
-#include <Mod/TechDraw/App/DrawViewCollection.h>
 #include "QGIViewCollection.h"
+
 
 using namespace TechDrawGui;
 
@@ -51,22 +36,4 @@ QGIViewCollection::QGIViewCollection()
     //setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-}
-
-
-QVariant QGIViewCollection::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
-void QGIViewCollection::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-    //TODO: should MouseMove logic go here instead of QGIView?
-    QGIView::mouseReleaseEvent(event);
-}
-
-void QGIViewCollection::updateView(bool update)
-{
-    return QGIView::updateView(update);
 }

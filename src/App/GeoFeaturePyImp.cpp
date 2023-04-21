@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/GeoFeature.h"
-
 // inclusion of the generated files (generated out of GeoFeaturePy.xml)
 #include "GeoFeaturePy.h"
 #include "GeoFeaturePy.cpp"
@@ -34,7 +32,7 @@
 using namespace App;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeoFeaturePy::representation(void) const
+std::string GeoFeaturePy::representation() const
 {
     return std::string("<GeoFeature object>");
 }
@@ -42,14 +40,14 @@ std::string GeoFeaturePy::representation(void) const
 PyObject* GeoFeaturePy::getPaths(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
-    
+
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
-    
+        return nullptr;
+
     try {
         Base::Placement p = static_cast<GeoFeature*>(getDocumentObjectPtr())->globalPlacement();
         return new Base::PlacementPy(new Base::Placement(p));
@@ -66,8 +64,8 @@ PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
-    const char* name = prop ? prop->getName() : 0;
-    if (name) {
+    const char* name = prop ? prop->getName() : nullptr;
+    if (Property::isValidName(name)) {
         return Py::new_reference_to(Py::String(std::string(name)));
     }
     return Py::new_reference_to(Py::None());
@@ -88,10 +86,10 @@ PyObject* GeoFeaturePy::getPropertyOfGeometry(PyObject * args)
 
 PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeoFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -81,7 +81,7 @@
     <message>
       <location filename="TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Manual</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="58"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation type="unfinished">Getting help from the community</translation>
+      <translation>Dapatkan bantuan dari komunitas</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="TranslationTexts.py" line="73"/>
       <source>version</source>
-      <translation type="unfinished">version</translation>
+      <translation>versi</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="74"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation type="unfinished">Create new...</translation>
+      <translation>Buat baru...</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="76"/>
@@ -196,17 +196,17 @@
     <message>
       <location filename="TranslationTexts.py" line="80"/>
       <source>Creation date</source>
-      <translation type="unfinished">Creation date</translation>
+      <translation>Tanggal diciptakan</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="81"/>
       <source>Last modification</source>
-      <translation type="unfinished">Last modification</translation>
+      <translation>Terakhir dimodifikasi</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Catatan</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="83"/>
@@ -265,7 +265,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation type="unfinished">Show forum</translation>
+      <translation>Tampilkan forum</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
@@ -317,7 +317,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
       <source>Fonts and colors</source>
-      <translation type="unfinished">Fonts and colors</translation>
+      <translation>Font dan warna</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="197"/>
@@ -377,7 +377,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="371"/>
       <source>Background image</source>
-      <translation type="unfinished">Background image</translation>
+      <translation>Gambar background</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="378"/>

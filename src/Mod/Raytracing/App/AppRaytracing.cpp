@@ -20,21 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
+#include "LuxFeature.h"
+#include "LuxProject.h"
 #include "RayFeature.h"
 #include "RayProject.h"
 #include "RaySegment.h"
-#include "LuxFeature.h"
-#include "LuxProject.h"
+
 
 namespace Raytracing {
     extern PyObject* initModule();
@@ -49,7 +46,7 @@ PyMOD_INIT_FUNC(Raytracing)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     Raytracing::RaySegment       ::init();

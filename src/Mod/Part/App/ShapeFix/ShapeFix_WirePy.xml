@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_WirePy"
+      PythonName="Part.ShapeFix.Wire"
+      Twin="ShapeFix_Wire"
+      TwinPointer="ShapeFix_Wire"
+      Include="ShapeFix_Wire.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Class for fixing operations on wires</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by wire, face, precision</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixEdgeTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing wires</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearModes">
+      <Documentation>
+        <UserDocu>Sets all modes to default</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearStatuses">
+      <Documentation>
+        <UserDocu>Clears all statuses</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="load">
+      <Documentation>
+        <UserDocu>Load data for the wire, and drops all fixing statuses</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setFace">
+      <Documentation>
+        <UserDocu>Set working face for the wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setSurface">
+      <Documentation>
+        <UserDocu>setSurface(surface, [Placement])
+Set surface for the wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setMaxTailAngle">
+      <Documentation>
+        <UserDocu>Sets the maximal allowed angle of the tails in radians</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setMaxTailWidth">
+      <Documentation>
+        <UserDocu>Sets the maximal allowed width of the tails</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isLoaded">
+      <Documentation>
+        <UserDocu>Tells if the wire is loaded</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isReady">
+      <Documentation>
+        <UserDocu>Tells if the wire and face are loaded</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="numberOfEdges">
+      <Documentation>
+        <UserDocu>Returns number of edges in the working wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="wire">
+      <Documentation>
+        <UserDocu>Makes the resulting Wire (by basic Brep_Builder)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="wireAPIMake">
+      <Documentation>
+          <UserDocu>Makes the resulting Wire (by BRepAPI_MakeWire)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="face">
+      <Documentation>
+        <UserDocu>Returns working face</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixReorder">
+      <Documentation>
+        <UserDocu>Performs an analysis and reorders edges in the wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSmall">
+      <Documentation>
+        <UserDocu>Applies fixSmall(...) to all edges in the wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixConnected">
+      <Documentation>
+        <UserDocu>Applies fixConnected(num) to all edges in the wire
+Connection between first and last edges is treated only if
+flag ClosedMode is True
+If prec is -1 then maxTolerance() is taken.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixEdgeCurves">
+      <Documentation>
+        <UserDocu>Groups the fixes dealing with 3d and pcurves of the edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixDegenerated">
+      <Documentation>
+        <UserDocu>Applies fixDegenerated(...) to all edges in the wire</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSelfIntersection">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixLacking">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixClosed">
+      <Documentation>
+        <UserDocu>Fixes a wire to be well closed</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixGaps3d">
+      <Documentation>
+        <UserDocu>Fixes gaps between ends of 3d curves on adjacent edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixGaps2d">
+      <Documentation>
+        <UserDocu>Fixes gaps between ends of pcurves on adjacent edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSeam">
+      <Documentation>
+        <UserDocu>Fixes seam edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixShifted">
+      <Documentation>
+        <UserDocu>Fixes edges which have pcurves shifted by whole parameter
+range on the closed surface</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixNotchedEdges">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixGap3d">
+      <Documentation>
+        <UserDocu>Fixes gap between ends of 3d curves on num-1 and num-th edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixGap2d">
+      <Documentation>
+        <UserDocu>Fixes gap between ends of pcurves on num-1 and num-th edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixTails">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="ModifyTopologyMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for modifying topology of the wire</UserDocu>
+      </Documentation>
+      <Parameter Name="ModifyTopologyMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="ModifyGeometryMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for modifying geometry of vertexes and edges</UserDocu>
+      </Documentation>
+      <Parameter Name="ModifyGeometryMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="ModifyRemoveLoopMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for modifying edges</UserDocu>
+      </Documentation>
+      <Parameter Name="ModifyRemoveLoopMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="ClosedWireMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode which defines whether the wire
+is to be closed (by calling methods like fixDegenerated()
+and fixConnected() for last and first edges)</UserDocu>
+      </Documentation>
+      <Parameter Name="ClosedWireMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="PreferencePCurveMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode which defines whether the 2d (True)
+representation of the wire is preferable over 3d one (in the
+case of ambiguity in FixEdgeCurves)</UserDocu>
+      </Documentation>
+      <Parameter Name="PreferencePCurveMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixGapsByRangesMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode which defines whether tool
+tries to fix gaps first by changing curves ranges (i.e.
+using intersection, extrema, projections) or not</UserDocu>
+      </Documentation>
+      <Parameter Name="FixGapsByRangesMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixReorderMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixReorderMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSmallMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixSmallMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixConnectedMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixConnectedMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixEdgeCurvesMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixEdgeCurvesMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixDegeneratedMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixDegeneratedMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSelfIntersectionMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixSelfIntersectionMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixLackingMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixLackingMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixGaps3dMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixGaps3dMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixGaps2dMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixGaps2dMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixReversed2dMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixReversed2dMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixRemovePCurveMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixRemovePCurveMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixAddPCurveMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixAddPCurveMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixRemoveCurve3dMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixRemoveCurve3dMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixAddCurve3dMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixAddCurve3dMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSeamMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixSeamMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixShiftedMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixShiftedMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSameParameterMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixSameParameterMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixVertexToleranceMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixVertexToleranceMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixNotchedEdgesMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixNotchedEdgesMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixSelfIntersectingEdgeMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixSelfIntersectingEdgeMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixIntersectingEdgesMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixIntersectingEdgesMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixNonAdjacentIntersectingEdgesMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixNonAdjacentIntersectingEdgesMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixTailMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+      <Parameter Name="FixTailMode" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

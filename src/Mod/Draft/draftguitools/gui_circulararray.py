@@ -61,11 +61,9 @@ class CircularArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_CircularArray',
-             'MenuText': QT_TRANSLATE_NOOP("Draft", "Circular array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates copies of the selected object, and places the copies in a radial pattern\ncreating various circular layers.\n\nThe array can be turned into an orthogonal or a polar array by changing its type.")}
-        return d
+        return {'Pixmap': 'Draft_CircularArray',
+               'MenuText': QT_TRANSLATE_NOOP("Draft_CircularArray", "Circular array"),
+               'ToolTip': QT_TRANSLATE_NOOP("Draft_CircularArray", "Creates copies of the selected object, and places the copies in a radial pattern\ncreating various circular layers.\n\nThe array can be turned into an orthogonal or a polar array by changing its type.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -134,7 +132,7 @@ class CircularArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(CircularArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_CircularArray', CircularArray())

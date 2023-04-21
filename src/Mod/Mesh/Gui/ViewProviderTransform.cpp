@@ -20,41 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoNormalBinding.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/manips/SoTransformerManip.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
-#include <Gui/Selection.h>
 #include <Gui/SoFCSelection.h>
-#include <Base/Sequencer.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
-#include "ViewProvider.h"
 #include "ViewProviderTransform.h"
 
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
 
 using namespace MeshGui;
 using Mesh::Feature;
 
-
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshTransform, MeshGui::ViewProviderMesh)
 
- 
 ViewProviderMeshTransform::ViewProviderMeshTransform()
 {
   pcTransformerDragger = new SoTransformerManip();
@@ -106,10 +91,10 @@ const char* ViewProviderMeshTransform::getDefaultDisplayMode() const
   return "Transform";
 }
 
-std::vector<std::string> ViewProviderMeshTransform::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeshTransform::getDisplayModes() const
 {
   std::vector<std::string> StrList = ViewProviderMesh::getDisplayModes();
-  StrList.push_back("Transform");
+  StrList.emplace_back("Transform");
   return StrList;
 }
 

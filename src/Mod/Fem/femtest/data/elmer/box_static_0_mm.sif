@@ -1,28 +1,20 @@
-Check Keywords Warn
+Check Keywords "Warn"
 
 Header
   Mesh DB "."
 End
 
 Solver 1
-  Bubbles = Logical False
-  Calculate Pangle = Logical False
-  Calculate Principal = Logical False
-  Calculate Strains = Logical False
-  Calculate Stresses = Logical False
-  Displace mesh = Logical False
+  Calculate Principal = Logical True
+  Displace mesh = Logical True
   Eigen Analysis = Logical False
-  Eigen System Values = Integer 5
-  Equation = String "Elasticity"
-  Exec Solver = String "Always"
+  Equation = String "Stress Solver"
+  Geometric Stiffness = Logical False
   Linear System Abort Not Converged = Logical False
-  Linear System Convergence Tolerance = Real 1e-08
-  Linear System Iterative Method = String "BiCGStab"
-  Linear System Max Iterations = Integer 500
+  Linear System Direct Method = String "Umfpack"
   Linear System Precondition Recompute = Integer 1
-  Linear System Preconditioning = String "ILU0"
   Linear System Residual Output = Integer 1
-  Linear System Solver = String "Iterative"
+  Linear System Solver = String "Direct"
   Optimize Bandwidth = Logical True
   Procedure = File "StressSolve" "StressSolver"
   Stabilize = Logical True
@@ -32,14 +24,12 @@ Solver 1
 End
 
 Simulation 
-  BDF Order = Integer 1
   Coordinate Mapping(3) = Integer 1 2 3
-  Coordinate System = String "Cartesian 3D"
-  Output Intervals = Integer 1
-  Simulation Type = String "Steady state"
+  Coordinate Scaling = Real 0.001
+  Coordinate System = String "Cartesian"
+  Simulation Type = String "Steady State"
   Steady State Max Iterations = Integer 1
   Steady State Min Iterations = Integer 0
-  Timestepping Method = String "BDF"
   Use Mesh Names = Logical True
 End
 
@@ -53,8 +43,9 @@ Body 1
 End
 
 Material 1
+  Name = String "Steel-Generic"
   Poisson ratio = Real 0.3
-  Youngs Modulus = Real 200000000.0
+  Youngs Modulus = Real 200000000000.0
 End
 
 Equation 1
@@ -62,16 +53,18 @@ Equation 1
 End
 
 Solver 2
+  Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"
-  Output File Name = File "case"
+  Output File Name = File "FreeCAD"
   Procedure = File "ResultOutputSolve" "ResultOutputSolver"
   Vtu Format = Logical True
+  Vtu Time Collection = Logical True
 End
 
 Boundary Condition 1
   Name = String "Face2"
-  Normal Force = Real -1000000.0
+  Normal Force = Real -1000000000.0
 End
 
 Boundary Condition 2
@@ -86,7 +79,7 @@ Boundary Condition 3
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -40000000.0
+  Force 3 = Real -40000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Face6"
 End

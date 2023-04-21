@@ -59,7 +59,7 @@ struct float_traits { };
 
 template <>
 struct float_traits<float> {
-    typedef float float_type;
+    using float_type = float;
     static inline float_type pi() { return F_PI; }
     static inline float_type epsilon() { return FLT_EPSILON; }
     static inline float_type maximum() { return FLT_MAX; }
@@ -67,7 +67,7 @@ struct float_traits<float> {
 
 template <>
 struct float_traits<double> {
-    typedef double float_type;
+    using float_type = double;
     static inline float_type pi() { return D_PI; }
     static inline float_type epsilon() { return DBL_EPSILON; }
     static inline float_type maximum() { return DBL_MAX; }
@@ -78,8 +78,8 @@ template <class _Precision>
 class Vector3
 {
 public:
-    typedef _Precision num_type;
-    typedef float_traits<num_type> traits_type;
+    using num_type = _Precision;
+    using traits_type = float_traits<num_type>;
     static inline num_type epsilon() { return traits_type::epsilon(); }
 
     /** @name Public data members */
@@ -91,8 +91,9 @@ public:
 
     /// Construction
     explicit Vector3 (_Precision fx = 0.0, _Precision fy = 0.0, _Precision fz = 0.0);
-    /// Construction
-    Vector3 (const Vector3<_Precision>& rcVct);
+    Vector3 (const Vector3<_Precision>& v) = default;
+    Vector3 (Vector3<_Precision>&& v) = default;
+    ~Vector3 () = default;
 
     /** @name Operator */
     //@{
@@ -106,7 +107,7 @@ public:
     /// Vector subtraction
     Vector3 operator -  (const Vector3<_Precision>& rcVct) const;
     /// Negative vector
-    Vector3 operator - (void) const;
+    Vector3 operator - () const;
     /// Vector summation
     Vector3 & operator += (const Vector3<_Precision>& rcVct);
     /// Vector subtraction
@@ -117,7 +118,8 @@ public:
     Vector3 & operator *= (_Precision fScale);
     Vector3 & operator /= (_Precision fDiv);
     /// Assignment
-    Vector3 & operator =  (const Vector3<_Precision>& rcVct);
+    Vector3 & operator =  (const Vector3<_Precision>& v)  = default;
+    Vector3 & operator =  (Vector3<_Precision>&& v) = default;
     /// Scalar product
     _Precision operator *  (const Vector3<_Precision>& rcVct) const;
     /// Scalar product
@@ -156,11 +158,13 @@ public:
     /** @name Mathematics */
     //@{
     /// Length of the vector.
-    _Precision Length (void) const;
+    _Precision Length () const;
     /// Squared length of the vector.
-    _Precision Sqr (void) const;
+    _Precision Sqr () const;
     /// Set length to 1.
-    Vector3 & Normalize (void);
+    Vector3 & Normalize ();
+    /// Checks whether this is the null vector
+    bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
     _Precision GetAngle (const Vector3 &rcVect) const;
     /** Transforms this point to the coordinate system defined by origin \a rclBase,
@@ -244,8 +248,8 @@ inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
     return Vector3<_Pr1>(static_cast<_Pr1>(v.x),static_cast<_Pr1>(v.y),static_cast<_Pr1>(v.z));
 }
 
-typedef Vector3<float>  Vector3f;
-typedef Vector3<double> Vector3d;
+using Vector3f = Vector3<float>;
+using Vector3d = Vector3<double>;
 
 } // namespace Base
 

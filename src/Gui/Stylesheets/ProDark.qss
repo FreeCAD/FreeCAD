@@ -7,7 +7,7 @@ based on the stock theme from FreeCAD by Pablo Gil Fernández
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-Please, follow the link to get updated information: 
+Please, follow the link to get updated information:
 https://forum.freecadweb.org/viewtopic.php?f=34&t=55134&sid=0466734fc3349eccd8921eb356f70ad7
 
 LICENSE
@@ -24,9 +24,9 @@ INSTALLATION
     WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
-============================================================================================================ 
+============================================================================================================
 THESE COLOURS WERE USED AS TEMP SCRATCHPAD FOR DESIGNING. PLEASE DISREGARD!
- 
+
     BACKGROUND (darker to lighter)
         black
         #1e1e1e
@@ -112,8 +112,8 @@ Sub windows
 ==================================================================================================*/
 QMdiSubWindow {
     border:1px solid #333333;
-    margin-top: 30px;    
-    margin-left: 4px;    
+    margin-top: 30px;
+    margin-left: 4px;
     margin-right: 4px;
     margin-bottom:4px;
 }
@@ -123,23 +123,23 @@ QToolBox
 ==================================================================================================*/
 QToolBox
 {
-	background-color: transparent;
+    background-color: transparent;
 }
 
 
 QToolBox::tab
 {
-	background-color: #2a2a2a;
-	border: 2x solid #3c3c3c;
-    	border-radius: 2px;
+    background-color: #2a2a2a;
+    border: 2x solid #3c3c3c;
+        border-radius: 2px;
 }
 
 
 QToolBox::tab:hover
 {
-	background-color: #557BB6;
-	border: 1px solid #6492d7;
-    	border-radius: 1px
+    background-color: #557BB6;
+    border: 1px solid #6492d7;
+        border-radius: 1px
 }
 
 /*==================================================================================================
@@ -191,12 +191,20 @@ QMenu::right-arrow:selected {
 }
 
 QMenu::item {
-    padding: 2px 16px 2px 26px; /* make room for icon at left */
+    padding: 2px 4px; /* make room for icon at left */
     border: 1px solid transparent; /* reserve space for selection border */
 }
 
 QMenu::icon {
-    margin-left: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+QMenu::icon:checked { /* appearance of a 'checked' icon */
+    background: #557BB6;
+    border: 2px #557BB6;
+    position: absolute;
+    border-radius: 2px;
 }
 
 QMenu::separator {
@@ -274,7 +282,7 @@ QToolBar::separator:bottom,
 QToolBar::separator:horizontal {
     width: 1px;
     margin: 6px 4px;
-    background-color: rgba(0,0,0,30);
+    background-color: #949494;
 }
 
 QToolBar::separator:left,
@@ -282,7 +290,7 @@ QToolBar::separator:right,
 QToolBar::separator:vertical {
     height: 1px;
     margin: 4px 6px;
-    background-color: rgba(0,0,0,30);
+    background-color: #949494;
 }
 
 
@@ -567,7 +575,7 @@ QTabWidget::tab-bar:right {
 
 QTabBar {
     qproperty-drawBase: 0; /* important */
-    background-color: transparent; /* Hack for Undocked white background - was transparent*/ 
+    background-color: transparent; /* Hack for Undocked white background - was transparent*/
 }
 
 /* Workaround for QTabBars created from docked QDockWidgets which don't draw the border if not set and reset as follows: */
@@ -845,8 +853,8 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: #949494;
-	background-color: #2a2a2a; /* same as focused background color */
+    color: #949494;
+    background-color: #2a2a2a; /* same as focused background color */
 }
 
 /* hack to disable margin inside Property values to following elements */
@@ -1043,7 +1051,7 @@ QSplitter::handle {
 }
 
 QSplitter::handle:horizontal {
-    background-image: url(qss:images_dark-light/splitter_vertical_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_vertical_light.svg);
     background-position: center center;
     background-repeat: none;
     margin: 4px 2px 4px 2px;
@@ -1051,7 +1059,7 @@ QSplitter::handle:horizontal {
 }
 
 QSplitter::handle:vertical {
-    background-image: url(qss:images_dark-light/splitter_horizontal_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
     background-position: center center;
     background-repeat: none;
     margin: 2px 4px 2px 4px;
@@ -1066,13 +1074,13 @@ QMainWindow::separator {
 
 QMainWindow::separator:horizontal {
     height: 2px;
-    background-image: url(qss:images_dark-light/splitter_horizontal_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
     margin: 4px 2px 4px 2px;
 }
 
 QMainWindow::separator:vertical {
     width: 2px;
-    background-image: url(qss:images_dark-light/splitter_vertical_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_vertical_light.svg);
     margin: 2px 4px 2px 4px;
 }
 
@@ -1206,7 +1214,7 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
     margin: 0px;
 }
 
-/* Fix for lists inside task panels */ /* sketcher constraints list */ 
+/* Fix for lists inside task panels */ /* sketcher constraints list */
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
@@ -1568,7 +1576,9 @@ QDockWidget#InspectWidgets QPushButton:pressed {
 }
 
 /* CAD Navigation Style */
-
+QMenu::item#NavigationIndicator {
+    image: url(qss:images_dark-light/NavigationBlender_light.svg);
+}
 QPushButton#NavigationIndicator {
     background-color: #557bb6;
     padding: 2px;
@@ -1612,20 +1622,6 @@ QWidget#Form QPushButton:hover {
 QWidget#Form QPushButton:pressed {
     border: 1px solid #557bb6;
     background-color: #557BB6;
-}
-
-/* Sketcher Manual Update Button */
-
-QPushButton#manualUpdate {
-    padding: 4px;
-    margin: 0px;
-    border: 1px solid #494949;
-}
-
-QPushButton:pressed#manualUpdate {
-    color: #ffffff;
-    border: 1px solid #3c3c3c;
-    background-color: #48699a;
 }
 
 /* Addon Manager */
@@ -1692,13 +1688,19 @@ Gui--ColorButton:pressed {
 }
 
 /* Pushbutton style for "..." inside Placement cell which launches Placement tool */
-Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton {
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
     background-color: #2a2a2a;
     border: 1px solid #1e1e1e;
     min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
     border-radius: 1px;
     margin: 0px; /* reset */
     padding: 0px; /* reset */
+}
+
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
+    text-align:left;
+    padding-left: 2px;
 }
 
 /* Fix for Expressions description QFrame that is "broken" with initial reset */
@@ -1754,8 +1756,8 @@ QDialog QToolButton:focus {
 QDialog QToolButton:disabled,
 QDialog QToolButton:disabled:checked {
     color: #f5f5f5;
-    background-color: #2a2a2a; 
-    border: 1px solid #2a2a2a; 
+    background-color: #2a2a2a;
+    border: 1px solid #2a2a2a;
 }
 
 QDialog QToolButton:pressed {
@@ -1799,6 +1801,30 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
     background-color: #557BB6;
 }
 
+/* QToolButtons with a menu found in Sketcher task panel*/
+QSint--ActionGroup QToolButton::menu-button {
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 2px;
+    width: 16px; /* 16px width + 4px for border = 20px allocated above */
+    outline: none;
+    background-color: transparent;
+}
+
+QSint--ActionGroup QToolButton#settingsButton,
+QSint--ActionGroup QToolButton#filterButton,
+QSint--ActionGroup QToolButton#manualUpdate {
+    padding-right: 20px; /* make way for the popup button */
+}
+
+/* to give widget inside the menu same look as regular menu */
+QSint--ActionGroup QToolButton#filterButton QListWidget {
+    color: #f5f5f5;
+    background: #2a2a2a;
+    padding: 0px;
+    margin: 0px;
+}
 
 /*==================================================================================================
 QComboBox inside Task Panel content
@@ -1808,7 +1834,7 @@ QComboBox inside Task Panel content
 /* TODO: external border not working, in the rest of GUI works setting up Qmenu background color but inside Task Panel it doesn't... */
 QSint--ActionGroup QFrame[class="content"] QMenu,
 QSint--ActionGroup QFrame[class="content"] QMenu::item {
-    background-color: #696969;
+    background-color: #2a2a2a;
 }
 
 QSint--ActionGroup QFrame[class="content"] QComboBox QAbstractItemView {
@@ -1928,7 +1954,7 @@ QCheckBox:focus {
 
 
 /*==================================================================================================
-Checkboxs inside QListWidget and QTreeView
+Checkboxes inside QListWidget and QTreeView
 ==================================================================================================*/
 QListWidget::indicator,
 QTreeView::indicator {
@@ -2256,15 +2282,13 @@ QToolBar QToolButton#qt_toolbar_ext_button:on {
 /*==================================================================================================
 Tables (spreadsheets)
 ==================================================================================================*/
+QMdiArea > QWidget > QMdiSubWindow > SpreadsheetGui--SheetView > QWidget > SpreadsheetGui--SheetTableView > {
+    background-color: #cecece; /* Default Spreadsheet background color */
+}
 QTableView {
     gridline-color: #a8a8a8;
     selection-color: #ffffff;
     selection-background-color: #557bb6; /* Default Spreadsheet cell selection background color */
-    background-color: #cecece; /* Default Spreadsheet cell background color */
-}
-
-QTableView::item:hover  {
-    background-color: #557bb6;  /* temporal: is it displayed in Linux or Windows? on OSX it isn't */
 }
 
 QTableView::item:disabled  {
@@ -2272,9 +2296,10 @@ QTableView::item:disabled  {
 }
 
 QTableView::item:selected  {
-    color: #a0a0a0;
+    color: #ffffff;
     border-color: #cecece; /* same as focused background color */
     border-bottom-color: #557BB6; /* same as focused border color */
+    background-color: #557BB6; /* cell background color */
 }
 
 /* fix for elements inside the cells */
@@ -2493,4 +2518,42 @@ QPushButton#NavigationIndicator::menu-indicator {
 QToolBar QToolButton[popupMode="1"] {
     width: 100px;
     background: red;
+}
+
+/*==================================================================================================
+SKETCHER
+==================================================================================================*/
+
+Gui--StatefulLabel[state="empty_sketch"] {
+    color : rgba(255,255,255,127); /* 50% opacity white */
+}
+Gui--StatefulLabel[state="under_constrained"] {
+    color : rgba(255,255,255,255); /* White */
+}
+Gui--StatefulLabel[state="conflicting_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="malformed_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="redundant_constraints"] {
+    color : rgba(255,69,0,255); /* Orange red */
+}
+Gui--StatefulLabel[state="partially_redundant_constraints"] {
+    color : rgba(65,105,225,255); /* Royal blue */
+}
+Gui--StatefulLabel[state="solver_failed"] {
+    color : rgba(255,0,0,255); /* Red */
+    font-weight: bold;
+}
+Gui--StatefulLabel[state="fully_constrained"] {
+    color : rgba(0,255,0,255); /* Green */
+    font-weight: bold;
+}
+
+/*==================================================================================================
+PREFERENCES PACKS
+==================================================================================================*/
+Gui--Dialog--DlgGeneralImp > QGroupBox > QGroupBox > QTableWidget > QWidget > QPushButton {
+    margin: 0px;
 }

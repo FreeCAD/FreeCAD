@@ -24,12 +24,6 @@
 #ifndef APP_DOCUMENTOBSERVERPYTHON_H
 #define APP_DOCUMENTOBSERVERPYTHON_H
 
-#include <CXX/Objects.hxx>
-
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <string>
-
 
 namespace App
 {

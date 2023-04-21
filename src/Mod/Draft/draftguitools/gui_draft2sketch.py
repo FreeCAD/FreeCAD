@@ -89,7 +89,7 @@ class Draft2Sketch(gui_base_original.Modifier):
         if not sel:
             return
         elif allDraft:
-            _cmd = "Draft.makeSketch"
+            _cmd = "Draft.make_sketch"
             _cmd += "("
             _cmd += "FreeCADGui.Selection.getSelection(), "
             _cmd += "autoconstraints=True"
@@ -123,7 +123,7 @@ class Draft2Sketch(gui_base_original.Modifier):
                 _cmd_df += "delete=False"
                 _cmd_df += ")"
 
-                _cmd_sk = "Draft.makeSketch"
+                _cmd_sk = "Draft.make_sketch"
                 _cmd_sk += "("
                 _cmd_sk += "FreeCAD.ActiveDocument." + obj.Name + ", "
                 _cmd_sk += "autoconstraints=True"

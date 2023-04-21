@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="ShapeFix_EdgePy"
+      PythonName="Part.ShapeFix.Edge"
+      Twin="ShapeFix_Edge"
+      TwinPointer="ShapeFix_Edge"
+      Include="ShapeFix_Edge.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="false">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Fixing invalid edge</UserDocu>
+    </Documentation>
+    <Methode Name="fixRemovePCurve">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixRemoveCurve3d">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixAddPCurve">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixAddCurve3d">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixVertexTolerance">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixReversed2d">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSameParameter">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <ClassDeclarations>
+private:
+    Handle(ShapeFix_Edge) hEdge;
+
+public:
+    void setHandle(Handle(ShapeFix_Edge) handle) {
+        setTwinPointer(handle.get());
+        hEdge = handle;
+    }
+    </ClassDeclarations>
+  </PythonExport>
+</GenerateModel>

@@ -28,6 +28,8 @@ SET(Arch_SRCS
     ArchWindow.py
     ArchWindowPresets.py
     ArchAxis.py
+    ArchAxisSystem.py
+    ArchGrid.py
     ArchVRM.py
     ArchRoof.py
     ArchStairs.py
@@ -57,6 +59,8 @@ SET(Arch_SRCS
     ArchCurtainWall.py
     importSHP.py
     exportIFCStructuralTools.py
+    ifc_objects.py
+    ifc_viewproviders.py
 )
 
 SET(Dice3DS_SRCS

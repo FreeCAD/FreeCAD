@@ -19,7 +19,7 @@ public:
 	
     virtual void SetProfile(double pos1, double pos2);
     /**
-     * Generate linear interpolation coeffcients.
+     * Generate linear interpolation coefficients.
      *
      * @param pos1 begin position.
      * @param pos2 end position.
@@ -29,7 +29,7 @@ public:
       double pos1, double pos2, double duration);
 
     /**
-     * Generate cubic spline interpolation coeffcients.
+     * Generate cubic spline interpolation coefficients.
      *
      * @param pos1 begin position.
      * @param vel1 begin velocity.
@@ -41,7 +41,7 @@ public:
       double pos1, double vel1, double pos2, double vel2, double duration);
 
     /**
-     * Generate quintic spline interpolation coeffcients.
+     * Generate quintic spline interpolation coefficients.
      *
      * @param pos1 begin position.
      * @param vel1 begin velocity.

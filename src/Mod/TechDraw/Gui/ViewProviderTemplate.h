@@ -20,12 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 #define DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 
-#include <Gui/ViewProviderFeature.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Gui/ViewProviderDocumentObject.h>
+
+#include "ViewProviderTemplateExtension.h"
 namespace TechDraw{
     class DrawTemplate;
 }
@@ -34,7 +36,8 @@ namespace TechDrawGui {
 class QGITemplate;
 class MDIViewPage;
 
-class TechDrawGuiExport ViewProviderTemplate : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderTemplate : public Gui::ViewProviderDocumentObject,
+                                               public ViewProviderTemplateExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderTemplate);
 
@@ -42,13 +45,11 @@ public:
     /// constructor
     ViewProviderTemplate();
     /// destructor
-    virtual ~ViewProviderTemplate();
+    ~ViewProviderTemplate() override = default;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
+    void attach(App::DocumentObject *) override;
+
     virtual bool useNewSelectionModel(void) const override {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override;
     virtual void updateData(const App::Property*) override;
     virtual void onChanged(const App::Property *prop) override;
     virtual void hide(void) override;
@@ -61,6 +62,11 @@ public:
 
     void setMarkers(bool state);
     virtual bool onDelete(const std::vector<std::string> &) override;
+
+    const char* whoAmI() const;
+
+private:
+    std::string m_myName;
 };
 
 } // namespace TechDrawGui

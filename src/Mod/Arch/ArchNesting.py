@@ -20,11 +20,14 @@
 #*                                                                         *
 #***************************************************************************
 
-
-from __future__ import print_function
-
-import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math
+import math
 from datetime import datetime
+
+import FreeCAD
+import DraftGeomUtils
+import DraftVecUtils
+import Part
+import WorkingPlane
 
 # This is roughly based on the no-fit polygon algorithm, used in
 # SvgNest: https://github.com/Jack000/SVGnest
@@ -291,7 +294,6 @@ class Nester:
                     nofitpol = []
                     for placed in sheet:
                         pts = []
-                        pi = 0
                         for placedvert in self.order(placed[1],right=True):
                             fpts = []
                             for i,rotvert in enumerate(rotverts):

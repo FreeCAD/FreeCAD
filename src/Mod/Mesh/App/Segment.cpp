@@ -20,30 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
 # include <sstream>
 #endif
 
-
-#include "Core/MeshKernel.h"
-
 #include "Segment.h"
 #include "Mesh.h"
-#include <Mod/Mesh/App/MeshPy.h>
+#include "MeshPy.h"
+
 
 using namespace Mesh;
 
-Segment::Segment(MeshObject* mesh, bool mod)
+Segment::Segment(const MeshObject* mesh, bool mod)
   : _mesh(mesh)
   , _save(false)
   , _modifykernel(mod)
 {
 }
 
-Segment::Segment(MeshObject* mesh, const std::vector<unsigned long>& inds, bool mod)
+Segment::Segment(const MeshObject* mesh, const std::vector<FacetIndex>& inds, bool mod)
   : _mesh(mesh)
   , _indices(inds)
   , _save(false)
@@ -53,7 +50,7 @@ Segment::Segment(MeshObject* mesh, const std::vector<unsigned long>& inds, bool 
         _mesh->updateMesh(inds);
 }
 
-void Segment::addIndices(const std::vector<unsigned long>& inds)
+void Segment::addIndices(const std::vector<FacetIndex>& inds)
 {
     _indices.insert(_indices.end(), inds.begin(), inds.end());
     std::sort(_indices.begin(), _indices.end());
@@ -62,21 +59,21 @@ void Segment::addIndices(const std::vector<unsigned long>& inds)
         _mesh->updateMesh(inds);
 }
 
-void Segment::removeIndices(const std::vector<unsigned long>& inds)
+void Segment::removeIndices(const std::vector<FacetIndex>& inds)
 {
     // make difference
-    std::vector<unsigned long> result;
-    std::set<unsigned long> s1(_indices.begin(), _indices.end());
-    std::set<unsigned long> s2(inds.begin(), inds.end());
+    std::vector<FacetIndex> result;
+    std::set<FacetIndex> s1(_indices.begin(), _indices.end());
+    std::set<FacetIndex> s2(inds.begin(), inds.end());
     std::set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(),
-        std::back_insert_iterator<std::vector<unsigned long> >(result));
-  
+        std::back_insert_iterator<std::vector<FacetIndex> >(result));
+
     _indices = result;
     if (_modifykernel)
         _mesh->updateMesh();
 }
 
-const std::vector<unsigned long>& Segment::getIndices() const
+const std::vector<FacetIndex>& Segment::getIndices() const
 {
     return _indices;
 }
@@ -109,7 +106,7 @@ bool Segment::operator == (const Segment& s) const
 
 // ----------------------------------------------------------------------------
 
-Segment::const_facet_iterator::const_facet_iterator(const Segment* segm, std::vector<unsigned long>::const_iterator it)
+Segment::const_facet_iterator::const_facet_iterator(const Segment* segm, std::vector<FacetIndex>::const_iterator it)
   : _segment(segm), _f_it(segm->_mesh->getKernel()), _it(it)
 {
     this->_f_it.Set(0);
@@ -135,7 +132,7 @@ Segment::const_facet_iterator& Segment::const_facet_iterator::operator=(const Se
     return *this;
 }
 
-void Segment::const_facet_iterator::dereference()
+void Segment::const_facet_iterator::dereference() const
 {
     this->_f_it.Set(*_it);
     this->_facet.MeshCore::MeshGeomFacet::operator = (*_f_it);
@@ -149,13 +146,13 @@ void Segment::const_facet_iterator::dereference()
 
 const Facet& Segment::const_facet_iterator::operator*() const
 {
-    const_cast<const_facet_iterator*>(this)->dereference();
+    this->dereference();
     return this->_facet;
 }
 
 const Facet* Segment::const_facet_iterator::operator->() const
 {
-    const_cast<const_facet_iterator*>(this)->dereference();
+    this->dereference();
     return &(this->_facet);
 }
 
@@ -164,7 +161,7 @@ bool Segment::const_facet_iterator::operator==(const Segment::const_facet_iterat
     return (this->_segment == fi._segment) && (this->_it == fi._it);
 }
 
-bool Segment::const_facet_iterator::operator!=(const Segment::const_facet_iterator& fi) const 
+bool Segment::const_facet_iterator::operator!=(const Segment::const_facet_iterator& fi) const
 {
     return !operator==(fi);
 }

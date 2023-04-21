@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2017 Lei Zheng <realthunder.dev@gmail.com>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,31 +20,15 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-/*
- *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com>
- */
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
 #include "FeaturePathShape.h"
-#include "Command.h"
 
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartFeature.h>
-
-#include "FeatureArea.h"
 
 using namespace Path;
 
@@ -53,7 +38,7 @@ PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_PATH)
 
 FeatureShape::FeatureShape()
 {
-    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(Sources,(nullptr));
     ADD_PROPERTY_TYPE(StartPoint,(Base::Vector3d()),"Path",App::Prop_None,"Feed start position");
     ADD_PROPERTY_TYPE(UseStartPoint,(false),"Path",App::Prop_None,"Enable feed start position");
     PARAM_PROP_ADD("Path",AREA_PARAMS_PATH);
@@ -64,7 +49,7 @@ FeatureShape::~FeatureShape()
 {
 }
 
-App::DocumentObjectExecReturn *FeatureShape::execute(void)
+App::DocumentObjectExecReturn *FeatureShape::execute()
 {
     Toolpath path;
     std::vector<App::DocumentObject*> links = Sources.getValues();
@@ -86,7 +71,7 @@ App::DocumentObjectExecReturn *FeatureShape::execute(void)
         shapes.push_back(shape);
     }
 
-    Area::toPath(path,shapes,UseStartPoint.getValue()?&pstart:0,0,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
+    Area::toPath(path,shapes,UseStartPoint.getValue()?&pstart:nullptr,nullptr,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
 
     Path.setValue(path);
     return App::DocumentObject::StdReturn;
@@ -97,7 +82,7 @@ App::DocumentObjectExecReturn *FeatureShape::execute(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureShapePython, Path::FeatureShape)
-template<> const char* Path::FeatureShapePython::getViewProviderName(void) const {
+template<> const char* Path::FeatureShapePython::getViewProviderName() const {
     return "PathGui::ViewProviderPathShape";
 }
 /// @endcond

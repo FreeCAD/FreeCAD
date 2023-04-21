@@ -26,29 +26,28 @@
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui
 {
 
 class FemGuiExport ViewProviderResult : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderResult);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderResult);
 
 public:
     /// constructor
     ViewProviderResult();
 
     /// destructor
-    virtual ~ViewProviderResult();
+    ~ViewProviderResult() override;
 
     // shows solid in the tree
-    virtual bool isShow(void) const
+    bool isShow() const override
     { return true; }
-
-    //bool doubleClicked(void);
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPython;
+using ViewProviderResultPython = Gui::ViewProviderPythonFeatureT<ViewProviderResult>;
 
 } //namespace FemGui
 

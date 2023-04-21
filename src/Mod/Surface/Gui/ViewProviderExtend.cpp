@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 
 #include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
 
 #include "ViewProviderExtend.h"
+
 
 using namespace SurfaceGui;
 
@@ -35,7 +35,7 @@ namespace SurfaceGui {
 
 QIcon ViewProviderExtend::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("Surface_Extend");
+    return Gui::BitmapFactory().pixmap("Surface_ExtendFace");
 }
 
 } //namespace SurfaceGui

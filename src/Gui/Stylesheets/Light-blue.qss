@@ -148,12 +148,20 @@ QMenu::right-arrow:selected {
 }
 
 QMenu::item {
-    padding: 2px 16px 2px 26px; /* make room for icon at left */
+    padding: 2px 4px; /* make room for icon at left */
     border: 1px solid transparent; /* reserve space for selection border */
 }
 
 QMenu::icon {
-    margin-left: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+QMenu::icon:checked { /* appearance of a 'checked' icon */
+    background: #5e90fa;
+    border: 2px #5e90fa;
+    position: absolute;
+    border-radius: 2px;
 }
 
 QMenu::separator {
@@ -1494,13 +1502,19 @@ Gui--ColorButton:pressed {
 }
 
 /* Pushbutton style for "..." inside Placement cell which launches Placement tool */
-Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton {
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
     background-color: #b6b6b6;
     border: 1px solid #828282;
     min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
     border-radius: 0px;
     margin: 0px; /* reset */
     padding: 0px; /* reset */
+}
+
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
+    text-align:left;
+    padding-left: 2px;
 }
 
 /* Fix for Expressions description QFrame that is "broken" with initial reset */
@@ -1596,6 +1610,31 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
+}
+
+/* QToolButtons with a menu found in Sketcher task panel*/
+QSint--ActionGroup QToolButton::menu-button {
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 2px;
+    width: 16px; /* 16px width + 4px for border = 20px allocated above */
+    outline: none;
+    background-color: transparent;
+}
+
+QSint--ActionGroup QToolButton#settingsButton,
+QSint--ActionGroup QToolButton#filterButton,
+QSint--ActionGroup QToolButton#manualUpdate {
+    padding-right: 20px; /* make way for the popup button */
+}
+
+/* to give widget inside the menu same look as regular menu */
+QSint--ActionGroup QToolButton#filterButton QListWidget {
+    color: black;
+    background: #f5f5f5;
+    padding: 0px;
+    margin: 0px;
 }
 
 
@@ -1710,7 +1749,7 @@ QCheckBox:focus {
 
 
 /*==================================================================================================
-Checkboxs inside QListWidget and QTreeView
+Checkboxes inside QListWidget and QTreeView
 ==================================================================================================*/
 QListWidget::indicator,
 QTreeView::indicator {
@@ -2243,4 +2282,39 @@ QDialog QGroupBox QFrame {
 QPushButton#NavigationIndicator::menu-indicator {
     image: none;
     width: 0px;
+}
+
+/*==================================================================================================
+SKETCHER
+==================================================================================================*/
+
+Gui--StatefulLabel[state="empty_sketch"] {
+    color : rgba(0,0,0,127); /* 50% opacity black */
+}
+Gui--StatefulLabel[state="under_constrained"] {
+    color : rgba(0,0,0,255); /* Black */
+}
+Gui--StatefulLabel[state="conflicting_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="malformed_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="redundant_constraints"] {
+    color : rgba(255,69,0,255); /* Orange red */
+}
+Gui--StatefulLabel[state="partially_redundant_constraints"] {
+    color : rgba(65,105,225,255); /* Royal blue */
+}
+Gui--StatefulLabel[state="solver_failed"] {
+    color : rgba(255,0,0,255); /* Red */
+    font-weight: bold;
+}
+Gui--StatefulLabel[state="fully_constrained"] {
+    color : rgba(0,255,0,255); /* Green */
+    font-weight: bold;
+}
+Gui--UrlLabel {
+    color : rgba(0,0,255,255); /* Blue */
+    text-decoration : underline;
 }

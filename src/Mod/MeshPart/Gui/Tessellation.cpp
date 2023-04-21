@@ -20,33 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopExp_Explorer.hxx>
 # include <QMessageBox>
 #endif
 
-#include "Tessellation.h"
-#include "ui_Tessellation.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+
+#include "Tessellation.h"
+#include "ui_Tessellation.h"
+
 
 using namespace MeshPartGui;
 
@@ -57,9 +56,9 @@ Tessellation::Tessellation(QWidget* parent)
 {
     ui->setupUi(this);
     gmsh = new Mesh2ShapeGmsh(this);
-    connect(gmsh, SIGNAL(processed()), this, SLOT(gmshProcessed()));
+    setupConnections();
 
-    ui->stackedWidget->addTab(gmsh, tr("gmsh"));
+    ui->stackedWidget->addTab(gmsh, tr("Gmsh"));
 
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
@@ -78,7 +77,7 @@ Tessellation::Tessellation(QWidget* parent)
     ui->spinMaximumEdgeLength->setRange(0, INT_MAX);
 
     ui->comboFineness->setCurrentIndex(2);
-    on_comboFineness_currentIndexChanged(2);
+    onComboFinenessCurrentIndexChanged(2);
 
 #if !defined (HAVE_MEFISTO)
     ui->stackedWidget->setTabEnabled(Mefisto, false);
@@ -101,12 +100,25 @@ Tessellation::~Tessellation()
 {
 }
 
+void Tessellation::setupConnections()
+{
+    connect(gmsh, &Mesh2ShapeGmsh::processed, this, &Tessellation::gmshProcessed);
+    connect(ui->estimateMaximumEdgeLength, &QPushButton::clicked,
+            this, &Tessellation::onEstimateMaximumEdgeLengthClicked);
+    connect(ui->comboFineness, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &Tessellation::onComboFinenessCurrentIndexChanged);
+    connect(ui->checkSecondOrder, &QCheckBox::toggled,
+            this, &Tessellation::onCheckSecondOrderToggled);
+    connect(ui->checkQuadDominated, &QCheckBox::toggled,
+            this, &Tessellation::onCheckQuadDominatedToggled);
+}
+
 void Tessellation::meshingMethod(int id)
 {
     ui->stackedWidget->setCurrentIndex(id);
 }
 
-void Tessellation::on_comboFineness_currentIndexChanged(int index)
+void Tessellation::onComboFinenessCurrentIndexChanged(int index)
 {
     if (index == 5) {
         ui->doubleGrading->setEnabled(true);
@@ -120,27 +132,27 @@ void Tessellation::on_comboFineness_currentIndexChanged(int index)
     }
 
     switch (index) {
-    case 0: // Very coarse
+    case VeryCoarse:
         ui->doubleGrading->setValue(0.7);
         ui->spinEdgeElements->setValue(0.3);
         ui->spinCurvatureElements->setValue(1.0);
         break;
-    case 1: // Coarse
+    case Coarse:
         ui->doubleGrading->setValue(0.5);
         ui->spinEdgeElements->setValue(0.5);
         ui->spinCurvatureElements->setValue(1.5);
         break;
-    case 2: // Moderate
+    case Moderate:
         ui->doubleGrading->setValue(0.3);
         ui->spinEdgeElements->setValue(1.0);
         ui->spinCurvatureElements->setValue(2.0);
         break;
-    case 3: // Fine
+    case Fine:
         ui->doubleGrading->setValue(0.2);
         ui->spinEdgeElements->setValue(2.0);
         ui->spinCurvatureElements->setValue(3.0);
         break;
-    case 4: // Very fine
+    case VeryFine:
         ui->doubleGrading->setValue(0.1);
         ui->spinEdgeElements->setValue(3.0);
         ui->spinCurvatureElements->setValue(5.0);
@@ -150,13 +162,13 @@ void Tessellation::on_comboFineness_currentIndexChanged(int index)
     }
 }
 
-void Tessellation::on_checkSecondOrder_toggled(bool on)
+void Tessellation::onCheckSecondOrderToggled(bool on)
 {
     if (on)
         ui->checkQuadDominated->setChecked(false);
 }
 
-void Tessellation::on_checkQuadDominated_toggled(bool on)
+void Tessellation::onCheckQuadDominatedToggled(bool on)
 {
     if (on)
         ui->checkSecondOrder->setChecked(false);
@@ -179,7 +191,7 @@ void Tessellation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void Tessellation::on_estimateMaximumEdgeLength_clicked()
+void Tessellation::onEstimateMaximumEdgeLengthClicked()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
@@ -192,7 +204,7 @@ void Tessellation::on_estimateMaximumEdgeLength_clicked()
     }
 
     double edgeLen = 0;
-    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+    for (auto &sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             Base::BoundBox3d bbox = shape.getBoundBox();
@@ -222,23 +234,45 @@ bool Tessellation::accept()
 
     this->document = QString::fromLatin1(activeDoc->getName());
 
-    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+    bool bodyWithNoTip = false;
+    bool partWithNoFace = false;
+    for (auto &sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
+        else if (sel.pObject) {
+            if (sel.pObject->isDerivedFrom(Part::Feature::getClassTypeId())) {
+                partWithNoFace = true;
+            }
+            if (sel.pObject->isDerivedFrom(Part::BodyBase::getClassTypeId())) {
+                Part::BodyBase* body = static_cast<Part::BodyBase*>(sel.pObject);
+                if (!body->Tip.getValue()) {
+                    bodyWithNoTip = true;
+                }
+            }
+        }
     }
 
     if (shapeObjects.empty()) {
-        QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for meshing, first."));
+        if (bodyWithNoTip) {
+            QMessageBox::critical(this, windowTitle(), tr("You have selected a body without tip.\n"
+                                                          "Either set the tip of the body or select a different shape, please."));
+        }
+        else if (partWithNoFace) {
+            QMessageBox::critical(this, windowTitle(), tr("You have selected a shape without faces.\n"
+                                                          "Select a different shape, please."));
+        }
+        else {
+            QMessageBox::critical(this, windowTitle(), tr("Select a shape for meshing, first."));
+        }
         return false;
     }
 
     bool doClose = !ui->checkBoxDontQuit->isChecked();
     int method = ui->stackedWidget->currentIndex();
 
-    // For gmsh the workflow is very different because it uses an executable
+    // For Gmsh the workflow is very different because it uses an executable
     // and therefore things are asynchronous
     if (method == Gmsh) {
         gmsh->process(activeDoc, shapeObjects);
@@ -284,11 +318,11 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
                 "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
                 "__mesh__.Label=\"%5 (Meshed)\"\n"
                 "del __doc__, __mesh__, __part__, __shape__\n")
-                .arg(this->document)
-                .arg(objname)
-                .arg(subname)
-                .arg(param)
-                .arg(label);
+                .arg(this->document,
+                     objname,
+                     subname,
+                     param,
+                     label);
 
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
@@ -347,7 +381,7 @@ std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Col
 
     std::vector<App::Color> unique;
     for (const auto& it : col_set)
-        unique.push_back(App::Color(it));
+        unique.emplace_back(it);
     return unique;
 }
 
@@ -500,7 +534,7 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
                 maxSize = 1.0e22;
             double minSize = getMinSize();
 
-            // gmsh geo file
+            // Gmsh geo file
             Base::FileInfo geo(d->geoFile);
             Base::ofstream geoOut(geo, std::ios::out);
             geoOut << "// geo file for meshing with Gmsh meshing software created by FreeCAD\n"
@@ -585,7 +619,7 @@ TaskTessellation::TaskTessellation()
     widget = new Tessellation();
     Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
         QPixmap()/*Gui::BitmapFactory().pixmap("MeshPart_Mesher")*/,
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

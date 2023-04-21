@@ -56,6 +56,14 @@
       </Documentation>
       <Parameter Name="Construction" Type="Boolean"/>
     </Attribute>
+    <Attribute Name="GeometryLayerId" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Returns the Id of the geometry Layer in which the geometry is located.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="GeometryLayerId" Type="Long"/>
+    </Attribute>
     <Methode Name="mirror">
       <Documentation>
         <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>

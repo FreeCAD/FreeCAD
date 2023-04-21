@@ -23,32 +23,58 @@
 #ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
 #define GUI_TASKVIEW_TASKSECTIONVIEW_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
-
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class Ui_TaskSectionView;
 
+namespace TechDraw {
+    class DrawViewPart;
+    class DrawViewSection;
+}
+
 namespace TechDrawGui
 {
+
+class CompassWidget;
+class VectorEditWidget;
 
 class TaskSectionView : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskSectionView(TechDraw::DrawViewPart* base);
-    TaskSectionView(TechDraw::DrawViewSection* section);
-    ~TaskSectionView();
+    explicit TaskSectionView(TechDraw::DrawViewPart* base);
+    explicit TaskSectionView(TechDraw::DrawViewSection* section);
+    ~TaskSectionView() = default;
 
-public:
     virtual bool accept();
     virtual bool reject();
+
+protected:
+    void changeEvent(QEvent *event) override;
+    void saveSectionState();
+    void restoreSectionState();
+
+    bool apply(bool forceUpdate = false);
+    void applyQuick(std::string dir);
+    void applyAligned();
+
+    TechDraw::DrawViewSection* createSectionView();
+    void updateSectionView();
+
+    void setUiPrimary();
+    void setUiEdit();
+    void setUiCommon(Base::Vector3d origin);
+
+    void checkAll(bool check);
+    void enableAll(bool enable);
+
+    void failNoObject();
+    bool isBaseValid();
+    bool isSectionValid();
 
 protected Q_SLOTS:
     void onUpClicked();
@@ -60,30 +86,15 @@ protected Q_SLOTS:
     void onXChanged();
     void onYChanged();
     void onZChanged();
-
-protected:
-    void changeEvent(QEvent *e);
-    void saveSectionState();
-    void restoreSectionState();
-
-    bool apply(void);
-    void applyQuick(std::string dir);
-    void applyAligned(void);
-
-    void createSectionView(void);
-    void updateSectionView(void);
-
-    void setUiPrimary();
-    void setUiEdit();
-
-    void checkAll(bool b);
-    void enableAll(bool b);
-
-    void failNoObject(std::string objName);
-    bool isBaseValid(void);
-    bool isSectionValid(void);
+    void scaleTypeChanged(int index);
+    void liveUpdateClicked();
+    void updateNowClicked();
+    void slotChangeAngle(double newAngle);
+    void slotViewDirectionChanged(Base::Vector3d newDirection);
 
 private:
+    double requiredRotation(double inputAngle);
+
     std::unique_ptr<Ui_TaskSectionView> ui;
     TechDraw::DrawViewPart* m_base;
     TechDraw::DrawViewSection* m_section;
@@ -91,13 +102,14 @@ private:
     Base::Vector3d m_normal;
     Base::Vector3d m_direction;
     Base::Vector3d m_origin;
-    
+
     std::string m_saveSymbol;
     std::string m_saveDirName;
     Base::Vector3d m_saveNormal;
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
+    int m_saveScaleType;
 
     std::string m_dirName;
     std::string m_sectionName;
@@ -110,8 +122,11 @@ private:
     std::string m_saveBaseName;
     std::string m_savePageName;
 
-    bool m_abort;
-
+    int m_applyDeferred;
+    CompassWidget* m_compass;
+    VectorEditWidget* m_viewDirectionWidget;
+    bool m_directionIsSet;
+    bool m_modelIsDirty;
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog
@@ -119,34 +134,28 @@ class TaskDlgSectionView : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSectionView(TechDraw::DrawViewPart* base);
-    TaskDlgSectionView(TechDraw::DrawViewSection* section);
-    ~TaskDlgSectionView();
+    explicit TaskDlgSectionView(TechDraw::DrawViewPart* base);
+    explicit TaskDlgSectionView(TechDraw::DrawViewSection* section);
+    ~TaskDlgSectionView() override;
 
-public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
 /*    virtual void clicked(int);*/
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-/*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
 
     void update();
 
-    virtual bool isAllowedAlterSelection(void) const
+    bool isAllowedAlterSelection() const override
     { return false; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return false; }
-
-protected:
 
 private:
     TaskSectionView * widget;

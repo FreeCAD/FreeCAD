@@ -20,23 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMPORT_EXPORTOCAF_H
 #define IMPORT_EXPORTOCAF_H
+
+#include <climits>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 #include <TDocStd_Document.hxx>
 #include <XCAFDoc_ColorTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
-#include <Quantity_Color.hxx>
-#include <TopoDS_Shape.hxx>
-#include <climits>
-#include <string>
-#include <set>
-#include <map>
-#include <vector>
+
 #include <App/Material.h>
-#include <App/Part.h>
-#include <Mod/Part/App/FeatureCompound.h>
+#include <Mod/Import/ImportGlobal.h>
 
 
 class TDF_Label;
@@ -45,6 +43,7 @@ class TopLoc_Location;
 namespace App {
 class Document;
 class DocumentObject;
+class Part;
 }
 namespace Part {
 class Feature;
@@ -105,7 +104,7 @@ public:
     }
 
 private:
-    virtual void findColors(Part::Feature*, std::vector<App::Color>&) const;
+    void findColors(Part::Feature*, std::vector<App::Color>&) const override;
 
 private:
     std::map<Part::Feature*, std::vector<App::Color> > partColors;

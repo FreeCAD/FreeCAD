@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderMainPart.h"
 #include <Mod/PartDesign/App/FeatureMainPart.h>
 

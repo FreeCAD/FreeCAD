@@ -3,11 +3,11 @@
 	<PythonExport
 		Father="ComplexGeoDataPy"
 		Include="Mod/Mesh/App/Mesh.h"
-		Name="MeshPy" 
+		Name="MeshPy"
 		Twin="MeshObject"
-		TwinPointer="MeshObject" 
-		Namespace="Mesh" 
-		FatherInclude="App/ComplexGeoDataPy.h" 
+		TwinPointer="MeshObject"
+		Namespace="Mesh"
+		FatherInclude="App/ComplexGeoDataPy.h"
 		FatherNamespace="Data"
 		Constructor="true">
 		<Documentation>
@@ -91,7 +91,14 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Get the part outside the intersection</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="coarsen">
+        <Methode Name="section" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Get the section curves of this and the given mesh object.
+lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="coarsen">
 			<Documentation>
 				<UserDocu>Coarse the mesh</UserDocu>
 			</Documentation>
@@ -169,7 +176,17 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPointNormals" Const="true">
+        <Methode Name="movePoint">
+            <Documentation>
+                <UserDocu>movePoint(int, Vector)
+  This method moves the point in the mesh along the
+  given vector. This affects the geometry of the mesh.
+  Be aware that after moving point(s) the mesh can
+  have self intersections!
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getPointNormals" Const="true">
 			<Documentation>
 				<UserDocu>
 					getPointNormals()
@@ -177,7 +194,12 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="countSegments" Const="true">
+        <Methode Name="addSegment">
+            <Documentation>
+                <UserDocu>Add a list of facet indices that describes a segment to the mesh</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="countSegments" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of segments which may also be 0</UserDocu>
 			</Documentation>
@@ -284,6 +306,19 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="hasPointsOnEdge" Const="true">
+            <Documentation>
+                <UserDocu>Check if points lie on edges</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removePointsOnEdge" Keyword="true">
+            <Documentation>
+                <UserDocu>removePointsOnEdge(FillBoundary=False)
+Remove points that lie on edges.
+If FillBoundary is True then the holes by removing the affected facets
+will be re-filled.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="hasInvalidNeighbourhood" Const="true">
             <Documentation>
                 <UserDocu>Check if the mesh has invalid neighbourhood indices</UserDocu>
@@ -422,7 +457,16 @@ The argument int is the mode: 0=inner, 1=outer
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<!-- The Const here is just a hack -->
+        <Methode Name="trimByPlane">
+            <Documentation>
+                <UserDocu>Trims the mesh with a given plane
+trimByPlane(Vector, Vector) -> None
+The plane is defined by a base and normal vector. Depending on the
+direction of the normal the part above or below will be kept.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <!-- The Const here is just a hack -->
 		<Methode Name="harmonizeNormals" Const="true">
 			<Documentation>
 				<UserDocu>Adjust wrong oriented facets</UserDocu>
@@ -473,7 +517,7 @@ smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
 			</Documentation>
 		</Methode>
 		<!-- End of hack -->
-		<Methode Name="nearestFacetOnRay" Const="true">
+        <Methode Name="nearestFacetOnRay" Const="true">
 			<Documentation>
 				<UserDocu>nearestFacetOnRay(tuple, tuple) -> dict
 Get the index and intersection point of the nearest facet to a ray.
@@ -489,7 +533,7 @@ an empty dictionary if there is no intersection.
 				<UserDocu>getPlanarSegments(dev,[min faces=0]) -> list
 Get all planes of the mesh as segment.
 In the worst case each triangle can be regarded as single
-plane if none of its neighbors are coplanar.</UserDocu>
+plane if none of its neighbours is coplanar.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="getSegmentsOfType" Const="true">

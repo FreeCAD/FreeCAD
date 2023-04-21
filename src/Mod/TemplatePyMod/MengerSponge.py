@@ -5,8 +5,7 @@
 # http://forum.freecadweb.org/viewtopic.php?f=3&t=2307
 
 import threading
-import Mesh, MeshGui
-from FreeCAD import Base
+import Mesh
 
 # Create a global mesh and make copies of them
 # This makes the algorithm faster by ~60%.
@@ -69,7 +68,7 @@ def makeMengerSponge_mt(level=3,x0=0,y0=0,z0=0):
     boxnums = pow(3,level)
     thirds = boxnums / 3
     twothirds = thirds * 2
-    
+
     rangerx = [ x0, x0 + thirds, x0 + twothirds ]
     rangery = [ y0, y0 + thirds, y0 + twothirds ]
     rangerz = [ z0, z0 + thirds, z0 + twothirds ]
@@ -105,7 +104,7 @@ def makeMengerSponge_mt(level=3,x0=0,y0=0,z0=0):
     for thr in threads:
         mesh.addMesh(thr.mesh)
         del thr.mesh
-        
+
     print(mesh)
     mesh.removeDuplicatedPoints()
     mesh.removeFacets(mesh.getInternalFacets())

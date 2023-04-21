@@ -20,14 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SEGMENT_H
 #define MESH_SEGMENT_H
 
-#include <vector>
 #include <string>
-#include "Facet.h"
+#include <vector>
+
 #include "Core/Iterator.h"
+
+#include "Facet.h"
+#include "Types.h"
+
 
 namespace Mesh
 {
@@ -37,11 +40,11 @@ class MeshObject;
 class MeshExport Segment
 {
 public:
-    Segment(MeshObject*, bool mod);
-    Segment(MeshObject*, const std::vector<unsigned long>& inds, bool mod);
-    void addIndices(const std::vector<unsigned long>& inds);
-    void removeIndices(const std::vector<unsigned long>& inds);
-    const std::vector<unsigned long>& getIndices() const;
+    Segment(const MeshObject*, bool mod);
+    Segment(const MeshObject*, const std::vector<FacetIndex>& inds, bool mod);
+    void addIndices(const std::vector<FacetIndex>& inds);
+    void removeIndices(const std::vector<FacetIndex>& inds);
+    const std::vector<FacetIndex>& getIndices() const;
     bool isEmpty() const { return _indices.empty(); }
 
     Segment(const Segment&);
@@ -61,8 +64,8 @@ public:
     friend class MeshObject;
 
 private:
-    MeshObject* _mesh;
-    std::vector<unsigned long> _indices;
+    const MeshObject* _mesh;
+    std::vector<FacetIndex> _indices;
     std::string _name;
     std::string _color;
     bool _save;
@@ -72,7 +75,7 @@ public:
     class MeshExport const_facet_iterator
     {
     public:
-        const_facet_iterator(const Segment*, std::vector<unsigned long>::const_iterator);
+        const_facet_iterator(const Segment*, std::vector<FacetIndex>::const_iterator);
         const_facet_iterator(const const_facet_iterator& fi);
         ~const_facet_iterator();
 
@@ -84,11 +87,11 @@ public:
         const_facet_iterator& operator++();
         const_facet_iterator& operator--();
     private:
-        void dereference();
+        void dereference() const;
         const Segment* _segment;
-        Facet _facet;
-        MeshCore::MeshFacetIterator _f_it;
-        std::vector<unsigned long>::const_iterator _it;
+        mutable Facet _facet;
+        mutable MeshCore::MeshFacetIterator _f_it;
+        std::vector<FacetIndex>::const_iterator _it;
     };
 
     const_facet_iterator facets_begin() const

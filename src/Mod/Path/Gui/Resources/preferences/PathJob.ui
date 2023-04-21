@@ -25,7 +25,7 @@
         <x>0</x>
         <y>0</y>
         <width>424</width>
-        <height>537</height>
+        <height>268</height>
        </rect>
       </property>
       <attribute name="label">
@@ -38,13 +38,6 @@
           <string>Defaults</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="leDefaultFilePath">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
@@ -52,10 +45,17 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="leDefaultFilePath">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="3">
            <widget class="QToolButton" name="tbDefaultFilePath">
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -76,7 +76,7 @@
           <item row="1" column="3">
            <widget class="QToolButton" name="tbDefaultJobTemplate">
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -90,34 +90,32 @@
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
-           <widget class="QWidget" name="widget_5" native="true">
-            <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="1">
-              <widget class="Gui::InputField" name="geometryTolerance">
-               <property name="toolTip">
-                <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Default Geometry Tolerance</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="Gui::InputField" name="curveAccuracy"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Default Curve Accuracy</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Default Geometry Tolerance</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="geometryTolerance">
+              <property name="toolTip">
+               <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Default Curve Accuracy</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="curveAccuracy"/>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -143,7 +141,7 @@
         <x>0</x>
         <y>0</y>
         <width>424</width>
-        <height>537</height>
+        <height>432</height>
        </rect>
       </property>
       <attribute name="label">
@@ -166,95 +164,81 @@
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="1" column="0">
-           <widget class="QWidget" name="widget_2" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Default Path</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Default Path</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="1" column="1">
-           <widget class="QWidget" name="widget" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLineEdit" name="leOutputFile">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="tbOutputFile">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLineEdit" name="leOutputFile">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tbOutputFile">
+              <property name="text">
+               <string notr="true">...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="2" column="0">
-           <widget class="QWidget" name="widget_3" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>File Save Policy</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>File Save Policy</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="2" column="1">
-           <widget class="QWidget" name="widget_4" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QComboBox" name="cboOutputPolicy">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QComboBox" name="cboOutputPolicy">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Open File Dialog</string>
                </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </item>
+              <item>
+               <property name="text">
+                <string>Open File Dialog on conflict</string>
                </property>
-               <item>
-                <property name="text">
-                 <string>Open File Dialog</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Open File Dialog on conflict</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Overwrite existing file</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Append Unique ID on conflict</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+              </item>
+              <item>
+               <property name="text">
+                <string>Overwrite existing file</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Append Unique ID on conflict</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -348,8 +332,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>424</width>
-        <height>537</height>
+        <width>411</width>
+        <height>527</height>
        </rect>
       </property>
       <attribute name="label">
@@ -409,15 +393,15 @@
           <item>
            <widget class="QFrame" name="stockFromBase">
             <layout class="QGridLayout" name="gridLayout_9">
-             <item row="1" column="3">
-              <widget class="Gui::InputField" name="stockExtYpos"/>
-             </item>
              <item row="0" column="1">
               <widget class="QLabel" name="stockExtXLabel">
                <property name="text">
                 <string>Ext. X</string>
                </property>
               </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockExtXneg"/>
              </item>
              <item row="0" column="3">
               <widget class="Gui::InputField" name="stockExtXpos">
@@ -436,8 +420,11 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockExtXneg"/>
+             <item row="1" column="2">
+              <widget class="Gui::InputField" name="stockExtYneg"/>
+             </item>
+             <item row="1" column="3">
+              <widget class="Gui::InputField" name="stockExtYpos"/>
              </item>
              <item row="2" column="1">
               <widget class="QLabel" name="stockExtZLabel">
@@ -452,21 +439,12 @@
              <item row="2" column="3">
               <widget class="Gui::InputField" name="stockExtZpos"/>
              </item>
-             <item row="1" column="2">
-              <widget class="Gui::InputField" name="stockExtYneg"/>
-             </item>
             </layout>
            </widget>
           </item>
           <item>
            <widget class="QFrame" name="stockCreateCylinder">
             <layout class="QGridLayout" name="gridLayout_10">
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockCylinderRadius"/>
-             </item>
-             <item row="1" column="2">
-              <widget class="Gui::InputField" name="stockCylinderHeight"/>
-             </item>
              <item row="0" column="1">
               <widget class="QLabel" name="stockCylinderRadiusLabel">
                <property name="text">
@@ -474,12 +452,18 @@
                </property>
               </widget>
              </item>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockCylinderRadius"/>
+             </item>
              <item row="1" column="1">
               <widget class="QLabel" name="stockCylinderHeightLabel">
                <property name="text">
                 <string>Height</string>
                </property>
               </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="Gui::InputField" name="stockCylinderHeight"/>
              </item>
             </layout>
            </widget>
@@ -494,18 +478,15 @@
                </property>
               </widget>
              </item>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockBoxLength"/>
+             </item>
              <item row="1" column="1">
               <widget class="QLabel" name="stockBoxWidthLabel">
                <property name="text">
                 <string>Width</string>
                </property>
               </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockBoxLength"/>
-             </item>
-             <item row="2" column="2">
-              <widget class="Gui::InputField" name="stockBoxHeight"/>
              </item>
              <item row="1" column="2">
               <widget class="Gui::InputField" name="stockBoxWidth"/>
@@ -516,6 +497,9 @@
                 <string>Height</string>
                </property>
               </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="Gui::InputField" name="stockBoxHeight"/>
              </item>
             </layout>
            </widget>
@@ -545,26 +529,6 @@
              <bool>false</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockAngle"/>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>Position</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Axis</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="Gui::InputField" name="stockPositionX"/>
-             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_9">
                <property name="text">
@@ -572,11 +536,15 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="3">
-              <widget class="Gui::InputField" name="stockPositionY"/>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockAngle"/>
              </item>
-             <item row="4" column="4">
-              <widget class="Gui::InputField" name="stockPositionZ"/>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Axis</string>
+               </property>
+              </widget>
              </item>
              <item row="3" column="2">
               <widget class="QDoubleSpinBox" name="stockAxisX">
@@ -598,6 +566,22 @@
                 <enum>QAbstractSpinBox::NoButtons</enum>
                </property>
               </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Position</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="Gui::InputField" name="stockPositionX"/>
+             </item>
+             <item row="4" column="3">
+              <widget class="Gui::InputField" name="stockPositionY"/>
+             </item>
+             <item row="4" column="4">
+              <widget class="Gui::InputField" name="stockPositionZ"/>
              </item>
             </layout>
            </widget>
@@ -626,23 +610,13 @@
         <x>0</x>
         <y>0</y>
         <width>424</width>
-        <height>537</height>
+        <height>200</height>
        </rect>
       </property>
       <attribute name="label">
        <string>Tools</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QCheckBox" name="toolsUseLegacy">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Use Legacy Tools</string>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QCheckBox" name="toolsAbsolutePaths">
          <property name="toolTip">
@@ -669,6 +643,19 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_5">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

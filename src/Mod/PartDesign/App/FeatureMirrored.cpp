@@ -23,20 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAdaptor_Surface.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Dir.hxx>
-# include <BRepAdaptor_Surface.hxx>
 #endif
 
-
 #include <App/OriginFeature.h>
-#include <Base/Exception.h>
-#include "FeatureMirrored.h"
-#include "DatumPlane.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
+
+#include "FeatureMirrored.h"
+#include "DatumPlane.h"
+
 
 using namespace PartDesign;
 
@@ -47,7 +47,7 @@ PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 
 Mirrored::Mirrored()
 {
-    ADD_PROPERTY_TYPE(MirrorPlane,(0),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
+    ADD_PROPERTY_TYPE(MirrorPlane,(nullptr),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
 }
 
 short Mirrored::mustExecute() const
@@ -60,7 +60,7 @@ short Mirrored::mustExecute() const
 const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
-    if (refObject == NULL)
+    if (!refObject)
         throw Base::ValueError("No mirror plane reference specified");
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
     if (subStrings.empty())
@@ -75,9 +75,9 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
         else if (subStrings[0] == "V_Axis")
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0] == "")
+        else if (subStrings[0].empty())
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
-        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+        else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);

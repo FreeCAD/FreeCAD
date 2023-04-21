@@ -20,22 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Sequencer.h>
-#include "FeatureMeshCurvature.h"
-#include "MeshFeature.h"
 
 #include "Core/Curvature.h"
-#include "Core/Elements.h"
-#include "Core/Iterator.h"
 
+#include "FeatureMeshCurvature.h"
+#include "MeshFeature.h"
 
 
 using namespace Mesh;
@@ -43,9 +33,9 @@ using namespace Mesh;
 PROPERTY_SOURCE(Mesh::Curvature, App::DocumentObject)
 
 
-Curvature::Curvature(void)
+Curvature::Curvature()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY(CurvInfo, (CurvatureInfo()));
 }
 
@@ -58,13 +48,13 @@ short Curvature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Curvature::execute(void)
+App::DocumentObjectExecReturn *Curvature::execute()
 {
     Mesh::Feature *pcFeat  = dynamic_cast<Mesh::Feature*>(Source.getValue());
     if(!pcFeat || pcFeat->isError()) {
         return new App::DocumentObjectExecReturn("No mesh object attached.");
     }
- 
+
     // get all points
     const MeshCore::MeshKernel& rMesh = pcFeat->Mesh.getValue().getKernel();
     MeshCore::MeshCurvature meshCurv(rMesh);

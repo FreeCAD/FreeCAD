@@ -20,26 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_PRECOMPILED_H
 #define FEM_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define AppFemExport   __declspec(dllexport)
-# define FemExport      __declspec(dllexport)
-# define PartExport     __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-# define BaseExport     __declspec(dllimport)
-#else // for Linux
-# define AppFemExport
-# define FemExport
-# define PartExport
-# define MeshExport
-# define BaseExport
-#endif
 
 #ifdef _MSC_VER
 # pragma warning(disable : 4290)
@@ -49,94 +33,86 @@
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-#include <cstdlib>
-#include <memory>
-#include <cmath>
-
-#include <math.h>
-
 #include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <set>
+#include <sstream>
 #include <stdexcept>
-// Python
-#include <Python.h>
+#include <string>
+#include <vector>
 
 // Boost
 #include <boost/assign/list_of.hpp>
 #include <boost/tokenizer.hpp>
 
+#include <Python.h>
+#include <QFileInfo>
+
 // Salomesh
-#include <SMESH_Version.h>
+#include <SMDS_MeshElement.hxx>
+#include <SMDS_MeshGroup.hxx>
+#include <SMDS_MeshNode.hxx>
+#include <SMDS_PolyhedralVolumeOfNodes.hxx>
+#include <SMDSAbs_ElementType.hxx>
 #include <SMESH_Gen.hxx>
 #include <SMESH_Group.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDS_MeshNode.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_NotConformAllowed.hxx>
-#include <StdMeshers_Arithmetic1D.hxx>
 #include <SMESH_Mesh.hxx>
 #include <SMESH_MeshEditor.hxx>
-#include <SMDS_MeshGroup.hxx>
-#include <SMESHDS_GroupBase.hxx>
+#include <SMESH_Version.h>
 #include <SMESHDS_Group.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
-#include <SMDS_MeshElement.hxx>
-#include <SMESH_Gen.hxx>
-#include <StdMeshers_UseExisting_1D2D.hxx>
+#include <SMESHDS_GroupBase.hxx>
+#include <SMESHDS_Mesh.hxx>
+
+#include <StdMeshers_Arithmetic1D.hxx>
+#include <StdMeshers_AutomaticLength.hxx>
 #include <StdMeshers_CompositeSegment_1D.hxx>
+#include <StdMeshers_Deflection1D.hxx>
 #include <StdMeshers_Hexa_3D.hxx>
 #include <StdMeshers_LayerDistribution.hxx>
+#include <StdMeshers_LengthFromEdges.hxx>
+#include <StdMeshers_LocalLength.hxx>
+#include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
+#include <StdMeshers_MaxLength.hxx>
+#include <StdMeshers_MEFISTO_2D.hxx>
+#include <StdMeshers_NotConformAllowed.hxx>
 #include <StdMeshers_NumberOfLayers.hxx>
+#include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_Prism_3D.hxx>
 #include <StdMeshers_Projection_1D.hxx>
 #include <StdMeshers_Projection_2D.hxx>
 #include <StdMeshers_Projection_3D.hxx>
-#include <StdMeshers_RadialPrism_3D.hxx>
-#include <StdMeshers_SegmentAroundVertex_0D.hxx>
 #include <StdMeshers_ProjectionSource1D.hxx>
 #include <StdMeshers_ProjectionSource2D.hxx>
 #include <StdMeshers_ProjectionSource3D.hxx>
+#include <StdMeshers_Quadrangle_2D.hxx>
+#include <StdMeshers_QuadraticMesh.hxx>
+#include <StdMeshers_QuadranglePreference.hxx>
+#include <StdMeshers_RadialPrism_3D.hxx>
+#include <StdMeshers_Regular_1D.hxx>
+#include <StdMeshers_SegmentAroundVertex_0D.hxx>
 #include <StdMeshers_SegmentLengthAroundVertex.hxx>
-#include <StdMeshers_CompositeHexa_3D.hxx>
-
+#include <StdMeshers_StartEndLength.hxx>
 #if SMESH_VERSION_MAJOR < 7
 # include <StdMeshers_TrianglePreference.hxx>
 #endif
+#include <StdMeshers_UseExisting_1D2D.hxx>
 
 // Opencascade
-#include <gp_Dir.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
 #include <Adaptor3d_IsoCurve.hxx>
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_HSurface.hxx>
+#if OCC_VERSION_HEX < 0x070600
+# include <BRepAdaptor_HSurface.hxx>
+#endif
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -146,8 +122,6 @@
 #include <BRepGProp.hxx>
 #include <BRepGProp_Face.hxx>
 #include <BRepTools.hxx>
-#include <ElCLib.hxx>
-#include <ElSLib.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
@@ -157,75 +131,69 @@
 #include <Geom_Plane.hxx>
 #include <GeomAPI_IntCS.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Lin.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 #include <GProp_GProps.hxx>
 #include <Precision.hxx>
-#include <Standard_Real.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
+#include <Standard_Real.hxx>
+#include <Standard_Version.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
-#include <TopoDS_Solid.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Solid.hxx>
 #include <TopoDS_Vertex.hxx>
 
 // VTK
-#include <vtkFieldData.h>
-#include <vtkPointData.h>
-#include <vtkCellData.h>
-#include <vtkDataSetReader.h>
-#include <vtkGeometryFilter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
 #include <vtkAppendFilter.h>
+#include <vtkCellArray.h>
+#include <vtkCompositeDataSet.h>
+#include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
 #include <vtkDataSetWriter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkXMLUnstructuredGridWriter.h>
-#include <vtkPointData.h>
-#include <vtkCellData.h>
-#include <vtkCellArray.h>
-#include <vtkDataArray.h>
 #include <vtkDoubleArray.h>
-#include <vtkIdList.h>
-#include <vtkCellTypes.h>
-#include <vtkTriangle.h>
-#include <vtkQuad.h>
-#include <vtkQuadraticTriangle.h>
-#include <vtkQuadraticQuad.h>
-#include <vtkTetra.h>
-#include <vtkPyramid.h>
-#include <vtkWedge.h>
 #include <vtkHexahedron.h>
-#include <vtkQuadraticTetra.h>
-#include <vtkQuadraticPyramid.h>
-#include <vtkQuadraticWedge.h>
-#include <vtkQuadraticHexahedron.h>
-#include <vtkPolyData.h>
-#include <vtkStructuredGrid.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkUniformGrid.h>
-#include <vtkCompositeDataSet.h>
+#include <vtkIdList.h>
+#include <vtkImageData.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiPieceDataSet.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPyramid.h>
+#include <vtkQuad.h>
+#include <vtkQuadraticHexahedron.h>
+#include <vtkQuadraticPyramid.h>
+#include <vtkQuadraticQuad.h>
+#include <vtkQuadraticTetra.h>
+#include <vtkQuadraticTriangle.h>
+#include <vtkQuadraticWedge.h>
+#include <vtkRectilinearGrid.h>
+#include <vtkStructuredGrid.h>
+#include <vtkTetra.h>
+#include <vtkTriangle.h>
+#include <vtkUniformGrid.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkWedge.h>
 #include <vtkXMLDataSetWriter.h>
+#include <vtkXMLImageDataReader.h>
+#include <vtkXMLPUnstructuredGridReader.h>
 #include <vtkXMLPolyDataReader.h>
+#include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLStructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLRectilinearGridReader.h>
-#include <vtkXMLImageDataReader.h>
+#include <vtkXMLUnstructuredGridWriter.h>
 
 // Netgen
 #ifdef FCWithNetgen
-# include <NETGENPlugin_SimpleHypothesis_3D.hxx>
 # include <NETGENPlugin_Hypothesis.hxx>
 # include <NETGENPlugin_Mesher.hxx>
+# include <NETGENPlugin_SimpleHypothesis_3D.hxx>
 #endif
 
 #endif // _PreComp_
 #endif
-

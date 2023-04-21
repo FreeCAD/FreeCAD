@@ -61,7 +61,7 @@ ConvexHull1<Real>::ConvexHull1 (const char* acFilename)
     :
     ConvexHull<Real>(0,(Real)0.0,false,Query::QT_REAL)
 {
-    m_afVertex = 0;
+    m_afVertex = nullptr;
     bool bLoaded = Load(acFilename);
     assert(bLoaded);
     (void)bLoaded;  // avoid warning in Release build

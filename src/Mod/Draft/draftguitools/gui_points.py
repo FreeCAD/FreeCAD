@@ -75,6 +75,7 @@ class Point(gui_base_original.Creator):
         self.point = None
         if self.ui:
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
+            self.ui.isRelative.hide()
             self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
@@ -134,7 +135,7 @@ class Point(gui_base_original.Creator):
                                        _cmd_list))
                 else:
                     # Insert a Draft point
-                    _cmd = 'Draft.makePoint'
+                    _cmd = 'Draft.make_point'
                     _cmd += '('
                     _cmd += str(self.stack[0][0]) + ', '
                     _cmd += str(self.stack[0][1]) + ', '
@@ -147,19 +148,24 @@ class Point(gui_base_original.Creator):
                                        _cmd_list))
                 todo.ToDo.delayCommit(commitlist)
                 Gui.Snapper.off()
-            self.finish()
+            self.finish(cont=None)
 
     def finish(self, cont=False):
-        """Terminate the operation and restart if needed."""
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         super(Point, self).finish()
         if self.callbackClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
-
-        if self.ui:
-            if self.ui.continueMode:
-                self.Activated()
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
 
 Gui.addCommand('Draft_Point', Point())

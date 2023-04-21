@@ -21,26 +21,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTPulley_H
 #define FEM_CONSTRAINTPulley_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraintGear.h"
+
 
 namespace Fem
 {
 
-class AppFemExport ConstraintPulley : public Fem::ConstraintGear
+class FemExport ConstraintPulley : public Fem::ConstraintGear
 {
-    PROPERTY_HEADER(Fem::ConstraintPulley);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintPulley);
 
 public:
     /// Constructor
-    ConstraintPulley(void);
+    ConstraintPulley();
 
     /// Other pulley diameter
     App::PropertyFloat OtherDiameter;
@@ -56,15 +52,15 @@ public:
     App::PropertyFloat BeltForce2;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemConstraintPulley";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 };
 

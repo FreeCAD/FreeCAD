@@ -24,7 +24,8 @@
 #define FREECAD_BASE_DUAL_QUATERNION_H
 
 #include "DualNumber.h"
-//#include <Console.h> //DEBUG
+#include <FCGlobal.h>
+
 
 namespace Base {
 
@@ -47,7 +48,7 @@ public:
     DualNumber w;
 public:
     ///default constructor: init with zeros
-    DualQuat(){}
+    DualQuat() = default;
     DualQuat(DualNumber x, DualNumber y, DualNumber z, DualNumber w)
         : x(x), y(y), z(z), w(w) {}
     DualQuat(double x,double y,double z,double w,double dx,double dy,double dz,double dw)

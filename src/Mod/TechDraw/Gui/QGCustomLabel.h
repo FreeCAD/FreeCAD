@@ -23,9 +23,11 @@
 #ifndef DRAWINGGUI_QGCUSTOMLABEL_H
 #define DRAWINGGUI_QGCUSTOMLABEL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
-#include <QPointF>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -44,7 +46,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 135};
     int type() const { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

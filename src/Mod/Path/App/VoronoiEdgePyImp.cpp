@@ -21,30 +21,19 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-
 #ifndef _PreComp_
-#include <boost/algorithm/string.hpp>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <Geom_Parabola.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <Geom_Parabola.hxx>
 #endif
 
-#include "Base/Exception.h"
-#include "Base/Vector3D.h"
-#include "Base/VectorPy.h"
-#include "Mod/Part/App/ArcOfParabolaPy.h"
-#include "Mod/Part/App/LineSegmentPy.h"
+#include "Mod/Part/App/Geometry.h"
 #include "Mod/Part/App/TopoShapeEdgePy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiCell.h"
-#include "Mod/Path/App/VoronoiCellPy.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
-#include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 
-#include "Mod/Path/App/VoronoiEdgePy.cpp"
+#include "VoronoiEdgePy.h"
+#include "VoronoiEdgePy.cpp"
+#include "VoronoiCellPy.h"
+#include "VoronoiVertexPy.h"
+
 
 using namespace Path;
 
@@ -170,6 +159,22 @@ namespace {
     return false;
   }
 
+  bool pointsMatch(const Voronoi::point_type &p0, const Voronoi::point_type &p1, double scale) {
+    return 1e-6 > distanceBetween(p0, p1, scale);
+  }
+
+  bool isPointOnSegment(const Voronoi::point_type &point, const Voronoi::segment_type &segment, double scale) {
+    return pointsMatch(point, low(segment), scale) || pointsMatch(point, high(segment), scale);
+  }
+
+  template<typename T>
+  PyObject* makeLineSegment(const VoronoiEdge *e, const T &p0, double z0, const T &p1, double z1) {
+    Part::GeomLineSegment p;
+    p.setPoints(e->dia->scaledVector(p0, z0), e->dia->scaledVector(p1, z1));
+    Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p.handle());
+    BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
+    return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
+  }
 }
 
 std::ostream& operator<<(std::ostream& os, const Voronoi::vertex_type &v) {
@@ -186,7 +191,7 @@ std::ostream& operator<<(std::ostream& os, const Voronoi::segment_type &s) {
 
 
 // returns a string which represents the object e.g. when printed in python
-std::string VoronoiEdgePy::representation(void) const
+std::string VoronoiEdgePy::representation() const
 {
   std::stringstream ss;
   ss.precision(5);
@@ -251,10 +256,10 @@ const Voronoi::voronoi_diagram_type::edge_type* getEdgeFromPy(VoronoiEdgePy *e, 
   if (throwIfNotBound) {
     throw Py::TypeError("Edge not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
+VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = nullptr) {
   VoronoiEdge *self = e->getVoronoiEdgePtr();
   if (!self->isBound()) {
     throw Py::TypeError("Edge not bound to voronoi diagram");
@@ -265,7 +270,7 @@ VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
   return self;
 }
 
-Py::Long VoronoiEdgePy::getIndex(void) const {
+Py::Long VoronoiEdgePy::getIndex() const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
     return Py::Long(e->dia->index(e->ptr));
@@ -273,7 +278,7 @@ Py::Long VoronoiEdgePy::getIndex(void) const {
   return Py::Long(-1);
 }
 
-Py::Long VoronoiEdgePy::getColor(void) const {
+Py::Long VoronoiEdgePy::getColor() const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
     Voronoi::color_type color = e->ptr->color() & Voronoi::ColorMask;
@@ -286,7 +291,7 @@ void VoronoiEdgePy::setColor(Py::Long color) {
   getEdgeFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
-Py::List VoronoiEdgePy::getVertices(void) const
+Py::List VoronoiEdgePy::getVertices() const
 {
   Py::List list;
   VoronoiEdge *e = getVoronoiEdgePtr();
@@ -309,37 +314,37 @@ Py::List VoronoiEdgePy::getVertices(void) const
   return list;
 }
 
-Py::Object VoronoiEdgePy::getTwin(void) const
+Py::Object VoronoiEdgePy::getTwin() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->twin())));
 }
 
-Py::Object VoronoiEdgePy::getNext(void) const
+Py::Object VoronoiEdgePy::getNext() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->next())));
 }
 
-Py::Object VoronoiEdgePy::getPrev(void) const
+Py::Object VoronoiEdgePy::getPrev() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->prev())));
 }
 
-Py::Object VoronoiEdgePy::getRotNext(void) const
+Py::Object VoronoiEdgePy::getRotNext() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_next())));
 }
 
-Py::Object VoronoiEdgePy::getRotPrev(void) const
+Py::Object VoronoiEdgePy::getRotPrev() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_prev())));
 }
 
-Py::Object VoronoiEdgePy::getCell(void) const
+Py::Object VoronoiEdgePy::getCell() const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiCellPy(new VoronoiCell(e->dia, e->ptr->cell())));
@@ -394,6 +399,21 @@ PyObject* VoronoiEdgePy::isSecondary(PyObject *args)
   return chk;
 }
 
+PyObject* VoronoiEdgePy::isBorderline(PyObject *args)
+{
+  VoronoiEdge *e = getVoronoiEdgeFromPy(this, args);
+  PyObject *chk = Py_False;
+  if (e->isBound() && !e->ptr->is_linear()) {
+    Voronoi::point_type   point   = e->ptr->cell()->contains_point() ? e->dia->retrievePoint(e->ptr->cell())  : e->dia->retrievePoint(e->ptr->twin()->cell());
+    Voronoi::segment_type segment = e->ptr->cell()->contains_point() ? e->dia->retrieveSegment(e->ptr->twin()->cell()) : e->dia->retrieveSegment(e->ptr->cell());
+    if (isPointOnSegment(point, segment, e->dia->getScale())) {
+      chk = Py_True;
+    }
+  }
+  Py_INCREF(chk);
+  return chk;
+}
+
 PyObject* VoronoiEdgePy::toShape(PyObject *args)
 {
   double z0 = 0.0;
@@ -412,11 +432,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         auto v0 = e->ptr->vertex0();
         auto v1 = e->ptr->vertex1();
         if (v0 && v1) {
-          Part::GeomLineSegment p;
-          p.setPoints(e->dia->scaledVector(*v0, z0), e->dia->scaledVector(*v1, z1));
-          Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p.handle());
-          BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
-          return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
+          return makeLineSegment(e, *v0, z0, *v1, z1);
         }
       } else {
         // infinite linear, need to clip somehow
@@ -461,11 +477,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
           end.x(origin.x() + direction.x() * k);
           end.y(origin.y() + direction.y() * k);
         }
-        Part::GeomLineSegment p;
-        p.setPoints(e->dia->scaledVector(begin, z0), e->dia->scaledVector(end, z1));
-        Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p.handle());
-        BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
-        return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
+        return makeLineSegment(e, begin, z0, end, z1);
       }
     } else {
       // parabolic curve, which is always formed by a point and an edge
@@ -473,6 +485,11 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
       Voronoi::segment_type segment = e->ptr->cell()->contains_point() ? e->dia->retrieveSegment(e->ptr->twin()->cell()) : e->dia->retrieveSegment(e->ptr->cell());
       // the location is the mid point between the normal on the segment through point
       // this is only the mid point of the segment if the parabola is symmetric
+
+      if (isPointOnSegment(point, segment, e->dia->getScale())) {
+        return makeLineSegment(e, low(segment), z0, high(segment), z1);
+      }
+
       Voronoi::point_type loc;
       {
         Voronoi::point_type proj = orthognalProjection(point, segment);
@@ -501,7 +518,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
       double dist1 = distanceBetween(pt1, pt1x, e->dia->getScale()) * sideOf(pt1, xaxis);
       if (dist1 < dist0) {
         // if the parabola is traversed in the revere direction we need to use the points
-        // on the other side of the parabola - beauty of symmetric geometries
+        // on the other side of the parabola - 'beauty of symmetric geometries
         dist0 = -dist0;
         dist1 = -dist1;
       }
@@ -527,6 +544,9 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         // focal length if parabola in the xy-plane is simply half the distance between the
         // point and segment - aka the distance between point and location, aka the length of axis
         focal = length(axis) / e->dia->getScale();
+        if (dbg) {
+          std::cerr << "focal = " << length(axis) << "/" << e->dia->getScale() << "\n";
+        }
       } else {
         // if the parabola is not in the xy-plane we need to find the
         // (x,y) coordinates of a point on the parabola in the parabola's
@@ -561,6 +581,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
           std::cerr << "  loc" << loc << ", axis" << axis << std::endl;
           std::cerr << "  dist0(" << dist0 << " : " << flenX0 << ", dist1(" << dist1 << " : " << flenX1 << ")" << std::endl;
           std::cerr << "  z(" << z0 << ", " << zx << ", " << z1 << ")" << std::endl;
+          std::cerr << "  focal = (" << flenX << " * " << flenX << ") / (4 * fabs(" << flenY << "))\n";
         }
         // use new X values to set the parameters
         dist0 = dist0 >= 0 ? flenX0 : -flenX0;
@@ -624,7 +645,7 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
 
 PyObject* VoronoiEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

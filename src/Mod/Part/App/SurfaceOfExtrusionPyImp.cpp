@@ -20,38 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_SurfaceOfLinearExtrusion.hxx>
 # include <Geom_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
+# include <Geom_SurfaceOfLinearExtrusion.hxx>
 #endif
-
-#include "Geometry.h"
-#include "SurfaceOfExtrusionPy.h"
-#include "SurfaceOfExtrusionPy.cpp"
-#include "GeometryCurvePy.h"
-#include "LinePy.h"
-#include "BezierCurvePy.h"
-#include "BSplineCurvePy.h"
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
+
+#include "SurfaceOfExtrusionPy.h"
+#include "SurfaceOfExtrusionPy.cpp"
+#include "GeometryCurvePy.h"
 #include "OCCError.h"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SurfaceOfExtrusionPy::representation(void) const
+std::string SurfaceOfExtrusionPy::representation() const
 {
     return std::string("<SurfaceOfExtrusion object>");
 }
 
 PyObject *SurfaceOfExtrusionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of SurfaceOfExtrusionPy and the Twin object 
+    // create a new instance of SurfaceOfExtrusionPy and the Twin object
     return new SurfaceOfExtrusionPy(new GeomSurfaceOfExtrusion);
 }
 
@@ -60,8 +54,8 @@ int SurfaceOfExtrusionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* pGeom;
     PyObject* pDir;
-    if (!PyArg_ParseTuple(args, "O!O!", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!O!",
+                            &(GeometryPy::Type), &pGeom,
                             &(Base::VectorPy::Type),&pDir))
         return -1;
 
@@ -87,7 +81,7 @@ int SurfaceOfExtrusionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Object SurfaceOfExtrusionPy::getDirection(void) const
+Py::Object SurfaceOfExtrusionPy::getDirection() const
 {
     Handle(Geom_SurfaceOfLinearExtrusion) curve = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
         (getGeometryPtr()->handle());
@@ -121,7 +115,7 @@ namespace Part {
     extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
 }
 
-Py::Object SurfaceOfExtrusionPy::getBasisCurve(void) const
+Py::Object SurfaceOfExtrusionPy::getBasisCurve() const
 {
     Handle(Geom_SurfaceOfLinearExtrusion) surf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
     (getGeometryPtr()->handle());
@@ -153,10 +147,10 @@ void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
 
 PyObject *SurfaceOfExtrusionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SurfaceOfExtrusionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

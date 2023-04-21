@@ -136,7 +136,7 @@
     <message>
       <location filename="TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation>No es pot obtindre informació de GitHub. &lt;a href="EnableDownload.py"&gt;Autoritzi FreeCAD a accedir a Internet&lt;/a&gt; i torni a carregar la pàgina d'inici.</translation>
+      <translation>No es pot obtenir informació de GitHub. &lt;a href="EnableDownload.py"&gt;Autoritzi FreeCAD a accedir a Internet&lt;/a&gt; i torni a carregar la pàgina d'inici.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>A continuació es mostren els últims canvis afegits al&lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;codi font de FreeCAD&lt;/a&gt;. És possible que aquests canvis encara no es reflecteixin en la versió de FreeCAD que esteu executant actualment. Verifiqueu les &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;opcions disponibles &lt;/a&gt; si desitgeu obtindre una versió de desenvolupament.</translation>
+      <translation>A continuació es mostren els últims canvis afegits al&lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;codi font de FreeCAD&lt;/a&gt;. És possible que aquests canvis encara no es reflecteixin en la versió de FreeCAD que esteu executant actualment. Verifiqueu les &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;opcions disponibles &lt;/a&gt; si desitgeu obtenir una versió de desenvolupament.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>
@@ -232,12 +232,12 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Start Page</source>
-      <translation>Pàgina Inicial</translation>
+      <translation>Pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Displays the start page in a browser view</source>
-      <translation>Obre la pàgina inicial en una vista del navegador</translation>
+      <translation>Obre la pàgina d'inici en una vista del navegador</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation>Opcions de pàgina d'inici</translation>
+      <translation>Opcions de la pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>

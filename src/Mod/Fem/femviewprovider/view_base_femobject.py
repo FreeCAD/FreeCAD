@@ -30,7 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider as base for all FEM objects
 
-from six import string_types
 
 import FreeCAD
 import FreeCADGui
@@ -61,7 +60,7 @@ class VPBaseFemObject(object):
             )
             return ""
         if (
-            isinstance(self.Object.Proxy.Type, string_types)
+            isinstance(self.Object.Proxy.Type, str)
             and self.Object.Proxy.Type.startswith("Fem::")
         ):
             icon_path = "/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
@@ -81,23 +80,15 @@ class VPBaseFemObject(object):
             # avoid edit mode by return False
             # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
             return False
-        if hide_mesh is True:
-            # hide all FEM meshes and VTK FemPost* objects
-            for o in vobj.Object.Document.Objects:
+        if hide_mesh:
+            # hide all FEM meshes and FemPost function objects
+            for obj in vobj.Object.Document.Objects:
                 if (
-                    o.isDerivedFrom("Fem::FemMeshObject")
-                    or o.isDerivedFrom("Fem::FemPostPipeline")
-                    or o.isDerivedFrom("Fem::FemPostClipFilter")
-                    or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
-                    or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
-                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                    or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
-                    or o.isDerivedFrom("Fem::FemPostCutFilter")
-                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                    or o.isDerivedFrom("Fem::FemPostPlaneFunction")
-                    or o.isDerivedFrom("Fem::FemPostSphereFunction")
+                    obj.isDerivedFrom("Fem::FemMeshObject")
+                    or obj.isDerivedFrom("Fem::FemPostPlaneFunction")
+                    or obj.isDerivedFrom("Fem::FemPostSphereFunction")
                 ):
-                    o.ViewObject.hide()
+                    obj.ViewObject.hide()
         # show task panel
         task = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(task)

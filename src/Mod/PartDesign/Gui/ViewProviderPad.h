@@ -30,19 +30,19 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPad : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPad);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPad);
 
 public:
     /// constructor
     ViewProviderPad();
     /// destructor
-    virtual ~ViewProviderPad();
+    ~ViewProviderPad() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly created TaskDlgPadParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

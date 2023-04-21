@@ -38,6 +38,10 @@
 #ifndef __PyCXX_config_hh__
 #define __PyCXX_config_hh__
 
+#if defined( Py_LIMITED_API ) && Py_LIMITED_API+0 < 0x03040000
+#error "PyCXX support for Python limited API requires version 3.4 or newer. Py_LIMITED_API=0x03040000"
+#endif
+
 //
 // Microsoft VC++ 6.0 has no traits
 //
@@ -53,7 +57,7 @@
 #endif
 
 //
-//	Assume all other compilers do
+// Assume all other compilers do
 //
 #else
 
@@ -68,7 +72,7 @@
 #endif
 
 //
-//	Which C++ standard is in use?
+// Which C++ standard is in use?
 //
 #if defined( _MSC_VER )
 #  if _MSC_VER <= 1200

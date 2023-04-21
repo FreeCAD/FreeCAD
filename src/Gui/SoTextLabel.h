@@ -23,18 +23,17 @@
 #ifndef GUI_SOTEXTLABEL_H
 #define GUI_SOTEXTLABEL_H
 
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoImage.h>
-#include <Inventor/nodes/SoText2.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFImage.h>
+#include <Inventor/fields/SoSFName.h>
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/nodes/SoImage.h>
+#include <Inventor/nodes/SoText2.h>
+#include <FCGlobal.h>
+
 
 namespace Gui {
 
@@ -43,7 +42,7 @@ namespace Gui {
  * @author Werner Mayer
  */
 class GuiExport SoTextLabel : public SoText2 {
-    typedef SoText2 inherited;
+    using inherited = SoText2;
 
     SO_NODE_HEADER(SoTextLabel);
 
@@ -56,12 +55,29 @@ public:
     SoSFFloat frameSize;
 
 protected:
-    virtual ~SoTextLabel() {};
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoTextLabel() override {}
+    void GLRender(SoGLRenderAction *action) override;
+};
+
+/**
+ * A text label for the color bar.
+ * @author Werner Mayer
+ */
+class GuiExport SoColorBarLabel : public SoText2 {
+    using inherited = SoText2;
+
+    SO_NODE_HEADER(SoColorBarLabel);
+
+public:
+    static void initClass();
+    SoColorBarLabel();
+
+protected:
+    void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
 };
 
 class GuiExport SoStringLabel : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoStringLabel);
 
@@ -75,12 +91,12 @@ public:
     SoSFInt32  size;
 
 protected:
-    virtual ~SoStringLabel() {};
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoStringLabel() override {}
+    void GLRender(SoGLRenderAction *action) override;
 };
 
 class GuiExport SoFrameLabel : public SoImage {
-    typedef SoImage inherited;
+    using inherited = SoImage;
 
     SO_NODE_HEADER(SoFrameLabel);
 
@@ -102,9 +118,9 @@ public:
   //SoSFImage  image;
 
 protected:
-    virtual ~SoFrameLabel() {};
-    virtual void notify(SoNotList * list);
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoFrameLabel() override {}
+    void notify(SoNotList * list) override;
+    void GLRender(SoGLRenderAction *action) override;
 
 private:
     void drawImage();
@@ -121,7 +137,7 @@ public:
 
 private:
     // Destructor
-    ~TranslateManip();
+    ~TranslateManip() override;
 };
 
 } // namespace Gui

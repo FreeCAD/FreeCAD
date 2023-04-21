@@ -20,23 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include <Mod/Mesh/Gui/ViewProvider.h>
-
+#include "ViewProvider.h"
 // inclusion of the generated files (generated out of ViewProviderMeshPy.xml)
 #include "ViewProviderMeshPy.h"
 #include "ViewProviderMeshPy.cpp"
 
+
 using namespace MeshGui;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ViewProviderMeshPy::representation(void) const
+std::string ViewProviderMeshPy::representation() const
 {
     std::stringstream str;
     str << "<View provider object at " << getViewProviderDocumentObjectPtr() << ">";
@@ -48,14 +46,14 @@ PyObject* ViewProviderMeshPy::setSelection(PyObject *args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
-        return 0;
+        return nullptr;
 
     Py::Sequence list(obj);
-    std::vector<unsigned long> selection;
+    std::vector<Mesh::FacetIndex> selection;
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        unsigned long value = static_cast<unsigned long>(index);
+        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -68,14 +66,14 @@ PyObject* ViewProviderMeshPy::addSelection(PyObject *args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
-        return 0;
+        return nullptr;
 
     Py::Sequence list(obj);
-    std::vector<unsigned long> selection;
+    std::vector<Mesh::FacetIndex> selection;
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        unsigned long value = static_cast<unsigned long>(index);
+        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -88,14 +86,14 @@ PyObject* ViewProviderMeshPy::removeSelection(PyObject *args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
-        return 0;
+        return nullptr;
 
     Py::Sequence list(obj);
-    std::vector<unsigned long> selection;
+    std::vector<Mesh::FacetIndex> selection;
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        unsigned long value = static_cast<unsigned long>(index);
+        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -107,7 +105,7 @@ PyObject* ViewProviderMeshPy::removeSelection(PyObject *args)
 PyObject* ViewProviderMeshPy::invertSelection(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     ViewProviderMesh* vp = getViewProviderMeshPtr();
     vp->invertSelection();
@@ -117,7 +115,7 @@ PyObject* ViewProviderMeshPy::invertSelection(PyObject *args)
 PyObject* ViewProviderMeshPy::clearSelection(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     ViewProviderMesh* vp = getViewProviderMeshPtr();
     vp->clearSelection();
@@ -128,7 +126,7 @@ PyObject* ViewProviderMeshPy::highlightSegments(PyObject *args)
 {
     PyObject* list;
     if (!PyArg_ParseTuple(args, "O", &list))
-        return 0;
+        return nullptr;
 
     App::PropertyColorList colors;
     colors.setPyObject(list);
@@ -140,7 +138,7 @@ PyObject* ViewProviderMeshPy::highlightSegments(PyObject *args)
 
 PyObject *ViewProviderMeshPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderMeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+	<name>Test Workbenches</name>
+	<description>A package.xml file for unit testing.</description>
+	<version>1.0.1</version>
+	<date>2022-01-07</date>
+	<maintainer email="developer@freecad.org">FreeCAD Developer</maintainer>
+	<license file="LICENSE">LGPLv2.1</license>
+	<url type="repository" branch="main">https://github.com/chennes/FreeCAD-Package</url>
+	<url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
+
+	<content>
+		<workbench>
+			<classname>MyFirstWorkbench</classname>
+			<icon>Resources/icons/PackageIcon.svg</icon>
+			<depend>Arch</depend>
+			<depend>DraftWB</depend>
+			<depend>FEM WB</depend>
+			<depend>MeshWorkbench</depend>
+			<depend>OpenSCAD Workbench</depend>
+			<depend>Part WORKBENCH</depend>
+			<depend>PartDesign WB</depend>
+			<depend>path</depend>
+			<depend>Plot</depend>
+			<depend>POINTS</depend>
+			<depend>RayTRAcing</depend>
+			<depend>ROBOTWB</depend>
+			<depend>Sketcher workbench</depend>
+			<depend>Spreadsheet</depend>
+			<depend>TechDraw</depend>
+		</workbench>
+	</content>
+
+</package>

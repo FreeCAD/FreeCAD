@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,18 +29,12 @@
 # include <QTcpSocket>
 #endif
 
-#include <sstream>
-#include <CXX/Objects.hxx>
-#include <zipios++/zipfile.h>
 #include <Base/Interpreter.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
 
-#include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "OnlineDocumentation.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 
@@ -245,7 +238,7 @@ QByteArray PythonOnlineHelp::fileNotFound() const
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
+    QString httpResponseHeader = http.arg(404).arg(QString::fromLatin1("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -274,7 +267,7 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
+    QString httpResponseHeader = http.arg(404).arg(QString::fromLatin1("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -294,9 +287,9 @@ void HttpServer::incomingConnection(qintptr socket)
     // communication with the client is done over this QTcpSocket. QTcpSocket
     // works asynchronously, this means that all the communication is done
     // in the two slots readClient() and discardClient().
-    QTcpSocket* s = new QTcpSocket(this);
-    connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-    connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
+    auto s = new QTcpSocket(this);
+    connect(s, &QTcpSocket::readyRead, this, &HttpServer::readClient);
+    connect(s, &QTcpSocket::disconnected, this, &HttpServer::discardClient);
     s->setSocketDescriptor(socket);
 }
 
@@ -318,7 +311,7 @@ void HttpServer::readClient()
     // This slot is called when the client sent data to the server. The
     // server looks if it was a GET request and  sends back the
     // corresponding HTML document from the ZIP file.
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    auto socket = static_cast<QTcpSocket*>(sender());
     if (socket->canReadLine()) {
         QString httpRequestHeader = QString::fromLatin1(socket->readLine());
         QStringList lst = httpRequestHeader.simplified().split(QLatin1String(" "));
@@ -352,7 +345,7 @@ void HttpServer::readClient()
 
 void HttpServer::discardClient()
 {
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    auto socket = static_cast<QTcpSocket*>(sender());
     socket->deleteLater();
 }
 
@@ -361,9 +354,9 @@ void HttpServer::discardClient()
 /* TRANSLATOR Gui::StdCmdPythonHelp */
 
 StdCmdPythonHelp::StdCmdPythonHelp()
-  : Command("Std_PythonHelp"), server(0)
+  : Command("Std_PythonHelp"), server(nullptr)
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
     sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
     sWhatsThis    = "Std_PythonHelp";

@@ -41,17 +41,15 @@
 
 #ifndef _PreComp_
 # ifdef _MSC_VER
-#  include <cstdio>
-#  include <time.h>
-#  include <Windows.h>
+#  include <ctime>
 #  include <crtdbg.h>
 # endif
 #endif
 
-
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "MemDebug.h"
 #include <stdexcept>
+
 
 using namespace Base;
 
@@ -124,19 +122,13 @@ MemDebug::MemDebug()
    // Open a log file for the hook functions to use
    if ( logFile != NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():38: Don't call the constructor by your self!");
-#if (_MSC_VER >= 1400)
+
    fopen_s( &logFile, "MemLog.txt", "w" );
    if ( logFile == NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
    _strtime_s( timeStr, 15 );
    _strdate_s( dateStr, 15 );
-#elif (_MSC_VER >= 1200)
-   logFile = fopen( "MemLog.txt", "w" );
-   if ( logFile == NULL )
-     throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
-   _strtime( timeStr );
-   _strdate( dateStr );
-#endif
+
    fprintf( logFile,
             "Memory Allocation Log File for FreeCAD, run at %s on %s.\n",
             timeStr, dateStr );
@@ -176,7 +168,7 @@ MemDebug::~MemDebug()
 */
 int MemDebug::sReportHook(int   nRptType,char *szMsg,int  *retVal)
 {
-   char *RptTypes[] = { "Warning", "Error", "Assert" };
+   const char *RptTypes[] = { "Warning", "Error", "Assert" };
 
    if ( ( nRptType > 0 ) || ( strstr( szMsg, "HEAP CORRUPTION DETECTED" ) ) )
       fprintf( logFile, "%s: %s", RptTypes[nRptType], szMsg );
@@ -201,8 +193,8 @@ int __cdecl MemDebug::sAllocHook(
    int      nLine
    )
 {
-  char *operation[] = { "       :", "Alloc  :", "Realloc:", "Free   :" };
-   char *blockType[] = { "Free", "Normal", "CRT", "Ignore", "Client" };
+   const char *operation[] = { "       :", "Alloc  :", "Realloc:", "Free   :" };
+   const char *blockType[] = { "Free", "Normal", "CRT", "Ignore", "Client" };
 
    if ( nBlockUse == _CRT_BLOCK )   // Ignore internal C runtime library allocations
       return( 7 ); // (True = 7, False = 0)

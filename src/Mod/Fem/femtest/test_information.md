@@ -2,7 +2,7 @@
 
 With these files one can find information on how to run unit tests for FEM
 
-## Specifically 
+## Specifically
 
 - How to run a specific test class or a test method see file: `src/Mod/Test/__init__`
 - related [forum thread](https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546)
@@ -62,6 +62,11 @@ import Test, femtest.app.test_common
 Test.runTestsFromClass(femtest.app.test_common.TestFemCommon)
 
 ```
+```python
+import Test, femtest.app.test_solver_calculix
+Test.runTestsFromClass(femtest.app.test_solver_calculix.TestSolverCalculix)
+
+```
 
 ### method
 
@@ -118,7 +123,7 @@ unittest.TextTestRunner().run(alltest)
 ```
 
 
-## Open files 
+## Open files
 
 ### From FEM test suite source code
 

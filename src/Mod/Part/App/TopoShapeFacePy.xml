@@ -30,6 +30,11 @@ Returns Compound of Wires. Deprecated - use makeOffset2D instead.
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="makeEvolved" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Profile along the spine</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getUVNodes" Const="true">
             <Documentation>
                 <UserDocu>Get the list of (u,v) nodes of the tessellation
@@ -101,6 +106,16 @@ makeHalfSpace(pos) -> Shape
 validate()
                 </UserDocu>
             </Documentation>
+        </Methode>
+        <Methode Name="countNodes" Const="true">
+        <Documentation>
+          <UserDocu>Returns the number of nodes of the triangulation.</UserDocu>
+        </Documentation>
+        </Methode>
+        <Methode Name="countTriangles" Const="true">
+        <Documentation>
+          <UserDocu>Returns the number of triangles of the triangulation.</UserDocu>
+        </Documentation>
         </Methode>
         <Methode Name="curveOnSurface" Const="true">
             <Documentation>

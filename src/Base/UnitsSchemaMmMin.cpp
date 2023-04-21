@@ -27,10 +27,8 @@
 #endif
 
 #include <QString>
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaMmMin.h"
-#include <cmath>
 
 
 using namespace Base;

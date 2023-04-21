@@ -29,8 +29,6 @@ __url__ = "https://www.freecadweb.org"
 #  @{
 
 import collections
-import six
-
 
 SIMULATION = "Simulation"
 CONSTANTS = "Constants"
@@ -57,7 +55,6 @@ _VALID_SECTIONS = (
     COMPONENT,
 )
 
-
 _NUMBERED_SECTIONS = (
     BODY,
     MATERIAL,
@@ -69,24 +66,22 @@ _NUMBERED_SECTIONS = (
     COMPONENT,
 )
 
-
 _SECTION_DELIM = "End"
 _WHITESPACE = " "
 _INDENT = " " * 2
 _NEWLINE = "\n"
-
 
 _TYPE_REAL = "Real"
 _TYPE_INTEGER = "Integer"
 _TYPE_LOGICAL = "Logical"
 _TYPE_STRING = "String"
 _TYPE_FILE = "File"
+_TYPE_VARIABLE = "Variable"
 
-
-WARN = "Warn"
-IGNORE = "Ignore"
-ABORT = "Abort"
-SILENT = "Silent"
+WARN = "\"Warn\""
+IGNORE = "\"Ignore\""
+ABORT = "\"Abort\""
+SILENT = "\"Silent\""
 
 
 def createSection(name):
@@ -334,12 +329,12 @@ class _Writer(object):
 
     def _getOnlyElement(self, collection):
         it = iter(collection)
-        return it.next()
+        return next(it)
 
     def _isCollection(self, data):
         return (
-            not isinstance(data, six.string_types)
-            and isinstance(data, collections.Iterable)
+            not isinstance(data, str)
+            and isinstance(data, collections.abc.Iterable)
         )
 
     def _checkScalar(self, dataType):
@@ -362,9 +357,20 @@ class _Writer(object):
         self._stream.write(_WHITESPACE)
         self._stream.write("=")
         self._stream.write(_WHITESPACE)
-        self._stream.write(attrType)
-        self._stream.write(_WHITESPACE)
-        self._stream.write(self._preprocess(data, type(data)))
+        # check if we have a variable string
+        if attrType is _TYPE_STRING:
+            if data.startswith('Variable'):
+                attrType = _TYPE_VARIABLE
+        if attrType is not _TYPE_VARIABLE:
+            self._stream.write(attrType)
+            self._stream.write(_WHITESPACE)
+        output = self._preprocess(data, type(data))
+        # in case of a variable the output must be without the quatoation marks
+        if attrType is _TYPE_VARIABLE:
+            output = output.lstrip('\"')
+            # we cannot use rstrip because there are two subsequent " at the end
+            output = output[:-1]
+        self._stream.write(output)
 
     def _writeArrAttr(self, key, data):
         attrType = self._getAttrTypeArr(data)
@@ -374,10 +380,21 @@ class _Writer(object):
         self._stream.write(_WHITESPACE)
         self._stream.write("=")
         self._stream.write(_WHITESPACE)
-        self._stream.write(attrType)
+        # check if we have a variable string
+        if attrType is _TYPE_STRING:
+            if data.startswith('Variable'):
+                attrType = _TYPE_VARIABLE
+        if attrType is not _TYPE_VARIABLE:
+            self._stream.write(attrType)
         for val in data:
             self._stream.write(_WHITESPACE)
-            self._stream.write(self._preprocess(val, type(val)))
+            output = self._preprocess(val, type(val))
+            # in case of a variable the output must be without the quatoation marks
+            if attrType is _TYPE_VARIABLE:
+                output = output.lstrip('\"')
+                # we cannot use rstrip because there are two subsequent " at the end
+                output = output[:-1]
+            self._stream.write(output)
 
     def _writeFileAttr(self, key, data):
         self._stream.write(_INDENT)
@@ -400,16 +417,14 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if issubclass(dataType, six.string_types):
+        if issubclass(dataType, str):
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        # use six to be sure to be Python 2.7 and 3.x compatible
-        if issubclass(dataType, six.string_types):
+        if issubclass(dataType, str):
             return '"%s"' % data
         return str(data)
 

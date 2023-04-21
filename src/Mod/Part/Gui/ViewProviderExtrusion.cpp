@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderExtrusion.h"
 #include <Mod/Part/App/FeatureExtrusion.h>
 
@@ -43,7 +40,7 @@ ViewProviderExtrusion::~ViewProviderExtrusion()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderExtrusion::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderExtrusion::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Part::Extrusion*>(getObject())->Base.getValue());

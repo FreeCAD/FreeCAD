@@ -25,9 +25,9 @@
 #define GUI_ACTIONFUNCTION_H
 
 #include <QObject>
-#include <QPointer>
 #include <QVariant>
-#include <boost/function.hpp>
+#include <functional>
+#include <FCGlobal.h>
 
 class QAction;
 
@@ -47,13 +47,13 @@ class ActionFunctionPrivate;
         Gui::ActionFunction* func = new Gui::ActionFunction(menu);
 
         QAction* a1 = menu->addAction(QObject::tr("Menu item 1..."));
-        func->triggered(a1, boost::bind(&MyViewProvider::doItem1, this));
+        func->triggered(a1, std::bind(&MyViewProvider::doItem1, this));
 
         QAction* a2 = menu->addAction(QObject::tr("Menu item 2..."));
-        func->triggered(a2, boost::bind(&MyViewProvider::doItem2, this));
+        func->triggered(a2, std::bind(&MyViewProvider::doItem2, this));
 
         QAction* a3 = menu->addAction(QObject::tr("Menu item 3..."));
-        func->triggered(a3, boost::bind(&MyViewProvider::doItem3, this));
+        func->triggered(a3, std::bind(&MyViewProvider::doItem3, this));
     }
   \endcode
 
@@ -67,15 +67,15 @@ class GuiExport ActionFunction : public QObject
 
 public:
     /// Constructor
-    ActionFunction(QObject*);
-    virtual ~ActionFunction();
+    explicit ActionFunction(QObject*);
+    ~ActionFunction() override;
 
     /*!
        Connects the QAction's triggered() signal with the function \a func
      */
-    void trigger(QAction* a, boost::function<void()> func);
-    void toggle(QAction* a, boost::function<void(bool)> func);
-    void hover(QAction* a, boost::function<void()> func);
+    void trigger(QAction* a, std::function<void()> func);
+    void toggle(QAction* a, std::function<void(bool)> func);
+    void hover(QAction* a, std::function<void()> func);
 
 private Q_SLOTS:
     void triggered();
@@ -96,13 +96,14 @@ class GuiExport TimerFunction : public QObject
 
 public:
     /// Constructor
-    TimerFunction(QObject* = 0);
-    virtual ~TimerFunction();
+    explicit TimerFunction(QObject* = nullptr);
+    ~TimerFunction() override;
 
-    void setFunction(boost::function<void()> func);
-    void setFunction(boost::function<void(QObject*)> func, QObject* args);
-    void setFunction(boost::function<void(QVariant)> func, QVariant args);
+    void setFunction(std::function<void()> func);
+    void setFunction(std::function<void(QObject*)> func, QObject* args);
+    void setFunction(std::function<void(QVariant)> func, QVariant args);
     void setAutoDelete(bool);
+    void singleShot(int ms);
 
 private Q_SLOTS:
     void timeout();

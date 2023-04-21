@@ -20,37 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
-#include "TaskDlgAnalysis.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
-
+#include <Gui/Document.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 
+#include "TaskDlgAnalysis.h"
 #include "TaskAnalysisInfo.h"
 #include "TaskDriver.h"
 
 
 using namespace FemGui;
 
-
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAnalysis::TaskDlgAnalysis(Fem::FemAnalysis *obj)
-    : TaskDialog(),FemAnalysis(obj)
+TaskDlgAnalysis::TaskDlgAnalysis(Fem::FemAnalysis* obj)
+    : TaskDialog(), FemAnalysis(obj)
 {
     driver  = new TaskDriver(obj);
     info    = new TaskAnalysisInfo(obj);
@@ -113,6 +105,5 @@ void TaskDlgAnalysis::helpRequested()
 {
 
 }
-
 
 #include "moc_TaskDlgAnalysis.cpp"

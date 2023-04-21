@@ -1,4 +1,3 @@
-
 /***************************************************************************
 * Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>        *
 *                                                                          *
@@ -23,17 +22,8 @@
 #ifndef PROPERTYCONSTRAINTLISTITEM_H
 #define PROPERTYCONSTRAINTLISTITEM_H
 
-#include <QObject>
-#include <QPointer>
-#include <QItemEditorFactory>
 #include <vector>
-#include <QList>
-
-#include <Base/Type.h>
-#include <Base/Quantity.h>
-#include <Base/UnitsApi.h>
-#include <App/PropertyStandard.h>
-#include <Gui/Widgets.h>
+#include <QObject>
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
@@ -45,19 +35,19 @@ class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    virtual ~PropertyConstraintListItem();
-    virtual void assignProperty(const App::Property* prop);
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
+    ~PropertyConstraintListItem() override;
+    void assignProperty(const App::Property* prop) override;
+    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    void setEditorData(QWidget *editor, const QVariant& data) const override;
+    QVariant editorData(QWidget *editor) const override;
 
 protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
-    virtual bool event (QEvent* ev);
+    QVariant toString(const QVariant&) const override;
+    QVariant value(const App::Property*) const override;
+    void setValue(const QVariant&) override;
+    bool event (QEvent* ev) override;
 
-    virtual void initialize();
+    void initialize() override;
 
 protected:
     PropertyConstraintListItem();

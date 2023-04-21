@@ -57,7 +57,7 @@ VEManifoldMesh::EPtr VEManifoldMesh::InsertEdge (int iV0, int iV1)
     if (pkEIter != m_kEMap.end())
     {
         // edge already exists
-        return 0;
+        return nullptr;
     }
 
     // add new edge
@@ -89,7 +89,7 @@ VEManifoldMesh::EPtr VEManifoldMesh::InsertEdge (int iV0, int iV1)
             if (pkVertex->E[1])
             {
                 assert(false);  // mesh must be manifold
-                return 0;
+                return nullptr;
             }
             pkVertex->E[1] = pkEdge;
 
@@ -135,11 +135,11 @@ bool VEManifoldMesh::RemoveEdge (int iV0, int iV1)
         {
             // one-edge vertices always have pointer in slot zero
             pkVertex->E[0] = pkVertex->E[1];
-            pkVertex->E[1] = 0;
+            pkVertex->E[1] = nullptr;
         }
         else if (pkVertex->E[1] == pkEdge)
         {
-            pkVertex->E[1] = 0;
+            pkVertex->E[1] = nullptr;
         }
         else
         {
@@ -162,7 +162,7 @@ bool VEManifoldMesh::RemoveEdge (int iV0, int iV1)
             {
                 if (pkAdjacent->E[j] == pkEdge)
                 {
-                    pkAdjacent->E[j] = 0;
+                    pkAdjacent->E[j] = nullptr;
                     break;
                 }
             }
@@ -198,7 +198,7 @@ void VEManifoldMesh::Print (const char* acFilename)
 
     // assign unique indices to the edges
     std::map<EPtr,int> kEIndex;
-    kEIndex[0] = 0;
+    kEIndex[nullptr] = 0;
     int i = 1;
     EMapIterator pkEIter;
     for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
@@ -272,8 +272,8 @@ void VEManifoldMesh::Print (const char* acFilename)
 VEManifoldMesh::Vertex::Vertex (int iV)
 {
     V = iV;
-    E[0] = 0;
-    E[1] = 0;
+    E[0] = nullptr;
+    E[1] = nullptr;
 }
 //----------------------------------------------------------------------------
 VEManifoldMesh::Vertex::~Vertex ()
@@ -288,8 +288,8 @@ VEManifoldMesh::Edge::Edge (int iV0, int iV1)
 {
     V[0] = iV0;
     V[1] = iV1;
-    E[0] = 0;
-    E[1] = 0;
+    E[0] = nullptr;
+    E[1] = nullptr;
 }
 //----------------------------------------------------------------------------
 VEManifoldMesh::Edge::~Edge ()

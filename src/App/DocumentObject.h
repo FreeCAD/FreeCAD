@@ -26,17 +26,18 @@
 #define APP_DOCUMENTOBJECT_H
 
 #include <App/TransactionalObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
+#include <Base/SmartPtrPy.h>
 
-#include <Base/TimeInfo.h>
-#include <Base/Matrix.h>
-#include <CXX/Objects.hxx>
-
-#include <unordered_map>
 #include <bitset>
-#include <boost_signals2.hpp>
+#include <unordered_map>
+
+namespace Base
+{
+class Matrix4D;
+}
 
 namespace App
 {
@@ -58,7 +59,6 @@ enum ObjectStatus {
     Recompute2 = 9, // set when the object is being recomputed in the second pass
     PartialObject = 10,
     PendingRecompute = 11, // set by Document, indicating the object is in recomputation queue
-    PendingRemove = 12, // set by Document, indicating the object is in pending for remove after recompute
     ObjImporting = 13, // Mark the object as importing
     NoTouch = 14, // no touch on any property change
     GeoExcluded = 15, // mark as a member but not claimed by GeoFeatureGroup
@@ -66,6 +66,7 @@ enum ObjectStatus {
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
     RecomputeExtension = 19, // mark the object to recompute its extensions
+    TouchOnColorChange = 20, // inform view provider touch object on color change
 };
 
 /** Return object for feature execution
@@ -73,11 +74,11 @@ enum ObjectStatus {
 class AppExport DocumentObjectExecReturn
 {
 public:
-    DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=0)
+    explicit DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=nullptr)
         : Why(sWhy), Which(WhichObject)
     {
     }
-    DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=0)
+    explicit DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=nullptr)
         : Which(WhichObject)
     {
         if (sWhy)
@@ -111,7 +112,7 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "";
     }
     /**
@@ -128,21 +129,23 @@ public:
     }
 
     /// Constructor
-    DocumentObject(void);
-    virtual ~DocumentObject();
+    DocumentObject();
+    ~DocumentObject() override;
 
     /// returns the name which is set in the document for this object (not the name property!)
-    const char *getNameInDocument(void) const;
+    const char *getNameInDocument() const;
     /// Return the object ID that is unique within its owner document
     long getID() const {return _Id;}
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
-    virtual std::string getFullName() const override;
-    virtual bool isAttachedToDocument() const override;
-    virtual const char* detachFromDocument() override;
+    std::string getFullName() const override;
+    /// Return the object full label in the form DocName#ObjName
+    std::string getFullLabel() const;
+    bool isAttachedToDocument() const override;
+    const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
-    App::Document *getDocument(void) const;
+    App::Document *getDocument() const;
 
     /** Set the property touched -> changed, cause recomputation in Update()
      */
@@ -150,22 +153,22 @@ public:
     /// set this document object touched (cause recomputation on dependent features)
     void touch(bool noRecompute=false);
     /// test if this document object is touched
-    bool isTouched(void) const;
+    bool isTouched() const;
     /// Enforce this document object to be recomputed
     void enforceRecompute();
     /// Test if this document object must be recomputed
-    bool mustRecompute(void) const;
+    bool mustRecompute() const;
     /// reset this document object touched
-    void purgeTouched(void) {
+    void purgeTouched() {
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0,false);
     }
     /// set this feature to error
-    bool isError(void) const {return  StatusBits.test(ObjectStatus::Error);}
-    bool isValid(void) const {return !StatusBits.test(ObjectStatus::Error);}
+    bool isError() const {return  StatusBits.test(ObjectStatus::Error);}
+    bool isValid() const {return !StatusBits.test(ObjectStatus::Error);}
     /// remove the error from the object
-    void purgeError(void){StatusBits.reset(ObjectStatus::Error);}
+    void purgeError(){StatusBits.reset(ObjectStatus::Error);}
     /// returns true if this objects is currently recomputing
     bool isRecomputing() const {return StatusBits.test(ObjectStatus::Recompute);}
     /// returns true if this objects is currently restoring from file
@@ -174,8 +177,8 @@ public:
     bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
-    bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
-    void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+    bool testStatus(ObjectStatus pos) const {return StatusBits.test(size_t(pos));}
+    void setStatus(ObjectStatus pos, bool on) {StatusBits.set(size_t(pos), on);}
     //@}
 
     int isExporting() const;
@@ -227,7 +230,7 @@ public:
     /// returns a list of objects linked by the property
     std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
     /// returns a list of objects this object is pointing to by Links and all further descended
-    std::vector<App::DocumentObject*> getOutListRecursive(void) const;
+    std::vector<App::DocumentObject*> getOutListRecursive() const;
     /// clear internal out list cache
     void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
@@ -236,10 +239,10 @@ public:
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const
 #else
-    const std::vector<App::DocumentObject*> &getInList(void) const;
+    const std::vector<App::DocumentObject*> &getInList() const;
 #endif
     /// get all objects link directly or indirectly to this object
-    std::vector<App::DocumentObject*> getInListRecursive(void) const;
+    std::vector<App::DocumentObject*> getInListRecursive() const;
     /** Get a set of all objects linking to this object, including possible external parent objects
      *
      * @param inSet [out]: a set containing all objects linking to this object.
@@ -248,7 +251,7 @@ public:
      * objects, with the furthest linking object ordered last.
      */
     void getInListEx(std::set<App::DocumentObject*> &inSet,
-            bool recursive, std::vector<App::DocumentObject*> *inList=0) const;
+            bool recursive, std::vector<App::DocumentObject*> *inList=nullptr) const;
     /** Return a set of all objects linking to this object, including possible external parent objects
      * @param recursive [in]: whether to obtain recursive in list
      */
@@ -298,7 +301,7 @@ public:
      * necessarily mean that it will be recomputed. It only means that all
      * objects that link it (i.e. its InList) will be recomputed.
      */
-    virtual short mustExecute(void) const;
+    virtual short mustExecute() const;
 
     /** Recompute only this feature
      *
@@ -307,7 +310,7 @@ public:
     bool recomputeFeature(bool recursive=false);
 
     /// get the status Message
-    const char *getStatusString(void) const;
+    const char *getStatusString() const;
 
     /** Called in case of losing a link
      * Get called by the document when a object got deleted a link property of this
@@ -316,7 +319,7 @@ public:
      * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     /** Get the sub element/object by name
      *
@@ -346,8 +349,8 @@ public:
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr,
+            Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
     /// Return a list of objects referenced by a given subname including this object
     std::vector<DocumentObject*> getSubObjectList(const char *subname) const;
@@ -396,7 +399,7 @@ public:
      * it is not a link or the link is invalid.
      */
     virtual DocumentObject *getLinkedObject(bool recurse=true,
-            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
+            Base::Matrix4D *mat=nullptr, bool transform=false, int depth=0) const;
 
     /* Return true to cause PropertyView to show linked object's property */
     virtual bool canLinkProperties() const {return true;}
@@ -418,11 +421,13 @@ public:
 
     static DocumentObjectExecReturn *StdReturn;
 
-    virtual void Save (Base::Writer &writer) const override;
+    void Save (Base::Writer &writer) const override;
 
     /* Expression support */
 
     virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
+
+    void clearExpression(const ObjectIdentifier & path);
 
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 
@@ -434,11 +439,11 @@ public:
         return _pcViewProviderName.c_str();
     }
 
-    virtual bool removeDynamicProperty(const char* prop) override;
+    bool removeDynamicProperty(const char* prop) override;
 
-    virtual App::Property* addDynamicProperty(
-            const char* type, const char* name=0,
-            const char* group=0, const char* doc=0,
+    App::Property* addDynamicProperty(
+            const char* type, const char* name=nullptr,
+            const char* group=nullptr, const char* doc=nullptr,
             short attr=0, bool ro=false, bool hidden=false) override;
 
     /** Resolve the last document object referenced in the subname
@@ -453,9 +458,9 @@ public:
      * @return Returns the last referenced document object in the subname. If no
      * such object in subname, return pObject.
      */
-    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0,
-        std::string *childName=0, const char **subElement=0,
-        PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=nullptr,
+        std::string *childName=nullptr, const char **subElement=nullptr,
+        PyObject **pyObj=nullptr, Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
     /** Resolve a link reference that is relative to this object reference
      *
@@ -519,7 +524,7 @@ public:
      * future parent.
      */
     virtual bool adjustRelativeLinks(const std::set<App::DocumentObject*> &inList,
-            std::set<App::DocumentObject*> *visited=0);
+            std::set<App::DocumentObject*> *visited=nullptr);
 
     /** allow partial loading of dependent objects
      *
@@ -558,7 +563,7 @@ public:
 
 protected:
     /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
+    virtual App::DocumentObjectExecReturn *recompute();
     /** get called by the document to recompute this feature
       * Normally this method get called in the processing of
       * Document::recompute().
@@ -566,7 +571,7 @@ protected:
       * with the data from linked objects and objects own
       * properties.
       */
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
 
     /**
      * Executes the extensions of a document object.
@@ -589,14 +594,14 @@ protected:
      */
     std::bitset<32> StatusBits;
 
-    void setError(void){StatusBits.set(ObjectStatus::Error);}
-    void resetError(void){StatusBits.reset(ObjectStatus::Error);}
+    void setError(){StatusBits.set(ObjectStatus::Error);}
+    void resetError(){StatusBits.reset(ObjectStatus::Error);}
     void setDocument(App::Document* doc);
 
     /// get called before the value is changed
-    virtual void onBeforeChange(const Property* prop) override;
+    void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
-    virtual void onChanged(const Property* prop) override;
+    void onChanged(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after an undo/redo transaction is finished
@@ -609,11 +614,14 @@ protected:
     virtual void unsetupObject();
 
     /// get called when a property status has changed
-    virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
+    void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
+
+private:
+    void printInvalidLinks() const;
 
      /// python object of this class and all descendent
 protected: // attributes
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
 

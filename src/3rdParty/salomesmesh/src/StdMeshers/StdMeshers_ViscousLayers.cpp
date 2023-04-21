@@ -44,7 +44,10 @@
 #include "SMESH_subMeshEventListener.hxx"
 #include "StdMeshers_FaceSide.hxx"
 
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX < 0x070600
 #include <Adaptor3d_HSurface.hxx>
+#endif
 #include <BRepAdaptor_Curve2d.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepLProp_SLProps.hxx>
@@ -1340,8 +1343,13 @@ namespace VISCOUS_3D
     //case GeomAbs_SurfaceOfExtrusion:
     case GeomAbs_OffsetSurface:
     {
+#if OCC_VERSION_HEX < 0x070600
       Handle(Adaptor3d_HSurface) base = surface.BasisSurface();
       return getRovolutionAxis( base->Surface(), axis );
+#else
+      Handle(Adaptor3d_Surface) base = surface.BasisSurface();
+      return getRovolutionAxis( *base, axis );
+#endif
     }
     default: return false;
     }

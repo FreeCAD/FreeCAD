@@ -20,21 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
+# include <limits>
+# include <QButtonGroup>
+# include <QDoubleValidator>
+# include <QFontMetrics>
 # include <QLocale>
 # include <QMessageBox>
-# include <QDoubleValidator>
-#endif
-
-#ifndef _PreComp_
-#include <cmath>
 #endif
 
 #include "DlgSettingsColorGradientImp.h"
 #include "ui_DlgSettingsColorGradient.h"
 #include "SpinBox.h"
+#include "Tools.h"
+
 
 using namespace Gui::Dialog;
 
@@ -44,15 +45,33 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsColorGradientImp as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::WindowFlags fl )
+DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradient& cg,
+                                                         QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
+  , validator(nullptr)
   , ui(new Ui_DlgSettingsColorGradient)
 {
     ui->setupUi(this);
-    fMaxVal = new QDoubleValidator(-1000,1000,ui->spinBoxDecimals->maximum(),this);
-    ui->floatLineEditMax->setValidator(fMaxVal);
-    fMinVal = new QDoubleValidator(-1000,1000,ui->spinBoxDecimals->maximum(),this);
-    ui->floatLineEditMin->setValidator(fMinVal);
+    ui->spinBoxLabel->setRange(5, 30);
+    ui->spinBoxDecimals->setMaximum(std::numeric_limits<float>::digits10);
+
+    // remove the automatic help button in dialog title since we don't use it
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+
+    // the elementary charge is 1.6e-19, since such values might be the result of
+    // simulations, use this as boundary for a scientific validator
+    validator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
+    validator->setNotation(QDoubleValidator::ScientificNotation);
+    ui->floatLineEditMax->setValidator(validator);
+    ui->floatLineEditMin->setValidator(validator);
+
+    // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
+    QFontMetrics fm(ui->floatLineEditMax->font());
+    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
+
+    setColorModelNames(cg.getColorModelNames());
+    setProfile(cg.getProfile());
+    setupConnections();
 }
 
 /**
@@ -63,54 +82,98 @@ DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgSettingsColorGradientImp::setColorModel( App::ColorGradient::TColorModel tModel)
+void DlgSettingsColorGradientImp::setupConnections()
 {
-    switch (tModel)
-    {
-    case App::ColorGradient::TRIA:
-        ui->comboBoxModel->setCurrentIndex(0);
-        break;
-    case App::ColorGradient::INVERSE_TRIA:
-        ui->comboBoxModel->setCurrentIndex(1);
-        break;
-    case App::ColorGradient::GRAY:
-        ui->comboBoxModel->setCurrentIndex(2);
-        break;
-    case App::ColorGradient::INVERSE_GRAY:
-        ui->comboBoxModel->setCurrentIndex(3);
-        break;
+    auto group = new QButtonGroup(this);
+    group->setExclusive(true);
+    group->addButton(ui->radioButtonFlow);
+    group->addButton(ui->radioButtonZero);
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    connect(group, &QButtonGroup::idClicked,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+#else
+    connect(group, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+#endif
+    connect(ui->comboBoxModel, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->checkBoxGrayed, &QCheckBox::toggled,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->checkBoxInvisible, &QCheckBox::toggled,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->floatLineEditMax, &QLineEdit::editingFinished,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->floatLineEditMin, &QLineEdit::editingFinished,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->spinBoxLabel, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->spinBoxDecimals, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+}
+
+App::ColorGradientProfile DlgSettingsColorGradientImp::getProfile() const
+{
+    App::ColorGradientProfile profile;
+    profile.tColorModel = colorModel();
+    profile.tStyle = colorStyle();
+    profile.visibility.setFlag(App::Visibility::Grayed, isOutGrayed());
+    profile.visibility.setFlag(App::Visibility::Invisible, isOutInvisible());
+    profile.ctColors = numberOfLabels();
+    getRange(profile.fMin, profile.fMax);
+    return profile;
+}
+
+void DlgSettingsColorGradientImp::setProfile(const App::ColorGradientProfile& pro)
+{
+    setColorModel(pro.tColorModel);
+    setColorStyle(pro.tStyle);
+    setOutGrayed(pro.visibility.testFlag(App::Visibility::Grayed));
+    setOutInvisible(pro.visibility.testFlag(App::Visibility::Invisible));
+    setNumberOfLabels(pro.ctColors);
+    setRange(pro.fMin, pro.fMax);
+}
+
+void DlgSettingsColorGradientImp::setColorModel(std::size_t index)
+{
+    ui->comboBoxModel->setCurrentIndex(index);
+}
+
+std::size_t DlgSettingsColorGradientImp::colorModel() const
+{
+    return static_cast<std::size_t>(ui->comboBoxModel->currentIndex());
+}
+
+void DlgSettingsColorGradientImp::setColorModelNames(const std::vector<std::string>& names)
+{
+    ui->comboBoxModel->clear();
+    for (const auto& it : names) {
+        ui->comboBoxModel->addItem(QString::fromStdString(it));
     }
 }
 
-App::ColorGradient::TColorModel DlgSettingsColorGradientImp::colorModel() const
-{
-    int item = ui->comboBoxModel->currentIndex();
-    if ( item == 0 )
-        return App::ColorGradient::TRIA;
-    else if ( item == 1 )
-        return App::ColorGradient::INVERSE_TRIA;
-    else if ( item == 2 )
-        return App::ColorGradient::GRAY;
-    else
-        return App::ColorGradient::INVERSE_GRAY;
-}
-
-void DlgSettingsColorGradientImp::setColorStyle( App::ColorGradient::TStyle tStyle )
+void DlgSettingsColorGradientImp::setColorStyle( App::ColorBarStyle tStyle )
 {
     switch ( tStyle )
     {
-    case App::ColorGradient::FLOW:
+    case App::ColorBarStyle::FLOW:
         ui->radioButtonFlow->setChecked(true);
         break;
-    case App::ColorGradient::ZERO_BASED:
+    case App::ColorBarStyle::ZERO_BASED:
         ui->radioButtonZero->setChecked(true);
         break;
     }
 }
 
-App::ColorGradient::TStyle DlgSettingsColorGradientImp::colorStyle() const
+App::ColorBarStyle DlgSettingsColorGradientImp::colorStyle() const
 {
-    return ui->radioButtonZero->isChecked() ? App::ColorGradient::ZERO_BASED : App::ColorGradient::FLOW;
+    return ui->radioButtonZero->isChecked() ? App::ColorBarStyle::ZERO_BASED
+                                            : App::ColorBarStyle::FLOW;
 }
 
 void DlgSettingsColorGradientImp::setOutGrayed( bool grayed )
@@ -133,13 +196,26 @@ bool DlgSettingsColorGradientImp::isOutInvisible() const
     return ui->checkBoxInvisible->isChecked();
 }
 
-void DlgSettingsColorGradientImp::setRange( float fMin, float fMax )
+void DlgSettingsColorGradientImp::setRange(float fMin, float fMax)
 {
+    auto toString = [=](float value, int decimals) {
+        int pos = 0;
+        while (decimals > 0) {
+            QString str = QLocale().toString(value, 'g', decimals--);
+            if (validator->validate(str, pos) == QValidator::Acceptable) {
+                return str;
+            }
+        }
+
+        return QLocale().toString(value, 'g', 1);
+    };
+
     ui->floatLineEditMax->blockSignals(true);
-    ui->floatLineEditMax->setText(QLocale().toString(fMax, 'f', numberOfDecimals()));
+    ui->floatLineEditMax->setText(toString(fMax, numberOfDecimals()));
     ui->floatLineEditMax->blockSignals(false);
+
     ui->floatLineEditMin->blockSignals(true);
-    ui->floatLineEditMin->setText(QLocale().toString(fMin, 'f', numberOfDecimals()));
+    ui->floatLineEditMin->setText(toString(fMin, numberOfDecimals()));
     ui->floatLineEditMin->blockSignals(false);
 }
 
@@ -159,9 +235,10 @@ int DlgSettingsColorGradientImp::numberOfLabels() const
     return ui->spinBoxLabel->value();
 }
 
-void DlgSettingsColorGradientImp::setNumberOfDecimals(int val)
+void DlgSettingsColorGradientImp::setNumberOfDecimals(int val, float fMin, float fMax)
 {
     ui->spinBoxDecimals->setValue(val);
+    setRange(fMin, fMax);
 }
 
 int DlgSettingsColorGradientImp::numberOfDecimals() const

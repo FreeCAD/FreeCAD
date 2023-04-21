@@ -53,7 +53,7 @@ else(PYCXX_INCLUDE_DIR)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT PYCXX_INCLUDE_DIR)
 endif(PYCXX_INCLUDE_DIR)
-    
+
 # find the sources directory
 if(PYCXX_SOURCE_DIR)
     # source directory specified, they'd better be there
@@ -117,7 +117,7 @@ if(PYCXX_FOUND)
         ${PYCXX_SOURCE_DIR}/cxxsupport.cxx
         ${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
     )
-    if(NOT ${PYCXX_VERSION} VERSION_LESS 7.0.0)
+    if(NOT ${PYCXX_VERSION} VERSION_LESS 6.3.0)
         list(APPEND PYCXX_SOURCES
             ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
         add_definitions(-DPYCXX_6_2_COMPATIBILITY)

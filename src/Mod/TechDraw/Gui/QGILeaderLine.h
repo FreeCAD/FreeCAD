@@ -23,23 +23,24 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 #define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
-#include <QFont>
+#include <QGraphicsItem>
+#include <QPainterPath>
 #include <QPointF>
+#include <QStyleOptionGraphicsItem>
 
 #include <Base/Vector3D.h>
+
 #include "QGIView.h"
 
-namespace TechDraw {
+
+namespace TechDraw
+{
 class DrawLeaderLine;
 class DrawView;
-}
+}// namespace TechDraw
 
 namespace TechDrawGui
 {
@@ -50,42 +51,45 @@ class QGEPath;
 
 //*******************************************************************
 
-class TechDrawGuiExport QGILeaderLine : public QGIView
+class TechDrawGuiExport QGILeaderLine: public QGIView
 {
     Q_OBJECT
 
 public:
-    enum {Type = QGraphicsItem::UserType + 232};
+    enum
+    {
+        Type = QGraphicsItem::UserType + 232
+    };
 
     explicit QGILeaderLine();
     ~QGILeaderLine() = default;
 
-    int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
+    int type() const override
+    {
+        return Type;
+    }
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
+    QRectF boundingRect() const override;
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
 
-    virtual TechDraw::DrawLeaderLine* getFeature(void);
+    virtual TechDraw::DrawLeaderLine* getFeature();
 
-    void startPathEdit(void);
+    void startPathEdit();
     void setArrows(std::vector<QPointF> pathPoints);
 
-    void abandonEdit(void);
-    void closeEdit(void);
-    
-    double getLineWidth(void);
-    double getEdgeFuzz(void) const;
+    void abandonEdit();
+    void closeEdit();
 
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    double getLineWidth();
+    double getEdgeFuzz() const;
+
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     void setPrettyNormal();
     void setPrettyPre();
@@ -94,40 +98,38 @@ public:
     void setLeaderFeature(TechDraw::DrawLeaderLine* feat);
 
 public Q_SLOTS:
-    void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
-    virtual void onSourceChange(TechDraw::DrawView* newParent) override;
+    void onLineEditFinished(QPointF tipDisplace,
+                            std::vector<QPointF> points);//QGEPath is finished editing points
+    void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
-    void editComplete(void);  //tell caller that edit session is finished
+    void editComplete();//tell caller that edit session is finished
 
 protected:
-    virtual void draw() override;
+    void draw() override;
     QPainterPath makeLeaderPath(std::vector<QPointF> qPoints);
-    std::vector<QPointF> getWayPointsFromFeature(void);
-    QPointF getAttachFromFeature(void);
+    std::vector<QPointF> getWayPointsFromFeature();
+    QPointF getAttachFromFeature();
 
-    virtual QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
-    std::vector<QPointF> m_pathPoints;
-    
-    void saveState(void);
-    void restoreState(void);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
-protected:
-    QColor getNormalColor() override;
+    void saveState();
+    void restoreState();
+
+    QColor prefNormalColor();
     void setNormalColorAll();
 
+private:
+    std::vector<QPointF> m_pathPoints;
     QGraphicsItem* m_parentItem;
-    QGIPrimPath* m_line;               //actual leader line
-    double m_lineWidth;
+    QGIPrimPath* m_line;//actual leader line
     QColor m_lineColor;
     Qt::PenStyle m_lineStyle;
     QGIArrow* m_arrow1;
     QGIArrow* m_arrow2;
 
-    QGEPath* m_editPath;               //line editor
+    QGEPath* m_editPath;//line editor
     QColor m_editPathColor;
-    Qt::PenStyle m_editPathStyle;
 
     bool m_hasHover;
 
@@ -135,9 +137,9 @@ protected:
     double m_saveY;
     std::vector<Base::Vector3d> m_savePoints;
 
-    bool m_blockDraw;    //prevent redraws while updating.
+    bool m_blockDraw;//prevent redraws while updating.
 };
 
-}
+}// namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
+#endif// DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H

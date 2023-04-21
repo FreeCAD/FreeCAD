@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "VectorListEditor.h"
 #include "ui_VectorListEditor.h"
-#include <Gui/QuantitySpinBox.h>
-#include <Base/Tools.h>
+#include "QuantitySpinBox.h"
+
 
 using namespace Gui;
 
@@ -79,7 +76,7 @@ bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, 
     if (role == Qt::EditRole && r < vectors.size()) {
         if (value.canConvert<Base::Vector3d>()) {
             vectors[r] = value.value<Base::Vector3d>();
-            dataChanged(index, index.sibling(index.row(), 2));
+            Q_EMIT dataChanged(index, index.sibling(index.row(), 2));
             return true;
         }
         else if (c < 3) {
@@ -90,7 +87,7 @@ bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, 
                 vectors[r].y = d;
             else if (c == 2)
                 vectors[r].z = d;
-            dataChanged(index, index);
+            Q_EMIT dataChanged(index, index);
             return true;
         }
     }
@@ -178,7 +175,7 @@ VectorTableDelegate::VectorTableDelegate(int decimals, QObject *parent)
 QWidget *VectorTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &/* option */,
                                            const QModelIndex & /*index*/) const
 {
-    QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
+    auto editor = new QDoubleSpinBox(parent);
     editor->setDecimals(decimals);
     editor->setMinimum(INT_MIN);
     editor->setMaximum(INT_MAX);
@@ -191,14 +188,14 @@ void VectorTableDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
 {
     double value = index.model()->data(index, Qt::EditRole).toDouble();
 
-    QDoubleSpinBox *spinBox = static_cast<QDoubleSpinBox*>(editor);
+    auto spinBox = static_cast<QDoubleSpinBox*>(editor);
     spinBox->setValue(value);
 }
 
 void VectorTableDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                        const QModelIndex &index) const
 {
-    QDoubleSpinBox *spinBox = static_cast<QDoubleSpinBox*>(editor);
+    auto spinBox = static_cast<QDoubleSpinBox*>(editor);
     spinBox->interpretText();
     double value = spinBox->value();
     model->setData(index, value, Qt::EditRole);
@@ -233,14 +230,14 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
 
     ui->toolButtonMouse->setDisabled(true);
 
-    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &VectorListEditor::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &VectorListEditor::reject);
 
-    connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(setCurrentRow(int)));
-    connect(ui->toolButtonAdd, SIGNAL(clicked(bool)), this, SLOT(addRow()));
-    connect(ui->toolButtonRemove, SIGNAL(clicked(bool)), this, SLOT(removeRow()));
-    connect(ui->toolButtonAccept, SIGNAL(clicked(bool)), this, SLOT(acceptCurrent()));
-    connect(ui->tableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(clickedRow(QModelIndex)));
+    connect(ui->spinBox, qOverload<int>(&QSpinBox::valueChanged), this, &VectorListEditor::setCurrentRow);
+    connect(ui->toolButtonAdd, &QToolButton::clicked, this, &VectorListEditor::addRow);
+    connect(ui->toolButtonRemove, &QToolButton::clicked, this, &VectorListEditor::removeRow);
+    connect(ui->toolButtonAccept, &QToolButton::clicked, this, &VectorListEditor::acceptCurrent);
+    connect(ui->tableWidget, &QTableView::clicked, this, &VectorListEditor::clickedRow);
 }
 
 VectorListEditor::~VectorListEditor()

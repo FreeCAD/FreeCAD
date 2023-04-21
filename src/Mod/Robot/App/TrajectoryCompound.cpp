@@ -20,26 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "TrajectoryCompound.h"
-//#include <App/DocumentObjectPy.h>
-//#include <Base/Placement.h>
-#include <Mod/Part/App/edgecluster.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <CPnts_AbscissaPoint.hxx>
-#include <TopExp.hxx>
 #include "Waypoint.h"
-#include "Trajectory.h"
+
 
 using namespace Robot;
 using namespace App;
@@ -50,7 +35,7 @@ PROPERTY_SOURCE(Robot::TrajectoryCompound, Robot::TrajectoryObject)
 TrajectoryCompound::TrajectoryCompound()
 {
 
-    ADD_PROPERTY_TYPE( Source,      (0)   , "Compound",Prop_None,"list of trajectories to combine");
+    ADD_PROPERTY_TYPE( Source,      (nullptr)   , "Compound",Prop_None,"list of trajectories to combine");
 
 }
 

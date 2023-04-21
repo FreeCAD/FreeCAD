@@ -24,31 +24,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Precision.hxx>
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-# include <sstream>
 #endif
 
-#include "TaskPrimitiveParameters.h"
-#include "ui_TaskPrimitiveParameters.h"
-#include "ViewProviderDatumCS.h"
-
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
+
+#include "TaskPrimitiveParameters.h"
+#include "ui_TaskPrimitiveParameters.h"
+
 
 using namespace PartDesignGui;
 
@@ -276,62 +269,104 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     }
 
     // box
-    connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
-    connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
-    connect(ui->boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+    connect(ui->boxLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onBoxLengthChanged);
+    connect(ui->boxWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onBoxWidthChanged);
+    connect(ui->boxHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onBoxHeightChanged);
 
     // cylinder
-    connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
-    connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
-    connect(ui->cylinderXSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderXSkewChanged(double)));
-    connect(ui->cylinderYSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderYSkewChanged(double)));
-    connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+    connect(ui->cylinderRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderRadiusChanged);
+    connect(ui->cylinderHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderHeightChanged);
+    connect(ui->cylinderXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderXSkewChanged);
+    connect(ui->cylinderYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderYSkewChanged);
+    connect(ui->cylinderAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderAngleChanged);
 
     // cone
-    connect(ui->coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
-    connect(ui->coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
-    connect(ui->coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
-    connect(ui->coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
+    connect(ui->coneRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeRadius1Changed);
+    connect(ui->coneRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeRadius2Changed);
+    connect(ui->coneAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeAngleChanged);
+    connect(ui->coneHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeHeightChanged);
 
     // sphere
-    connect(ui->sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
-    connect(ui->sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
-    connect(ui->sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
-    connect(ui->sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+    connect(ui->sphereRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereRadiusChanged);
+    connect(ui->sphereAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereAngle1Changed);
+    connect(ui->sphereAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereAngle2Changed);
+    connect(ui->sphereAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereAngle3Changed);
 
     // ellipsoid
-    connect(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
-    connect(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
-    connect(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
-    connect(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
-    connect(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
-    connect(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
+    connect(ui->ellipsoidRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidRadius1Changed);
+    connect(ui->ellipsoidRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidRadius2Changed);
+    connect(ui->ellipsoidRadius3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidRadius3Changed);
+    connect(ui->ellipsoidAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidAngle1Changed);
+    connect(ui->ellipsoidAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidAngle2Changed);
+    connect(ui->ellipsoidAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidAngle3Changed);
 
     // torus
-    connect(ui->torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
-    connect(ui->torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
-    connect(ui->torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
-    connect(ui->torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
-    connect(ui->torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
+    connect(ui->torusRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusRadius1Changed);
+    connect(ui->torusRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusRadius2Changed);
+    connect(ui->torusAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusAngle1Changed);
+    connect(ui->torusAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusAngle2Changed);
+    connect(ui->torusAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusAngle3Changed);
 
     //prism
-    connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
-    connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
-    connect(ui->prismXSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismXSkewChanged(double)));
-    connect(ui->prismYSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismYSkewChanged(double)));
-    connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
+    connect(ui->prismCircumradius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismCircumradiusChanged);
+    connect(ui->prismHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismHeightChanged);
+    connect(ui->prismXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismXSkewChanged);
+    connect(ui->prismYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismYSkewChanged);
+    connect(ui->prismPolygon, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismPolygonChanged);
 
     // wedge
-    connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
-    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXminChanged(double)));
-    connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
-    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYminChanged(double)));
-    connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
-    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZminChanged(double)));
-    connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
-    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2minChanged(double)));
-    connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
-    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2minChanged(double)));
+    connect(ui->wedgeXmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeXmaxChanged);
+    connect(ui->wedgeXmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeXminChanged);
+    connect(ui->wedgeYmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeYmaxChanged);
+    connect(ui->wedgeYmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeYminChanged);
+    connect(ui->wedgeZmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZmaxChanged);
+    connect(ui->wedgeZmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZminChanged);
+    connect(ui->wedgeX2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeX2maxChanged);
+    connect(ui->wedgeX2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeX2minChanged);
+    connect(ui->wedgeZ2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
+    connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZ2minChanged);
 }
 
 /*
@@ -341,7 +376,7 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
 {
     //hide the parts coordinate system axis for selection
     try {
-        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
+        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : nullptr;
         if (body) {
             App::Origin *origin = body->getOrigin();
             Gui::ViewProviderOrigin* vpOrigin;
@@ -398,7 +433,7 @@ void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
 void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         cyl->FirstAngle.setValue(v);
     }
@@ -415,7 +450,7 @@ void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
 void TaskBoxPrimitives::onCylinderYSkewChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         cyl->SecondAngle.setValue(v);
     }
@@ -522,7 +557,7 @@ void TaskBoxPrimitives::onEllipsoidRadius3Changed(double v) {
 
 void TaskBoxPrimitives::onTorusAngle1Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
-    ui->torusAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2  
+    ui->torusAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
     sph->Angle1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -572,7 +607,7 @@ void TaskBoxPrimitives::onPrismHeightChanged(double v) {
 void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         sph->FirstAngle.setValue(v);
     }
@@ -589,7 +624,7 @@ void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
 void TaskBoxPrimitives::onPrismYSkewChanged(double v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         sph->SecondAngle.setValue(v);
     }
@@ -691,32 +726,32 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
             return false;
         }
 
-        Base::QuantityFormat format(Base::QuantityFormat::Default, Base::UnitsApi::getDecimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch(ui->widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(
-                    "%1.Length=%2\n"
-                    "%1.Width=%3\n"
-                    "%1.Height=%4\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->boxLength->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->boxWidth->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->boxHeight->value(), format));
+                    "%1.Length='%2'\n"
+                    "%1.Width='%3'\n"
+                    "%1.Height='%4'\n")
+                    .arg(name,
+                         ui->boxLength->value().getSafeUserString(),
+                         ui->boxWidth->value().getSafeUserString(),
+                         ui->boxHeight->value().getSafeUserString());
                 break;
 
             case 2:  // cylinder
                 cmd = QString::fromLatin1(
-                    "%1.Radius=%2\n"
-                    "%1.Height=%3\n"
-                    "%1.Angle=%4\n"
-                    "%1.FirstAngle=%5\n"
-                    "%1.SecondAngle=%6\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderRadius->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderHeight->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderAngle->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderXSkew->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->cylinderYSkew->value(), format));
+                    "%1.Radius='%2'\n"
+                    "%1.Height='%3'\n"
+                    "%1.Angle='%4'\n"
+                    "%1.FirstAngle='%5'\n"
+                    "%1.SecondAngle='%6'\n")
+                    .arg(name,
+                         ui->cylinderRadius->value().getSafeUserString(),
+                         ui->cylinderHeight->value().getSafeUserString(),
+                         ui->cylinderAngle->value().getSafeUserString(),
+                         ui->cylinderXSkew->value().getSafeUserString(),
+                         ui->cylinderYSkew->value().getSafeUserString());
                 break;
 
             case 3:  // cone
@@ -727,73 +762,73 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     return false;
                 }
                 cmd = QString::fromLatin1(
-                    "%1.Radius1=%2\n"
-                    "%1.Radius2=%3\n"
-                    "%1.Height=%4\n"
-                    "%1.Angle=%5\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->coneRadius1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->coneRadius2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->coneHeight->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->coneAngle->value(), format));
+                    "%1.Radius1='%2'\n"
+                    "%1.Radius2='%3'\n"
+                    "%1.Height='%4'\n"
+                    "%1.Angle='%5'\n")
+                    .arg(name,
+                         ui->coneRadius1->value().getSafeUserString(),
+                         ui->coneRadius2->value().getSafeUserString(),
+                         ui->coneHeight->value().getSafeUserString(),
+                         ui->coneAngle->value().getSafeUserString());
                  break;
 
             case 4:  // sphere
                 cmd = QString::fromLatin1(
-                    "%1.Radius=%2\n"
-                    "%1.Angle1=%3\n"
-                    "%1.Angle2=%4\n"
-                    "%1.Angle3=%5\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->sphereRadius->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle3->value(), format));
+                    "%1.Radius='%2'\n"
+                    "%1.Angle1='%3'\n"
+                    "%1.Angle2='%4'\n"
+                    "%1.Angle3='%5'\n")
+                    .arg(name,
+                         ui->sphereRadius->value().getSafeUserString(),
+                         ui->sphereAngle1->value().getSafeUserString(),
+                         ui->sphereAngle2->value().getSafeUserString(),
+                         ui->sphereAngle3->value().getSafeUserString());
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
-                    "%1.Radius1=%2\n"
-                    "%1.Radius2=%3\n"
-                    "%1.Radius3=%4\n"
-                    "%1.Angle1=%5\n"
-                    "%1.Angle2=%6\n"
-                    "%1.Angle3=%7\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value(), format));
+                    "%1.Radius1='%2'\n"
+                    "%1.Radius2='%3'\n"
+                    "%1.Radius3='%4'\n"
+                    "%1.Angle1='%5'\n"
+                    "%1.Angle2='%6'\n"
+                    "%1.Angle3='%7'\n")
+                    .arg(name,
+                         ui->ellipsoidRadius1->value().getSafeUserString(),
+                         ui->ellipsoidRadius2->value().getSafeUserString(),
+                         ui->ellipsoidRadius3->value().getSafeUserString(),
+                         ui->ellipsoidAngle1->value().getSafeUserString(),
+                         ui->ellipsoidAngle2->value().getSafeUserString(),
+                         ui->ellipsoidAngle3->value().getSafeUserString());
                 break;
 
             case 6:  // torus
                 cmd = QString::fromLatin1(
-                    "%1.Radius1=%2\n"
-                    "%1.Radius2=%3\n"
-                    "%1.Angle1=%4\n"
-                    "%1.Angle2=%5\n"
-                    "%1.Angle3=%6\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->torusRadius1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusRadius2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusAngle1->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusAngle2->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->torusAngle3->value(), format));
+                    "%1.Radius1='%2'\n"
+                    "%1.Radius2='%3'\n"
+                    "%1.Angle1='%4'\n"
+                    "%1.Angle2='%5'\n"
+                    "%1.Angle3='%6'\n")
+                    .arg(name,
+                         ui->torusRadius1->value().getSafeUserString(),
+                         ui->torusRadius2->value().getSafeUserString(),
+                         ui->torusAngle1->value().getSafeUserString(),
+                         ui->torusAngle2->value().getSafeUserString(),
+                         ui->torusAngle3->value().getSafeUserString());
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
                     "%1.Polygon=%2\n"
-                    "%1.Circumradius=%3\n"
-                    "%1.Height=%4\n"
-                    "%1.FirstAngle=%5\n"
-                    "%1.SecondAngle=%6\n")
-                    .arg(name)
-                    .arg(ui->prismPolygon->value())
-                    .arg(Base::UnitsApi::toNumber(ui->prismCircumradius->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->prismHeight->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->prismXSkew->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->prismYSkew->value(), format));
+                    "%1.Circumradius='%3'\n"
+                    "%1.Height='%4'\n"
+                    "%1.FirstAngle='%5'\n"
+                    "%1.SecondAngle='%6'\n")
+                    .arg(name,
+                         QString::number(ui->prismPolygon->value()),
+                         ui->prismCircumradius->value().getSafeUserString(),
+                         ui->prismHeight->value().getSafeUserString(),
+                         ui->prismXSkew->value().getSafeUserString(),
+                         ui->prismYSkew->value().getSafeUserString());
                 break;
             case 8:  // wedge
                 // Xmin/max, Ymin/max and Zmin/max must each not be equal
@@ -813,27 +848,27 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     return false;
                 }
                 cmd = QString::fromLatin1(
-                    "%1.Xmin=%2\n"
-                    "%1.Ymin=%3\n"
-                    "%1.Zmin=%4\n"
-                    "%1.X2min=%5\n"
-                    "%1.Z2min=%6\n"
-                    "%1.Xmax=%7\n"
-                    "%1.Ymax=%8\n"
-                    "%1.Zmax=%9\n"
-                    "%1.X2max=%10\n"
-                    "%1.Z2max=%11\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeXmin->value()))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format));
+                    "%1.Xmin='%2'\n"
+                    "%1.Ymin='%3'\n"
+                    "%1.Zmin='%4'\n"
+                    "%1.X2min='%5'\n"
+                    "%1.Z2min='%6'\n"
+                    "%1.Xmax='%7'\n"
+                    "%1.Ymax='%8'\n"
+                    "%1.Zmax='%9'\n"
+                    "%1.X2max='%10'\n"
+                    "%1.Z2max='%11'\n")
+                    .arg(name,
+                         ui->wedgeXmin->value().getSafeUserString(),
+                         ui->wedgeYmin->value().getSafeUserString(),
+                         ui->wedgeZmin->value().getSafeUserString(),
+                         ui->wedgeX2min->value().getSafeUserString(),
+                         ui->wedgeZ2min->value().getSafeUserString(),
+                         ui->wedgeXmax->value().getSafeUserString(),
+                         ui->wedgeYmax->value().getSafeUserString(),
+                         ui->wedgeZmax->value().getSafeUserString())
+                    .arg(ui->wedgeX2max->value().getSafeUserString(),
+                         ui->wedgeZ2max->value().getSafeUserString());
                 break;
 
             default:

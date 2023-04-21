@@ -53,20 +53,20 @@ class UnitBasicCases(unittest.TestCase):
 
     def testConversions(self):
         #tu = FreeCAD.Units.translateUnit
-        self.failUnless(compare(tu('10 m'), 10000.0))
-        self.failUnless(compare(tu('3/8 in'), 9.525))
-        self.failUnless(compare(tu('100 km/h'), 27777.77777777))
-        self.failUnless(compare(tu('m^2*kg*s^-3*A^-2'), 1000000.0))
-        self.failUnless(compare(tu('(m^2*kg)/(A^2*s^3)'), 1000000.0))
-        self.failUnless(compare(tu('2*pi rad'), 360.0))
-        self.failUnless(compare(tu('2*pi rad') / tu('gon'), 400.0))
-        self.failUnless(compare(tu('999 kg') / tu('1 m^3'), 0.000009999))
+        self.assertTrue(compare(tu('10 m'), 10000.0))
+        self.assertTrue(compare(tu('3/8 in'), 9.525))
+        self.assertTrue(compare(tu('100 km/h'), 27777.77777777))
+        self.assertTrue(compare(tu('m^2*kg*s^-3*A^-2'), 1000000.0))
+        self.assertTrue(compare(tu('(m^2*kg)/(A^2*s^3)'), 1000000.0))
+        self.assertTrue(compare(tu('2*pi rad'), 360.0))
+        self.assertTrue(compare(tu('2*pi rad') / tu('gon'), 400.0))
+        self.assertTrue(compare(tu('999 kg') / tu('1 m^3'), 0.000009999))
 
     def testImperial(self):
         #tu = FreeCAD.Units.translateUnit
-        self.failUnless(compare(tu('3/8in'), 9.525))
-        #self.failUnless(compare(tu('1fo(3+7/16)in'),392.112500))thisgivesaparsersyntaxerror!!!
-        self.failUnless(compare(tu('1\'(3+7/16)"'), 392.112500))
+        self.assertTrue(compare(tu('3/8in'), 9.525))
+        #self.assertTrue(compare(tu('1fo(3+7/16)in'),392.112500))thisgivesaparsersyntaxerror!!!
+        self.assertTrue(compare(tu('1\'(3+7/16)"'), 392.112500))
 
         psi = FreeCAD.Units.parseQuantity("1psi")
         mpa = psi.getValueAs("MPa").Value
@@ -109,6 +109,13 @@ class UnitBasicCases(unittest.TestCase):
             v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("ksi")
             self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1 (delta: {2})".format(schemes[i], v.Value, self.delta), delta=self.delta)
 
+        vacuum_permittivity = FreeCAD.Units.parseQuantity("1F/m")
+        vacuum_permittivity.Format = {"NumberFormat" : FreeCAD.Units.NumberFormat.Scientific}
+        for i in range(num):
+            t = FreeCAD.Units.schemaTranslate(vacuum_permittivity, i)
+            v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("F/m")
+            self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1 (delta: {2})".format(schemes[i], v.Value, self.delta), delta=self.delta)
+
     def testSchemeTranslation(self):
         quantities = []
         for i in dir(FreeCAD.Units):
@@ -121,13 +128,13 @@ class UnitBasicCases(unittest.TestCase):
             q1 = FreeCAD.Units.Quantity(q1)
             q1.Format = {'Precision': 16}
             for idx, val in enumerate(schemes):
-                t = FreeCAD.Units.schemaTranslate(q1, idx)
+                [t, amountPerUnit, unit] = FreeCAD.Units.schemaTranslate(q1, idx)
                 try:
-                    q2 = FreeCAD.Units.Quantity(t[0])
+                    q2 = FreeCAD.Units.Quantity(t)
                     if math.fabs(q1.Value - q2.Value) > 0.01:
-                        print (q1, " : ", q2, " : ", t, " : ", i, " : ", val)
+                        print (" {} : {} : {} : {} : {}".format(q1, q2, t, i, val).encode("utf-8").strip())
                 except Exception as e:
-                    print ("{}: {}".format(str(e), t[0]))
+                    print ("{} : {} : {} : {}".format(q1, i, val, e).encode("utf-8").strip())
 
     def testVoltage(self):
         q1 = FreeCAD.Units.Quantity("1e20 V")
@@ -143,6 +150,44 @@ class UnitBasicCases(unittest.TestCase):
 
     def testTrigonometric(self):
         #tu=FreeCAD.Units.translateUnit
-        self.failUnless(compare(tu('sin(pi)'), math.sin(math.pi)))
-        self.failUnless(compare(tu('cos(pi)'), math.cos(math.pi)))
-        self.failUnless(compare(tu('tan(pi)'), math.tan(math.pi)))
+        self.assertTrue(compare(tu('sin(pi)'), math.sin(math.pi)))
+        self.assertTrue(compare(tu('cos(pi)'), math.cos(math.pi)))
+        self.assertTrue(compare(tu('tan(pi)'), math.tan(math.pi)))
+
+    def testQuantity(self):
+        length = FreeCAD.Units.Quantity(1, "m")
+        self.assertEqual(length.Value, 1000)
+        self.assertEqual(length.Unit, FreeCAD.Units.Length)
+
+    def testToString(self):
+        value = FreeCAD.Units.toNumber(1023, 'g', 2)
+        self.assertEqual(float(value), 1000)
+
+        value = FreeCAD.Units.toNumber(1023, 'g', 3)
+        self.assertEqual(float(value), 1020)
+
+        value = FreeCAD.Units.toNumber(1023, 'f', 2)
+        self.assertEqual(float(value), 1023)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 1)
+        self.assertEqual(float(value), 1000)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 2)
+        self.assertEqual(float(value), 1020)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 3)
+        self.assertEqual(float(value), 1023)
+
+        q = FreeCAD.Units.Quantity("1023")
+        value = FreeCAD.Units.toNumber(q, 'f', 2)
+        self.assertEqual(float(value), 1023)
+
+        with self.assertRaises(TypeError):
+            FreeCAD.Units.toNumber("1023", 'g', 2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Units.toNumber(1023, 'gg', 2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Units.toNumber(1023, 's', 2)
+
+    def testIssue6735(self):
+        FreeCAD.Units.Quantity("1400.0 N/mm^2")

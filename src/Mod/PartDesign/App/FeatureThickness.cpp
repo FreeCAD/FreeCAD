@@ -23,30 +23,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS.hxx>
 # include <Precision.hxx>
+# include <TopoDS.hxx>
 #endif
 
-#include "FeatureThickness.h"
 #include <Base/Exception.h>
+#include "FeatureThickness.h"
 
 
 using namespace PartDesign;
 
-const char* PartDesign::Thickness::ModeEnums[] = {"Skin","Pipe", "RectoVerso",NULL};
-const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection",NULL};
+const char *PartDesign::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
+const char *PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 
 Thickness::Thickness()
 {
-    ADD_PROPERTY_TYPE(Value,(1.0),"Thickness",App::Prop_None,"Thickness value");
-    ADD_PROPERTY_TYPE(Mode,(long(0)),"Thickness",App::Prop_None,"Mode");
+    ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
+    ADD_PROPERTY_TYPE(Mode, (long(0)), "Thickness", App::Prop_None, "Mode");
     Mode.setEnums(ModeEnums);
-    ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
+    ADD_PROPERTY_TYPE(Join, (long(0)), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(Reversed,(false),"Thickness",App::Prop_None,"Apply the thickness towards the solids interior");
-    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Enable intersection-handling");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Thickness", App::Prop_None,
+                      "Apply the thickness towards the solids interior");
+    ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None,
+                      "Enable intersection-handling");
 }
 
 short Thickness::mustExecute() const
@@ -59,18 +61,33 @@ short Thickness::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Thickness::execute(void)
+App::DocumentObjectExecReturn *Thickness::execute()
 {
     // Base shape
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception &e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopTools_ListOfShape closingFaces;
     const std::vector<std::string>& subStrings = Base.getSubValues();
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (subStrings.empty()) {
+        //We must set the placement of the feature in case it's empty.
+        this->positionByBaseFeature();
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
+
+    /* If the feature was empty at some point, then Placement was set by positionByBaseFeature.
+    *  However makeThickSolid apparently requires the placement to be empty, so we have to clear it*/
+    this->Placement.setValue(Base::Placement());
+
+    TopTools_ListOfShape closingFaces;
+
     for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
         TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(it->c_str()));
         closingFaces.Append(face);

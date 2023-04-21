@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_MDIVIEW_H
 #define GUI_MDIVIEW_H
 
-#include "View.h"
+#include <boost_signals2.hpp>
 #include <QMainWindow>
-#include "ActiveObjectList.h"
+#include <Gui/ActiveObjectList.h>
+#include <Gui/View.h>
+
 
 QT_BEGIN_NAMESPACE
 class QPrinter;
@@ -35,6 +36,7 @@ QT_END_NAMESPACE
 namespace Gui
 {
 class Document;
+class MainWindow;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
@@ -54,7 +56,7 @@ class GuiExport MDIView : public QMainWindow, public BaseView
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** View constructor
@@ -66,21 +68,21 @@ public:
     /** View destructor
      * Detach the view from the document, if attached.
      */
-    ~MDIView();
+    ~MDIView() override;
 
     /// get called when the document is updated
-    virtual void onRelabel(Gui::Document *pDoc);
+    void onRelabel(Gui::Document *pDoc) override;
     virtual void viewAll();
 
     /// Message handler
-    virtual bool onMsg(const char* pMsg,const char** ppReturn);
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
     /// Message handler test
-    virtual bool onHasMsg(const char* pMsg) const;
+    bool onHasMsg(const char* pMsg) const override;
     /// overwrite when checking on close state
-    virtual bool canClose(void);
+    bool canClose() override;
     /// delete itself
-    virtual void deleteSelf();
-    virtual PyObject *getPyObject();
+    void deleteSelf() override;
+    PyObject *getPyObject() override;
     /** @name Printing */
     //@{
 public Q_SLOTS:
@@ -93,9 +95,19 @@ public:
     virtual void printPdf();
     /** Show a preview dialog */
     virtual void printPreview();
+    /** Save the printer configuration */
+    void savePrinterSettings(QPrinter* printer);
+    /** Restore the printer configuration */
+    void restorePrinterSettings(QPrinter* printer);
     //@}
 
-    QSize minimumSizeHint () const;
+    /** @name Undo/Redo actions */
+    //@{
+    virtual QStringList undoActions() const;
+    virtual QStringList redoActions() const;
+    //@}
+
+    QSize minimumSizeHint () const override;
 
     /// MDI view mode enum
     enum ViewMode {
@@ -115,11 +127,11 @@ public:
 
     /// access getter for the active object list
     template<typename _T>
-    inline _T getActiveObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const
+    inline _T getActiveObject(const char* name, App::DocumentObject **parent=nullptr, std::string *subname=nullptr) const
     {
         return ActiveObjects.getObject<_T>(name,parent,subname);
     }
-    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=0)
+    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr)
     {
         ActiveObjects.setObject(o, n, subname);
     }
@@ -127,7 +139,7 @@ public:
     {
         return ActiveObjects.hasObject(n);
     }
-    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=0) const
+    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr) const
     {
         return ActiveObjects.hasObject(o,n,subname);
     }
@@ -154,12 +166,12 @@ protected Q_SLOTS:
      * whenever the window state of the active view changes.
      * The default implementation does nothing.
      */
-    virtual void windowStateChanged(MDIView*);
+    virtual void windowStateChanged(Gui::MDIView*);
 
 protected:
-    void closeEvent(QCloseEvent *e);
+    void closeEvent(QCloseEvent *e) override;
     /** \internal */
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 protected:
     PyObject* pythonObject;
@@ -169,8 +181,10 @@ private:
     Qt::WindowStates wstate;
     // list of active objects of this view
     ActiveObjectList ActiveObjects;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectDelObject; //remove active object upon delete.
+
+    friend class MainWindow;
 };
 
 } // namespace Gui

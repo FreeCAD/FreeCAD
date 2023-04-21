@@ -5,29 +5,35 @@
 # Python script to make source tarballs.
 #
 
-import sys, os, getopt, tarfile, gzip, time, io, platform, shutil
+import sys, os, getopt, tarfile, gzip, time, io, platform, shutil, subprocess
 
 def main():
     bindir="."
+    major="0"
+    minor="0"
     dfsg=False
     check=False
-    wta=""
+    wta=None
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir=","dfsg", "check"])
+        opts, args = getopt.getopt(sys.argv[1:], "sb:", ["srcdir=","bindir=","major=","minor=","dfsg", "check"])
     except getopt.GetoptError:
         pass
 
     for o, a in opts:
         if o in ("-s", "--srcdir"):
-            print("%s is deprecated -- ignoring" % (o))
+            print("{} is deprecated -- ignoring".format(o))
         if o in ("-b", "--bindir"):
             bindir = a
+        if o in ("--major"):
+            major = a
+        if o in ("--minor"):
+            minor = a
         if o in ("--dfsg"):
             dfsg = True
             wta = "--worktree-attributes"
         if o in ("--check"):
             check = True
-            
+
     if dfsg:
         gitattr = open("src/.gitattributes","w")
         gitattr.write("zipios++    export-ignore\n")
@@ -41,14 +47,15 @@ def main():
     info=os.popen("git rev-list HEAD").read()
     revision='%04d' % (info.count('\n'))
 
-    verfile = open("%s/src/Build/Version.h" % (bindir), 'r')
-    verstream = io.StringIO(verfile.read())
+    verfile = open("{}/src/Build/Version.h".format(bindir), 'rb')
+    verstream = io.BytesIO(verfile.read())
     verfile.close()
 
-    version_minor = verstream.getvalue().split('FCVersionMinor "')[1][:2]
+    version_major = major
+    version_minor = minor
 
     PACKAGE_NAME = 'freecad'
-    version = "0.%s.%s" % (version_minor, revision)
+    version = "{}.{}.{}".format(version_major, version_minor, revision)
 
     DIRNAME = "%(p)s-%(v)s" % {'p': PACKAGE_NAME, 'v': version}
     TARNAME = DIRNAME + '.tar'
@@ -61,10 +68,13 @@ def main():
     verinfo.size = len(verstream.getvalue())
     verinfo.mtime = time.time()
 
-    print(("git archive %s --prefix=%s/ HEAD" % (wta, DIRNAME)))
+    if wta is None:
+        print(("git archive --prefix={}/ HEAD".format(DIRNAME)))
+    else:
+        print(("git archive {} --prefix={}/ HEAD".format(wta, DIRNAME)))
+
     if platform.system() == 'Windows':
-        os.popen("git archive %s --prefix=%s/ --output=%s HEAD"
-                                % (wta, DIRNAME, TARNAME)).read()
+        os.popen("git archive {} --prefix={}/ --output={} HEAD".format(wta, DIRNAME, TARNAME)).read()
 
         tar = tarfile.TarFile(mode="a", name=TARNAME)
         tar.addfile(verinfo, verstream)
@@ -77,9 +87,15 @@ def main():
         tardata.close()
         os.remove(TARNAME)
     else:
-        tardata = os.popen("git archive %s --prefix=%s/ HEAD"
-                                % (wta, DIRNAME)).read()
-        tarstream = io.StringIO(tardata)
+        cmd_line = ["git", "archive"]
+        if not wta is None:
+            cmd_line.append(wta)
+        cmd_line.append("--prefix={}/".format(DIRNAME))
+        cmd_line.append("HEAD")
+
+        tardata = subprocess.Popen(cmd_line, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out,err = tardata.communicate()
+        tarstream = io.BytesIO(out)
 
         tar = tarfile.TarFile(mode="a", fileobj=tarstream)
         tar.addfile(verinfo, verstream)
@@ -88,7 +104,7 @@ def main():
         out = gzip.open(TGZNAME, "wb")
         out.write(tarstream.getvalue())
         out.close()
-        
+
     if dfsg:
         os.remove("src/.gitattributes")
     print(("Created " + TGZNAME))

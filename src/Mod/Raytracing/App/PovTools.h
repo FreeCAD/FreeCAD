@@ -20,12 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _PovTools_h_
 #define _PovTools_h_
 
 #include <gp_Vec.hxx>
 #include <vector>
+
+#include <Mod/Raytracing/RaytracingGlobal.h>
+
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -71,7 +73,7 @@ public:
 };
 
 
-class AppRaytracingExport PovTools
+class RaytracingExport PovTools
 {
 public:
     /// returns the given camera position as povray defines in a file
@@ -110,9 +112,6 @@ public:
                               const TopoDS_Shape& Shape,
                               float fMeshDeviation,
                               float fLength);
-
-
-    static void transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec** vertexnormals, long** cons,int &nbNodesInFace,int &nbTriInFace );
 };
 
 

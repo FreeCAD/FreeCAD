@@ -20,21 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskTrajectory_H
 #define GUI_TASKVIEW_TaskTrajectory_H
 
-#include <Base/UnitsApi.h>
-
-
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/Robot6Axis.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Trajectory.h>
 #include <Mod/Robot/App/Simulation.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
 
 #include "ViewProviderRobotObject.h"
 
@@ -58,21 +51,21 @@ class TaskTrajectory : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = 0);
-    ~TaskTrajectory();
+    TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = nullptr);
+    ~TaskTrajectory() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
 
 private Q_SLOTS:
-    void start(void);
-    void stop(void);
-    void run(void);
-    void back(void);
-    void forward(void);
-    void end(void);
+    void start();
+    void stop();
+    void run();
+    void back();
+    void forward();
+    void end();
 
-    void timerDone(void);
+    void timerDone();
     void valueChanged ( int value );
     void valueChanged ( double d );
 
@@ -80,7 +73,7 @@ Q_SIGNALS:
     void axisChanged(float A1,float A2,float A3,float A4,float A5,float A6,const Base::Placement &Tcp);
 
 protected:
-    void setTo(void);
+    void setTo();
     void viewTool(const Base::Placement& pos);
 
     QTimer *timer;

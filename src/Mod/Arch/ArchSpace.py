@@ -145,11 +145,15 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
-import FreeCAD,ArchComponent,ArchCommands,Draft,sys
+import FreeCAD
+import ArchComponent
+import ArchCommands
+import Draft
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -401,12 +405,12 @@ class _Space(ArchComponent.Component):
         # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
-                if hasattr(b[0],'Shape'):
-                    for sub in b[1]:
-                        if "Face" in sub:
-                            fn = int(sub[4:])-1
-                            faces.append(b[0].Shape.Faces[fn])
-                            #print("adding face ",fn," of object ",b[0].Name)
+            if hasattr(b[0],'Shape'):
+                for sub in b[1]:
+                    if "Face" in sub:
+                        fn = int(sub[4:])-1
+                        faces.append(b[0].Shape.Faces[fn])
+                        #print("adding face ",fn," of object ",b[0].Name)
 
         #print("total: ", len(faces), " faces")
 
@@ -465,7 +469,8 @@ class _Space(ArchComponent.Component):
 
         "returns a face that represents the footprint of this space"
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         if not hasattr(obj.Shape,"CenterOfMass"):
             return None
         try:
@@ -609,7 +614,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 except (AttributeError, RuntimeError):
                     pos = FreeCAD.Vector()
             else:
-                pos = vobj.TextPosition
+                pos = vobj.Object.Placement.multVec(vobj.TextPosition)
         # placement's displacement will be already added by the coin node
         pos = vobj.Object.Placement.inverse().multVec(pos)
         return pos
@@ -650,8 +655,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                             t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
                             t = t.replace("$ceiling",vobj.Object.FinishCeiling)
-                        if sys.version_info.major < 3:
-                            t = t.encode("utf8")
                         if first:
                             text1.append(t)
                         else:
@@ -666,17 +669,19 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(self,"font") and hasattr(vobj,"FontName"):
                 self.font.name = str(vobj.FontName)
 
-        elif (prop == "FontSize"):
+        elif prop == "FontSize":
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
                 if hasattr(vobj,"FirstLine"):
                     scale = vobj.FirstLine.Value/vobj.FontSize.Value
                     self.header.scaleFactor.setValue([scale,scale,scale])
+                    self.onChanged(vobj, "TextPosition")
 
-        elif (prop == "FirstLine"):
+        elif prop == "FirstLine":
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])
+                self.onChanged(vobj, "TextPosition")
 
         elif prop == "TextColor":
             if hasattr(self,"color") and hasattr(vobj,"TextColor"):
@@ -723,7 +728,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(vobj,"Transparency"):
                 self.fmat.transparency.setValue(vobj.Transparency/100.0)
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         taskd = SpaceTaskPanel()
         taskd.obj = self.Object
         taskd.update()

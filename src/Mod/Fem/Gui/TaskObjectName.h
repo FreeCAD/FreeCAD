@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskObjectName_H
 #define GUI_TASKVIEW_TaskObjectName_H
 
 #include <Gui/TaskView/TaskView.h>
-
 
 
 class Ui_TaskObjectName;
@@ -48,8 +46,8 @@ class TaskObjectName : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = 0);
-    ~TaskObjectName();
+    explicit TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = nullptr);
+    ~TaskObjectName() override;
 
 
     std::string name;
@@ -64,7 +62,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskObjectName* ui;
+    std::unique_ptr<Ui_TaskObjectName> ui;
 };
 
 } //namespace FemGui

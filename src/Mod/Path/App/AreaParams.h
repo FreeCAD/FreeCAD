@@ -112,7 +112,7 @@
 	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
 	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
 	((double,shift,Shift,0.0,"Pattern shift distance for each section.\n"\
-        "The pocket patter will be shifted in orthogonal direction by this amount for each section.\n"\
+        "The pocket pattern will be shifted in orthogonal direction by this amount for each section.\n"\
         "This gives a 3D pattern mainly for 3D printing. The shift only applies to 'Offset', 'Grid'\n"\
         "and 'Triangle'", App::PropertyDistance))
 

@@ -9,7 +9,6 @@
 \brief Airfoil (.dat) file importer
 
 This module provides support for importing airfoil .dat files.
-Note (2019): this module has been unmaintained for a long time.
 '''
 # Check code with
 # flake8 --ignore=E226,E266,E401,W503
@@ -39,13 +38,17 @@ __title__ = "FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
 __url__ = "https://www.freecadweb.org"
 
-import re, FreeCAD, Draft, Part, os
+import re
+import os
+import FreeCAD
+import Draft
+import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     def translate(context, txt):
         return txt
@@ -54,38 +57,6 @@ if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 useDraftWire = True
-
-
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'latin1',
-        otherwise in 'utf8'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = name
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            try:
-                decodedName = (name.decode("utf8"))
-            except UnicodeDecodeError:
-                _msg = ("AirfoilDAT error: "
-                        "couldn't determine character encoding.")
-                FCC.PrintError(translate("ImportAirfoilDAT", _msg) + "\n")
-                decodedName = name
-    return decodedName
 
 
 def open(filename):
@@ -103,8 +74,9 @@ def open(filename):
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decodeName(docname[:-4])
-    process(doc, filename)
+    doc.Label = docname
+    process(filename)
+    doc.recompute()
 
 
 def insert(filename, docname):
@@ -131,13 +103,15 @@ def insert(filename, docname):
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
-    importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
-    importgroup.Label = decodeName(groupname)
-    process(doc, filename)
+    obj = process(filename)
+    if obj is not None:
+        importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
+        importgroup.Group = [obj]
+    doc.recompute()
 
 
-def process(doc, filename):
-    """Process the filename and provide the document with the information.
+def process(filename):
+    """Process the filename and create a Draft Wire from the data.
 
     The common airfoil dat format has many flavors.
     This code should work with almost every dialect.
@@ -146,18 +120,15 @@ def process(doc, filename):
     ----------
     filename : str
         The path to the filename to be opened.
-    docname : str
-        The name of the active App::Document if one exists, or
-        of the new one created.
 
     Returns
     -------
-    App::Document
-        The active FreeCAD document, or the document created if none exists,
-        with the parsed information.
+    Part::Part2DObject or None.
+        The created Draft Wire object or None if the file contains less
+        than 3 points.
     """
     # Regex to identify data rows and throw away unused metadata
-    xval = r'(?P<xval>(\-|\d*)\.*\d*([Ee]\-?\d+)?)'
+    xval = r'(?P<xval>\-?\s*\d*\.*\d*([Ee]\-?\d+)?)'
     yval = r'(?P<yval>\-?\s*\d*\.*\d*([Ee]\-?\d+)?)'
     _regex = r'^\s*' + xval + r'\,?\s*' + yval + r'\s*$'
 
@@ -170,21 +141,28 @@ def process(doc, filename):
     # upside = True
     # last_x = None
 
-    # Collect the data for the upper and the lower side separately if possible
+    # Collect the data
     for lin in afile:
         curdat = regex.match(lin)
-        if curdat is not None:
+        if (curdat is not None
+                and curdat.group("xval")
+                and curdat.group("yval")):
             x = float(curdat.group("xval"))
             y = float(curdat.group("yval"))
 
-            # the normal processing
-            coords.append(Vector(x, y, 0))
+            # Some files specify the number of upper and lower points on the 2nd line:
+            # "       67.       72."
+            # See: http://airfoiltools.com/airfoil
+            # This line must be skipped:
+            if x < 2 and y < 2:
+                # the normal processing
+                coords.append(Vector(x, y, 0))
 
     afile.close()
 
     if len(coords) < 3:
-        print('Did not find enough coordinates\n')
-        return
+        FCC.PrintError(translate("ImportAirfoilDAT", "Did not find enough coordinates") + "\n")
+        return None
 
     # sometimes coords are divided in upper an lower side
     # so that x-coordinate begin new from leading or trailing edge
@@ -200,7 +178,7 @@ def process(doc, filename):
 
     # do we use the parametric Draft Wire?
     if useDraftWire:
-        obj = Draft.makeWire(coords, True)
+        obj = Draft.make_wire(coords, True)
         # obj.label = airfoilname
     else:
         # alternate solution, uses common Part Faces
@@ -227,4 +205,4 @@ def process(doc, filename):
         obj = FreeCAD.ActiveDocument.addObject('Part::Feature', airfoilname)
         obj.Shape = face
 
-    doc.recompute()
+    return obj

@@ -48,7 +48,7 @@ public:
   ContextMenu(QuarterWidget * quarterwidget);
   ~ContextMenu();
 
-  QMenu * getMenu(void) const;
+  QMenu * getMenu() const;
 
 public Q_SLOTS:
   void changeRenderMode(QAction * action);

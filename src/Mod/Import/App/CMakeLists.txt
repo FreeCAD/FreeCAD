@@ -8,6 +8,7 @@ endif(MSVC)
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
@@ -19,7 +20,6 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(Import_LIBS
     Part
-    #Assembly
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )
@@ -41,10 +41,10 @@ SET(Import_SRCS
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
-    ImpExpDxf.cpp
-    ImpExpDxf.h
-    dxf.cpp
-    dxf.h
+    dxf/ImpExpDxf.cpp
+    dxf/ImpExpDxf.h
+    dxf/dxf.cpp
+    dxf/dxf.h
 )
 
 SET(SCL_Resources
@@ -81,7 +81,7 @@ ADD_CUSTOM_TARGET(ImportPy ALL
     SOURCES ${SCL_Resources}
 )
 
-fc_target_copy_resource(ImportPy 
+fc_target_copy_resource(ImportPy
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
     ${CMAKE_BINARY_DIR}/Mod/Import
     ${SCL_Resources})

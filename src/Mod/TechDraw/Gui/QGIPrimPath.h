@@ -23,14 +23,18 @@
 #ifndef DRAWINGGUI_QGIPRIMPATH_H
 #define DRAWINGGUI_QGIPRIMPATH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QBrush>
 #include <QGraphicsItem>
+#include <QPen>
+
+#include <Base/Parameter.h>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
-
-#include <Base/Parameter.h>
 
 namespace TechDrawGui
 {
@@ -44,7 +48,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 170};
 
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual QPainterPath shape() const override { return path(); }
 
     void setHighlighted(bool state);

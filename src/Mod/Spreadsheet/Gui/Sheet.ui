@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="SpreadsheetGui::LineEdit" name="cellContent">
+      <widget class="Gui::ExpressionLineEdit" name="cellContent">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -44,7 +44,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="SpreadsheetGui::LineEdit" name="cellAlias">
+      <widget class="Gui::ExpressionLineEdit" name="cellAlias">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -68,9 +68,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</string>
    <header>SheetTableView.h</header>
   </customwidget>
   <customwidget>
-   <class>SpreadsheetGui::LineEdit</class>
+   <class>Gui::ExpressionLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>SpreadsheetView.h</header>
+   <header location="global">Gui/ExpressionCompleter.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

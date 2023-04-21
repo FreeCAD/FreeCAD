@@ -104,6 +104,10 @@
         <file>icons/general/Sketcher_ValidateSketch.svg</file>
         <file>icons/general/Sketcher_ViewSection.svg</file>
         <file>icons/general/Sketcher_ViewSketch.svg</file>
+        <file>icons/general/Sketcher_GridToggle.svg</file>
+        <file>icons/general/Sketcher_GridToggle_Deactivated.svg</file>
+        <file>icons/general/Sketcher_Snap.svg</file>
+        <file>icons/general/Sketcher_Snap_Deactivated.svg</file>
     </qresource>
     <qresource>
         <file>icons/geometry/Sketcher_AlterFillet.svg</file>
@@ -121,12 +125,16 @@
         <file>icons/geometry/Sketcher_CreateArc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateBSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_CreateBSplineByInterpolation_Constr.svg</file>
+        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateEllipse.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateEllipse_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateEllipseByCenter.svg</file>
+        <file>icons/geometry/Sketcher_CreateEllipseByCenter_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateElliptical_Arc.svg</file>
         <file>icons/geometry/Sketcher_CreateElliptical_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateFillet.svg</file>
@@ -139,6 +147,8 @@
         <file>icons/geometry/Sketcher_CreateHyperbolic_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateLine.svg</file>
         <file>icons/geometry/Sketcher_CreateLine_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateOblong.svg</file>
+        <file>icons/geometry/Sketcher_CreateOblong_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateParabolic_Arc.svg</file>
@@ -152,6 +162,8 @@
         <file>icons/geometry/Sketcher_CreatePolyline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangle_Center.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangle_Center_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
@@ -196,6 +208,8 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_InsertKnot.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Oblong.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Splitting.svg</file>
@@ -209,19 +223,20 @@
         <file>icons/splines/Sketcher_BSplineDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplineInsertKnot.svg</file>
+        <file>icons/splines/Sketcher_JoinCurves.svg</file>
         <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
         <file>icons/splines/Sketcher_BSplinePoleWeight.svg</file>
         <file>icons/splines/Sketcher_BSplinePolygon.svg</file>
     </qresource>
     <qresource>
         <file>icons/tools/Sketcher_Clone.svg</file>
-        <file>icons/tools/Sketcher_CloseShape.svg</file>
-        <file>icons/tools/Sketcher_ConnectLines.svg</file>
         <file>icons/tools/Sketcher_Copy.svg</file>
         <file>icons/tools/Sketcher_DeleteConstraints.svg</file>
         <file>icons/tools/Sketcher_DeleteGeometry.svg</file>
         <file>icons/tools/Sketcher_Move.svg</file>
         <file>icons/tools/Sketcher_RectangularArray.svg</file>
+        <file>icons/tools/Sketcher_RemoveAxesAlignment.svg</file>
         <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
@@ -231,6 +246,9 @@
         <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/tools/Sketcher_Symmetry.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/dialogs/Sketcher_Settings.svg</file>
     </qresource>
     <qresource>
         <file>translations/Sketcher_af.qm</file>
@@ -270,5 +288,10 @@
         <file>translations/Sketcher_vi.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_es-AR.qm</file>
+        <file>translations/Sketcher_bg.qm</file>
+        <file>translations/Sketcher_ka.qm</file>
+        <file>translations/Sketcher_sr-CS.qm</file>
+        <file>translations/Sketcher_be.qm</file>
     </qresource>
 </RCC>

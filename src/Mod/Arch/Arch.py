@@ -35,8 +35,8 @@ __url__    = "https://www.freecadweb.org"
 
 import FreeCAD
 if FreeCAD.GuiUp:
-	import FreeCADGui
-	FreeCADGui.updateLocale()
+    import FreeCADGui
+    FreeCADGui.updateLocale()
 
 from ArchWall import *
 from ArchFloor import *
@@ -51,6 +51,8 @@ from ArchSectionPlane import *
 from ArchWindow import *
 from ArchWindowPresets import *
 from ArchAxis import *
+from ArchAxisSystem import *
+from ArchGrid import *
 from ArchRoof import *
 from ArchSpace import *
 from ArchStairs import *

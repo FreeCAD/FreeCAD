@@ -26,23 +26,29 @@ Configuration and variables of FreeCAD installer
 !define APP_DIR_USERDATA ${APP_NAME}
 #!define APP_DIR_USERDATA "${APP_NAME}${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}"
 !define APP_INFO "${APP_NAME} - Your Own 3D Parametric Modeler"
-!define APP_WEBPAGE "https://freecadweb.org/"
+!define APP_WEBPAGE "https://www.freecad.org/"
 !define APP_WEBPAGE_INFO "${APP_NAME} Website"
-!define APP_WIKI "https://www.freecadweb.org/wiki/Main_Page"
+!define APP_WIKI "https://wiki.freecad.org/Main_Page"
 !define APP_WIKI_INFO "${APP_NAME} Wiki"
 !define APP_COPYRIGHT "${APP_NAME} is Copyright © 2001-${COPYRIGHT_YEAR} by the ${APP_NAME} Team"
 
 !define APP_RUN "bin\${APP_NAME}.exe"
 !define BIN_FREECAD "${APP_NAME}.exe"
 
-!define APP_REGKEY "Software\${APP_NAME}${APP_SERIES_KEY}" # like "FreeCAD0180"
+!define APP_REGKEY "SOFTWARE\${APP_NAME}${APP_SERIES_KEY}" # like "FreeCAD0180"
 !define APP_REGKEY_SETUP "${APP_REGKEY}\Setup"
 !define APP_REGKEY_SETTINGS "${APP_REGKEY}\Settings"
 
 !define APP_REGNAME_DOC "${APP_NAME}.Document"
 
 !define APP_EXT ".FCStd"
+!define APP_EXT1 ".FCStd1"
 !define APP_MIME_TYPE "application/x-zip-compressed"
+
+!define APP_EXT_BAK ".FCBak"
+!define APP_EXT_MACRO ".FCMacro"
+!define APP_EXT_MAT ".FCMat"
+!define APP_EXT_SCRIPT ".FCScript"
 
 !define APP_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SETUP_UNINSTALLER_KEY}"
 

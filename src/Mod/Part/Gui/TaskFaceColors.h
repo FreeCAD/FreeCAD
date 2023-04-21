@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_TASKSETCOLORS_H
 #define PARTGUI_TASKSETCOLORS_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 namespace Gui {
     class Document;
     class ViewProvider;
 }
 
-namespace PartGui { 
+namespace PartGui {
 
 class ViewProviderPartExt;
 
@@ -41,21 +40,22 @@ class FaceColors : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    FaceColors(ViewProviderPartExt* vp, QWidget* parent = 0);
-    ~FaceColors();
+    explicit FaceColors(ViewProviderPartExt* vp, QWidget* parent = nullptr);
+    ~FaceColors() override;
 
     void open();
     bool accept();
     bool reject();
 
-private Q_SLOTS:
-    void on_colorButton_changed();
-    void on_defaultButton_clicked();
-    void on_boxSelection_toggled(bool checked);
+private:
+    void setupConnections();
+    void onColorButtonChanged();
+    void onDefaultButtonClicked();
+    void onBoxSelectionToggled(bool checked);
 
 protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void changeEvent(QEvent *e);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void changeEvent(QEvent *e) override;
     void slotUndoDocument(const Gui::Document& Doc);
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
@@ -71,16 +71,16 @@ class TaskFaceColors : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskFaceColors(ViewProviderPartExt* vp);
-    ~TaskFaceColors();
+    explicit TaskFaceColors(ViewProviderPartExt* vp);
+    ~TaskFaceColors() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

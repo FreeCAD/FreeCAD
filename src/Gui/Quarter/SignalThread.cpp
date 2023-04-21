@@ -36,7 +36,7 @@
 
 using namespace SIM::Coin3D::Quarter;
 
-SignalThread::SignalThread(void)
+SignalThread::SignalThread()
   : isstopped(false)
 {
 }
@@ -46,7 +46,7 @@ SignalThread::~SignalThread()
 }
 
 void
-SignalThread::trigger(void)
+SignalThread::trigger()
 {
   // lock first to make sure the QThread is actually waiting for a signal
   QMutexLocker ml(&this->mutex);
@@ -54,7 +54,7 @@ SignalThread::trigger(void)
 }
 
 void
-SignalThread::stopThread(void)
+SignalThread::stopThread()
 {
   QMutexLocker ml(&this->mutex);
   this->isstopped = true;
@@ -63,7 +63,7 @@ SignalThread::stopThread(void)
 
 
 void
-SignalThread::run(void)
+SignalThread::run()
 {
   QMutexLocker ml(&this->mutex);
   while (!this->isstopped) {

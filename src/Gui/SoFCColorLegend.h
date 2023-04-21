@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCCOLORLEGEND_H
 #define GUI_SOFCCOLORLEGEND_H
 
+#include <Inventor/SbBox2f.h>
 #include <Inventor/nodes/SoSeparator.h>
+
 #include "SoFCColorBar.h"
-#include <App/ColorModel.h>
+
 
 class SoCoordinate3;
 class SoMFString;
@@ -35,54 +36,59 @@ class SbVec2s;
 namespace Gui {
 
 class GuiExport SoFCColorLegend : public SoFCColorBarBase {
-  typedef SoFCColorBarBase inherited;
+  using inherited = SoFCColorBarBase;
 
   SO_NODE_HEADER(Gui::SoFCColorLegend);
 
 public:
-  static void initClass(void);
-  static void finish(void);
-  SoFCColorLegend(void);
+  static void initClass();
+  static void finish();
+  SoFCColorLegend();
 
-  void setMarkerLabel( const SoMFString& label );
+  void setLegendLabels(const App::ColorLegend& legend, int prec=3);
 
   /**
    * Sets the range of the colorbar from the maximum \a fMax to the minimum \a fMin.
    * \a prec indicates the post decimal positions, \a prec should be in between 0 and 6.
    */
-  void setRange( float fMin, float fMax, int prec=3 );
+  void setRange( float fMin, float fMax, int prec=3 ) override;
   /**
-   * Sets the color model of the underlying color ramp to \a tModel. \a tModel either can
-   * be \c TRIA, \c INVERSE_TRIA or \c GRAY
+   * Updates the node with the given color legend.
    */
-  void setColorModel (App::ColorGradient::TColorModel tModel);
+  void setColorLegend (const App::ColorLegend& legend);
 
-  unsigned short getColorIndex (float fVal) const { return _cColRamp.getColorIndex(fVal);  }
-  App::Color getColor (float fVal) const { return _cColRamp.getColor(fVal); }
-  void setOutsideGrayed (bool bVal) { _cColRamp.setOutsideGrayed(bVal); }
-  bool isVisible (float) const { return false; }
-  float getMinValue (void) const { return _cColRamp.getMinValue(); }
-  float getMaxValue (void) const { return _cColRamp.getMaxValue(); }
-  unsigned long countColors (void) const { return _cColRamp.getCountColors(); }
+  unsigned short getColorIndex (float fVal) const { return _currentLegend.getColorIndex(fVal);  }
+  App::Color getColor (float fVal) const override { return _currentLegend.getColor(fVal); }
+  void setOutsideGrayed (bool bVal) override { _currentLegend.setOutsideGrayed(bVal); }
+  bool isVisible (float) const override { return false; }
+  float getMinValue () const override { return _currentLegend.getMinValue(); }
+  float getMaxValue () const override { return _currentLegend.getMaxValue(); }
+  std::size_t countColors () const { return _currentLegend.hasNumberOfFields(); }
 
-  bool customize() { return false; }
-  const char* getColorBarName() const { return "Color Legend"; }
+  void customize(SoFCColorBarBase*) override { }
+  const char* getColorBarName() const override;
 
 //  virtual void handleEvent(SoHandleEventAction * action);
 //  virtual void GLRenderBelowPath(SoGLRenderAction * action);
 //  virtual void GLRenderInPath(SoGLRenderAction * action);
 
 protected:
-  void setViewportSize( const SbVec2s& size );
-  virtual ~SoFCColorLegend();
+  void setViewportSize( const SbVec2s& size ) override;
+  ~SoFCColorLegend() override;
 //  virtual void redrawHighlighted(SoAction * act, SbBool  flag);
-
-  SoCoordinate3* coords;
-  SoSeparator* labels;
+private:
+  void setMarkerLabel(const SoMFString& label);
+  void setMarkerValue(const SoMFString& value);
+  void modifyPoints(const SbBox2f&);
+  void arrangeLabels(const SbBox2f&);
+  void arrangeValues(const SbBox2f&);
 
 private:
-  float _fPosX, _fPosY;
-  App::ColorGradient _cColRamp;
+  SoCoordinate3* coords;
+  SoSeparator* labelGroup;
+  SoSeparator* valueGroup;
+  SbBox2f _bbox;
+  App::ColorLegend _currentLegend;
 };
 
 } // namespace Gui

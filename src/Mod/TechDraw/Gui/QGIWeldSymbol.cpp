@@ -22,56 +22,30 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
-
-  # include <QGraphicsScene>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-
-  # include <math.h>
+# include <cmath>
+# include <QGraphicsScene>
+# include <QPainterPath>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-//#include <Mod/TechDraw/App/Preferences.h>
-
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "ViewProviderWeld.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGIPrimPath.h"
-#include "QGITile.h"
-#include "QGILeaderLine.h"
-#include "QGIVertex.h"
-#include "QGCustomText.h"
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "QGIWeldSymbol.h"
+#include "PreferencesGui.h"
+#include "QGCustomText.h"
+#include "QGILeaderLine.h"
+#include "QGIPrimPath.h"
+#include "QGITile.h"
+#include "QGIVertex.h"
+
+#include "ViewProviderWeld.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -88,7 +62,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
 {
     setFiltersChildEvents(true);    //qt5
     setFlag(QGraphicsItem::ItemIsMovable, false);
-    
+
     setCacheMode(QGraphicsItem::NoCache);
 
     setParentItem(m_qgLead);
@@ -109,7 +83,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_allAround->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_allAround->setFlag(QGraphicsItem::ItemIsMovable, false);
     m_allAround->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_allAround->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
     m_fieldFlag = new QGIPrimPath();
@@ -119,12 +93,13 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsMovable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_fieldFlag->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
     m_fieldFlag->setFill(prefNormalColor(), Qt::SolidPattern);
 
-    m_colCurrent = prefNormalColor();
-    m_colSetting = m_colCurrent;
+    setNormalColor(prefNormalColor());
+    setCurrentColor(getNormalColor());
+    setSettingColor(getNormalColor());
 
     setPrettyNormal();
 }
@@ -149,11 +124,10 @@ void QGIWeldSymbol::updateView(bool update)
 //    Base::Console().Message("QGIWS::updateView()\n");
     Q_UNUSED(update);
     auto viewWeld( dynamic_cast<TechDraw::DrawWeldSymbol*>(getViewObject()) );
-    if( viewWeld == nullptr ) {
+    if (!viewWeld)
         return;
-    }
 
-    if ( getFeature() == nullptr ) {
+    if (!getFeature()) {
         Base::Console().Warning("QGIWS::updateView - no feature!\n");
         return;
     }
@@ -171,11 +145,11 @@ void QGIWeldSymbol::draw()
 
     removeQGITiles();
 
-    if (m_arrowFeat != nullptr) {
+    if (m_arrowFeat) {
         drawTile(m_arrowFeat);
     }
 
-    if (m_otherFeat != nullptr) {
+    if (m_otherFeat) {
         drawTile(m_otherFeat);
     }
 
@@ -189,23 +163,20 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
 //    Base::Console().Message("QGIWS::drawTile() - tileFeat: %X\n", tileFeat);
-    if (tileFeat == nullptr) {
+    if (!tileFeat) {
         Base::Console().Message("QGIWS::drawTile - tile is null\n");
         return;
     }
 
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
-    double      sizeMM = vp->TileFontSize.getValue();
-    double      fontSize = QGIView::calculateFontPixelSize(sizeMM);
-
+    int         fontSize = QGIView::exactFontSize(vp->Font.getValue(),
+                                                  vp->TileFontSize.getValue());
     double featScale = m_leadFeat->getScale();
 
     std::string tileTextL = tileFeat->LeftText.getValue();
@@ -234,7 +205,7 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     tile->draw();
 }
 
-void QGIWeldSymbol::drawAllAround(void)
+void QGIWeldSymbol::drawAllAround()
 {
 //    Base::Console().Message("QGIWS::drawAllAround()\n");
     QPointF allAroundPos = getKinkPoint();
@@ -243,7 +214,7 @@ void QGIWeldSymbol::drawAllAround(void)
     if (getFeature()->AllAround.getValue()) {
         m_allAround->show();
     } else {
-        
+
         m_allAround->hide();
         return;
     }
@@ -258,11 +229,11 @@ void QGIWeldSymbol::drawAllAround(void)
     m_allAround->setZValue(ZVALUE::DIMENSION);
 }
 
-void QGIWeldSymbol::drawTailText(void)
+void QGIWeldSymbol::drawTailText()
 {
 //    Base::Console().Message("QGIWS::drawTailText()\n");
     QPointF textPos = getTailPoint();
-    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0,0 !!!
+    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0, 0 !!!
     std::string tText = getFeature()->TailText.getValue();
     if (tText.empty()) {
         m_tailText->hide();
@@ -271,17 +242,15 @@ void QGIWeldSymbol::drawTailText(void)
         m_tailText->show();
     }
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp) {
         return;
     }
-    std::string fontName = vp->Font.getValue();
-    QString qFontName = Base::Tools::fromStdString(fontName);
-    double sizeMM = vp->FontSize.getValue();
-    double fontSize = QGIView::calculateFontPixelSize(sizeMM);
+    QString qFontName = Base::Tools::fromStdString(vp->Font.getValue());
+    int fontSize = QGIView::exactFontSize(vp->Font.getValue(),
+                                          vp->FontSize.getValue());
 
     m_font.setFamily(qFontName);
     m_font.setPixelSize(fontSize);
@@ -310,7 +279,7 @@ void QGIWeldSymbol::drawFieldFlag()
 {
 //    Base::Console().Message("QGIWS::drawFieldFlag()\n");
     QPointF fieldFlagPos = getKinkPoint();
-    m_fieldFlag->setPos(fieldFlagPos); 
+    m_fieldFlag->setPos(fieldFlagPos);
 
     if (getFeature()->FieldWeld.getValue()) {
         m_fieldFlag->show();
@@ -340,17 +309,17 @@ void QGIWeldSymbol::drawFieldFlag()
     m_fieldFlag->setPath(path);
 }
 
-void QGIWeldSymbol::getTileFeats(void)
+void QGIWeldSymbol::getTileFeats()
 {
     std::vector<TechDraw::DrawTileWeld*> tiles = getFeature()->getTiles();
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
-    
+
     if (!tiles.empty()) {
         TechDraw::DrawTileWeld* tempTile = tiles.at(0);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -358,13 +327,13 @@ void QGIWeldSymbol::getTileFeats(void)
         TechDraw::DrawTileWeld* tempTile = tiles.at(1);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
 }
 
-void QGIWeldSymbol::removeQGITiles(void) 
+void QGIWeldSymbol::removeQGITiles()
 {
     std::vector<QGITile*> tiles = getQGITiles();
     for (auto t: tiles) {
@@ -380,7 +349,7 @@ void QGIWeldSymbol::removeQGITiles(void)
     }
 }
 
-std::vector<QGITile*> QGIWeldSymbol::getQGITiles(void) const
+std::vector<QGITile*> QGIWeldSymbol::getQGITiles() const
 {
     std::vector<QGITile*> result;
     QList<QGraphicsItem*> children = childItems();
@@ -397,10 +366,10 @@ void QGIWeldSymbol::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     if (isSelected()) {
-        m_colCurrent = getSelectColor();
+        setCurrentColor(getSelectColor());
         setPrettySel();
     } else {
-        m_colCurrent = getPreColor();
+        setCurrentColor(getPreColor());
         setPrettyPre();
     }
     QGIView::hoverEnterEvent(event);
@@ -410,10 +379,10 @@ void QGIWeldSymbol::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     if(isSelected()) {
-        m_colCurrent = getSelectColor();
+        setCurrentColor(getSelectColor());
         setPrettySel();
     } else {
-        m_colCurrent = m_colNormal;
+        setCurrentColor(getNormalColor());
         setPrettyNormal();
     }
     QGIView::hoverLeaveEvent(event);
@@ -429,15 +398,15 @@ void QGIWeldSymbol::setPrettyNormal()
 {
     std::vector<QGITile*> tiles = getQGITiles();
     for (auto t: tiles) {
-        t->setColor(m_colNormal);
+        t->setColor(getNormalColor());
         t->draw();
     }
-    m_colCurrent = m_colNormal;
-    m_fieldFlag->setNormalColor(m_colCurrent);
+    setCurrentColor(getNormalColor());
+    m_fieldFlag->setNormalColor(getNormalColor());
     m_fieldFlag->setPrettyNormal();
-    m_allAround->setNormalColor(m_colCurrent);
+    m_allAround->setNormalColor(getNormalColor());
     m_allAround->setPrettyNormal();
-    m_tailText->setColor(m_colCurrent);
+    m_tailText->setColor(getNormalColor());
     m_tailText->setPrettyNormal();
 }
 
@@ -449,7 +418,7 @@ void QGIWeldSymbol::setPrettyPre()
         t->draw();
     }
 
-    m_colCurrent = getPreColor();
+    setCurrentColor(getPreColor());
     m_fieldFlag->setNormalColor(getPreColor());
     m_fieldFlag->setPrettyPre();
     m_allAround->setNormalColor(getPreColor());
@@ -466,7 +435,7 @@ void QGIWeldSymbol::setPrettySel()
         t->draw();
     }
 
-    m_colCurrent = getSelectColor();
+    setCurrentColor(getSelectColor());
     m_fieldFlag->setNormalColor(getSelectColor());
     m_fieldFlag->setPrettySel();
     m_allAround->setNormalColor(getSelectColor());
@@ -475,21 +444,21 @@ void QGIWeldSymbol::setPrettySel()
     m_tailText->setPrettySel();
 }
 
-QPointF QGIWeldSymbol::getTileOrigin(void)
+QPointF QGIWeldSymbol::getTileOrigin()
 {
     Base::Vector3d org = m_leadFeat->getTileOrigin();
     QPointF result(org.x, org.y);
     return result;
 }
 
-QPointF QGIWeldSymbol::getKinkPoint(void)
+QPointF QGIWeldSymbol::getKinkPoint()
 {
     Base::Vector3d org = m_leadFeat->getKinkPoint();
     QPointF result(org.x, org.y);
     return result;
 }
 
-QPointF QGIWeldSymbol::getTailPoint(void)
+QPointF QGIWeldSymbol::getTailPoint()
 {
     Base::Vector3d org = m_leadFeat->getTailPoint();
     QPointF result(org.x, org.y);
@@ -503,7 +472,7 @@ void QGIWeldSymbol::setFeature(TechDraw::DrawWeldSymbol* feat)
     m_weldFeatName = feat->getNameInDocument();
 }
 
-TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature(void)
+TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature()
 {
     return m_weldFeat;
 }
@@ -511,8 +480,8 @@ TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature(void)
 //preference
 QColor QGIWeldSymbol::prefNormalColor()
 {
-    m_colNormal = PreferencesGui::leaderQColor();
-    return m_colNormal;
+    setNormalColor(PreferencesGui::leaderQColor());
+    return getNormalColor();
 }
 
 double QGIWeldSymbol::prefArrowSize()
@@ -520,7 +489,7 @@ double QGIWeldSymbol::prefArrowSize()
     return PreferencesGui::dimArrowSize();
 }
 
-double QGIWeldSymbol::prefFontSize(void) const
+double QGIWeldSymbol::prefFontSize() const
 {
     return Preferences::labelFontSizeMM();
 }

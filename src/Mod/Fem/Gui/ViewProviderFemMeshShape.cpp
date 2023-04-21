@@ -20,21 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "ViewProviderFemMeshShape.h"
 
 
 using namespace FemGui;
 
-
-
 PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShape, FemGui::ViewProviderFemMesh)
-
 
 ViewProviderFemMeshShape::ViewProviderFemMeshShape()
 {

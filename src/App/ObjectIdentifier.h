@@ -24,16 +24,17 @@
 #ifndef APP_PATH_H
 #define APP_PATH_H
 
-#include <climits>
-#include <memory>
-#include <vector>
-#include <string>
-#include <set>
-#include <map>
 #include <bitset>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 #include <boost/any.hpp>
-#include <CXX/Objects.hxx>
+#include <FCConfig.h>
 
+namespace Py {
+class Object;
+}
 namespace App
 {
 
@@ -71,7 +72,7 @@ public:
 
     class AppExport DocumentMapper {
     public:
-        DocumentMapper(const std::map<std::string,std::string> &);
+        explicit DocumentMapper(const std::map<std::string,std::string> &);
         ~DocumentMapper();
     };
 
@@ -80,14 +81,21 @@ public:
 
     public:
 
-        // Constructor
-        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false)
-            : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier)
-        { }
+        String(const std::string &s = "",
+               bool _isRealString = false,
+               bool _forceIdentifier = false)
+            : str(s),
+            isString(_isRealString),
+            forceIdentifier(_forceIdentifier)
+        {}//explicit bombs
 
-        String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false)
-            : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier)
-        { }
+        explicit String(std::string &&s,
+               bool _isRealString = false,
+               bool _forceIdentifier = false)
+            : str(std::move(s)),
+            isString(_isRealString),
+            forceIdentifier(_forceIdentifier)
+        {}
 
         FC_DEFAULT_CTORS(String) {
             str = std::move(other.str);
@@ -111,9 +119,9 @@ public:
 
         // Operators
 
-        operator std::string() const { return str; }
+        explicit operator std::string() const { return str; }
 
-        operator const char *() const { return str.c_str(); }
+        explicit operator const char *() const { return str.c_str(); }
 
         bool operator==(const String & other) const { return str == other.str; }
 
@@ -126,7 +134,7 @@ public:
         bool operator>(const String & other) const { return str > other.str; }
 
         void checkImport(const App::DocumentObject *owner,
-                const App::DocumentObject *obj=0, String *objName=0);
+                const App::DocumentObject *obj=nullptr, String *objName=nullptr);
     private:
 
         std::string str;
@@ -165,9 +173,9 @@ public:
         }
 
         Component(const String &_name = String(), typeEnum _type=SIMPLE,
-                int begin=INT_MAX, int end=INT_MAX, int step=1);
+                int begin=INT_MAX, int end=INT_MAX, int step=1);//explicit bombs
         Component(String &&_name, typeEnum _type=SIMPLE,
-                int begin=INT_MAX, int end=INT_MAX, int step=1);
+                int begin=INT_MAX, int end=INT_MAX, int step=1);//explicit bombs
 
         static Component SimpleComponent(const char * _component);
 
@@ -233,6 +241,9 @@ public:
     static Component SimpleComponent(String &&_component)
         {return Component::SimpleComponent(std::move(_component));}
 
+   static Component SimpleComponent(const std::string _component)
+        {return Component::SimpleComponent(_component.c_str());}
+
     static Component ArrayComponent(int _index)
         {return Component::ArrayComponent(_index); }
 
@@ -245,12 +256,12 @@ public:
     static Component MapComponent(String &&_key)
         {return Component::MapComponent(_key);}
 
-    ObjectIdentifier(const App::PropertyContainer * _owner = 0,
+    explicit ObjectIdentifier(const App::PropertyContainer * _owner = nullptr,
             const std::string & property = std::string(), int index=INT_MAX);
 
     ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
 
-    ObjectIdentifier(const App::Property & prop, int index=INT_MAX);
+    ObjectIdentifier(const App::Property & prop, int index=INT_MAX);//explicit bombs
 
     FC_DEFAULT_CTORS(ObjectIdentifier) {
         owner = other.owner;
@@ -267,7 +278,7 @@ public:
         return *this;
     }
 
-    virtual ~ObjectIdentifier() {}
+    virtual ~ObjectIdentifier() = default;
 
     App::DocumentObject *getOwner() const { return owner; }
 
@@ -288,7 +299,7 @@ public:
     template<typename C>
     void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); }
 
-    const Component & getPropertyComponent(int i, int *idx=0) const;
+    const Component & getPropertyComponent(int i, int *idx=nullptr) const;
 
     void setComponent(int idx, Component &&comp);
     void setComponent(int idx, const Component &comp);
@@ -310,7 +321,7 @@ public:
 
     bool isTouched() const;
 
-    App::Property *getProperty(int *ptype=0) const;
+    App::Property *getProperty(int *ptype=nullptr) const;
 
     App::ObjectIdentifier canonicalPath() const;
 
@@ -335,16 +346,54 @@ public:
     const std::string &getSubObjectName(bool newStyle) const;
     const std::string &getSubObjectName() const;
 
-    typedef std::map<std::pair<App::DocumentObject*,std::string>,std::string> SubNameMap;
+    using SubNameMap = std::map<std::pair<App::DocumentObject*,std::string>,std::string>;
     void importSubNames(const SubNameMap &subNameMap);
 
     bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
 
     bool relabeledDocument(ExpressionVisitor &v, const std::string &oldLabel, const std::string &newLabel);
 
-    std::pair<App::DocumentObject*,std::string> getDep(std::vector<std::string> *labels=0) const;
+    /** Type for storing dependency of an ObjectIdentifier
+     *
+     * The dependency is a map from document object to a set of property names.
+     * An object identifier may references multiple objects using syntax like
+     * 'Part.Group[0].Width'.
+     *
+     * Also, we use set of string instead of set of Property pointer, because
+     * the property may not exist at the time this ObjectIdentifier is
+     * constructed.
+     */
+    using Dependencies = std::map<App::DocumentObject *, std::set<std::string> >;
 
-    App::Document *getDocument(String name = String(), bool *ambiguous=0) const;
+    /** Get dependencies of this object identifier
+     *
+     * @param needProps: whether need property dependencies.
+     * @param labels: optional return of any label references.
+     *
+     * In case of multi-object references, like 'Part.Group[0].Width', if no
+     * property dependency is required, then this function will only return the
+     * first referred object dependency. Or else, all object and property
+     * dependencies will be returned.
+     */
+    Dependencies getDep(bool needProps, std::vector<std::string> *labels=nullptr) const;
+
+    /** Get dependencies of this object identifier
+     *
+     * @param deps: returns the dependencies.
+     * @param needProps: whether need property dependencies.
+     * @param labels: optional return of any label references.
+     *
+     * In case of multi-object references, like 'Part.Group[0].Width', if no
+     * property dependency is required, then this function will only return the
+     * first referred object dependency. Or else, all object and property
+     * dependencies will be returned.
+     */
+    void getDep(Dependencies &deps, bool needProps, std::vector<std::string> *labels=nullptr) const;
+
+    /// Returns all label references
+    void getDepLabels(std::vector<std::string> &labels) const;
+
+    App::Document *getDocument(String name = String(), bool *ambiguous=nullptr) const;
 
     App::DocumentObject *getDocumentObject() const;
 
@@ -368,9 +417,9 @@ public:
 
     // Getter
 
-    App::any getValue(bool pathValue=false, bool *isPseudoProperty=0) const;
+    App::any getValue(bool pathValue=false, bool *isPseudoProperty=nullptr) const;
 
-    Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=0) const;
+    Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=nullptr) const;
 
     // Setter: is const because it does not alter the object state,
     // but does have an aiding effect.
@@ -385,7 +434,7 @@ public:
 
     bool adjustLinks(ExpressionVisitor &v, const std::set<App::DocumentObject *> &inList);
 
-    bool updateElementReference(ExpressionVisitor &v, App::DocumentObject *feature=0, bool reverse=false);
+    bool updateElementReference(ExpressionVisitor &v, App::DocumentObject *feature=nullptr, bool reverse=false);
 
     void resolveAmbiguity();
 
@@ -397,7 +446,7 @@ protected:
 
     struct ResolveResults {
 
-        ResolveResults(const ObjectIdentifier & oi);
+        explicit ResolveResults(const ObjectIdentifier & oi);
 
         int propertyIndex;
         App::Document * resolvedDocument;
@@ -422,13 +471,16 @@ protected:
 
     void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
 
-    Py::Object access(const ResolveResults &rs, Py::Object *value=0) const;
+    Py::Object access(const ResolveResults &rs,
+            Py::Object *value=nullptr, Dependencies *deps=nullptr) const;
 
     void resolve(ResolveResults & results) const;
     void resolveAmbiguity(ResolveResults &results);
 
     static App::DocumentObject *getDocumentObject(
             const App::Document *doc, const String &name, std::bitset<32> &flags);
+
+    void getDepLabels(const ResolveResults &result, std::vector<std::string> &labels) const;
 
     App::DocumentObject * owner;
     String  documentName;
@@ -464,8 +516,8 @@ namespace std {
 
 template<>
 struct hash<App::ObjectIdentifier> {
-    typedef App::ObjectIdentifier argument_type;
-    typedef std::size_t result_type;
+    using argument_type = App::ObjectIdentifier;
+    using result_type = std::size_t;
     inline result_type operator()(argument_type const& s) const {
         return s.hash();
     }

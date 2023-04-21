@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+      Father="PyObjectBase"
+      Name="HLRBRep_AlgoPy"
+      PythonName="Part.HLRBRep_Algo"
+      Twin="HLRBRep_Algo"
+      TwinPointer="HLRBRep_Algo"
+      Include="HLRBRep_Algo.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="false">
+    <Documentation>
+          <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+          <UserDocu>Describes functions to use HLR algorithm.</UserDocu>
+    </Documentation>
+    <Methode Name="add">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="remove">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="index">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="outLinedShapeNullify">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setProjector" Keyword="true">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="nbShapes">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="showAll">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="hide">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="hideAll">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="partialHide">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="select">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="selectEdge">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="selectFace">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="initEdgeStatus">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="update">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <ClassDeclarations>
+private:
+    Handle(HLRBRep_Algo) hAlgo;
+
+public:
+    Handle(HLRBRep_Algo) handle() {
+        return hAlgo;
+    }
+    </ClassDeclarations>
+    </PythonExport>
+</GenerateModel>

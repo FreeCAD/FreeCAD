@@ -1,0 +1,63 @@
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+# source:
+# - any: ['src/**/*', '!src/docs/*']
+
+Core:
+- 'src/App/**/*'
+- 'src/Base/**/*'
+- 'src/Gui/**/*'
+
+:octocat::
+- '.github/**/*'
+
+Addon Manager:
+- 'src/Mod/AddonManager/**/*'
+
+WB Arch:
+- 'src/Mod/Arch/**/*'
+
+WB Draft:
+- 'src/Mod/Draft/**/*'
+
+WB FEM:
+- 'src/Mod/Fem/**/*'
+
+WB Mesh:
+- 'src/Mod/Mesh/**/*'
+
+WB MeshPart:
+- 'src/Mod/MeshPart/**/*'
+
+WB OpenSCAD:
+- 'src/Mod/OpenSCAD/**/*'
+
+WB Part:
+- 'src/Mod/Part/**/*'
+
+WB PartDesign:
+- 'src/Mod/PartDesign/**/*'
+
+WB Path:
+- 'src/Mod/Path/**/*'
+
+WB Points:
+- 'src/Mod/Points/**/*'
+
+WB ReverseEngineering:
+- 'src/Mod/ReverseEngineering/**/*'
+
+WB Sketcher:
+- 'src/Mod/Sketcher/**/*'
+
+WB Spreadsheet:
+- 'src/Mod/Spreadsheet/**/*'
+
+WB Surface:
+- 'src/Mod/Surface/**/*/'
+
+WB TechDraw:
+- 'src/Mod/TechDraw/**/*'
+
+WB Test:
+- 'src/Mod/Test/**/*'
+

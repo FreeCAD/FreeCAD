@@ -20,28 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <QFileInfo>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <App/DocumentObjectPy.h>
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/EditorView.h>
 #include <Gui/MainWindow.h>
 #include <Gui/TextEdit.h>
-#include <Gui/EditorView.h>
-
 #include <Mod/Fem/App/FemAnalysis.h>
-#include "ActiveAnalysisObserver.h"
+
 #include "AbaqusHighlighter.h"
+#include "ActiveAnalysisObserver.h"
 
 
 namespace FemGui {
@@ -50,53 +43,53 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("FemGui")
     {
-        add_varargs_method("setActiveAnalysis",&Module::setActiveAnalysis,
+        add_varargs_method("setActiveAnalysis", &Module::setActiveAnalysis,
             "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."
         );
-        add_varargs_method("getActiveAnalysis",&Module::getActiveAnalysis,
+        add_varargs_method("getActiveAnalysis", &Module::getActiveAnalysis,
             "getActiveAnalysis() -- Returns the Analysis object in work."
         );
-        add_varargs_method("open",&Module::open,
+        add_varargs_method("open", &Module::open,
             "open(string) -- Opens an Abaqus file in a text editor."
         );
-        add_varargs_method("insert",&Module::open,
+        add_varargs_method("insert", &Module::open,
             "insert(string,string) -- Opens an Abaqus file in a text editor."
         );
         initialize("This module is the FemGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    Py::Object invoke_method_varargs(void* method_def, const Py::Tuple& args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
         }
-        catch (const Base::Exception &e) {
+        catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
         }
-        catch (const std::exception &e) {
+        catch (const std::exception& e) {
             throw Py::RuntimeError(e.what());
         }
     }
     Py::Object setActiveAnalysis(const Py::Tuple& args)
     {
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
-            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue,false);
-            FemGui::ActiveAnalysisObserver::instance()->setActiveObject(0);
+            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue, false);
+            FemGui::ActiveAnalysisObserver::instance()->setActiveObject(nullptr);
         }
 
-        PyObject *object=0;
-        if (PyArg_ParseTuple(args.ptr(),"|O!",&(App::DocumentObjectPy::Type), &object)&& object) {
+        PyObject* object = nullptr;
+        if (PyArg_ParseTuple(args.ptr(), "|O!", &(App::DocumentObjectPy::Type), &object) && object) {
             App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-            if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "Active Analysis object have to be of type Fem::FemAnalysis!");
+            if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())) {
+                throw Py::Exception(Base::PyExc_FC_GeneralError, "Active Analysis object have to be of type Fem::FemAnalysis!");
             }
 
             // get the gui document of the Analysis Item
             FemGui::ActiveAnalysisObserver::instance()->setActiveObject(static_cast<Fem::FemAnalysis*>(obj));
-            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue,true);
+            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue, true);
         }
 
         return Py::None();
@@ -114,7 +107,7 @@ private:
     {
         char* Name;
         const char* DocName;
-        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
+        if (!PyArg_ParseTuple(args.ptr(), "et|s", "utf-8", &Name, &DocName))
             throw Py::Exception();
 
         std::string EncodedName = std::string(Name);
@@ -132,11 +125,14 @@ private:
             }
         }
 
-        if (ext == QLatin1String("inp")) {
+        if ( (ext == QLatin1String("inp"))
+            || (ext == QLatin1String("sif"))
+            || (ext == QLatin1String("txt")) ) {
             Gui::TextEditor* editor = new Gui::TextEditor();
             editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/fem-solver-inp-editor.svg"));
             Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
-            editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
+            if (ext == QLatin1String("inp"))
+                editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
             edit->setDisplayName(Gui::EditorView::FileName);
             edit->open(fileName);
             edit->resize(400, 300);
@@ -153,7 +149,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace FemGui

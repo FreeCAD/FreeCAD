@@ -24,9 +24,9 @@
 #ifndef APP_Part_H
 #define APP_Part_H
 
+#include "GeoFeature.h"
 #include "OriginGroupExtension.h"
 #include "PropertyLinks.h"
-
 
 
 namespace App
@@ -53,7 +53,7 @@ public:
     /// unique identifier of the Item
     App::PropertyUUID    Uid;
     /// material descriptions
-    App::PropertyMap     Material;
+    App::PropertyLink    Material;
     /// Meta descriptions
     App::PropertyMap     Meta;
 
@@ -76,13 +76,16 @@ public:
     //@}
 
     /// Constructor
-    Part(void);
-    virtual ~Part();
+    Part();
+    ~Part() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderPart";
     }
+
+
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
 
     /**
      * Returns the part which contains this object.
@@ -92,10 +95,10 @@ public:
      */
     static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 };
 
-//typedef App::FeaturePythonT<Part> PartPython;
+//using PartPython = App::FeaturePythonT<Part>;
 
 } //namespace App
 

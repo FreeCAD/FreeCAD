@@ -33,13 +33,13 @@ namespace Gui {
 
 class GestureNavigationStyle: public UserNavigationStyle
 {
-    typedef UserNavigationStyle superclass;
+    using superclass = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GestureNavigationStyle();
-    virtual ~GestureNavigationStyle() override;
+    ~GestureNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
 
 protected:

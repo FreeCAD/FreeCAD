@@ -236,11 +236,11 @@ std::string OnFileOpen(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void OnLoadFreeCAD(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (!Py_IsInitialized()) {
-        Py_SetProgramName("CEmbed_FreeCADDlg");
+        Py_SetProgramName(L"CEmbed_FreeCADDlg");
         Py_Initialize();
         static int argc = 1;
-        static char* app = "CEmbed_FreeCADDlg"; 
-        static char *argv[2] = {app,0};
+        static wchar_t* app = L"CEmbed_FreeCADDlg";
+        static wchar_t *argv[2] = {app,0};
         PySys_SetArgv(argc, argv);
     }
 
@@ -271,7 +271,7 @@ void OnLoadFreeCAD(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PyObject *ptype, *pvalue, *ptrace;
             PyErr_Fetch(&ptype, &pvalue, &ptrace);
             PyObject* pystring = PyObject_Str(pvalue);
-            const char* error = PyString_AsString(pystring);
+            const char* error = PyUnicode_AsUTF8(pystring);
             MessageBox(0, error, "Error", MB_OK);
             Py_DECREF(pystring);
         }
@@ -294,7 +294,7 @@ void OnNewDocument(HWND hWnd)
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);
         PyObject* pystring = PyObject_Str(pvalue);
-        const char* error = PyString_AsString(pystring);
+        const char* error = PyUnicode_AsUTF8(pystring);
         MessageBox(hWnd, error, "Error", MB_OK);
         Py_DECREF(pystring);
     }
@@ -329,7 +329,7 @@ void OnEmbedWidget(HWND hWnd)
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);
         PyObject* pystring = PyObject_Str(pvalue);
-        const char* error = PyString_AsString(pystring);
+        const char* error = PyUnicode_AsUTF8(pystring);
         MessageBox(hWnd, error, "Error", MB_OK);
         Py_DECREF(pystring);
     }

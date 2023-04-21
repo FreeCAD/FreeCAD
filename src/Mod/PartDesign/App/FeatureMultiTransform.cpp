@@ -23,18 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
-# include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FeatureMultiTransform.h"
-#include "FeatureScaled.h"
 #include "FeatureAddSub.h"
-#include <Mod/Part/App/TopoShape.h>
+#include "FeatureScaled.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
 
 using namespace PartDesign;
 
@@ -45,11 +42,11 @@ PROPERTY_SOURCE(PartDesign::MultiTransform, PartDesign::Transformed)
 
 MultiTransform::MultiTransform()
 {
-    ADD_PROPERTY(Transformations,(0));
+    ADD_PROPERTY(Transformations,(nullptr));
     Transformations.setSize(0);
 }
 
-void MultiTransform::positionBySupport(void)
+void MultiTransform::positionBySupport()
 {
     PartDesign::Transformed::positionBySupport();
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();

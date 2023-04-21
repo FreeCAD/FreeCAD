@@ -22,31 +22,25 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
+# include <QPainter>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
+#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "QGIView.h"
 #include "QGIHighlight.h"
+#include "PreferencesGui.h"
+#include "QGIViewPart.h"
+#include "Rez.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-QGIHighlight::QGIHighlight()
+QGIHighlight::QGIHighlight() :
+    m_referenceAngle(0.0)
 {
-    m_refText = "";
     m_refSize = 0.0;
     setInteractive(false);
 
@@ -70,6 +64,17 @@ QGIHighlight::~QGIHighlight()
 
 }
 
+void QGIHighlight::onDragFinished()
+{
+//    Base::Console().Message("QGIH::onDragFinished - pos: %s\n",
+//                            DrawUtil::formatVector(pos()).c_str());
+    QGraphicsItem* parent = parentItem();
+    auto qgivp = dynamic_cast<QGIViewPart*>(parent);
+    if (qgivp) {
+        qgivp->highlightMoved(this, pos());
+    }
+}
+
 void QGIHighlight::draw()
 {
     prepareGeometryChange();
@@ -80,7 +85,7 @@ void QGIHighlight::draw()
 
 void QGIHighlight::makeHighlight()
 {
-    QRectF r(m_start,m_end);
+    QRectF r(m_start, m_end);
     m_circle->setRect(r);
     m_rect->setRect(r);
     if (getHoleStyle() == 0) {
@@ -95,15 +100,39 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    m_refFont.setPixelSize(QGIView::calculateFontPixelSize(m_refSize));
+    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_refFont.family()),
+                                          m_refSize);
+    m_refFont .setPixelSize(fontSize);
     m_reference->setFont(m_refFont);
-    m_reference->setPlainText(QString::fromUtf8(m_refText));
-    double fudge = Rez::guiX(1.0);
-    QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
-    m_reference->setPos(newPos);   
+    m_reference->setPlainText(m_refText);
+
+    double vertOffset = 0.0;
+    if (m_referenceAngle >= 0.0 &&
+        m_referenceAngle <= 180.0) {
+        //above the X axis
+        //referenceText is positioned by top-left, need to adjust upwards by text height
+        vertOffset = m_reference->boundingRect().height();
+    } else {
+        //below X axis. need to adjust upwards a bit because there is blank space above text
+        vertOffset = m_reference->tightBoundingAdjust().y();
+    }
+
+    double horizOffset = 0.0;
+    if (m_referenceAngle > 90.0 &&
+        m_referenceAngle < 270.0) {
+        //to left of Y axis
+        horizOffset = -m_reference->boundingRect().width();
+    }
+    QRectF r(m_start, m_end);
+    double radius = r.width() / 2.0;
+    QPointF center = r.center();
+    double angleRad = m_referenceAngle * M_PI / 180.0;
+    double posX = center.x() + cos(angleRad) * radius + horizOffset;
+    double posY = center.y() - sin(angleRad) * radius - vertOffset;
+    m_reference->setPos(posX, posY);
 
     double highRot = rotation();
-    if (!TechDraw::DrawUtil::fpCompare(highRot,0.0)) {
+    if (!TechDraw::DrawUtil::fpCompare(highRot, 0.0)) {
         QRectF refBR = m_reference->boundingRect();
         QPointF refCenter = refBR.center();
         m_reference->setTransformOriginPoint(refCenter);
@@ -120,15 +149,15 @@ void QGIHighlight::setInteractive(bool state)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, state);
 }
 
-void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
+void QGIHighlight::setBounds(double x1, double y1, double x2, double y2)
 {
-    m_start = QPointF(Rez::guiX(x1),Rez::guiX(-y1));
-    m_end = QPointF(Rez::guiX(x2),Rez::guiX(-y2));
+    m_start = QPointF(Rez::guiX(x1), Rez::guiX(-y1));
+    m_end = QPointF(Rez::guiX(x2), Rez::guiX(-y2));
 }
 
-void QGIHighlight::setReference(char* ref)
+void QGIHighlight::setReference(const char* ref)
 {
-    m_refText = ref;
+    m_refText = QString::fromUtf8(ref);
 }
 
 void QGIHighlight::setFont(QFont f, double fsize)
@@ -152,7 +181,7 @@ Qt::PenStyle QGIHighlight::getHighlightStyle()
 
 int QGIHighlight::getHoleStyle()
 {
-    return PreferencesGui::mattingStyle();
+    return TechDraw::Preferences::mattingStyle();
 }
 
 void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

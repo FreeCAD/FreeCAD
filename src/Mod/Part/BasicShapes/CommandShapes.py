@@ -53,6 +53,9 @@ class CommandTube:
         tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
         Shapes.TubeFeature(tube)
         vp = ViewProviderShapes.ViewProviderTube(tube.ViewObject)
+        activePart = FreeCADGui.activeView().getActiveObject('part')
+        if activePart:
+            activePart.addObject(tube)
         FreeCAD.ActiveDocument.recompute()
         vp.startDefaultEditMode(tube.ViewObject)
 

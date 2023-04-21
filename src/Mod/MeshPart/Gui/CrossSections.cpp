@@ -20,47 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cfloat>
 # include <sstream>
-# include <Standard_math.hxx>
+
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <cfloat>
+
 # include <QFuture>
-# include <QFutureWatcher>
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QtConcurrentMap>
-# include <boost_bind_bind.hpp>
-# include <Python.h>
+
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "ui_CrossSections.h"
-#include "CrossSections.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Base/UnitsApi.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/Core/Grid.h>
+
+#include "CrossSections.h"
+#include "ui_CrossSections.h"
+
 
 using namespace MeshPartGui;
 namespace bp = boost::placeholders;
@@ -84,19 +82,19 @@ public:
         this->pcRoot->addChild(coords);
         this->pcRoot->addChild(planes);
     }
-    ~ViewProviderCrossSections()
+    ~ViewProviderCrossSections() override
     {
         coords->unref();
         planes->unref();
     }
-    void updateData(const App::Property*)
+    void updateData(const App::Property*) override
     {
     }
-    const char* getDefaultDisplayMode() const
+    const char* getDefaultDisplayMode() const override
     {
         return "";
     }
-    std::vector<std::string> getDisplayModes(void) const
+    std::vector<std::string> getDisplayModes(void) const override
     {
         return std::vector<std::string>();
     }
@@ -174,6 +172,8 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
 {
     ui = new Ui_CrossSections();
     ui->setupUi(this);
+    setupConnections();
+
     ui->position->setRange(-DBL_MAX, DBL_MAX);
     ui->position->setUnit(Base::Unit::Length);
     ui->distance->setRange(0, DBL_MAX);
@@ -192,7 +192,7 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     }
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 CrossSections::~CrossSections()
@@ -203,6 +203,27 @@ CrossSections::~CrossSections()
         view->getViewer()->removeViewProvider(vp);
     }
     delete vp;
+}
+
+void CrossSections::setupConnections()
+{
+    connect(ui->xyPlane, &QRadioButton::clicked,
+            this, &CrossSections::xyPlaneClicked);
+    connect(ui->xzPlane, &QRadioButton::clicked,
+            this, &CrossSections::xzPlaneClicked);
+    connect(ui->yzPlane, &QRadioButton::clicked,
+            this, &CrossSections::yzPlaneClicked);
+    connect(ui->position, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &CrossSections::positionValueChanged);
+    connect(ui->distance, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &CrossSections::distanceValueChanged);
+    connect(ui->countSections, qOverload<int>(&QSpinBox::valueChanged),
+            this, &CrossSections::countSectionsValueChanged);
+    connect(ui->checkBothSides, &QCheckBox::toggled,
+            this, &CrossSections::checkBothSidesToggled);
+    connect(ui->sectionsBox, &QGroupBox::toggled,
+            this, &CrossSections::sectionsBoxToggled);
+
 }
 
 CrossSections::Plane CrossSections::plane() const
@@ -347,7 +368,7 @@ void CrossSections::apply()
 #endif
 }
 
-void CrossSections::on_xyPlane_clicked()
+void CrossSections::xyPlaneClicked()
 {
     Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.z);
@@ -363,7 +384,7 @@ void CrossSections::on_xyPlane_clicked()
     }
 }
 
-void CrossSections::on_xzPlane_clicked()
+void CrossSections::xzPlaneClicked()
 {
     Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.y);
@@ -379,7 +400,7 @@ void CrossSections::on_xzPlane_clicked()
     }
 }
 
-void CrossSections::on_yzPlane_clicked()
+void CrossSections::yzPlaneClicked()
 {
     Base::Vector3d c = bbox.GetCenter();
     ui->position->setValue(c.x);
@@ -395,7 +416,7 @@ void CrossSections::on_yzPlane_clicked()
     }
 }
 
-void CrossSections::on_position_valueChanged(double v)
+void CrossSections::positionValueChanged(double v)
 {
     if (!ui->sectionsBox->isChecked()) {
         calcPlane(plane(), v);
@@ -405,10 +426,10 @@ void CrossSections::on_position_valueChanged(double v)
     }
 }
 
-void CrossSections::on_sectionsBox_toggled(bool b)
+void CrossSections::sectionsBoxToggled(bool ok)
 {
-    if (b) {
-        on_countSections_valueChanged(ui->countSections->value());
+    if (ok) {
+        countSectionsValueChanged(ui->countSections->value());
     }
     else {
         CrossSections::Plane type = plane();
@@ -431,7 +452,7 @@ void CrossSections::on_sectionsBox_toggled(bool b)
     }
 }
 
-void CrossSections::on_checkBothSides_toggled(bool b)
+void CrossSections::checkBothSidesToggled(bool b)
 {
     double d = ui->distance->value().getValue();
     d = b ? 2.0 * d : 0.5 * d;
@@ -439,7 +460,7 @@ void CrossSections::on_checkBothSides_toggled(bool b)
     calcPlanes(plane());
 }
 
-void CrossSections::on_countSections_valueChanged(int v)
+void CrossSections::countSectionsValueChanged(int v)
 {
     CrossSections::Plane type = plane();
     double dist = 0;
@@ -460,7 +481,7 @@ void CrossSections::on_countSections_valueChanged(int v)
     calcPlanes(type);
 }
 
-void CrossSections::on_distance_valueChanged(double)
+void CrossSections::distanceValueChanged(double)
 {
     calcPlanes(plane());
 }
@@ -586,7 +607,7 @@ TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
     widget = new CrossSections(bb);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Mesh_CrossSections"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

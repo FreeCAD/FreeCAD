@@ -20,17 +20,16 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_LINK_H
 #define GUI_VIEWPROVIDER_LINK_H
 
-#include <boost/preprocessor/seq/for_each.hpp>
-#include <App/PropertyGeo.h>
 #include <App/Link.h>
+
 #include "SoFCUnifiedSelection.h"
-#include "ViewProviderPythonFeature.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
+#include "ViewProviderPythonFeature.h"
+
 
 class SoBase;
 class SoDragger;
@@ -39,13 +38,13 @@ class SoMaterialBinding;
 namespace Gui {
 
 class LinkInfo;
-typedef boost::intrusive_ptr<LinkInfo> LinkInfoPtr;
+using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
 
 class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
     EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ViewProviderLinkObserver();
-    virtual ~ViewProviderLinkObserver();
+    ~ViewProviderLinkObserver() override;
     void extensionReattach(App::DocumentObject *) override;
     void extensionBeforeDelete() override;
     void extensionOnChanged(const App::Property *) override;
@@ -53,7 +52,7 @@ public:
     void extensionFinishRestoring() override;
     bool extensionCanDragObject(App::DocumentObject*) const override { return false; }
     bool extensionCanDropObject(App::DocumentObject*) const override { return false; }
-    void extensionModeSwitchChange(void) override;
+    void extensionModeSwitchChange() override;
 
     bool isLinkVisible() const;
     void setLinkVisible(bool);
@@ -75,15 +74,15 @@ class GuiExport LinkView : public Base::BaseClass, public LinkOwner {
 public:
 
     LinkView();
-    ~LinkView();
+    ~LinkView() override;
     LinkView &operator=(const LinkView&) = delete;
     LinkView(const LinkView&) = delete;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    virtual void unlink(LinkInfoPtr) override;
-    virtual void onLinkedIconChange(LinkInfoPtr) override;
-    virtual void onLinkedUpdateData(LinkInfoPtr, const App::Property *) override;
+    void unlink(LinkInfoPtr) override;
+    void onLinkedIconChange(LinkInfoPtr) override;
+    void onLinkedUpdateData(LinkInfoPtr, const App::Property *) override;
 
     bool isLinked() const;
 
@@ -147,7 +146,7 @@ public:
     std::vector<std::string> getSubNames() const;
     ViewProviderDocumentObject *getLinkedView() const;
 
-    Base::BoundBox3d getBoundBox(ViewProviderDocumentObject *vpd=0) const;
+    Base::BoundBox3d getBoundBox(ViewProviderDocumentObject *vpd=nullptr) const;
 
     void setInvalid();
 
@@ -182,7 +181,7 @@ protected:
 class GuiExport ViewProviderLink : public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLink);
-    typedef ViewProviderDocumentObject inherited;
+    using inherited = ViewProviderDocumentObject;
 
 public:
     App::PropertyBool OverrideMaterial;
@@ -197,24 +196,24 @@ public:
     App::PropertyPersistentObject ChildViewProvider;
 
     ViewProviderLink();
-    virtual ~ViewProviderLink();
+    ~ViewProviderLink() override;
 
     void attach(App::DocumentObject *pcObj) override;
     void reattach(App::DocumentObject *pcObj) override;
 
-    bool isSelectable(void) const override;
+    bool isSelectable() const override;
 
-    bool useNewSelectionModel(void) const override {return true;}
+    bool useNewSelectionModel() const override {return true;}
 
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
-    std::vector<App::DocumentObject*> claimChildren(void) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     bool getElementPicked(const SoPickedPoint *, std::string &) const override;
     bool getDetailPath(const char *, SoFullPath *, bool, SoDetail *&) const override;
 
     void finishRestoring() override;
 
-    QIcon getIcon(void) const override;
+    QIcon getIcon() const override;
 
     bool canDragObjects() const override;
     bool canDragObject(App::DocumentObject*) const override;
@@ -229,7 +228,7 @@ public:
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
@@ -248,32 +247,36 @@ public:
     void enableCenterballDragger(bool enable);
     bool isUsingCenterballDragger() const { return useCenterballDragger; }
 
-    std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
+    std::map<std::string, App::Color> getElementColors(const char *subname=nullptr) const override;
     void setElementColors(const std::map<std::string, App::Color> &colors) override;
 
     void setOverrideMode(const std::string &mode) override;
 
-    virtual void onBeforeChange(const App::Property*) override;
+    void onBeforeChange(const App::Property*) override;
     ViewProviderDocumentObject *getChildViewProvider() const {
         return childVp;
     }
 
-    virtual App::Property *getPropertyByName(const char* name) const override;
-    virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
-    virtual void getPropertyList(std::vector<App::Property*> &List) const override;
+    App::Property *getPropertyByName(const char* name) const override;
+    void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
+    void getPropertyList(std::vector<App::Property*> &List) const override;
 
-    virtual ViewProviderDocumentObject *getLinkedViewProvider(
-            std::string *subname=0, bool recursive=false) const override;
+    ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=nullptr, bool recursive=false) const override;
 
-    virtual bool allowOverride(const App::DocumentObject &) const override {
+    bool allowOverride(const App::DocumentObject &) const override {
         return true;
     }
+
+    void setTransformation(const Base::Matrix4D &rcMatrix) override;
+    void setTransformation(const SbMatrix &rcMatrix) override;
 
 protected:
     bool setEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(View3DInventorViewer*) override;
-    bool linkEdit(const App::LinkBaseExtension *ext=0) const;
+    bool linkEdit(const App::LinkBaseExtension *ext=nullptr) const;
+    void _setupContextMenu(App::LinkBaseExtension *ext, QMenu*, QObject*, const char*);
 
     enum LinkType {
         LinkTypeNone,
@@ -281,8 +284,8 @@ protected:
         LinkTypeSubs,
     };
 
-    bool hasElements(const App::LinkBaseExtension *ext = 0) const;
-    bool isGroup(const App::LinkBaseExtension *ext=0, bool plainGroup=false) const;
+    bool hasElements(const App::LinkBaseExtension *ext = nullptr) const;
+    bool isGroup(const App::LinkBaseExtension *ext=nullptr, bool plainGroup=false) const;
     const App::LinkBaseExtension *getLinkExtension() const;
     App::LinkBaseExtension *getLinkExtension();
 
@@ -297,9 +300,9 @@ protected:
     void applyMaterial();
     void applyColors();
 
-    void checkIcon(const App::LinkBaseExtension *ext=0);
+    void checkIcon(const App::LinkBaseExtension *ext=nullptr);
 
-    ViewProvider *getLinkedView(bool real,const App::LinkBaseExtension *ext=0) const;
+    ViewProvider *getLinkedView(bool real,const App::LinkBaseExtension *ext=nullptr) const;
 
     bool initDraggingPlacement();
     bool callDraggerProxy(const char *fname, bool update);
@@ -330,7 +333,7 @@ protected:
     mutable qint64 overlayCacheKey;
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;
+using ViewProviderLinkPython = ViewProviderPythonFeatureT<ViewProviderLink>;
 
 } //namespace Gui
 

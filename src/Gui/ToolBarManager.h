@@ -26,6 +26,7 @@
 
 #include <string>
 #include <QStringList>
+#include <FCGlobal.h>
 
 class QAction;
 class QToolBar;
@@ -35,12 +36,18 @@ namespace Gui {
 class GuiExport ToolBarItem
 {
 public:
+    enum class HideStyle {
+        VISIBLE,
+        HIDDEN, // toolbar hidden by default
+        FORCE_HIDE // Force a toolbar to be hidden. For when all elements are disabled at some point in a workbench.
+    };
+
     ToolBarItem();
-    ToolBarItem(ToolBarItem* item);
+    explicit ToolBarItem(ToolBarItem* item, HideStyle visibility = HideStyle::VISIBLE);
     ~ToolBarItem();
 
     void setCommand(const std::string&);
-    std::string command() const;
+    const std::string &command() const;
 
     bool hasItems() const;
     ToolBarItem* findItem(const std::string&);
@@ -55,6 +62,8 @@ public:
     ToolBarItem& operator << (ToolBarItem* item);
     ToolBarItem& operator << (const std::string& command);
     QList<ToolBarItem*> getItems() const;
+
+    HideStyle visibility;
 
 private:
     std::string _name;
@@ -79,6 +88,10 @@ public:
     void saveState() const;
     void restoreState() const;
     void retranslate() const;
+
+    void setMovable(bool movable) const;
+    void setToolbarVisibility(bool show, const QList<QString>& names);
+    void setToolbarVisibility(bool show, const QString& name);
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;

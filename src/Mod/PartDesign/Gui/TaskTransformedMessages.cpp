@@ -23,16 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
+#include <Gui/BitmapFactory.h>
 
 #include "ui_TaskTransformedMessages.h"
 #include "TaskTransformedMessages.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-
 #include "ViewProviderTransformed.h"
 
 using namespace PartDesignGui;
@@ -40,7 +34,7 @@ using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, 0)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, nullptr)
     , transformedView(transformedView_)
     , ui(new Ui_TaskTransformedMessages)
 {

@@ -36,16 +36,16 @@ class DlgDecimating : public QWidget
     Q_OBJECT
 
 public:
-    DlgDecimating(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgDecimating();
+    explicit DlgDecimating(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgDecimating() override;
     void setNumberOfTriangles(int);
     double tolerance() const;
     double reduction() const;
     bool isAbsoluteNumber() const;
     int targetNumberOfTriangles() const;
 
-private Q_SLOTS:
-    void on_checkAbsolueNumber_toggled(bool);
+private:
+    void onCheckAbsoluteNumberToggled(bool);
 
 private:
     int numberOfTriangles;
@@ -61,14 +61,14 @@ class TaskDecimating : public Gui::TaskView::TaskDialog
 
 public:
     TaskDecimating();
-    ~TaskDecimating();
+    ~TaskDecimating() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return true; }
 
 private:

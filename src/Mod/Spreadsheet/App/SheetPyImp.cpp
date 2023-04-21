@@ -24,15 +24,15 @@
 #include "PreCompiled.h"
 
 #include <boost/tokenizer.hpp>
-#include <Base/Exception.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/PropertyStandard.h>
-#include "Utils.h"
-#include <App/Range.h>
 
+#include <App/Range.h>
+#include <Base/Exception.h>
+
+#include "Sheet.h"
 // inclusion of the generated files (generated out of SheetPy.xml)
 #include "SheetPy.h"
 #include "SheetPy.cpp"
+
 
 using namespace Spreadsheet;
 using namespace App;
@@ -64,14 +64,14 @@ PyObject* SheetPy::set(PyObject *args)
 
 
     if (!PyArg_ParseTuple(args, "ss:set", &address, &contents))
-        return 0;
+        return nullptr;
 
     try {
         Sheet * sheet = getSheetPtr();
         std::string cellAddress = sheet->getAddressFromAlias(address).c_str();
 
         /* Check to see if address is really an alias first */
-        if (cellAddress.size() > 0)
+        if (!cellAddress.empty())
             sheet->setCell(cellAddress.c_str(), contents);
         else {
             Range rangeIter(address);
@@ -83,7 +83,7 @@ PyObject* SheetPy::set(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     Py_Return;
@@ -91,16 +91,42 @@ PyObject* SheetPy::set(PyObject *args)
 
 PyObject* SheetPy::get(PyObject *args)
 {
-    char *address;
+    const char *address;
+    const char *address2=nullptr;
 
-    if (!PyArg_ParseTuple(args, "s:get", &address))
-        return 0;
+    if (!PyArg_ParseTuple(args, "s|s:get", &address, &address2))
+        return nullptr;
+
+    PY_TRY {
+        if(address2) {
+            auto a1 = getSheetPtr()->getAddressFromAlias(address);
+            if(a1.empty())
+                a1 = address;
+            auto a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+            Range range(a1.c_str(),a2.c_str());
+            Py::Tuple tuple(range.size());
+            int i=0;
+            do {
+                App::Property *prop = getSheetPtr()->getPropertyByName(range.address().c_str());
+                if(!prop) {
+                    PyErr_Format(PyExc_ValueError, "Invalid address '%s' in range %s:%s",
+                            range.address().c_str(), address, address2);
+                    return nullptr;
+                }
+                tuple.setItem(i++,Py::Object(prop->getPyObject(),true));
+            }while(range.next());
+            return Py::new_reference_to(tuple);
+        }
+    }PY_CATCH;
 
     App::Property * prop = this->getSheetPtr()->getPropertyByName(address);
 
-    if (prop == 0) {
-        PyErr_SetString(PyExc_ValueError, "Invalid address or property.");
-        return 0;
+    if (!prop) {
+        PyErr_Format(PyExc_ValueError, 
+                "Invalid cell address or property: %s",address);
+        return nullptr;
     }
     return prop->getPyObject();
 }
@@ -111,23 +137,31 @@ PyObject* SheetPy::getContents(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "s:getContents", &strAddress))
-        return 0;
+        return nullptr;
 
-    try {        
-        address = stringToAddress(strAddress);
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
+    PY_TRY {
+        try {        
+            Sheet * sheet = getSheetPtr();
+            std::string addr = sheet->getAddressFromAlias(strAddress);
 
-    std::string contents;
-    const Cell * cell = this->getSheetPtr()->getCell(address);
+            if (addr.empty())
+                address = stringToAddress(strAddress);
+            else
+                address = stringToAddress(addr.c_str());
+        }
+        catch (const Base::Exception & e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return nullptr;
+        }
 
-    if (cell)
-        cell->getStringContent( contents );
+        std::string contents;
+        const Cell * cell = this->getSheetPtr()->getCell(address);
 
-    return Py::new_reference_to( Py::String( contents ) );
+        if (cell)
+            cell->getStringContent( contents );
+
+        return Py::new_reference_to( Py::String( contents ) );
+    } PY_CATCH
 }
 
 PyObject* SheetPy::clear(PyObject *args)
@@ -136,7 +170,7 @@ PyObject* SheetPy::clear(PyObject *args)
     int all = 1;
 
     if (!PyArg_ParseTuple(args, "s|p:clear", &strAddress, &all))
-        return 0;
+        return nullptr;
 
     try {
         Range rangeIter(strAddress);
@@ -146,7 +180,7 @@ PyObject* SheetPy::clear(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     Py_Return;
@@ -155,7 +189,7 @@ PyObject* SheetPy::clear(PyObject *args)
 PyObject* SheetPy::clearAll(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     this->getSheetPtr()->clearAll();
     Py_Return;
@@ -169,7 +203,7 @@ PyObject* SheetPy::importFile(PyObject *args)
     const char * escapeChar = "\\";
 
     if (!PyArg_ParseTuple(args, "s|sss:importFile", &filename, &delimiter, &quoteChar, &escapeChar))
-        return 0;
+        return nullptr;
 
     if (getSheetPtr()->importFromFile(filename, delimiter[0], quoteChar[0], escapeChar[0]))
         return Py::new_reference_to( Py::Boolean(true) );
@@ -185,7 +219,7 @@ PyObject* SheetPy::exportFile(PyObject *args)
     const char * escapeChar = "\\";
 
     if (!PyArg_ParseTuple(args, "s|sss:exportFile", &filename, &delimiter, &quoteChar, &escapeChar))
-        return 0;
+        return nullptr;
 
     if (getSheetPtr()->exportToFile(filename, delimiter[0], quoteChar[0], escapeChar[0]))
         return Py::new_reference_to( Py::Boolean(true) );
@@ -198,7 +232,7 @@ PyObject* SheetPy::mergeCells(PyObject *args)
     const char * range;
 
     if (!PyArg_ParseTuple(args, "s:mergeCells", &range))
-        return 0;
+        return nullptr;
 
     getSheetPtr()->mergeCells(Range(range));
     Py_Return;
@@ -209,7 +243,7 @@ PyObject* SheetPy::splitCell(PyObject *args)
     const char * strAddress;
 
     if (!PyArg_ParseTuple(args, "s:splitCell", &strAddress))
-        return 0;
+        return nullptr;
 
     CellAddress address;
     try {
@@ -217,7 +251,7 @@ PyObject* SheetPy::splitCell(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     getSheetPtr()->splitCell(address);
@@ -230,7 +264,7 @@ PyObject* SheetPy::insertColumns(PyObject *args)
     int count;
 
     if (!PyArg_ParseTuple(args, "si:insertColumns", &column, &count))
-        return 0;
+        return nullptr;
 
     getSheetPtr()->insertColumns(decodeColumn(column), count);
     Py_Return;
@@ -242,7 +276,7 @@ PyObject* SheetPy::removeColumns(PyObject *args)
     int count;
 
     if (!PyArg_ParseTuple(args, "si:removeColumns", &column, &count))
-        return 0;
+        return nullptr;
 
     getSheetPtr()->removeColumns(decodeColumn(column), count);
     Py_Return;
@@ -254,7 +288,7 @@ PyObject* SheetPy::insertRows(PyObject *args)
     int count;
 
     if (!PyArg_ParseTuple(args, "si:insertRows", &row, &count))
-        return 0;
+        return nullptr;
 
     getSheetPtr()->insertRows(decodeRow(std::string(row)), count);
     Py_Return;
@@ -266,7 +300,7 @@ PyObject* SheetPy::removeRows(PyObject *args)
     int count;
 
     if (!PyArg_ParseTuple(args, "si:removeRows", &row, &count))
-        return 0;
+        return nullptr;
 
     getSheetPtr()->removeRows(decodeRow(std::string(row)), count);
     Py_Return;
@@ -280,7 +314,7 @@ PyObject* SheetPy::setStyle(PyObject *args)
     const char * options = "replace";
 
     if (!PyArg_ParseTuple(args, "sO|s:setStyle", &cell, &value, &options))
-        return 0;
+        return nullptr;
 
     if (PySet_Check(value)) {
         PyObject * copy = PySet_New(value);
@@ -295,7 +329,7 @@ PyObject* SheetPy::setStyle(PyObject *args)
                 std::string error = std::string("type of the set need to be a string, not ") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
                 Py_DECREF(copy);
-                return 0;
+                return nullptr;
             }
         }
         Py_DECREF(copy);
@@ -313,7 +347,7 @@ PyObject* SheetPy::setStyle(PyObject *args)
     else {
         std::string error = std::string("style must be either set or string, not ") + value->ob_type->tp_name;
         PyErr_SetString(PyExc_TypeError, error.c_str());
-        return 0;
+        return nullptr;
     }
 
     if (strcmp(options, "replace") == 0) {
@@ -387,7 +421,7 @@ PyObject* SheetPy::setStyle(PyObject *args)
     }
     else {
         PyErr_SetString(PyExc_ValueError, "Optional parameter must be either 'replace', 'add', 'remove', or 'invert'");
-        return 0;
+        return nullptr;
     }
 
     Py_Return;
@@ -399,21 +433,21 @@ PyObject* SheetPy::getStyle(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "s:getStyle", &strAddress))
-        return 0;
+        return nullptr;
 
     try {
         address = stringToAddress(strAddress);
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     std::set<std::string> style;
     const Cell * cell = getSheetPtr()->getCell(address);
 
     if (cell && cell->getStyle(style)) {
-        PyObject * s = PySet_New(NULL);
+        PyObject * s = PySet_New(nullptr);
 
         for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i)
             PySet_Add(s, PyUnicode_FromString((*i).c_str()));
@@ -432,7 +466,7 @@ PyObject* SheetPy::setDisplayUnit(PyObject *args)
     const char * value;
 
     if (!PyArg_ParseTuple(args, "ss:setDisplayUnit", &cell, &value))
-        return 0;
+        return nullptr;
 
     try {
         Range rangeIter(cell);
@@ -443,7 +477,7 @@ PyObject* SheetPy::setDisplayUnit(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     Py_Return;
@@ -456,22 +490,17 @@ PyObject* SheetPy::setAlias(PyObject *args)
     PyObject * value;
 
     if (!PyArg_ParseTuple(args, "sO:setAlias", &strAddress, &value))
-        return 0;
+        return nullptr;
 
     try {
         address = stringToAddress(strAddress);
-        if (PyUnicode_Check(value))
-            getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
-        else if (value == Py_None)
-            getSheetPtr()->setAlias(address, "");
-        else
-            throw Base::TypeError("String or None expected");
-
+        Base::PyTypeCheck(&value, &PyUnicode_Type, "String or None expected");
+        getSheetPtr()->setAlias(address, value ? PyUnicode_AsUTF8(value) : "");
         Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -480,7 +509,7 @@ PyObject* SheetPy::getAlias(PyObject *args)
     const char * strAddress;
 
     if (!PyArg_ParseTuple(args, "s:getAlias", &strAddress))
-        return 0;
+        return nullptr;
 
     try {
         CellAddress address(strAddress);
@@ -489,14 +518,12 @@ PyObject* SheetPy::getAlias(PyObject *args)
 
         if (cell && cell->getAlias(alias))
             return Py::new_reference_to( Py::String( alias ) );
-        else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+        else
+            Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -505,21 +532,19 @@ PyObject* SheetPy::getCellFromAlias(PyObject *args)
     const char * alias;
 
     if (!PyArg_ParseTuple(args, "s:getAlias", &alias))
-        return 0;
+        return nullptr;
 
     try {
         std::string address = getSheetPtr()->getAddressFromAlias(alias);
 
-        if (address.size() > 0)
+        if (!address.empty())
             return Py::new_reference_to( Py::String( address ) );
-        else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+        else
+            Py_Return;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -529,7 +554,7 @@ PyObject* SheetPy::getDisplayUnit(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "s:getDisplayUnit", &strAddress))
-        return 0;
+        return nullptr;
 
     try {
         address = stringToAddress(strAddress);
@@ -545,7 +570,7 @@ PyObject* SheetPy::getDisplayUnit(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -557,7 +582,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
     const char * options = "replace";
 
     if (!PyArg_ParseTuple(args, "sO|s:setAlignment", &cell, &value, &options))
-        return 0;
+        return nullptr;
 
     if (PySet_Check(value)) {
         // Argument is a set of strings
@@ -573,7 +598,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
                 std::string error = std::string("type of the key need to be a string, not") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
                 Py_DECREF(copy);
-                return 0;
+                return nullptr;
             }
         }
 
@@ -587,13 +612,15 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         std::string line = PyUnicode_AsUTF8(value);
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
-        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
-            alignment = Cell::decodeAlignment(*i, alignment);
+        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
+            if(!i->empty())
+                alignment = Cell::decodeAlignment(*i, alignment);
+        }
     }
     else {
         std::string error = std::string("style must be either set or string, not ") + value->ob_type->tp_name;
         PyErr_SetString(PyExc_TypeError, error.c_str());
-        return 0;
+        return nullptr;
     }
 
     // Set alignment depending on 'options' variable
@@ -624,7 +651,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
     }
     else {
         PyErr_SetString(PyExc_ValueError, "Optional parameter must be either 'replace' or 'keep'");
-        return 0;
+        return nullptr;
     }
     Py_Return;
 }
@@ -635,21 +662,21 @@ PyObject* SheetPy::getAlignment(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "s:getAlignment", &strAddress))
-        return 0;
+        return nullptr;
 
     try {
         address = stringToAddress(strAddress);
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
 
     int alignment;
     const  Cell * cell = getSheetPtr()->getCell(address);
     if (cell && cell->getAlignment(alignment)) {
-        PyObject * s = PySet_New(NULL);
+        PyObject * s = PySet_New(nullptr);
 
         if (alignment & Cell::ALIGNMENT_LEFT)
             PySet_Add(s, PyUnicode_FromString("left"));
@@ -709,7 +736,7 @@ PyObject* SheetPy::setForeground(PyObject *args)
         Color c;
 
         if (!PyArg_ParseTuple(args, "sO:setForeground", &range, &value))
-            return 0;
+            return nullptr;
 
         decodeColor(value, c);
 
@@ -721,11 +748,11 @@ PyObject* SheetPy::setForeground(PyObject *args)
     }
     catch (const Base::TypeError & e) {
         PyErr_SetString(PyExc_TypeError, e.what());
-        return 0;
+        return nullptr;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -735,14 +762,14 @@ PyObject* SheetPy::getForeground(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "s:getForeground", &strAddress))
-        return 0;
+        return nullptr;
 
     try {
         address = stringToAddress(strAddress);
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     Color c;
@@ -771,7 +798,7 @@ PyObject* SheetPy::setBackground(PyObject *args)
         Color c;
 
         if (!PyArg_ParseTuple(args, "sO:setBackground", &strAddress, &value))
-            return 0;
+            return nullptr;
 
         decodeColor(value, c);
         Range rangeIter(strAddress);
@@ -783,11 +810,11 @@ PyObject* SheetPy::setBackground(PyObject *args)
     }
     catch (const Base::TypeError & e) {
         PyErr_SetString(PyExc_TypeError, e.what());
-        return 0;
+        return nullptr;
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -797,14 +824,14 @@ PyObject* SheetPy::getBackground(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "s:setStyle", &strAddress))
-        return 0;
+        return nullptr;
 
     try {
         address = stringToAddress(strAddress);
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 
     Color c;
@@ -832,7 +859,7 @@ PyObject* SheetPy::setColumnWidth(PyObject *args)
     CellAddress address;
 
     if (!PyArg_ParseTuple(args, "si:setColumnWidth", &columnStr, &width))
-        return 0;
+        return nullptr;
 
     try {
         std::string cellAddr = std::string(columnStr) + "1";
@@ -843,7 +870,7 @@ PyObject* SheetPy::setColumnWidth(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -852,7 +879,7 @@ PyObject* SheetPy::getColumnWidth(PyObject *args)
     const char * columnStr;
 
     if (!PyArg_ParseTuple(args, "s:getColumnWidth", &columnStr))
-        return 0;
+        return nullptr;
 
     try {
         CellAddress address(std::string(columnStr) + "1");
@@ -861,7 +888,7 @@ PyObject* SheetPy::getColumnWidth(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -871,7 +898,7 @@ PyObject* SheetPy::setRowHeight(PyObject *args)
     int height;
 
     if (!PyArg_ParseTuple(args, "si:setRowHeight", &rowStr, &height))
-        return 0;
+        return nullptr;
 
     try {
         CellAddress address("A" + std::string(rowStr));
@@ -881,7 +908,7 @@ PyObject* SheetPy::setRowHeight(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -890,7 +917,7 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     const char * rowStr;
 
     if (!PyArg_ParseTuple(args, "s:getRowHeight", &rowStr))
-        return 0;
+        return nullptr;
 
     try {
         CellAddress address("A" + std::string(rowStr));
@@ -899,19 +926,116 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
+PyObject *SheetPy::touchCells(PyObject *args) {
+    const char *address;
+    const char *address2=nullptr;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return nullptr;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->touchCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
+PyObject *SheetPy::recomputeCells(PyObject *args) {
+    const char *address;
+    const char *address2=nullptr;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return nullptr;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->recomputeCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
+PyObject *SheetPy::getUsedCells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto usedCells = getSheetPtr()->getCells()->getUsedCells();
+    Py::List pyCellList;
+    for (const auto &cell : usedCells) { 
+        pyCellList.append(Py::String(cell.toString()));
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getUsedRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto usedRange = getSheetPtr()->getCells()->getUsedRange();
+    Py::Tuple pyTuple(2);
+    pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
+    pyTuple[1] = Py::String(std::get<1>(usedRange).toString());
+    return Py::new_reference_to(pyTuple);
+}
+
+PyObject *SheetPy::getNonEmptyCells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto nonEmptyCells = getSheetPtr()->getCells()->getNonEmptyCells();
+    Py::List pyCellList;
+    for (const auto &cell : nonEmptyCells) { 
+        pyCellList.append(Py::String(cell.toString())); 
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getNonEmptyRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto nonEmptyRange = getSheetPtr()->getCells()->getNonEmptyRange();
+    Py::Tuple pyTuple(2);
+    pyTuple[0] = Py::String(std::get<0>(nonEmptyRange).toString());
+    pyTuple[1] = Py::String(std::get<1>(nonEmptyRange).toString());
+    return Py::new_reference_to(pyTuple);
+}
+
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
-PyObject *SheetPy::getCustomAttributes(const char* attr) const
+PyObject *SheetPy::getCustomAttributes(const char*) const
 {
-    App::Property * prop = this->getSheetPtr()->getPropertyByName(attr);
-
-    if (prop == 0)
-        return 0;
-    return prop->getPyObject();
+    return nullptr;
 }
 
 int SheetPy::setCustomAttributes(const char* , PyObject* )

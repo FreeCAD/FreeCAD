@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,51 +22,59 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.constraint_transform_beam_hinged import setup
-setup()
-
-"""
-# Constraint transform on a beam
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20238#p157643
-
 import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Fem
-import ObjectsFem
 from CompoundTools import CompoundFilter
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+import Fem
+import ObjectsFem
 
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Constraint Transform Beam Hinged",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["pressure", "displacement", "transform"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Constraint Transform Beam Hinged",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["pressure", "displacement", "transform"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "solid",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.constraint_transform_beam_hinged import setup
+setup()
+
+
+See forum topic post:
+https://forum.freecadweb.org/viewtopic.php?f=18&t=20238#p157643
+
+Constraint transform on a beam
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup cylinder base model
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric object
     # name is important because the other method in this module use obj name
     cube = doc.addObject("Part::Box", "Cube")
     cube.Height = "20 mm"
@@ -108,74 +117,63 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
-    )[0]
-    mat = material_object.Material
+    material_obj = ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    mat = material_obj.Material
     mat["Name"] = "CalculiX-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
-    material_object.Material = mat
+    material_obj.Material = mat
+    analysis.addObject(material_obj)
 
     # constraint pressure
-    pressure_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
-    )[0]
-    pressure_constraint.References = [(geom_obj, "Face8")]
-    pressure_constraint.Pressure = 10.0
-    pressure_constraint.Reversed = False
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
+    con_pressure.References = [(geom_obj, "Face8")]
+    con_pressure.Pressure = 10.0
+    con_pressure.Reversed = False
+    analysis.addObject(con_pressure)
 
-    # constraint_displacement
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="FemConstraintDisplacment")
-    )[0]
-    displacement_constraint.References = [(geom_obj, "Face4"), (geom_obj, "Face5")]
-    displacement_constraint.xFree = False
-    displacement_constraint.xFix = True
+    # constraint displacement
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="FemConstraintDisplacment")
+    con_disp.References = [(geom_obj, "Face4"), (geom_obj, "Face5")]
+    con_disp.xFree = False
+    con_disp.xFix = True
+    analysis.addObject(con_disp)
 
-    # constraint_transform_1
-    transform_constraint1 = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform1")
-    )[0]
-    transform_constraint1.References = [(geom_obj, "Face4")]
-    transform_constraint1.TransformType = "Cylindrical"
-    transform_constraint1.X_rot = 0.0
-    transform_constraint1.Y_rot = 0.0
-    transform_constraint1.Z_rot = 0.0
+    # constraints transform
+    con_transform1 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform1")
+    con_transform1.References = [(geom_obj, "Face4")]
+    con_transform1.TransformType = "Cylindrical"
+    con_transform1.X_rot = 0.0
+    con_transform1.Y_rot = 0.0
+    con_transform1.Z_rot = 0.0
+    analysis.addObject(con_transform1)
 
-    # constraint_transform_2
-    transform_constraint2 = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform2")
-    )[0]
-    transform_constraint2.References = [(geom_obj, "Face5")]
-    transform_constraint2.TransformType = "Cylindrical"
-    transform_constraint2.X_rot = 0.0
-    transform_constraint2.Y_rot = 0.0
-    transform_constraint2.Z_rot = 0.0
+    con_transform2 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform2")
+    con_transform2.References = [(geom_obj, "Face5")]
+    con_transform2.TransformType = "Cylindrical"
+    con_transform2.X_rot = 0.0
+    con_transform2.Y_rot = 0.0
+    con_transform2.Z_rot = 0.0
+    analysis.addObject(con_transform2)
 
     # mesh
     from .meshes.mesh_transform_beam_hinged_tetra10 import create_nodes, create_elements
@@ -186,9 +184,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

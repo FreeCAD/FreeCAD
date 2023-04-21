@@ -25,6 +25,9 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <App/PropertyGeo.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 
 namespace TechDraw{
@@ -42,26 +45,23 @@ public:
     /// constructor
     ViewProviderHatch();
     /// destructor
-    virtual ~ViewProviderHatch();
+    ~ViewProviderHatch() override;
 
-    App::PropertyColor       HatchColor;
+    App::PropertyColor           HatchColor;
     App::PropertyFloatConstraint HatchScale;
+    App::PropertyFloat           HatchRotation;
+    App::PropertyVector          HatchOffset;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
-    virtual bool doubleClicked(void) override;
-    virtual void updateData(const App::Property*) override;
-    virtual bool canDelete(App::DocumentObject* obj) const override;
+    bool useNewSelectionModel() const override {return false;}
+    void onChanged(const App::Property* prop) override;
+    void updateData(const App::Property*) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawHatch* getViewObject() const;
 
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;

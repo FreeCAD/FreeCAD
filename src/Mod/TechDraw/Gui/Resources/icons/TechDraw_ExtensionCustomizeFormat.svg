@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="17.2mm" height="17.2mm" fill-rule="evenodd" stroke-linejoin="round" stroke-width="28.222" preserveAspectRatio="xMidYMid" version="1.2" viewBox="0 0 1720 1720" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export">
+ <defs class="ClipPathGroup">
+  <clipPath id="presentation_clip_path">
+   <rect width="1720" height="1720"/>
+  </clipPath>
+ </defs>
+ <g class="SlideGroup">
+   <g id="container-id1">
+    <g id="id1" class="Slide" clip-path="url(#presentation_clip_path)">
+     <g class="Page">
+      <g class="Graphic">
+       <g id="id3">
+        <rect class="BoundingBox" width="1720" height="1720" fill="none"/>
+        <path d="m1040 1541-374 1 187-355 187 354z" fill="#f00"/>
+        <path d="m1040 1541-374 1 187-355 187 354z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="round" stroke-width="38"/>
+        <path d="m1236 796h-447v-751h893v751h-446z" fill="#ff0"/>
+        <path d="m1236 796h-447v-751h893v751h-446z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="30"/>
+        <path d="m412 796h-375v-751h751v751h-376z" fill="#ff0"/>
+        <path d="m412 796h-375v-751h751v751h-376z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="30"/>
+        <path d="m412 881v-94h40v189h-40v-95z" fill="#2b1100"/>
+        <path d="m835 1080v-131h40v261h-40v-130z" fill="#2b1100"/>
+        <path d="m650 935h224v40h-447v-40h223z" fill="#2b1100"/>
+        <path d="m858 1669h-816v-121h1633v121h-817z" fill="#ff0"/>
+        <path d="m858 1669h-816v-121h1633v121h-817z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m615 424c0 37-10 73-28 105-19 32-45 59-77 77-33 19-69 29-106 29s-73-10-105-29c-32-18-59-45-78-77-18-32-28-68-28-105s10-74 28-106c19-32 46-59 78-77 32-19 68-28 105-28s73 9 106 28c32 18 58 45 77 77 18 32 28 69 28 106z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="70"/>
+        <path d="m406 732h-14v-635h28v635h-14z" fill="#f00"/>
+        <path d="m406 732h-14v-635h28v635h-14z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m89 414v-14h635v28h-635v-14z" fill="#f00"/>
+        <path d="m89 414v-14h635v28h-635v-14z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m1409 424c0 31-8 62-23 89-15 28-37 50-64 66-26 16-56 24-86 24-31 0-61-8-87-24s-48-38-63-66c-16-27-24-58-24-89 0-32 8-63 24-90 15-27 37-50 63-66s56-24 87-24c30 0 60 8 86 24 27 16 49 39 64 66s23 58 23 90z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="69"/>
+        <path d="m1303 693-9-7 327-422 17 15-326 422-9-8z" fill="#f00"/>
+        <path d="m1303 693-9-7 327-422 17 15-326 422-9-8z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m841 575-9-7 326-422 18 15-326 421-9-7z" fill="#f00"/>
+        <path d="m841 575-9-7 326-422 18 15-326 421-9-7z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+       </g>
+      </g>
+     </g>
+    </g>
+   </g>
+ </g>
+</svg>

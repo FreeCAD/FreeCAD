@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DlgRunExternal_H
 #define GUI_DIALOG_DlgRunExternal_H
 
-#include <QProcess>
+#include <memory>
 #include <QDialog>
+#include <QProcess>
+#include <FCGlobal.h>
 
 namespace Gui {
 namespace Dialog {
@@ -41,28 +42,26 @@ class GuiExport DlgRunExternal : public QDialog
     Q_OBJECT
 
 public:
-    DlgRunExternal(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    virtual ~DlgRunExternal();
+    explicit DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgRunExternal() override;
 
-    int Do(void);
-
-    QString ProcName;
-    QStringList arguments;
+    void addArgument(const QString&);
+    int runProcess();
 
 protected Q_SLOTS:
-    virtual void reject(void);
-    virtual void accept(void);
-    virtual void abort(void);
-    virtual void advanced(void);
+    void reject() override;
+    void accept() override;
+    virtual void abort();
+    virtual void advanced();
     void finished (int exitCode, QProcess::ExitStatus exitStatus);
-    void on_chooseProgram_clicked();
-
-protected:
-    QProcess process;
-    bool advancedHidden;
+    void onChooseProgramClicked();
 
 private:
-    Ui_DlgRunExternal* ui;
+    QString ProcName;
+    QStringList arguments;
+    QProcess process;
+    bool advancedHidden;
+    std::unique_ptr<Ui_DlgRunExternal> ui;
 };
 
 } // namespace Dialog

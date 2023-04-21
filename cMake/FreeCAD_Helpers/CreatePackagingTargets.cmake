@@ -5,25 +5,37 @@ macro(CreatePackagingTargets)
     #add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
     add_custom_target(dist-git
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
-              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
+              --bindir=${CMAKE_BINARY_DIR}
+              --major=${PACKAGE_VERSION_MAJOR}
+              --minor=${PACKAGE_VERSION_MINOR}
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
     add_custom_target(distdfsg-git
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
-              --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg
+              --bindir=${CMAKE_BINARY_DIR}
+              --major=${PACKAGE_VERSION_MAJOR}
+              --minor=${PACKAGE_VERSION_MINOR}
+              --dfsg
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
-    if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX OR MINGW)
         add_custom_target(distcheck-git
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
-                  --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --check
+                  --bindir=${CMAKE_BINARY_DIR}
+                  --major=${PACKAGE_VERSION_MAJOR}
+                  --minor=${PACKAGE_VERSION_MINOR}
+                  --check
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         )
         add_custom_target(distcheckdfsg-git
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
-                  --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR} --dfsg --check
+                  --bindir=${CMAKE_BINARY_DIR}
+                  --major=${PACKAGE_VERSION_MAJOR}
+                  --minor=${PACKAGE_VERSION_MINOR}
+                  --dfsg
+                  --check
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         )
-    endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+    endif()
 
 endmacro(CreatePackagingTargets)

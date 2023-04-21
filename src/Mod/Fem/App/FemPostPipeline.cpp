@@ -20,51 +20,56 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Python.h>
-# include <SMESH_Mesh.hxx>
+# include <vtkAppendFilter.h>
 # include <vtkDataSetReader.h>
-# include <vtkGeometryFilter.h>
-# include <vtkStructuredGrid.h>
-# include <vtkUnstructuredGrid.h>
 # include <vtkImageData.h>
 # include <vtkRectilinearGrid.h>
-# include <vtkAppendFilter.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLPolyDataReader.h>
-# include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLRectilinearGridReader.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUnstructuredGrid.h>
 # include <vtkXMLImageDataReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLUnstructuredGridReader.h>
 #endif
 
+#include <Base/Console.h>
+
 #include "FemPostPipeline.h"
+#include "FemPostPipelinePy.h"
 #include "FemMesh.h"
 #include "FemMeshObject.h"
 #include "FemVTKTools.h"
-
-#include <Base/Console.h>
-#include <App/Document.h>
-
-#include <App/DocumentObjectPy.h>
-#include <Mod/Fem/App/FemPostPipelinePy.h>
 
 
 using namespace Fem;
 using namespace App;
 
 PROPERTY_SOURCE(Fem::FemPostPipeline, Fem::FemPostObject)
-const char* FemPostPipeline::ModeEnums[]= {"Serial","Parallel",NULL};
+const char* FemPostPipeline::ModeEnums[] = { "Serial", "Parallel", "Custom", nullptr };
 
 FemPostPipeline::FemPostPipeline()
 {
-    ADD_PROPERTY_TYPE(Filter, (0), "Pipeline", App::Prop_None, "The filter used in in this pipeline");
-    ADD_PROPERTY_TYPE(Functions, (0), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
-    ADD_PROPERTY_TYPE(Mode,(long(0)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode. In serial every filter"
-                                                              "gets the output of the previous one as input, in parallel every"
-                                                              "filter gets the pipelien source as input.");
+    ADD_PROPERTY_TYPE(
+        Filter, (nullptr), "Pipeline", App::Prop_None, "The filter used in this pipeline");
+    ADD_PROPERTY_TYPE(Functions,
+                      (nullptr),
+                      "Pipeline",
+                      App::Prop_Hidden,
+                      "The function provider which groups all pipeline functions");
+    ADD_PROPERTY_TYPE(Mode,
+                      (long(2)),
+                      "Pipeline",
+                      App::Prop_None,
+                      "Selects the pipeline data transition mode.\n"
+                      "In serial, every filter gets the output of the previous one as input.\n"
+                      "In parallel, every filter gets the pipeline source as input.\n"
+                      "In custom, every filter keeps its input set by the user.");
     Mode.setEnums(ModeEnums);
 }
 
@@ -72,37 +77,36 @@ FemPostPipeline::~FemPostPipeline()
 {
 }
 
-short FemPostPipeline::mustExecute(void) const
+short FemPostPipeline::mustExecute() const
 {
-    if(Mode.isTouched())
+    if (Mode.isTouched())
         return 1;
 
     return FemPostFilter::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostPipeline::execute(void) {
+DocumentObjectExecReturn* FemPostPipeline::execute() {
 
-    //if we are the toplevel pipeline our data object is not created by filters, we are the main source!
-    if(!Input.getValue())
+    // if we are the toplevel pipeline our data object is not created by filters,
+    // we are the main source
+    if (!Input.getValue())
         return StdReturn;
 
-    //now if we are a filter than our data object is created by the filter we hold
+    // now if we are a filter than our data object is created by the filter we hold
 
-    //if we are in serial mode we just copy over the data of the last filter,
-    //but if we are in parallel we need to combine all filter results
-    if(Mode.getValue() == 0) {
-
+    // if we are in serial mode we just copy over the data of the last filter,
+    // but if we are in parallel we need to combine all filter results
+    if (Mode.getValue() == 0) {
         //serial
         Data.setValue(getLastPostObject()->Data.getValue());
     }
-    else {
-
-        //parallel. go through all filters and append the result
+    else if (Mode.getValue() == 1) {
+        // parallel, go through all filters and append the result
         const std::vector<App::DocumentObject*>& filters = Filter.getValues();
         std::vector<App::DocumentObject*>::const_iterator it = filters.begin();
 
         vtkSmartPointer<vtkAppendFilter> append = vtkSmartPointer<vtkAppendFilter>::New();
-        for(;it != filters.end(); ++it) {
+        for (; it != filters.end(); ++it) {
 
             append->AddInputDataObject(static_cast<FemPostObject*>(*it)->Data.getValue());
         }
@@ -110,7 +114,6 @@ DocumentObjectExecReturn* FemPostPipeline::execute(void) {
         append->Update();
         Data.setValue(append->GetOutputDataObject(0));
     }
-
 
     return Fem::FemPostObject::execute();
 }
@@ -124,7 +127,8 @@ bool FemPostPipeline::canRead(Base::FileInfo File) {
         File.hasExtension("vts") ||
         File.hasExtension("vtr") ||
         File.hasExtension("vti") ||
-        File.hasExtension("vtu"))
+        File.hasExtension("vtu") ||
+        File.hasExtension("pvtu"))
         return true;
 
     return false;
@@ -138,6 +142,8 @@ void FemPostPipeline::read(Base::FileInfo File) {
 
     if (File.hasExtension("vtu"))
         readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
+    else if (File.hasExtension("pvtu"))
+        readXMLFile<vtkXMLPUnstructuredGridReader>(File.filePath());
     else if (File.hasExtension("vtp"))
         readXMLFile<vtkXMLPolyDataReader>(File.filePath());
     else if (File.hasExtension("vts"))
@@ -152,71 +158,73 @@ void FemPostPipeline::read(Base::FileInfo File) {
         throw Base::FileException("Unknown extension");
 }
 
-
-// PyObject *FemPostPipeline::getPyObject()
-// {
-//     if (PythonObject.is(Py::_None())){
-//         // ref counter is set to 1
-//         PythonObject = Py::Object(new DocumentObjectPy(this),true);
-//     }
-//     return Py::new_reference_to(PythonObject);
-// }
+void FemPostPipeline::scale(double s)
+{
+    Data.scale(s);
+}
 
 void FemPostPipeline::onChanged(const Property* prop)
 {
-    if(prop == &Filter || prop == &Mode) {
+    if (prop == &Filter || prop == &Mode) {
 
-        //we check if all connections are right and add new ones if needed
+        // if we are in custom mode the user is free to set the input
+        // thus nothing needs to be done here
+        if (Mode.getValue() == 2) // custom
+            return;
+
+        // we check if all connections are right and add new ones if needed
         std::vector<App::DocumentObject*> objs = Filter.getValues();
 
-        if(objs.empty())
+        if (objs.empty())
             return;
 
         std::vector<App::DocumentObject*>::iterator it = objs.begin();
         FemPostFilter* filter = static_cast<FemPostFilter*>(*it);
 
-        //If we have a Input we need to ensure our filters are connected correctly
-        if(Input.getValue()) {
+        // If we have a Input we need to ensure our filters are connected correctly
+        if (Input.getValue()) {
 
-            //the first filter is always connected to the input
-            if(filter->Input.getValue() != Input.getValue())
+            // the first filter is always connected to the input
+            if (filter->Input.getValue() != Input.getValue())
                 filter->Input.setValue(Input.getValue());
 
-            //all the others need to be connected to the previous filter or the source, dependent on the mode
+            // all the others need to be connected to the previous filter or the source,
+            // dependent on the mode
             ++it;
-            for(; it != objs.end(); ++it) {
+            for (; it != objs.end(); ++it) {
                 FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
 
-                if(Mode.getValue() == 0) { //serial mode
-                    if( nextFilter->Input.getValue() != filter)
+                if (Mode.getValue() == 0) { //serial mode
+                    if (nextFilter->Input.getValue() != filter)
                         nextFilter->Input.setValue(filter);
                 }
                 else { //Parallel mode
-                    if( nextFilter->Input.getValue() != Input.getValue())
+                    if (nextFilter->Input.getValue() != Input.getValue())
                         nextFilter->Input.setValue(Input.getValue());
                 }
 
                 filter = nextFilter;
             };
         }
-        //if we have no input the filters are responsible of grabbing the pipeline data themself
+        // if we have no input the filters are responsible of grabbing the pipeline data themself
         else {
-            //the first filter must always grab the data
-            if(filter->Input.getValue() != NULL)
-                filter->Input.setValue(NULL);
+            // the first filter must always grab the data
+            if (filter->Input.getValue())
+                filter->Input.setValue(nullptr);
 
-            //all the others need to be connected to the previous filter or grab the data, dependent on mode
+            // all the others need to be connected to the previous filter or grab the data,
+            // dependent on mode
             ++it;
-            for(; it != objs.end(); ++it) {
+            for (; it != objs.end(); ++it) {
                 FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
 
-                if(Mode.getValue() == 0) { //serial mode
-                    if( nextFilter->Input.getValue() != filter)
+                if (Mode.getValue() == 0) { //serial mode
+                    if (nextFilter->Input.getValue() != filter)
                         nextFilter->Input.setValue(filter);
                 }
                 else { //Parallel mode
-                    if( nextFilter->Input.getValue() != NULL)
-                        nextFilter->Input.setValue(NULL);
+                    if (nextFilter->Input.getValue())
+                        nextFilter->Input.setValue(nullptr);
                 }
 
                 filter = nextFilter;
@@ -228,9 +236,15 @@ void FemPostPipeline::onChanged(const Property* prop)
 
 }
 
+void FemPostPipeline::recomputeChildren()
+{
+    for (const auto &obj : Filter.getValues())
+        obj->touch();
+}
+
 FemPostObject* FemPostPipeline::getLastPostObject() {
 
-    if(Filter.getValues().empty())
+    if (Filter.getValues().empty())
         return this;
 
     return static_cast<FemPostObject*>(Filter.getValues().back());
@@ -239,9 +253,9 @@ FemPostObject* FemPostPipeline::getLastPostObject() {
 bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
 
     std::vector<App::DocumentObject*>::const_iterator it = Filter.getValues().begin();
-    for(; it != Filter.getValues().end(); ++it) {
+    for (; it != Filter.getValues().end(); ++it) {
 
-        if(*it == obj)
+        if (*it == obj)
             return true;
     }
     return false;
@@ -252,29 +266,29 @@ void FemPostPipeline::load(FemResultObject* res) {
         Base::Console().Log("Result mesh object is empty.\n");
         return;
     }
-    if(!res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+    if (!res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
         Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }
 
-    //first copy the mesh over
+    // first copy the mesh over
     // ***************************
     const FemMesh& mesh = static_cast<FemMeshObject*>(res->Mesh.getValue())->FemMesh.getValue();
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     FemVTKTools::exportVTKMesh(&mesh, grid);
 
-    //Now copy the point data over
+    // Now copy the point data over
     // ***************************
     FemVTKTools::exportFreeCADResult(res, grid);
 
     Data.setValue(grid);
 }
 
-PyObject* FemPostPipeline::getPyObject(void)
+PyObject* FemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FemPostPipelinePy(this),true);
+        PythonObject = Py::Object(new FemPostPipelinePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

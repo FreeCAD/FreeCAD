@@ -20,37 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATUREPARTCIRCLE_H
 #define PART_FEATUREPARTCIRCLE_H
 
 #include <App/PropertyUnits.h>
+
 #include "PrimitiveFeature.h"
+
 
 namespace Part
 {
 class PartExport Circle : public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Circle);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Circle);
 
 public:
     Circle();
-    virtual ~Circle();
+    ~Circle() override;
 
     App::PropertyLength Radius;
-    App::PropertyAngle Angle0;
     App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
 
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    void onChanged(const App::Property*);
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    void onChanged(const App::Property*) override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderCircleParametric";
     }
+
+protected:
+    void Restore(Base::XMLReader &reader) override;
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 
 private:
     static App::PropertyQuantityConstraint::Constraints angleRange;

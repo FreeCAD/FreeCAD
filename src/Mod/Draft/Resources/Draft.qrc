@@ -1,9 +1,10 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Draft_2DShapeView.svg</file>
         <file>icons/Draft_AddConstruction.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
         <file>icons/Draft_AddToGroup.svg</file>
+        <file>icons/Draft_AddNamedGroup.svg</file>
         <file>icons/Draft_Annotation_Style.svg</file>
         <file>icons/Draft_Apply.svg</file>
         <file>icons/Draft_Arc.svg</file>
@@ -34,7 +35,6 @@
         <file>icons/Draft_Downgrade.svg</file>
         <file>icons/Draft_Draft.svg</file>
         <file>icons/Draft_Draft2Sketch.svg</file>
-        <file>icons/Draft_Drawing.svg</file>
         <file>icons/Draft_Edit.svg</file>
         <file>icons/Draft_Ellipse.svg</file>
         <file>icons/Draft_Facebinder.svg</file>
@@ -43,10 +43,12 @@
         <file>icons/Draft_Finish.svg</file>
         <file>icons/Draft_FlipDimension.svg</file>
         <file>icons/Draft_Grid.svg</file>
+        <file>icons/Draft_Hatch.svg</file>
         <file>icons/Draft_Heal.svg</file>
         <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Label.svg</file>
         <file>icons/Draft_Layer.svg</file>
+        <file>icons/Draft_LayerManager.svg</file>
         <file>icons/Draft_Line.svg</file>
         <file>icons/Draft_LinkArray.svg</file>
         <file>icons/Draft_Lock.svg</file>
@@ -56,6 +58,7 @@
         <file>icons/Draft_N-Curve.svg</file>
         <file>icons/Draft_N-Linear.svg</file>
         <file>icons/Draft_N-Polygon.svg</file>
+        <file>icons/Draft_NewLayer.svg</file>
         <file>icons/Draft_Offset.svg</file>
         <file>icons/Draft_PathArray.svg</file>
         <file>icons/Draft_PathLinkArray.svg</file>
@@ -77,6 +80,21 @@
         <file>icons/Draft_ShapeString_tree.svg</file>
         <file>icons/Draft_Slope.svg</file>
         <file>icons/Draft_Snap.svg</file>
+        <file>icons/Draft_Snap_Angle.svg</file>
+        <file>icons/Draft_Snap_Center.svg</file>
+        <file>icons/Draft_Snap_Dimensions.svg</file>
+        <file>icons/Draft_Snap_Endpoint.svg</file>
+        <file>icons/Draft_Snap_Extension.svg</file>
+        <file>icons/Draft_Snap_Grid.svg</file>
+        <file>icons/Draft_Snap_Intersection.svg</file>
+        <file>icons/Draft_Snap_Lock.svg</file>
+        <file>icons/Draft_Snap_Midpoint.svg</file>
+        <file>icons/Draft_Snap_Near.svg</file>
+        <file>icons/Draft_Snap_Ortho.svg</file>
+        <file>icons/Draft_Snap_Parallel.svg</file>
+        <file>icons/Draft_Snap_Perpendicular.svg</file>
+        <file>icons/Draft_Snap_Special.svg</file>
+        <file>icons/Draft_Snap_WorkingPlane.svg</file>
         <file>icons/Draft_Split.svg</file>
         <file>icons/Draft_Stretch.svg</file>
         <file>icons/Draft_SubelementHighlight.svg</file>
@@ -90,22 +108,6 @@
         <file>icons/Draft_WireToBSpline.svg</file>
         <file>icons/DraftWorkbench.svg</file>
         <file>icons/preferences-draft.svg</file>
-        <file>icons/Snap_Angle.svg</file>
-        <file>icons/Snap_Center.svg</file>
-        <file>icons/Snap_Dimensions.svg</file>
-        <file>icons/Snap_Endpoint.svg</file>
-        <file>icons/Snap_Extension.svg</file>
-        <file>icons/Snap_Grid.svg</file>
-        <file>icons/Snap_Intersection.svg</file>
-        <file>icons/Snap_Lock.svg</file>
-        <file>icons/Snap_Midpoint.svg</file>
-        <file>icons/Snap_Near.svg</file>
-        <file>icons/Snap_Ortho.svg</file>
-        <file>icons/Snap_Parallel.svg</file>
-        <file>icons/Snap_Perpendicular.svg</file>
-        <file>icons/Snap_Special.svg</file>
-        <file>icons/Snap_WorkingPlane.svg</file>
-        <file>icons/Draft_NewLayer.svg</file>
         <file>patterns/aluminium.svg</file>
         <file>patterns/brick01.svg</file>
         <file>patterns/concrete.svg</file>
@@ -167,6 +169,11 @@
         <file>translations/Draft_vi.qm</file>
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_zh-TW.qm</file>
+        <file>translations/Draft_es-AR.qm</file>
+        <file>translations/Draft_bg.qm</file>
+        <file>translations/Draft_ka.qm</file>
+        <file>translations/Draft_sr-CS.qm</file>
+        <file>translations/Draft_be.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
@@ -183,5 +190,7 @@
         <file>ui/TaskShapeString.ui</file>
         <file>ui/dialog_AnnotationStyleEditor.ui</file>
         <file>ui/TaskPanel_SetStyle.ui</file>
+        <file>ui/dialogHatch.ui</file>
+        <file>ui/dialogLayers.ui</file>
     </qresource>
-</RCC> 
+</RCC>

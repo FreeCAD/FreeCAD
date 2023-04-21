@@ -38,15 +38,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderEllipseParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderEllipseParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderEllipseParametric);
 
 public:
     /// constructor
     ViewProviderEllipseParametric();
     /// destructor
-    virtual ~ViewProviderEllipseParametric();
+    ~ViewProviderEllipseParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

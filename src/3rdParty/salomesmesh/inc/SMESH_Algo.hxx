@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : SMESH_Algo.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
@@ -256,7 +256,7 @@ public:
   // ==================================================================
 
   // SMESH_Hypothesis::GetDim();
-  // 1 - dimention of target mesh
+  // 1 - dimension of target mesh
 
   bool OnlyUnaryInput() const { return _onlyUnaryInput; }
   // 2 - is collection of tesselatable shapes inacceptable as input;
@@ -270,7 +270,7 @@ public:
   // 3 - is a Dim-1 mesh prerequisite
 
   bool NeedShape() const { return _requireShape; }
-  // 4 - is shape existance required
+  // 4 - is shape existence required
 
   bool SupportSubmeshes() const { return _supportSubmeshes; }
   // 5 - whether supports submeshes if !NeedDiscreteBoundary()

@@ -22,24 +22,15 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 
-#include "DrawUtil.h"
-
-#include <Mod/TechDraw/App/DrawWeldSymbolPy.h>  // generated from DrawWeldSymbolPy.xml
-
-#include "DrawLeaderLine.h"
-#include "DrawTile.h"
-#include "DrawTileWeld.h"
 #include "DrawWeldSymbol.h"
+#include "DrawWeldSymbolPy.h"  // generated from DrawWeldSymbolPy.xml
+#include "DrawLeaderLine.h"
+#include "DrawTileWeld.h"
+
 
 using namespace TechDraw;
 
@@ -49,24 +40,20 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawWeldSymbol, TechDraw::DrawView)
 
-DrawWeldSymbol::DrawWeldSymbol(void)
+DrawWeldSymbol::DrawWeldSymbol()
 {
     static const char *group = "Weld Symbol";
 
-    ADD_PROPERTY_TYPE(Leader,(0),group,(App::PropertyType)(App::Prop_None), "Parent Leader");
+    ADD_PROPERTY_TYPE(Leader, (nullptr), group, (App::PropertyType)(App::Prop_None), "Parent Leader");
     ADD_PROPERTY_TYPE(AllAround, (false), group, App::Prop_None, "All Around Symbol on/off");
     ADD_PROPERTY_TYPE(FieldWeld, (false), group, App::Prop_None, "Field Weld Symbol on/off");
     ADD_PROPERTY_TYPE(AlternatingWeld, (false), group, App::Prop_None, "Alternating Weld true/false");
     ADD_PROPERTY_TYPE(TailText, (""), group, App::Prop_None, "Text at tail of symbol");
 
-    Caption.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+    Caption.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::Hidden, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
     Rotation.setStatus(App::Property::Hidden, true);
-}
-
-DrawWeldSymbol::~DrawWeldSymbol()
-{
 }
 
 //DWS always has exactly 2 child tiles - ArrowSide and OtherSide.
@@ -91,14 +78,14 @@ void DrawWeldSymbol::onSettingDocument()
     std::string tileName1 = doc->getUniqueObjectName("TileWeld");
     auto tile1Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName1.c_str() ) );
     DrawTileWeld* tile1 = dynamic_cast<DrawTileWeld*>(tile1Obj);
-    if (tile1 != nullptr) {
+    if (tile1) {
         tile1->TileParent.setValue(this);
     }
 
     std::string tileName2 = doc->getUniqueObjectName("TileWeld");
     auto tile2Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName2.c_str() ) );
     DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
-    if (tile2 != nullptr) {
+    if (tile2) {
         tile2->TileParent.setValue(this);
         tile2->TileRow.setValue(-1);   //other side is row -1
     }
@@ -108,9 +95,6 @@ void DrawWeldSymbol::onSettingDocument()
 
 void DrawWeldSymbol::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        //nothing in particular
-    }
     DrawView::onChanged(prop);
 }
 
@@ -119,29 +103,32 @@ short DrawWeldSymbol::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
+App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 {
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
     }
 
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
-std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
+std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles() const
 {
 //    Base::Console().Message("DWS::getTiles()\n");
     std::vector<DrawTileWeld*> result;
 
     std::vector<App::DocumentObject*> tiles = getInList();
-    if (!tiles.empty()) {
-        for(std::vector<App::DocumentObject *>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-            if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawTileWeld::getClassTypeId())) {
-                App::DocumentObject* doTemp = (*it);
-                DrawTileWeld* temp = static_cast<DrawTileWeld*>(doTemp);
-                result.push_back(temp);
-            }
+    if (tiles.empty()) {
+        return result;
+    }
+
+    for(std::vector<App::DocumentObject *>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+        if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawTileWeld::getClassTypeId())) {
+            App::DocumentObject* doTemp = (*it);
+            DrawTileWeld* temp = static_cast<DrawTileWeld*>(doTemp);
+            result.push_back(temp);
         }
     }
     return result;
@@ -149,25 +136,24 @@ std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
 
 bool DrawWeldSymbol::isTailRightSide()
 {
-    bool result = true;
     App::DocumentObject* obj = Leader.getValue();
     TechDraw::DrawLeaderLine* realLeader = dynamic_cast<TechDraw::DrawLeaderLine*>(obj);
-    if (realLeader != nullptr) {
+    if (realLeader) {
         Base::Vector3d tail = realLeader->getTailPoint();
         Base::Vector3d kink = realLeader->getKinkPoint();
         if (tail.x < kink.x)  {   //tail is to left
-            result = false;
+            return false;
         }
     }
-    return result;
+    return true;
 }
 
 
-PyObject *DrawWeldSymbol::getPyObject(void)
+PyObject *DrawWeldSymbol::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawWeldSymbolPy(this),true);
+        PythonObject = Py::Object(new DrawWeldSymbolPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -177,7 +163,7 @@ PyObject *DrawWeldSymbol::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawWeldSymbolPython, TechDraw::DrawWeldSymbol)
-template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderWeld";
 }
 /// @endcond

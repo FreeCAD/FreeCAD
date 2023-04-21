@@ -20,19 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+#include <Base/PyObjectBase.h>
 
-#include "StartConfiguration.h"
 
 namespace Start {
 class Module : public Py::ExtensionModule<Module>
@@ -43,14 +36,14 @@ public:
         initialize("This module is the Start module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Start

@@ -21,20 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
-
 #include "FemConstraintContact.h"
+
 
 using namespace Fem;
 
@@ -55,12 +45,12 @@ ConstraintContact::ConstraintContact()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintContact::execute(void)
+App::DocumentObjectExecReturn *ConstraintContact::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintContact::getViewProviderName(void) const
+const char* ConstraintContact::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintContact";
 }

@@ -23,9 +23,12 @@
 #ifndef DRAWINGGUI_QGIDECORATION_H
 #define DRAWINGGUI_QGIDECORATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QBrush>
 #include <QGraphicsItemGroup>
 #include <QPen>
-#include <QBrush>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -35,9 +38,14 @@ QT_END_NAMESPACE
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 namespace TechDrawGui
 {
+
+#define DECORNODRAG 0
+#define DECORDRAGSTARTED 1
+#define DECORDRAGGING 2
 
 class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 {
@@ -45,12 +53,23 @@ public:
     explicit QGIDecoration(void);
     ~QGIDecoration() {}
     enum {Type = QGraphicsItem::UserType + 173};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual QRectF boundingRect() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    QRectF boundingRect() const override;
+    void paint(QPainter * painter,
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget = nullptr ) override;
     virtual void draw();
+
+    // Mouse handling
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+    virtual void onDragFinished();
+
     void setWidth(double w);
+    double getWidth() { return m_width; }
     void setStyle(Qt::PenStyle s);
     void setColor(QColor c);
     QColor getColor(void) { return m_colNormal; }
@@ -72,6 +91,8 @@ protected:
     double m_width;
     Qt::PenStyle m_styleCurrent;
     Qt::BrushStyle m_brushCurrent;
+
+    int m_dragState;
 
 private:
 };

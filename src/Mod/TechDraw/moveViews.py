@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2018 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -20,7 +20,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 # Name:    moveView macro
 # About:   move Views from Drawing Page to TechDraw Page in the current doc
@@ -30,45 +30,48 @@
 
 import FreeCAD
 import FreeCADGui
-import Part
-import Drawing
-import TechDraw
 
-svgHead = "<svg\n" + " xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n" + "    xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\n"
+svgHead = (
+    "<svg\n"
+    + ' xmlns="http://www.w3.org/2000/svg" version="1.1"\n'
+    + '    xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">\n'
+)
 svgTail = "\n</svg>"
+
 
 def moveViews():
     s = FreeCADGui.Selection.getSelection()
 
     if len(s) != 2:
-        print ("Please select 1 Drawing Page and 1 TechDraw Page")
+        print("Please select 1 Drawing Page and 1 TechDraw Page")
         return
 
-    print ("First object in selection is a: ", s[0].TypeId)
-    print ("Second object in selection is a: ", s[1].TypeId)
-    if s[0].isDerivedFrom("Drawing::FeaturePage")  and \
-       s[1].isDerivedFrom("TechDraw::DrawPage"):
-       dPage = s[0]
-       tPage = s[1]
-    elif s[0].isDerivedFrom("TechDraw::DrawPage") and \
-        s[1].isDerivedFrom("Drawing::FeaturePage"):
+    print("First object in selection is a: ", s[0].TypeId)
+    print("Second object in selection is a: ", s[1].TypeId)
+    if s[0].isDerivedFrom("Drawing::FeaturePage") and s[1].isDerivedFrom(
+        "TechDraw::DrawPage"
+    ):
+        dPage = s[0]
+        tPage = s[1]
+    elif s[0].isDerivedFrom("TechDraw::DrawPage") and s[1].isDerivedFrom(
+        "Drawing::FeaturePage"
+    ):
         tPage = s[0]
         dPage = s[1]
     else:
-        print ("Please select 1 Drawing Page and 1 TechDraw Page")
+        print("Please select 1 Drawing Page and 1 TechDraw Page")
         return
 
-    i = 1
     for o in dPage.OutList:
         newName = "DraftView" + str(i).zfill(3)
-        print ("moving " + o.Name + " to " + newName)
+        print("moving " + o.Name + " to " + newName)
         svg = svgHead + o.ViewResult + svgTail
-        no = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewSymbol',newName)
+        no = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewSymbol", newName)
         no.Symbol = svg
         tPage.addView(no)
-        i += 1
 
-    print ("moveViews moved " + str(i-1) + " views")
+    print("moveViews moved " + str(len(dPage.OutList)) + " views")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     moveViews()

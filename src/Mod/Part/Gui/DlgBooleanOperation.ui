@@ -26,20 +26,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="1" column="1">
-       <widget class="QRadioButton" name="sectionButton">
-        <property name="text">
-         <string>Section</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QRadioButton" name="diffButton">
-        <property name="text">
-         <string>Difference</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QRadioButton" name="unionButton">
         <property name="text">
@@ -50,6 +36,13 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="diffButton">
+        <property name="text">
+         <string>Difference</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QRadioButton" name="interButton">
         <property name="text">
@@ -57,7 +50,14 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="1" column="1">
+       <widget class="QRadioButton" name="sectionButton">
+        <property name="text">
+         <string>Section</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">

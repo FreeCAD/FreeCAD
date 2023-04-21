@@ -23,10 +23,10 @@
 #ifndef SURFACE_FEATUREFILLING_H
 #define SURFACE_FEATUREFILLING_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
+#include <Mod/Surface/SurfaceGlobal.h>
+
 
 class BRepFill_Filling;
 
@@ -35,7 +35,7 @@ namespace Surface
 
 class SurfaceExport Filling :  public Part::Spline
 {
-    PROPERTY_HEADER(Surface::Filling);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Filling);
 
 public:
     Filling();
@@ -65,10 +65,10 @@ public:
     App::PropertyInteger MaximumSegments;           //Maximum number of segments
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "SurfaceGui::ViewProviderFilling";
     }
 

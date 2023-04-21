@@ -22,31 +22,27 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
+# include <cassert>
+
+# include <QPainter>
+# include <QPainterPath>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+#include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
-#include <qmath.h>
-#include <QRectF>
-#include "PreferencesGui.h"
-#include "QGCustomRect.h"
-#include "ZVALUE.h"
 #include "QGIMatting.h"
+#include "Rez.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 
 QGIMatting::QGIMatting() :
-    m_height(10.0),
-    m_width(10.0),
-    //m_holeStyle(0),
-    m_radius(5.0)
+    m_radius(5.0),
+    m_fudge(1.01)       // same as m_fudge in DrawViewDetail
 
 {
     setCacheMode(QGraphicsItem::NoCache);
@@ -54,26 +50,23 @@ QGIMatting::QGIMatting() :
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    m_mat = new QGraphicsPathItem();
-    addToGroup(m_mat);
     m_border = new QGraphicsPathItem();
     addToGroup(m_border);
 
-    m_pen.setColor(Qt::white);
-//    m_pen.setColor(Qt::black);
-//    m_pen.setStyle(Qt::DashLine);
-    m_brush.setColor(Qt::white);
-//    m_brush.setColor(Qt::black);
-    m_brush.setStyle(Qt::SolidPattern);
-//    m_brush.setStyle(Qt::CrossPattern);
-//    m_brush.setStyle(Qt::NoBrush);
-    m_penB.setColor(Qt::black);
-    m_brushB.setStyle(Qt::NoBrush);
+    m_pen.setColor(Qt::black);
+    m_brush.setStyle(Qt::NoBrush);
 
-    m_mat->setPen(m_pen);
-    m_mat->setBrush(m_brush);
-    m_border->setPen(m_penB);
-    m_border->setBrush(m_brushB);
+    m_border->setPen(m_pen);
+    m_border->setBrush(m_brush);
+
+    m_mat = new QGraphicsPathItem();
+    addToGroup(m_mat);
+    m_matPen.setColor(Qt::white);
+    m_matPen.setStyle(Qt::SolidLine);
+    m_matBrush.setStyle(Qt::SolidPattern);
+    m_matBrush.setColor(Qt::white);
+    m_mat->setPen(m_matPen);
+    m_mat->setBrush(m_matBrush);
 
     setZValue(ZVALUE::MATTING);
 }
@@ -81,46 +74,51 @@ QGIMatting::QGIMatting() :
 void QGIMatting::draw()
 {
     prepareGeometryChange();
-    double radiusFudge = 1.5;       //keep slightly larger than fudge in App/DVDetail to prevent bleed through
-    m_width = m_radius * radiusFudge;
-    m_height = m_radius * radiusFudge;
-    QRectF outline(-m_width,-m_height,2.0 * m_width,2.0 * m_height);
-    QPainterPath ppOut;
-    ppOut.addRect(outline);
+    double penWidth = Rez::guiX(TechDraw::LineGroup::getDefaultWidth("Graphic"));
+    double penWidth_2 = penWidth / 2.0;
+    m_pen.setWidthF(penWidth);
+    double matSize = m_radius * m_fudge + 2 * penWidth;   // outer bound of mat
+    m_matPen.setWidthF(2.0 * penWidth);
     QPainterPath ppCut;
+    QPainterPath ppMat;
     if (getHoleStyle() == 0) {
-        QRectF roundCutout (-m_radius,-m_radius,2.0 * m_radius,2.0 * m_radius);
+        QRectF roundCutout (-m_radius, -m_radius, 2.0 * m_radius, 2.0 * m_radius);
         ppCut.addEllipse(roundCutout);
+        QRectF roundMat(-matSize, -matSize, 2.0 * matSize, 2.0 * matSize);
+        ppMat.addEllipse(roundMat);
+        ppMat.addEllipse(roundCutout.adjusted(-penWidth_2, -penWidth_2, penWidth_2, penWidth_2));
     } else {
-        double squareSize = m_radius/ 1.4142;                                 //fit just within radius
-        QRectF squareCutout (-squareSize,-squareSize,2.0 * squareSize,2.0 * squareSize);
+        double squareSize = m_radius;
+        QRectF squareCutout (-squareSize, -squareSize, 2.0 * squareSize, 2.0 * squareSize);
         ppCut.addRect(squareCutout);
+        QRectF squareMat(-matSize, -matSize, 2.0 * matSize, 2.0 * matSize);
+        ppMat.addRect(squareMat);
+        ppMat.addRect(squareCutout.adjusted(-penWidth_2, -penWidth_2, penWidth_2, penWidth_2));
     }
-    ppOut.addPath(ppCut);
-    m_mat->setPath(ppOut);
+    m_border->setPen(m_pen);
     m_border->setPath(ppCut);
-    m_mat->setZValue(ZVALUE::MATTING);
     m_border->setZValue(ZVALUE::MATTING);
+    m_mat->setPen(m_matPen);
+    m_mat->setPath(ppMat);
+    m_mat->setZValue(ZVALUE::MATTING - 1.0);
 }
 
 int QGIMatting::getHoleStyle()
 {
-    return PreferencesGui::mattingStyle();
+    return TechDraw::Preferences::mattingStyle();
 }
 
 //need this because QQGIG only updates BR when items added/deleted.
 QRectF QGIMatting::boundingRect() const
 {
-    QRectF result ;
-    result = childrenBoundingRect().adjusted(-1,-1,1,1);
-    return result;
+    return childrenBoundingRect().adjusted(-1, -1, 1,1);
 }
 
 void QGIMatting::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //painter->drawRect(boundingRect().adjusted(-2.0,-2.0,2.0,2.0));
+    //painter->drawRect(boundingRect().adjusted(-2.0, -2.0, 2.0, 2.0));
 
     QGraphicsItemGroup::paint (painter, &myOption, widget);
 }

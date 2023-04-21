@@ -24,8 +24,9 @@
 #ifndef GUI_TASKVIEW_TaskDatumShapeBinder_H
 #define GUI_TASKVIEW_TaskDatumShapeBinder_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/DocumentObserver.h>
 
 #include "ViewProviderShapeBinder.h"
 
@@ -37,10 +38,11 @@ class Property;
 }
 
 namespace Gui {
+class ButtonGroup;
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
 
@@ -49,35 +51,37 @@ class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = 0);
-    ~TaskShapeBinder();
+    explicit TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
+    ~TaskShapeBinder() override;
 
- 
-private Q_SLOTS:
-    void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
-    void onBaseButton(bool checked);
-  
+    void accept();
+
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd };
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     selectionModes selectionMode = none;
-    
+
     void removeFromListWidget(QListWidget *w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void setupButtonGroup();
+    void setupContextMenu();
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onButtonToggled(QAbstractButton *button, bool checked);
     void updateUI();
+    void supportChanged(const QString&);
     void clearButtons();
+    void deleteItem();
     void exitSelectionMode();
 
     bool supportShow = false;
-    
+
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskShapeBinder> ui;
-    ViewProviderShapeBinder* vp;
+    Gui::ButtonGroup *buttonGroup;
+    Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 
 
@@ -87,18 +91,18 @@ class TaskDlgShapeBinder : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
-    ~TaskDlgShapeBinder();
+    explicit TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
+    ~TaskDlgShapeBinder() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
 
 protected:
     TaskShapeBinder  *parameter;
-    ViewProviderShapeBinder* vp;
+    Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 
 } //namespace PartDesignGui

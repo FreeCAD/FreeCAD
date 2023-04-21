@@ -22,17 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#include <QColor>
-#include <QFont>
-#include <QGraphicsScene>
+# include <QGraphicsScene>
+# include <QPainter>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include "DrawGuiStd.h"
 #include "QGMText.h"
 
-using namespace TechDraw;
+
 using namespace TechDrawGui;
 
 QGMText::QGMText() :
@@ -49,25 +46,12 @@ QGMText::QGMText() :
 
 QVariant QGMText::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    //QPointF newPos(0.0,0.0);
+    //QPointF newPos(0.0, 0.0);
     if(change == ItemPositionHasChanged && scene()) {
         Q_EMIT dragging();
     }
 
     return QGCustomText::itemChange(change, value);
-}
-
-void QGMText::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-//    if(scene() && this == scene()->mouseGrabberItem()) {   //why would we get even if not mousegrabber?
-//        Q_EMIT dragging();
-//    }
-    QGCustomText::mousePressEvent(event);
-}
-
-void QGMText::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGCustomText::mouseMoveEvent(event);
 }
 
 void QGMText::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -81,34 +65,28 @@ void QGMText::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGMText::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_EMIT hover(true);
-    if (!isSelected()) {
-        setPrettyPre();
-    }
     QGCustomText::hoverEnterEvent(event);
 }
 
 void QGMText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_EMIT hover(false);
-    if (!isSelected()) {
-        setPrettyNormal();
-    }
     QGCustomText::hoverLeaveEvent(event);
 }
 
-void QGMText::setPrettySel(void)
+void QGMText::setPrettySel()
 {
     m_prettyState = "Sel";
     QGCustomText::setPrettySel();
 }
 
-void QGMText::setPrettyPre(void)
+void QGMText::setPrettyPre()
 {
     m_prettyState = "Pre";
     QGCustomText::setPrettyPre();
 }
 
-void QGMText::setPrettyNormal(void)
+void QGMText::setPrettyNormal()
 {
     m_prettyState = "Normal";
     QGCustomText::setPrettyNormal();
@@ -121,7 +99,7 @@ void QGMText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
 //    painter->drawRect(boundingRect());          //good for debugging
     //TODO: this should be changed to a rectItem in the parent
     if (showBox()) {
-        painter->drawRect(boundingRect().adjusted(1,1,-1,-1));
+        painter->drawRect(boundingRect().adjusted(1, 1,-1, -1));
     }
 
     QGCustomText::paint (painter, &myOption, widget);

@@ -20,37 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QPushButton>
 #endif
 
-#include "SegmentationManual.h"
-#include "ui_SegmentationManual.h"
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
-#include <Mod/Mesh/App/Core/Curvature.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
-using namespace ReverseEngineeringGui;
+#include "SegmentationManual.h"
+#include "ui_SegmentationManual.h"
 
+
+using namespace ReverseEngineeringGui;
 
 SegmentationManual::SegmentationManual(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
   , ui(new Ui_SegmentationManual)
 {
     ui->setupUi(this);
+    setupConnections();
     ui->spSelectComp->setRange(1, INT_MAX);
     ui->spSelectComp->setValue(10);
 
@@ -64,6 +60,32 @@ SegmentationManual::~SegmentationManual()
 {
 }
 
+void SegmentationManual::setupConnections()
+{
+    connect(ui->selectRegion, &QPushButton::clicked,
+            this, &SegmentationManual::onSelectRegionClicked);
+    connect(ui->selectAll, &QPushButton::clicked,
+            this, &SegmentationManual::onSelectAllClicked);
+    connect(ui->selectComponents, &QPushButton::clicked,
+            this, &SegmentationManual::onSelectComponentsClicked);
+    connect(ui->selectTriangle, &QPushButton::clicked,
+            this, &SegmentationManual::onSelectTriangleClicked);
+    connect(ui->deselectAll, &QPushButton::clicked,
+            this, &SegmentationManual::onDeselectAllClicked);
+    connect(ui->visibleTriangles, &QCheckBox::toggled,
+            this, &SegmentationManual::onVisibleTrianglesToggled);
+    connect(ui->screenTriangles, &QCheckBox::toggled,
+            this, &SegmentationManual::onScreenTrianglesToggled);
+    connect(ui->cbSelectComp, &QCheckBox::toggled,
+            this, &SegmentationManual::onSelectCompToggled);
+    connect(ui->planeDetect, &QPushButton::clicked,
+            this, &SegmentationManual::onPlaneDetectClicked);
+    connect(ui->cylinderDetect, &QPushButton::clicked,
+            this, &SegmentationManual::onCylinderDetectClicked);
+    connect(ui->sphereDetect, &QPushButton::clicked,
+            this, &SegmentationManual::onSphereDetectClicked);
+}
+
 void SegmentationManual::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -72,41 +94,41 @@ void SegmentationManual::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void SegmentationManual::on_selectRegion_clicked()
+void SegmentationManual::onSelectRegionClicked()
 {
     meshSel.startSelection();
 }
 
-void SegmentationManual::on_selectAll_clicked()
+void SegmentationManual::onSelectAllClicked()
 {
     // select the complete meshes
     meshSel.fullSelection();
 }
 
-void SegmentationManual::on_deselectAll_clicked()
+void SegmentationManual::onDeselectAllClicked()
 {
     // deselect all meshes
     meshSel.clearSelection();
 }
 
-void SegmentationManual::on_selectComponents_clicked()
+void SegmentationManual::onSelectComponentsClicked()
 {
     // select components up to a certain size
     int size = ui->spSelectComp->value();
     meshSel.selectComponent(size);
 }
 
-void SegmentationManual::on_visibleTriangles_toggled(bool on)
+void SegmentationManual::onVisibleTrianglesToggled(bool on)
 {
     meshSel.setCheckOnlyVisibleTriangles(on);
 }
 
-void SegmentationManual::on_screenTriangles_toggled(bool on)
+void SegmentationManual::onScreenTrianglesToggled(bool on)
 {
     meshSel.setCheckOnlyPointToUserTriangles(on);
 }
 
-void SegmentationManual::on_cbSelectComp_toggled(bool on)
+void SegmentationManual::onSelectCompToggled(bool on)
 {
     meshSel.setAddComponentOnClick(on);
 }
@@ -130,7 +152,8 @@ static void findGeometry(int minFaces, double tolerance,
         if (mesh.hasSelectedFacets()) {
             const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
-            std::vector<unsigned long> facets, vertexes;
+            std::vector<MeshCore::FacetIndex> facets;
+            std::vector<MeshCore::PointIndex> vertexes;
             mesh.getFacetsFromSelection(facets);
             vertexes = mesh.getPointsFromFacets(facets);
             MeshCore::MeshPointArray coords = kernel.GetPoints(vertexes);
@@ -149,7 +172,7 @@ static void findGeometry(int minFaces, double tolerance,
                     (surfFit, kernel, minFaces, tolerance));
                 finder.FindSegments(segm);
 
-                for (auto segmIt : segm) {
+                for (const auto& segmIt : segm) {
                     const std::vector<MeshCore::MeshSegment>& data = segmIt->GetSegments();
                     for (const auto& dataIt : data) {
                         vpm->addSelection(dataIt);
@@ -161,7 +184,7 @@ static void findGeometry(int minFaces, double tolerance,
 }
 };
 
-void SegmentationManual::on_planeDetect_clicked()
+void SegmentationManual::onPlaneDetectClicked()
 {
     auto func = [=](const std::vector<Base::Vector3f>& points,
                     const std::vector<Base::Vector3f>& normal) -> MeshCore::AbstractSurfaceFit* {
@@ -180,7 +203,7 @@ void SegmentationManual::on_planeDetect_clicked()
     Private::findGeometry(ui->numPln->value(), ui->tolPln->value(), func);
 }
 
-void SegmentationManual::on_cylinderDetect_clicked()
+void SegmentationManual::onCylinderDetectClicked()
 {
     auto func = [=](const std::vector<Base::Vector3f>& points,
                     const std::vector<Base::Vector3f>& normal) -> MeshCore::AbstractSurfaceFit* {
@@ -205,7 +228,7 @@ void SegmentationManual::on_cylinderDetect_clicked()
     Private::findGeometry(ui->numCyl->value(), ui->tolCyl->value(), func);
 }
 
-void SegmentationManual::on_sphereDetect_clicked()
+void SegmentationManual::onSphereDetectClicked()
 {
     auto func = [=](const std::vector<Base::Vector3f>& points,
                     const std::vector<Base::Vector3f>& normal) -> MeshCore::AbstractSurfaceFit* {
@@ -244,7 +267,7 @@ void SegmentationManual::createSegment()
         if (ct > 0) {
             selected = true;
 
-            std::vector<unsigned long> facets;
+            std::vector<MeshCore::FacetIndex> facets;
             algo.GetFacetsFlag(facets, MeshCore::MeshFacet::SELECTED);
 
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(facets));
@@ -273,7 +296,7 @@ void SegmentationManual::createSegment()
     meshSel.clearSelection();
 }
 
-void SegmentationManual::on_selectTriangle_clicked()
+void SegmentationManual::onSelectTriangleClicked()
 {
     meshSel.selectTriangle();
     meshSel.setAddComponentOnClick(ui->cbSelectComp->isChecked());
@@ -294,7 +317,7 @@ TaskSegmentationManual::TaskSegmentationManual()
 {
     widget = new SegmentationManual();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

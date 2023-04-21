@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskSelectLineAttributes</class>
+ <widget class="QWidget" name="TechDrawGui::TaskSelectLineAttributes">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>250</width>
+    <height>482</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Line attributes</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="lineStyles">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_styles">
+       <property name="text">
+        <string>Line style:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="rbSolid">
+       <property name="toolTip">
+        <string>Set line style to solid</string>
+       </property>
+       <property name="text">
+        <string>Solid</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineStyles</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="rbDashed">
+       <property name="text">
+        <string>Dashed</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineStyles</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QRadioButton" name="rbDotted">
+       <property name="text">
+        <string>Dotted</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineStyles</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QRadioButton" name="rbDashDotted">
+       <property name="text">
+        <string>Dashdot</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineStyles</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="lineWidth">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_width">
+       <property name="text">
+        <string>Line width:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="rbThin">
+       <property name="text">
+        <string>Thin 0,18</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineWidth</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="rbMiddle">
+       <property name="text">
+        <string>Middle 0,35</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineWidth</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QRadioButton" name="rbThick">
+       <property name="text">
+        <string>Thick 0,70</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineWidth</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="lineColors">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_colors">
+       <property name="text">
+        <string>Line color:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="rbBlack">
+       <property name="text">
+        <string>Black</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QRadioButton" name="rbBlue">
+       <property name="text">
+        <string>Blue</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="rbGrey">
+       <property name="text">
+        <string>Grey</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QRadioButton" name="rbMagenta">
+       <property name="text">
+        <string>Magenta</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QRadioButton" name="rbRed">
+       <property name="text">
+        <string>Red</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QRadioButton" name="rbCyan">
+       <property name="text">
+        <string>Cyan</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QRadioButton" name="rbGreen">
+       <property name="text">
+        <string>Green</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QRadioButton" name="rbYellow">
+       <property name="text">
+        <string>Yellow</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">bgLineColor</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="cascadeValues" rowstretch="0,0" columnstretch="0,0">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_spacing">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Cascade spacing</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="sbSpacing">
+       <property name="singleStep">
+        <double>0.500000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_stretch">
+       <property name="text">
+        <string>Delta distance</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="sbStretch">
+       <property name="singleStep">
+        <double>0.500000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="bgLineStyles">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+  <buttongroup name="bgLineWidth">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+  <buttongroup name="bgLineColor">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+ </buttongroups>
+</ui>

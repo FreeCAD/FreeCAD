@@ -28,6 +28,13 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Category</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QLabel" name="label_category">
           <property name="text">
@@ -35,10 +42,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Category</string>
+           <string>Material card</string>
           </property>
          </widget>
         </item>
@@ -49,13 +56,6 @@
             <string>choose...</string>
            </property>
           </item>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Material card</string>
-          </property>
          </widget>
         </item>
         <item row="3" column="0">
@@ -158,6 +158,9 @@
         </item>
         <item row="4" column="1">
          <widget class="Gui::InputField" name="input_fd_density">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -171,15 +174,15 @@
            </size>
           </property>
           <property name="text">
-           <string>8000 kg/m^3</string>
+           <string>0 kg/m^3</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -224,6 +227,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::InputField" name="input_fd_young_modulus">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -237,16 +243,16 @@
            </size>
           </property>
           <property name="text">
-           <string>200 GPa</string>
+           <string>0 Pa</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
-           <double>2000000000.000000000000000</double>
+          <property name="maximum">
+           <double>90000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">Pa</string>
@@ -268,6 +274,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QDoubleSpinBox" name="spinBox_poisson_ratio">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -328,6 +337,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::InputField" name="input_fd_kinematic_viscosity">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -341,15 +353,15 @@
            </size>
           </property>
           <property name="text">
-           <string>0.000001 m^2/s</string>
+           <string>0 m^2/s</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>0.000001000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>1000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -394,6 +406,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::InputField" name="input_fd_thermal_conductivity">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -407,15 +422,15 @@
            </size>
           </property>
           <property name="text">
-           <string>50 W/m/K</string>
+           <string>0 W/m/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -438,6 +453,9 @@
         </item>
         <item row="1" column="1">
          <widget class="Gui::InputField" name="input_fd_expansion_coefficient">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -451,15 +469,15 @@
            </size>
           </property>
           <property name="text">
-           <string>12 um/m/K</string>
+           <string>0 m/m/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -482,6 +500,9 @@
         </item>
         <item row="2" column="1">
          <widget class="Gui::InputField" name="input_fd_specific_heat">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -495,15 +516,15 @@
            </size>
           </property>
           <property name="text">
-           <string>500 J/kg/K</string>
+           <string>0 J/kg/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2050000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -526,6 +547,9 @@
         </item>
         <item row="3" column="1">
          <widget class="Gui::InputField" name="input_fd_vol_expansion_coefficient">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -539,15 +563,15 @@
            </size>
           </property>
           <property name="text">
-           <string>0.001 m/m/K</string>
+           <string>0 m/m/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>0.001000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>1.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -589,5 +613,150 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>input_fd_density</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>250</x>
+     <y>364</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>input_fd_young_modulus</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_poisson_ratio</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>input_fd_kinematic_viscosity</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>247</x>
+     <y>512</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>input_fd_thermal_conductivity</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>573</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>input_fd_expansion_coefficient</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>599</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>input_fd_specific_heat</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>625</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_vol_expansion_coefficient</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>67</x>
+     <y>651</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbu_allow_edit</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButton_editMat</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>91</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

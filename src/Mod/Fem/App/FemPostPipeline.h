@@ -20,55 +20,56 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemPostPipeline_H
 #define Fem_FemPostPipeline_H
 
-#include "FemPostObject.h"
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
+#include "FemPostObject.h"
 #include "FemResultObject.h"
 
 #include <vtkSmartPointer.h>
-#include <vtkDataSet.h>
+
 
 namespace Fem
 {
 
-class AppFemExport FemPostPipeline : public Fem::FemPostFilter
+class FemExport FemPostPipeline : public Fem::FemPostFilter
 {
-    PROPERTY_HEADER(Fem::FemPostPipeline);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPipeline);
 
 public:
     /// Constructor
-    FemPostPipeline(void);
-    virtual ~FemPostPipeline();
+    FemPostPipeline();
+    ~FemPostPipeline() override;
 
     App::PropertyLinkList       Filter;
     App::PropertyLink           Functions;
     App::PropertyEnumeration    Mode;
 
-    short mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
-    PyObject* getPyObject();
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn* execute() override;
+    PyObject* getPyObject() override;
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemPostPipeline";
     }
 
     //load data from files
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
+    void scale(double s);
 
     //load from results
     void load(FemResultObject* res);
 
     //Pipeline handling
-    FemPostObject* getLastPostObject();
-    bool           holdsPostObject(FemPostObject* obj);
+    void recomputeChildren();
+    FemPostObject *getLastPostObject();
+    bool holdsPostObject(FemPostObject *obj);
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property *prop) override;
 
 private:
     static const char* ModeEnums[];

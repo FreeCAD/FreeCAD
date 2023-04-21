@@ -44,14 +44,11 @@ https://knowledge.autodesk.com/support/autocad/downloads/
 # *                                                                         *
 # ***************************************************************************
 
-# TODO: use subprocess.popen() instead of subprocess.call()
-
-import six
 import FreeCAD
 from FreeCAD import Console as FCC
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     def translate(context, txt):
         return txt
@@ -151,38 +148,25 @@ def getTeighaConverter():
     -------
     str
         The full path of the converter executable
-        '/usr/bin/TeighaFileConverter'
+        '/usr/bin/ODAFileConverter'
     """
     import FreeCAD, os, platform
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    p = p.GetString("TeighaFileConverter")
-    if p:
+    path = p.GetString("TeighaFileConverter")
+    if path:
         # path set manually
-        teigha = p
-    else:
-        # try to find teigha
-        teigha = None
-        if platform.system() == "Linux":
-            teigha = "/usr/bin/TeighaFileConverter"
-            if not os.path.exists(teigha):
-                teigha = "/usr/bin/ODAFileConverter"
-        elif platform.system() == "Windows":
-            odadir = os.path.expandvars("%ProgramFiles%\ODA")
-            if os.path.exists(odadir):
-                subdirs = os.walk(odadir).next()[1]
-                for sub in subdirs:
-                    t = (odadir + os.sep + sub + os.sep
-                         + "TeighaFileConverter.exe")
-                    t = os.path.join(odadir, sub, "TeighaFileConverter.exe")
-                    if os.path.exists(t):
-                        teigha = t
-    if teigha:
-        if os.path.exists(teigha):
-            return teigha
-    from DraftTools import translate
-    _msg = ("ODA (formerly Teigha) File Converter not found, "
-            "DWG support is disabled")
-    FCC.PrintMessage(translate("draft", _msg) + "\n")
+        return path
+    elif platform.system() == "Linux":
+        path = "/usr/bin/ODAFileConverter"
+        if os.path.exists(path):
+            return path
+    elif platform.system() == "Windows":
+        odadir = os.path.expandvars("%ProgramFiles%\ODA")
+        if os.path.exists(odadir):
+            for sub in os.listdir(odadir):
+                path = os.path.join(odadir, sub, "ODAFileConverter.exe")
+                if os.path.exists(path):
+                    return path
     return None
 
 
@@ -203,40 +187,61 @@ def convertToDxf(dwgfilename):
     """
     import os, tempfile, subprocess, sys
 
-    import shutil
-    if shutil.which("dwg2dxf"):
-        outdir = tempfile.mkdtemp()
-        basename = os.path.basename(dwgfilename)
-        result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
-        proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
-        proc.communicate()
-        return result
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    conv = p.GetInt("DWGConversion",0)
+    path = p.GetString("TeighaFileConverter","")
 
-    teigha = getTeighaConverter()
-    if teigha:
-        indir = os.path.dirname(dwgfilename)
-        outdir = tempfile.mkdtemp()
-        basename = os.path.basename(dwgfilename)
-        cmdline = ('"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"'
-                   % (teigha, indir, outdir, basename))
-        FCC.PrintMessage(translate("ImportDWG", "Converting:")
-                         + " " + cmdline + "\n")
-        if six.PY2:
-            if isinstance(cmdline, six.text_type):
-                encoding = sys.getfilesystemencoding()
-                cmdline = cmdline.encode(encoding)
-        subprocess.call(cmdline, shell=True)  # os.system(cmdline)
-        result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
-        if os.path.exists(result):
-            FCC.PrintMessage(translate("ImportDWG",
-                                       "Conversion successful") + "\n")
+    if conv in [0,1]: # LibreDWG dxf2dwg/dwg2dxf
+        if not path:
+            path = "dwg2dxf"
+        if path.endswith("dxf2dwg"):
+            path = os.path.join(os.path.dirname,"dwg2dxf")
+        try:
+            outdir = tempfile.mkdtemp()
+            basename = os.path.basename(dwgfilename)
+            result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+            proc = subprocess.Popen((path, dwgfilename, "-o", result))
+            proc.communicate()
             return result
+        except Exception:
+            if conv != 0:
+                FCC.PrintError(translate("draft", "LibreDWG error") + "\n")
+
+    if conv in [0,2]: # ODA
+        teigha = getTeighaConverter()
+        if teigha:
+            indir = os.path.dirname(dwgfilename)
+            outdir = tempfile.mkdtemp()
+            basename = os.path.basename(dwgfilename)
+            cmdline = [teigha, indir, outdir, "ACAD2000", "DXF", "0", "1", basename]
+            FCC.PrintMessage(translate("draft", "Converting:") + " " + str(cmdline) + "\n")
+            proc = subprocess.Popen(cmdline)
+            proc.communicate()
+            result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+            if os.path.exists(result):
+                FCC.PrintMessage(translate("draft", "Conversion successful") + "\n")
+                return result
+            else:
+                FCC.PrintError(translate("draft","""Error during DWG conversion.
+Try moving the DWG file to a directory path without spaces and non-english characters,
+or try saving to a lower DWG version.""") + "\n")
         else:
-            _msg = ("Error during DWG to DXF conversion. "
-                    "Try moving the DWG file to a directory path\n"
-                    "without spaces and non-english characters, "
-                    "or try saving to a lower DWG version.")
-            FCC.PrintMessage(translate("ImportDWG", _msg) + "\n")
+            if conv != 0:
+                    FCC.PrintError(translate("draft", "ODA File Converter not found") + "\n")
+
+    if conv in [0,3]: # QCAD
+        if not path:
+            path = "dwg2dwg"
+        try:
+            outdir = tempfile.mkdtemp()
+            basename = os.path.basename(dwgfilename)
+            result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+            proc = subprocess.Popen((path, "-f", "-o", result, dwgfilename))
+            proc.communicate()
+            return result
+        except Exception:
+            FCC.PrintError(translate("draft", "QCAD error") + "\n")
+
     return None
 
 
@@ -257,23 +262,51 @@ def convertToDwg(dxffilename, dwgfilename):
     str
         The same `dwgfilename` file path.
     """
-    import os, subprocess
+    import os, subprocess, shutil
 
-    import shutil
-    if shutil.which("dxf2dwg"):
-        proc = subprocess.Popen(("dxf2dwg", dxffilename, "-y", "-o", dwgfilename))
-        proc.communicate()
-        return dwgfilename
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    conv = p.GetInt("DWGConversion",0)
+    path = p.GetString("TeighaFileConverter","")
 
-    teigha = getTeighaConverter()
-    if teigha:
-        indir = os.path.dirname(dxffilename)
-        outdir = os.path.dirname(dwgfilename)
-        basename = os.path.basename(dxffilename)
-        cmdline = ('"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"'
-                   % (teigha, indir, outdir, basename))
-        FCC.PrintMessage(translate("ImportDWG", "Converting:")
-                         + " " + cmdline + "\n")
-        subprocess.call(cmdline, shell=True)  # os.system(cmdline)
-        return dwgfilename
+    if conv in [0,1]: # LibreDWG dxf2dwg/dwg2dxf
+        if not path:
+            path = "dxf2dwg"
+        if path.endswith("dwg2dxf"):
+            path = os.path.join(os.path.dirname,"dxf2dwg")
+        try:
+            proc = subprocess.Popen((path, dxffilename, "-y", "-o", dwgfilename))
+            proc.communicate()
+            return dwgfilename
+        except Exception:
+            if conv != 0:
+                FCC.PrintError(translate("draft", "LibreDWG error") + "\n")
+
+    if conv in [0,2]: # ODA
+        teigha = getTeighaConverter()
+        if teigha:
+            indir = os.path.dirname(dxffilename)
+            outdir = os.path.dirname(dwgfilename)
+            basename = os.path.basename(dxffilename)
+            cmdline = [teigha, indir, outdir, "ACAD2000", "DWG", "0", "1", basename]
+            FCC.PrintMessage(translate("draft", "Converting:") + " " + str(cmdline) + "\n")
+            proc = subprocess.Popen(cmdline)
+            proc.communicate()
+            return dwgfilename
+        else:
+            if conv != 0:
+                FCC.PrintError(translate("draft", "ODA File Converter not found") + "\n")
+
+    if conv in [0,3]: # QCAD
+        if not path:
+            path = "dwg2dwg"
+        try:
+            proc = subprocess.Popen((path, "-o", dwgfilename, dxffilename))
+            proc.communicate()
+            return dwgfilename
+        except Exception:
+            if conv != 0:
+                FCC.PrintError(translate("draft", "QCAD error") + "\n")
+            else:
+                FCC.PrintError(translate("draft", """No suitable DWG converter has been found.
+Please set one manually under menu Edit -> Preferences -> Import/Export -> DWG""") + "\n")
     return None

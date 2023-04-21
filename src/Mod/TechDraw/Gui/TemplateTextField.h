@@ -23,9 +23,13 @@
 #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
 #define DRAWINGGUI_TEMPLATETEXTFIELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsRectItem>
 
-#include "Mod/TechDraw/App/DrawTemplate.h"
+namespace TechDraw {
+class DrawTemplate;
+}
 
 namespace TechDrawGui
 {

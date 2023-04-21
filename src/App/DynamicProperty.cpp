@@ -22,30 +22,24 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+
+#include <Base/Reader.h>
+#include <Base/Tools.h>
+#include <Base/Writer.h>
 
 #include "DynamicProperty.h"
+#include "Application.h"
 #include "Property.h"
 #include "PropertyContainer.h"
-#include "Application.h"
-#include "ExtensionContainer.h"
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
 
-FC_LOG_LEVEL_INIT("DynamicProperty",true,true)
+
+FC_LOG_LEVEL_INIT("Property",true,true)
 
 
 using namespace App;
 
 
-DynamicProperty::DynamicProperty()
-{
-}
+DynamicProperty::DynamicProperty() = default;
 
 DynamicProperty::~DynamicProperty()
 {
@@ -65,6 +59,12 @@ void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
         List.push_back(v.property);
 }
 
+void DynamicProperty::getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const
+{
+    for (auto &v : props.get<0>())
+        List.emplace_back(v.getName(),v.property);
+}
+
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*> &Map) const
 {
     for (auto &v : props.get<0>())
@@ -77,7 +77,7 @@ Property *DynamicProperty::getDynamicPropertyByName(const char* name) const
     auto it = index.find(name);
     if (it != index.end())
         return it->property;
-    return 0;
+    return nullptr;
 }
 
 std::vector<std::string> DynamicProperty::getDynamicPropertyNames() const
@@ -116,7 +116,7 @@ const char* DynamicProperty::getPropertyGroup(const Property* prop) const
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
         return it->group.c_str();
-    return 0;
+    return nullptr;
 }
 
 const char* DynamicProperty::getPropertyGroup(const char *name) const
@@ -125,7 +125,7 @@ const char* DynamicProperty::getPropertyGroup(const char *name) const
     auto it = index.find(name);
     if (it != index.end())
         return it->group.c_str();
-    return 0;
+    return nullptr;
 }
 
 const char* DynamicProperty::getPropertyDocumentation(const Property* prop) const
@@ -134,7 +134,7 @@ const char* DynamicProperty::getPropertyDocumentation(const Property* prop) cons
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
         return it->doc.c_str();
-    return 0;
+    return nullptr;
 }
 
 const char* DynamicProperty::getPropertyDocumentation(const char *name) const
@@ -143,35 +143,61 @@ const char* DynamicProperty::getPropertyDocumentation(const char *name) const
     auto it = index.find(name);
     if (it != index.end())
         return it->doc.c_str();
-    return 0;
+    return nullptr;
 }
 
 Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char* type,
         const char* name, const char* group, const char* doc, short attr, bool ro, bool hidden)
 {
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(type,true));
-    if (!base)
-        return 0;
-    if (!base->getTypeId().isDerivedFrom(Property::getClassTypeId())) {
-        delete base;
-        std::stringstream str;
-        str << "'" << type << "' is not a property type";
-        throw Base::ValueError(str.str());
+    if(!type)
+        type = "<null>";
+
+    std::string _name;
+
+    static ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Document");
+    if(hGrp->GetBool("AutoNameDynamicProperty",false)) {
+        if(!name || !name[0])
+            name = type;
+        _name = getUniquePropertyName(pc,name);
+        if(_name != name) {
+            FC_WARN(pc.getFullName() << " rename dynamic property from '"
+                    << name << "' to '" << _name << "'");
+        }
+        name = _name.c_str();
+    } else if(!name)
+        name = "<null>"; // setting a bad name to trigger exception
+
+    auto prop = pc.getPropertyByName(name);
+    if(prop && prop->getContainer()==&pc)
+        FC_THROWM(Base::NameError, "Property " << pc.getFullName() << '.' << name << " already exists");
+
+    if(Base::Tools::getIdentifier(name) != name)
+        FC_THROWM(Base::NameError, "Invalid property name '" << name << "'");
+
+    Base::Type propType = Base::Type::getTypeIfDerivedFrom(type, App::Property::getClassTypeId(), true);
+    if (propType.isBad()) {
+        FC_THROWM(Base::TypeError, "Invalid type "
+                << type << " for property " << pc.getFullName() << '.' << name);
     }
 
-    // get unique name
-    Property* pcProperty = static_cast<Property*>(base);
-    if (!name || !name[0])
-        name = type;
+    void* propInstance = propType.createInstance();
+    if (!propInstance) {
+        FC_THROWM(Base::RuntimeError, "Failed to create property "
+                << pc.getFullName() << '.' << name << " of type " << type);
+    }
 
-    auto res = props.get<0>().emplace(pcProperty,
-            getUniquePropertyName(pc,name), nullptr, group, doc, attr, ro, hidden);
+    Property* pcProperty = static_cast<Property*>(propInstance);
+
+    auto res = props.get<0>().emplace(pcProperty,name, nullptr, group, doc, attr, ro, hidden);
 
     pcProperty->setContainer(&pc);
     pcProperty->myName = res.first->name.c_str();
 
-    if(ro) attr |= Prop_ReadOnly;
-    if(hidden) attr |= Prop_Hidden;
+    if(ro)
+        attr |= Prop_ReadOnly;
+    if(hidden)
+        attr |= Prop_Hidden;
 
     pcProperty->syncType(attr);
     pcProperty->StatusBits.set((size_t)Property::PropDynamic);
@@ -183,7 +209,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
 
 bool DynamicProperty::addProperty(Property *prop)
 {
-    if(!prop || !prop->getName())
+    if(!prop || !prop->hasName())
         return false;
     auto &index = props.get<0>();
     if(index.count(prop->getName()))
@@ -215,10 +241,14 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
             throw Base::RuntimeError("property is not dynamic");
         Property *prop = it->property;
         GetApplication().signalRemoveDynamicProperty(*prop);
-        Property::destroy(prop);
-        index.erase(it);
-        // memory of myName has been freed
-        prop->myName = nullptr;
+
+        // Handle possible recursive calls of removeDynamicProperty
+        if (prop->myName) {
+            Property::destroy(prop);
+            index.erase(it);
+            // memory of myName has been freed
+            prop->myName = nullptr;
+        }
         return true;
     }
 
@@ -265,17 +295,20 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
         const char *PropName, const char *TypeName, Base::XMLReader &reader)
 {
     if (!reader.hasAttribute("group"))
-        return 0;
+        return nullptr;
 
     short attribute = 0;
     bool readonly = false, hidden = false;
-    const char *group=0, *doc=0, *attr=0, *ro=0, *hide=0;
+    const char *group=nullptr, *doc=nullptr, *attr=nullptr, *ro=nullptr, *hide=nullptr;
     group = reader.getAttribute("group");
     if (reader.hasAttribute("doc"))
         doc = reader.getAttribute("doc");
     if (reader.hasAttribute("attr")) {
         attr = reader.getAttribute("attr");
-        if (attr) attribute = attr[0]-48;
+        if (attr) {
+            std::istringstream str(attr);
+            str >> attribute;
+        }
     }
     if (reader.hasAttribute("ro")) {
         ro = reader.getAttribute("ro");
@@ -285,6 +318,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
         hide = reader.getAttribute("hide");
         if (hide) hidden = (hide[0]-48) != 0;
     }
+
     return addDynamicProperty(pc,TypeName, PropName, group, doc, attribute, readonly, hidden);
 }
 
@@ -297,11 +331,23 @@ DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property
     return PropData();
 }
 
+bool DynamicProperty::changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
+    auto &index = props.get<1>();
+    auto it = index.find(const_cast<Property*>(prop));
+    if (it == index.end())
+        return false;
+    if(group)
+        it->group = group;
+    if(doc)
+        it->doc = doc;
+    return true;
+}
+
 const char *DynamicProperty::getPropertyName(const Property *prop) const
 {
     auto &index = props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it != index.end())
         return it->getName();
-    return 0;
+    return nullptr;
 }

@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QDir>
+# include <QMessageBox>
 #endif
+
+#include <App/Application.h>
 
 #include "DlgOnlineHelpImp.h"
 #include "ui_DlgOnlineHelp.h"
-#include "PrefWidgets.h"
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
 
 using namespace Gui::Dialog;
 
@@ -99,7 +97,7 @@ void DlgOnlineHelpImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgOnlineHelpImp::on_lineEditDownload_fileNameSelected( const QString& url )
+void DlgOnlineHelpImp::onLineEditDownloadFileNameSelected( const QString& url )
 {
     QDir dir(url);
     if (dir.exists() && dir.count() == 0) {

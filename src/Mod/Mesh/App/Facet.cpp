@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
@@ -29,16 +28,17 @@
 #include "Facet.h"
 #include "Mesh.h"
 
+
 using namespace Mesh;
 
-Facet::Facet(const MeshCore::MeshFacet& face, MeshObject* obj, unsigned long index)
+Facet::Facet(const MeshCore::MeshFacet& face, const MeshObject* obj, MeshCore::FacetIndex index)
   : Index(index), Mesh(obj)
 {
     for (int i=0; i<3; i++) {
         PIndex[i] = face._aulPoints[i];
         NIndex[i] = face._aulNeighbours[i];
     }
-    if (Mesh.isValid() && index != ULONG_MAX) {
+    if (Mesh.isValid() && index != MeshCore::FACET_INDEX_MAX) {
         for (int i=0; i<3; i++) {
             Base::Vector3d vert = Mesh->getPoint(PIndex[i]);
             _aclPoints[i].Set((float)vert.x, (float)vert.y, (float)vert.z);
@@ -68,4 +68,24 @@ void Facet::operator = (const Facet& f)
         PIndex[i] = f.PIndex[i];
         NIndex[i] = f.NIndex[i];
     }
+}
+
+Edge Facet::getEdge(int index) const
+{
+    index = index % 3;
+    Edge edge;
+    // geometric coordinates
+    edge._aclPoints[0] = this->_aclPoints[index];
+    edge._aclPoints[1] = this->_aclPoints[(index + 1) % 3];
+
+    // indices
+    edge.Index = index;
+    edge.PIndex[0] = this->PIndex[index];
+    edge.PIndex[1] = this->PIndex[(index + 1) % 3];
+    edge.NIndex[0] = this->Index;
+    edge.NIndex[1] = this->NIndex[index];
+    edge._bBorder = (this->NIndex[index] == MeshCore::FACET_INDEX_MAX);
+
+    edge.Mesh = this->Mesh;
+    return edge;
 }

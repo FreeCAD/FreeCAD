@@ -94,7 +94,7 @@ Note: C++ exporter is faster, but is not as featureful yet</string>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
            <string>Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the &quot;dxf_library&quot; workbench
+You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</string>
           </property>
           <property name="text">

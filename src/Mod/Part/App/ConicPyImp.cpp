@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_Conic.hxx>
 #endif
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/ConicPy.h>
-#include <Mod/Part/App/ConicPy.cpp>
-
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "ConicPy.h"
+#include "ConicPy.cpp"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ConicPy::representation(void) const
+std::string ConicPy::representation() const
 {
     return "<Conic object>";
 }
@@ -46,7 +46,7 @@ PyObject *ConicPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyth
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'Conic'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -55,14 +55,14 @@ int ConicPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
     return 0;
 }
 
-Py::Object ConicPy::getCenter(void) const
+Py::Object ConicPy::getCenter() const
 {
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Pnt loc = conic->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Object ConicPy::getLocation(void) const
+Py::Object ConicPy::getLocation() const
 {
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Pnt loc = conic->Location();
@@ -103,13 +103,13 @@ void  ConicPy::setLocation(Py::Object arg)
     }
 }
 
-Py::Float ConicPy::getEccentricity(void) const
+Py::Float ConicPy::getEccentricity() const
 {
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     return Py::Float(conic->Eccentricity());
 }
 
-Py::Float ConicPy::getAngleXU(void) const
+Py::Float ConicPy::getAngleXU() const
 {
     return Py::Float(getGeomConicPtr()->getAngleXU());
 }
@@ -119,7 +119,7 @@ void ConicPy::setAngleXU(Py::Float arg)
     getGeomConicPtr()->setAngleXU((double)arg);
 }
 
-Py::Object ConicPy::getAxis(void) const
+Py::Object ConicPy::getAxis() const
 {
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Ax1 axis = conic->Axis();
@@ -155,7 +155,7 @@ void  ConicPy::setAxis(Py::Object arg)
     }
 }
 
-Py::Object ConicPy::getXAxis(void) const
+Py::Object ConicPy::getXAxis() const
 {
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Ax1 axis = conic->XAxis();
@@ -191,7 +191,7 @@ void  ConicPy::setXAxis(Py::Object arg)
     }
 }
 
-Py::Object ConicPy::getYAxis(void) const
+Py::Object ConicPy::getYAxis() const
 {
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(getGeomConicPtr()->handle());
     gp_Ax1 axis = conic->YAxis();
@@ -229,10 +229,10 @@ void  ConicPy::setYAxis(Py::Object arg)
 
 PyObject *ConicPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ConicPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

@@ -98,6 +98,36 @@ def makeConstraintBodyHeatSource(
     return obj
 
 
+def makeConstraintCentrif(
+    doc,
+    name="ConstraintCentrif"
+):
+    """makeConstraintCentrif(document, [name]):
+    creates a centrif object to define centrifugal body load constraint"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_centrif
+    constraint_centrif.ConstraintCentrif(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_centrif
+        view_constraint_centrif.VPConstraintCentrif(obj.ViewObject)
+    return obj
+
+
+def makeConstraintCurrentDensity(
+    doc,
+    name="ConstraintCurrentDensity"
+):
+    """makeConstraintCurrentDensity(document, [name]):
+    makes a Fem CurrentDensity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_currentdensity
+    constraint_currentdensity.ConstraintCurrentDensity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_currentdensity
+        view_constraint_currentdensity.VPConstraintCurrentDensity(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(
     doc,
     name="ConstraintContact"
@@ -213,6 +243,21 @@ def makeConstraintInitialFlowVelocity(
     return obj
 
 
+def makeConstraintInitialPressure(
+    doc,
+    name="ConstraintInitialPressure"
+):
+    """makeConstraintInitialPressure(document, [name]):
+    makes a Fem ConstraintInitialPressure object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_initialpressure
+    constraint_initialpressure.ConstraintInitialPressure(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_initialpressure
+        view_constraint_initialpressure.VPConstraintInitialPressure(obj.ViewObject)
+    return obj
+
+
 def makeConstraintInitialTemperature(
     doc,
     name="ConstraintInitialTemperature"
@@ -220,6 +265,21 @@ def makeConstraintInitialTemperature(
     """makeConstraintInitialTemperature(document, name):
     makes a Fem ConstraintInitialTemperature object"""
     obj = doc.addObject("Fem::ConstraintInitialTemperature", name)
+    return obj
+
+
+def makeConstraintMagnetization(
+    doc,
+    name="ConstraintMagnetization"
+):
+    """makeConstraintMagnetization(document, [name]):
+    makes a Fem Magnetization object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_magnetization
+    constraint_magnetization.ConstraintMagnetization(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_magnetization
+        view_constraint_magnetization.VPConstraintMagnetization(obj.ViewObject)
     return obj
 
 
@@ -258,7 +318,7 @@ def makeConstraintSelfWeight(
     name="ConstraintSelfWeight"
 ):
     """makeConstraintSelfWeight(document, [name]):
-    creates an self weight object to define a gravity load"""
+    creates a self weight object to define a gravity load"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_selfweight
     constraint_selfweight.ConstraintSelfWeight(obj)
@@ -285,7 +345,7 @@ def makeConstraintTie(
     name="ConstraintTie"
 ):
     """makeConstraintTie(document, [name]):
-    creates an tie object to define bonded faces constraint"""
+    creates a tie object to define bonded faces constraint"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_tie
     constraint_tie.ConstraintTie(obj)
@@ -310,7 +370,7 @@ def makeConstraintSectionPrint(
     name="ConstraintSectionPrint"
 ):
     """makeConstraintSectionPrint(document, [name]):
-    creates an section print object to evaluate forces and moments of defined face"""
+    creates a section print object to evaluate forces and moments of defined face"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_sectionprint
     constraint_sectionprint.ConstraintSectionPrint(obj)
@@ -320,13 +380,23 @@ def makeConstraintSectionPrint(
     return obj
 
 
+def makeConstraintSpring(
+    doc,
+    name="ConstraintSpring"
+):
+    """makeConstraintSpring(document, [name]):
+    makes a Fem ConstraintSpring object"""
+    obj = doc.addObject("Fem::ConstraintSpring", name)
+    return obj
+
+
 # ********* element definition objects ***********************************************************
 def makeElementFluid1D(
     doc,
     name="ElementFluid1D"
 ):
     """makeElementFluid1D(document, [name]):
-    creates an 1D fluid element object to define 1D flow"""
+    creates a 1D fluid element object to define 1D flow"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_fluid1D
     element_fluid1D.ElementFluid1D(obj)
@@ -344,13 +414,13 @@ def makeElementGeometry1D(
     name="ElementGeometry1D"
 ):
     """makeElementGeometry1D(document, [width], [height], [name]):
-    creates an 1D geometry element object to define a cross section"""
+    creates a 1D geometry element object to define a cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_geometry1D
     element_geometry1D.ElementGeometry1D(obj)
     sec_types = element_geometry1D.ElementGeometry1D.known_beam_types
     if sectiontype not in sec_types:
-        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
+        FreeCAD.Console.PrintError("Section type is unknown. Set to " + sec_types[0] + " \n")
         obj.SectionType = sec_types[0]
     else:
         obj.SectionType = sectiontype
@@ -371,7 +441,7 @@ def makeElementGeometry2D(
     name="ElementGeometry2D"
 ):
     """makeElementGeometry2D(document, [thickness], [name]):
-    creates an 2D geometry element object to define a plate thickness"""
+    creates a 2D geometry element object to define a plate thickness"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_geometry2D
     element_geometry2D.ElementGeometry2D(obj)
@@ -387,7 +457,7 @@ def makeElementRotation1D(
     name="ElementRotation1D"
 ):
     """makeElementRotation1D(document, [name]):
-    creates an 1D geometry rotation element object to rotate a 1D cross section"""
+    creates a 1D geometry rotation element object to rotate a 1D cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_rotation1D
     element_rotation1D.ElementRotation1D(obj)
@@ -580,7 +650,7 @@ def makeResultMechanical(
     name="ResultMechanical"
 ):
     """makeResultMechanical(document, [name]):
-    creates an mechanical result object to hold FEM results"""
+    creates a mechanical result object to hold FEM results"""
     obj = doc.addObject("Fem::FemResultObjectPython", name)
     from femobjects import result_mechanical
     result_mechanical.ResultMechanical(obj)
@@ -596,7 +666,7 @@ def makePostVtkFilterClipRegion(
     name="VtkFilterClipRegion"
 ):
     """makePostVtkFilterClipRegion(document, base_vtk_result, [name]):
-    creates an FEM post processing region clip filter object (vtk based)"""
+    creates a FEM post processing region clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -611,7 +681,7 @@ def makePostVtkFilterClipScalar(
     name="VtkFilterClipScalar"
 ):
     """makePostVtkFilterClipScalar(document, base_vtk_result, [name]):
-    creates an FEM post processing scalar clip filter object (vtk based)"""
+    creates a FEM post processing scalar clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostScalarClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -626,7 +696,7 @@ def makePostVtkFilterCutFunction(
     name="VtkFilterCutFunction"
 ):
     """makePostVtkFilterCutFunction(document, base_vtk_result, [name]):
-    creates an FEM post processing cut function filter object (vtk based)"""
+    creates a FEM post processing cut function filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -641,8 +711,23 @@ def makePostVtkFilterWarp(
     name="VtkFilterWarp"
 ):
     """makePostVtkFilterWarp(document, base_vtk_result, [name]):
-    creates an FEM post processing warp filter object (vtk based)"""
+    creates a FEM post processing warp filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostWarpVectorFilter", name)
+    tmp_filter_list = base_vtk_result.Filter
+    tmp_filter_list.append(obj)
+    base_vtk_result.Filter = tmp_filter_list
+    del tmp_filter_list
+    return obj
+
+
+def makePostVtkFilterContours(
+    doc,
+    base_vtk_result,
+    name="VtkFilterContours"
+):
+    """makePostVtkFilterContours(document, base_vtk_result, [name]):
+    creates a FEM post processing contours filter object (vtk based)"""
+    obj = doc.addObject("Fem::FemPostContoursFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
     base_vtk_result.Filter = tmp_filter_list
@@ -656,13 +741,32 @@ def makePostVtkResult(
     name="VtkResult"
 ):
     """makePostVtkResult(document, base_result, [name]):
-    creates an FEM post processing result object (vtk based) to hold FEM results"""
-    obj = doc.addObject("Fem::FemPostPipeline", name)
+    creates a FEM post processing result object (vtk based) to hold FEM results"""
+    Pipeline_Name = "Pipeline_" + name
+    obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
     obj.load(base_result)
+    if FreeCAD.GuiUp:
+        obj.ViewObject.SelectionStyle = "BoundBox"
+        # to assure the user sees something, set the default to Surface
+        obj.ViewObject.DisplayMode = "Surface"
     return obj
 
 
 # ********* solver objects ***********************************************************************
+def makeEquationDeformation(
+    doc,
+    base_solver=None,
+    name="Deformation"
+):
+    """makeEquationDeformation(document, [base_solver], [name]):
+    creates a FEM deformation (nonlinear elasticity) equation for a solver"""
+    from femsolver.elmer.equations import deformation
+    obj = deformation.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeEquationElasticity(
     doc,
     base_solver=None,
@@ -747,6 +851,34 @@ def makeEquationHeat(
     return obj
 
 
+def makeEquationMagnetodynamic(
+    doc,
+    base_solver=None,
+    name="Magnetodynamic"
+):
+    """makeEquationMagnetodynamic(document, [base_solver], [name]):
+    creates a FEM magnetodynamic equation for a solver"""
+    from femsolver.elmer.equations import magnetodynamic
+    obj = magnetodynamic.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
+def makeEquationMagnetodynamic2D(
+    doc,
+    base_solver=None,
+    name="Magnetodynamic2D"
+):
+    """makeEquationMagnetodynamic2D(document, [base_solver], [name]):
+    creates a FEM magnetodynamic2D equation for a solver"""
+    from femsolver.elmer.equations import magnetodynamic2D
+    obj = magnetodynamic2D.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeSolverCalculixCcxTools(
     doc,
     name="SolverCcxTools"
@@ -781,6 +913,17 @@ def makeSolverElmer(
     makes a Elmer solver object"""
     import femsolver.elmer.solver
     obj = femsolver.elmer.solver.create(doc, name)
+    return obj
+
+
+def makeSolverMystran(
+    doc,
+    name="SolverMystran"
+):
+    """makeSolverMystran(document, [name]):
+    makes a Mystran solver object"""
+    import femsolver.mystran.solver
+    obj = femsolver.mystran.solver.create(doc, name)
     return obj
 
 

@@ -24,20 +24,30 @@
 #define PLANEGCS_GEO_H
 
 #include <cmath>
+
 #include "Util.h"
+
 
 namespace GCS
 {
     class Point
     {
     public:
-        Point(){x = 0; y = 0;}
-        Point(double *px, double *py) {x=px; y=py;}
-        double *x;
-        double *y;
+        Point()
+        {
+            x = nullptr;
+            y = nullptr;
+        }
+        Point(double* px, double* py)
+        {
+            x = px;
+            y = py;
+        }
+        double* x;
+        double* y;
     };
 
-    typedef std::vector<Point> VEC_P;
+    using VEC_P = std::vector<Point>;
 
     ///Class DeriVector2 holds a vector value and its derivative on the
     ///parameter that the derivatives are being calculated for now. x,y is the
@@ -52,36 +62,76 @@ namespace GCS
     class DeriVector2
     {
     public:
-        DeriVector2(){x=0; y=0; dx=0; dy=0;}
-        DeriVector2(double x, double y) {this->x = x; this->y = y; this->dx = 0; this->dy = 0;}
-        DeriVector2(double x, double y, double dx, double dy) {this->x = x; this->y = y; this->dx = dx; this->dy = dy;}
-        DeriVector2(const Point &p, const double* derivparam);
+        DeriVector2()
+        {
+            x = 0;
+            y = 0;
+            dx = 0;
+            dy = 0;
+        }
+        DeriVector2(double x, double y)
+        {
+            this->x = x;
+            this->y = y;
+            this->dx = 0;
+            this->dy = 0;
+        }
+        DeriVector2(double x, double y, double dx, double dy)
+        {
+            this->x = x;
+            this->y = y;
+            this->dx = dx;
+            this->dy = dy;
+        }
+        DeriVector2(const Point& p, const double* derivparam);
         double x, dx;
         double y, dy;
 
-        double length() const {return sqrt(x*x + y*y);}
-        double length(double &dlength) const; //returns length and writes length deriv into the dlength argument.
+        double length() const
+        {
+            return sqrt(x * x + y * y);
+        }
+        double length(double& dlength)
+            const;// returns length and writes length deriv into the dlength argument.
 
 
-        //unlike other vectors in FreeCAD, this normalization creates a new vector instead of modifying existing one.
-        DeriVector2 getNormalized() const; //returns zero vector if the original is zero.
-        double scalarProd(const DeriVector2 &v2, double* dprd=0) const;//calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
-        DeriVector2 sum(const DeriVector2 &v2) const {//adds two vectors and returns result
-            return DeriVector2(x + v2.x, y + v2.y,
-                               dx + v2.dx, dy + v2.dy);}
-        DeriVector2 subtr(const DeriVector2 &v2) const {//subtracts two vectors and returns result
-            return DeriVector2(x - v2.x, y - v2.y,
-                               dx - v2.dx, dy - v2.dy);}
-        DeriVector2 mult(double val) const {
-            return DeriVector2(x*val, y*val, dx*val, dy*val);}//multiplies the vector by a number. Derivatives are scaled.
-        DeriVector2 multD(double val, double dval) const {//multiply vector by a variable with a derivative.
-            return DeriVector2(x*val, y*val, dx*val+x*dval, dy*val+y*dval);}
-        DeriVector2 divD(double val, double dval) const;//divide vector by a variable with a derivative
-        DeriVector2 rotate90ccw() const {return DeriVector2(-y,x,-dy,dx);}
-        DeriVector2 rotate90cw() const {return DeriVector2(y,-x,dy,-dx);}
-        DeriVector2 linCombi(double m1, const DeriVector2 &v2, double m2) const {//linear combination of two vectors
-            return DeriVector2(x*m1 + v2.x*m2, y*m1 + v2.y*m2,
-                               dx*m1 + v2.dx*m2, dy*m1 + v2.dy*m2);}
+        // unlike other vectors in FreeCAD, this normalization creates a new vector instead of
+        // modifying existing one.
+        DeriVector2 getNormalized() const;// returns zero vector if the original is zero.
+        double scalarProd(const DeriVector2& v2, double* dprd = nullptr)
+            const;// calculates scalar product of two vectors and returns the result. The derivative
+                  // of the result is written into argument dprd.
+        DeriVector2 sum(const DeriVector2& v2) const
+        {// adds two vectors and returns result
+            return DeriVector2(x + v2.x, y + v2.y, dx + v2.dx, dy + v2.dy);
+        }
+        DeriVector2 subtr(const DeriVector2& v2) const
+        {// subtracts two vectors and returns result
+            return DeriVector2(x - v2.x, y - v2.y, dx - v2.dx, dy - v2.dy);
+        }
+        DeriVector2 mult(double val) const
+        {
+            return DeriVector2(x * val, y * val, dx * val, dy * val);
+        }// multiplies the vector by a number. Derivatives are scaled.
+        DeriVector2 multD(double val, double dval) const
+        {// multiply vector by a variable with a derivative.
+            return DeriVector2(x * val, y * val, dx * val + x * dval, dy * val + y * dval);
+        }
+        DeriVector2 divD(double val,
+                         double dval) const;// divide vector by a variable with a derivative
+        DeriVector2 rotate90ccw() const
+        {
+            return DeriVector2(-y, x, -dy, dx);
+        }
+        DeriVector2 rotate90cw() const
+        {
+            return DeriVector2(y, -x, dy, -dx);
+        }
+        DeriVector2 linCombi(double m1, const DeriVector2& v2, double m2) const
+        {// linear combination of two vectors
+            return DeriVector2(
+                x * m1 + v2.x * m2, y * m1 + v2.y * m2, dx * m1 + v2.dx * m2, dy * m1 + v2.dy * m2);
+        }
 
     };
 
@@ -100,7 +150,7 @@ namespace GCS
         //derivparam is a pointer to a curve parameter (or point coordinate) to
         // compute the derivative for. The derivative is returned through dx,dy
         // fields of DeriVector2.
-        virtual DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const = 0;
+        virtual DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const = 0;
 
         /**
          * @brief Value: returns point (vector) given the value of parameter
@@ -109,7 +159,7 @@ namespace GCS
          * @param derivparam: pointer to sketch parameter to calculate the derivative for
          * @return
          */
-        virtual DeriVector2 Value(double u, double du, const double* derivparam = 0) const;
+        virtual DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const;
 
         //adds curve's parameters to pvec (used by constraints)
         virtual int PushOwnParams(VEC_pD &pvec) = 0;
@@ -123,50 +173,50 @@ namespace GCS
     {
     public:
         Line(){}
-        virtual ~Line(){}
+        ~Line() override{}
         Point p1;
         Point p2;
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
-        DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual Line* Copy() override;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
+        DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        Line* Copy() override;
     };
 
     class Circle: public Curve
     {
     public:
-        Circle(){rad = 0;}
-        virtual ~Circle(){}
+        Circle(){rad = nullptr;}
+        ~Circle() override{}
         Point center;
         double *rad;
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
-        DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual Circle* Copy() override;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
+        DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        Circle* Copy() override;
     };
 
     class Arc: public Circle
     {
     public:
-        Arc(){startAngle=0;endAngle=0;rad=0;}
-        virtual ~Arc(){}
+        Arc(){startAngle=nullptr;endAngle=nullptr;rad=nullptr;}
+        ~Arc() override{}
         double *startAngle;
         double *endAngle;
         //double *rad; //inherited
         Point start;
         Point end;
         //Point center; //inherited
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual Arc* Copy() override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        Arc* Copy() override;
     };
 
     class MajorRadiusConic: public Curve
     {
     public:
-        virtual ~MajorRadiusConic(){}
+        ~MajorRadiusConic() override{}
         virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const = 0;
         virtual double getRadMaj(double* derivparam, double &ret_dRadMaj) const = 0;
         virtual double getRadMaj() const = 0;
@@ -176,26 +226,26 @@ namespace GCS
     class Ellipse: public MajorRadiusConic
     {
     public:
-        Ellipse(){ radmin = 0;}
-        virtual ~Ellipse(){}
+        Ellipse(){ radmin = nullptr;}
+        ~Ellipse() override{}
         Point center;
         Point focus1;
         double *radmin;
-        virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const override;
-        virtual double getRadMaj(double* derivparam, double &ret_dRadMaj) const override;
-        virtual double getRadMaj() const override;
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
-        DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual Ellipse* Copy() override;
+        double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const override;
+        double getRadMaj(double* derivparam, double &ret_dRadMaj) const override;
+        double getRadMaj() const override;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
+        DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        Ellipse* Copy() override;
     };
 
     class ArcOfEllipse: public Ellipse
     {
     public:
-        ArcOfEllipse(){startAngle=0;endAngle=0;radmin = 0;}
-        virtual ~ArcOfEllipse(){}
+        ArcOfEllipse(){startAngle=nullptr;endAngle=nullptr;radmin = nullptr;}
+        ~ArcOfEllipse() override{}
         double *startAngle;
         double *endAngle;
         //double *radmin; //inherited
@@ -204,82 +254,82 @@ namespace GCS
         //Point center;  //inherited
         //double *focus1.x; //inherited
         //double *focus1.y; //inherited
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual ArcOfEllipse* Copy() override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        ArcOfEllipse* Copy() override;
     };
 
     class Hyperbola: public MajorRadiusConic
     {
     public:
-        Hyperbola(){ radmin = 0;}
-        virtual ~Hyperbola(){}
+        Hyperbola(){ radmin = nullptr;}
+        ~Hyperbola() override{}
         Point center;
         Point focus1;
         double *radmin;
-        virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const override;
-        virtual double getRadMaj(double* derivparam, double &ret_dRadMaj) const override;
-        virtual double getRadMaj() const override;
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
-        virtual DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual Hyperbola* Copy() override;
+        double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const override;
+        double getRadMaj(double* derivparam, double &ret_dRadMaj) const override;
+        double getRadMaj() const override;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
+        DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        Hyperbola* Copy() override;
     };
 
     class ArcOfHyperbola: public Hyperbola
     {
     public:
-        ArcOfHyperbola(){startAngle=0;endAngle=0;radmin = 0;}
-        virtual ~ArcOfHyperbola(){}
+        ArcOfHyperbola(){startAngle=nullptr;endAngle=nullptr;radmin = nullptr;}
+        ~ArcOfHyperbola() override{}
         // parameters
         double *startAngle;
         double *endAngle;
         Point start;
         Point end;
         // interface helpers
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual ArcOfHyperbola* Copy() override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        ArcOfHyperbola* Copy() override;
     };
 
     class Parabola: public Curve
     {
     public:
         Parabola(){ }
-        virtual ~Parabola(){}
+        ~Parabola() override{}
         Point vertex;
         Point focus1;
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
-        virtual DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual Parabola* Copy() override;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
+        DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        Parabola* Copy() override;
     };
 
     class ArcOfParabola: public Parabola
     {
     public:
-        ArcOfParabola(){startAngle=0;endAngle=0;}
-        virtual ~ArcOfParabola(){}
+        ArcOfParabola(){startAngle=nullptr;endAngle=nullptr;}
+        ~ArcOfParabola() override{}
         // parameters
         double *startAngle;
         double *endAngle;
         Point start;
         Point end;
         // interface helpers
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual ArcOfParabola* Copy() override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        ArcOfParabola* Copy() override;
     };
 
     class BSpline: public Curve
     {
     public:
         BSpline(){periodic=false;degree=2;}
-        virtual ~BSpline(){}
+        ~BSpline() override{}
         // parameters
-        VEC_P poles;
+        VEC_P poles; // TODO: use better data structures so poles.x and poles.y
         VEC_pD weights;
         VEC_pD knots;
         // dependent parameters (depends on previous parameters,
@@ -292,12 +342,29 @@ namespace GCS
         int degree;
         bool periodic;
         VEC_I knotpointGeoids; // geoids of knotpoints as to index Geom array
+        VEC_D flattenedknots; // knot vector with repetitions for multiplicity and "padding" for periodic spline
         // interface helpers
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
-        virtual DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
-        virtual int PushOwnParams(VEC_pD &pvec) override;
-        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
-        virtual BSpline* Copy() override;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = nullptr) const override;
+        DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+        int PushOwnParams(VEC_pD &pvec) override;
+        void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
+        BSpline* Copy() override;
+        /// finds the value B_i(x) such that spline(x) = sum(poles[i] * B_i(x))
+        /// x is the point at which combination is needed
+        /// k is the range in `flattenedknots` that contains x
+        /// i is index of control point
+        /// p is the degree
+        double getLinCombFactor(double x, size_t k, size_t i, unsigned int p);
+        inline double getLinCombFactor(double x, size_t k, size_t i)
+        { return getLinCombFactor(x, k, i, degree); }
+        void setupFlattenedKnots();
+        /// finds spline(x) for the given parameter and knot/pole vector
+        /// x is the point at which combination is needed
+        /// k is the range in `flattenedknots` that contains x
+        /// p is the degree
+        /// d is the vector of (relevant) poles (this will be changed)
+        /// flatknots is the vector of knots
+        static double splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots);
     };
 
 } //namespace GCS

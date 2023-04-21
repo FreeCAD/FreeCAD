@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_KERNEL_H
 #define MESH_KERNEL_H
 
-#include <assert.h>
+#include <cassert>
 #include <iosfwd>
 
-#include "Elements.h"
+#include <Base/BoundBox.h>
+#include <Base/Matrix.h>
+
 #include "Helpers.h"
 
-#include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 
 namespace Base{
   class Polygon2d;
@@ -51,10 +49,10 @@ class MeshPointVisitor;
 class MeshFacetGrid;
 
 
-/** 
+/**
  * The MeshKernel class is the basic class that holds the data points,
  * the edges and the facets describing a mesh object.
- * 
+ *
  * The bounding box is calculated during the buildup of the data
  * structure and gets only re-caclulated after insertion of new facets
  * but not after removal of facets.
@@ -65,11 +63,11 @@ class MeshExport MeshKernel
 {
 public:
     /// Construction
-    MeshKernel (void);
+    MeshKernel ();
     /// Construction
     MeshKernel (const MeshKernel &rclMesh);
     /// Destruction
-    ~MeshKernel (void)
+    ~MeshKernel ()
     { Clear(); }
 
     /** @name I/O methods */
@@ -82,71 +80,74 @@ public:
     /** @name Querying */
     //@{
     /// Returns the number of facets
-    unsigned long CountFacets (void) const
+    unsigned long CountFacets () const
     { return static_cast<unsigned long>(_aclFacetArray.size()); }
     /// Returns the number of edge
-    unsigned long CountEdges (void) const;
+    unsigned long CountEdges () const;
     // Returns the number of points
-    unsigned long CountPoints (void) const
+    unsigned long CountPoints () const
     { return static_cast<unsigned long>(_aclPointArray.size()); }
     /// Returns the number of required memory in bytes
-    unsigned int GetMemSize (void) const
+    unsigned int GetMemSize () const
     { return static_cast<unsigned int>(_aclPointArray.size() * sizeof(MeshPoint) +
                                        _aclFacetArray.size() * sizeof(MeshFacet)); }
     /// Determines the bounding box
-    const Base::BoundBox3f& GetBoundBox (void) const
+    const Base::BoundBox3f& GetBoundBox () const
     { return _clBoundBox; }
 
     /** Forces a recalculation of the bounding box. This method should be called after
      * the removal of points.or after a transformation of the data structure.
      */
-    void RecalcBoundBox (void);
+    void RecalcBoundBox () const;
 
     /** Returns the point at the given index. This method is rather slow and should be
      * called occasionally only. For fast access the MeshPointIterator interfsce should
      * be used.
      */
-    inline MeshPoint GetPoint (unsigned long ulIndex) const;
+    inline MeshPoint GetPoint (PointIndex ulIndex) const;
 
     /** Returns an array of the vertex normals of the mesh. A vertex normal gets calculated
      * by summarizing the normals of the associated facets.
      */
     std::vector<Base::Vector3f> CalcVertexNormals() const;
-    std::vector<Base::Vector3f> GetFacetNormals(const std::vector<unsigned long>&) const;
+    std::vector<Base::Vector3f> GetFacetNormals(const std::vector<FacetIndex>&) const;
 
     /** Returns the facet at the given index. This method is rather slow and should be
      * called occasionally only. For fast access the MeshFacetIterator interface should
      * be used.
      */
-    inline MeshGeomFacet GetFacet (unsigned long ulIndex) const;
+    inline MeshGeomFacet GetFacet (FacetIndex ulIndex) const;
     inline MeshGeomFacet GetFacet (const MeshFacet &rclFacet) const;
 
     /** Returns the point indices of the given facet index. */
-    inline void GetFacetPoints (unsigned long ulFaIndex, unsigned long &rclP0, 
-                                unsigned long &rclP1, unsigned long &rclP2) const;
+    inline void GetFacetPoints (FacetIndex ulFaIndex, PointIndex &rclP0,
+                                PointIndex &rclP1, PointIndex &rclP2) const;
+    /** Returns the point indices of the given facet index. */
+    inline void SetFacetPoints (FacetIndex ulFaIndex, PointIndex rclP0,
+                                PointIndex rclP1, PointIndex rclP2);
     /** Returns the point indices of the given facet indices. */
-    std::vector<unsigned long> GetFacetPoints(const std::vector<unsigned long>&) const;
+    std::vector<PointIndex> GetFacetPoints(const std::vector<FacetIndex>&) const;
     /** Returns the facet indices that share the given point indices. */
-    std::vector<unsigned long> GetPointFacets(const std::vector<unsigned long>&) const;
+    std::vector<FacetIndex> GetPointFacets(const std::vector<PointIndex>&) const;
     /** Returns the indices of the neighbour facets of the given facet index. */
-    inline void GetFacetNeighbours (unsigned long ulIndex, unsigned long &rulNIdx0, 
-                                    unsigned long &rulNIdx1, unsigned long &rulNIdx2) const;
+    inline void GetFacetNeighbours (FacetIndex ulIndex, FacetIndex &rulNIdx0,
+                                    FacetIndex &rulNIdx1, FacetIndex &rulNIdx2) const;
 
     /** Determines all facets that are associated to this point. This method is very
      * slow and should be called occasionally only.
      */
-    std::vector<unsigned long> HasFacets (const MeshPointIterator &rclIter) const;
+    std::vector<FacetIndex> HasFacets (const MeshPointIterator &rclIter) const;
 
     /** Returns true if the data structure is valid. */
-    bool IsValid (void) const
+    bool IsValid () const
     { return _bValid; }
 
     /** Returns the array of all data points. */
-    const MeshPointArray& GetPoints (void) const { return _aclPointArray; }
+    const MeshPointArray& GetPoints () const { return _aclPointArray; }
     /** Returns an array of points to the given indices. The indices
      * must not be out of range.
      */
-    MeshPointArray GetPoints(const std::vector<unsigned long>&) const;
+    MeshPointArray GetPoints(const std::vector<PointIndex>&) const;
 
     /** Returns a modifier for the point array */
     MeshPointModifier ModifyPoints()
@@ -155,11 +156,11 @@ public:
     }
 
     /** Returns the array of all facets */
-    const MeshFacetArray& GetFacets (void) const { return _aclFacetArray; }
+    const MeshFacetArray& GetFacets () const { return _aclFacetArray; }
     /** Returns an array of facets to the given indices. The indices
      * must not be out of range.
      */
-    MeshFacetArray GetFacets(const std::vector<unsigned long>&) const;
+    MeshFacetArray GetFacets(const std::vector<FacetIndex>&) const;
 
     /** Returns a modifier for the facet array */
     MeshFacetModifier ModifyFacets()
@@ -179,7 +180,7 @@ public:
     /** Calculates the surface area of the mesh object. */
     float GetSurface() const;
     /** Calculates the surface area of the segment defined by \a aSegment. */
-    float GetSurface( const std::vector<unsigned long>& aSegment ) const;
+    float GetSurface( const std::vector<FacetIndex>& aSegment ) const;
     /** Calculates the volume of the mesh object. Therefore the mesh must be a solid, if not 0
      * is returned.
      */
@@ -195,10 +196,10 @@ public:
     //@}
 
     /** @name Facet visitors
-     * The MeshKernel class provides different methods to visit "topologic connected" facets 
-     * to a given start facet. Two facets are regarded as "topologic connected" if they share 
+     * The MeshKernel class provides different methods to visit "topologic connected" facets
+     * to a given start facet. Two facets are regarded as "topologic connected" if they share
      * a common edge or a common point.
-     * All methods expect a MeshFacetVisitor as argument that can decide to continue or to stop. 
+     * All methods expect a MeshFacetVisitor as argument that can decide to continue or to stop.
      * If there is no topologic neighbour facet any more being not marked as "VISIT" the algorithm
      * stops anyway.
      * @see MeshFacetVisitor, MeshOrientationVisitor, MeshSearchNeighbourFacetsVisitor
@@ -206,47 +207,47 @@ public:
      */
     //@{
     /**
-     * This method visits all neighbour facets, i.e facets that share a common edge 
-     * starting from the facet associated to index \a ulStartFacet. All facets having set the VISIT 
+     * This method visits all neighbour facets, i.e facets that share a common edge
+     * starting from the facet associated to index \a ulStartFacet. All facets having set the VISIT
      * flag are ignored. Therefore the user have to set or unset this flag if needed.
      * All facets that get visited during this algorithm are marked as VISIT and the Visit() method
-     * of the given MeshFacetVisitor gets invoked. 
-     * If there are no unvisited neighbours any more the algorithms returns immediately and returns 
+     * of the given MeshFacetVisitor gets invoked.
+     * If there are no unvisited neighbours any more the algorithms returns immediately and returns
      * the number of visited facets.
      * \note For the start facet \a ulStartFacet MeshFacetVisitor::Visit() does not get invoked though
      * the facet gets marked as VISIT.
      */
-    unsigned long VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, unsigned long ulStartFacet) const;
+    unsigned long VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, FacetIndex ulStartFacet) const;
     /**
      * Does basically the same as the method above unless the facets that share just a common point
      * are regared as neighbours.
      */
-    unsigned long VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rclFVisitor, unsigned long ulStartFacet) const;
+    unsigned long VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rclFVisitor, FacetIndex ulStartFacet) const;
     //@}
 
     /** @name Point visitors
      * The MeshKernel class provides a method to visit neighbour points to a given start point.
      * Two points are regarded as neighbours if they share an edge.
-     * The method expects a MeshPointVisitor as argument that can decide to continue or to stop. 
+     * The method expects a MeshPointVisitor as argument that can decide to continue or to stop.
      * If there is no topologic neighbour point any more being not marked as "VISIT" the algorithm
      * stops anyway.
      */
     //@{
     /**
-     * This method visits all neighbour points starting from the point associated to index \a ulStartPoint. 
-     * All points having set the VISIT flag are ignored. Therefore the user have to set or unset this flag 
+     * This method visits all neighbour points starting from the point associated to index \a ulStartPoint.
+     * All points having set the VISIT flag are ignored. Therefore the user have to set or unset this flag
      * if needed before the algorithm starts.
      * All points that get visited during this algorithm are marked as VISIT and the Visit() method
-     * of the given MeshPointVisitor gets invoked. 
-     * If there are no unvisited neighbours any more the algorithms returns immediately and returns 
+     * of the given MeshPointVisitor gets invoked.
+     * If there are no unvisited neighbours any more the algorithms returns immediately and returns
      * the number of visited points.
      * \note For the start facet \a ulStartPoint MeshPointVisitor::Visit() does not get invoked though
      * the point gets marked as VISIT.
      */
-    unsigned long VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, unsigned long ulStartPoint) const; 
+    unsigned long VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, PointIndex ulStartPoint) const;
     //@}
 
-    /** @name Iterators 
+    /** @name Iterators
      * The iterator methods are provided for convenience. They return an iterator object that
      * points to the first element in the appropriate list.
      * \code
@@ -281,11 +282,11 @@ public:
      * be called occasionally only. This does the same as the += operator above.
      */
     void AddFacet(const MeshGeomFacet &rclSFacet);
-    /** Adds an array of facets to the data structure. This method keeps temporarily 
-     * set properties and flags. 
+    /** Adds an array of facets to the data structure. This method keeps temporarily
+     * set properties and flags.
      */
     MeshKernel& operator += (const std::vector<MeshGeomFacet> &rclFAry);
-    /** Adds an array of facets to the data structure. This method keeps temporarily 
+    /** Adds an array of facets to the data structure. This method keeps temporarily
      * set properties and flags. This does the same as the += operator above.
      */
     void AddFacets(const std::vector<MeshGeomFacet> &rclFAry);
@@ -339,47 +340,47 @@ public:
      * \li If there is no neighbour facet check if the points can be deleted.
      * True is returned if the facet could be deleted.
      * @note This method is very slow and should only be called occasionally.
-     * @note After deletion of the facet \a rclIter becomes invalid and must not 
+     * @note After deletion of the facet \a rclIter becomes invalid and must not
      * be used before setting to a new position.
      */
     bool DeleteFacet (const MeshFacetIterator &rclIter);
     /**
      * Does basically the same as the method above unless that the index of the facet is given.
      */
-    bool DeleteFacet (unsigned long ulInd);
-    /** Removes several facets from the data structure. 
+    bool DeleteFacet (FacetIndex ulInd);
+    /** Removes several facets from the data structure.
      * @note This method overwrites the free usable property of each mesh point.
      * @note This method also removes points from the structure that are no longer
      * referenced by the facets.
      * @note This method is very slow and should only be called occasionally.
      */
-    void DeleteFacets (const std::vector<unsigned long> &raulFacets);
+    void DeleteFacets (const std::vector<FacetIndex> &raulFacets);
     /** Deletes the point the iterator points to. The deletion of a point requires the following step:
      * \li Find all associated facets to this point.
      * \li Delete these facets.
      * True is returned if the point could be deleted.
      * @note This method is very slow and should only be called occasionally.
-     * @note After deletion of the point \a rclIter becomes invalid and must not 
+     * @note After deletion of the point \a rclIter becomes invalid and must not
      * be used before setting to a new position.
      */
     bool DeletePoint (const MeshPointIterator &rclIter);
     /**
      * Does basically the same as the method above unless that the index of the facet is given.
      */
-    bool DeletePoint (unsigned long ulInd);
-    /** Removes several points from the data structure. 
+    bool DeletePoint (PointIndex ulInd);
+    /** Removes several points from the data structure.
      * @note This method overwrites the free usable property of each mesh point.
      */
-    void DeletePoints (const std::vector<unsigned long> &raulPoints);
+    void DeletePoints (const std::vector<PointIndex> &raulPoints);
     /** Removes all as INVALID marked points and facets from the structure. */
     void RemoveInvalids ();
     /** Rebuilds the neighbour indices for all facets. */
-    void RebuildNeighbours (void);
+    void RebuildNeighbours ();
     /** Removes unreferenced points or facets with invalid indices from the mesh. */
     void Cleanup();
     /** Clears the whole data structure. */
-    void Clear (void);
-    /** Replaces the current data structure with the structure built up of the array 
+    void Clear ();
+    /** Replaces the current data structure with the structure built up of the array
      * of triangles given in \a rclFAry.
      */
     MeshKernel& operator = (const std::vector<MeshGeomFacet> &rclFAry);
@@ -404,15 +405,15 @@ public:
      */
     void Transform (const Base::Matrix4D &rclMat);
     /** Moves the point at the given index along the vector \a rclTrans. */
-    inline void MovePoint (unsigned long ulPtIndex, const Base::Vector3f &rclTrans);
+    inline void MovePoint (PointIndex ulPtIndex, const Base::Vector3f &rclTrans);
     /** Sets the point at the given index to the new \a rPoint. */
-    inline void SetPoint (unsigned long ulPtIndex, const Base::Vector3f &rPoint);
+    inline void SetPoint (PointIndex ulPtIndex, const Base::Vector3f &rPoint);
     /** Sets the point at the given index to the new \a rPoint. */
-    inline void SetPoint (unsigned long ulPtIndex, float x, float y, float z);
+    inline void SetPoint (PointIndex ulPtIndex, float x, float y, float z);
     /** Smoothes the mesh kernel. */
     void Smooth(int iterations, float d_max);
     /**
-     * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure. 
+     * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure.
      * The facets to be deleted are returned with their geometric representation.
      * @see CheckFacets().
      */
@@ -423,19 +424,19 @@ public:
      * index number in the facet array of the mesh structure.
      */
     void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclP, const Base::Polygon2d& rclPoly,
-                    bool bCutInner, std::vector<unsigned long> &raclCutted);
+                    bool bCutInner, std::vector<FacetIndex> &raclCutted);
     //@}
 
 protected:
     /** Rebuilds the neighbour indices for subset of all facets from index \a index on. */
-    void RebuildNeighbours (unsigned long);
+    void RebuildNeighbours (FacetIndex);
     /** Checks if this point is associated to no other facet and deletes if so.
      * The point indices of the facets get adjusted.
      * \a ulIndex is the index of the point to be deleted. \a ulFacetIndex is the index
      * of the quasi deleted facet and is ignored. If \a bOnlySetInvalid is true the point
      * doesn't get deleted but marked as invalid.
      */
-    void ErasePoint (unsigned long ulIndex, unsigned long ulFacetIndex, bool bOnlySetInvalid = false);
+    void ErasePoint (PointIndex ulIndex, FacetIndex ulFacetIndex, bool bOnlySetInvalid = false);
 
     /** Adjusts the facet's orierntation to the given normal direction. */
     inline void AdjustNormal (MeshFacet &rclFacet, const Base::Vector3f &rclNormal);
@@ -446,7 +447,7 @@ protected:
 
     MeshPointArray   _aclPointArray; /**< Holds the array of geometric points. */
     MeshFacetArray   _aclFacetArray; /**< Holds the array of facets. */
-    Base::BoundBox3f _clBoundBox;    /**< The current calculated bounding box. */
+    mutable Base::BoundBox3f _clBoundBox;    /**< The current calculated bounding box. */
     bool            _bValid; /**< Current state of validality. */
 
     // friends
@@ -460,13 +461,13 @@ protected:
     friend class MeshTrimming;
 };
 
-inline MeshPoint MeshKernel::GetPoint (unsigned long ulIndex) const
+inline MeshPoint MeshKernel::GetPoint (PointIndex ulIndex) const
 {
     assert(ulIndex < _aclPointArray.size());
     return _aclPointArray[ulIndex];
 }
 
-inline MeshGeomFacet MeshKernel::GetFacet (unsigned long ulIndex) const
+inline MeshGeomFacet MeshKernel::GetFacet (FacetIndex ulIndex) const
 {
     assert(ulIndex < _aclFacetArray.size());
 
@@ -498,8 +499,8 @@ inline MeshGeomFacet MeshKernel::GetFacet (const MeshFacet &rclFacet) const
     return  clFacet;
 }
 
-inline void MeshKernel::GetFacetNeighbours (unsigned long ulIndex, unsigned long &rulNIdx0,
-                                            unsigned long &rulNIdx1, unsigned long &rulNIdx2) const 
+inline void MeshKernel::GetFacetNeighbours (FacetIndex ulIndex, FacetIndex &rulNIdx0,
+                                            FacetIndex &rulNIdx1, FacetIndex &rulNIdx2) const
 {
     assert(ulIndex < _aclFacetArray.size());
 
@@ -508,17 +509,17 @@ inline void MeshKernel::GetFacetNeighbours (unsigned long ulIndex, unsigned long
     rulNIdx2 = _aclFacetArray[ulIndex]._aulNeighbours[2];
 }
 
-inline void MeshKernel::MovePoint (unsigned long ulPtIndex, const Base::Vector3f &rclTrans)
+inline void MeshKernel::MovePoint (PointIndex ulPtIndex, const Base::Vector3f &rclTrans)
 {
     _aclPointArray[ulPtIndex] += rclTrans;
 }
 
-inline void MeshKernel::SetPoint (unsigned long ulPtIndex, const Base::Vector3f &rPoint)
+inline void MeshKernel::SetPoint (PointIndex ulPtIndex, const Base::Vector3f &rPoint)
 {
     _aclPointArray[ulPtIndex] = rPoint;
 }
 
-inline void MeshKernel::SetPoint (unsigned long ulPtIndex, float x, float y, float z)
+inline void MeshKernel::SetPoint (PointIndex ulPtIndex, float x, float y, float z)
 {
     _aclPointArray[ulPtIndex].Set(x,y,z);
 }
@@ -550,17 +551,27 @@ inline Base::Vector3f MeshKernel::GetGravityPoint (const MeshFacet &rclFacet) co
                           (p0.z+p1.z+p2.z)/3.0f);
 }
 
-inline void MeshKernel::GetFacetPoints (unsigned long ulFaIndex, unsigned long &rclP0,
-                                        unsigned long &rclP1, unsigned long &rclP2) const
+inline void MeshKernel::GetFacetPoints (FacetIndex ulFaIndex, PointIndex &rclP0,
+                                        PointIndex &rclP1, PointIndex &rclP2) const
 {
     assert(ulFaIndex < _aclFacetArray.size());
     const MeshFacet& rclFacet = _aclFacetArray[ulFaIndex];
-    rclP0 = rclFacet._aulPoints[0];  
-    rclP1 = rclFacet._aulPoints[1];  
-    rclP2 = rclFacet._aulPoints[2];  
+    rclP0 = rclFacet._aulPoints[0];
+    rclP1 = rclFacet._aulPoints[1];
+    rclP2 = rclFacet._aulPoints[2];
+}
+
+inline void MeshKernel::SetFacetPoints (FacetIndex ulFaIndex, PointIndex rclP0,
+                                        PointIndex rclP1, PointIndex rclP2)
+{
+    assert(ulFaIndex < _aclFacetArray.size());
+    MeshFacet& rclFacet = _aclFacetArray[ulFaIndex];
+    rclFacet._aulPoints[0] = rclP0;
+    rclFacet._aulPoints[1] = rclP1;
+    rclFacet._aulPoints[2] = rclP2;
 }
 
 
 } // namespace MeshCore
 
-#endif // MESH_KERNEL_H 
+#endif // MESH_KERNEL_H

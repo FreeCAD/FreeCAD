@@ -32,8 +32,18 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="addRemoveEdit" native="true">
+    <widget class="QWidget" name="addRemoveEdit">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="addLocation">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Add</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
        <widget class="QPushButton" name="removeLocation">
         <property name="toolTip">
@@ -51,16 +61,6 @@
         </property>
         <property name="text">
          <string>Edit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="addLocation">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Add</string>
         </property>
        </widget>
       </item>

@@ -21,17 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
-#include <boost_signals2.hpp> 
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+#include <boost_signals2.hpp>
 
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
-#include "QGIView.h"
+
+#include "ViewProviderDrawingViewExtension.h"
 
 namespace TechDraw {
 class DrawView;
@@ -40,8 +40,10 @@ class DrawView;
 namespace TechDrawGui {
 class QGIView;
 class MDIViewPage;
+class ViewProviderPage;
 
-class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject,
+                                                  public ViewProviderDrawingViewExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDrawingView);
 
@@ -49,45 +51,59 @@ public:
     /// constructor
     ViewProviderDrawingView();
     /// destructor
-    virtual ~ViewProviderDrawingView();
+    ~ViewProviderDrawingView() override;
 
     App::PropertyBool  KeepLabel;
+    App::PropertyInteger StackOrder;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override;
+    void attach(App::DocumentObject *) override;
+    bool useNewSelectionModel() const override {return false;}
     /// Hide the object in the view
-    virtual void hide(void) override;
+    void hide() override;
     /// Show the object in the view
-    virtual void show(void) override;
-    virtual bool isShow(void) const override;
+    void show() override;
+    bool isShow() const override;
 
-    virtual void onChanged(const App::Property *prop) override;
-    virtual void updateData(const App::Property*) override;
-    virtual void unsetEdit(int ModNum) override;
+    void dropObject(App::DocumentObject* docObj) override;
 
-    QGIView* getQView(void);
+    void onChanged(const App::Property *prop) override;
+    void updateData(const App::Property*) override;
+
+    QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
+    ViewProviderPage* getViewProviderPage() const;
 
     /** @name Restoring view provider from document load */
     //@{
-    virtual void startRestoring() override;
-    virtual void finishRestoring() override;
+    void startRestoring() override;
+    void finishRestoring() override;
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;
-    
-    void onGuiRepaint(const TechDraw::DrawView* dv); 
-    typedef boost::signals2::scoped_connection Connection;
+    void showProgressMessage(const std::string featureName, const std::string text) const;
+
+    void onGuiRepaint(const TechDraw::DrawView* dv);
+    void onProgressMessage(const TechDraw::DrawView* dv,
+                         const std::string featureName,
+                         const std::string text);
+    using Connection = boost::signals2::scoped_connection;
     Connection connectGuiRepaint;
-    
+    Connection connectProgressMessage;
+
+    virtual void stackUp();
+    virtual void stackDown();
+    virtual void stackTop();
+    virtual void stackBottom();
+    virtual int getZ() {return StackOrder.getValue();}
+
+    const char* whoAmI() const;
 
 private:
-    bool m_docReady;                                                   //sb MDI + QGraphicsScene ready
+    void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
+    void singleParentPaint(const TechDraw::DrawView* dv);
 
+    std::string m_myName;
 };
 
 } // namespace TechDrawGui

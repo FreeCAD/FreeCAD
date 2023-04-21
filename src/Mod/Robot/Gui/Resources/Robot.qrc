@@ -51,5 +51,10 @@
         <file>translations/Robot_val-ES.qm</file>
         <file>translations/Robot_ar.qm</file>
         <file>translations/Robot_vi.qm</file>
+        <file>translations/Robot_es-AR.qm</file>
+        <file>translations/Robot_bg.qm</file>
+        <file>translations/Robot_ka.qm</file>
+        <file>translations/Robot_sr-CS.qm</file>
+        <file>translations/Robot_be.qm</file>
     </qresource>
 </RCC> 

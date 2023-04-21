@@ -7,15 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>193</height>
+    <height>398</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-
-    <item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayoutStatus">
      <item>
       <widget class="QLabel" name="labelStatus">
@@ -31,13 +30,12 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
-
-    <item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label0">
+      <widget class="QLabel" name="labelAxis">
        <property name="text">
         <string>Axis:</string>
        </property>
@@ -72,6 +70,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Normal sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Select reference...</string>
         </property>
        </item>
@@ -79,11 +82,10 @@
      </item>
     </layout>
    </item>
-
-    <item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayoutMode">
      <item>
-      <widget class="QLabel" name="label4">
+      <widget class="QLabel" name="labelInputMode">
        <property name="text">
         <string>Mode:</string>
        </property>
@@ -111,11 +113,10 @@
          <string>Height-Turns-Growth</string>
         </property>
        </item>
-       </widget>
+      </widget>
      </item>
     </layout>
    </item>
-
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutPitch">
      <item>
@@ -136,9 +137,6 @@
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
        <property name="value">
         <double>10.000000000000000</double>
        </property>
@@ -146,7 +144,6 @@
      </item>
     </layout>
    </item>
-
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutHeight">
      <item>
@@ -167,9 +164,6 @@
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
        <property name="value">
         <double>30.000000000000000</double>
        </property>
@@ -177,7 +171,6 @@
      </item>
     </layout>
    </item>
-
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutTurns">
      <item>
@@ -195,17 +188,13 @@
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
        <property name="value">
-        <double>3.0000000000000</double>
+        <double>3.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutConeAngle">
      <item>
@@ -230,22 +219,18 @@
         <double>89.000000000000000</double>
        </property>
        <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.000000000000000</double>
+        <double>1.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutGrowth">
      <item>
       <widget class="QLabel" name="labelGrowth">
        <property name="text">
-        <string>Growth:</string>
+        <string>Radial growth:</string>
        </property>
       </widget>
      </item>
@@ -257,17 +242,10 @@
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.000000000000000</double>
-       </property>
       </widget>
      </item>
     </layout>
    </item>
-
    <item>
     <widget class="QCheckBox" name="checkBoxLeftHanded">
      <property name="enabled">
@@ -278,7 +256,6 @@
      </property>
     </widget>
    </item>
-
    <item>
     <widget class="QCheckBox" name="checkBoxReversed">
      <property name="enabled">
@@ -289,7 +266,6 @@
      </property>
     </widget>
    </item>
-
    <item>
     <widget class="QCheckBox" name="checkBoxOutside">
      <property name="text">
@@ -300,7 +276,6 @@
      </property>
     </widget>
    </item>
-
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
@@ -308,7 +283,6 @@
      </property>
     </widget>
    </item>
-
    <item>
     <widget class="QCheckBox" name="checkBoxUpdateView">
      <property name="text">
@@ -319,9 +293,6 @@
      </property>
     </widget>
    </item>
-
-
-
   </layout>
  </widget>
  <customwidgets>
@@ -331,6 +302,19 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>axis</tabstop>
+  <tabstop>inputMode</tabstop>
+  <tabstop>pitch</tabstop>
+  <tabstop>height</tabstop>
+  <tabstop>turns</tabstop>
+  <tabstop>coneAngle</tabstop>
+  <tabstop>growth</tabstop>
+  <tabstop>checkBoxLeftHanded</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>checkBoxOutside</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

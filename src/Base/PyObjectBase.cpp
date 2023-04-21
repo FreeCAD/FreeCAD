@@ -25,19 +25,28 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <cstdlib>
 #endif
 
 #include "PyObjectBase.h"
 #include "Console.h"
 #include "Interpreter.h"
 
+
 #define ATTR_TRACKING
 
 using namespace Base;
 
-PyObject* Base::BaseExceptionFreeCADError = nullptr;
-PyObject* Base::BaseExceptionFreeCADAbort = nullptr;
+PyObject* Base::PyExc_FC_GeneralError = nullptr;
+PyObject* Base::PyExc_FC_FreeCADAbort = nullptr;
+PyObject* Base::PyExc_FC_XMLBaseException = nullptr;
+PyObject* Base::PyExc_FC_XMLParseException = nullptr;
+PyObject* Base::PyExc_FC_XMLAttributeError = nullptr;
+PyObject* Base::PyExc_FC_UnknownProgramOption = nullptr;
+PyObject* Base::PyExc_FC_BadFormatError = nullptr;
+PyObject* Base::PyExc_FC_BadGraphError = nullptr;
+PyObject* Base::PyExc_FC_ExpressionError = nullptr;
+PyObject* Base::PyExc_FC_ParserError = nullptr;
+PyObject* Base::PyExc_FC_CADKernelError = nullptr;
 
 typedef struct {
     PyObject_HEAD
@@ -51,7 +60,11 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
   , baseProxy(nullptr)
   , attrDict(nullptr)
 {
+#if PY_VERSION_HEX < 0x030b0000
     Py_TYPE(this) = T;
+#else
+    this->ob_type = T;
+#endif
     _Py_NewReference(this);
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO+: %s (%p)\n",T->tp_name, this);
@@ -94,13 +107,13 @@ static void
 PyBaseProxy_dealloc(PyObject* self)
 {
     /* Clear weakrefs first before calling any destructors */
-    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist != NULL)
+    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist)
         PyObject_ClearWeakRefs(self);
     Py_TYPE(self)->tp_free(self);
 }
 
 static PyTypeObject PyBaseProxyType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    PyVarObject_HEAD_INIT(nullptr, 0)
     "PyBaseProxy",                                          /*tp_name*/
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/
@@ -235,7 +248,8 @@ PyObject* createWeakRef(PyObjectBase* ptr)
     static bool init = false;
     if (!init) {
        init = true;
-       PyType_Ready(&PyBaseProxyType);
+       if (PyType_Ready(&PyBaseProxyType) < 0)
+           return nullptr;
     }
 
     PyObject* proxy = ptr->baseProxy;
@@ -337,9 +351,9 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
     const char *attr;
     attr = PyUnicode_AsUTF8(attro);
 
-    //FIXME: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
+    //Hint: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
     //we must check then in _setattr() of all subclasses whether value is 0.
-    if ( value==nullptr ) {
+    if (!value) {
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
         return -1;
     }
@@ -379,7 +393,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // Note: We must return the type object here,
         // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
-        return (PyObject *)(Py_TYPE(this));
+        return reinterpret_cast<PyObject *>(Py_TYPE(this));
     }
     else if (streq(attr, "__members__")) {
         // Use __dict__ instead as __members__ is deprecated
@@ -399,7 +413,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // As fallback solution use Python's default method to get generic attributes
         PyObject *w, *res;
         w = PyUnicode_InternFromString(attr);
-        if (w != nullptr) {
+        if (w) {
             res = PyObject_GenericGetAttr(this, w);
             Py_XDECREF(w);
             return res;
@@ -419,7 +433,7 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
     PyObject *w;
     // As fallback solution use Python's default method to get generic attributes
     w = PyUnicode_InternFromString(attr); // new reference
-    if (w != nullptr) {
+    if (w) {
         // call methods from tp_getset if defined
         int res = PyObject_GenericSetAttr(this, w, value);
         Py_DECREF(w);

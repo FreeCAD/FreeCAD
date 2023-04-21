@@ -58,26 +58,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include <QAction>
-# include <QActionGroup>
 # include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QList>
-# include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
+
 #include "NavigationStyle.h"
-#include "View3DInventorViewer.h"
-#include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
 #include "SoTouchEvents.h"
+#include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
@@ -131,7 +120,9 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
+    if (this->isSeekMode()) {
+        return inherited::processSoEvent(ev);
+    }
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
@@ -190,13 +181,11 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    this->ctrldown = ev->wasCtrlDown();
-    this->shiftdown = ev->wasShiftDown();
-    this->altdown = ev->wasAltDown();
+    syncModifierKeys(ev);
     //before this block, mouse button states in NavigationStyle::buttonXdown reflected those before current event arrived.
     //track mouse button states
     if (evIsButton) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        auto const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press //the button was pressed (if false -> released)
                 = event->getState() == SoButtonEvent::DOWN ? true : false;
@@ -237,7 +226,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //track gestures
     if (evIsGesture) {
-        const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
+        auto gesture = static_cast<const SoGestureEvent*>(ev);
         switch(gesture->state) {
         case SoGestureEvent::SbGSStart:
             //assert(!inGesture);//start of another gesture before the first finished? Happens all the time for Pan gesture... No idea why!  --DeepSOIC
@@ -288,7 +277,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mode-independent keyboard handling
     if (evIsKeyboard) {
-        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
+        auto const event = (const SoKeyboardEvent *) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
@@ -297,7 +286,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                 if(!ret){
                     this->interactiveCountDec();
-                    Base::Console().Warning(
+                    Base::Console().Log(
                         "No object under cursor! Can't set new center of rotation.\n");
                 }
             }
@@ -311,7 +300,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //mode-independent spaceball/joystick handling
     if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
+        auto const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -328,7 +317,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         //keyboard
         if (evIsKeyboard) {
-            const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
+            auto const event = (const SoKeyboardEvent *) ev;
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
             switch(event->getKey()){
@@ -363,7 +352,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         // Mouse Button / Spaceball Button handling
         if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            auto const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press //the button was pressed (if false -> released)
                     = event->getState() == SoButtonEvent::DOWN ? true : false;
@@ -380,11 +369,11 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         this->mouseMoveThresholdBroken = false;
                         pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
-                        this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
+                        this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
                         assert(cnt<=2);
-                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvent))){
-                            cnt=sizeof(mousedownConsumedEvent);//we are in trouble
+                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvents))){
+                            cnt=sizeof(mousedownConsumedEvents);//we are in trouble
                         }
                         processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning
                     }
@@ -398,7 +387,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                            inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
                         }
                         this->mousedownConsumedCount = 0;
                         processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
@@ -415,7 +404,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                     if(!ret){
                         this->interactiveCountDec();
-                        Base::Console().Warning(
+                        Base::Console().Log(
                             "No object under cursor! Can't set new center of rotation.\n");
                     }
                 }
@@ -443,7 +432,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     //no, we are not entering navigation.
                     //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
                     for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                        inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
                     }
                     this->mousedownConsumedCount = 0;
                     processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
@@ -456,7 +445,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         //gesture start
         if (evIsGesture && /*!this->button1down &&*/ !this->button2down){//ignore gestures when mouse buttons are down. Button1down check was disabled because of wrong state after doubleclick on sketcher constraint to edit datum
-            const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
+            auto gesture = static_cast<const SoGestureEvent*>(ev);
             if (gesture->state == SoGestureEvent::SbGSStart
                     || gesture->state == SoGestureEvent::SbGSUpdate) {//even if we didn't get a start, assume the first update is a start (sort-of fail-safe).
                 if (type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())) {
@@ -483,7 +472,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         // Mouse Button / Spaceball Button handling
         if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            auto const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             switch(button){
                 case SoMouseButtonEvent::BUTTON1:
@@ -531,14 +520,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         //the essence part 2!
         //gesture into camera motion
         if (evIsGesture){
-            const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
+            auto gesture = static_cast<const SoGestureEvent*>(ev);
             assert(gesture);
             if (gesture->state == SoGestureEvent::SbGSEnd) {
                 setViewingMode(NavigationStyle::SELECTION);
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
+                    auto const event = static_cast<const SoGesturePinchEvent*>(ev);
                     if (this->zoomAtCursor){
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                         SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
@@ -550,7 +539,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 }
                 if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
+                    auto const event = static_cast<const SoGesturePanEvent*>(ev);
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                     SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
                     NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
@@ -560,14 +549,13 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 //shouldn't happen. Gestures are not expected to start in the middle of navigation.
                 //we'll consume it, without reacting.
                 processed=true;
-                //This does, unfortunately, happen on regular basis for pan gesture on Windows8.1+Qt4.8
             }
         }
 
     } break;//end of actual navigation
     case NavigationStyle::SEEK_WAIT_MODE:{
         if (evIsButton) {
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            auto const event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
             if (button == SoMouseButtonEvent::BUTTON1 && press) {

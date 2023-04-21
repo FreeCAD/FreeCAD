@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>340</height>
+    <width>300</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,16 +24,22 @@
    <item>
     <layout class="QHBoxLayout" name="hLayout1">
      <item>
-      <widget class="QPushButton" name="btnAdd">
+      <widget class="QToolButton" name="btnAdd">
        <property name="text">
         <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnRemove">
+      <widget class="QToolButton" name="btnRemove">
        <property name="text">
         <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -76,12 +82,12 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="if_temperature">
-       <property name="text">
-        <string>300 K</string>
-       </property>
+      <widget class="Gui::QuantitySpinBox" name="if_temperature">
        <property name="unit" stdset="0">
-        <string notr="true"/>
+        <string notr="true">K</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -91,9 +97,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

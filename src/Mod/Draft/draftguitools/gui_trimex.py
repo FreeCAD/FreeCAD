@@ -74,7 +74,10 @@ class Trimex(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Trimex',
                 'Accel': "T, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex", "Trims or extends the selected object, or extrudes single faces.\nCTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex",
+                    "Trims or extends the selected object, or extrudes single"
+                    + " faces.\nCTRL snaps, SHIFT constrains to current segment"
+                    + " or to normal, ALT inverts.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -120,7 +123,7 @@ class Trimex(gui_base_original.Modifier):
             self.extrudeMode = True
             self.ghost = [trackers.ghostTracker([self.obj])]
             self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-            self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
+            self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss = Gui.Selection.getSelectionEx()[0]
@@ -131,7 +134,7 @@ class Trimex(gui_base_original.Modifier):
                     self.extrudeMode = True
                     self.ghost = [trackers.ghostTracker([self.obj])]
                     self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                    self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
+                    self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
@@ -201,11 +204,23 @@ class Trimex(gui_base_original.Modifier):
                 self.snapped = self.view.getObjectInfo((arg["Position"][0],
                                                         arg["Position"][1]))
             if self.extrudeMode:
-                dist = self.extrude(self.shift)
+                dist, ang = (self.extrude(self.shift), None)
             else:
-                dist = self.redraw(self.point, self.snapped,
-                                   self.shift, self.alt)
-            self.ui.setRadiusValue(dist, unit="Length")
+                # If the geomType of the edge is "Line" ang will be None,
+                # else dist will be None.
+                dist, ang = self.redraw(self.point, self.snapped,
+                                        self.shift, self.alt)
+
+            if dist:
+                self.ui.labelRadius.setText(translate("draft", "Distance"))
+                self.ui.radiusValue.setToolTip(translate("draft",
+                                                         "Offset distance"))
+                self.ui.setRadiusValue(dist, unit="Length")
+            else:
+                self.ui.labelRadius.setText(translate("draft", "Angle"))
+                self.ui.radiusValue.setToolTip(translate("draft",
+                                                         "Offset angle"))
+                self.ui.setRadiusValue(ang, unit="Angle")
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
             gui_tool_utils.redraw3DView()
@@ -301,6 +316,7 @@ class Trimex(gui_base_original.Modifier):
 
         # modifying active edge
         if DraftGeomUtils.geomType(edge) == "Line":
+            ang = None
             ve = DraftGeomUtils.vec(edge)
             chord = v1.sub(point)
             n = ve.cross(chord)
@@ -313,9 +329,6 @@ class Trimex(gui_base_original.Modifier):
             dist = v1.sub(self.newpoint).Length
             ghost.p1(self.newpoint)
             ghost.p2(v2)
-            self.ui.labelRadius.setText(translate("draft", "Distance"))
-            self.ui.radiusValue.setToolTip(translate("draft",
-                                                     "The offset distance"))
             if real:
                 if self.force:
                     ray = self.newpoint.sub(v1)
@@ -323,16 +336,14 @@ class Trimex(gui_base_original.Modifier):
                     self.newpoint = App.Vector.add(v1, ray)
                 newedges.append(Part.LineSegment(self.newpoint, v2).toShape())
         else:
+            dist = None
             center = edge.Curve.Center
             rad = edge.Curve.Radius
             ang1 = DraftVecUtils.angle(v2.sub(center))
             ang2 = DraftVecUtils.angle(point.sub(center))
             _rot_rad = DraftVecUtils.rotate(App.Vector(rad, 0, 0), -ang2)
             self.newpoint = App.Vector.add(center, _rot_rad)
-            self.ui.labelRadius.setText(translate("draft", "Angle"))
-            self.ui.radiusValue.setToolTip(translate("draft",
-                                                     "The offset angle"))
-            dist = math.degrees(-ang2)
+            ang = math.degrees(-ang2)
             # if ang1 > ang2:
             #     ang1, ang2 = ang2, ang1
             # print("last calculated:",
@@ -384,7 +395,7 @@ class Trimex(gui_base_original.Modifier):
         if real:
             return newedges
         else:
-            return dist
+            return [dist, ang]
 
     def trimObject(self):
         """Trim the actual object."""
@@ -536,7 +547,7 @@ class Trimex(gui_base_original.Modifier):
                     obj.FirstAngle = ang
         self.doc.recompute()
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate the operation of the Trimex tool."""
         super(Trimex, self).finish()
         self.force = None

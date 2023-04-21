@@ -31,19 +31,19 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPocket : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPocket);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPocket);
 
 public:
     /// constructor
     ViewProviderPocket();
     /// destructor
-    virtual ~ViewProviderPocket();
+    ~ViewProviderPocket() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly created TaskDlgPocketParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

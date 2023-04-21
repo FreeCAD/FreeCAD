@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 #define RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+
+#include <Gui/PropertyPage.h>
+
 
 namespace RaytracingGui {
 class Ui_DlgSettingsRay;
@@ -40,13 +41,13 @@ class DlgSettingsRayImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsRayImp( QWidget* parent = 0 );
-    ~DlgSettingsRayImp();
+    explicit DlgSettingsRayImp( QWidget* parent = nullptr );
+    ~DlgSettingsRayImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsRay> ui;

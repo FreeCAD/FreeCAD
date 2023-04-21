@@ -24,13 +24,9 @@
 #ifndef BASE_Unit_H
 #define BASE_Unit_H
 
-#ifdef _MSC_VER
-#  include <boost/cstdint.hpp>
-#else
-#  include <stdint.h>
-#endif
-#include <string>
+#include <cstdint>
 #include <QString>
+#include <FCGlobal.h>
 
 namespace Base {
 
@@ -63,12 +59,14 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminousIntensity=0,int8_t Angle=0);
-    Unit(void);
+    explicit Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,
+                  int8_t ThermodynamicTemperature=0, int8_t AmountOfSubstance=0,
+                  int8_t LuminousIntensity=0, int8_t Angle=0);
+    Unit();
     Unit(const Unit&);
-    Unit(const QString& expr);
+    explicit Unit(const QString& expr);
     /// Destruction
-    ~Unit () {}
+    ~Unit () = default;
 
 
     /** Operators. */
@@ -80,15 +78,15 @@ public:
     bool operator ==(const Unit&) const;
     bool operator !=(const Unit&that) const {return !(*this == that);}
     Unit& operator =(const Unit&);
-    Unit pow(signed char exp)const;
+    Unit pow(double exp)const;
     //@}
     /// get the unit signature
-    const UnitSignature & getSignature(void)const {return Sig;}
-    bool isEmpty(void)const;
+    const UnitSignature & getSignature()const {return Sig;}
+    bool isEmpty()const;
 
-    QString getString(void) const;
+    QString getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
-    QString getTypeString(void) const;
+    QString getTypeString() const;
 
     /** Predefined Unit types. */
     //@{
@@ -111,12 +109,14 @@ public:
     static Unit Acceleration;
     static Unit Temperature;
 
+    static Unit CurrentDensity;
     static Unit ElectricCurrent;
     static Unit ElectricPotential;
     static Unit ElectricCharge;
     static Unit MagneticFieldStrength;
     static Unit MagneticFlux;
     static Unit MagneticFluxDensity;
+    static Unit Magnetization;
     static Unit ElectricalCapacitance;
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;
@@ -134,6 +134,8 @@ public:
     static Unit YieldStrength;
     static Unit YoungsModulus;
 
+    static Unit Stiffness;
+
     static Unit Force;
     static Unit Work;
     static Unit Power;
@@ -148,6 +150,12 @@ public:
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
     static Unit VacuumPermittivity;
+    static Unit VolumeFlowRate;
+    static Unit DissipationRate;
+
+    static Unit InverseLength;
+    static Unit InverseArea;
+    static Unit InverseVolume;
 
     //@}
 protected:

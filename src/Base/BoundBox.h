@@ -24,11 +24,11 @@
 #ifndef BASE_BOUNDBOX_H
 #define BASE_BOUNDBOX_H
 
-#include "Vector3D.h"
-#include "Matrix.h"
-#include "ViewProj.h"
-#include "Tools2D.h"
 #include <limits>
+#include "Matrix.h"
+#include "Tools2D.h"
+#include "ViewProj.h"
+
 
 namespace Base {
 
@@ -43,8 +43,8 @@ class BoundBox3
     static bool isOnRayS(_Precision, _Precision, _Precision);
 
 public:
-    typedef _Precision num_type;
-    typedef float_traits<num_type> traits_type;
+    using num_type = _Precision;
+    using traits_type = float_traits<num_type>;
 
     /**  Public attributes */
     //@{
@@ -113,7 +113,7 @@ public:
      */
     inline bool IsInBox (const BoundBox2d &rcbb) const;
     /** Checks whether the bounding box is valid. */
-    bool IsValid (void) const;
+    bool IsValid () const;
     //@}
 
     enum OCTANT {OCT_LDB = 0, OCT_RDB, OCT_LUB, OCT_RUB,
@@ -173,12 +173,12 @@ public:
     BoundBox3<_Precision> Transformed(const Matrix4D& mat) const;
 
     /** Returns the center.of the box. */
-    inline Vector3<_Precision> GetCenter (void) const;
+    inline Vector3<_Precision> GetCenter () const;
     /** Compute the diagonal length of this bounding box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
      */
-    inline _Precision CalcDiagonalLength (void) const;
-    void SetVoid (void);
+    inline _Precision CalcDiagonalLength () const;
+    void SetVoid ();
 
     /** Enlarges the box with factor \a fLen. */
     inline void Enlarge (_Precision fLen);
@@ -186,11 +186,11 @@ public:
     inline void Shrink  (_Precision fLen);
 
     /** Calculates expansion in x-direction. */
-    inline _Precision LengthX (void) const;
+    inline _Precision LengthX () const;
     /** Calculates expansion in y-direction. */
-    inline _Precision LengthY (void) const;
+    inline _Precision LengthY () const;
     /** Calculates expansion in z-direction. */
-    inline _Precision LengthZ (void) const;
+    inline _Precision LengthZ () const;
     /** Moves in x-direction. */
     inline void MoveX (_Precision f);
     /** Moves in y-direction. */
@@ -263,9 +263,7 @@ inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> &rcVector, _P
 }
 
 template <class _Precision>
-inline BoundBox3<_Precision>::~BoundBox3 ()
-{
-}
+inline BoundBox3<_Precision>::~BoundBox3 () = default;
 
 template <class _Precision>
 inline  BoundBox3<_Precision>& BoundBox3<_Precision>::operator = (const BoundBox3<_Precision> &rcBound)
@@ -400,7 +398,7 @@ inline bool BoundBox3<_Precision>::IsInBox (const BoundBox2d &rcBB) const
 }
 
 template <class _Precision>
-inline bool BoundBox3<_Precision>::IsValid (void) const
+inline bool BoundBox3<_Precision>::IsValid () const
 {
     return ((MinX <= MaxX) && (MinY <= MaxY) && (MinZ <= MaxZ));
 }
@@ -610,7 +608,7 @@ inline bool BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> 
             rc = IntersectPlaneWithLine(i, rcVct, rcVctDir, cVctRes);
             if (!cCmpBound.IsInBox(cVctRes))
                 rc = false;
-            if (rc == true) {
+            if (rc) {
                 // does intersection point lie in desired direction
                 // or was found the opposing side?
                 // -> scalar product of both direction vectors > 0 (angle < 90)
@@ -627,39 +625,39 @@ inline bool BoundBox3<_Precision>::IsCutLine (const Vector3<_Precision>& rcBase,
 {
     _Precision fDist;
 
-    // zuerst nur grobe und schnelle Pruefung, indem der
-    // Abstand der Linie zum Mittelpunkt der BB berechnet wird
-    // und mit der maximalen Diagonalenlaenge + fTolerance
-    // verglichen wird.
+    // at first only a rough and quick test by the
+    // Distance of the line to the center of the BB is calculated
+    // and with the maximum diagonal length + fTolerance
+    // will be compared.
 
-    // Distanz zwischen Mittelpunkt und Linie
+    // Distance between center point and line
     fDist = (rcDir % (GetCenter() - rcBase)).Length() / rcDir.Length();
 
     if (fDist > (CalcDiagonalLength() + fTolerance)) {
         return false;
     }
-    else { // hier genauerer Test
+    else { // more detailed test here
         unsigned char i;
         Vector3<_Precision>  clVectRes;
 
-        // schneide jede Seitenflaeche mit der Linie
+        // intersect each face with the line
         for (i = 0; i < 6; i++) {
             if (IntersectPlaneWithLine(i, rcBase, rcDir, clVectRes)) {
-                // pruefe, ob Schnittpunkt innerhalb BB-Grenzen + Toleranz
+                // Check whether the intersection point is within BB limits + Tolerance
                 switch (i) {
-                    case LEFT :  // linke und rechte Ebene
+                    case LEFT :  // left and right plane
                     case RIGHT :
                         if ((isOnRayW (MinY - fTolerance, MaxY + fTolerance, clVectRes.y) &&
                              isOnRayW (MinZ - fTolerance, MaxZ + fTolerance, clVectRes.z)))
                             return true;
                         break;
-                    case TOP :  // obere und untere Ebene
+                    case TOP :  // top and bottom plane
                     case BOTTOM :
                         if ((isOnRayW (MinX - fTolerance, MaxX + fTolerance, clVectRes.x) &&
                              isOnRayW (MinZ - fTolerance, MaxZ + fTolerance, clVectRes.z)))
                             return true;
                         break;
-                    case FRONT :  // vordere und hintere Ebene
+                    case FRONT :  // front and back plane
                     case BACK :
                         if ((isOnRayW (MinX - fTolerance, MaxX + fTolerance, clVectRes.x) &&
                              isOnRayW (MinY - fTolerance, MaxY + fTolerance, clVectRes.y)))
@@ -773,7 +771,7 @@ inline typename BoundBox3<_Precision>::SIDE BoundBox3<_Precision>::GetSideFromRa
                                                                                    Vector3<_Precision>& rcInt) const
 {
     Vector3<_Precision> cP0, cP1;
-    if (IntersectWithLine(rclPt, rclDir, cP0, cP1) == false)
+    if (!IntersectWithLine(rclPt, rclDir, cP0, cP1))
         return INVALID;
 
     Vector3<_Precision>  cOut;
@@ -894,7 +892,7 @@ inline BoundBox3<_Precision> BoundBox3<_Precision>::Transformed(const Matrix4D& 
 }
 
 template <class _Precision>
-inline Vector3<_Precision> BoundBox3<_Precision>::GetCenter (void) const
+inline Vector3<_Precision> BoundBox3<_Precision>::GetCenter () const
 {
     return Vector3<_Precision>((MaxX + MinX) / 2,
                                (MaxY + MinY) / 2,
@@ -902,7 +900,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::GetCenter (void) const
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::CalcDiagonalLength (void) const
+inline _Precision BoundBox3<_Precision>::CalcDiagonalLength () const
 {
     return static_cast<_Precision>(sqrt (((MaxX - MinX) * (MaxX - MinX)) +
                                          ((MaxY - MinY) * (MaxY - MinY)) +
@@ -910,7 +908,7 @@ inline _Precision BoundBox3<_Precision>::CalcDiagonalLength (void) const
 }
 
 template <class _Precision>
-inline void BoundBox3<_Precision>::SetVoid (void)
+inline void BoundBox3<_Precision>::SetVoid ()
 {
     MinX = MinY = MinZ =  std::numeric_limits<_Precision>::max();
     MaxX = MaxY = MaxZ = -std::numeric_limits<_Precision>::max();
@@ -931,19 +929,19 @@ inline void BoundBox3<_Precision>::Shrink (_Precision fLen)
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::LengthX (void) const
+inline _Precision BoundBox3<_Precision>::LengthX () const
 {
     return MaxX - MinX;
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::LengthY (void) const
+inline _Precision BoundBox3<_Precision>::LengthY () const
 {
     return MaxY - MinY;
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::LengthZ (void) const
+inline _Precision BoundBox3<_Precision>::LengthZ () const
 {
     return MaxZ - MinZ;
 }
@@ -984,8 +982,8 @@ inline void BoundBox3<_Precision>::ScaleZ (_Precision f)
     MinZ *= f; MaxZ *= f;
 }
 
-typedef BoundBox3<float> BoundBox3f;
-typedef BoundBox3<double> BoundBox3d;
+using BoundBox3f = BoundBox3<float>;
+using BoundBox3d = BoundBox3<double>;
 
 } // namespace Base
 

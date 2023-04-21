@@ -24,9 +24,9 @@
 #ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
 #define GUI_DIALOG_DLGMACROEXECUTEIMP_H
 
-#include "Window.h"
 #include <QDialog>
 #include <memory>
+#include "Window.h"
 
 class QTreeWidgetItem;
 
@@ -44,28 +44,28 @@ class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl =  Qt::WindowFlags() );
-    ~DlgMacroExecuteImp();
+    explicit DlgMacroExecuteImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgMacroExecuteImp() override;
 
-    void accept();
+    void accept() override;
 
-public Q_SLOTS:
-    void on_fileChooser_fileNameChanged(const QString&);
-    void on_createButton_clicked();
-    void on_deleteButton_clicked();
-    void on_editButton_clicked();
-    void on_renameButton_clicked();
-    void on_duplicateButton_clicked();
-    void on_toolbarButton_clicked();
-    void on_addonsButton_clicked();
+private:
+    void setupConnections();
+    void onFileChooserFileNameChanged(const QString&);
+    void onCreateButtonClicked();
+    void onDeleteButtonClicked();
+    void onEditButtonClicked();
+    void onRenameButtonClicked();
+    void onDuplicateButtonClicked();
+    void onToolbarButtonClicked();
+    void onAddonsButtonClicked();
 
-protected Q_SLOTS:
-    void on_userMacroListBox_currentItemChanged(QTreeWidgetItem*);
-    void on_systemMacroListBox_currentItemChanged(QTreeWidgetItem*);
-    void on_tabMacroWidget_currentChanged(int index);
+    void onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
+    void onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
+    void onTabMacroWidgetCurrentChanged(int index);
 
 protected:
-    void fillUpList(void);
+    void fillUpList();
 
 protected:
     QString macroPath;

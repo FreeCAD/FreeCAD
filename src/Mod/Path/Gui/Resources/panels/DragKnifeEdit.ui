@@ -14,19 +14,6 @@
    <string>Dragknife Dressup</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>275</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="lblFilterAngle">
      <property name="text">
@@ -34,10 +21,20 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="lblPivotHeight">
+   <item row="0" column="2" colspan="2">
+    <widget class="Gui::QuantitySpinBox" name="filterAngle">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
+     </property>
+    </widget>
+   </item>
+  <item row="1" column="0">
+    <widget class="QLabel" name="lblOffSetDistance">
      <property name="text">
-      <string>Pivot Height</string>
+      <string>Offset Distance</string>
      </property>
     </widget>
    </item>
@@ -60,10 +57,10 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="lblOffSetDistance">
+   <item row="2" column="0">
+    <widget class="QLabel" name="lblPivotHeight">
      <property name="text">
-      <string>Offset Distance</string>
+      <string>Pivot Height</string>
      </property>
     </widget>
    </item>
@@ -86,17 +83,20 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2" colspan="2">
-    <widget class="Gui::QuantitySpinBox" name="filterAngle">
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   <item row="3" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="unit" stdset="0">
-      <string notr="true">deg</string>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>275</height>
+      </size>
      </property>
-    </widget>
+    </spacer>
    </item>
-  </layout>
+   </layout>
  </widget>
  <customwidgets>
   <customwidget>

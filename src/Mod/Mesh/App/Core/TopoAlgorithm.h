@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_TOPOALGORITHM_H
 #define MESH_TOPOALGORITHM_H
 
 #include <map>
 #include <vector>
 
-#include "Definitions.h"
-#include "Iterator.h"
-#include "MeshKernel.h"
-#include "Elements.h"
-#include "Visitor.h"
 #include "Algorithm.h"
+#include "Elements.h"
+#include "MeshKernel.h"
 
-#include <Base/Vector3D.h>
-#include <Base/Sequencer.h>
 
 namespace MeshCore {
 class AbstractPolygonTriangulator;
@@ -52,8 +46,8 @@ class MeshExport MeshTopoAlgorithm
 {
 public:
     // construction/destruction
-    MeshTopoAlgorithm (MeshKernel &rclM);
-    virtual ~MeshTopoAlgorithm (void);
+    explicit MeshTopoAlgorithm (MeshKernel &rclM);
+    virtual ~MeshTopoAlgorithm ();
 
 public:
     /** @name Topological Operations */
@@ -63,7 +57,7 @@ public:
      * triangles. The given point must lie inside the triangle not outside or on
      * an edge.
      */
-    bool InsertVertex(unsigned long ulFacetPos, const Base::Vector3f&  rclPoint);
+    bool InsertVertex(FacetIndex ulFacetPos, const Base::Vector3f&  rclPoint);
     /**
      * This method is provided for convenience. It inserts a new vertex to the
      * mesh and tries to swap the common edges of the newly created facets with
@@ -73,7 +67,7 @@ public:
      * edges to build more well-formed triangles.
      * @see InsertVertex(), ShouldSwapEdge(), SwapEdge().
      */
-    bool InsertVertexAndSwapEdge(unsigned long ulFacetPos, const Base::Vector3f&  rclPoint,
+    bool InsertVertexAndSwapEdge(FacetIndex ulFacetPos, const Base::Vector3f&  rclPoint,
                                  float fMaxAngle);
     /**
      * Swaps the common edge of two adjacent facets even if the operation might
@@ -81,9 +75,9 @@ public:
      * IsSwapEdgeLegal() or ShouldSwapEdge() before.
      * An illegal swap edge operation can produce non-manifolds, degenerated
      * facets or it might create a fold on the surface, i.e. geometric overlaps
-     * of several triangles. 
+     * of several triangles.
      */
-    void SwapEdge(unsigned long ulFacetPos, unsigned long ulNeighbour);
+    void SwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour);
     /**
      * Splits the common edge of the two adjacent facets with index \a ulFacetPos
      * and \a ulNeighbour. The point \a rP must lie inside of one the given facets
@@ -91,7 +85,7 @@ public:
      * that two new facets get created. If \a rP is coincident with a corner point
      * nothing happens.
      */
-    bool SplitEdge(unsigned long ulFacetPos, unsigned long ulNeighbour, 
+    bool SplitEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour,
                    const Base::Vector3f& rP);
     /**
      * Splits the facet with index \a ulFacetPos on the edge side \a uSide into
@@ -99,7 +93,7 @@ public:
      * point \a rP must be near to this edge and must not be coincident with any
      * corner vertices of the facet.
      */
-    void SplitOpenEdge(unsigned long ulFacetPos, unsigned short uSide,
+    bool SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSide,
                        const Base::Vector3f& rP);
     /**
      * Splits the facet with index \a ulFacetPos into up to three facets. The points
@@ -109,7 +103,7 @@ public:
      * is coincident with a corner point then the facet is split into two facets.
      * If both points are coincident with corner points of this facet nothing is done.
      */
-    void SplitFacet(unsigned long ulFacetPos, const Base::Vector3f& rP1,
+    void SplitFacet(FacetIndex ulFacetPos, const Base::Vector3f& rP1,
                     const Base::Vector3f& rP2);
     /**
      * Collapse a vertex. At the moment only removing inner vertexes referenced
@@ -126,7 +120,7 @@ public:
      * Collapses the common edge of two adjacent facets. This operation removes
      * one common point of the collapsed edge and the facets \a ulFacetPos and
      * \a ulNeighbour from the data structure.
-     * @note If \a ulNeighbour is the neighbour facet on the i-th side of 
+     * @note If \a ulNeighbour is the neighbour facet on the i-th side of
      * \a ulFacetPos then the i-th point is removed whereas i is 0, 1 or 2.
      * If the other common point should be removed then CollapseEdge()
      * should be invoked with swapped arguments of \a ulFacetPos and
@@ -144,7 +138,7 @@ public:
      * @note While the mesh structure has invalid elements the client programmer
      * must take care not to use such elements.
      */
-    bool CollapseEdge(unsigned long ulFacetPos, unsigned long ulNeighbour);
+    bool CollapseEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour);
     /**
      * Convenience function that passes already all needed information.
      */
@@ -152,28 +146,28 @@ public:
     /**
      * Removes the facet with index \a ulFacetPos and all its neighbour facets.
      * The three vertices that are referenced by this facet are replaced by its
-     * gravity point. 
+     * gravity point.
      *
      * @note The client programmer must make sure that this is a legal operation.
      *
      * @note This method marks the facets and the point as 'invalid' but does not
      * remove them from the mesh structure, i.e. the mesh structure gets into an
      * inconsistent stage. To make the structure consistent again Cleanup() should
-     * be called. 
+     * be called.
      * The reason why this cannot be done automatically is that it would become
      * quite slow if a lot of facets should be collapsed.
      *
      * @note While the mesh structure has invalid elements the client programmer
      * must take care not to use such elements.
      */
-    bool CollapseFacet(unsigned long ulFacetPos);
+    bool CollapseFacet(FacetIndex ulFacetPos);
     //@}
 
     /** @name Topological Optimization */
     //@{
     /**
      * Tries to make a more beautiful mesh by swapping the common edge of two
-     * adjacent facets where needed. 
+     * adjacent facets where needed.
      * \a fMaxAngle is the maximum allowed angle between the normals of two
      * adjacent facets to allow swapping the common edge. A too high value might
      * result into folds on the surface.
@@ -209,24 +203,24 @@ public:
      * make sure that no overlaps are created.
      * @note This operation might be useful to close gaps in a mesh.
      */
-    bool SnapVertex(unsigned long ulFacetPos, const Base::Vector3f& rP);
+    bool SnapVertex(FacetIndex ulFacetPos, const Base::Vector3f& rP);
     /**
      * Checks whether a swap edge operation is legal, that is fulfilled if the
      * two adjacent facets builds a convex polygon. If this operation is legal
      * true is returned, false is returned if this operation is illegal or if
      * \a ulFacetPos and \a ulNeighbour are not adjacent facets.
      */
-    bool IsSwapEdgeLegal(unsigned long ulFacetPos, unsigned long ulNeighbour) const;
+    bool IsSwapEdgeLegal(FacetIndex ulFacetPos, FacetIndex ulNeighbour) const;
     /**
      * Checks whether the swap edge operation is legal and whether it makes
      * sense. This operation only makes sense if the maximum angle of both
      * facets is decreased and if the angle between the facet normals does
-     * not exceed \a fMaxAngle.  
+     * not exceed \a fMaxAngle.
      */
-    bool ShouldSwapEdge(unsigned long ulFacetPos, unsigned long ulNeighbour,
+    bool ShouldSwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour,
                         float fMaxAngle) const;
     /** Computes a value for the benefit of swapping the edge. */
-    float SwapEdgeBenefit(unsigned long f, int e) const;
+    float SwapEdgeBenefit(FacetIndex f, int e) const;
     /**
      * Removes all invalid marked elements from the mesh structure.
      */
@@ -235,37 +229,37 @@ public:
      * Removes the degenerated facet at position \a index from the mesh structure.
      * A facet is degenerated if its corner points are collinear.
      */
-    void RemoveDegeneratedFacet(unsigned long index);
+    bool RemoveDegeneratedFacet(FacetIndex index);
     /**
      * Removes the corrupted facet at position \a index from the mesh structure.
      * A facet is corrupted if the indices of its corner points are not all different.
      */
-    void RemoveCorruptedFacet(unsigned long index);
+    bool RemoveCorruptedFacet(FacetIndex index);
     /**
-     * Closes holes in the mesh that consists of up to \a length edges. In case a fit 
+     * Closes holes in the mesh that consists of up to \a length edges. In case a fit
      * needs to be done then the points of the neighbours of \a level rings will be used.
      * Holes for which the triangulation failed are returned in \a aFailed.
      */
     void FillupHoles(unsigned long length, int level,
         AbstractPolygonTriangulator&,
-        std::list<std::vector<unsigned long> >& aFailed);
+        std::list<std::vector<PointIndex> >& aFailed);
     /**
      * This is an overloaded method provided for convenience. It takes as first argument
      * the boundaries which must be filled up.
      */
     void FillupHoles(int level, AbstractPolygonTriangulator&,
-        const std::list<std::vector<unsigned long> >& aBorders,
-        std::list<std::vector<unsigned long> >& aFailed);
+        const std::list<std::vector<PointIndex> >& aBorders,
+        std::list<std::vector<PointIndex> >& aFailed);
     /**
      * Find holes which consists of up to \a length edges.
      */
     void FindHoles(unsigned long length,
-        std::list<std::vector<unsigned long> >& aBorders) const;
+        std::list<std::vector<PointIndex> >& aBorders) const;
     /**
      * Find topologic independent components with maximum \a count facets
      * and returns an array of the indices.
      */
-    void FindComponents(unsigned long count, std::vector<unsigned long>& aInds);
+    void FindComponents(unsigned long count, std::vector<FacetIndex>& aInds);
     /**
      * Removes topologic independent components with maximum \a count facets.
      */
@@ -273,11 +267,11 @@ public:
     /**
      * Harmonizes the normals.
      */
-    void HarmonizeNormals (void);
-    /** 
+    void HarmonizeNormals ();
+    /**
      * Flips the normals.
      */
-    void FlipNormals (void);
+    void FlipNormals ();
     /**
      * Caching facility.
      */
@@ -288,28 +282,28 @@ private:
     /**
      * Splits the neighbour facet of \a ulFacetPos on side \a uSide.
      */
-    void SplitNeighbourFacet(unsigned long ulFacetPos, unsigned short uSide,
+    void SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned short uSide,
                              const Base::Vector3f rPoint);
-    void SplitFacetOnOneEdge(unsigned long ulFacetPos,
+    void SplitFacetOnOneEdge(FacetIndex ulFacetPos,
                              const Base::Vector3f& rP1);
-    void SplitFacetOnTwoEdges(unsigned long ulFacetPos,
+    void SplitFacetOnTwoEdges(FacetIndex ulFacetPos,
                               const Base::Vector3f& rP1,
                               const Base::Vector3f& rP2);
-    void SplitFacet(unsigned long ulFacetPos, unsigned long P1,
-                    unsigned long P2, unsigned long Pn);
-    void AddFacet(unsigned long P1, unsigned long P2, unsigned long P3);
-    void AddFacet(unsigned long P1, unsigned long P2, unsigned long P3,
-                  unsigned long N1, unsigned long N2, unsigned long N3);
-    void HarmonizeNeighbours(unsigned long facet1, unsigned long facet2);
-    void HarmonizeNeighbours(const std::vector<unsigned long>& ulFacets);
+    void SplitFacet(FacetIndex ulFacetPos, PointIndex P1,
+                    PointIndex P2, PointIndex Pn);
+    void AddFacet(PointIndex P1, PointIndex P2, PointIndex P3);
+    void AddFacet(PointIndex P1, PointIndex P2, PointIndex P3,
+                  FacetIndex N1, FacetIndex N2, FacetIndex N3);
+    void HarmonizeNeighbours(FacetIndex facet1, FacetIndex facet2);
+    void HarmonizeNeighbours(const std::vector<FacetIndex>& ulFacets);
     /**
      * Returns all facets that references the point index \a uPointPos. \a uFacetPos
      * is a facet that must reference this point and is added to the list as well.
      */
-    std::vector<unsigned long> GetFacetsToPoint(unsigned long uFacetPos,
-                                                unsigned long uPointPos) const;
+    std::vector<FacetIndex> GetFacetsToPoint(FacetIndex uFacetPos,
+                                             PointIndex uPointPos) const;
     /** \internal */
-    unsigned long GetOrAddIndex (const MeshPoint &rclPoint);
+    PointIndex GetOrAddIndex (const MeshPoint &rclPoint);
 
 private:
     MeshKernel& _rclMesh;
@@ -321,13 +315,13 @@ private:
     };
 
     // cache
-    typedef std::map<Base::Vector3f,unsigned long,Vertex_Less> tCache;
+    using tCache = std::map<Base::Vector3f,PointIndex,Vertex_Less>;
     tCache* _cache;
 };
 
 /**
- * The MeshComponents class searches for topologic independent segments of the 
- * given mesh structure. 
+ * The MeshComponents class searches for topologic independent segments of the
+ * given mesh structure.
  *
  * @author Werner Mayer
  */
@@ -336,29 +330,29 @@ class MeshExport MeshComponents
 public:
     enum TMode {OverEdge, OverPoint};
 
-    MeshComponents( const MeshKernel& rclMesh );
+    explicit MeshComponents( const MeshKernel& rclMesh );
     ~MeshComponents();
 
     /**
      * Searches for 'isles' of the mesh. If \a tMode is \a OverEdge then facets
      * sharing the same edge are regarded as connected, if \a tMode is \a OverPoint
      * then facets sharing a common point are regarded as connected.
-     */ 
-    void SearchForComponents(TMode tMode, std::vector<std::vector<unsigned long> >& aclT) const;
+     */
+    void SearchForComponents(TMode tMode, std::vector<std::vector<FacetIndex> >& aclT) const;
 
     /**
      * Does basically the same as the method above escept that only the faces in
      * \a aSegment are regarded.
      */
-    void SearchForComponents(TMode tMode, const std::vector<unsigned long>& aSegment,
-                             std::vector<std::vector<unsigned long> >& aclT) const;
+    void SearchForComponents(TMode tMode, const std::vector<FacetIndex>& aSegment,
+                             std::vector<std::vector<FacetIndex> >& aclT) const;
 
 protected:
     // for sorting of elements
     struct CNofFacetsCompare
     {
-        bool operator () (const std::vector<unsigned long> &rclC1, 
-                          const std::vector<unsigned long> &rclC2)
+        bool operator () (const std::vector<FacetIndex> &rclC1,
+                          const std::vector<FacetIndex> &rclC2)
         {
             return rclC1.size() > rclC2.size();
         }

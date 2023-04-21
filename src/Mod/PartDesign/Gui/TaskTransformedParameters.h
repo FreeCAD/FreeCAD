@@ -26,11 +26,11 @@
 
 #include <QComboBox>
 
-#include <Mod/Part/App/Part2DObject.h>
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <Gui/DocumentObserver.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/PartDesign/Gui/EnumFlags.h>
 
 #include "TaskFeatureParameters.h"
 #include "TaskTransformedMessages.h"
@@ -64,9 +64,9 @@ public:
      * remove items from the combo directly, otherwise internal tracking list
      * will go out of sync, and crashes may result.
      */
-    ComboLinks(QComboBox &combo);
-    ComboLinks() {_combo = 0; doc = 0;}
-    void setCombo(QComboBox &combo) {assert(_combo == 0); this->_combo = &combo; _combo->clear();}
+    explicit ComboLinks(QComboBox &combo);
+    ComboLinks() {_combo = nullptr; doc = nullptr;}
+    void setCombo(QComboBox &combo) {assert(!_combo); this->_combo = &combo; _combo->clear();}
 
     /**
      * @brief addLink adds an item to the combo. Doesn't check for duplicates.
@@ -100,7 +100,7 @@ public:
 
     QComboBox& combo(void) const {assert(_combo); return *_combo;}
 
-    ~ComboLinks() {_combo = 0; clear();}
+    ~ComboLinks() {_combo = nullptr; clear();}
 private:
     QComboBox* _combo;
     App::Document* doc;
@@ -123,10 +123,10 @@ class TaskTransformedParameters : public Gui::TaskView::TaskBox,
 
 public:
     /// Constructor for task with ViewProvider
-    TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    explicit TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
-    virtual ~TaskTransformedParameters();
+    explicit TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
+    ~TaskTransformedParameters() override;
 
     /// Returns the originals property of associated top feeature object
     const std::vector<App::DocumentObject*> & getOriginals(void) const;
@@ -141,14 +141,23 @@ public:
     void exitSelectionMode();
 
     virtual void apply() = 0;
+    virtual void onUpdateView(bool) = 0;
 
+    /*!
+     * \brief setEnabledTransaction
+     * The transaction handling of this panel can be disabled if there is another
+     * instance that does it already, e.g. TaskDlgMultiTransformParameters.
+     * By default, transactions are enabled.
+     */
+    void setEnabledTransaction(bool);
+    bool isEnabledTransaction() const;
     void setupTransaction();
 
     int getTransactionID() const {
         return transactionID;
     }
 
-protected Q_SLOTS:
+protected:
     /**
      * Returns the base transformation view provider
      * For stand alone features it will be view provider associated with this object
@@ -163,6 +172,7 @@ protected Q_SLOTS:
      */
     PartDesign::Transformed *getTopTransformedObject () const;
 
+protected Q_SLOTS:
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
     void onButtonAddFeature(const bool checked);
@@ -188,7 +198,7 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false, bool circle=false);
+    void addReferenceSelectionGate(AllowSelectionFlags);
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
@@ -199,9 +209,9 @@ protected:
     virtual void addObject(App::DocumentObject*);
     virtual void removeObject(App::DocumentObject*);
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
-    virtual void changeEvent(QEvent *e) = 0;
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
+    void changeEvent(QEvent *e) override = 0;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override = 0;
     virtual void clearButtons()=0;
     static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 
@@ -212,6 +222,7 @@ protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
     int transactionID = 0;
+    bool enableTransaction = true;
 
     enum selectionModes { none, addFeature, removeFeature, reference };
     selectionModes selectionMode;
@@ -230,17 +241,17 @@ class TaskDlgTransformedParameters : public PartDesignGui::TaskDlgFeatureParamet
     Q_OBJECT
 
 public:
-    TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
-    virtual ~TaskDlgTransformedParameters() {}
+    explicit TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
+    ~TaskDlgTransformedParameters() override {}
 
     ViewProviderTransformed* getTransformedView() const
     { return static_cast<ViewProviderTransformed*>(vp); }
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
 protected:
     TaskTransformedParameters  *parameter;
     TaskTransformedMessages  *message;

@@ -21,23 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FemConstraintPulley.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
@@ -56,15 +47,15 @@ ConstraintPulley::ConstraintPulley()
                       "First belt force");
     ADD_PROPERTY_TYPE(BeltForce2,(0.0),"ConstraintPulley",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Second belt force");
-    ForceAngle.setValue(00.0);
+    ForceAngle.setValue(0.0);
     Diameter.setValue(300.0);
     // calculate initial values of read-only properties
     onChanged(&Force);
 }
 
-App::DocumentObjectExecReturn *ConstraintPulley::execute(void)
+App::DocumentObjectExecReturn *ConstraintPulley::execute()
 {
-    return ConstraintBearing::execute();
+    return ConstraintGear::execute();
 }
 
 void ConstraintPulley::onChanged(const App::Property* prop)

@@ -19,52 +19,38 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
+ 
 #ifndef APP_PRECOMPILED_H
 #define APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define InspectionExport __declspec(dllexport)
-# define MeshExport          __declspec(dllimport)
-# define PointsExport     __declspec(dllimport)
-# define PartExport       __declspec(dllimport)
-#else // for Linux
-# define InspectionExport
-# define MeshExport
-# define PointsExport
-# define PartExport
-#endif
-
 #ifdef _MSC_VER
-# pragma warning(disable : 4290)
-# pragma warning(disable : 4275)
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4503)
+# pragma warning(disable : 4786)// specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
 
-// standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
-
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+#include <numeric>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+// OCC
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepGProp_Face.hxx>
+#include <gp_Pnt.hxx>
+#include <TopExp.hxx>
+#include <TopoDS.hxx>
+
+// Qt
+#include <QEventLoop>
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QtConcurrentMap>
 
 #endif //_PreComp_
 

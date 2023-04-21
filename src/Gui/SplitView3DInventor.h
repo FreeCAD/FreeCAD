@@ -20,67 +20,74 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SPLITVIEW3DINVENTOR_H
 #define GUI_SPLITVIEW3DINVENTOR_H
 
 #include "MDIView.h"
+#include "MDIViewPy.h"
 
 #include <Base/Parameter.h>
-#include <CXX/Extensions.hxx>
 #include <vector>
+
 
 namespace Gui {
 class View3DInventorViewer;
 class AbstractSplitViewPy;
+class View3DSettings;
 
 /** The SplitView3DInventor class allows to create a window with two or more Inventor views.
  *  \author Werner Mayer
  */
-class GuiExport AbstractSplitView : public MDIView, public ParameterGrp::ObserverType
+class GuiExport AbstractSplitView : public MDIView
 {
-    TYPESYSTEM_HEADER();
+    Q_OBJECT
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
-    ~AbstractSplitView();
+    ~AbstractSplitView() override;
 
-    virtual const char *getName(void) const;
+    const char *getName() const override;
 
     /// Message handler
-    virtual bool onMsg(const char* pMsg, const char** ppReturn);
-    virtual bool onHasMsg(const char* pMsg) const;
-    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
-    virtual void onUpdate(void);
-    virtual void deleteSelf();
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
+    void onUpdate() override;
+    void deleteSelf() override;
+    void viewAll() override;
 
     View3DInventorViewer *getViewer(unsigned int) const;
-    void setOverrideCursor(const QCursor&);
-    virtual bool containsViewProvider(const ViewProvider*) const;
+    void setOverrideCursor(const QCursor&) override;
+    bool containsViewProvider(const ViewProvider*) const override;
 
-    PyObject *getPyObject(void);
-    void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
     int getSize();
 
 protected:
+    void setDocumentOfViewers(Gui::Document* document);
     void setupSettings();
 
 protected:
-    /// handle to the viewer parameter group
-    ParameterGrp::handle hGrp;
     std::vector<View3DInventorViewer*> _viewer;
     PyObject *_viewerPy;
+    std::unique_ptr<View3DSettings> viewSettings;
 };
 
 class AbstractSplitViewPy : public Py::PythonExtension<AbstractSplitViewPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    using BaseType = Py::PythonExtension<AbstractSplitViewPy>;
+    static void init_type();    // announce properties and methods
 
     AbstractSplitViewPy(AbstractSplitView *vi);
-    ~AbstractSplitViewPy();
+    ~AbstractSplitViewPy() override;
+    AbstractSplitView* getSplitViewPtr();
 
-    Py::Object repr();
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
+    Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object fitAll(const Py::Tuple&);
     Py::Object viewBottom(const Py::Tuple&);
@@ -91,14 +98,12 @@ public:
     Py::Object viewTop(const Py::Tuple&);
     Py::Object viewIsometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
-    Py::Object sequence_item(ssize_t);
+    Py::Object sequence_item(Py_ssize_t) override;
     Py::Object close(const Py::Tuple&);
-    int sequence_length();
+    PyCxx_ssize_t sequence_length() override;
 
 private:
-    AbstractSplitView* _view;
-    friend class AbstractSplitView;
-    void testExistence();
+    Gui::MDIViewPy base;
 };
 
 /** The SplitView3DInventor class allows to create a window with two or more Inventor views.
@@ -106,11 +111,11 @@ private:
  */
 class GuiExport SplitView3DInventor : public AbstractSplitView
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
-    ~SplitView3DInventor();
+    ~SplitView3DInventor() override;
 };
 
 } // namespace Gui

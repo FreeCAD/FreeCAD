@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATUREPARTPOLYGON_H
 #define PART_FEATUREPARTPOLYGON_H
 
@@ -28,16 +27,17 @@
 
 #include "PartFeature.h"
 
+
 namespace Part
 {
 
 class Polygon : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Polygon);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Polygon);
 
 public:
     Polygon();
-    virtual ~Polygon();
+    ~Polygon() override;
 
     App::PropertyVectorList Nodes;
     App::PropertyBool       Close;
@@ -45,8 +45,8 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 };
 

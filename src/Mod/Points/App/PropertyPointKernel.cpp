@@ -20,22 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <cmath>
 # include <iostream>
-# include <algorithm>
 #endif
 
-#include <Base/Exception.h>
 #include <Base/Matrix.h>
-#include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "PropertyPointKernel.h"
 #include "PointsPy.h"
+
 
 using namespace Points;
 
@@ -58,7 +56,7 @@ void PropertyPointKernel::setValue(const PointKernel& m)
     hasSetValue();
 }
 
-const PointKernel& PropertyPointKernel::getValue(void) const 
+const PointKernel& PropertyPointKernel::getValue() const
 {
     return *_cPoints;
 }
@@ -68,12 +66,22 @@ const Data::ComplexGeoData* PropertyPointKernel::getComplexData() const
     return _cPoints;
 }
 
+void PropertyPointKernel::setTransform(const Base::Matrix4D& rclTrf)
+{
+    _cPoints->setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyPointKernel::getTransform() const
+{
+    return _cPoints->getTransform();
+}
+
 Base::BoundBox3d PropertyPointKernel::getBoundingBox() const
 {
     return _cPoints->getBoundBox();
 }
 
-PyObject *PropertyPointKernel::getPyObject(void)
+PyObject *PropertyPointKernel::getPyObject()
 {
     PointsPy* points = new PointsPy(&*_cPoints);
     points->setConst(); // set immutable
@@ -83,7 +91,7 @@ PyObject *PropertyPointKernel::getPyObject(void)
 void PropertyPointKernel::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(PointsPy::Type))) {
-        PointsPy  *pcObject = (PointsPy*)value;
+        PointsPy  *pcObject = static_cast<PointsPy*>(value);
         setValue( *(pcObject->getPointKernelPtr()));
     }
     else {
@@ -132,7 +140,7 @@ void PropertyPointKernel::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
-App::Property *PropertyPointKernel::Copy(void) const 
+App::Property *PropertyPointKernel::Copy() const
 {
     PropertyPointKernel* prop = new PropertyPointKernel();
     (*prop->_cPoints) = (*this->_cPoints);
@@ -147,7 +155,7 @@ void PropertyPointKernel::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPointKernel::getMemSize (void) const
+unsigned int PropertyPointKernel::getMemSize () const
 {
     return sizeof(Base::Vector3f) * this->_cPoints->size();
 }

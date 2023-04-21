@@ -20,24 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
-#include <Base/VectorPy.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Application.h>
 
-#include "DraftDxf.h"
 
 namespace DraftUtils {
 class Module : public Py::ExtensionModule<Module>
@@ -46,55 +33,29 @@ public:
     Module() : Py::ExtensionModule<Module>("DraftUtils")
     {
         add_varargs_method("readDXF",&Module::readDXF,
-            "readDXF(filename,[document,ignore_errors]): Imports a DXF file into the given document. ignore_errors is True by default."
+            "readDXF(filename,[document,ignore_errors]): "
+            "Imports a DXF file into the given document. "
+            "ignore_errors is True by default. "
+            "NOTE: DraftUtils.readDXF is removed. "
+            "Use Import.readDxf instead."
         );
         initialize("The DraftUtils module contains utility functions for the Draft module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    Py::Object readDXF(const Py::Tuple& args)
+    Py::Object readDXF(const Py::Tuple& /*args*/)
     {
-        Base::Console().Warning("DraftUtils.readDXF is deprecated. Use Import.readDxf instead.\n");
-        char* Name;
-        const char* DocName=0;
-        bool IgnoreErrors=true;
-        if (!PyArg_ParseTuple(args.ptr(), "et|sb","utf-8",&Name,&DocName,&IgnoreErrors))
-            throw Py::Exception();
-
-        std::string EncodedName = std::string(Name);
-        PyMem_Free(Name);
-
-        Base::FileInfo file(EncodedName.c_str());
-        if (!file.exists())
-            throw Py::RuntimeError("File doesn't exist");
-
-        App::Document *pcDoc;
-        if (DocName)
-            pcDoc = App::GetApplication().getDocument(DocName);
-        else
-            pcDoc = App::GetApplication().getActiveDocument();
-        if (!pcDoc) 
-            pcDoc = App::GetApplication().newDocument(DocName);
-
-        try {
-            // read the DXF file
-            DraftDxfRead dxf_file(EncodedName,pcDoc);
-            dxf_file.DoRead(IgnoreErrors);
-            pcDoc->recompute();
-        }
-        catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
-        }
-
+        Base::Console().Warning("DraftUtils.readDXF is removed. "
+                                "Use Import.readDxf instead.\n");
         return Py::None();
     }
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace DraftUtils

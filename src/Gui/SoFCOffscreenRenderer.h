@@ -20,16 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCOFFSCREENRENDERER_H
 #define GUI_SOFCOFFSCREENRENDERER_H
 
-#include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SoOffscreenRenderer.h>
+
 #include <QImage>
 #include <QStringList>
 #include <QtOpenGL.h>
+
+#include <CXX/Extensions.hxx>
+
 
 namespace Gui {
 
@@ -106,22 +109,19 @@ public:
     ~SoQtOffscreenRenderer();
 
     void setViewportRegion(const SbViewportRegion & region);
-    const SbViewportRegion & getViewportRegion(void) const;
+    const SbViewportRegion & getViewportRegion() const;
 
     void setBackgroundColor(const SbColor4f & color);
-    const SbColor4f & getBackgroundColor(void) const;
+    const SbColor4f & getBackgroundColor() const;
 
     void setGLRenderAction(SoGLRenderAction * action);
-    SoGLRenderAction * getGLRenderAction(void) const;
+    SoGLRenderAction * getGLRenderAction() const;
 
     void setNumPasses(const int num);
-    int getNumPasses(void) const;
+    int getNumPasses() const;
 
     void setInternalTextureFormat(GLenum internalTextureFormat);
     GLenum internalTextureFormat() const;
-
-    void setPbufferEnable(SbBool enable);
-    SbBool getPbufferEnable(void) const;
 
     SbBool render(SoNode * scene);
     SbBool render(SoPath * scene);
@@ -130,17 +130,11 @@ public:
     QStringList getWriteImageFiletypeInfo() const;
 
 private:
-    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = NULL);
+    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = nullptr);
     static void pre_render_cb(void * userdata, SoGLRenderAction * action);
     SbBool renderFromBase(SoBase * base);
-#if !defined(HAVE_QT5_OPENGL)
-    void makePixelBuffer(int width, int height, int samples);
-#endif
     void makeFrameBuffer(int width, int height, int samples);
 
-#if !defined(HAVE_QT5_OPENGL)
-    QGLPixelBuffer*         pixelbuffer; // the offscreen rendering supported by Qt
-#endif
     QtGLFramebufferObject*  framebuffer;
     uint32_t                cache_context; // our unique context id
 
@@ -149,12 +143,43 @@ private:
     SbColor4f backgroundopaque;
     SoGLRenderAction * renderaction;
     SbBool didallocation;
-    SbBool pbuffer;
     int numSamples;
     GLenum texFormat;
-#if defined(HAVE_QT5_OPENGL)
     QImage glImage;
-#endif
+};
+
+class SoQtOffscreenRendererPy : public Py::PythonExtension<SoQtOffscreenRendererPy>
+{
+public:
+    static void init_type();
+
+    explicit SoQtOffscreenRendererPy(const SbViewportRegion&);
+    ~SoQtOffscreenRendererPy() override;
+
+    Py::Object repr() override;
+
+    Py::Object setViewportRegion(const Py::Tuple&);
+    Py::Object getViewportRegion(const Py::Tuple&);
+
+    Py::Object setBackgroundColor(const Py::Tuple&);
+    Py::Object getBackgroundColor(const Py::Tuple&);
+
+    Py::Object setNumPasses(const Py::Tuple&);
+    Py::Object getNumPasses(const Py::Tuple&);
+
+    Py::Object setInternalTextureFormat(const Py::Tuple&);
+    Py::Object getInternalTextureFormat(const Py::Tuple&);
+
+    Py::Object render(const Py::Tuple&);
+
+    Py::Object writeToImage(const Py::Tuple&);
+    Py::Object getWriteImageFiletypeInfo(const Py::Tuple&);
+
+private:
+    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+
+private:
+    SoQtOffscreenRenderer renderer;
 };
 
 } // namespace Gui

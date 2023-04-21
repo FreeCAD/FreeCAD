@@ -23,15 +23,19 @@
 #ifndef SURFACEGUI_TASKFILLINGVERTEX_H
 #define SURFACEGUI_TASKFILLINGVERTEX_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
+#include <QWidget>
 #include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Gui/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+#include <Mod/Surface/Gui/SelectionMode.h>
+
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -47,7 +51,11 @@ class FillingVertexPanel : public QWidget,
 
 protected:
     class VertexSelection;
-    enum SelectionMode { None, AppendVertex, RemoveVertex };
+    enum SelectionMode {
+        None = SurfaceGui::SelectionMode::None,
+        AppendVertex = SurfaceGui::SelectionMode::AppendVertexConstraint,
+        RemoveVertex = SurfaceGui::SelectionMode::RemoveVertexConstraint
+    };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;
@@ -58,28 +66,33 @@ private:
 
 public:
     FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~FillingVertexPanel();
+    ~FillingVertexPanel() override;
 
     void open();
     void reject();
     void checkOpenCommand();
     void setEditedObject(Surface::Filling* obj);
+    void appendButtons(Gui::ButtonGroup *);
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
+    void slotUndoDocument(const Gui::Document& Doc) override;
     /** Notifies on redo */
-    virtual void slotRedoDocument(const Gui::Document& Doc);
+    void slotRedoDocument(const Gui::Document& Doc) override;
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-private Q_SLOTS:
-    void on_buttonVertexAdd_clicked();
-    void on_buttonVertexRemove_clicked();
-    void onDeleteVertex(void);
+private:
+    void setupConnections();
+    void onButtonVertexAddToggled(bool checked);
+    void onButtonVertexRemoveToggled(bool checked);
+    void onDeleteVertex();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 } //namespace SurfaceGui

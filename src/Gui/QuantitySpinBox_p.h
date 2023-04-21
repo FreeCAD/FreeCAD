@@ -33,14 +33,14 @@ public:
     ExpressionLabel(QWidget * parent) : QLabel(parent) { }
 
     void setExpressionText(const QString& text) {
-        if (text.isEmpty()) 
+        if (text.isEmpty())
             this->setToolTip(genericFormulaEditorTooltip);
-        else 
+        else
             this->setToolTip(formulaEditorTooltipPrefix + text);
     }
 
 protected:
-    void mouseReleaseEvent(QMouseEvent * event) {
+    void mouseReleaseEvent(QMouseEvent * event) override {
         if (rect().contains(event->pos()))
                 Q_EMIT clicked();
     }

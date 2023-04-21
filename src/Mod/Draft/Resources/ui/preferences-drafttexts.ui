@@ -141,12 +141,12 @@ such as "Arial:Bold"</string>
           </property>
           <item>
            <property name="text">
-            <string>text above (2D)</string>
+            <string>World</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string> text inside (3D)</string>
+            <string>Screen</string>
            </property>
           </item>
          </widget>

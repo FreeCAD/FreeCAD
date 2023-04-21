@@ -204,7 +204,8 @@ boost::python::list getCurveSpans(const CCurve& c)
 
 Span getFirstCurveSpan(const CCurve& c)
 {
-	if(c.m_vertices.size() < 2)return Span();
+	if(c.m_vertices.size() < 2)
+	    return Span();
 
 	std::list<CVertex>::const_iterator VIt = c.m_vertices.begin();
 	const Point &p = (*VIt).m_p;
@@ -214,7 +215,8 @@ Span getFirstCurveSpan(const CCurve& c)
 
 Span getLastCurveSpan(const CCurve& c)
 {
-	if(c.m_vertices.size() < 2)return Span();
+	if(c.m_vertices.size() < 2)
+	    return Span();
 
 	std::list<CVertex>::const_reverse_iterator VIt = c.m_vertices.rbegin();
 	const CVertex &v = (*VIt);

@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/DocumentObjectPy.h>
 
 #include "FemSetNodesObject.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+
 
 using namespace Fem;
 using namespace App;
@@ -45,7 +42,7 @@ FemSetNodesObject::~FemSetNodesObject()
 {
 }
 
-short FemSetNodesObject::mustExecute(void) const
+short FemSetNodesObject::mustExecute() const
 {
     return 0;
 }

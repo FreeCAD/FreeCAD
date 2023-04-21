@@ -23,28 +23,18 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
-#include <Base/Writer.h>
-#include <Base/Exception.h>
-
-#include "Document.h"
 #include "TransactionalObject.h"
+#include "Document.h"
+
 
 using namespace App;
 
 
 PROPERTY_SOURCE_ABSTRACT(App::TransactionalObject, App::ExtensionContainer)
 
-TransactionalObject::TransactionalObject(void)
-{
-}
+TransactionalObject::TransactionalObject() = default;
 
-TransactionalObject::~TransactionalObject(void)
-{
-}
+TransactionalObject::~TransactionalObject() = default;
 
 bool TransactionalObject::isAttachedToDocument() const
 {

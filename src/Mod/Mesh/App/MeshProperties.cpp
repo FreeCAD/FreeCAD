@@ -20,32 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <CXX/Objects.hxx>
-#include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Exception.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
 #include <Base/VectorPy.h>
+#include <Base/Writer.h>
 
+#include "Core/Iterator.h"
 #include "Core/MeshKernel.h"
 #include "Core/MeshIO.h"
-#include "Core/Iterator.h"
 
 #include "MeshProperties.h"
 #include "Mesh.h"
 #include "MeshPy.h"
 
+
 using namespace Mesh;
 
 TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists)
 TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyMaterial , App::Property)
 TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData)
 
 PropertyNormalList::PropertyNormalList()
@@ -63,7 +60,7 @@ void PropertyNormalList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyNormalList::getSize(void) const
+int PropertyNormalList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -91,7 +88,7 @@ void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
     hasSetValue();
 }
 
-PyObject *PropertyNormalList::getPyObject(void)
+PyObject *PropertyNormalList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
 
@@ -174,7 +171,7 @@ void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyNormalList::Copy(void) const
+App::Property *PropertyNormalList::Copy() const
 {
     PropertyNormalList *p= new PropertyNormalList();
     p->_lValueList = _lValueList;
@@ -188,7 +185,7 @@ void PropertyNormalList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyNormalList::getMemSize (void) const
+unsigned int PropertyNormalList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
@@ -304,7 +301,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 {
     // The principal direction is only a vector with unit length, so we only need to rotate it
     // (no translations or scaling)
-    
+
     // Extract scale factors (assumes an orthogonal rotation matrix)
     // Use the fact that the length of the row vectors of R are all equal to 1
     // And that scaling is applied after rotating
@@ -312,7 +309,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
     s[0] = sqrt(mat[0][0] * mat[0][0] + mat[0][1] * mat[0][1] + mat[0][2] * mat[0][2]);
     s[1] = sqrt(mat[1][0] * mat[1][0] + mat[1][1] * mat[1][1] + mat[1][2] * mat[1][2]);
     s[2] = sqrt(mat[2][0] * mat[2][0] + mat[2][1] * mat[2][1] + mat[2][2] * mat[2][2]);
-    
+
     // Set up the rotation matrix: zero the translations and make the scale factors = 1
     Base::Matrix4D rot;
     rot.setToUnity();
@@ -339,7 +336,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 void PropertyCurvatureList::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<CurvatureList file=\"" << 
+        writer.Stream() << writer.ind() << "<CurvatureList file=\"" <<
         writer.addFile(getName(), this) << "\"/>" << std::endl;
     }
 }
@@ -348,7 +345,7 @@ void PropertyCurvatureList::Restore(Base::XMLReader &reader)
 {
     reader.readElement("CurvatureList");
     std::string file (reader.getAttribute("file") );
-    
+
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(),this);
@@ -382,7 +379,7 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-PyObject* PropertyCurvatureList::getPyObject(void)
+PyObject* PropertyCurvatureList::getPyObject()
 {
     Py::List list;
     for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
@@ -410,7 +407,7 @@ void PropertyCurvatureList::setPyObject(PyObject* /*value*/)
     throw Base::AttributeError(std::string("This attribute is read-only"));
 }
 
-App::Property *PropertyCurvatureList::Copy(void) const
+App::Property *PropertyCurvatureList::Copy() const
 {
     PropertyCurvatureList *p= new PropertyCurvatureList();
     p->_lValueList = _lValueList;
@@ -426,21 +423,338 @@ void PropertyCurvatureList::Paste(const App::Property &from)
 
 // ----------------------------------------------------------------------------
 
+const MeshCore::Material& PropertyMaterial::getValue() const
+{
+    return _material;
+}
+
+MeshCore::MeshIO::Binding PropertyMaterial::getBinding() const
+{
+    return _material.binding;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getAmbientColor() const
+{
+    return _material.ambientColor;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getDiffuseColor() const
+{
+    return _material.diffuseColor;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getSpecularColor() const
+{
+    return _material.specularColor;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getEmissiveColor() const
+{
+    return _material.emissiveColor;
+}
+
+const std::vector<float>& PropertyMaterial::getShininess() const
+{
+    return _material.shininess;
+}
+
+const std::vector<float>& PropertyMaterial::getTransparency() const
+{
+    return _material.transparency;
+}
+
+void PropertyMaterial::setValue(const MeshCore::Material& value)
+{
+    aboutToSetValue();
+    _material = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setAmbientColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.ambientColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setDiffuseColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.diffuseColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setSpecularColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.specularColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setEmissiveColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.emissiveColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setShininess(const std::vector<float>& value)
+{
+    aboutToSetValue();
+    _material.shininess = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setTransparency(const std::vector<float>& value)
+{
+    aboutToSetValue();
+    _material.transparency = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setBinding(MeshCore::MeshIO::Binding bind)
+{
+    aboutToSetValue();
+    _material.binding = bind;
+    hasSetValue();
+}
+
+PyObject* PropertyMaterial::getPyObject()
+{
+    auto getColorList = [](const std::vector<App::Color>& color) {
+        Py::List list;
+        for (const auto& it : color) {
+            list.append(Py::TupleN(Py::Float(it.r),
+                                   Py::Float(it.g),
+                                   Py::Float(it.b)));
+        }
+        return list;
+    };
+
+    auto getFloatList = [](const std::vector<float>& value) {
+        Py::List list;
+        for (auto it : value) {
+            list.append(Py::Float(it));
+        }
+        return list;
+    };
+
+    Py::Dict dict;
+    dict.setItem("binding", Py::Long(static_cast<int>(_material.binding)));
+    dict.setItem("ambientColor", getColorList(_material.ambientColor));
+    dict.setItem("diffuseColor", getColorList(_material.diffuseColor));
+    dict.setItem("specularColor", getColorList(_material.specularColor));
+    dict.setItem("emissiveColor", getColorList(_material.emissiveColor));
+    dict.setItem("shininess", getFloatList(_material.shininess));
+    dict.setItem("transparency", getFloatList(_material.transparency));
+
+    return Py::new_reference_to(dict);
+}
+
+void PropertyMaterial::setPyObject(PyObject* obj)
+{
+    auto getColorList = [](const Py::Dict& dict, const std::string& key) {
+        std::vector<App::Color> color;
+        if (dict.hasKey(key)) {
+            Py::Sequence list(dict.getItem(key));
+            color.reserve(list.size());
+            for (const auto& it : list) {
+                Py::Sequence tuple(it);
+                float r = static_cast<float>(Py::Float(tuple[0]));
+                float g = static_cast<float>(Py::Float(tuple[1]));
+                float b = static_cast<float>(Py::Float(tuple[2]));
+                color.emplace_back(r, g, b);
+            }
+        }
+        return color;
+    };
+
+    auto getFloatList = [](const Py::Dict& dict, const std::string& key) {
+        std::vector<float> value;
+        if (dict.hasKey(key)) {
+            Py::Sequence list(dict.getItem(key));
+            value.reserve(list.size());
+            for (const auto& it : list) {
+                value.push_back(static_cast<float>(Py::Float(it)));
+            }
+        }
+        return value;
+    };
+
+    try {
+        MeshCore::Material material;
+        Py::Dict dict(obj);
+
+        if (dict.hasKey("binding")) {
+            Py::Long binding(dict.getItem("binding"));
+            int bind = static_cast<int>(binding);
+            material.binding = static_cast<MeshCore::MeshIO::Binding>(bind);
+        }
+
+        material.ambientColor = getColorList(dict, "ambientColor");
+        material.diffuseColor = getColorList(dict, "diffuseColor");
+        material.specularColor = getColorList(dict, "specularColor");
+        material.emissiveColor = getColorList(dict, "emissiveColor");
+        material.shininess = getFloatList(dict, "shininess");
+        material.transparency = getFloatList(dict, "transparency");
+
+        setValue(material);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        throw Base::TypeError("Not a dict with expected keys");
+    }
+}
+
+void PropertyMaterial::Save(Base::Writer& writer) const
+{
+    if (!writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<Material file=\""
+                        << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyMaterial::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("Material");
+    if (reader.hasAttribute("file")) {
+        std::string file(reader.getAttribute("file"));
+
+        if (!file.empty()) {
+            // initiate a file read
+            reader.addFile(file.c_str(), this);
+        }
+    }
+}
+
+void PropertyMaterial::SaveDocFile(Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    auto saveColor = [&str](const std::vector<App::Color>& color) {
+        uint32_t count = static_cast<uint32_t>(color.size());
+        str << count;
+        for (const auto& it : color) {
+            str << it.getPackedValue();
+        }
+    };
+
+    auto saveFloat = [&str](const std::vector<float>& value) {
+        uint32_t count = static_cast<uint32_t>(value.size());
+        str << count;
+        for (const auto& it : value) {
+            str << it;
+        }
+    };
+
+    uint32_t bind = static_cast<uint32_t>(_material.binding);
+    str << bind;
+
+    saveColor(_material.ambientColor);
+    saveColor(_material.diffuseColor);
+    saveColor(_material.specularColor);
+    saveColor(_material.emissiveColor);
+    saveFloat(_material.shininess);
+    saveFloat(_material.transparency);
+}
+
+void PropertyMaterial::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    auto restoreColor = [&str](std::vector<App::Color>& color) {
+        uint32_t count = 0;
+        str >> count;
+        color.resize(count);
+        for (auto& it : color) {
+            uint32_t value; // must be 32 bit long
+            str >> value;
+            it.setPackedValue(value);
+        }
+    };
+
+    auto restoreFloat = [&str](std::vector<float>& value) {
+        uint32_t count = 0;
+        str >> count;
+        value.resize(count);
+        for (auto& it : value) {
+            float valueF;
+            str >> valueF;
+            it = valueF;
+        }
+    };
+
+    MeshCore::Material material;
+
+    uint32_t bind = 0;
+    str >> bind;
+    material.binding = static_cast<MeshCore::MeshIO::Binding>(bind);
+
+    restoreColor(material.ambientColor);
+    restoreColor(material.diffuseColor);
+    restoreColor(material.specularColor);
+    restoreColor(material.emissiveColor);
+    restoreFloat(material.shininess);
+    restoreFloat(material.transparency);
+
+    setValue(material);
+}
+
+const char* PropertyMaterial::getEditorName() const
+{
+    return "";
+}
+
+App::Property* PropertyMaterial::Copy() const
+{
+    PropertyMaterial *prop = new PropertyMaterial();
+    prop->_material = _material;
+    return prop;
+}
+
+void PropertyMaterial::Paste(const Property& from)
+{
+    aboutToSetValue();
+    using ObjectType = std::remove_pointer<decltype(this)>::type;
+    _material = dynamic_cast<const ObjectType&>(from)._material;
+    hasSetValue();
+}
+
+unsigned int PropertyMaterial::getMemSize() const
+{
+    auto size = (_material.ambientColor.size() +
+                 _material.diffuseColor.size() +
+                 _material.emissiveColor.size() +
+                 _material.specularColor.size()) * sizeof(App::Color) +
+                (_material.shininess.size() +
+                 _material.transparency.size()) * sizeof(float) +
+                 _material.library.size() + sizeof(_material);
+    return static_cast<unsigned int>(size);
+}
+
+bool PropertyMaterial::isSame(const App::Property& other) const
+{
+    if (&other == this)
+        return true;
+    return getTypeId() == other.getTypeId()
+        && getValue() == static_cast<decltype(this)>(&other)->getValue();
+}
+
+// ----------------------------------------------------------------------------
+
 PropertyMeshKernel::PropertyMeshKernel()
-  : _meshObject(new MeshObject()), meshPyObject(0)
+  : _meshObject(new MeshObject()), meshPyObject(nullptr)
 {
     // Note: Normally this property is a member of a document object, i.e. the setValue()
-    // method gets called in the constructor of a sublcass of DocumentObject, e.g. Mesh::Feature.
-    // This means that the created MeshObject here will be replaced and deleted immediately. 
+    // method gets called in the constructor of a subclass of DocumentObject, e.g. Mesh::Feature.
+    // This means that the created MeshObject here will be replaced and deleted immediately.
     // However, we anyway create this object in case we use this class in another context.
 }
 
 PropertyMeshKernel::~PropertyMeshKernel()
 {
     if (meshPyObject) {
-        // Note: Do not call setInvalid() of the Python binding 
+        // Note: Do not call setInvalid() of the Python binding
         // because the mesh should still be accessible afterwards.
-        meshPyObject->parentProperty = 0;
+        meshPyObject->parentProperty = nullptr;
         Py_DECREF(meshPyObject);
     }
 }
@@ -483,19 +797,19 @@ void PropertyMeshKernel::swapMesh(MeshCore::MeshKernel& mesh)
     hasSetValue();
 }
 
-const MeshObject& PropertyMeshKernel::getValue(void)const 
+const MeshObject& PropertyMeshKernel::getValue()const
 {
     return *_meshObject;
 }
 
-const MeshObject* PropertyMeshKernel::getValuePtr(void)const 
+const MeshObject* PropertyMeshKernel::getValuePtr()const
 {
-    return (MeshObject*)_meshObject;
+    return static_cast<MeshObject*>(_meshObject);
 }
 
 const Data::ComplexGeoData* PropertyMeshKernel::getComplexData() const
 {
-    return (MeshObject*)_meshObject;
+    return static_cast<MeshObject*>(_meshObject);
 }
 
 Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
@@ -503,18 +817,18 @@ Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
     return _meshObject->getBoundBox();
 }
 
-unsigned int PropertyMeshKernel::getMemSize (void) const
+unsigned int PropertyMeshKernel::getMemSize () const
 {
     unsigned int size = 0;
     size += _meshObject->getMemSize();
-    
+
     return size;
 }
 
 MeshObject* PropertyMeshKernel::startEditing()
 {
     aboutToSetValue();
-    return (MeshObject*)_meshObject;
+    return static_cast<MeshObject*>(_meshObject);
 }
 
 void PropertyMeshKernel::finishEditing()
@@ -529,16 +843,26 @@ void PropertyMeshKernel::transformGeometry(const Base::Matrix4D &rclMat)
     hasSetValue();
 }
 
-void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<unsigned long, Base::Vector3f> >& inds)
+void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex, Base::Vector3f> >& inds)
 {
     aboutToSetValue();
     MeshCore::MeshKernel& kernel = _meshObject->getKernel();
-    for (std::vector<std::pair<unsigned long, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
+    for (std::vector<std::pair<PointIndex, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
         kernel.SetPoint(it->first, it->second);
     hasSetValue();
 }
 
-PyObject *PropertyMeshKernel::getPyObject(void)
+void PropertyMeshKernel::setTransform(const Base::Matrix4D& rclTrf)
+{
+    _meshObject->setTransform(rclTrf);
+}
+
+Base::Matrix4D PropertyMeshKernel::getTransform() const
+{
+    return _meshObject->getTransform();
+}
+
+PyObject *PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {
         meshPyObject = new MeshPy(&*_meshObject); // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in this class because it is reference-counted and destroyed elsewhere
@@ -581,7 +905,7 @@ void PropertyMeshKernel::Save (Base::Writer &writer) const
         saver.SaveXML(writer);
     }
     else {
-        writer.Stream() << writer.ind() << "<Mesh file=\"" << 
+        writer.Stream() << writer.ind() << "<Mesh file=\"" <<
         writer.addFile("MeshKernel.bms", this) << "\"/>" << std::endl;
     }
 }
@@ -590,7 +914,7 @@ void PropertyMeshKernel::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Mesh");
     std::string file (reader.getAttribute("file") );
-    
+
     if (file.empty()) {
         // read XML
         MeshCore::MeshKernel kernel;
@@ -605,7 +929,7 @@ void PropertyMeshKernel::Restore(Base::XMLReader &reader)
         aboutToSetValue();
         _meshObject->getKernel().Adopt(points, facets);
         hasSetValue();
-    } 
+    }
     else {
         // initiate a file read
         reader.addFile(file.c_str(),this);
@@ -624,7 +948,7 @@ void PropertyMeshKernel::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
-App::Property *PropertyMeshKernel::Copy(void) const
+App::Property *PropertyMeshKernel::Copy() const
 {
     // Note: Copy the content, do NOT reference the same mesh object
     PropertyMeshKernel *prop = new PropertyMeshKernel();

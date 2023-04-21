@@ -23,24 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Ax1.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-
-#include "FeatureLinearPattern.h"
-#include "DatumPlane.h"
-#include "DatumLine.h"
 #include <App/OriginFeature.h>
 #include <Base/Axis.h>
-#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
+
+#include "FeatureLinearPattern.h"
+#include "DatumLine.h"
+#include "DatumPlane.h"
+
 
 using namespace PartDesign;
 
@@ -49,11 +49,11 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
 
 LinearPattern::LinearPattern()
 {
-    ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Occurrences,(3));
@@ -72,16 +72,20 @@ short LinearPattern::mustExecute() const
 
 const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    double distance = Length.getValue();
-    if (distance < Precision::Confusion())
-        throw Base::ValueError("Pattern length too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
         throw Base::ValueError("At least one occurrence required");
+
+    if (occurrences == 1)
+        return {gp_Trsf()};
+
+    double distance = Length.getValue();
+    if (distance < Precision::Confusion())
+        throw Base::ValueError("Pattern length too small");
     bool reversed = Reversed.getValue();
 
     App::DocumentObject* refObject = Direction.getValue();
-    if (refObject == NULL)
+    if (!refObject)
         throw Base::ValueError("No direction reference specified");
 
     std::vector<std::string> subStrings = Direction.getSubValues();
@@ -98,12 +102,12 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
         else if (subStrings[0] == "N_Axis")
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
-        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+        else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount())
                 axis = refSketch->getAxis(AxId);
         }
-        else if (subStrings[0].substr(0,4) == "Edge") {
+        else if (subStrings[0].compare(0, 4, "Edge") == 0) {
             Part::TopoShape refShape = refSketch->Shape.getShape();
             TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
@@ -168,23 +172,20 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     dir.Transform(invObjLoc.Transformation());
 
-    gp_Vec direction(dir.X(), dir.Y(), dir.Z());
-
+    gp_Vec offset(dir.X(), dir.Y(), dir.Z());
+    offset *= distance / (occurrences - 1);
     if (reversed)
-        direction.Reverse();
+        offset.Reverse();
 
-    // Note: The original feature is NOT included in the list of transformations! Therefore
-    // we start with occurrence number 1, not number 0
     std::list<gp_Trsf> transformations;
     gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
+    transformations.push_back(trans);
 
-    if (occurrences > 1) {
-        double offset = distance / (occurrences - 1);
-        for (int i = 1; i < occurrences; i++) {
-            trans.SetTranslation(direction * i * offset);
-            transformations.push_back(trans);
-        }
+    // Note: The original feature is already included in the list of transformations!
+    // Therefore we start with occurrence number 1
+    for (int i = 1; i < occurrences; i++) {
+        trans.SetTranslation(offset * i);
+        transformations.push_back(trans);
     }
 
     return transformations;
@@ -199,6 +200,9 @@ void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const cha
         // restore the PropertyInteger to be able to set its value
         OccurrencesProperty.Restore(reader);
         Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

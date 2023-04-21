@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,15 +29,16 @@
 #endif
 
 #include "ToolBoxManager.h"
-#include "ToolBarManager.h"
 #include "Application.h"
 #include "Command.h"
+#include "ToolBarManager.h"
 #include "ToolBox.h"
+
 
 using namespace Gui;
 using DockWnd::ToolBox;
 
-ToolBoxManager* ToolBoxManager::_instance=0;
+ToolBoxManager* ToolBoxManager::_instance=nullptr;
 
 ToolBoxManager* ToolBoxManager::getInstance()
 {
@@ -50,10 +50,10 @@ ToolBoxManager* ToolBoxManager::getInstance()
 void ToolBoxManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
-ToolBoxManager::ToolBoxManager() : _toolBox(0L)
+ToolBoxManager::ToolBoxManager() : _toolBox(nullptr)
 {
 }
 
@@ -83,9 +83,9 @@ void ToolBoxManager::setup( ToolBarItem* toolBar ) const
     CommandManager& mgr = Application::Instance->commandManager();
     QList<ToolBarItem*> items = toolBar->getItems();
 
-    for ( QList<ToolBarItem*>::ConstIterator item = items.begin(); item != items.end(); ++item )
+    for ( QList<ToolBarItem*>::Iterator item = items.begin(); item != items.end(); ++item )
     {
-        QToolBar* bar = new QToolBar();
+        auto bar = new QToolBar();
         bar->setOrientation(Qt::Vertical);
         bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         std::string toolbarName = (*item)->command();
@@ -94,7 +94,7 @@ void ToolBoxManager::setup( ToolBarItem* toolBar ) const
         _toolBox->addItem( bar, bar->windowTitle() );
 
         QList<ToolBarItem*> subitems = (*item)->getItems();
-        for ( QList<ToolBarItem*>::ConstIterator subitem = subitems.begin(); subitem != subitems.end(); ++subitem )
+        for ( QList<ToolBarItem*>::Iterator subitem = subitems.begin(); subitem != subitems.end(); ++subitem )
         {
             if ( (*subitem)->command() == "Separator" ) {
                 //bar->addSeparator();

@@ -21,7 +21,13 @@
 
 "The FreeCAD Arch Vector Rendering Module"
 
-import FreeCAD,math,Part,ArchCommands,DraftVecUtils,DraftGeomUtils
+import math
+
+import FreeCAD
+import ArchCommands
+import DraftVecUtils
+import DraftGeomUtils
+import Part
 
 ## @package ArchVRM
 #  \ingroup ARCH
@@ -464,9 +470,9 @@ class Renderer:
                 else:
                     if faces.index(f2) < h:
                         h = faces.index(f2)
-        if l != None:
+        if l is not None:
             return l + 1
-        elif h != None:
+        elif h is not None:
             return h
         else:
             return None
@@ -648,4 +654,3 @@ class Renderer:
             svg += '"/>\n'
         svg += '</g>\n'
         return svg
-

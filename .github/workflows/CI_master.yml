@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is the master workflow for CI of FreeCAD.
+# It (only) aims at properly organizing the sub-workflows.
+
+name: FreeCAD master CI
+
+on: [workflow_dispatch, push, pull_request]
+
+concurrency:
+  group: FC-CI-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+
+  Prepare:
+    uses: ./.github/workflows/sub_prepare.yml
+    with:
+      artifactBasename: Prepare-${{ github.run_id }}
+
+  Ubuntu_20-04:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildUbuntu2004.yml
+    with:
+      artifactBasename: Ubuntu_20-04-${{ github.run_id }}
+
+  Ubuntu_22-04:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildUbuntu2204.yml
+    with:
+      artifactBasename: Ubuntu_22-04-${{ github.run_id }}
+
+  Windows:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildWindows.yml
+    with:
+      artifactBasename: Windows-${{ github.run_id }}
+
+  Lint:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_lint.yml
+    with:
+      artifactBasename: Lint-${{ github.run_id }}
+      changedFiles: ${{ needs.Prepare.outputs.changedFiles }}
+      changedCppFiles: ${{ needs.Prepare.outputs.changedCppFiles }}
+      changedPythonFiles: ${{ needs.Prepare.outputs.changedPythonFiles }}
+
+  WrapUp:
+    needs: [Prepare, Ubuntu_20-04, Ubuntu_22-04, Windows, Lint]
+    if: always()
+    uses: ./.github/workflows/sub_wrapup.yml
+    with:
+      previousSteps: ${{ toJSON(needs) }}

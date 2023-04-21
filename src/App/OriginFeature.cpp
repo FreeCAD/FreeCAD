@@ -22,13 +22,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
+#include "OriginFeature.h"
 #include "Document.h"
 #include "Origin.h"
 
-#include "OriginFeature.h"
 
 using namespace App;
 
@@ -44,8 +41,7 @@ OriginFeature::OriginFeature()
     Placement.setStatus(Property::Hidden, true);
 }
 
-OriginFeature::~OriginFeature()
-{ }
+OriginFeature::~OriginFeature() = default;
 
 Origin * OriginFeature::getOrigin () {
     App::Document *doc = getDocument();
@@ -56,7 +52,7 @@ Origin * OriginFeature::getOrigin () {
             return static_cast<App::Origin *> (origin)->hasObject (this);
         } );
     if (originIt == origins.end()) {
-        return 0;
+        return nullptr;
     } else {
         assert ( (*originIt)->isDerivedFrom ( App::Origin::getClassTypeId() ) );
         return static_cast<App::Origin *> (*originIt);

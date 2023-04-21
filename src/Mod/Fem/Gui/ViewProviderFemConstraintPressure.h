@@ -24,21 +24,21 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 
-#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui {
 
-class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPressure);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPressure);
 
 public:
     ViewProviderFemConstraintPressure();
-    virtual ~ViewProviderFemConstraintPressure();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintPressure() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

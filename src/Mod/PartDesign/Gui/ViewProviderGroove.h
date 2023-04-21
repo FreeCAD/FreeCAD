@@ -31,22 +31,22 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderGroove : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderGroove);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderGroove);
 
 public:
     /// constructor
     ViewProviderGroove();
     /// destructor
-    virtual ~ViewProviderGroove();
+    ~ViewProviderGroove() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /**
      * Returns a newly created TaskDlgRevolutionParameters
      * NOTE: as for now groove and revolution share the dialog implementation
      */
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

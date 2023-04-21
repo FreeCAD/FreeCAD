@@ -25,19 +25,12 @@
 #ifndef BASE_XMLTOOLS_H
 #define BASE_XMLTOOLS_H
 
-// Std. configurations
-
-
-// Include files
 #include <memory>
 #include <iostream>
-#include <xercesc/util/XercesDefs.hpp>
-#include <xercesc/util/XercesVersion.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/TransService.hpp>
 
 #include <Base/Exception.h>
+
 
 XERCES_CPP_NAMESPACE_BEGIN
     class DOMNode;
@@ -205,9 +198,7 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
     str = XMLTools::toXMLString(fromTranscode);
 }
 
-inline XUTF8Str::~XUTF8Str()
-{
-}
+inline XUTF8Str::~XUTF8Str() = default;
 
 
 // -----------------------------------------------------------------------

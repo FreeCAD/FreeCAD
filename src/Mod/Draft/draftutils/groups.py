@@ -37,8 +37,37 @@ the objects created with this workbench work like groups.
 import FreeCAD as App
 import draftutils.utils as utils
 
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftutils.messages import _msg, _err
+
+
+def is_group(obj):
+    """Return True if the given object is considered a group.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to check.
+
+    Returns
+    -------
+    bool
+        Returns `True` if `obj` is considered a group:
+
+        The object is derived from `App::DocumentObjectGroup` but not
+        a `'LayerContainer'`.
+
+        Or the object is of the type `'Project'`, `'Site'`, `'Building'`,
+        `'Floor'`, `'BuildingPart'` or `'Space'` from the Arch Workbench.
+        Note that `'Floor'` and `'Building'` are obsolete types.
+
+        Otherwise returns `False`.
+    """
+    typ = utils.get_type(obj)
+    return ((obj.isDerivedFrom("App::DocumentObjectGroup")
+                and typ != "LayerContainer")
+            or typ in ("Project", "Site", "Building",
+                       "Floor", "BuildingPart", "Space"))
 
 
 def get_group_names(doc=None):
@@ -54,25 +83,22 @@ def get_group_names(doc=None):
     Returns
     -------
     list of str
-        A list of names of objects that are "groups".
-        These are objects derived from `App::DocumentObjectGroup`
-        or which are of types `'Floor'`, `'Building'`, or `'Site'`
-        from the Arch Workbench.
+        A list of names of objects that are considered groups.
+        See the is_group function.
 
-        Otherwise, return an empty list.
+        Otherwise returns an empty list.
     """
     if not doc:
         found, doc = utils.find_doc(App.activeDocument())
 
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return []
 
     glist = []
 
     for obj in doc.Objects:
-        if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) in ("Floor", "Building", "Site")):
+        if is_group(obj):
             glist.append(obj.Name)
 
     return glist
@@ -103,7 +129,7 @@ def ungroup(obj):
     found, obj = utils.find_object(obj, doc=App.activeDocument())
     if not found:
         _msg("obj: {}".format(obj_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object not in document."))
         return None
 
     doc = obj.Document
@@ -175,12 +201,9 @@ def get_group_contents(objectslist,
     Parameters
     ----------
     objectslist: list
-        If any object in the list is a group, its contents (`obj.Group`)
-        are extracted and added to the output list.
-
-        The "groups" are objects derived from `App::DocumentObjectGroup`,
-        but they can also be `'App::Part'`, or `'Building'`, `'BuildingPart'`,
-        `'Space'`, and `'Site'` from the Arch Workbench.
+        If any object in the list is considered a group, see the `is_group`
+        function, its contents (`obj.Group`) are extracted and added to the
+        output list.
 
         Single items that aren't groups are added to the output list
         as is.
@@ -217,28 +240,16 @@ def get_group_contents(objectslist,
 
     for obj in objectslist:
         if obj:
-            if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                    or (utils.get_type(obj) in ("Building", "BuildingPart",
-                                                "Space", "Site")
-                        and hasattr(obj, "Group"))):
-                if utils.get_type(obj) == "Site":
-                    if obj.Shape:
-                        newlist.append(obj)
-                if obj.isDerivedFrom("Drawing::FeaturePage"):
-                    # Skip if the group is a Drawing page
-                    # Note: the Drawing workbench is obsolete
+            if is_group(obj):
+                if addgroups or (spaces
+                                 and utils.get_type(obj) == "Space"):
                     newlist.append(obj)
-                else:
-                    if addgroups or (spaces
-                                     and utils.get_type(obj) == "Space"):
-                        newlist.append(obj)
-                    if (noarchchild
-                            and utils.get_type(obj) in ("Building",
-                                                        "BuildingPart")):
-                        pass
-                    else:
-                        newlist.extend(get_group_contents(obj.Group,
-                                                          walls, addgroups))
+                if not (noarchchild
+                        and utils.get_type(obj) in ("Building",
+                                                    "BuildingPart")):
+                    newlist.extend(get_group_contents(obj.Group,
+                                                      walls, addgroups,
+                                                      spaces, noarchchild))
             else:
                 # print("adding ", obj.Name)
                 newlist.append(obj)

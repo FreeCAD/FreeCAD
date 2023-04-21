@@ -25,18 +25,13 @@
 #ifndef _PreComp_
 # include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopTools_ListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
-# include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -53,9 +48,12 @@ const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Radius,(1.0));
+    ADD_PROPERTY_TYPE(Radius, (1.0), "Fillet", App::Prop_None, "Fillet radius.");
     Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
+    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Fillet", App::Prop_None,
+      "Fillet all edges if true, else use only those edges in Base property.\n"
+      "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
 }
 
 short Fillet::mustExecute() const
@@ -65,26 +63,42 @@ short Fillet::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Fillet::execute(void)
+App::DocumentObjectExecReturn *Fillet::execute()
 {
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseShape();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    getContiniusEdges(TopShape, SubNames);
 
-    if (SubNames.size() == 0)
-        return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
-    
+    if (UseAllEdges.getValue()){
+        SubNames.clear();
+        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
+        int count = TopShape.countSubElements(edgeTypeName.c_str());
+        for (int ii = 0; ii < count; ii++){
+            std::ostringstream edgeName;
+            edgeName << edgeTypeName << ii+1;
+            SubNames.push_back(edgeName.str());
+        }
+    }
+
+    getContinuousEdges(TopShape, SubNames);
+
     double radius = Radius.getValue();
-    
+
     if(radius <= 0)
         return new App::DocumentObjectExecReturn("Fillet radius must be greater than zero");
 
     this->positionByBaseFeature();
+
+    //If no element is selected, then we use a copy of previous feature.
+    if (SubNames.empty()) {
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
 
     // create an untransformed copy of the base shape
     Part::TopoShape baseShape(TopShape);
@@ -134,36 +148,18 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
 void Fillet::Restore(Base::XMLReader &reader)
 {
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    DressUp::Restore(reader);
+}
 
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
-
-        try {
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-                prop->Restore(reader);
-            }
-            else if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-                     strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
-                App::PropertyFloatConstraint p;
-                p.Restore(reader);
-                static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        reader.readEndElement("Property");
+void Fillet::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
+        strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
+        App::PropertyFloatConstraint p;
+        p.Restore(reader);
+        static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
     }
-    reader.readEndElement("Properties");
+    else {
+        DressUp::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }

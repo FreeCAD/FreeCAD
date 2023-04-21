@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>290</width>
-    <height>487</height>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,16 @@
       <string>Viewing mode</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <item row="0" column="0">
@@ -28,7 +37,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -48,7 +66,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -84,7 +111,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -105,7 +141,7 @@
            </size>
           </property>
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
@@ -123,7 +159,7 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="buttonColorPlot">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
@@ -151,6 +187,16 @@
         <item row="2" column="1">
          <widget class="Gui::ColorButton" name="buttonLineColor"/>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Point color:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::ColorButton" name="buttonPointColor"/>
+        </item>
        </layout>
       </item>
      </layout>
@@ -162,62 +208,36 @@
       <string>Display</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Line transparency:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="textLabel1_2">
-        <property name="text">
-         <string>Transparency:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="margin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QSlider" name="sliderLineTransparency">
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinLineTransparency">
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="singleStep">
-           <number>5</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -263,7 +283,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -304,12 +333,28 @@
         </item>
        </layout>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="textLabel1_2">
+        <property name="text">
+         <string>Transparency:</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -340,14 +385,53 @@
         </item>
        </layout>
       </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Line transparency:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QSlider" name="sliderLineTransparency">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinLineTransparency">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="singleStep">
+           <number>5</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close</set>
-     </property>
     </widget>
    </item>
   </layout>
@@ -437,22 +521,6 @@
     <hint type="destinationlabel">
      <x>98</x>
      <y>404</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Gui::Dialog::DlgDisplayProperties</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>150</x>
-     <y>461</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>243</y>
     </hint>
    </hints>
   </connection>

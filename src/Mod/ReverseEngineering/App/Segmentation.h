@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REEN_SEGMENTATION_H
 #define REEN_SEGMENTATION_H
 
-#include <Base/Vector3D.h>
-#include <vector>
 #include <list>
+#include <vector>
+
+#include <Base/Vector3D.h>
+
 
 namespace Points {class PointKernel;}
 
@@ -49,7 +50,7 @@ private:
 class NormalEstimation
 {
 public:
-    NormalEstimation(const Points::PointKernel&);
+    explicit NormalEstimation(const Points::PointKernel&);
     /** \brief Set the number of k nearest neighbors to use for the feature estimation.
       * \param[in] k the number of k-nearest neighbors
       */

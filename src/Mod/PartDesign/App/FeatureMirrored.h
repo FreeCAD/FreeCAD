@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_FeatureMirrored_H
 #define PARTDESIGN_FeatureMirrored_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureTransformed.h"
 
 
@@ -45,7 +44,7 @@ public:
     short mustExecute() const;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartDesignGui::ViewProviderMirrored";
     }
     //@}

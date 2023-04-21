@@ -165,7 +165,7 @@ public:
    * \param theElems     - The triangles to be fused.
    * \param theCriterion - Is used to choose a neighbour to fuse with.
    * \param theMaxAngle  - Is a max angle between element normals at which fusion
-   *                       is still performed; theMaxAngle is mesured in radians.
+   *                       is still performed; theMaxAngle is measured in radians.
    * \return bool - Success or not.
    */
   bool TriToQuad (TIDSortedElemSet &                   theElems,
@@ -173,7 +173,7 @@ public:
                   const double                         theMaxAngle);
   /*!
    * \brief Split quadrangles into triangles.
-   * \param theElems     - The faces to be splitted.
+   * \param theElems     - The faces to be split.
    * \param theCriterion - Is used to choose a diagonal for splitting.
    * \return bool - Success or not.
    */
@@ -181,7 +181,7 @@ public:
                   SMESH::Controls::NumericalFunctorPtr theCriterion);
   /*!
    * \brief Split quadrangles into triangles.
-   * \param theElems  - The faces to be splitted.
+   * \param theElems  - The faces to be split.
    * \param the13Diag - Is used to choose a diagonal for splitting.
    * \return bool - Success or not.
    */
@@ -189,7 +189,7 @@ public:
                   const bool         the13Diag);
   /*!
    * \brief Split each of given quadrangles into 4 triangles.
-   * \param theElems - The faces to be splitted. If empty all faces are split.
+   * \param theElems - The faces to be split. If empty all faces are split.
    */
   void QuadTo4Tri (TIDSortedElemSet & theElems);
 
@@ -522,9 +522,9 @@ public:
   // of the side 2. If nb of links in the free border and
   // between theSide2FirstNode and theSide2LastNode are different,
   // additional nodes are inserted on a link provided that no
-  // volume elements share the splitted link.
+  // volume elements share the split link.
   // The side 2 is a free border if theSide2IsFreeBorder == true.
-  // Sewing is peformed between the given first, second and last
+  // Sewing is performed between the given first, second and last
   // nodes on the sides.
   // theBorderFirstNode is merged with theSide2FirstNode.
   // if (!theSide2IsFreeBorder) then theSide2SecondNode gives
@@ -796,7 +796,7 @@ private:
   // Nodes and elements created during last operation
   SMESH_SequenceOfElemPtr myLastCreatedNodes, myLastCreatedElems;
 
-  // Description of error/warning occured during last operation
+  // Description of error/warning occurred during last operation
   SMESH_ComputeErrorPtr   myError;
 };
 

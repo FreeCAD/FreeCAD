@@ -20,21 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <Precision.hxx>
 #endif
 
-
-#include <Base/Console.h>
 #include <Base/Reader.h>
+
 #include "FeaturePartBox.h"
 
 
 using namespace Part;
-
 
 PROPERTY_SOURCE(Part::Box, Part::Primitive)
 
@@ -55,7 +52,7 @@ short Box::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Box::execute(void)
+App::DocumentObjectExecReturn *Box::execute()
 {
     double L = Length.getValue();
     double W = Width.getValue();
@@ -125,7 +122,7 @@ void Box::Restore(Base::XMLReader &reader)
                 prop->setStatusValue(status.to_ulong());
         }
         if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-            if (!prop->testStatus(App::Property::Transient) 
+            if (!prop->testStatus(App::Property::Transient)
                     && !status.test(App::Property::Transient)
                     && !status.test(App::Property::PropTransient)
                     && !(getPropertyType(prop) & App::Prop_Transient))

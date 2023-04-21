@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawScaleImp.h"
 #include "ui_DlgPrefsTechDrawScale.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace TechDrawGui;
 
@@ -40,8 +39,8 @@ DlgPrefsTechDrawScaleImp::DlgPrefsTechDrawScaleImp( QWidget* parent )
     ui->pdsbTemplateMark->setUnit(Base::Unit::Length);
     ui->pdsbTemplateMark->setMinimum(0);
 
-    connect(ui->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onScaleTypeChanged(int)));
+    connect(ui->cbViewScaleType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawScaleImp::onScaleTypeChanged);
 }
 
 DlgPrefsTechDrawScaleImp::~DlgPrefsTechDrawScaleImp()
@@ -64,7 +63,7 @@ void DlgPrefsTechDrawScaleImp::saveSettings()
     ui->pdsbPageScale->onSave();
     ui->cbViewScaleType->onSave();
     ui->pdsbViewScale->onSave();
-    ui->pdsbVertexScale->onSave(); 
+    ui->pdsbVertexScale->onSave();
     ui->pdsbCenterScale->onSave();
     ui->pdsbTemplateMark->onSave();
     ui->pdsbSymbolScale->onSave();

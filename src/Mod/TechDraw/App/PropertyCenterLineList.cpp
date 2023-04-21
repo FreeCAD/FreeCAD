@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "CenterLinePy.h"
 
 #include "PropertyCenterLineList.h"
+#include "CenterLinePy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyCenterLineList
@@ -72,7 +60,7 @@ void PropertyCenterLineList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyCenterLineList::getSize(void) const
+int PropertyCenterLineList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -96,7 +84,7 @@ void PropertyCenterLineList::setValues(const std::vector<CenterLine*>& lValue)
     hasSetValue();
 }
 
-PyObject *PropertyCenterLineList::getPyObject(void)
+PyObject *PropertyCenterLineList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -137,18 +125,19 @@ void PropertyCenterLineList::setPyObject(PyObject *value)
 
 void PropertyCenterLineList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CenterLineList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<CenterLineList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
-    for (int i = 0; i < getSize(); i++) { 
+    for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CenterLine  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CenterLine>" << endl;
+        writer.Stream() << writer.ind() << "</CenterLine>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CenterLineList>" << endl ;
+    writer.Stream() << writer.ind() << "</CenterLineList>" << std::endl;
 }
 
 void PropertyCenterLineList::Restore(Base::XMLReader &reader)
@@ -163,11 +152,11 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("CenterLine");
         const char* TypeName = reader.getAttribute("type");
-        CenterLine *newG = (CenterLine *)Base::Type::fromName(TypeName).createInstance();
+        CenterLine *newG = static_cast<CenterLine *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("CenterLine \"%s\" within a PropertyCenterLineList was subject to a partial restore.\n",reader.localName());
+            Base::Console().Error("CenterLine \"%s\" within a PropertyCenterLineList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CenterLine class
                 values.push_back(newG);
@@ -190,7 +179,7 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCenterLineList::Copy(void) const
+App::Property *PropertyCenterLineList::Copy() const
 {
     PropertyCenterLineList *p = new PropertyCenterLineList();
     p->setValues(_lValueList);
@@ -203,7 +192,7 @@ void PropertyCenterLineList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyCenterLineList::getMemSize(void) const
+unsigned int PropertyCenterLineList::getMemSize() const
 {
     int size = sizeof(PropertyCenterLineList);
     for (int i = 0; i < getSize(); i++)

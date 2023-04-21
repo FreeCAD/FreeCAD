@@ -22,15 +22,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/Range.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "PropertyRowHeights.h"
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <App/Range.h>
+#include "PropertyRowHeightsPy.h"
 #include "Utils.h"
-#include <PropertyRowHeightsPy.h>
+
 
 using namespace Spreadsheet;
 
@@ -126,8 +125,8 @@ void PropertyRowHeights::Restore(Base::XMLReader &reader)
     Cnt = reader.hasAttribute("Count") ? reader.getAttributeAsInteger("Count") : 0;
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Row");
-        const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : 0;
-        const char * height = reader.hasAttribute("height") ? reader.getAttribute("height") : 0;
+        const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : nullptr;
+        const char * height = reader.hasAttribute("height") ? reader.getAttribute("height") : nullptr;
 
         try {
             if (name && height) {

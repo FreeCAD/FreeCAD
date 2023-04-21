@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::DlgSettingsMeasure</class>
+ <widget class="QWidget" name="PartGui::DlgSettingsMeasure">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>282</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Measure</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Measurement settings</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="Gui::PrefColorButton" name="dim3dColorButton">
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Dimensions3dColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_1">
+          <property name="text">
+           <string>3D color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefColorButton" name="dimDeltaColorButton">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>255</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DimensionsDeltaColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Delta color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefColorButton" name="dimAngularColorButton">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DimensionsAngularColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Angular color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefSpinBox" name="fontSizeSpinBox">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DimensionsFontSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Font size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefCheckBox" name="fontStyleBoldCheckBox">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Bold</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DimensionsFontStyleBold</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="Gui::PrefCheckBox" name="fontStyleItalicCheckBox">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Italic</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DimensionsFontStyleItalic</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="Gui::PrefFontBox" name="fontNameComboBox">
+          <property name="currentText">
+           <string>defaultFont</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DimensionsFontName</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Font name</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="pushButtonRefresh">
+          <property name="text">
+           <string>Refresh existing measurements</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFontBox</class>
+   <extends>QFontComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

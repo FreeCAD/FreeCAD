@@ -20,41 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #include <SMESH_Version.h>
 
 #ifndef _PreComp_
 # include <Python.h>
-# include <SMESH_Gen.hxx>
 # include <SMESHDS_Mesh.hxx>
 # include <SMESH_Mesh.hxx>
-# include <SMDS_VolumeTool.hxx>
-
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools.hxx>
 
 # ifdef FCWithNetgen
-#  include <NETGENPlugin_SimpleHypothesis_3D.hxx>
 #  include <NETGENPlugin_Hypothesis.hxx>
 #  include <NETGENPlugin_Mesher.hxx>
 # endif
-
 #endif
+
+#include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FemMeshShapeNetgenObject.h"
 #include "FemMesh.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
+
 
 using namespace Fem;
 using namespace App;
 
 PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
 
-const char* FinenessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",NULL};
+const char* FinenessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",nullptr};
 
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {
@@ -73,7 +66,7 @@ FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
 {
 }
 
-App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
+App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute()
 {
 #ifdef FCWithNetgen
 

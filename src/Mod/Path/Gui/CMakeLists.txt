@@ -25,11 +25,7 @@ set(PathGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(PathResource_SRCS Resources/Path.qrc)
-else()
-    qt4_add_resources(PathResource_SRCS Resources/Path.qrc)
-endif()
+qt_add_resources(PathResource_SRCS Resources/Path.qrc)
 
 SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
 
@@ -38,12 +34,6 @@ set(PathGui_UIC_SRCS
     TaskDlgPathCompound.ui
     DlgProcessorChooser.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
-endif()
 
 SET(PathGui_SRCS_Module
     Command.cpp

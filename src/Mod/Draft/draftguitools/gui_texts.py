@@ -64,41 +64,46 @@ class Text(gui_base_original.Creator):
         """Execute when the command is called."""
         super(Text, self).Activated(name="Text")
         if self.ui:
-            self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
+            self.ui.isRelative.hide()
+            self.ui.continueCmd.show()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.active = True
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
             _msg(translate("draft", "Pick location point"))
-            Gui.draftToolBar.show()
 
-    def finish(self, closed=False, cont=False):
-        """Terminate the operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         super(Text, self).finish(self)
-        if self.ui:
-            del self.dialog
-            if self.ui.continueMode:
-                self.Activated()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def createObject(self):
         """Create the actual object in the current document."""
+        rot, sup, pts, fil = self.getStrings()
+        base = pts[1:-1]
+
         text_list = self.text
-        text_list = [text.replace("\"","\\\"") for text in text_list]
+
+        if not text_list:
+            self.finish()
+            return None
 
         # If the last element is an empty string "" we remove it
         if not text_list[-1]:
             text_list.pop()
 
-        # For Python 2 we convert the string to unicode,
-        # Python 3 nothing needs to be done
-        if sys.version_info.major < 3:
-            u_list = [unicode(line) for line in text_list]
-            t_list = ['"' + str(line.encode("utf8")) + '"' for line in u_list]
-        else:
-            t_list = ['"' + line + '"' for line in text_list]
+        t_list = ['"' + line + '"' for line in text_list]
 
         list_as_text = ", ".join(t_list)
 
@@ -108,14 +113,17 @@ class Text(gui_base_original.Creator):
         _cmd = 'Draft.make_text'
         _cmd += '('
         _cmd += string + ', '
-        _cmd += 'placement=' + DraftVecUtils.toString(self.node[0])
+        _cmd += 'placement=pl'
         _cmd += ')'
-        _cmd_list = ['_text_ = ' + _cmd,
+        _cmd_list = ['pl = FreeCAD.Placement()',
+                     'pl.Rotation.Q = ' + rot,
+                     'pl.Base = ' + base,
+                     '_text_ = ' + _cmd,
                      'Draft.autogroup(_text_)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(translate("draft", "Create Text"),
                     _cmd_list)
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def action(self, arg):
         """Handle the 3D scene events.

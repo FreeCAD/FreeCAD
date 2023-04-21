@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -39,23 +39,23 @@ using namespace std;
 
 struct Segment_Header
 {
-	Segment_Header(){};
+    Segment_Header(){};
 
-	Segment_Header(Context& cont)
-	{
-		read(cont);
-	};
+    Segment_Header(Context& cont)
+    {
+        read(cont);
+    };
 
-	inline void read(Context& cont)
-	{
-		Segment_ID.read(cont);
-		Segment_Type.read(cont);
-		Segment_Length.read(cont);
-	};
+    inline void read(Context& cont)
+    {
+        Segment_ID.read(cont);
+        Segment_Type.read(cont);
+        Segment_Length.read(cont);
+    };
 
-	GUID Segment_ID;
-	I32  Segment_Type;
-	I32  Segment_Length;
+    GUID Segment_ID;
+    I32  Segment_Type;
+    I32  Segment_Length;
 
 
 };

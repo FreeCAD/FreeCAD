@@ -23,25 +23,21 @@
 #ifndef GUI_TASKVIEW_TASKLINEDECOR_H
 #define GUI_TASKVIEW_TASKLINEDECOR_H
 
-#include <App/Material.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Gui/FileDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
-#include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>   //????
-
-class Ui_TaskLineDecor;
 
 namespace App
 {
 class DocumentObject;
 }
 
-
 namespace TechDrawGui
 {
 
+class Ui_TaskLineDecor;
+class Ui_TaskRestoreLines;
 class TaskLineDecor : public QWidget
 {
     Q_OBJECT
@@ -49,25 +45,25 @@ class TaskLineDecor : public QWidget
 public:
     TaskLineDecor(TechDraw::DrawViewPart* partFeat,
                   std::vector<std::string> edgeNames);
-    ~TaskLineDecor();
+    ~TaskLineDecor() override;
 
 public:
     virtual bool accept();
     virtual bool reject();
-    bool apply(void) { return m_apply; }
+    bool apply() { return m_apply; }
     void apply(bool b) { m_apply = b; }
 
 protected Q_SLOTS:
-    void onStyleChanged(void);
-    void onColorChanged(void);
-    void onWeightChanged(void);
-    void onVisibleChanged(void);
+    void onStyleChanged();
+    void onColorChanged();
+    void onWeightChanged();
+    void onVisibleChanged();
 
 protected:
-    void changeEvent(QEvent *e);
-    void initUi(void);
-    void applyDecorations(void);
-    void getDefaults(void);
+    void changeEvent(QEvent *e) override;
+    void initUi();
+    void applyDecorations();
+    void getDefaults();
 
 private:
     std::unique_ptr<Ui_TaskLineDecor> ui;
@@ -87,29 +83,29 @@ class TaskRestoreLines : public QWidget
 public:
     TaskRestoreLines(TechDraw::DrawViewPart* partFeat,
                      TechDrawGui::TaskLineDecor* parent);
-    ~TaskRestoreLines();
+    ~TaskRestoreLines() override;
 
 public:
     virtual bool accept();
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onAllPressed(void);
-    void onGeometryPressed(void);
-    void onCosmeticPressed(void);
-    void onCenterPressed(void);
+    void onAllPressed();
+    void onGeometryPressed();
+    void onCosmeticPressed();
+    void onCenterPressed();
 
 protected:
-    void changeEvent(QEvent *e);
-    void initUi(void);
-    int countInvisibleLines(void);
-    int countInvisibleGeoms(void);
-    int countInvisibleCosmetics(void);
-    int countInvisibleCenters(void);
-    void restoreInvisibleLines(void);
-    void restoreInvisibleGeoms(void);
-    void restoreInvisibleCosmetics(void);
-    void restoreInvisibleCenters(void);
+    void changeEvent(QEvent *e) override;
+    void initUi();
+    int countInvisibleLines();
+    int countInvisibleGeoms();
+    int countInvisibleCosmetics();
+    int countInvisibleCenters();
+    void restoreInvisibleLines();
+    void restoreInvisibleGeoms();
+    void restoreInvisibleCosmetics();
+    void restoreInvisibleCenters();
 
 private:
     std::unique_ptr<Ui_TaskRestoreLines> ui;
@@ -125,20 +121,20 @@ class TaskDlgLineDecor : public Gui::TaskView::TaskDialog
 public:
     TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
                      std::vector<std::string> edgeNames);
-    ~TaskDlgLineDecor();
+    ~TaskDlgLineDecor() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
 
 protected:

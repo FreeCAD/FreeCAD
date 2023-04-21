@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
 
 #include "DlgReportViewImp.h"
 #include "ui_DlgReportView.h"
-#include "PrefWidgets.h"
 
 
 using namespace Gui::Dialog;
@@ -47,6 +42,7 @@ DlgReportViewImp::DlgReportViewImp( QWidget* parent )
   , ui(new Ui_DlgReportView)
 {
     ui->setupUi(this);
+    ui->colorText->setColor(qApp->palette().windowText().color());
 }
 
 /**

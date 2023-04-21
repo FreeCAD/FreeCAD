@@ -20,28 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTreeWidget>
-# include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
+
+// to avoid compiler warnings of redefining contents of basic.h
+// later by #include <Gui/ViewProvider.h>
+# define _USE_MATH_DEFINES
+# include <cmath>
+
 # include <cfloat>
-# include <Python.h>
-# include <Inventor/system/inttypes.h>
+# include <QMessageBox>
+# include <QRegularExpression>
+# include <QTreeWidget>
 #endif
 
-#include "Mirroring.h"
-#include "ui_Mirroring.h"
-#include "../App/PartFeature.h"
-#include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -50,6 +49,11 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "Mirroring.h"
+#include "ui_Mirroring.h"
+
 
 using namespace PartGui;
 
@@ -69,9 +73,11 @@ Mirroring::Mirroring(QWidget* parent)
 
     Gui::ItemViewSelection sel(ui->shapes);
     sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 Mirroring::~Mirroring()
@@ -90,20 +96,21 @@ void Mirroring::changeEvent(QEvent *e)
 void Mirroring::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui)
+        return;
 
     this->document = QString::fromLatin1(activeDoc->getName());
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
-        (Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
-        if (!shape.IsNull()) {
+        Part::TopoShape shape = Part::Feature::getTopoShape(*it);
+        if (!shape.isNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
+
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
@@ -135,7 +142,7 @@ bool Mirroring::accept()
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label;
-    QRegExp rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
+    QRegularExpression rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
     QList<QTreeWidgetItem *> items = ui->shapes->selectedItems();
     float normx=0, normy=0, normz=0;
     int index = ui->comboBox->currentIndex();
@@ -167,7 +174,7 @@ bool Mirroring::accept()
             "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
             "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
             "del __doc__")
-            .arg(this->document).arg(shape).arg(label)
+            .arg(this->document, shape, label)
             .arg(normx).arg(normy).arg(normz)
             .arg(basex).arg(basey).arg(basez);
         Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
@@ -189,7 +196,7 @@ TaskMirroring::TaskMirroring()
     widget = new Mirroring();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Mirror.svg"),
-        widget->windowTitle(), false, 0);
+        widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

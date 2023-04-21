@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to repair certain objects created with old versions."""
 ## @package heal
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to repair certain objects from old versions.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils
@@ -35,9 +35,9 @@ from draftmake.make_copy import make_copy
 
 def heal(objlist=None, delete=True, reparent=True):
     """heal([objlist],[delete],[reparent])
-    
+
     Recreate Draft objects that are damaged, for example if created from an
-    earlier version. If ran without arguments, all the objects in the document 
+    earlier version. If ran without arguments, all the objects in the document
     will be healed if they are damaged.
 
     Parameters
@@ -48,7 +48,7 @@ def heal(objlist=None, delete=True, reparent=True):
         If delete is True, the damaged objects are deleted (default).
 
     reparent : bool
-        If reparent is True (default), new objects go at the very same place 
+        If reparent is True (default), new objects go at the very same place
         in the tree than their original.
     """
 
@@ -70,7 +70,7 @@ def heal(objlist=None, delete=True, reparent=True):
     for obj in objlist:
         dtype = utils.get_type(obj)
         ftype = obj.TypeId
-        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython","Drawing::FeatureViewPython"]:
+        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             proxy = obj.Proxy
             if hasattr(obj,"ViewObject"):
                 if hasattr(obj.ViewObject,"Proxy"):
@@ -98,8 +98,6 @@ def heal(objlist=None, delete=True, reparent=True):
                 elif ("DrawMode" in props) and ("FacesNumber" in props):
                     print("Healing " + obj.Name + " of type Polygon")
                     nobj = make_copy(obj,force="Polygon",reparent=reparent)
-                elif ("FillStyle" in props) and ("FontSize" in props):
-                    nobj = make_copy(obj,force="DrawingView",reparent=reparent)
                 else:
                     dellist.pop()
                     print("Object " + obj.Name + " is not healable")

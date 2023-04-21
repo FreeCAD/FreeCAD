@@ -21,17 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Axis.h"
 
 using namespace Base;
 
-Axis::Axis()
-{
-
-}
+Axis::Axis() = default;
 
 Axis::Axis(const Axis& that)
 {

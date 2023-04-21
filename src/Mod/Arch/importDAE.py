@@ -21,7 +21,7 @@
 
 import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(context,text):
@@ -92,7 +92,7 @@ def open(filename):
         return
     docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
@@ -113,21 +113,6 @@ def insert(filename,docname):
     return doc
 
 
-def decode(name):
-
-    "decodes encoded strings"
-
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-            decodedName = name
-    return decodedName
-
-
 def read(filename):
 
     "reads a DAE file"
@@ -146,13 +131,13 @@ def read(filename):
             if "}" in node.xmlnode.tag:
                 bt = node.xmlnode.tag.split("}")[0]+"}"
                 gnode = node.xmlnode.find(bt+"instance_geometry")
-                if gnode != None:
+                if gnode is not None:
                     bnode = gnode.find(bt+"bind_material")
-                    if bnode != None:
+                    if bnode is not None:
                         tnode = bnode.find(bt+"technique_common")
-                        if tnode != None:
+                        if tnode is not None:
                             mnode = tnode.find(bt+"instance_material")
-                            if mnode != None:
+                            if mnode is not None:
                                 if "target" in mnode.keys():
                                     mname = mnode.get("target").strip("#")
                                     for m in col.materials:

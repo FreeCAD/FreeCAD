@@ -22,29 +22,18 @@
 
 #include "PreCompiled.h"
 
-
-#ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
-#endif
-
-#include "Base/Exception.h"
-#include "Base/GeometryPyCXX.h"
-#include "Base/PlacementPy.h"
 #include "Base/Vector3D.h"
 #include "Base/VectorPy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
-#include "Mod/Path/App/VoronoiPy.h"
-#include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 
-#include "Mod/Path/App/VoronoiVertexPy.cpp"
+#include "VoronoiVertexPy.h"
+#include "VoronoiVertexPy.cpp"
+#include "VoronoiEdgePy.h"
+
 
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string VoronoiVertexPy::representation(void) const
+std::string VoronoiVertexPy::representation() const
 {
   std::stringstream ss;
   ss.precision(5);
@@ -97,10 +86,10 @@ const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexP
   if (throwIfNotBound) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = 0) {
+VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = nullptr) {
   VoronoiVertex *self = v->getVoronoiVertexPtr();
   if (!self->isBound()) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
@@ -112,7 +101,7 @@ VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args =
 }
 
 
-Py::Long VoronoiVertexPy::getIndex(void) const {
+Py::Long VoronoiVertexPy::getIndex() const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
     return Py::Long(v->dia->index(v->ptr));
@@ -120,7 +109,7 @@ Py::Long VoronoiVertexPy::getIndex(void) const {
   return Py::Long(-1);
 }
 
-Py::Long VoronoiVertexPy::getColor(void) const {
+Py::Long VoronoiVertexPy::getColor() const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
     Voronoi::color_type color = v->ptr->color() & Voronoi::ColorMask;
@@ -133,13 +122,13 @@ void VoronoiVertexPy::setColor(Py::Long color) {
   getVertexFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
-Py::Float VoronoiVertexPy::getX(void) const
+Py::Float VoronoiVertexPy::getX() const
 {
   VoronoiVertex *v = getVoronoiVertexFromPy(this);
   return Py::Float(v->ptr->x() / v->dia->getScale());
 }
 
-Py::Float VoronoiVertexPy::getY(void) const
+Py::Float VoronoiVertexPy::getY() const
 {
   VoronoiVertex *v = getVoronoiVertexFromPy(this);
   return Py::Float(v->ptr->y() / v->dia->getScale());
@@ -168,7 +157,7 @@ PyObject* VoronoiVertexPy::toPoint(PyObject *args)
 
 PyObject* VoronoiVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

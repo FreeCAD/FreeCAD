@@ -59,7 +59,7 @@ ETManifoldMesh::TPtr ETManifoldMesh::InsertTriangle (int iV0, int iV1,
     if (pkTIter != m_kTMap.end())
     {
         // triangle already exists
-        return 0;
+        return nullptr;
     }
 
     // add new triangle
@@ -92,7 +92,7 @@ ETManifoldMesh::TPtr ETManifoldMesh::InsertTriangle (int iV0, int iV1,
             if (pkEdge->T[1])
             {
                 assert(false);  // mesh must be manifold
-                return 0;
+                return nullptr;
             }
             pkEdge->T[1] = pkTriangle;
 
@@ -137,11 +137,11 @@ bool ETManifoldMesh::RemoveTriangle (int iV0, int iV1, int iV2)
         {
             // one-triangle edges always have pointer in slot zero
             pkEdge->T[0] = pkEdge->T[1];
-            pkEdge->T[1] = 0;
+            pkEdge->T[1] = nullptr;
         }
         else if (pkEdge->T[1] == pkTriangle)
         {
-            pkEdge->T[1] = 0;
+            pkEdge->T[1] = nullptr;
         }
         else
         {
@@ -165,7 +165,7 @@ bool ETManifoldMesh::RemoveTriangle (int iV0, int iV1, int iV2)
             {
                 if (pkAdjacent->T[j] == pkTriangle)
                 {
-                    pkAdjacent->T[j] = 0;
+                    pkAdjacent->T[j] = nullptr;
                     break;
                 }
             }
@@ -201,7 +201,7 @@ void ETManifoldMesh::Print (const char* acFilename)
 
     // assign unique indices to the edges
     std::map<EPtr,int> kEIndex;
-    kEIndex[0] = 0;
+    kEIndex[nullptr] = 0;
     int i = 1;
     EMapIterator pkEIter;
     for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
@@ -214,7 +214,7 @@ void ETManifoldMesh::Print (const char* acFilename)
 
     // assign unique indices to the triangles
     std::map<TPtr,int> kTIndex;
-    kTIndex[0] = 0;
+    kTIndex[nullptr] = 0;
     i = 1;
     TMapIterator pkTIter;
     for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); pkTIter++)
@@ -328,8 +328,8 @@ ETManifoldMesh::Edge::Edge (int iV0, int iV1)
 {
     V[0] = iV0;
     V[1] = iV1;
-    T[0] = 0;
-    T[1] = 0;
+    T[0] = nullptr;
+    T[1] = nullptr;
 }
 //----------------------------------------------------------------------------
 ETManifoldMesh::Edge::~Edge ()
@@ -348,8 +348,8 @@ ETManifoldMesh::Triangle::Triangle (int iV0, int iV1, int iV2)
 
     for (int i = 0; i < 3; i++)
     {
-        E[i] = 0;
-        T[i] = 0;
+        E[i] = nullptr;
+        T[i] = nullptr;
     }
 }
 //----------------------------------------------------------------------------

@@ -21,23 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-
-#endif
-
-#include <Base/Console.h>
 
 #include "DrawViewClip.h"
 #include "DrawPage.h"
-
 #include <Mod/TechDraw/App/DrawViewClipPy.h>  // generated from DrawViewClipPy.xml
 
-using namespace TechDraw;
-using namespace std;
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawViewClip
@@ -45,26 +36,22 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewClip, TechDraw::DrawView)
 
-DrawViewClip::DrawViewClip(void)
+DrawViewClip::DrawViewClip()
 {
     static const char *group = "Clip Group";
     //App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
 
-    ADD_PROPERTY_TYPE(Height     ,(100),group,App::Prop_None,"The height of the view area of this clip");
-    ADD_PROPERTY_TYPE(Width      ,(100),group,App::Prop_None,"The width of the view area of this clip");
-    ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
-    ADD_PROPERTY_TYPE(Views      ,(0) ,group,App::Prop_None,"The Views in this Clip group");
+    ADD_PROPERTY_TYPE(Height     ,(100), group, App::Prop_None, "The height of the view area of this clip");
+    ADD_PROPERTY_TYPE(Width      ,(100), group, App::Prop_None, "The width of the view area of this clip");
+    ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group, App::Prop_None, "Specifies if the clip frame appears on the page or not");
+    ADD_PROPERTY_TYPE(Views      ,(nullptr) ,group, App::Prop_None, "The Views in this Clip group");
     Views.setScope(App::LinkScope::Global);
 
     // hide N/A properties
-    ScaleType.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
-}
-
-DrawViewClip::~DrawViewClip()
-{
+    ScaleType.setStatus(App::Property::ReadOnly, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::ReadOnly, true);
+    Scale.setStatus(App::Property::Hidden, true);
 }
 
 void DrawViewClip::onChanged(const App::Property* prop)
@@ -84,9 +71,23 @@ void DrawViewClip::addView(DrawView *view)
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(view);
     Views.setValues(newViews);
-    view->X.setValue(0.0);                   //position in centre of clip group frame
-    view->Y.setValue(0.0);
-    auto page = findParentPage();             //get Page to release child relationship in tree
+    QRectF viewRect = view->getRectAligned();
+    QPointF clipPoint(X.getValue(), Y.getValue());
+    if (viewRect.contains(clipPoint)) {
+        //position so the part of view that is overlapped by clip frame
+        //stays in the clip frame
+        double deltaX = view->X.getValue() - X.getValue();
+        double deltaY = view->Y.getValue() - Y.getValue();
+        view->X.setValue(deltaX);
+        view->Y.setValue(deltaY);
+    } else {
+        //position in centre of clip group frame
+        view->X.setValue(0.0);
+        view->Y.setValue(0.0);
+    }
+
+    //reparent view to clip in tree
+    auto page = findParentPage();
     page->Views.touch();
 }
 
@@ -104,7 +105,7 @@ void DrawViewClip::removeView(DrawView *view)
     Views.setValues(newViews);
 }
 
-App::DocumentObjectExecReturn *DrawViewClip::execute(void)
+App::DocumentObjectExecReturn *DrawViewClip::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -119,19 +120,19 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
     }
 
     requestPaint();
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewClip::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = ( Height.isTouched() ||
-                   Width.isTouched()  ||
-                   Views.isTouched());
-    }
-    if (result) {
-        return result;
+        if (Height.isTouched() ||
+            Width.isTouched() ||
+            Views.isTouched()) {
+            return 1;
+        }
     }
     return TechDraw::DrawView::mustExecute();
 }
@@ -151,21 +152,20 @@ std::vector<std::string> DrawViewClip::getChildViewNames()
 
 bool DrawViewClip::isViewInClip(App::DocumentObject* view)
 {
-    bool result = false;
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it) == view) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
-PyObject *DrawViewClip::getPyObject(void)
+PyObject *DrawViewClip::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewClipPy(this),true);
+        PythonObject = Py::Object(new DrawViewClipPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -176,7 +176,7 @@ PyObject *DrawViewClip::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewClipPython, TechDraw::DrawViewClip)
-template<> const char* TechDraw::DrawViewClipPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewClipPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewClip";
 }
 /// @endcond

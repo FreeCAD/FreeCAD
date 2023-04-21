@@ -6,7 +6,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 set(CloudGui_LIBS
@@ -14,11 +13,7 @@ set(CloudGui_LIBS
     FreeCADGui
 )
 
-if (BUILD_QT5)
-    qt5_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
-else()
-    qt4_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
-endif()
+qt_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
 
 SET(CloudGui_SRCS
     ${Cloud_QRC_SRCS}

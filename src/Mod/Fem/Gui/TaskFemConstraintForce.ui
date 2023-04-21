@@ -6,21 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>320</height>
+    <width>300</width>
+    <height>243</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-    <horstretch>3</horstretch>
-    <verstretch>35</verstretch>
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>330</width>
-    <height>300</height>
-   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -42,16 +36,34 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="btnAdd">
+      <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnRemove">
+      <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -84,7 +96,7 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="spinForce">
-       <property name="value" stdset="0">
+       <property name="value">
         <double>500.000000000000000</double>
        </property>
       </widget>
@@ -94,7 +106,7 @@
    <item>
     <layout class="QHBoxLayout" name="layoutDirection">
      <item>
-      <widget class="QPushButton" name="buttonDirection">
+      <widget class="QToolButton" name="buttonDirection">
        <property name="toolTip">
         <string>Select a planar edge or face, then press this button</string>
        </property>

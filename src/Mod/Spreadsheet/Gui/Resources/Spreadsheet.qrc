@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>icons/preferences-spreadsheet.svg</file>
         <file>icons/Spreadsheet.svg</file>
         <file>icons/SpreadsheetController.svg</file>
         <file>icons/SpreadsheetImport.svg</file>
@@ -53,6 +54,11 @@
         <file>translations/Spreadsheet_val-ES.qm</file>
         <file>translations/Spreadsheet_ar.qm</file>
         <file>translations/Spreadsheet_vi.qm</file>
+        <file>translations/Spreadsheet_es-AR.qm</file>
+        <file>translations/Spreadsheet_bg.qm</file>
+        <file>translations/Spreadsheet_ka.qm</file>
+        <file>translations/Spreadsheet_sr-CS.qm</file>
+        <file>translations/Spreadsheet_be.qm</file>
         <file>icons/SpreadsheetAlias.svg</file>
     </qresource>
 </RCC>

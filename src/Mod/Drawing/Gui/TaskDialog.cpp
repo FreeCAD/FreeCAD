@@ -20,27 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QCheckBox>
 # include <QMessageBox>
 #endif
 
-
-#include <Standard_math.hxx>
-#include "TaskDialog.h"
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/PartFeature.h>
 
-using namespace DrawingGui;
+#include "TaskDialog.h"
 
+
+using namespace DrawingGui;
 
 /* TRANSLATOR DrawingGui::TaskProjection */
 
@@ -74,7 +71,7 @@ TaskProjection::TaskProjection()
     widget->setLayout(mainLayout);
 
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), tr("Project shapes"), false, 0);
+        QPixmap(), tr("Project shapes"), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

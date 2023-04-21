@@ -15,6 +15,7 @@ set(Sketcher_TestScripts
     SketcherTests/__init__.py
     SketcherTests/TestSketchFillet.py
     SketcherTests/TestSketcherSolver.py
+    SketcherTests/TestSketchExpression.py
 )
 
 if(BUILD_GUI)

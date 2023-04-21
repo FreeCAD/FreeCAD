@@ -20,51 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
+# include <string>
 # include <QAction>
 # include <QMenu>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/manips/SoCenterballManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "ViewProviderDragger.h"
-#include "View3DInventorViewer.h"
-#include "Application.h"
-#include "Document.h"
-#include "Window.h"
-
-#include <Base/Console.h>
-#include <Base/Placement.h>
-#include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
-#include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/nodes/SoResetTransform.h>
-#if (COIN_MAJOR_VERSION > 2)
-#include <Inventor/nodes/SoDepthBuffer.h>
-#endif
-#include "SoFCUnifiedSelection.h"
-#include "SoFCCSysDragger.h"
+#include <Base/Placement.h>
+
+#include "Application.h"
+#include "BitmapFactory.h"
 #include "Control.h"
+#include "Document.h"
+#include "SoFCCSysDragger.h"
+#include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
-#include <boost/math/special_functions/fpclassify.hpp>
+#include "View3DInventorViewer.h"
+#include "ViewProviderDragger.h"
+
 
 using namespace Gui;
 
@@ -97,7 +76,7 @@ void ViewProviderDragger::updateData(const App::Property* prop)
     ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderDragger::doubleClicked(void)
+bool ViewProviderDragger::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
@@ -105,13 +84,14 @@ bool ViewProviderDragger::doubleClicked(void)
 
 void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
+    QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Transform));
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
 ViewProvider *ViewProviderDragger::startEditing(int mode) {
-    _linkDragger = 0;
+    _linkDragger = nullptr;
     auto ret = ViewProviderDocumentObject::startEditing(mode);
     if(!ret)
         return ret;
@@ -123,7 +103,7 @@ bool ViewProviderDragger::checkLink() {
     // usually by doubleClicked(). If so, we route the request back. There shall
     // be no risk of infinite recursion, as ViewProviderLink handles
     // ViewProvider::Transform request by itself.
-    ViewProviderDocumentObject *vpParent = 0;
+    ViewProviderDocumentObject *vpParent = nullptr;
     std::string subname;
     auto doc = Application::Instance->editDocument();
     if(!doc)
@@ -153,9 +133,9 @@ bool ViewProviderDragger::setEdit(int ModNum)
   App::DocumentObject *genericObject = this->getObject();
   if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
   {
-    App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
+    auto geoFeature = static_cast<App::GeoFeature *>(genericObject);
     const Base::Placement &placement = geoFeature->Placement.getValue();
-    SoTransform *tempTransform = new SoTransform();
+    auto tempTransform = new SoTransform();
     tempTransform->ref();
     updateTransform(placement, tempTransform);
 
@@ -177,7 +157,7 @@ bool ViewProviderDragger::setEdit(int ModNum)
     // pcRoot->insertChild(csysDragger, 0);
     csysDragger->ref();
 
-    TaskCSysDragger *task = new TaskCSysDragger(this, csysDragger);
+    auto task = new TaskCSysDragger(this, csysDragger);
     Gui::Control().showDialog(task);
   }
 
@@ -207,9 +187,9 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 
     if (csysDragger && viewer)
     {
-      SoPickStyle *rootPickStyle = new SoPickStyle();
+      auto rootPickStyle = new SoPickStyle();
       rootPickStyle->style = SoPickStyle::UNPICKABLE;
-      SoFCUnifiedSelection* selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
+      auto selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
       selection->insertChild(rootPickStyle, 0);
       selection->selectionRole.setValue(false);
       csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
@@ -228,8 +208,8 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 
 void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-  SoFCUnifiedSelection* selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
-  SoNode *child = selection->getChild(0);
+    auto selection = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph());
+    SoNode *child = selection->getChild(0);
   if (child && child->isOfType(SoPickStyle::getClassTypeId())) {
     selection->removeChild(child);
     selection->selectionRole.setValue(true);
@@ -246,8 +226,8 @@ void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator has done manipulating
 
-    ViewProviderDragger* sudoThis = reinterpret_cast<ViewProviderDragger *>(data);
-    SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
+    auto sudoThis = static_cast<ViewProviderDragger *>(data);
+    auto dragger = static_cast<SoFCCSysDragger *>(d);
     updatePlacementFromDragger(sudoThis, dragger);
 
     Gui::Application::Instance->activeDocument()->commitCommand();
@@ -258,7 +238,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   App::DocumentObject *genericObject = sudoThis->getObject();
   if (!genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
     return;
-  App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
+  auto geoFeature = static_cast<App::GeoFeature *>(genericObject);
   Base::Placement originalPlacement = geoFeature->Placement.getValue();
   double pMatrix[16];
   originalPlacement.toMatrix().getMatrix(pMatrix);
@@ -286,7 +266,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
     return;
   assert(numberOfFieldChanged == 1);
 
-  //helper lamdas.
+  //helper lambdas.
   auto getVectorX = [&pMatrix]() {return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);};
   auto getVectorY = [&pMatrix]() {return Base::Vector3d(pMatrix[1], pMatrix[5], pMatrix[9]);};
   auto getVectorZ = [&pMatrix]() {return Base::Vector3d(pMatrix[2], pMatrix[6], pMatrix[10]);};
@@ -339,13 +319,13 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
 
 void ViewProviderDragger::updateTransform(const Base::Placement& from, SoTransform* to)
 {
-  float q0 = (float)from.getRotation().getValue()[0];
-  float q1 = (float)from.getRotation().getValue()[1];
-  float q2 = (float)from.getRotation().getValue()[2];
-  float q3 = (float)from.getRotation().getValue()[3];
-  float px = (float)from.getPosition().x;
-  float py = (float)from.getPosition().y;
-  float pz = (float)from.getPosition().z;
+    auto q0 = (float)from.getRotation().getValue()[0];
+    auto q1 = (float)from.getRotation().getValue()[1];
+    auto q2 = (float)from.getRotation().getValue()[2];
+    auto q3 = (float)from.getRotation().getValue()[3];
+    auto px = (float)from.getPosition().x;
+    auto py = (float)from.getPosition().y;
+    auto pz = (float)from.getPosition().z;
   to->rotation.setValue(q0,q1,q2,q3);
   to->translation.setValue(px,py,pz);
   to->center.setValue(0.0f,0.0f,0.0f);

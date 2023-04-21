@@ -23,20 +23,11 @@
 #ifndef TECHDRAWGUI_TASKCOSMETICLINE_H
 #define TECHDRAWGUI_TASKCOSMETICLINE_H
 
-#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/TechDraw/App/Cosmetic.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskCosmeticLine.h>
-
-class Ui_TaskCosmeticLine;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
@@ -44,51 +35,44 @@ class DrawPage;
 class DrawView;
 class DrawViewPart;
 class CosmeticEdge;
-class LineFormat;
-}
-
-namespace TechDraw
-{
 class Face;
+class LineFormat;
 }
 
 namespace TechDrawGui
 {
+class QGSPage;
 class QGVPage;
 class QGIView;
 class QGIPrimPath;
 class MDIViewPage;
 class ViewProviderViewPart;
+class Ui_TaskCosmeticLine;
 
 class TaskCosmeticLine : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::vector<Base::Vector3d> points,
                         std::vector<bool> is3d);
-    TaskCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::string edgeName);
-    ~TaskCosmeticLine();
+    ~TaskCosmeticLine() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
 
-protected Q_SLOTS:
-
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
-    void setUiPrimary(void);
-    void setUiEdit(void);
+    void setUiPrimary();
+    void setUiEdit();
 
-    void createCosmeticLine(void);
-    void updateCosmeticLine(void);
+    void createCosmeticLine();
+    void updateCosmeticLine();
 
 private:
     std::unique_ptr<Ui_TaskCosmeticLine> ui;
@@ -96,7 +80,6 @@ private:
     TechDraw::DrawViewPart* m_partFeat;
 
     std::string m_edgeName;
-    //int m_edgeIndex;
     TechDraw::CosmeticEdge* m_ce;
     TechDraw::CosmeticEdge* m_saveCE;
     std::vector<Base::Vector3d> m_points;
@@ -110,25 +93,25 @@ class TaskDlgCosmeticLine : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::vector<Base::Vector3d> points,
                         std::vector<bool> is3d);
-    TaskDlgCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::string edgeName);
-    ~TaskDlgCosmeticLine();
+    ~TaskDlgCosmeticLine() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 

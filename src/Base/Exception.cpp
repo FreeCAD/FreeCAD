@@ -24,12 +24,10 @@
 
 #include "PreCompiled.h"
 
-#include <typeinfo>
-
 #include "Exception.h"
 #include "Console.h"
 #include "PyObjectBase.h"
-#include <CXX/Objects.hxx>
+
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
 
@@ -39,7 +37,7 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass)
 
 
-Exception::Exception(void)
+Exception::Exception()
   : _line(0)
   , _isTranslatable(false)
   , _isReported(false)
@@ -48,7 +46,8 @@ Exception::Exception(void)
 }
 
 Exception::Exception(const Exception &inst)
-  : _sErrMsg(inst._sErrMsg)
+  : BaseClass(inst)
+  , _sErrMsg(inst._sErrMsg)
   , _file(inst._file)
   , _line(inst._line)
   , _function(inst._function)
@@ -82,12 +81,12 @@ Exception &Exception::operator=(const Exception &inst)
     return *this;
 }
 
-const char* Exception::what(void) const throw()
+const char* Exception::what() const throw()
 {
     return _sErrMsg.c_str();
 }
 
-void Exception::ReportException (void) const
+void Exception::ReportException () const
 {
     if (!_isReported) {
         const char *msg;
@@ -105,7 +104,7 @@ void Exception::ReportException (void) const
     }
 }
 
-PyObject * Exception::getPyObject(void)
+PyObject * Exception::getPyObject()
 {
     Py::Dict edict;
     edict.setItem("sclassname", Py::String(typeid(*this).name()));
@@ -148,14 +147,14 @@ void Exception::setPyObject( PyObject * pydict)
 
 PyObject * Exception::getPyExceptionType() const
 {
-    return BaseExceptionFreeCADError;
+    return PyExc_FC_GeneralError;
 }
 
 void Exception::setPyException() const
 {
     PyObject* exc = getPyExceptionType();
     if (!exc) {
-        exc = BaseExceptionFreeCADError;
+        exc = PyExc_FC_GeneralError;
     }
 
     PyErr_SetString(exc, what());
@@ -180,6 +179,11 @@ const char* AbortException::what() const throw()
     return Exception::what();
 }
 
+PyObject * AbortException::getPyExceptionType() const
+{
+    return PyExc_FC_FreeCADAbort;
+}
+
 // ---------------------------------------------------------
 
 
@@ -196,6 +200,11 @@ XMLBaseException::XMLBaseException(const char * sMessage)
 XMLBaseException::XMLBaseException(const std::string& sMessage)
   : Exception(sMessage)
 {
+}
+
+PyObject * XMLBaseException::getPyExceptionType() const
+{
+    return PyExc_FC_XMLBaseException;
 }
 
 // ---------------------------------------------------------
@@ -220,6 +229,11 @@ const char* XMLParseException::what() const throw()
     return XMLBaseException::what();
 }
 
+PyObject * XMLParseException::getPyExceptionType() const
+{
+    return PyExc_FC_XMLParseException;
+}
+
 // ---------------------------------------------------------
 
 XMLAttributeError::XMLAttributeError(const char * sMessage)
@@ -242,23 +256,24 @@ const char* XMLAttributeError::what() const throw()
     return XMLBaseException::what();
 }
 
+PyObject * XMLAttributeError::getPyExceptionType() const
+{
+    return PyExc_FC_XMLAttributeError;
+}
+
 // ---------------------------------------------------------
 
 
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
-    if (sFileName) {
-        _sErrMsgAndFileName = _sErrMsg + ": ";
-        _sErrMsgAndFileName += sFileName;
-    }
+    setFileName(sFileName);
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
   : Exception( sMessage ),file(File)
 {
-    _sErrMsgAndFileName = _sErrMsg + ": ";
-    _sErrMsgAndFileName += File.fileName();
+    setFileName(File.filePath().c_str());
 }
 
 FileException::FileException()
@@ -272,6 +287,16 @@ FileException::FileException(const FileException &inst)
   , file(inst.file)
   , _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
 {
+}
+
+void FileException::setFileName(const char * sFileName)
+{
+    file.setFile(sFileName);
+    _sErrMsgAndFileName = _sErrMsg;
+    if (sFileName) {
+        _sErrMsgAndFileName += ": ";
+        _sErrMsgAndFileName += sFileName;
+    }
 }
 
 std::string FileException::getFileName() const
@@ -292,7 +317,7 @@ const char* FileException::what() const throw()
     return _sErrMsgAndFileName.c_str();
 }
 
-void FileException::ReportException (void) const
+void FileException::ReportException () const
 {
     if (!_isReported) {
         const char *msg;
@@ -310,7 +335,7 @@ void FileException::ReportException (void) const
     }
 }
 
-PyObject * FileException::getPyObject(void)
+PyObject * FileException::getPyObject()
 {
     Py::Dict edict(Exception::getPyObject(), true);
     edict.setItem("filename", Py::String(this->file.fileName()));
@@ -319,16 +344,17 @@ PyObject * FileException::getPyObject(void)
 
 void FileException::setPyObject( PyObject * pydict)
 {
-    if (pydict!=NULL) {
+    if (pydict) {
         Exception::setPyObject(pydict);
 
         Py::Dict edict(pydict);
         if (edict.hasKey("filename"))
-            file.setFile(static_cast<std::string>(Py::String(edict.getItem("filename"))));
+            setFileName(Py::String(edict.getItem("filename")).as_std_string("utf-8").c_str());
     }
 }
 
-PyObject * FileException::getPyExceptionType() const {
+PyObject * FileException::getPyExceptionType() const
+{
     return PyExc_IOError;
 }
 
@@ -350,6 +376,11 @@ FileSystemError::FileSystemError(const std::string& sMessage)
 {
 }
 
+PyObject * FileSystemError::getPyExceptionType() const
+{
+    return PyExc_IOError;
+}
+
 // ---------------------------------------------------------
 
 
@@ -366,6 +397,11 @@ BadFormatError::BadFormatError(const char * sMessage)
 BadFormatError::BadFormatError(const std::string& sMessage)
   : Exception(sMessage)
 {
+}
+
+PyObject * BadFormatError::getPyExceptionType() const
+{
+    return PyExc_FC_BadFormatError;
 }
 
 // ---------------------------------------------------------
@@ -399,6 +435,11 @@ const char* MemoryException::what() const throw()
 }
 #endif
 
+PyObject * MemoryException::getPyExceptionType() const
+{
+    return PyExc_MemoryError;
+}
+
 // ---------------------------------------------------------
 
 AccessViolation::AccessViolation()
@@ -414,6 +455,11 @@ AccessViolation::AccessViolation(const char * sMessage)
 AccessViolation::AccessViolation(const std::string& sMessage)
   : Exception(sMessage)
 {
+}
+
+PyObject *AccessViolation::getPyExceptionType() const
+{
+    return PyExc_OSError;
 }
 
 // ---------------------------------------------------------
@@ -433,6 +479,11 @@ AbnormalProgramTermination::AbnormalProgramTermination(const std::string& sMessa
 {
 }
 
+PyObject *AbnormalProgramTermination::getPyExceptionType() const
+{
+    return PyExc_InterruptedError;
+}
+
 // ---------------------------------------------------------
 
 UnknownProgramOption::UnknownProgramOption()
@@ -448,6 +499,11 @@ UnknownProgramOption::UnknownProgramOption(const char * sMessage)
 UnknownProgramOption::UnknownProgramOption(const std::string& sMessage)
   : Exception(sMessage)
 {
+}
+
+PyObject *UnknownProgramOption::getPyExceptionType() const
+{
+    return PyExc_FC_UnknownProgramOption;
 }
 
 // ---------------------------------------------------------
@@ -484,7 +540,8 @@ TypeError::TypeError(const std::string& sMessage)
 {
 }
 
-PyObject *TypeError::getPyExceptionType() const {
+PyObject *TypeError::getPyExceptionType() const
+{
     return PyExc_TypeError;
 }
 
@@ -505,7 +562,8 @@ ValueError::ValueError(const std::string& sMessage)
 {
 }
 
-PyObject *ValueError::getPyExceptionType() const {
+PyObject *ValueError::getPyExceptionType() const
+{
     return PyExc_ValueError;
 }
 
@@ -526,7 +584,8 @@ IndexError::IndexError(const std::string& sMessage)
 {
 }
 
-PyObject *IndexError::getPyExceptionType() const {
+PyObject *IndexError::getPyExceptionType() const
+{
     return PyExc_IndexError;
 }
 
@@ -547,7 +606,8 @@ NameError::NameError(const std::string& sMessage)
 {
 }
 
-PyObject *NameError::getPyExceptionType() const {
+PyObject *NameError::getPyExceptionType() const
+{
     return PyExc_NameError;
 }
 
@@ -568,7 +628,8 @@ ImportError::ImportError(const std::string& sMessage)
 {
 }
 
-PyObject *ImportError::getPyExceptionType() const {
+PyObject *ImportError::getPyExceptionType() const
+{
     return PyExc_ImportError;
 }
 
@@ -589,7 +650,8 @@ AttributeError::AttributeError(const std::string& sMessage)
 {
 }
 
-PyObject *AttributeError::getPyExceptionType() const {
+PyObject *AttributeError::getPyExceptionType() const
+{
     return PyExc_AttributeError;
 }
 
@@ -610,7 +672,8 @@ RuntimeError::RuntimeError(const std::string& sMessage)
 {
 }
 
-PyObject *RuntimeError::getPyExceptionType() const {
+PyObject *RuntimeError::getPyExceptionType() const
+{
     return PyExc_RuntimeError;
 }
 
@@ -631,6 +694,11 @@ BadGraphError::BadGraphError(const std::string& sMessage)
 {
 }
 
+PyObject *BadGraphError::getPyExceptionType() const
+{
+    return PyExc_FC_BadGraphError;
+}
+
 // ---------------------------------------------------------
 
 NotImplementedError::NotImplementedError()
@@ -648,49 +716,52 @@ NotImplementedError::NotImplementedError(const std::string& sMessage)
 {
 }
 
-PyObject *NotImplementedError::getPyExceptionType() const {
+PyObject *NotImplementedError::getPyExceptionType() const
+{
     return PyExc_NotImplementedError;
 }
 
 // ---------------------------------------------------------
 
-DivisionByZeroError::DivisionByZeroError()
+ZeroDivisionError::ZeroDivisionError()
   : Exception()
 {
 }
 
-DivisionByZeroError::DivisionByZeroError(const char * sMessage)
+ZeroDivisionError::ZeroDivisionError(const char * sMessage)
   : Exception(sMessage)
 {
 }
 
-DivisionByZeroError::DivisionByZeroError(const std::string& sMessage)
+ZeroDivisionError::ZeroDivisionError(const std::string& sMessage)
   : Exception(sMessage)
 {
 }
 
-PyObject *DivisionByZeroError::getPyExceptionType() const {
+PyObject *ZeroDivisionError::getPyExceptionType() const
+{
     return PyExc_ZeroDivisionError;
 }
 
 // ---------------------------------------------------------
 
-ReferencesError::ReferencesError()
+ReferenceError::ReferenceError()
 : Exception()
 {
 }
 
-ReferencesError::ReferencesError(const char * sMessage)
+ReferenceError::ReferenceError(const char * sMessage)
   : Exception(sMessage)
 {
 }
 
-ReferencesError::ReferencesError(const std::string& sMessage)
+ReferenceError::ReferenceError(const std::string& sMessage)
   : Exception(sMessage)
 {
 }
 
-PyObject *ReferencesError::getPyExceptionType() const {
+PyObject *ReferenceError::getPyExceptionType() const
+{
     return PyExc_ReferenceError;
 }
 
@@ -711,6 +782,11 @@ ExpressionError::ExpressionError(const std::string& sMessage)
 {
 }
 
+PyObject * ExpressionError::getPyExceptionType() const
+{
+    return PyExc_FC_ExpressionError;
+}
+
 // ---------------------------------------------------------
 
 ParserError::ParserError()
@@ -726,6 +802,11 @@ ParserError::ParserError(const char * sMessage)
 ParserError::ParserError(const std::string& sMessage)
   : Exception(sMessage)
 {
+}
+
+PyObject * ParserError::getPyExceptionType() const
+{
+    return PyExc_FC_ParserError;
 }
 
 // ---------------------------------------------------------
@@ -745,7 +826,8 @@ UnicodeError::UnicodeError(const std::string& sMessage)
 {
 }
 
-PyObject *UnicodeError::getPyExceptionType() const {
+PyObject *UnicodeError::getPyExceptionType() const
+{
     return PyExc_UnicodeError;
 }
 
@@ -766,7 +848,8 @@ OverflowError::OverflowError(const std::string& sMessage)
 {
 }
 
-PyObject *OverflowError::getPyExceptionType() const {
+PyObject *OverflowError::getPyExceptionType() const
+{
     return PyExc_OverflowError;
 }
 
@@ -787,7 +870,8 @@ UnderflowError::UnderflowError(const std::string& sMessage)
 {
 }
 
-PyObject *UnderflowError::getPyExceptionType() const {
+PyObject *UnderflowError::getPyExceptionType() const
+{
     return PyExc_ArithmeticError;
 }
 
@@ -808,7 +892,8 @@ UnitsMismatchError::UnitsMismatchError(const std::string& sMessage)
 {
 }
 
-PyObject *UnitsMismatchError::getPyExceptionType() const {
+PyObject *UnitsMismatchError::getPyExceptionType() const
+{
     return PyExc_ArithmeticError;
 }
 
@@ -829,6 +914,11 @@ CADKernelError::CADKernelError(const std::string& sMessage)
 {
 }
 
+PyObject * CADKernelError::getPyExceptionType() const
+{
+    return PyExc_FC_CADKernelError;
+}
+
 // ---------------------------------------------------------
 
 RestoreError::RestoreError()
@@ -844,6 +934,11 @@ RestoreError::RestoreError(const char * sMessage)
 RestoreError::RestoreError(const std::string& sMessage)
   : Exception(sMessage)
 {
+}
+
+PyObject * RestoreError::getPyExceptionType() const
+{
+    return PyExc_IOError;
 }
 
 // ---------------------------------------------------------
@@ -866,7 +961,7 @@ SignalException::SignalException()
 
 SignalException::~SignalException()
 {
-    sigaction (SIGSEGV, &old_action, NULL);
+    sigaction (SIGSEGV, &old_action, nullptr);
 #ifdef _DEBUG
     std::cout << "Restore old signal handler" << std::endl;
 #endif

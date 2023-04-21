@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_ViewProviderPath_H
 #define PATH_ViewProviderPath_H
 
 #include <App/PropertyGeo.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
+
 
 class SoCoordinate3;
 class SoDrawStyle;
@@ -47,7 +46,7 @@ class PathSelectionObserver;
 class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER(PathGui::ViewProviderPath);
-    typedef ViewProviderGeometryObject inherited;
+    using inherited = ViewProviderGeometryObject;
 
 public:
     /// constructor.
@@ -117,7 +116,7 @@ protected:
 
  };
 
- typedef Gui::ViewProviderPythonFeatureT<ViewProviderPath> ViewProviderPathPython;
+ using ViewProviderPathPython = Gui::ViewProviderPythonFeatureT<ViewProviderPath>;
 
 } //namespace PathGui
 

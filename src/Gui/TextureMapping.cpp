@@ -20,40 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <QImage>
-# include <QMessageBox>
 # include <QImageReader>
 # include <QKeyEvent>
+# include <QMessageBox>
 #endif
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-#include <QDialogButtonBox>
-
-#include <App/Application.h>
 
 #include "TextureMapping.h"
-#include "BitmapFactory.h"
 #include "ui_TextureMapping.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Document.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::TextureMapping */
 
 TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), grp(0), tex(0), env(0)
+  : QDialog(parent, fl), grp(nullptr), tex(nullptr), env(nullptr)
 {
     ui = new Ui_TextureMapping();
     ui->setupUi(this);
+    connect(ui->fileChooser, &FileChooser::fileNameSelected,
+            this, &TextureMapping::onFileChooserFileNameSelected);
+    connect(ui->checkEnv, &QCheckBox::toggled,
+            this, &TextureMapping::onCheckEnvToggled);
+
     ui->checkGlobal->hide();
 
     // set a dummy string which is not a valid file name
@@ -77,7 +79,7 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     if (!path.empty()) {
         QString file = QString::fromUtf8(path.c_str());
         ui->fileChooser->setFileName(file);
-        on_fileChooser_fileNameSelected(file);
+        onFileChooserFileNameSelected(file);
     }
 }
 
@@ -122,7 +124,7 @@ void TextureMapping::keyPressEvent(QKeyEvent *e)
     e->ignore();
 }
 
-void TextureMapping::on_fileChooser_fileNameSelected(const QString& s)
+void TextureMapping::onFileChooserFileNameSelected(const QString& s)
 {
     QImage image;
     if (!image.load(s)) {
@@ -164,7 +166,7 @@ void TextureMapping::on_fileChooser_fileNameSelected(const QString& s)
     App::GetApplication().Config()["TextureImage"] = (const char*)s.toUtf8();
 }
 
-void TextureMapping::on_checkEnv_toggled(bool b)
+void TextureMapping::onCheckEnvToggled(bool b)
 {
     if (!this->grp)
         return;
@@ -181,7 +183,7 @@ void TextureMapping::on_checkEnv_toggled(bool b)
 TaskTextureMapping::TaskTextureMapping()
 {
     dialog = new TextureMapping();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(dialog);
     Content.push_back(taskbox);
 }

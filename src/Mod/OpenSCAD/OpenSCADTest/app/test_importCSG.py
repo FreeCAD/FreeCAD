@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -38,6 +37,7 @@ __url__ = "https://www.freecadweb.org"
 class TestImportCSG(unittest.TestCase):
 
     MODULE = 'test_importCSG' # file name without extension
+    temp_dir = tempfile.TemporaryDirectory()
 
 
     def setUp(self):
@@ -73,136 +73,103 @@ class TestImportCSG(unittest.TestCase):
 
         FreeCAD.closeDocument("CSG")
 
+    def utility_create_scad(self, scadCode, name):
+        filename = self.temp_dir.name + os.path.sep + name + ".scad"
+        print (f"Creating {filename}")
+        f = open(filename,"w+")
+        f.write(scadCode)
+        f.close()
+        return importCSG.open(filename)
+
     def test_import_sphere(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "sphere.scad"
-            f = open(filename,"w+")
-            f.write("sphere(10.0);")
-            f.close()
-            doc = importCSG.open(filename)
-            sphere = doc.getObject("sphere")
-            self.assertTrue (sphere is not None)
-            self.assertTrue (sphere.Radius == 10.0)
-            FreeCAD.closeDocument(doc.Name)
+        doc = self.utility_create_scad("sphere(10.0);","sphere")
+        sphere = doc.getObject("sphere")
+        self.assertTrue (sphere is not None)
+        self.assertTrue (sphere.Radius == 10.0)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_cylinder(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "cylinder.scad"
-            f = open(filename,"w+")
-            f.write("cylinder(50.0,d=10.0);")
-            f.close()
-            doc = importCSG.open(filename)
-            cylinder = doc.getObject("cylinder")
-            self.assertTrue (cylinder is not None)
-            self.assertTrue (cylinder.Radius == 5.0)
-            self.assertTrue (cylinder.Height == 50.0)
-            FreeCAD.closeDocument(doc.Name)
+        doc = self.utility_create_scad("cylinder(50.0,d=10.0);","cylinder")
+        cylinder = doc.getObject("cylinder")
+        self.assertTrue (cylinder is not None)
+        self.assertTrue (cylinder.Radius == 5.0)
+        self.assertTrue (cylinder.Height == 50.0)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_cube(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "cube.scad"
-            f = open(filename,"w+")
-            f.write("cube([1.0,2.0,3.0]);")
-            f.close()
-            doc = importCSG.open(filename)
-            cube = doc.getObject("cube")
-            self.assertTrue (cube is not None)
-            self.assertTrue (cube.Length == 1.0)
-            self.assertTrue (cube.Width == 2.0)
-            self.assertTrue (cube.Height == 3.0)
-            FreeCAD.closeDocument(doc.Name)
+        doc = self.utility_create_scad("cube([1.0,2.0,3.0]);","cube")
+        cube = doc.getObject("cube")
+        self.assertTrue (cube is not None)
+        self.assertTrue (cube.Length == 1.0)
+        self.assertTrue (cube.Width == 2.0)
+        self.assertTrue (cube.Height == 3.0)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_circle(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "circle.scad"
-            f = open(filename,"w+")
-            f.write("circle(10.0);")
-            f.close()
-            doc = importCSG.open(filename)
-            circle = doc.getObject("circle")
-            self.assertTrue (circle is not None)
-            self.assertTrue (circle.Radius == 10.0)
-            FreeCAD.closeDocument(doc.Name)
+        doc = self.utility_create_scad("circle(10.0);","circle")
+        circle = doc.getObject("circle")
+        self.assertTrue (circle is not None)
+        self.assertTrue (circle.Radius == 10.0)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_square(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "square.scad"
-            f = open(filename,"w+")
-            f.write("square([1.0,2.0]);")
-            f.close()
-            doc = importCSG.open(filename)
-            square = doc.getObject("square")
-            self.assertTrue (square is not None)
-            self.assertTrue (square.Length == 1.0)
-            self.assertTrue (square.Width == 2.0)
-            FreeCAD.closeDocument(doc.Name)
+        doc = self.utility_create_scad("square([1.0,2.0]);","square")
+        square = doc.getObject("square")
+        self.assertTrue (square is not None)
+        self.assertTrue (square.Length == 1.0)
+        self.assertTrue (square.Width == 2.0)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_text(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "text.scad"
-            f = open(filename,"w+")
-            f.write("text(\"X\");") # Keep it short to keep the test fast-ish
-            f.close()
-            try:
-                doc = importCSG.open(filename)
-                text = doc.getObject("text")
-                self.assertTrue (text is not None)
-                FreeCAD.closeDocument(doc.Name)
-            except Exception:
-                pass # We may not have the DXF importer available
+        try:
+            doc = self.utility_create_scad("text(\"X\");","text") # Keep it short to keep the test fast-ish
+            text = doc.getObject("text")
+            self.assertTrue (text is not None)
+            FreeCAD.closeDocument(doc.Name)
+        except Exception:
+            return # We may not have the DXF importer available
+
+        # Try a number with a set script:
+        doc = self.utility_create_scad("text(\"2\",script=\"latin\");","two_text")
+        text = doc.getObject("text")
+        self.assertTrue (text is not None)
+        FreeCAD.closeDocument(doc.Name)
+
+        # Leave off the script (which is supposed to default to "latin")
+        doc = self.utility_create_scad("text(\"1\");","one_text")
+        text = doc.getObject("text")
+        self.assertTrue (text is not None)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_polygon_nopath(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "polygon_nopath.scad"
-            f = open(filename,"w+")
-            f.write("polygon(points=[[0,0],[100,0],[130,50],[30,50]]);")
-            f.close()
-            doc = importCSG.open(filename)
-            polygon = doc.getObject("polygon")
-            self.assertTrue (polygon is not None)
-            self.assertAlmostEqual (polygon.Shape.Area, 5000.0)
-            FreeCAD.closeDocument(doc.Name)
+        doc = self.utility_create_scad("polygon(points=[[0,0],[100,0],[130,50],[30,50]]);","polygon_nopath")
+        polygon = doc.getObject("polygon")
+        self.assertTrue (polygon is not None)
+        self.assertAlmostEqual (polygon.Shape.Area, 5000.0)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_polygon_path(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "polygon_path.scad"
-            f = open(filename,"w+")
-            f.write("polygon([[0,0],[100,0],[130,50],[30,50]], paths=[[0,1,2,3]]);")
-            f.close()
-            doc = importCSG.open(filename)
-            wire = doc.ActiveObject # With paths, the polygon gets created as a wire...
-            self.assertTrue (wire is not None)
-            self.assertAlmostEqual (wire.Shape.Area, 5000.0)
-            FreeCAD.closeDocument(doc.Name)
-    
+        doc = self.utility_create_scad("polygon([[0,0],[100,0],[130,50],[30,50]], paths=[[0,1,2,3]]);","polygon_path")
+        wire = doc.ActiveObject # With paths, the polygon gets created as a wire...
+        self.assertTrue (wire is not None)
+        self.assertAlmostEqual (wire.Shape.Area, 5000.0)
+        FreeCAD.closeDocument(doc.Name)
+
     def test_import_polyhedron(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + "polyhedron.scad"
-            f = open(filename,"w+")
-            f.write(
+        doc = self.utility_create_scad(
 """
 polyhedron(
   points=[ [10,10,0],[10,-10,0],[-10,-10,0],[-10,10,0], // the four points at base
-           [0,0,10]  ],                                 // the apex point 
+           [0,0,10]  ],                                 // the apex point
   faces=[ [0,1,4],[1,2,4],[2,3,4],[3,0,4],              // each triangle side
               [1,0,3],[2,1,3] ]                         // two triangles for square base
  );
-"""
+""","polyhedron"
                 )
-            f.close()
-            doc = importCSG.open(filename)
-            polyhedron = doc.ActiveObject # With paths, the polygon gets created as a wire...
-            self.assertTrue (polyhedron is not None)
-            self.assertAlmostEqual (polyhedron.Shape.Volume, 1333.3333, 4)
-            FreeCAD.closeDocument(doc.Name)
-
-    def utility_create_scad(self, scadCode, name):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.path.sep + name + ".scad"
-            f = open(filename,"w+")
-            f.write(scadCode)
-            f.close()
-            return importCSG.open(filename)
+        polyhedron = doc.ActiveObject # With paths, the polygon gets created as a wire...
+        self.assertTrue (polyhedron is not None)
+        self.assertAlmostEqual (polyhedron.Shape.Volume, 1333.3333, 4)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_difference(self):
         doc = self.utility_create_scad("difference() { cube(15, center=true); sphere(10); }", "difference")
@@ -262,7 +229,7 @@ polyhedron(
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
         FreeCAD.closeDocument(doc.Name)
-       
+
     def test_import_linear_extrude(self):
         doc = self.utility_create_scad("linear_extrude(height = 20) square([20, 10], center = true);", "linear_extrude_simple")
         object = doc.ActiveObject
@@ -305,6 +272,13 @@ polyhedron(
 #        FreeCAD.closeDocument(doc.Name)
 
     def test_import_import_stl(self):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+        transfer_mechanism = preferences.GetInt('transfermechanism',0)
+        if transfer_mechanism == 2:
+            print ("Cannot test STL import, communication with OpenSCAD is via pipes")
+            print ("If either OpenSCAD or FreeCAD are installed as sandboxed packages,")
+            print ("use of import is not possible.")
+            return
         testfile = join(self.test_dir, "Cube.stl").replace('\\','/')
         doc = self.utility_create_scad("import(\"{}\");".format(testfile), "import_stl");
         object = doc.ActiveObject
@@ -317,13 +291,13 @@ polyhedron(
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
         FreeCAD.closeDocument(doc.Name)
-        
+
         doc = self.utility_create_scad("resize([2,2,0]) cube();", "resize_with_zero")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 4.000000, 6)
         FreeCAD.closeDocument(doc.Name)
-        
+
         doc = self.utility_create_scad("resize([2,0,0], auto=true) cube();", "resize_with_auto")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
@@ -349,6 +323,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
 }""", "resize_non_uniform_sphere")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
+        object.Shape.tessellate(0.025) # To ensure the bounding box calculation is correct
         self.assertAlmostEqual (object.Shape.BoundBox.XLength, 2*8.5, 1)
         self.assertAlmostEqual (object.Shape.BoundBox.YLength, 2*8.5, 1)
         self.assertAlmostEqual (object.Shape.BoundBox.ZLength, 10.0, 1)
@@ -374,7 +349,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
             self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
             self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
             FreeCAD.closeDocument(doc.Name)
-        
+
             testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
             doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
             object = doc.ActiveObject
@@ -415,7 +390,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
         self.assertAlmostEqual (object.Shape.Area, 0.75*0.75 - 0.25*0.25, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        # Unimplemented functionality: 
+        # Unimplemented functionality:
 
         # With cut=false, the twisted unit square projects to a circle of radius sqrt(0.5)
         #doc = self.utility_create_scad(f"projection(cut=false) {base_shape}", "projection_circle")
@@ -438,3 +413,125 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
 
     def test_import_offset(self):
         pass
+
+    def test_empty_union(self):
+        content = """union() {
+ color(c = [0.30, 0.50, 0.80, 0.50]) {
+  union() {
+   union() {
+    union() {
+     translate(v = [23.0, -9.50, 13.60]) {
+      union() {
+       difference() {
+        difference() {
+         difference() {
+          difference() {
+           difference() {
+            difference() {
+             difference() {
+              union() {
+               union() {
+                union() {
+                 union() {
+                  union() {
+                   union() {
+                    union() {
+                     union();
+                     translate(v = [2.50, 2.50, 9.50]) {
+                      cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                     }
+                    }
+                    translate(v = [11.50, 2.50, 9.50]) {
+                     cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                    }
+                   }
+                   translate(v = [11.50, 6.30, 9.50]) {
+                    cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                   }
+                  }
+                  translate(v = [2.50, 6.30, 9.50]) {
+                   cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                  }
+                 }
+                 translate(v = [2.50, 0.0, 0.0]) {
+                  cube(size = [9.0, 8.80, 19.0]);
+                 }
+                }
+                translate(v = [0.0, 2.50, 0.0]) {
+                 cube(size = [14.0, 3.80, 19.0]);
+                }
+               }
+              }
+              translate(v = [-1.0, 8.40, 3.50]) {
+               cube(size = [30.0, 10.0, 12.0]);
+              }
+             }
+             translate(v = [4.0, 4.0, -0.10]) {
+              cylinder($fn = 30, h = 20.0, r = 1.750, r1 = 1.80);
+             }
+            }
+            translate(v = [9.0, 4.40, -0.10]) {
+             cylinder($fn = 30, h = 20.0, r = 2.150, r1 = 2.20);
+            }
+           }
+           translate(v = [12.30, 2.10, -0.10]) {
+            cube(size = [5.0, 2.20, 20.0]);
+           }
+          }
+          translate(v = [1.90, 7.60, -0.10]) {
+           cube(size = [2.20, 5.0, 20.0]);
+          }
+         }
+         translate(v = [3.60, 7.20, 1.80]) {
+          cube(size = [30.0, 10.0, 2.0]);
+         }
+        }
+        translate(v = [0, 0, 13.40]) {
+         translate(v = [3.60, 7.20, 1.80]) {
+          cube(size = [30.0, 10.0, 2.0]);
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}"""
+        doc = self.utility_create_scad(content, "empty_union")
+        self.assertEqual (len(doc.RootObjects), 1)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_complex_fuse_no_placement(self):
+        # Issue #7878 - https://github.com/FreeCAD/FreeCAD/issues/7878
+
+        csg_data = """
+group() {
+    multmatrix([[1, 0, 0, 0], [0, 1, 0, -127], [0, 0, 1, -6], [0, 0, 0, 1]]) {
+        union() {
+            group() {
+                difference() {
+                    cube(size = [4, 106.538, 12], center = false);
+                    group() {
+                            polyhedron(points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1]], faces = [[0, 1, 2], [5, 4, 3], [3, 1, 0], [1, 3, 4], [0, 2, 3], [5, 3, 2], [4, 2, 1], [2, 4, 5]], convexity = 1);
+                    }
+                }
+            }
+            polyhedron(points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1]], faces = [[0, 1, 2], [5, 4, 3], [3, 1, 0], [1, 3, 4], [0, 2, 3], [5, 3, 2], [4, 2, 1], [2, 4, 5]], convexity = 1);
+            polyhedron(points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [0, 1, 1]], faces = [[0, 1, 2], [5, 4, 3], [3, 1, 0], [1, 3, 4], [0, 2, 3], [5, 3, 2], [4, 2, 1], [2, 4, 5]], convexity = 1);
+        }
+    }
+    multmatrix([[1, 0, 0, 6.4], [0, 1, 0, -125], [0, 0, 1, -40], [0, 0, 0, 1]]) {
+        difference() {
+            cylinder($fn = 0, $fa = 12, $fs = 2, h = 80, r1 = 8, r2 = 8, center = false);
+            multmatrix([[1, 0, 0, -14.4], [0, 1, 0, -8], [0, 0, 1, -5], [0, 0, 0, 1]]) {
+                cube(size = [8, 16, 90], center = false);
+            }
+        }
+    }
+}
+"""
+        doc = self.utility_create_scad(csg_data, "complex-fuse")
+        self.assertEqual (doc.RootObjects[0].Placement, FreeCAD.Placement())
+        FreeCAD.closeDocument(doc.Name)

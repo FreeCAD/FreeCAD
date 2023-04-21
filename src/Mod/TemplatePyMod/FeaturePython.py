@@ -547,7 +547,7 @@ class ViewProviderMolecule:
 		sep2.addChild(coin.SoSphere())
 		obj.RootNode.addChild(sep1)
 		obj.RootNode.addChild(sep2)
-		# triggers an updateData call so the the assignment at the end
+		# triggers an updateData call so the assignment at the end
 		obj.Proxy = self
 
 	def updateData(self, fp, prop):
@@ -597,7 +597,7 @@ class ViewProviderCircleSet:
 
 	def updateData(self, fp, prop):
 			if prop == "Shape":
-				edges=p = fp.getPropertyByName("Shape").Edges
+				edges = fp.getPropertyByName("Shape").Edges
 				pts=[]
 				ver=[]
 				for i in edges:
@@ -630,8 +630,8 @@ def makeCircleSet():
 
 	doc=FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("App::FeaturePython","Circles")
-	c=CircleSet(a)
-	v=ViewProviderCircleSet(a.ViewObject)
+	CircleSet(a)
+	ViewProviderCircleSet(a.ViewObject)
 	a.Shape=comp
 	doc.recompute()
 

@@ -41,14 +41,24 @@ class DlgSettingsViewColor : public PreferencePage
   Q_OBJECT
 
 public:
-  DlgSettingsViewColor(QWidget* parent = 0);
-  ~DlgSettingsViewColor();
+  explicit DlgSettingsViewColor(QWidget* parent = nullptr);
+  ~DlgSettingsViewColor() override;
 
-  void saveSettings();
-  void loadSettings();
+  void saveSettings() override;
+  void loadSettings() override;
 
 protected:
-  void changeEvent(QEvent *e);
+  void changeEvent(QEvent *e) override;
+
+protected Q_SLOTS:
+  void onSwitchGradientColorsPressed();
+  void onRadioButtonSimpleToggled(bool val);
+  void onRadioButtonGradientToggled(bool val);
+  void onRadioButtonRadialGradientToggled(bool val);
+  void onCheckMidColorToggled(bool val);
+
+private:
+	void setGradientColorVisibility(bool val);
 
 private:
   std::unique_ptr<Ui_DlgSettingsViewColor> ui;

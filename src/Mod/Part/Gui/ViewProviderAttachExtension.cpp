@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # ifdef _MSC_VER
 #  define _USE_MATH_DEFINES
 #  include <cmath>
-# endif //_MSC_VER
+# endif
 # include <QAction>
 # include <QMenu>
 #endif
 
-#include "ViewProviderAttachExtension.h"
-#include "TaskAttacher.h"
-#include <Mod/Part/App/AttachExtension.h>
-
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Mod/Part/App/AttachExtension.h>
+
+#include "ViewProviderAttachExtension.h"
+#include "TaskAttacher.h"
+
 
 using namespace PartGui;
 
@@ -111,12 +111,15 @@ void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
 
 void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
 {
-    // toggle command to display components
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Attachment editor"));
-    if (Gui::Control().activeDialog())
-        act->setDisabled(true);
-    func->trigger(act, boost::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+    bool attach = getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId());
+    if (attach) {
+        // toggle command to display components
+        Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+        QAction* act = menu->addAction(QObject::tr("Attachment editor"));
+        if (Gui::Control().activeDialog())
+            act->setDisabled(true);
+        func->trigger(act, std::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+    }
 }
 
 void ViewProviderAttachExtension::showAttachmentEditor()

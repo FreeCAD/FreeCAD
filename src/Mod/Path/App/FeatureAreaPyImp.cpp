@@ -22,9 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Objects.hxx>
 #include <Mod/Part/App/TopoShapePy.h>
-#include "FeatureArea.h"
 
 // inclusion of the generated files (generated out of FeatureAreaPy.xml)
 #include "FeatureAreaPy.h"
@@ -32,11 +30,11 @@
 
 #include "AreaPy.h"
 
+
 using namespace Path;
 
-
 // returns a string which represent the object e.g. when printed in python
-std::string FeatureAreaPy::representation(void) const
+std::string FeatureAreaPy::representation() const
 {
     return std::string("<Path::FeatureArea>");
 }
@@ -45,14 +43,14 @@ std::string FeatureAreaPy::representation(void) const
 PyObject* FeatureAreaPy::getArea(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     return new AreaPy(new Area(getFeatureAreaPtr()->getArea()));
 }
 
 PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),NULL};
+    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),nullptr};
 
     //Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_CONF);
@@ -65,11 +63,11 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     //populate the CONF variables with values in properties
     PARAM_FOREACH(AREA_SET,AREA_PARAMS_CONF)
 
-    //Parse arguments to overwrite CONF variables 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, 
-                "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
+    //Parse arguments to overwrite CONF variables
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+                "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist,
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        return 0;
+        return nullptr;
 
 #define AREA_GET(_param) \
     feature->PARAM_FNAME(_param).setValue(\
@@ -81,7 +79,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     return Py_None;
 }
 
-Py::Object FeatureAreaPy::getWorkPlane(void) const {
+Py::Object FeatureAreaPy::getWorkPlane() const {
     return Part::shape2pyshape(getFeatureAreaPtr()->getArea().getPlane());
 }
 
@@ -98,7 +96,7 @@ void FeatureAreaPy::setWorkPlane(Py::Object obj) {
 
 PyObject *FeatureAreaPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 

@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+
 # include <QDialog>
 # include <QDoubleSpinBox>
-# include <QVBoxLayout>
 # include <QMessageBox>
 # include <QPointer>
+# include <QVBoxLayout>
 #endif
 
-#include "SegmentationBestFit.h"
-#include "ui_SegmentationBestFit.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
@@ -41,8 +38,11 @@
 #include <Gui/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+
+#include "SegmentationBestFit.h"
+#include "ui_SegmentationBestFit.h"
+
 
 using namespace MeshGui;
 
@@ -51,8 +51,8 @@ class PlaneFitParameter : public FitParameter
 {
 public:
     PlaneFitParameter() {}
-    virtual ~PlaneFitParameter() {}
-    virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+    ~PlaneFitParameter() override {}
+    std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
         fit.AddPoints(pts.points);
@@ -74,8 +74,8 @@ class CylinderFitParameter : public FitParameter
 {
 public:
     CylinderFitParameter() {}
-    virtual ~CylinderFitParameter() {}
-    virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+    ~CylinderFitParameter() override {}
+    std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
         fit.AddPoints(pts.points);
@@ -129,8 +129,8 @@ class SphereFitParameter : public FitParameter
 {
 public:
     SphereFitParameter() {}
-    virtual ~SphereFitParameter() {}
-    virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+    ~SphereFitParameter() override {}
+    std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::SphereFit fit;
         fit.AddPoints(pts.points);
@@ -207,7 +207,7 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
     int index = 0;
     QGridLayout *layout;
     layout = new QGridLayout(groupBox);
-    for (auto it : parameter) {
+    for (const auto& it : parameter) {
         QLabel* label = new QLabel(groupBox);
         label->setText(it.first);
         layout->addWidget(label, index, 0, 1, 1);
@@ -221,9 +221,12 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
         ++index;
     }
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    QMetaObject::connectSlotsByName(this);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ParametersDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ParametersDialog::reject);
+    connect(regionButton, &QPushButton::clicked, this, &ParametersDialog::onRegionClicked);
+    connect(singleButton, &QPushButton::clicked, this, &ParametersDialog::onSingleClicked);
+    connect(clearButton, &QPushButton::clicked, this, &ParametersDialog::onClearClicked);
+    connect(computeButton, &QPushButton::clicked, this, &ParametersDialog::onComputeClicked);
 
     Gui::SelectionObject obj(mesh);
     std::vector<Gui::SelectionObject> sel;
@@ -242,27 +245,27 @@ ParametersDialog::~ParametersDialog()
     delete fitParameter;
 }
 
-void ParametersDialog::on_region_clicked()
+void ParametersDialog::onRegionClicked()
 {
     meshSel.startSelection();
 }
 
-void ParametersDialog::on_single_clicked()
+void ParametersDialog::onSingleClicked()
 {
     meshSel.selectTriangle();
 }
 
-void ParametersDialog::on_clear_clicked()
+void ParametersDialog::onClearClicked()
 {
     meshSel.clearSelection();
 }
 
-void ParametersDialog::on_compute_clicked()
+void ParametersDialog::onComputeClicked()
 {
     const Mesh::MeshObject& kernel = myMesh->Mesh.getValue();
     if (kernel.hasSelectedFacets()) {
         FitParameter::Points fitpts;
-        std::vector<unsigned long> facets, points;
+        std::vector<Mesh::ElementIndex> facets, points;
         kernel.getFacetsFromSelection(facets);
         points = kernel.getPointsFromFacets(facets);
         MeshCore::MeshPointArray coords = kernel.getKernel().GetPoints(points);
@@ -310,6 +313,8 @@ SegmentationBestFit::SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent, Q
 {
     ui = new Ui_SegmentationBestFit;
     ui->setupUi(this);
+    setupConnections();
+
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
     ui->numCyl->setRange(1, INT_MAX);
@@ -329,7 +334,17 @@ SegmentationBestFit::~SegmentationBestFit()
     delete ui;
 }
 
-void SegmentationBestFit::on_planeParameters_clicked()
+void SegmentationBestFit::setupConnections()
+{
+    connect(ui->planeParameters, &QPushButton::clicked,
+            this, &SegmentationBestFit::onPlaneParametersClicked);
+    connect(ui->cylinderParameters, &QPushButton::clicked,
+            this, &SegmentationBestFit::onCylinderParametersClicked);
+    connect(ui->sphereParameters, &QPushButton::clicked,
+            this, &SegmentationBestFit::onSphereParametersClicked);
+}
+
+void SegmentationBestFit::onPlaneParametersClicked()
 {
     ParameterList list;
     std::vector<float> p = planeParameter;
@@ -346,7 +361,7 @@ void SegmentationBestFit::on_planeParameters_clicked()
     list.push_back(std::make_pair(axis + y, p[4]));
     list.push_back(std::make_pair(axis + z, p[5]));
 
-    static QPointer<QDialog> dialog = 0;
+    static QPointer<QDialog> dialog = nullptr;
     if (!dialog)
         dialog = new ParametersDialog(planeParameter,
                                       new PlaneFitParameter,
@@ -355,7 +370,7 @@ void SegmentationBestFit::on_planeParameters_clicked()
     dialog->show();
 }
 
-void SegmentationBestFit::on_cylinderParameters_clicked()
+void SegmentationBestFit::onCylinderParametersClicked()
 {
     ParameterList list;
     std::vector<float> p = cylinderParameter;
@@ -374,7 +389,7 @@ void SegmentationBestFit::on_cylinderParameters_clicked()
     list.push_back(std::make_pair(axis + z, p[5]));
     list.push_back(std::make_pair(radius,   p[6]));
 
-    static QPointer<QDialog> dialog = 0;
+    static QPointer<QDialog> dialog = nullptr;
     if (!dialog)
         dialog = new ParametersDialog(cylinderParameter,
                                       new CylinderFitParameter,
@@ -383,7 +398,7 @@ void SegmentationBestFit::on_cylinderParameters_clicked()
     dialog->show();
 }
 
-void SegmentationBestFit::on_sphereParameters_clicked()
+void SegmentationBestFit::onSphereParametersClicked()
 {
     ParameterList list;
     std::vector<float> p = sphereParameter;
@@ -398,7 +413,7 @@ void SegmentationBestFit::on_sphereParameters_clicked()
     list.push_back(std::make_pair(base + z, p[2]));
     list.push_back(std::make_pair(radius,   p[3]));
 
-    static QPointer<QDialog> dialog = 0;
+    static QPointer<QDialog> dialog = nullptr;
     if (!dialog)
         dialog = new ParametersDialog(sphereParameter,
                                       new SphereFitParameter,
@@ -504,7 +519,7 @@ TaskSegmentationBestFit::TaskSegmentationBestFit(Mesh::Feature* mesh)
 {
     widget = new SegmentationBestFit(mesh);
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

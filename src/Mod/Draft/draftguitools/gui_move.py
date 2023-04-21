@@ -102,13 +102,19 @@ class Move(gui_base_original.Modifier):
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _msg(translate("draft", "Pick start point"))
 
-    def finish(self, closed=False, cont=False):
-        """Finish the move operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         for ghost in self.ghosts:
             ghost.finalize()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                todo.ToDo.delayAfter(self.Activated, [])
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            todo.ToDo.delayAfter(self.Activated, [])
         super(Move, self).finish()
 
     def action(self, arg):
@@ -165,39 +171,46 @@ class Move(gui_base_original.Modifier):
         else:
             last = self.node[0]
             self.vector = self.point.sub(last)
-            self.move()
+            self.move(self.ui.isCopy.isChecked()
+                      or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
             if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
                 self.extendedCopy = True
             else:
-                self.finish(cont=True)
+                self.finish(cont=None)
 
     def set_ghosts(self):
         """Set the ghost to display."""
+        for ghost in self.ghosts:
+            ghost.remove()
         if self.ui.isSubelementMode.isChecked():
-            return self.set_subelement_ghosts()
-        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+            self.ghosts = self.get_subelement_ghosts()
+        else:
+            self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
-    def set_subelement_ghosts(self):
-        """Set ghost for the subelements."""
+    def get_subelement_ghosts(self):
+        """Get ghost for the subelements (vertices, edges)."""
         import Part
 
-        for object in self.selected_subelements:
-            for subelement in object.SubObjects:
-                if (isinstance(subelement, Part.Vertex)
-                        or isinstance(subelement, Part.Edge)):
-                    self.ghosts.append(trackers.ghostTracker(subelement))
+        ghosts = []
+        for sel in Gui.Selection.getSelectionEx("", 0):
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                if "Vertex" in sub or "Edge" in sub:
+                    shape = Part.getShape(sel.Object, sub, needSubElement=True, retType=0)
+                    ghosts.append(trackers.ghostTracker(shape))
+        return ghosts
 
-    def move(self):
+    def move(self, is_copy=False):
         """Perform the move of the subelements or the entire object."""
         if self.ui.isSubelementMode.isChecked():
-            self.move_subelements()
+            self.move_subelements(is_copy)
         else:
-            self.move_object()
+            self.move_object(is_copy)
 
-    def move_subelements(self):
+    def move_subelements(self, is_copy):
         """Move the subelements."""
+        Gui.addModule("Draft")
         try:
-            if self.ui.isCopy.isChecked():
+            if is_copy:
                 self.commit(translate("draft", "Copy"),
                             self.build_copy_subelements_command())
             else:
@@ -227,7 +240,7 @@ class Move(gui_base_original.Modifier):
                 arguments.append(_cmd)
 
         all_args = ', '.join(arguments)
-        command.append('Draft.copyMovedEdges([' + all_args + '])')
+        command.append('Draft.copy_moved_edges([' + all_args + '])')
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
@@ -242,7 +255,7 @@ class Move(gui_base_original.Modifier):
             for index, subelement in enumerate(obj.SubObjects):
                 if isinstance(subelement, Part.Vertex):
                     _vertex_index = int(obj.SubElementNames[index][V:]) - 1
-                    _cmd = 'Draft.moveVertex'
+                    _cmd = 'Draft.move_vertex'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -252,7 +265,7 @@ class Move(gui_base_original.Modifier):
                     command.append(_cmd)
                 elif isinstance(subelement, Part.Edge):
                     _edge_index = int(obj.SubElementNames[index][E:]) - 1
-                    _cmd = 'Draft.moveEdge'
+                    _cmd = 'Draft.move_edge'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
                     _cmd += obj.ObjectName + ', '
@@ -263,7 +276,7 @@ class Move(gui_base_original.Modifier):
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
-    def move_object(self):
+    def move_object(self, is_copy):
         """Move the object."""
         _doc = 'FreeCAD.ActiveDocument.'
         _selected = self.selected_objects
@@ -277,12 +290,12 @@ class Move(gui_base_original.Modifier):
         _cmd += '('
         _cmd += objects + ', '
         _cmd += DraftVecUtils.toString(self.vector) + ', '
-        _cmd += 'copy=' + str(self.ui.isCopy.isChecked())
+        _cmd += 'copy=' + str(is_copy)
         _cmd += ')'
         _cmd_list = [_cmd,
                      'FreeCAD.ActiveDocument.recompute()']
 
-        _mode = "Copy" if self.ui.isCopy.isChecked() else "Move"
+        _mode = "Copy" if is_copy else "Move"
         self.commit(translate("draft", _mode),
                     _cmd_list)
 
@@ -303,7 +316,7 @@ class Move(gui_base_original.Modifier):
         else:
             last = self.node[-1]
             self.vector = self.point.sub(last)
-            self.move()
+            self.move(self.ui.isCopy.isChecked())
             self.finish()
 
 

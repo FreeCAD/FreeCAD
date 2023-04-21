@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2021 FreeCAD Developers                                 *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -36,6 +37,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 
+import draftutils.utils as utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
 from draftobjects.layer import Layer
@@ -73,7 +75,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
-                                     "the line color of the layer")
+                                     "the shape color of the layer")
             vobj.addProperty("App::PropertyBool",
                              "OverrideShapeColorChildren",
                              "Layer",
@@ -150,7 +152,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The transparency of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyInteger",
+            vobj.addProperty("App::PropertyPercent",
                              "Transparency",
                              "Layer",
                              _tip)
@@ -238,20 +240,24 @@ class ViewProviderLayer:
             # and then sets the target property accordingly
             if hasattr(target_vobj, prop):
                 setattr(target_vobj, prop, getattr(vobj, prop))
-            else:
-                continue
 
-            # Use the line color for the text color if it exists
+            # Use the line color for the point color and text color
             if prop == "LineColor":
+                if hasattr(target_vobj, "PointColor"):
+                    target_vobj.PointColor = vobj.LineColor
                 if hasattr(target_vobj, "TextColor"):
                     target_vobj.TextColor = vobj.LineColor
-                if hasattr(target_vobj, "FontColor"):
-                    target_vobj.FontColor = vobj.LineColor
+            # Use the line width for the point size
+            elif prop == "LineWidth":
+                if hasattr(target_vobj, "PointSize"):
+                    target_vobj.PointSize = vobj.LineWidth
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
-        if prop in ("LineColor", "ShapeColor", "LineWidth",
-                    "DrawStyle", "Transparency", "Visibility"):
+        if (prop in ("LineColor", "ShapeColor", "LineWidth",
+                    "DrawStyle", "Transparency", "Visibility")
+                and hasattr(vobj, "OverrideLineColorChildren")
+                and hasattr(vobj, "OverrideShapeColorChildren")):
             self.change_view_properties(vobj, prop)
 
         if (prop in ("LineColor", "ShapeColor")
@@ -294,7 +300,21 @@ class ViewProviderLayer:
             vobj.signalChangeIcon()
 
     def canDragObject(self, obj):
-        """Return True to allow dragging one object from the Layer."""
+        """Return True to allow dragging one object from the Layer.
+
+        Also store parent group data for update_groups_after_drag_drop and
+        trigger that function.
+        """
+        if not hasattr(self, "old_parent_data"):
+            self.old_parent_data = {}
+        old_data = []
+        for parent in obj.InList:
+            if hasattr(parent, "Group"):
+                old_data.append([parent, parent.Group])
+        if old_data:
+            self.old_parent_data.setdefault(obj, old_data)
+            QtCore.QTimer.singleShot(0, self.update_groups_after_drag_drop)
+
         return True
 
     def canDragObjects(self):
@@ -314,9 +334,23 @@ class ViewProviderLayer:
 
         If the object being dropped is itself a `'Layer'`, return `False`
         to prevent dropping a layer inside a layer, at least for now.
+
+        Also store parent group data for update_groups_after_drag_drop and
+        trigger that function.
         """
-        if hasattr(obj, "Proxy") and isinstance(obj.Proxy, Layer):
+        if utils.get_type(obj) == "Layer":
             return False
+
+        if not hasattr(self, "old_parent_data"):
+            self.old_parent_data = {}
+        old_data = []
+        for parent in obj.InList:
+            if hasattr(parent, "Group"):
+                old_data.append([parent, parent.Group])
+        if old_data:
+            self.old_parent_data.setdefault(obj, old_data)
+            QtCore.QTimer.singleShot(0, self.update_groups_after_drag_drop)
+
         return True
 
     def canDropObjects(self):
@@ -330,7 +364,7 @@ class ViewProviderLayer:
         return immediately to prevent dropping a layer inside a layer,
         at least for now.
         """
-        if hasattr(otherobj, "Proxy") and isinstance(otherobj.Proxy, Layer):
+        if utils.get_type(otherobj) == "Layer":
             return
 
         obj = vobj.Object
@@ -342,43 +376,115 @@ class ViewProviderLayer:
 
             # Remove from all other layers (not automatic)
             for parent in otherobj.InList:
-                if (hasattr(parent, "Proxy")
-                        and isinstance(parent.Proxy, Layer)
-                        and otherobj in parent.Group
-                        and parent != obj):
+                if (parent != obj
+                        and utils.get_type(parent) == "Layer"
+                        and otherobj in parent.Group):
                     p_group = parent.Group
                     p_group.remove(otherobj)
                     parent.Group = p_group
 
             App.ActiveDocument.recompute()
 
+    def update_groups_after_drag_drop(self):
+        """Workaround function to improve the drag and drop behavior of Layer
+        objects.
+
+        The function processes the parent group data stored in the
+        old_parent_data dictionary by canDragObject and canDropObject.
+        """
+
+        # The function can be called multiple times, old_parent_data will be
+        # empty after the first call.
+        if (not hasattr(self, "old_parent_data")) or (not self.old_parent_data):
+            return
+
+        # List to collect parents whose Group must be updated.
+        # This has to happen later in a separate loop as we need the unmodified
+        # InList properties of the children in the main loop.
+        parents_to_update = []
+
+        # Main loop:
+        for child, old_data in self.old_parent_data.items():
+
+            # We assume a single old and a single new layer...
+
+            old_layer = None
+            for old_parent, old_parent_group in old_data:
+                if utils.get_type(old_parent) == "Layer":
+                    old_layer = old_parent
+                    break
+
+            new_layer = None
+            for new_parent in child.InList:
+                if utils.get_type(new_parent) == "Layer":
+                    new_layer = new_parent
+                    break
+
+            if new_layer == old_layer:
+                continue
+
+            elif new_layer is None:
+                # An object was dragged out of a layer.
+                # We need to check if it was put in a new group. If that is
+                # the case the content of old_layer should be restored.
+                # If the object was not put in a new group it was dropped on
+                # the document node, in that case we do nothing.
+                old_parents = [sub[0] for sub in old_data]
+                for new_parent in child.InList:
+                    if (hasattr(new_parent, "Group")
+                            and new_parent not in old_parents): # New group check.
+                        for old_parent, old_parent_group in old_data:
+                            if old_parent == old_layer:
+                                parents_to_update.append([old_parent, old_parent_group])
+                                break
+                        break
+
+            else:
+                # A new layer was assigned.
+                # The content of all `non-layer` groups should be restored.
+                for old_parent, old_parent_group in old_data:
+                    if utils.get_type(old_parent) != "Layer":
+                        parents_to_update.append([old_parent, old_parent_group])
+
+        # Update parents:
+        if parents_to_update:
+            for old_parent, old_parent_group in parents_to_update:
+                old_parent.Group = old_parent_group
+            App.ActiveDocument.recompute()
+
+        self.old_parent_data = {}
+
+    def replaceObject(self, old_obj, new_obj):
+        """Return immediately to prevent replacement of children."""
+        return
+
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),
-                                translate("draft", "Activate this layer"),
-                                menu)
-        action1.triggered.connect(self.activate)
-        menu.addAction(action1)
+        action_activate = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),
+                                        translate("draft", "Activate this layer"),
+                                        menu)
+        action_activate.triggered.connect(self.activate)
+        menu.addAction(action_activate)
 
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
-                                translate("draft", "Select layer contents"),
-                                menu)
-        action2.triggered.connect(self.select_contents)
-        menu.addAction(action2)
+        action_select = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
+                                      translate("draft", "Select layer contents"),
+                                      menu)
+        action_select.triggered.connect(self.select_contents)
+        menu.addAction(action_select)
 
     def activate(self):
         """Activate the selected layer, it becomes the Autogroup."""
-        if hasattr(self, "Object"):
-            Gui.Selection.clearSelection()
-            Gui.Selection.addSelection(self.Object)
-            Gui.runCommand("Draft_AutoGroup")
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(self.Object)
+        if not "Draft_AutoGroup" in Gui.listCommands():
+            Gui.activateWorkbench("DraftWorkbench")
+        Gui.runCommand("Draft_AutoGroup")
 
     def select_contents(self):
         """Select the contents of the layer."""
-        if hasattr(self, "Object"):
-            Gui.Selection.clearSelection()
-            for layer_obj in self.Object.Group:
-                Gui.Selection.addSelection(layer_obj)
+        Gui.Selection.clearSelection()
+        for layer_obj in self.Object.Group:
+            Gui.Selection.addSelection(layer_obj)
 
 
 class ViewProviderLayerContainer:
@@ -398,81 +504,75 @@ class ViewProviderLayerContainer:
 
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
-                                translate("Draft", "Merge layer duplicates"),
-                                menu)
-        action1.triggered.connect(self.merge_by_name)
-        menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
-                                translate("Draft", "Add new layer"),
-                                menu)
-        action2.triggered.connect(self.add_layer)
-        menu.addAction(action2)
+        action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
+                                     translate("draft", "Merge layer duplicates"),
+                                     menu)
+        action_merge.triggered.connect(self.merge_by_name)
+        menu.addAction(action_merge)
+
+        action_add = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
+                                   translate("draft", "Add new layer"),
+                                   menu)
+        action_add.triggered.connect(self.add_layer)
+        menu.addAction(action_add)
 
     def merge_by_name(self):
-        """Merge the layers that have the same name."""
-        if not hasattr(self, "Object") or not hasattr(self.Object, "Group"):
-            return
+        """Merge the layers that have the same base label."""
+        doc = App.ActiveDocument
+        doc.openTransaction(translate("draft", "Merge layer duplicates"))
 
-        obj = self.Object
+        layer_container = self.Object
+        layers = []
+        for obj in layer_container.Group:
+            if utils.get_type(obj) == "Layer":
+                layers.append(obj)
 
-        layers = list()
-        for iobj in obj.Group:
-            if hasattr(iobj, "Proxy") and isinstance(iobj.Proxy, Layer):
-                layers.append(iobj)
-
-        to_delete = list()
+        to_delete = []
         for layer in layers:
-            # Test the last three characters of the layer's Label to see
-            # if it's a number, like `'Layer017'`
-            if (layer.Label[-1].isdigit()
-                    and layer.Label[-2].isdigit()
-                    and layer.Label[-3].isdigit()):
-                # If the object inside the layer has the same Label
-                # as the layer, save this object
-                orig = None
-                for ol in layer.OutList:
-                    if ol.Label == layer.Label[:-3].strip():
-                        orig = ol
-                        break
+            # Remove trailing digits (usually 3 but there might be more) and
+            # trailing spaces from Label before comparing:
+            base_label = layer.Label.rstrip("0123456789 ")
 
-                # Go into the objects that reference this layer object
-                # and set the layer property with the previous `orig`
-                # object found
-                # Editor: when is this possible? Maybe if a layer is inside
-                # another layer? Currently the code doesn't allow this
-                # so maybe this was a previous behavior that was disabled
-                # in `ViewProviderLayer`.
-                if orig:
-                    for par in layer.InList:
-                        for prop in par.PropertiesList:
-                            if getattr(par, prop) == layer:
-                                _msg("Changed property '" + prop
-                                     + "' of object " + par.Label
-                                     + " from " + layer.Label
-                                     + " to " + orig.Label)
-                                setattr(par, prop, orig)
-                    to_delete.append(layer)
+            # Try to find the `'base'` layer:
+            base = None
+            for other_layer in layers:
+                if ((not other_layer in to_delete) # Required if there are duplicate labels.
+                        and other_layer != layer
+                        and other_layer.Label.upper() == base_label.upper()):
+                    base = other_layer
+                    break
+
+            if base:
+                if layer.Group:
+                    base_group = base.Group
+                    for obj in layer.Group:
+                        if not obj in base_group:
+                            base_group.append(obj)
+                    base.Group = base_group
+                to_delete.append(layer)
+            elif layer.Label != base_label:
+                _msg(translate("draft", "Relabeling layer:")
+                        + " '{}' -> '{}'".format(layer.Label, base_label))
+                layer.Label = base_label
 
         for layer in to_delete:
-            if not layer.InList:
-                _msg("Merging duplicate layer: " + layer.Label)
-                App.ActiveDocument.removeObject(layer.Name)
-            elif len(layer.InList) == 1:
-                first = layer.InList[0]
+            _msg(translate("draft", "Merging layer:") + " '{}'".format(layer.Label))
+            doc.removeObject(layer.Name)
 
-                if first.isDerivedFrom("App::DocumentObjectGroup"):
-                    _msg("Merging duplicate layer: " + layer.Label)
-                    App.ActiveDocument.removeObject(layer.Name)
-            else:
-                _msg("InList not empty. "
-                     "Unable to delete layer: " + layer.Label)
+        doc.recompute()
+        doc.commitTransaction()
 
     def add_layer(self):
         """Creates a new layer"""
         import Draft
+
+        doc = App.ActiveDocument
+        doc.openTransaction(translate("draft", "Add new layer"))
+
         Draft.make_layer()
-        App.ActiveDocument.recompute()
+
+        doc.recompute()
+        doc.commitTransaction()
 
     def __getstate__(self):
         """Return a tuple of objects to save or None."""
@@ -481,6 +581,10 @@ class ViewProviderLayerContainer:
     def __setstate__(self, state):
         """Set the internal properties from the restored state."""
         return None
+
+    def replaceObject(self, old_obj, new_obj):
+        """Return immediately to prevent replacement of children."""
+        return
 
 
 # Alias for compatibility with v0.18 and earlier

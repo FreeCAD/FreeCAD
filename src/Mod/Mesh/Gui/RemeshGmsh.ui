@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Remesh by gmsh</string>
+   <string>Remesh by Gmsh</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -48,16 +48,16 @@
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>1000.000000000000000</double>
         </property>
-        <property name="singleStep" stdset="0">
+        <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
-        <property name="value" stdset="0">
+        <property name="value">
          <double>0.000000000000000</double>
         </property>
        </widget>
@@ -74,16 +74,16 @@
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>1000.000000000000000</double>
         </property>
-        <property name="singleStep" stdset="0">
+        <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
-        <property name="value" stdset="0">
+        <property name="value">
          <double>0.000000000000000</double>
         </property>
        </widget>
@@ -100,13 +100,13 @@
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>20.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>120.000000000000000</double>
         </property>
-        <property name="value" stdset="0">
+        <property name="value">
          <double>40.000000000000000</double>
         </property>
        </widget>

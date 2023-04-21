@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PropertyGeometryList_H
 #define APP_PropertyGeometryList_H
 
-// Std. configurations
-
-
 #include <vector>
-#include <string>
+
 #include <App/Property.h>
+
 #include "Geometry.h"
+
 
 namespace Base {
 class Writer;
@@ -42,7 +40,7 @@ class Geometry;
 
 class PartExport PropertyGeometryList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -55,10 +53,10 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyGeometryList();
+    ~PropertyGeometryList() override;
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     /** Sets the property
      */
@@ -71,22 +69,26 @@ public:
         return _lValueList[idx];
     }
 
-    const std::vector<Geometry*> &getValues(void) const {
+    const std::vector<Geometry*> &getValues() const {
         return _lValueList;
     }
 
     void set1Value(int idx, std::unique_ptr<Geometry> &&);
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save(Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual App::Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize(void) const;
+    unsigned int getMemSize() const override;
+
+private:
+    void trySaveGeometry(Geometry * geom, Base::Writer &writer) const;
+    void tryRestoreGeometry(Geometry * geom, Base::XMLReader &reader);
 
 private:
     std::vector<Geometry*> _lValueList;

@@ -65,7 +65,7 @@ enum SMESH_ComputeErrorName
 
 // =============================================================
 /*!
- * \brief Contains an algorithm and description of an occured error
+ * \brief Contains an algorithm and description of an occurred error
  */
 // =============================================================
 

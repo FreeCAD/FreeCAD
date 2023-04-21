@@ -26,11 +26,10 @@
 #ifndef TECHDRAWGUI_MOVABLETEXT_H
 #define TECHDRAWGUI_MOVABLETEXT_H
 
-#include <QGraphicsTextItem>
-#include <QObject>
-//#include <QDocument>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGCustomText.h"
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -53,7 +52,7 @@ public:
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void showBox(bool b) { m_showBox = b; }
@@ -71,8 +70,6 @@ Q_SIGNALS:
 
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 

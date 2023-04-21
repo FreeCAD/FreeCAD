@@ -62,7 +62,7 @@ class Draft_SelectPlane:
         """Set icon, menu and tooltip."""
         d = {'Pixmap': 'Draft_SelectPlane',
              'Accel': "W, P",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "SelectPlane"),
+             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select Plane"),
              'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select the face of solid body to create a working plane on which to sketch Draft objects.\nYou may also select a three vertices or a Working Plane Proxy.")}
         return d
 
@@ -96,7 +96,10 @@ class Draft_SelectPlane:
 
         # Fill values
         self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))
-        q = FreeCAD.Units.Quantity(self.param.GetFloat("gridSpacing", 1.0), FreeCAD.Units.Length)
+        try:
+            q = FreeCAD.Units.Quantity(self.param.GetString("gridSpacing", "1 mm"))
+        except ValueError:
+            q = FreeCAD.Units.Quantity("1 mm")
         self.taskd.form.fieldGridSpacing.setText(q.UserString)
         self.taskd.form.fieldGridMainLine.setValue(self.param.GetInt("gridEvery", 10))
         self.taskd.form.fieldGridExtension.setValue(self.param.GetInt("gridSize", 100))
@@ -127,6 +130,9 @@ class Draft_SelectPlane:
         self.taskd.form.fieldGridExtension.valueChanged.connect(self.onSetExtension)
         self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
 
+        # save previous WP to ensure back to the last used when restored
+        FreeCAD.DraftWorkingPlane.save()
+
         # Try to find a WP from the current selection
         if FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name):
             if self.handle():
@@ -137,14 +143,14 @@ class Draft_SelectPlane:
                 self.display(FreeCAD.DraftWorkingPlane.axis)
             return None
 
-        # Execute the actual task panel delayed to catch posible active Draft command
+        # Execute the actual task panel delayed to catch possible active Draft command
         todo.delay(FreeCADGui.Control.showDialog, self.taskd)
         _msg(translate(
                 "draft",
                 "Pick a face, 3 vertices or a WP Proxy to define the drawing plane"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
-    def finish(self, close=False):
+    def finish(self):
         """Execute when the command is terminated."""
         # Store values
         self.param.SetBool("CenterPlaneOnView",
@@ -161,7 +167,6 @@ class Draft_SelectPlane:
 
         # Reset everything else
         FreeCADGui.Control.closeDialog()
-        FreeCAD.DraftWorkingPlane.restore()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
@@ -190,7 +195,7 @@ class Draft_SelectPlane:
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) == 1:
             sel = sel[0]
-            if hasattr(sel.Object, 'TypeId') and sel.Object.TypeId == 'App::Part':
+            if hasattr(sel.Object, 'TypeId') and (sel.Object.TypeId == 'App::Part' or sel.Object.TypeId == 'PartDesign::Plane'):
                 self.setPlaneFromObjPlacement(sel.Object)
                 return True
             elif Draft.getType(sel.Object) == "Axis":
@@ -207,7 +212,9 @@ class Draft_SelectPlane:
                 if len(sel.SubElementNames) == 1:
                     # look for a face or a plane
                     if "Face" in sel.SubElementNames[0]:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.getOffset())
+                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0],
+                                                              self.getOffset(),
+                                                              sel.Object.getParentGeoFeatureGroup())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
                     elif sel.SubElementNames[0] == "Plane":
@@ -473,7 +480,7 @@ class Draft_SelectPlane:
         except Exception:
             pass
         else:
-            self.param.SetFloat("gridSpacing", q.Value)
+            self.param.SetString("gridSpacing", q.UserString)
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
 

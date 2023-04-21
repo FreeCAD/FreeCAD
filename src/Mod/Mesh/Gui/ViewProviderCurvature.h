@@ -23,9 +23,11 @@
 #ifndef MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
 #define MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
 
-#include <Base/Observer.h>
 #include <App/DocumentObserver.h>
+#include <Base/Observer.h>
+
 #include "ViewProvider.h"
+
 
 class SoSeparator;
 class SbVec3f;
@@ -58,50 +60,51 @@ namespace MeshGui {
 class MeshGuiExport ViewProviderMeshCurvature : public Gui::ViewProviderDocumentObject,
                                                 public App::DocumentObserver,
                                                 public Base::Observer<int> {
-    typedef Gui::ViewProviderDocumentObject inherited;
+    using inherited = Gui::ViewProviderDocumentObject;
 
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshCurvature);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshCurvature);
 
 public:
     ViewProviderMeshCurvature();
-    virtual ~ViewProviderMeshCurvature();
+    ~ViewProviderMeshCurvature() override;
 
     App::PropertyMaterial TextureMaterial;
 
     /// Extracts the mesh data from the feature \a pcFeature and creates an Inventor node \a SoNode with these data. 
-    void attach(App::DocumentObject* pcFeature);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    void attach(App::DocumentObject* pcFeature) override;
+    bool useNewSelectionModel() const override {return false;}
     /// Sets the viewing mode
-    void setDisplayMode(const char* ModeName);
+    void setDisplayMode(const char* ModeName) override;
     /// get the default display mode
-    virtual const char* getDefaultDisplayMode() const;
+    const char* getDefaultDisplayMode() const override;
     /// Returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
     /// Updates the mesh feature representation
-    void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
     /// Returns a pixmap for the associated feature type
-    QIcon getIcon() const;
+    QIcon getIcon() const override;
     /// Once the color bar settinhs has been changed this method gets called to update the feature's representation
-    void OnChange(Base::Subject<int> &rCaller,int rcReason);
+    void OnChange(Base::Subject<int> &rCaller,int rcReason) override;
     /// Returns a color bar
-    SoSeparator* getFrontRoot(void) const;
+    SoSeparator* getFrontRoot() const override;
     /// Hide the object in the view
-    virtual void hide(void);
+    void hide() override;
     /// Show the object in the view
-    virtual void show(void);
+    void show() override;
 
 public:
     static void curvatureInfoCallback(void * ud, SoEventCallback * n);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     void setVertexCurvatureMode(int mode);
     std::string curvatureInfo(bool detail, int index1, int index2, int index3) const;
+    void touchShapeNode();
 
 private:
     void init(const Mesh::PropertyCurvatureList *prop);
 
-    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
 protected:
     SoMaterial       * pcColorMat;

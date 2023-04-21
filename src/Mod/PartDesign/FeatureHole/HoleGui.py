@@ -22,7 +22,7 @@
 
 import FreeCAD, FreeCADGui
 import PartDesignGui
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 from TaskHole import TaskHole
 from FeatureHole import Hole
 from ViewProviderHole import ViewProviderHole
@@ -66,11 +66,11 @@ class HoleGui:
         if body is None:
             QtGui.QMessageBox.critical(mw, "No active body", "Please create a body or make a body active")
             return
-    
+
         feature = doc.addObject("Part::FeaturePython","Hole")
         hole = Hole(feature)
         body.addFeature(feature)
-        
+
         vp = ViewProviderHole(feature.ViewObject)
         feature.touch()
         FreeCAD.ActiveDocument.recompute()

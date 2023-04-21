@@ -19,14 +19,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "PathSegmentWalker.h"
+
+#include <vector>
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
 
-#include <vector>
+#include "PathSegmentWalker.h"
+
 
 #define ARC_MIN_SEGMENTS   20.0  // minimum # segments to interpolate an arc
 
@@ -275,7 +276,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             // relative mode
             absolutecenter = false;
 
-        } else if ((name=="G81")||(name=="G82")||(name=="G83")||(name=="G84")||(name=="G85")||(name=="G86")||(name=="G89")){
+        } else if ((name=="G73")||(name=="G81")||(name=="G82")||(name=="G83")||(name=="G84")||(name=="G85")||(name=="G86")||(name=="G89")){
             // drill,tap,bore
             double r = 0;
             if (cmd.has("R"))
@@ -326,7 +327,12 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             }
 
             Base::Vector3d p3(next);
-            p3.*pz = last.*pz;
+            if (retract_mode == 99)  // G81,G83 need to account for G99 and retract to R only
+                p3.*pz = p2.*pz;
+            else
+                p3.*pz = last.*pz;
+
+
             Base::Vector3d p3r = compensateRotation(p3, nrot, rotCenter);
 
             plist.push_back(p1r);
@@ -342,15 +348,20 @@ void PathSegmentWalker::walk(PathSegmentVisitor &cb, const Base::Vector3d &start
             lrot = nrot;
 
 
-        } else if ((name=="G38.2")||(name=="38.3")||(name=="G38.4")||(name=="G38.5")){
+        } else if ((name=="G38.2")||(name=="G38.3")||(name=="G38.4")||(name=="G38.5")){
             // Straight probe
             cb.g38(i, last, next);
+            last = next;
         } else if(name=="G17") {
             pz = &Base::Vector3d::z;
         } else if(name=="G18") {
             pz = &Base::Vector3d::y;
         } else if(name=="G19") {
             pz = &Base::Vector3d::x;
+        } else if(name=="G98") {
+            retract_mode = 98;
+        } else if(name=="G99") {
+            retract_mode = 99;
         }
     }
 }

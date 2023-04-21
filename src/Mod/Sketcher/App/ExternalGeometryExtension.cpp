@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-
-#include <Mod/Sketcher/App/ExternalGeometryExtensionPy.h>
+#include <Base/Writer.h>
 
 #include "ExternalGeometryExtension.h"
+#include "ExternalGeometryExtensionPy.h"
+
 
 using namespace Sketcher;
 
@@ -61,7 +61,7 @@ void ExternalGeometryExtension::saveAttributes(Base::Writer &writer) const
                     << "\" Flags=\"" << Flags.to_string();
 }
 
-std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) const
+std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy() const
 {
     auto cpy = std::make_unique<ExternalGeometryExtension>();
 
@@ -74,7 +74,7 @@ std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) c
 #endif
 }
 
-PyObject * ExternalGeometryExtension::getPyObject(void)
+PyObject * ExternalGeometryExtension::getPyObject()
 {
     return new ExternalGeometryExtensionPy(new ExternalGeometryExtension(*this));
 }
@@ -84,7 +84,8 @@ bool ExternalGeometryExtension::getFlagsFromName(std::string str, ExternalGeomet
     auto pos = std::find_if(    ExternalGeometryExtension::flag2str.begin(),
                                 ExternalGeometryExtension::flag2str.end(),
                                 [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
+                                    return strcmp(val,str.c_str())==0;
+                                }
                                 );
 
     if( pos != ExternalGeometryExtension::flag2str.end()) {

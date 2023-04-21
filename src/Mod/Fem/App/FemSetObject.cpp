@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemSetObject.h"
 #include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+#include "FemSetObject.h"
+
 
 using namespace Fem;
 using namespace App;
@@ -38,14 +34,14 @@ PROPERTY_SOURCE(Fem::FemSetObject, App::DocumentObject)
 
 FemSetObject::FemSetObject()
 {
-    ADD_PROPERTY_TYPE(FemMesh,(0), "MeshSet link",Prop_None,"MeshSet the set belongs to");
+    ADD_PROPERTY_TYPE(FemMesh,(nullptr), "MeshSet link",Prop_None,"MeshSet the set belongs to");
 }
 
 FemSetObject::~FemSetObject()
 {
 }
 
-short FemSetObject::mustExecute(void) const
+short FemSetObject::mustExecute() const
 {
     return 0;
 }

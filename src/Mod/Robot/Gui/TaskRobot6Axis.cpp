@@ -20,29 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <qpalette.h>
+# include <QString>
 #endif
 
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Placement.h>
+#include <Gui/Selection.h>
 
-#include <QString>
-#include <qpalette.h>
-#include <QSlider>
 #include "ui_TaskRobot6Axis.h"
 #include "TaskRobot6Axis.h"
-
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Placement.h>
-
 
 
 using namespace RobotGui;
@@ -60,17 +49,17 @@ TaskRobot6Axis::TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->horizontalSlider_Axis1,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA1(int)));
-    QObject::connect(ui->horizontalSlider_Axis2,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA2(int)));
-    QObject::connect(ui->horizontalSlider_Axis3,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA3(int)));
-    QObject::connect(ui->horizontalSlider_Axis4,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA4(int)));
-    QObject::connect(ui->horizontalSlider_Axis5,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA5(int)));
-    QObject::connect(ui->horizontalSlider_Axis6,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA6(int)));
+    QObject::connect(ui->horizontalSlider_Axis1, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA1);
+    QObject::connect(ui->horizontalSlider_Axis2, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA2);
+    QObject::connect(ui->horizontalSlider_Axis3, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA3);
+    QObject::connect(ui->horizontalSlider_Axis4, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA4);
+    QObject::connect(ui->horizontalSlider_Axis5, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA5);
+    QObject::connect(ui->horizontalSlider_Axis6, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA6);
+    QObject::connect(ui->pushButtonChooseTool, &QPushButton::clicked, this, &TaskRobot6Axis::createPlacementDlg);
 
-    QObject::connect(ui->pushButtonChooseTool,SIGNAL(clicked()),this,SLOT(createPlacementDlg()));
-
-    if(pcRobotObject)
+    if (pcRobotObject) {
         setRobot(pcRobotObject);
+    }
 }
 
 TaskRobot6Axis::~TaskRobot6Axis()
@@ -115,9 +104,10 @@ void TaskRobot6Axis::setRobot(Robot::RobotObject *pcRobotObject)
     viewTool(pcRobot->Tool.getValue());
 }
 
-void TaskRobot6Axis::createPlacementDlg(void)
+void TaskRobot6Axis::createPlacementDlg()
 {
     Gui::Dialog::Placement plc;
+    plc.setSelection(Gui::Selection().getSelectionEx());
     plc.setPlacement(pcRobot->Tool.getValue());
     if (plc.exec()==QDialog::Accepted)
         pcRobot->Tool.setValue(plc.getPlacement());

@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/DocumentObjectPy.h>
 
 #include "FemSetFacesObject.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+
 
 using namespace Fem;
 using namespace App;
@@ -44,7 +41,7 @@ FemSetFacesObject::~FemSetFacesObject()
 {
 }
 
-short FemSetFacesObject::mustExecute(void) const
+short FemSetFacesObject::mustExecute() const
 {
     return 0;
 }

@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <sstream>
+#endif
 
-#include "Mod/Robot/App/Robot6Axis.h"
-#include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>
-#include <Base/Exception.h>
-#include <sstream>
+#include <Base/PlacementPy.h>
 
 // inclusion of the generated files (generated out of Robot6AxisPy.xml)
 #include "Robot6AxisPy.h"
 #include "Robot6AxisPy.cpp"
 
+
 using namespace Robot;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Robot6AxisPy::representation(void) const
+std::string Robot6AxisPy::representation() const
 {
 	std::stringstream str;
 
@@ -73,12 +73,12 @@ int Robot6AxisPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* Robot6AxisPy::check(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 
 
-Py::Float Robot6AxisPy::getAxis1(void) const
+Py::Float Robot6AxisPy::getAxis1() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(0));
 }
@@ -88,7 +88,7 @@ void Robot6AxisPy::setAxis1(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(0,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis2(void) const
+Py::Float Robot6AxisPy::getAxis2() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(1));
 }
@@ -98,7 +98,7 @@ void Robot6AxisPy::setAxis2(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(1,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis3(void) const
+Py::Float Robot6AxisPy::getAxis3() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(2));
 }
@@ -108,7 +108,7 @@ void Robot6AxisPy::setAxis3(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(2,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis4(void) const
+Py::Float Robot6AxisPy::getAxis4() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(3));
 }
@@ -118,7 +118,7 @@ void Robot6AxisPy::setAxis4(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(3,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis5(void) const
+Py::Float Robot6AxisPy::getAxis5() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(4));
 }
@@ -128,7 +128,7 @@ void Robot6AxisPy::setAxis5(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(4,(float)arg.operator double());
 }
 
-Py::Float Robot6AxisPy::getAxis6(void) const
+Py::Float Robot6AxisPy::getAxis6() const
 {
     return Py::Float(getRobot6AxisPtr()->getAxis(5));
 }
@@ -138,7 +138,7 @@ void Robot6AxisPy::setAxis6(Py::Float arg)
 	getRobot6AxisPtr()->setAxis(5,(float)arg.operator double());
 }
 
-Py::Object Robot6AxisPy::getTcp(void) const
+Py::Object Robot6AxisPy::getTcp() const
 {
 	return Py::asObject(new Base::PlacementPy(new Base::Placement(getRobot6AxisPtr()->getTcp())));
 }
@@ -164,7 +164,7 @@ void Robot6AxisPy::setTcp(Py::Object value)
 
 }
 
-Py::Object Robot6AxisPy::getBase(void) const
+Py::Object Robot6AxisPy::getBase() const
 {
     return Py::Object();
 }
@@ -176,7 +176,7 @@ void Robot6AxisPy::setBase(Py::Object /*arg*/)
 
 PyObject *Robot6AxisPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Robot6AxisPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

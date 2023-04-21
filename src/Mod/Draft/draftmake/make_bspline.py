@@ -40,9 +40,9 @@ if App.GuiUp:
 
 def make_bspline(pointslist, closed=False, placement=None, face=None, support=None):
     """make_bspline(pointslist, [closed], [placement])
-    
+
     Creates a B-Spline object from the given list of vectors.
-    
+
     Parameters
     ----------
     pointlist : [Base.Vector]
@@ -51,17 +51,17 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         TODO: Change the name so!
 
     closed : bool
-        If closed is True or first and last points are identical, 
+        If closed is True or first and last points are identical,
         the created BSpline will be closed.
 
     placement : Base.Placement
         If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.   
 
-    support : 
+    face : Bool
+        If face is False, the rectangle is shown as a wireframe,
+        otherwise as a face.
+
+    support :
         TODO: Describe
     """
     if not App.ActiveDocument:
@@ -73,18 +73,18 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
             nlist.append(v.Point)
         pointslist = nlist
     if len(pointslist) < 2:
-        _err = "Draft.makeBSpline: not enough points"
+        _err = "Draft.make_bspline: not enough points"
         App.Console.PrintError(translate("draft", _err)+"\n")
         return
     if (pointslist[0] == pointslist[-1]):
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
-            _err = "Draft.makeBSpline: Equal endpoints forced Closed"
+            _err = "Draft.make_bspline: Equal endpoints forced Closed"
             App.Console.PrintWarning(translate("Draft", _err) + _err + "\n")
         else:
             # len == 2 and first == last   GIGO
-            _err = "Draft.makeBSpline: Invalid pointslist"
+            _err = "Draft.make_bspline: Invalid pointslist"
             App.Console.PrintError(translate("Draft", _err)+"\n")
             return
     # should have sensible parms from here on
@@ -97,7 +97,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     obj.Closed = closed
     obj.Points = pointslist
     obj.Support = support
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
     if placement: obj.Placement = placement
     if App.GuiUp:

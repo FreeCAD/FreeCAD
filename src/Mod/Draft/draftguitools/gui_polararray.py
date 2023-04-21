@@ -61,11 +61,9 @@ class PolarArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_PolarArray',
-             'MenuText': QT_TRANSLATE_NOOP("Draft", "Polar array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates copies of the selected object, and places the copies in a polar pattern\ndefined by a center of rotation and its angle.\n\nThe array can be turned into an orthogonal or a circular array by changing its type.")}
-        return d
+        return {'Pixmap': 'Draft_PolarArray',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PolarArray", "Polar array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PolarArray", "Creates copies of the selected object, and places the copies in a polar pattern\ndefined by a center of rotation and its angle.\n\nThe array can be turned into an orthogonal or a circular array by changing its type.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -134,7 +132,7 @@ class PolarArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super(PolarArray, self).finish()
+            self.finish()
 
 
 Gui.addCommand('Draft_PolarArray', PolarArray())

@@ -20,36 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QActionGroup>
-# include <QApplication>
-# include <qcursor.h>
-# include <qlayout.h>
-# include <qstatusbar.h>
-# include <QContextMenuEvent>
-# include <QMenu>
-# include <QPixmap>
-# include <QTimer>
-#endif
-
 #include <QFileSystemModel>
-#include <Base/Console.h>
-#include <App/Document.h>
 
 #include "ProjectView.h"
-#include "Document.h"
-#include "BitmapFactory.h"
-#include "ViewProviderDocumentObject.h"
-#include "MenuManager.h"
-#include "Application.h"
-#include "MainWindow.h"
+
 
 using namespace Gui;
-
 
 
 /* TRANSLATOR Gui::ProjectWidget */
@@ -64,9 +42,4 @@ ProjectWidget::~ProjectWidget()
 {
 }
 
-
-
-
-
 #include "moc_ProjectView.cpp"
-

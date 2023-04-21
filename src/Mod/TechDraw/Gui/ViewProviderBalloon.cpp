@@ -30,28 +30,17 @@
 # include <QMenu>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "PreferencesGui.h"
+#include "ZVALUE.h"
+#include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
 
@@ -72,39 +61,19 @@ ViewProviderBalloon::ViewProviderBalloon()
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()), group, App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
                                 group, (App::PropertyType)(App::Prop_None), "Balloon text size in units");
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
+    double weight = TechDraw::LineGroup::getDefaultWidth("Thin");
     ADD_PROPERTY_TYPE(LineWidth, (weight), group, (App::PropertyType)(App::Prop_None), "Leader line width");
     ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
     ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
+
+    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
 {
 }
 
-void ViewProviderBalloon::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderBalloon::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderBalloon::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-bool ViewProviderBalloon::doubleClicked(void)
+bool ViewProviderBalloon::doubleClicked()
 {
     startDefaultEditMode();
     return true;
@@ -115,54 +84,42 @@ void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, boost::bind(&ViewProviderBalloon::startDefaultEditMode, this));
+    func->trigger(act, std::bind(&ViewProviderBalloon::startDefaultEditMode, this));
 
     ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
 }
 
-void ViewProviderBalloon::startDefaultEditMode()
-{
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
-    Gui::Document* document = this->getDocument();
-    if (document) {
-        document->setEdit(this, ViewProvider::Default);
-    }
-}
-
 bool ViewProviderBalloon::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
-        if (qgivBalloon) {
-            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
-        }
-        return true;
-    } else {
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog())  {
+        return false;
+    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
+    if (qgivBalloon) {
+        Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
     }
     return true;
 }
 
-void ViewProviderBalloon::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
 void ViewProviderBalloon::updateData(const App::Property* p)
 {
-    ViewProviderDrawingView::updateData(p);
+    //Balloon handles X, Y updates differently that other QGIView
+    //call QGIViewBalloon::updateView
+    if (p == &(getViewObject()->X)  ||
+        p == &(getViewObject()->Y) ){
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
+    //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
+    Gui::ViewProviderDocumentObject::updateData(p);
 }
 
 void ViewProviderBalloon::onChanged(const App::Property* p)
@@ -194,6 +151,9 @@ void ViewProviderBalloon::handleChangedPropertyType(Base::XMLReader &reader, con
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
+    }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

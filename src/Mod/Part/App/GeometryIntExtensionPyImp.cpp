@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#include "GeometryDefaultExtension.h"
 
 #include "GeometryIntExtensionPy.h"
 #include "GeometryIntExtensionPy.cpp"
 
+
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryIntExtensionPy::representation(void) const
+std::string GeometryIntExtensionPy::representation() const
 {
     std::stringstream str;
     long val = getGeometryIntExtensionPtr()->getValue();
     str << "<GeometryIntExtension (" ;
 
-    if(getGeometryIntExtensionPtr()->getName().size()>0)
+    if(!getGeometryIntExtensionPtr()->getName().empty())
         str << "\'" << getGeometryIntExtensionPtr()->getName() << "\', ";
 
     str << val << ") >";
@@ -83,7 +81,7 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Long GeometryIntExtensionPy::getValue(void) const
+Py::Long GeometryIntExtensionPy::getValue() const
 {
     return Py::Long(this->getGeometryIntExtensionPtr()->getValue());
 }
@@ -97,7 +95,7 @@ void GeometryIntExtensionPy::setValue(Py::Long value)
 
 PyObject *GeometryIntExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometryIntExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

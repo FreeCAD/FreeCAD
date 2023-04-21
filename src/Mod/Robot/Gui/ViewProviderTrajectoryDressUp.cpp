@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ViewProviderTrajectoryDressUp.h"
 #include <Gui/Control.h>
 #include <Mod/Robot/Gui/TaskDlgTrajectoryDressUp.h>
+
+#include "ViewProviderTrajectoryDressUp.h"
+
 
 using namespace Gui;
 using namespace RobotGui;
@@ -58,7 +56,7 @@ void ViewProviderTrajectoryDressUp::unsetEdit(int)
 
 }
 
-std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Robot::TrajectoryDressUpObject*>(getObject())->Source.getValue());

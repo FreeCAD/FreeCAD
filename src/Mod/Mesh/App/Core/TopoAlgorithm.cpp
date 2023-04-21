@@ -20,50 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
-# include <utility>
 # include <queue>
+# include <utility>
+# include <boost/core/ignore_unused.hpp>
 #endif
 
+#include <Base/Console.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 
 #include "TopoAlgorithm.h"
+#include "Evaluation.h"
 #include "Iterator.h"
 #include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Evaluation.h"
 #include "Triangulation.h"
-#include "Definitions.h"
-#include <Base/Console.h>
+
 
 using namespace MeshCore;
 
 MeshTopoAlgorithm::MeshTopoAlgorithm (MeshKernel &rclM)
-: _rclMesh(rclM), _needsCleanup(false), _cache(0)
+: _rclMesh(rclM), _needsCleanup(false), _cache(nullptr)
 {
 }
 
-MeshTopoAlgorithm::~MeshTopoAlgorithm (void)
+MeshTopoAlgorithm::~MeshTopoAlgorithm ()
 {
   if ( _needsCleanup )
     Cleanup();
   EndCache();
 }
 
-bool MeshTopoAlgorithm::InsertVertex(unsigned long ulFacetPos, const Base::Vector3f&  rclPoint)
+bool MeshTopoAlgorithm::InsertVertex(FacetIndex ulFacetPos, const Base::Vector3f&  rclPoint)
 {
   MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
   MeshFacet  clNewFacet1, clNewFacet2;
 
   // insert new point
-  unsigned long ulPtCnt = _rclMesh._aclPointArray.size();
-  unsigned long ulPtInd = this->GetOrAddIndex(rclPoint);
-  unsigned long ulSize  = _rclMesh._aclFacetArray.size();
+  PointIndex ulPtCnt = _rclMesh._aclPointArray.size();
+  PointIndex ulPtInd = this->GetOrAddIndex(rclPoint);
+  FacetIndex ulSize  = _rclMesh._aclFacetArray.size();
 
   if ( ulPtInd < ulPtCnt )
     return false; // the given point is already part of the mesh => creating new facets would be an illegal operation
@@ -85,9 +83,9 @@ bool MeshTopoAlgorithm::InsertVertex(unsigned long ulFacetPos, const Base::Vecto
   clNewFacet2._aulNeighbours[1] = ulFacetPos;
   clNewFacet2._aulNeighbours[2] = ulSize;
   // adjust the neighbour facet
-  if (rclF._aulNeighbours[1] != ULONG_MAX)
+  if (rclF._aulNeighbours[1] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclF._aulNeighbours[1]].ReplaceNeighbour(ulFacetPos, ulSize);
-  if (rclF._aulNeighbours[2] != ULONG_MAX)
+  if (rclF._aulNeighbours[2] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclF._aulNeighbours[2]].ReplaceNeighbour(ulFacetPos, ulSize+1);
   // original facet
   rclF._aulPoints[2] = ulPtInd;
@@ -101,7 +99,7 @@ bool MeshTopoAlgorithm::InsertVertex(unsigned long ulFacetPos, const Base::Vecto
   return true;
 }
 
-bool MeshTopoAlgorithm::SnapVertex(unsigned long ulFacetPos, const Base::Vector3f& rP)
+bool MeshTopoAlgorithm::SnapVertex(FacetIndex ulFacetPos, const Base::Vector3f& rP)
 {
   MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
   if (!rFace.HasOpenEdge())
@@ -109,7 +107,7 @@ bool MeshTopoAlgorithm::SnapVertex(unsigned long ulFacetPos, const Base::Vector3
   Base::Vector3f cNo1 = _rclMesh.GetNormal(rFace);
   for (unsigned short i=0; i<3; i++)
   {
-    if (rFace._aulNeighbours[i]==ULONG_MAX)
+    if (rFace._aulNeighbours[i]==FACET_INDEX_MAX)
     {
       const Base::Vector3f& rPt1 = _rclMesh._aclPointArray[rFace._aulPoints[i]];
       const Base::Vector3f& rPt2 = _rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]];
@@ -121,9 +119,7 @@ bool MeshTopoAlgorithm::SnapVertex(unsigned long ulFacetPos, const Base::Vector3
       // Point is on the edge
       if ( cNo3.Length() < FLOAT_EPS )
       {
-        unsigned long uCt = _rclMesh.CountFacets();
-        SplitOpenEdge(ulFacetPos, i, rP);
-        return uCt < _rclMesh.CountFacets();
+        return SplitOpenEdge(ulFacetPos, i, rP);
       }
       else if ( (rP - rPt1)*cNo2 > 0.0f && fD2 >= fTV && fTV >= 0.0f )
       {
@@ -146,21 +142,21 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
 {
     // For each internal edge get the adjacent facets. When doing an edge swap we must update
     // this structure.
-    std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> > aEdge2Face;
+    std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> > aEdge2Face;
     for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             // ignore open edges
-            if (pI->_aulNeighbours[i] != ULONG_MAX) {
-                unsigned long ulPt0 = std::min<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
-                unsigned long ulPt1 = std::max<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
-                aEdge2Face[std::pair<unsigned long, unsigned long>(ulPt0, ulPt1)].push_back(pI - _rclMesh._aclFacetArray.begin());
+            if (pI->_aulNeighbours[i] != FACET_INDEX_MAX) {
+                PointIndex ulPt0 = std::min<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+                PointIndex ulPt1 = std::max<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+                aEdge2Face[std::pair<PointIndex, PointIndex>(ulPt0, ulPt1)].push_back(pI - _rclMesh._aclFacetArray.begin());
             }
         }
     }
 
     // fill up this list with all internal edges and perform swap edges until this list is empty
-    std::list<std::pair<unsigned long, unsigned long> > aEdgeList;
-    std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> >::iterator pE;
+    std::list<std::pair<PointIndex, PointIndex> > aEdgeList;
+    std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> >::iterator pE;
     for (pE = aEdge2Face.begin(); pE != aEdge2Face.end(); ++pE) {
         if (pE->second.size() == 2) // make sure that we really have an internal edge
             aEdgeList.push_back(pE->first);
@@ -172,7 +168,7 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
     // Perform a swap edge where needed
     while (!aEdgeList.empty() && uMaxIter > 0) {
         // get the first edge and remove it from the list
-        std::pair<unsigned long, unsigned long> aEdge = aEdgeList.front();
+        std::pair<PointIndex, PointIndex> aEdge = aEdgeList.front();
         aEdgeList.pop_front();
         uMaxIter--;
 
@@ -199,10 +195,10 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
 
             // adjust the edge list
             for (int i=0; i<3; i++) {
-                std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> >::iterator it;
+                std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> >::iterator it;
                 // first facet
-                unsigned long ulPt0 = std::min<unsigned long>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
-                unsigned long ulPt1 = std::max<unsigned long>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
+                PointIndex ulPt0 = std::min<PointIndex>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
+                PointIndex ulPt1 = std::max<PointIndex>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
                 it = aEdge2Face.find( std::make_pair(ulPt0, ulPt1) );
                 if (it != aEdge2Face.end()) {
                     if (it->second[0] == pE->second[1])
@@ -213,8 +209,8 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
                 }
 
                 // second facet
-                ulPt0 = std::min<unsigned long>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
-                ulPt1 = std::max<unsigned long>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
+                ulPt0 = std::min<PointIndex>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
+                ulPt1 = std::max<PointIndex>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
                 it = aEdge2Face.find( std::make_pair(ulPt0, ulPt1) );
                 if (it != aEdge2Face.end()) {
                     if (it->second[0] == pE->second[0])
@@ -226,9 +222,9 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
             }
 
             // Now we must remove the edge and replace it through the new edge
-            unsigned long ulPt0 = std::min<unsigned long>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
-            std::pair<unsigned long, unsigned long> aNewEdge = std::make_pair(ulPt0, ulPt1);
+            PointIndex ulPt0 = std::min<PointIndex>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
+            PointIndex ulPt1 = std::max<PointIndex>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
+            std::pair<PointIndex, PointIndex> aNewEdge = std::make_pair(ulPt0, ulPt1);
             aEdge2Face[aNewEdge] = pE->second;
             aEdge2Face.erase(pE);
         }
@@ -261,25 +257,25 @@ static float swap_benefit(const Base::Vector3f &v1, const Base::Vector3f &v2,
            std::max<float>(-cos_maxangle(v1,v2,v4), -cos_maxangle(v2,v3,v4));
 }
 
-float MeshTopoAlgorithm::SwapEdgeBenefit(unsigned long f, int e) const
+float MeshTopoAlgorithm::SwapEdgeBenefit(FacetIndex f, int e) const
 {
     const MeshFacetArray& faces = _rclMesh.GetFacets();
     const MeshPointArray& vertices = _rclMesh.GetPoints();
 
-    unsigned long n = faces[f]._aulNeighbours[e];
-    if (n == ULONG_MAX)
+    FacetIndex n = faces[f]._aulNeighbours[e];
+    if (n == FACET_INDEX_MAX)
         return 0.0f; // border edge
 
-    unsigned long v1 = faces[f]._aulPoints[e];
-    unsigned long v2 = faces[f]._aulPoints[(e+1)%3];
-    unsigned long v3 = faces[f]._aulPoints[(e+2)%3];
+    PointIndex v1 = faces[f]._aulPoints[e];
+    PointIndex v2 = faces[f]._aulPoints[(e+1)%3];
+    PointIndex v3 = faces[f]._aulPoints[(e+2)%3];
     unsigned short s = faces[n].Side(faces[f]);
     if (s == USHRT_MAX) {
         std::cerr << "MeshTopoAlgorithm::SwapEdgeBenefit: error in neighbourhood "
                   << "of faces " << f << " and " << n << std::endl;
         return 0.0f; // topological error
     }
-    unsigned long v4 = faces[n]._aulPoints[(s+2)%3];
+    PointIndex v4 = faces[n]._aulPoints[(s+2)%3];
     if (v3 == v4) {
         std::cerr << "MeshTopoAlgorithm::SwapEdgeBenefit: duplicate faces "
                   << f << " and " << n << std::endl;
@@ -289,17 +285,17 @@ float MeshTopoAlgorithm::SwapEdgeBenefit(unsigned long f, int e) const
                         vertices[v1], vertices[v4]);
 }
 
-typedef std::pair<unsigned long,int> FaceEdge; // (face, edge) pair
-typedef std::pair<float, FaceEdge> FaceEdgePriority;
+using FaceEdge = std::pair<FacetIndex,int>; // (face, edge) pair
+using FaceEdgePriority = std::pair<float, FaceEdge>;
 
 void MeshTopoAlgorithm::OptimizeTopology()
 {
     // Find all edges that can be swapped and insert them into a
     // priority queue
     const MeshFacetArray& faces = _rclMesh.GetFacets();
-    unsigned long nf = _rclMesh.CountFacets();
+    FacetIndex nf = _rclMesh.CountFacets();
     std::priority_queue<FaceEdgePriority> todo;
-    for (unsigned long i = 0; i < nf; i++) {
+    for (FacetIndex i = 0; i < nf; i++) {
         for (int j = 0; j < 3; j++) {
             float b = SwapEdgeBenefit(i, j);
             if (b > 0.0f)
@@ -309,14 +305,14 @@ void MeshTopoAlgorithm::OptimizeTopology()
 
     // Edges are sorted in decreasing order with respect to their benefit
     while (!todo.empty()) {
-        unsigned long f = todo.top().second.first;
+        FacetIndex f = todo.top().second.first;
         int e = todo.top().second.second;
         todo.pop();
         // Check again if the swap should still be done
         if (SwapEdgeBenefit(f, e) <= 0.0f)
             continue;
         // OK, swap the edge
-        unsigned long f2 = faces[f]._aulNeighbours[e];
+        FacetIndex f2 = faces[f]._aulNeighbours[e];
         SwapEdge(f, f2);
         // Insert new edges into queue, if necessary
         for (int j = 0; j < 3; j++) {
@@ -335,23 +331,23 @@ void MeshTopoAlgorithm::OptimizeTopology()
 void MeshTopoAlgorithm::DelaunayFlip(float fMaxAngle)
 {
     // For each internal edge get the adjacent facets.
-    std::set<std::pair<unsigned long, unsigned long> > aEdge2Face;
-    unsigned long index = 0;
+    std::set<std::pair<FacetIndex, FacetIndex> > aEdge2Face;
+    FacetIndex index = 0;
     for (MeshFacetArray::_TIterator pI = _rclMesh._aclFacetArray.begin(); pI != _rclMesh._aclFacetArray.end(); ++pI, index++) {
         for (int i = 0; i < 3; i++) {
             // ignore open edges
-            if (pI->_aulNeighbours[i] != ULONG_MAX) {
-                unsigned long ulFt0 = std::min<unsigned long>(index, pI->_aulNeighbours[i]);
-                unsigned long ulFt1 = std::max<unsigned long>(index, pI->_aulNeighbours[i]);
-                aEdge2Face.insert(std::pair<unsigned long, unsigned long>(ulFt0, ulFt1));
+            if (pI->_aulNeighbours[i] != FACET_INDEX_MAX) {
+                FacetIndex ulFt0 = std::min<FacetIndex>(index, pI->_aulNeighbours[i]);
+                FacetIndex ulFt1 = std::max<FacetIndex>(index, pI->_aulNeighbours[i]);
+                aEdge2Face.insert(std::pair<FacetIndex, FacetIndex>(ulFt0, ulFt1));
             }
         }
     }
 
     Base::Vector3f center;
     while (!aEdge2Face.empty()) {
-        std::set<std::pair<unsigned long, unsigned long> >::iterator it = aEdge2Face.begin();
-        std::pair<unsigned long, unsigned long> edge = *it;
+        std::set<std::pair<FacetIndex, FacetIndex> >::iterator it = aEdge2Face.begin();
+        std::pair<FacetIndex, FacetIndex> edge = *it;
         aEdge2Face.erase(it);
         if (ShouldSwapEdge(edge.first, edge.second, fMaxAngle)) {
             float radius = _rclMesh.GetFacet(edge.first).CenterOfCircumCircle(center);
@@ -363,15 +359,15 @@ void MeshTopoAlgorithm::DelaunayFlip(float fMaxAngle)
             if (Base::DistanceP2(center, vertex) < radius) {
                 SwapEdge(edge.first, edge.second);
                 for (int i=0; i<3; i++) {
-                    if (face_1._aulNeighbours[i] != ULONG_MAX && face_1._aulNeighbours[i] != edge.second) {
-                        unsigned long ulFt0 = std::min<unsigned long>(edge.first, face_1._aulNeighbours[i]);
-                        unsigned long ulFt1 = std::max<unsigned long>(edge.first, face_1._aulNeighbours[i]);
-                        aEdge2Face.insert(std::pair<unsigned long, unsigned long>(ulFt0, ulFt1));
+                    if (face_1._aulNeighbours[i] != FACET_INDEX_MAX && face_1._aulNeighbours[i] != edge.second) {
+                        FacetIndex ulFt0 = std::min<FacetIndex>(edge.first, face_1._aulNeighbours[i]);
+                        FacetIndex ulFt1 = std::max<FacetIndex>(edge.first, face_1._aulNeighbours[i]);
+                        aEdge2Face.insert(std::pair<FacetIndex, FacetIndex>(ulFt0, ulFt1));
                     }
-                    if (face_2._aulNeighbours[i] != ULONG_MAX && face_2._aulNeighbours[i] != edge.first) {
-                        unsigned long ulFt0 = std::min<unsigned long>(edge.second, face_2._aulNeighbours[i]);
-                        unsigned long ulFt1 = std::max<unsigned long>(edge.second, face_2._aulNeighbours[i]);
-                        aEdge2Face.insert(std::pair<unsigned long, unsigned long>(ulFt0, ulFt1));
+                    if (face_2._aulNeighbours[i] != FACET_INDEX_MAX && face_2._aulNeighbours[i] != edge.first) {
+                        FacetIndex ulFt0 = std::min<FacetIndex>(edge.second, face_2._aulNeighbours[i]);
+                        FacetIndex ulFt1 = std::max<FacetIndex>(edge.second, face_2._aulNeighbours[i]);
+                        aEdge2Face.insert(std::pair<FacetIndex, FacetIndex>(ulFt0, ulFt1));
                     }
                 }
             }
@@ -384,13 +380,13 @@ int MeshTopoAlgorithm::DelaunayFlip()
     int cnt_swap=0;
     _rclMesh._aclFacetArray.ResetFlag(MeshFacet::TMP0);
     size_t cnt_facets = _rclMesh._aclFacetArray.size();
-    for (unsigned long i=0;i<cnt_facets;i++) {
+    for (size_t i=0;i<cnt_facets;i++) {
         const MeshFacet& f_face = _rclMesh._aclFacetArray[i];
         if (f_face.IsFlag(MeshFacet::TMP0))
             continue;
         for (int j=0;j<3;j++) {
-            unsigned long n = f_face._aulNeighbours[j];
-            if (n != ULONG_MAX) {
+            FacetIndex n = f_face._aulNeighbours[j];
+            if (n != FACET_INDEX_MAX) {
                 const MeshFacet& n_face = _rclMesh._aclFacetArray[n];
                 if (n_face.IsFlag(MeshFacet::TMP0))
                     continue;
@@ -433,16 +429,16 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
   aIdx.reserve( 3*raFts.size() );
 
   // Build map of edges to the referencing facets
-  unsigned long k = 0;
-  std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> > aclEdgeMap;
+  FacetIndex k = 0;
+  std::map<std::pair<PointIndex, PointIndex>, std::list<FacetIndex> > aclEdgeMap;
   for ( std::vector<MeshFacet>::const_iterator jt = raFts.begin(); jt != raFts.end(); ++jt, k++ )
   {
     for (int i=0; i<3; i++)
     {
-      unsigned long ulT0 = jt->_aulPoints[i];
-      unsigned long ulT1 = jt->_aulPoints[(i+1)%3];
-      unsigned long ulP0 = std::min<unsigned long>(ulT0, ulT1);
-      unsigned long ulP1 = std::max<unsigned long>(ulT0, ulT1);
+      PointIndex ulT0 = jt->_aulPoints[i];
+      PointIndex ulT1 = jt->_aulPoints[(i+1)%3];
+      PointIndex ulP0 = std::min<PointIndex>(ulT0, ulT1);
+      PointIndex ulP1 = std::max<PointIndex>(ulT0, ulT1);
       aclEdgeMap[std::make_pair(ulP0, ulP1)].push_front(k);
       aIdx.push_back( static_cast<int>(jt->_aulPoints[i]) );
     }
@@ -460,25 +456,25 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
 
   raFts.ResetFlag(MeshFacet::VISIT);
   const MeshPointArray& raPts = _rclMesh.GetPoints();
-  for ( std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> >::iterator kt = aclEdgeMap.begin(); kt != aclEdgeMap.end(); ++kt )
+  for ( std::map<std::pair<PointIndex, PointIndex>, std::list<FacetIndex> >::iterator kt = aclEdgeMap.begin(); kt != aclEdgeMap.end(); ++kt )
   {
     if ( kt->second.size() == 2 ) {
-      unsigned long uPt1 = kt->first.first;
-      unsigned long uPt2 = kt->first.second;
-      unsigned long uFt1 = kt->second.front();
-      unsigned long uFt2 = kt->second.back();
+      PointIndex uPt1 = kt->first.first;
+      PointIndex uPt2 = kt->first.second;
+      FacetIndex uFt1 = kt->second.front();
+      FacetIndex uFt2 = kt->second.back();
 
       const MeshFacet& rFace1 = raFts[uFt1];
       const MeshFacet& rFace2 = raFts[uFt2];
       if ( rFace1.IsFlag(MeshFacet::VISIT) || rFace2.IsFlag(MeshFacet::VISIT) )
         continue;
 
-      unsigned long uPt3, uPt4;
+      PointIndex uPt3, uPt4;
       unsigned short side = rFace1.Side(uPt1, uPt2);
       uPt3 = rFace1._aulPoints[(side+2)%3];
       side = rFace2.Side(uPt1, uPt2);
       uPt4 = rFace2._aulPoints[(side+2)%3];
-      
+
       Wm4::Vector3<float> dir;
       float fActCurvature;
       if ( fabs(aMinCurv[uPt1]) > fabs(aMaxCurv[uPt1]) ) {
@@ -493,7 +489,7 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
       Base::Vector3f cEdgeDir1 = raPts[uPt1] - raPts[uPt2];
       Base::Vector3f cEdgeDir2 = raPts[uPt3] - raPts[uPt4];
       cMinDir.Normalize(); cEdgeDir1.Normalize(); cEdgeDir2.Normalize();
-    
+
       // get the plane and calculate the distance to the fourth point
       MeshGeomFacet cPlane(raPts[uPt1], raPts[uPt2], raPts[uPt3]);
       // positive or negative distance
@@ -513,24 +509,23 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
   }
 }
 
-bool MeshTopoAlgorithm::InsertVertexAndSwapEdge(unsigned long ulFacetPos, const Base::Vector3f&  rclPoint, float fMaxAngle)
+bool MeshTopoAlgorithm::InsertVertexAndSwapEdge(FacetIndex ulFacetPos, const Base::Vector3f&  rclPoint, float fMaxAngle)
 {
   if ( !InsertVertex(ulFacetPos, rclPoint) )
     return false;
 
   // get the created elements
-  unsigned long ulF1Ind = _rclMesh._aclFacetArray.size()-2;
-  unsigned long ulF2Ind = _rclMesh._aclFacetArray.size()-1;
+  FacetIndex ulF1Ind = _rclMesh._aclFacetArray.size()-2;
+  FacetIndex ulF2Ind = _rclMesh._aclFacetArray.size()-1;
   MeshFacet& rclF1 = _rclMesh._aclFacetArray[ulFacetPos];
   MeshFacet& rclF2 = _rclMesh._aclFacetArray[ulF1Ind];
   MeshFacet& rclF3 = _rclMesh._aclFacetArray[ulF2Ind];
 
   // first facet
-  int i;
-  for ( i=0; i<3; i++ )
+  for (int i=0; i<3; i++ )
   {
-    unsigned long uNeighbour = rclF1._aulNeighbours[i];
-    if ( uNeighbour!=ULONG_MAX && uNeighbour!=ulF1Ind && uNeighbour!=ulF2Ind )
+    FacetIndex uNeighbour = rclF1._aulNeighbours[i];
+    if ( uNeighbour!=FACET_INDEX_MAX && uNeighbour!=ulF1Ind && uNeighbour!=ulF2Ind )
     {
       if ( ShouldSwapEdge(ulFacetPos, uNeighbour, fMaxAngle) ) {
         SwapEdge(ulFacetPos, uNeighbour);
@@ -538,11 +533,11 @@ bool MeshTopoAlgorithm::InsertVertexAndSwapEdge(unsigned long ulFacetPos, const 
       }
     }
   }
-  for ( i=0; i<3; i++ )
+  for (int i=0; i<3; i++ )
   {
     // second facet
-    unsigned long uNeighbour = rclF2._aulNeighbours[i];
-    if ( uNeighbour!=ULONG_MAX && uNeighbour!=ulFacetPos && uNeighbour!=ulF2Ind )
+    FacetIndex uNeighbour = rclF2._aulNeighbours[i];
+    if ( uNeighbour!=FACET_INDEX_MAX && uNeighbour!=ulFacetPos && uNeighbour!=ulF2Ind )
     {
       if ( ShouldSwapEdge(ulF1Ind, uNeighbour, fMaxAngle) ) {
         SwapEdge(ulF1Ind, uNeighbour);
@@ -552,10 +547,10 @@ bool MeshTopoAlgorithm::InsertVertexAndSwapEdge(unsigned long ulFacetPos, const 
   }
 
   // third facet
-  for ( i=0; i<3; i++ )
+  for (int i=0; i<3; i++ )
   {
-    unsigned long uNeighbour = rclF3._aulNeighbours[i];
-    if ( uNeighbour!=ULONG_MAX && uNeighbour!=ulFacetPos && uNeighbour!=ulF1Ind )
+    FacetIndex uNeighbour = rclF3._aulNeighbours[i];
+    if ( uNeighbour!=FACET_INDEX_MAX && uNeighbour!=ulFacetPos && uNeighbour!=ulF1Ind )
     {
       if ( ShouldSwapEdge(ulF2Ind, uNeighbour, fMaxAngle) ) {
         SwapEdge(ulF2Ind, uNeighbour);
@@ -567,7 +562,7 @@ bool MeshTopoAlgorithm::InsertVertexAndSwapEdge(unsigned long ulFacetPos, const 
   return true;
 }
 
-bool MeshTopoAlgorithm::IsSwapEdgeLegal(unsigned long ulFacetPos, unsigned long ulNeighbour) const
+bool MeshTopoAlgorithm::IsSwapEdgeLegal(FacetIndex ulFacetPos, FacetIndex ulNeighbour) const
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
     MeshFacet& rclN = _rclMesh._aclFacetArray[ulNeighbour];
@@ -591,7 +586,7 @@ bool MeshTopoAlgorithm::IsSwapEdgeLegal(unsigned long ulFacetPos, unsigned long 
     if (cT4.IsDegenerated(MeshDefinitions::_fMinPointDistanceP2))
         return false;
 
-    // We must make sure that the two adjacent triangles builds a convex polygon, otherwise 
+    // We must make sure that the two adjacent triangles builds a convex polygon, otherwise
     // the swap edge operation is illegal
     Base::Vector3f cU = cP2-cP1;
     Base::Vector3f cV = cP4-cP3;
@@ -607,7 +602,7 @@ bool MeshTopoAlgorithm::IsSwapEdgeLegal(unsigned long ulFacetPos, unsigned long 
     return true;
 }
 
-bool MeshTopoAlgorithm::ShouldSwapEdge(unsigned long ulFacetPos, unsigned long ulNeighbour, float fMaxAngle) const
+bool MeshTopoAlgorithm::ShouldSwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour, float fMaxAngle) const
 {
     if (!IsSwapEdgeLegal(ulFacetPos, ulNeighbour))
         return false;
@@ -640,7 +635,7 @@ bool MeshTopoAlgorithm::ShouldSwapEdge(unsigned long ulFacetPos, unsigned long u
     return  fMax12 > fMax34;
 }
 
-void MeshTopoAlgorithm::SwapEdge(unsigned long ulFacetPos, unsigned long ulNeighbour)
+void MeshTopoAlgorithm::SwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour)
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
     MeshFacet& rclN = _rclMesh._aclFacetArray[ulNeighbour];
@@ -648,13 +643,13 @@ void MeshTopoAlgorithm::SwapEdge(unsigned long ulFacetPos, unsigned long ulNeigh
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) 
+    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX)
         return; // not neighbours
 
     // adjust the neighbourhood
-    if (rclF._aulNeighbours[(uFSide+1)%3] != ULONG_MAX)
+    if (rclF._aulNeighbours[(uFSide+1)%3] != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[rclF._aulNeighbours[(uFSide+1)%3]].ReplaceNeighbour(ulFacetPos, ulNeighbour);
-    if (rclN._aulNeighbours[(uNSide+1)%3] != ULONG_MAX)
+    if (rclN._aulNeighbours[(uNSide+1)%3] != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+1)%3]].ReplaceNeighbour(ulNeighbour, ulFacetPos);
 
     // swap the point and neighbour indices
@@ -666,7 +661,7 @@ void MeshTopoAlgorithm::SwapEdge(unsigned long ulFacetPos, unsigned long ulNeigh
     rclN._aulNeighbours[(uNSide+1)%3] = ulFacetPos;
 }
 
-bool MeshTopoAlgorithm::SplitEdge(unsigned long ulFacetPos, unsigned long ulNeighbour, const Base::Vector3f& rP)
+bool MeshTopoAlgorithm::SplitEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour, const Base::Vector3f& rP)
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
     MeshFacet& rclN = _rclMesh._aclFacetArray[ulNeighbour];
@@ -674,12 +669,12 @@ bool MeshTopoAlgorithm::SplitEdge(unsigned long ulFacetPos, unsigned long ulNeig
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) 
+    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX)
         return false; // not neighbours
 
-    unsigned long uPtCnt = _rclMesh._aclPointArray.size();
-    unsigned long uPtInd = this->GetOrAddIndex(rP);
-    unsigned long ulSize = _rclMesh._aclFacetArray.size();
+    PointIndex uPtCnt = _rclMesh._aclPointArray.size();
+    PointIndex uPtInd = this->GetOrAddIndex(rP);
+    FacetIndex ulSize = _rclMesh._aclFacetArray.size();
 
     // the given point is already part of the mesh => creating new facets would
     // be an illegal operation
@@ -687,9 +682,9 @@ bool MeshTopoAlgorithm::SplitEdge(unsigned long ulFacetPos, unsigned long ulNeig
         return false;
 
     // adjust the neighbourhood
-    if (rclF._aulNeighbours[(uFSide+1)%3] != ULONG_MAX)
+    if (rclF._aulNeighbours[(uFSide+1)%3] != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[rclF._aulNeighbours[(uFSide+1)%3]].ReplaceNeighbour(ulFacetPos, ulSize);
-    if (rclN._aulNeighbours[(uNSide+2)%3] != ULONG_MAX)
+    if (rclN._aulNeighbours[(uNSide+2)%3] != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+2)%3]].ReplaceNeighbour(ulNeighbour, ulSize+1);
 
     MeshFacet cNew1, cNew2;
@@ -720,28 +715,28 @@ bool MeshTopoAlgorithm::SplitEdge(unsigned long ulFacetPos, unsigned long ulNeig
     return true;
 }
 
-void MeshTopoAlgorithm::SplitOpenEdge(unsigned long ulFacetPos, unsigned short uSide, const Base::Vector3f& rP)
+bool MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSide, const Base::Vector3f& rP)
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
-    if (rclF._aulNeighbours[uSide] != ULONG_MAX) 
-        return; // not open
+    if (rclF._aulNeighbours[uSide] != FACET_INDEX_MAX)
+        return false; // not open
 
-    unsigned long uPtCnt = _rclMesh._aclPointArray.size();
-    unsigned long uPtInd = this->GetOrAddIndex(rP);
-    unsigned long ulSize = _rclMesh._aclFacetArray.size();
+    PointIndex uPtCnt = _rclMesh._aclPointArray.size();
+    PointIndex uPtInd = this->GetOrAddIndex(rP);
+    FacetIndex ulSize = _rclMesh._aclFacetArray.size();
 
     if (uPtInd < uPtCnt)
-        return; // the given point is already part of the mesh => creating new facets would be an illegal operation
+        return false; // the given point is already part of the mesh => creating new facets would be an illegal operation
 
     // adjust the neighbourhood
-    if (rclF._aulNeighbours[(uSide+1)%3] != ULONG_MAX)
+    if (rclF._aulNeighbours[(uSide+1)%3] != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[rclF._aulNeighbours[(uSide+1)%3]].ReplaceNeighbour(ulFacetPos, ulSize);
 
     MeshFacet cNew;
     cNew._aulPoints[0] = uPtInd;
     cNew._aulPoints[1] = rclF._aulPoints[(uSide+1)%3];
     cNew._aulPoints[2] = rclF._aulPoints[(uSide+2)%3];
-    cNew._aulNeighbours[0] = ULONG_MAX;
+    cNew._aulNeighbours[0] = FACET_INDEX_MAX;
     cNew._aulNeighbours[1] = rclF._aulNeighbours[(uSide+1)%3];
     cNew._aulNeighbours[2] = ulFacetPos;
 
@@ -751,6 +746,7 @@ void MeshTopoAlgorithm::SplitOpenEdge(unsigned long ulFacetPos, unsigned short u
 
     // insert new facets
     _rclMesh._aclFacetArray.push_back(cNew);
+    return true;
 }
 
 bool MeshTopoAlgorithm::Vertex_Less::operator ()(const Base::Vector3f& u,
@@ -771,7 +767,7 @@ void MeshTopoAlgorithm::BeginCache()
         delete _cache;
     }
     _cache = new tCache();
-    unsigned long nbPoints = _rclMesh._aclPointArray.size();
+    PointIndex nbPoints = _rclMesh._aclPointArray.size();
     for (unsigned int pntCpt = 0 ; pntCpt < nbPoints ; ++pntCpt) {
         _cache->insert(std::make_pair(_rclMesh._aclPointArray[pntCpt],pntCpt));
     }
@@ -782,11 +778,11 @@ void MeshTopoAlgorithm::EndCache()
     if (_cache) {
         _cache->clear();
         delete _cache;
-        _cache = 0;
+        _cache = nullptr;
     }
 }
 
-unsigned long MeshTopoAlgorithm::GetOrAddIndex (const MeshPoint &rclPoint)
+PointIndex MeshTopoAlgorithm::GetOrAddIndex (const MeshPoint &rclPoint)
 {
     if (!_cache)
         return _rclMesh._aclPointArray.GetOrAddIndex(rclPoint);
@@ -798,24 +794,24 @@ unsigned long MeshTopoAlgorithm::GetOrAddIndex (const MeshPoint &rclPoint)
     return retval.first->second;
 }
 
-std::vector<unsigned long> MeshTopoAlgorithm::GetFacetsToPoint(unsigned long uFacetPos, unsigned long uPointPos) const
+std::vector<FacetIndex> MeshTopoAlgorithm::GetFacetsToPoint(FacetIndex uFacetPos, PointIndex uPointPos) const
 {
     // get all facets this point is referenced by
-    std::list<unsigned long> aReference;
+    std::list<FacetIndex> aReference;
     aReference.push_back(uFacetPos);
-    std::set<unsigned long> aRefFacet;
+    std::set<FacetIndex> aRefFacet;
     while (!aReference.empty()) {
-        unsigned long uIndex = aReference.front();
+        FacetIndex uIndex = aReference.front();
         aReference.pop_front();
         aRefFacet.insert(uIndex);
         MeshFacet& rFace = _rclMesh._aclFacetArray[uIndex];
         for (int i=0; i<3; i++) {
             if (rFace._aulPoints[i] == uPointPos) {
-                if (rFace._aulNeighbours[i] != ULONG_MAX) {
+                if (rFace._aulNeighbours[i] != FACET_INDEX_MAX) {
                     if (aRefFacet.find(rFace._aulNeighbours[i]) == aRefFacet.end())
                         aReference.push_back( rFace._aulNeighbours[i] );
                 }
-                if (rFace._aulNeighbours[(i+2)%3] != ULONG_MAX) {
+                if (rFace._aulNeighbours[(i+2)%3] != FACET_INDEX_MAX) {
                     if (aRefFacet.find(rFace._aulNeighbours[(i+2)%3]) == aRefFacet.end())
                         aReference.push_back( rFace._aulNeighbours[(i+2)%3] );
                 }
@@ -825,7 +821,7 @@ std::vector<unsigned long> MeshTopoAlgorithm::GetFacetsToPoint(unsigned long uFa
     }
 
     //copy the items
-    std::vector<unsigned long> aRefs;
+    std::vector<FacetIndex> aRefs;
     aRefs.insert(aRefs.end(), aRefFacet.begin(), aRefFacet.end());
     return aRefs;
 }
@@ -852,8 +848,8 @@ bool MeshTopoAlgorithm::CollapseVertex(const VertexCollapse& vc)
     MeshFacet& rFace3 = _rclMesh._aclFacetArray[vc._circumFacets[2]];
 
     // get the point that is not shared by rFace1
-    unsigned long ptIndex = ULONG_MAX;
-    std::vector<unsigned long>::const_iterator it;
+    PointIndex ptIndex = POINT_INDEX_MAX;
+    std::vector<PointIndex>::const_iterator it;
     for (it = vc._circumPoints.begin(); it != vc._circumPoints.end(); ++it) {
         if (!rFace1.HasPoint(*it)) {
             ptIndex = *it;
@@ -861,13 +857,13 @@ bool MeshTopoAlgorithm::CollapseVertex(const VertexCollapse& vc)
         }
     }
 
-    if (ptIndex == ULONG_MAX)
+    if (ptIndex == POINT_INDEX_MAX)
         return false;
 
-    unsigned long neighbour1 = ULONG_MAX;
-    unsigned long neighbour2 = ULONG_MAX;
+    FacetIndex neighbour1 = FACET_INDEX_MAX;
+    FacetIndex neighbour2 = FACET_INDEX_MAX;
 
-    const std::vector<unsigned long>& faces = vc._circumFacets;
+    const std::vector<FacetIndex>& faces = vc._circumFacets;
     // get neighbours that are not part of the faces to be removed
     for (int i=0; i<3; i++) {
         if (std::find(faces.begin(), faces.end(), rFace2._aulNeighbours[i]) == faces.end()) {
@@ -883,11 +879,11 @@ bool MeshTopoAlgorithm::CollapseVertex(const VertexCollapse& vc)
     rFace1.ReplaceNeighbour(vc._circumFacets[1], neighbour1);
     rFace1.ReplaceNeighbour(vc._circumFacets[2], neighbour2);
 
-    if (neighbour1 != ULONG_MAX) {
+    if (neighbour1 != FACET_INDEX_MAX) {
         MeshFacet& rFace4 = _rclMesh._aclFacetArray[neighbour1];
         rFace4.ReplaceNeighbour(vc._circumFacets[1], vc._circumFacets[0]);
     }
-    if (neighbour2 != ULONG_MAX) {
+    if (neighbour2 != FACET_INDEX_MAX) {
         MeshFacet& rFace5 = _rclMesh._aclFacetArray[neighbour2];
         rFace5.ReplaceNeighbour(vc._circumFacets[2], vc._circumFacets[0]);
     }
@@ -902,7 +898,7 @@ bool MeshTopoAlgorithm::CollapseVertex(const VertexCollapse& vc)
     return true;
 }
 
-bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulNeighbour)
+bool MeshTopoAlgorithm::CollapseEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour)
 {
   MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
   MeshFacet& rclN = _rclMesh._aclFacetArray[ulNeighbour];
@@ -910,42 +906,42 @@ bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulN
   unsigned short uFSide = rclF.Side(rclN);
   unsigned short uNSide = rclN.Side(rclF);
 
-  if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) 
+  if (uFSide == USHRT_MAX || uNSide == USHRT_MAX)
     return false; // not neighbours
 
   if (!rclF.IsValid() || !rclN.IsValid())
     return false; // the facets are marked invalid from a previous run
 
   // get the point index we want to remove
-  unsigned long ulPointPos = rclF._aulPoints[uFSide];
-  unsigned long ulPointNew = rclN._aulPoints[uNSide];
+  PointIndex ulPointPos = rclF._aulPoints[uFSide];
+  PointIndex ulPointNew = rclN._aulPoints[uNSide];
 
   // get all facets this point is referenced by
-  std::vector<unsigned long> aRefs = GetFacetsToPoint(ulFacetPos, ulPointPos);
-  for ( std::vector<unsigned long>::iterator it = aRefs.begin(); it != aRefs.end(); ++it )
+  std::vector<FacetIndex> aRefs = GetFacetsToPoint(ulFacetPos, ulPointPos);
+  for ( std::vector<FacetIndex>::iterator it = aRefs.begin(); it != aRefs.end(); ++it )
   {
     MeshFacet& rFace = _rclMesh._aclFacetArray[*it];
     rFace.Transpose( ulPointPos, ulPointNew );
   }
 
   // set the new neighbourhood
-  if (rclF._aulNeighbours[(uFSide+1)%3] != ULONG_MAX)
+  if (rclF._aulNeighbours[(uFSide+1)%3] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclF._aulNeighbours[(uFSide+1)%3]].ReplaceNeighbour(ulFacetPos, rclF._aulNeighbours[(uFSide+2)%3]);
-  if (rclF._aulNeighbours[(uFSide+2)%3] != ULONG_MAX)
+  if (rclF._aulNeighbours[(uFSide+2)%3] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclF._aulNeighbours[(uFSide+2)%3]].ReplaceNeighbour(ulFacetPos, rclF._aulNeighbours[(uFSide+1)%3]);
-  if (rclN._aulNeighbours[(uNSide+1)%3] != ULONG_MAX)
+  if (rclN._aulNeighbours[(uNSide+1)%3] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+1)%3]].ReplaceNeighbour(ulNeighbour, rclN._aulNeighbours[(uNSide+2)%3]);
-  if (rclN._aulNeighbours[(uNSide+2)%3] != ULONG_MAX)
+  if (rclN._aulNeighbours[(uNSide+2)%3] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+2)%3]].ReplaceNeighbour(ulNeighbour, rclN._aulNeighbours[(uNSide+1)%3]);
 
   // isolate the both facets and the point
-  rclF._aulNeighbours[0] = ULONG_MAX;
-  rclF._aulNeighbours[1] = ULONG_MAX;
-  rclF._aulNeighbours[2] = ULONG_MAX;
+  rclF._aulNeighbours[0] = FACET_INDEX_MAX;
+  rclF._aulNeighbours[1] = FACET_INDEX_MAX;
+  rclF._aulNeighbours[2] = FACET_INDEX_MAX;
   rclF.SetInvalid();
-  rclN._aulNeighbours[0] = ULONG_MAX;
-  rclN._aulNeighbours[1] = ULONG_MAX;
-  rclN._aulNeighbours[2] = ULONG_MAX;
+  rclN._aulNeighbours[0] = FACET_INDEX_MAX;
+  rclN._aulNeighbours[1] = FACET_INDEX_MAX;
+  rclN._aulNeighbours[2] = FACET_INDEX_MAX;
   rclN.SetInvalid();
   _rclMesh._aclPointArray[ulPointPos].SetInvalid();
 
@@ -959,16 +955,16 @@ bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
     // http://stackoverflow.com/a/27049418/148668
     // Check connectivity
     //
-    std::vector<unsigned long> commonPoints;
+    std::vector<PointIndex> commonPoints;
     std::set_intersection(ec._adjacentFrom.begin(), ec._adjacentFrom.end(),
                           ec._adjacentTo.begin(), ec._adjacentTo.end(),
-                          std::back_insert_iterator<std::vector<unsigned long> >(commonPoints));
+                          std::back_insert_iterator<std::vector<PointIndex> >(commonPoints));
     if (commonPoints.size() > 2) {
         return false;
     }
 
     // Check geometry
-    std::vector<unsigned long>::const_iterator it;
+    std::vector<FacetIndex>::const_iterator it;
     for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
         MeshFacet f = _rclMesh._aclFacetArray[*it];
         if (!f.IsValid())
@@ -1005,16 +1001,16 @@ bool MeshTopoAlgorithm::IsCollapseEdgeLegal(const EdgeCollapse& ec) const
 
 bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
 {
-    std::vector<unsigned long>::const_iterator it;
+    std::vector<FacetIndex>::const_iterator it;
     for (it = ec._removeFacets.begin(); it != ec._removeFacets.end(); ++it) {
         MeshFacet& f = _rclMesh._aclFacetArray[*it];
         f.SetInvalid();
 
         // adjust the neighbourhood
-        std::vector<unsigned long> neighbours;
+        std::vector<FacetIndex> neighbours;
         for (int i=0; i<3; i++) {
             // get the neighbours of the facet that won't be invalidated
-            if (f._aulNeighbours[i] != ULONG_MAX) {
+            if (f._aulNeighbours[i] != FACET_INDEX_MAX) {
                 if (std::find(ec._removeFacets.begin(), ec._removeFacets.end(),
                               f._aulNeighbours[i]) == ec._removeFacets.end()) {
                     neighbours.push_back(f._aulNeighbours[i]);
@@ -1030,7 +1026,7 @@ bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
         }
         else if (neighbours.size() == 1) {
             MeshFacet& n1 = _rclMesh._aclFacetArray[neighbours[0]];
-            n1.ReplaceNeighbour(*it, ULONG_MAX);
+            n1.ReplaceNeighbour(*it, FACET_INDEX_MAX);
         }
     }
 
@@ -1045,61 +1041,61 @@ bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
     return true;
 }
 
-bool MeshTopoAlgorithm::CollapseFacet(unsigned long ulFacetPos)
+bool MeshTopoAlgorithm::CollapseFacet(FacetIndex ulFacetPos)
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
     if (!rclF.IsValid())
         return false; // the facet is marked invalid from a previous run
 
     // get the point index we want to remove
-    unsigned long ulPointInd0 = rclF._aulPoints[0];
-    unsigned long ulPointInd1 = rclF._aulPoints[1];
-    unsigned long ulPointInd2 = rclF._aulPoints[2];
+    PointIndex ulPointInd0 = rclF._aulPoints[0];
+    PointIndex ulPointInd1 = rclF._aulPoints[1];
+    PointIndex ulPointInd2 = rclF._aulPoints[2];
 
     // move the vertex to the gravity center
     Base::Vector3f cCenter = _rclMesh.GetGravityPoint(rclF);
     _rclMesh._aclPointArray[ulPointInd0] = cCenter;
 
     // set the new point indices for all facets that share one of the points to be deleted
-    std::vector<unsigned long> aRefs = GetFacetsToPoint(ulFacetPos, ulPointInd1);
-    for (std::vector<unsigned long>::iterator it = aRefs.begin(); it != aRefs.end(); ++it) {
+    std::vector<FacetIndex> aRefs = GetFacetsToPoint(ulFacetPos, ulPointInd1);
+    for (std::vector<FacetIndex>::iterator it = aRefs.begin(); it != aRefs.end(); ++it) {
         MeshFacet& rFace = _rclMesh._aclFacetArray[*it];
         rFace.Transpose(ulPointInd1, ulPointInd0);
     }
-    
+
     aRefs = GetFacetsToPoint(ulFacetPos, ulPointInd2);
-    for (std::vector<unsigned long>::iterator it = aRefs.begin(); it != aRefs.end(); ++it) {
+    for (std::vector<FacetIndex>::iterator it = aRefs.begin(); it != aRefs.end(); ++it) {
         MeshFacet& rFace = _rclMesh._aclFacetArray[*it];
         rFace.Transpose(ulPointInd2, ulPointInd0);
     }
 
     // set the neighbourhood of the circumjacent facets
     for (int i=0; i<3; i++) {
-        if (rclF._aulNeighbours[i] == ULONG_MAX)
+        if (rclF._aulNeighbours[i] == FACET_INDEX_MAX)
             continue;
         MeshFacet& rclN = _rclMesh._aclFacetArray[rclF._aulNeighbours[i]];
         unsigned short uNSide = rclN.Side(rclF);
 
-        if (rclN._aulNeighbours[(uNSide+1)%3] != ULONG_MAX) {
+        if (rclN._aulNeighbours[(uNSide+1)%3] != FACET_INDEX_MAX) {
             _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+1)%3]]
                     .ReplaceNeighbour(rclF._aulNeighbours[i],rclN._aulNeighbours[(uNSide+2)%3]);
         }
-        if (rclN._aulNeighbours[(uNSide+2)%3] != ULONG_MAX) {
+        if (rclN._aulNeighbours[(uNSide+2)%3] != FACET_INDEX_MAX) {
             _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+2)%3]]
                     .ReplaceNeighbour(rclF._aulNeighbours[i],rclN._aulNeighbours[(uNSide+1)%3]);
         }
 
         // Isolate the neighbours from the topology
-        rclN._aulNeighbours[0] = ULONG_MAX;
-        rclN._aulNeighbours[1] = ULONG_MAX;
-        rclN._aulNeighbours[2] = ULONG_MAX;
+        rclN._aulNeighbours[0] = FACET_INDEX_MAX;
+        rclN._aulNeighbours[1] = FACET_INDEX_MAX;
+        rclN._aulNeighbours[2] = FACET_INDEX_MAX;
         rclN.SetInvalid();
     }
 
     // Isolate this facet and make two of its points invalid
-    rclF._aulNeighbours[0] = ULONG_MAX;
-    rclF._aulNeighbours[1] = ULONG_MAX;
-    rclF._aulNeighbours[2] = ULONG_MAX;
+    rclF._aulNeighbours[0] = FACET_INDEX_MAX;
+    rclF._aulNeighbours[1] = FACET_INDEX_MAX;
+    rclF._aulNeighbours[2] = FACET_INDEX_MAX;
     rclF.SetInvalid();
     _rclMesh._aclPointArray[ulPointInd1].SetInvalid();
     _rclMesh._aclPointArray[ulPointInd2].SetInvalid();
@@ -1109,7 +1105,7 @@ bool MeshTopoAlgorithm::CollapseFacet(unsigned long ulFacetPos)
     return true;
 }
 
-void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, const Base::Vector3f& rP1, const Base::Vector3f& rP2)
+void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos, const Base::Vector3f& rP1, const Base::Vector3f& rP2)
 {
     float fEps = MESH_MIN_EDGE_LEN;
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
@@ -1148,7 +1144,7 @@ void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, const Base::Vector3
     }
 }
 
-void MeshTopoAlgorithm::SplitFacetOnOneEdge(unsigned long ulFacetPos, const Base::Vector3f& rP)
+void MeshTopoAlgorithm::SplitFacetOnOneEdge(FacetIndex ulFacetPos, const Base::Vector3f& rP)
 {
     float fMinDist = FLOAT_MAX;
     unsigned short iEdgeNo = USHRT_MAX;
@@ -1167,14 +1163,14 @@ void MeshTopoAlgorithm::SplitFacetOnOneEdge(unsigned long ulFacetPos, const Base
     }
 
     if (fMinDist < 0.05f) {
-        if (rFace._aulNeighbours[iEdgeNo] != ULONG_MAX)
+        if (rFace._aulNeighbours[iEdgeNo] != FACET_INDEX_MAX)
             SplitEdge(ulFacetPos, rFace._aulNeighbours[iEdgeNo], rP);
         else
             SplitOpenEdge(ulFacetPos, iEdgeNo, rP);
     }
 }
 
-void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Base::Vector3f& rP1, const Base::Vector3f& rP2)
+void MeshTopoAlgorithm::SplitFacetOnTwoEdges(FacetIndex ulFacetPos, const Base::Vector3f& rP1, const Base::Vector3f& rP2)
 {
     // search for the matching edges
     unsigned short iEdgeNo1 = USHRT_MAX, iEdgeNo2 = USHRT_MAX;
@@ -1210,21 +1206,21 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Bas
     }
 
     // insert new points
-    unsigned long cntPts1 = this->GetOrAddIndex(cP1);
-    unsigned long cntPts2 = this->GetOrAddIndex(cP2);
-    unsigned long cntFts = _rclMesh.CountFacets();
+    PointIndex cntPts1 = this->GetOrAddIndex(cP1);
+    PointIndex cntPts2 = this->GetOrAddIndex(cP2);
+    FacetIndex cntFts = _rclMesh.CountFacets();
 
     unsigned short v0 = (iEdgeNo2 + 1) % 3;
     unsigned short v1 = iEdgeNo1;
     unsigned short v2 = iEdgeNo2;
 
-    unsigned long p0 = rFace._aulPoints[v0];
-    unsigned long p1 = rFace._aulPoints[v1];
-    unsigned long p2 = rFace._aulPoints[v2];
+    PointIndex p0 = rFace._aulPoints[v0];
+    PointIndex p1 = rFace._aulPoints[v1];
+    PointIndex p2 = rFace._aulPoints[v2];
 
-    unsigned long n0 = rFace._aulNeighbours[v0];
-    unsigned long n1 = rFace._aulNeighbours[v1];
-    unsigned long n2 = rFace._aulNeighbours[v2];
+    FacetIndex n0 = rFace._aulNeighbours[v0];
+    FacetIndex n1 = rFace._aulNeighbours[v1];
+    FacetIndex n2 = rFace._aulNeighbours[v2];
 
     // Modify and add facets
     //
@@ -1244,15 +1240,15 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Bas
         AddFacet(p0, cntPts1, cntPts2, cntFts, ulFacetPos, n2);
     }
 
-    std::vector<unsigned long> fixIndices;
+    std::vector<FacetIndex> fixIndices;
     fixIndices.push_back(ulFacetPos);
 
-    if (n0 != ULONG_MAX) {
+    if (n0 != FACET_INDEX_MAX) {
         fixIndices.push_back(n0);
     }
 
     // split up the neighbour facets
-    if (n1 != ULONG_MAX) {
+    if (n1 != FACET_INDEX_MAX) {
         fixIndices.push_back(n1);
         MeshFacet& rN = _rclMesh._aclFacetArray[n1];
         for (int i=0; i<3; i++)
@@ -1260,7 +1256,7 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Bas
         SplitFacet(n1, p1, p2, cntPts1);
     }
 
-    if (n2 != ULONG_MAX) {
+    if (n2 != FACET_INDEX_MAX) {
         fixIndices.push_back(n2);
         MeshFacet& rN = _rclMesh._aclFacetArray[n2];
         for (int i=0; i<3; i++)
@@ -1268,8 +1264,8 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Bas
         SplitFacet(n2, p2, p0, cntPts2);
     }
 
-    unsigned long cntFts2 = _rclMesh.CountFacets();
-    for (unsigned long i=cntFts; i<cntFts2; i++) {
+    FacetIndex cntFts2 = _rclMesh.CountFacets();
+    for (FacetIndex i=cntFts; i<cntFts2; i++) {
         fixIndices.push_back(i);
     }
 
@@ -1278,19 +1274,19 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(unsigned long ulFacetPos, const Bas
     HarmonizeNeighbours(fixIndices);
 }
 
-void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, unsigned long P1,
-                                   unsigned long P2, unsigned long Pn)
+void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos, PointIndex P1,
+                                   PointIndex P2, PointIndex Pn)
 {
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
     unsigned short side = rFace.Side(P1, P2);
     if (side != USHRT_MAX) {
-        unsigned long V1 = rFace._aulPoints[(side + 1) % 3];
-        unsigned long V2 = rFace._aulPoints[(side + 2) % 3];
-        unsigned long size = _rclMesh._aclFacetArray.size();
+        PointIndex V1 = rFace._aulPoints[(side + 1) % 3];
+        PointIndex V2 = rFace._aulPoints[(side + 2) % 3];
+        FacetIndex size = _rclMesh._aclFacetArray.size();
 
         rFace._aulPoints[(side + 1) % 3] = Pn;
-        unsigned long N1 = rFace._aulNeighbours[(side + 1) % 3];
-        if (N1 != ULONG_MAX)
+        FacetIndex N1 = rFace._aulNeighbours[(side + 1) % 3];
+        if (N1 != FACET_INDEX_MAX)
             _rclMesh._aclFacetArray[N1].ReplaceNeighbour(ulFacetPos, size);
 
         rFace._aulNeighbours[(side + 1) % 3] = ulFacetPos;
@@ -1298,7 +1294,7 @@ void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, unsigned long P1,
     }
 }
 
-void MeshTopoAlgorithm::AddFacet(unsigned long P1, unsigned long P2, unsigned long P3)
+void MeshTopoAlgorithm::AddFacet(PointIndex P1, PointIndex P2, PointIndex P3)
 {
     MeshFacet facet;
     facet._aulPoints[0] = P1;
@@ -1308,8 +1304,8 @@ void MeshTopoAlgorithm::AddFacet(unsigned long P1, unsigned long P2, unsigned lo
     _rclMesh._aclFacetArray.push_back(facet);
 }
 
-void MeshTopoAlgorithm::AddFacet(unsigned long P1, unsigned long P2, unsigned long P3,
-                                 unsigned long N1, unsigned long N2, unsigned long N3)
+void MeshTopoAlgorithm::AddFacet(PointIndex P1, PointIndex P2, PointIndex P3,
+                                 FacetIndex N1, FacetIndex N2, FacetIndex N3)
 {
     MeshFacet facet;
     facet._aulPoints[0] = P1;
@@ -1322,16 +1318,16 @@ void MeshTopoAlgorithm::AddFacet(unsigned long P1, unsigned long P2, unsigned lo
     _rclMesh._aclFacetArray.push_back(facet);
 }
 
-void MeshTopoAlgorithm::HarmonizeNeighbours(const std::vector<unsigned long>& ulFacets)
+void MeshTopoAlgorithm::HarmonizeNeighbours(const std::vector<FacetIndex>& ulFacets)
 {
-    for (unsigned long it : ulFacets) {
-        for (unsigned long jt : ulFacets) {
+    for (FacetIndex it : ulFacets) {
+        for (FacetIndex jt : ulFacets) {
             HarmonizeNeighbours(it, jt);
         }
     }
 }
 
-void MeshTopoAlgorithm::HarmonizeNeighbours(unsigned long facet1, unsigned long facet2)
+void MeshTopoAlgorithm::HarmonizeNeighbours(FacetIndex facet1, FacetIndex facet2)
 {
     if (facet1 == facet2)
         return;
@@ -1350,21 +1346,20 @@ void MeshTopoAlgorithm::HarmonizeNeighbours(unsigned long facet1, unsigned long 
     }
 }
 
-void MeshTopoAlgorithm::SplitNeighbourFacet(unsigned long ulFacetPos, unsigned short uFSide, const Base::Vector3f rPoint)
+void MeshTopoAlgorithm::SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned short uFSide, const Base::Vector3f rPoint)
 {
   MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
 
-  unsigned long ulNeighbour = rclF._aulNeighbours[uFSide];
+  FacetIndex ulNeighbour = rclF._aulNeighbours[uFSide];
   MeshFacet& rclN = _rclMesh._aclFacetArray[ulNeighbour];
 
   unsigned short uNSide = rclN.Side(rclF);
 
-  //unsigned long uPtCnt = _rclMesh._aclPointArray.size();
-  unsigned long uPtInd = this->GetOrAddIndex(rPoint);
-  unsigned long ulSize = _rclMesh._aclFacetArray.size();
+  PointIndex uPtInd = this->GetOrAddIndex(rPoint);
+  FacetIndex ulSize = _rclMesh._aclFacetArray.size();
 
   // adjust the neighbourhood
-  if (rclN._aulNeighbours[(uNSide+1)%3] != ULONG_MAX)
+  if (rclN._aulNeighbours[(uNSide+1)%3] != FACET_INDEX_MAX)
     _rclMesh._aclFacetArray[rclN._aulNeighbours[(uNSide+1)%3]].ReplaceNeighbour(ulNeighbour, ulSize);
 
   MeshFacet cNew;
@@ -1407,9 +1402,10 @@ void MeshTopoAlgorithm::SplitNeighbourFacet(unsigned long ulFacetPos, unsigned s
   _aclNewFacets.push_back(clFacet);
 #endif
 
-void MeshTopoAlgorithm::RemoveDegeneratedFacet(unsigned long index)
+bool MeshTopoAlgorithm::RemoveDegeneratedFacet(FacetIndex index)
 {
-  if (index >= _rclMesh._aclFacetArray.size()) return;
+  if (index >= _rclMesh._aclFacetArray.size())
+      return false;
   MeshFacet& rFace = _rclMesh._aclFacetArray[index];
 
   // coincident corners (either topological or geometrical)
@@ -1417,19 +1413,19 @@ void MeshTopoAlgorithm::RemoveDegeneratedFacet(unsigned long index)
     const MeshPoint& rE0 = _rclMesh._aclPointArray[rFace._aulPoints[i]];
     const MeshPoint& rE1 = _rclMesh._aclPointArray[rFace._aulPoints[(i+1)%3]];
     if (rE0 == rE1) {
-      unsigned long uN1 = rFace._aulNeighbours[(i+1)%3];
-      unsigned long uN2 = rFace._aulNeighbours[(i+2)%3];
-      if (uN2 != ULONG_MAX)
+      FacetIndex uN1 = rFace._aulNeighbours[(i+1)%3];
+      FacetIndex uN2 = rFace._aulNeighbours[(i+2)%3];
+      if (uN2 != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[uN2].ReplaceNeighbour(index, uN1);
-      if (uN1 != ULONG_MAX)
+      if (uN1 != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[uN1].ReplaceNeighbour(index, uN2);
 
       // isolate the face and remove it
-      rFace._aulNeighbours[0] = ULONG_MAX;
-      rFace._aulNeighbours[1] = ULONG_MAX;
-      rFace._aulNeighbours[2] = ULONG_MAX;
+      rFace._aulNeighbours[0] = FACET_INDEX_MAX;
+      rFace._aulNeighbours[1] = FACET_INDEX_MAX;
+      rFace._aulNeighbours[2] = FACET_INDEX_MAX;
       _rclMesh.DeleteFacet(index);
-      return;
+      return true;
     }
   }
 
@@ -1442,8 +1438,8 @@ void MeshTopoAlgorithm::RemoveDegeneratedFacet(unsigned long index)
 
     // adjust the neighbourhoods and point indices
     if (cVec1 * cVec2 < 0.0f) {
-      unsigned long uN1 = rFace._aulNeighbours[(j+1)%3];
-      if (uN1 != ULONG_MAX) {
+      FacetIndex uN1 = rFace._aulNeighbours[(j+1)%3];
+      if (uN1 != FACET_INDEX_MAX) {
         // get the neighbour and common edge side
         MeshFacet& rNb = _rclMesh._aclFacetArray[uN1];
         unsigned short side = rNb.Side(index);
@@ -1453,14 +1449,14 @@ void MeshTopoAlgorithm::RemoveDegeneratedFacet(unsigned long index)
         rNb._aulPoints[(side+1)%3] = rFace._aulPoints[j];
 
         // set correct neighbourhood
-        unsigned long uN2 = rFace._aulNeighbours[(j+2)%3];
+        FacetIndex uN2 = rFace._aulNeighbours[(j+2)%3];
         rNb._aulNeighbours[side] = uN2;
-        if (uN2 != ULONG_MAX) {
+        if (uN2 != FACET_INDEX_MAX) {
           _rclMesh._aclFacetArray[uN2].ReplaceNeighbour(index, uN1);
         }
-        unsigned long uN3 = rNb._aulNeighbours[(side+1)%3];
+        FacetIndex uN3 = rNb._aulNeighbours[(side+1)%3];
         rFace._aulNeighbours[(j+1)%3] = uN3;
-        if (uN3 != ULONG_MAX) {
+        if (uN3 != FACET_INDEX_MAX) {
           _rclMesh._aclFacetArray[uN3].ReplaceNeighbour(uN1, index);
         }
         rNb._aulNeighbours[(side+1)%3] = index;
@@ -1469,49 +1465,54 @@ void MeshTopoAlgorithm::RemoveDegeneratedFacet(unsigned long index)
       else
         _rclMesh.DeleteFacet(index);
 
-      return;
+      return true;
     }
   }
+
+  return false;
 }
 
-void MeshTopoAlgorithm::RemoveCorruptedFacet(unsigned long index)
+bool MeshTopoAlgorithm::RemoveCorruptedFacet(FacetIndex index)
 {
-  if (index >= _rclMesh._aclFacetArray.size()) return;
+  if (index >= _rclMesh._aclFacetArray.size())
+      return false;
   MeshFacet& rFace = _rclMesh._aclFacetArray[index];
 
   // coincident corners (topological)
   for (int i=0; i<3; i++) {
     if (rFace._aulPoints[i] == rFace._aulPoints[(i+1)%3]) {
-      unsigned long uN1 = rFace._aulNeighbours[(i+1)%3];
-      unsigned long uN2 = rFace._aulNeighbours[(i+2)%3];
-      if (uN2 != ULONG_MAX)
+      FacetIndex uN1 = rFace._aulNeighbours[(i+1)%3];
+      FacetIndex uN2 = rFace._aulNeighbours[(i+2)%3];
+      if (uN2 != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[uN2].ReplaceNeighbour(index, uN1);
-      if (uN1 != ULONG_MAX)
+      if (uN1 != FACET_INDEX_MAX)
         _rclMesh._aclFacetArray[uN1].ReplaceNeighbour(index, uN2);
 
       // isolate the face and remove it
-      rFace._aulNeighbours[0] = ULONG_MAX;
-      rFace._aulNeighbours[1] = ULONG_MAX;
-      rFace._aulNeighbours[2] = ULONG_MAX;
+      rFace._aulNeighbours[0] = FACET_INDEX_MAX;
+      rFace._aulNeighbours[1] = FACET_INDEX_MAX;
+      rFace._aulNeighbours[2] = FACET_INDEX_MAX;
       _rclMesh.DeleteFacet(index);
-      return;
+      return true;
     }
   }
+
+  return false;
 }
 
 void MeshTopoAlgorithm::FillupHoles(unsigned long length, int level,
                                     AbstractPolygonTriangulator& cTria,
-                                    std::list<std::vector<unsigned long> >& aFailed)
+                                    std::list<std::vector<PointIndex> >& aFailed)
 {
     // get the mesh boundaries as an array of point indices
-    std::list<std::vector<unsigned long> > aBorders, aFillBorders;
+    std::list<std::vector<PointIndex> > aBorders, aFillBorders;
     MeshAlgorithm cAlgo(_rclMesh);
     cAlgo.GetMeshBorders(aBorders);
 
     // split boundary loops if needed
     cAlgo.SplitBoundaryLoops(aBorders);
 
-    for (std::list<std::vector<unsigned long> >::iterator it = aBorders.begin(); it != aBorders.end(); ++it) {
+    for (std::list<std::vector<PointIndex> >::iterator it = aBorders.begin(); it != aBorders.end(); ++it) {
         if (it->size()-1 <= length) // ignore boundary with too many edges
             aFillBorders.push_back(*it);
     }
@@ -1521,8 +1522,8 @@ void MeshTopoAlgorithm::FillupHoles(unsigned long length, int level,
 }
 
 void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTria,
-                                    const std::list<std::vector<unsigned long> >& aBorders,
-                                    std::list<std::vector<unsigned long> >& aFailed)
+                                    const std::list<std::vector<PointIndex> >& aBorders,
+                                    std::list<std::vector<PointIndex> >& aFailed)
 {
     // get the facets to a point
     MeshRefPointToFacets cPt2Fac(_rclMesh);
@@ -1531,10 +1532,10 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
     MeshFacetArray newFacets;
     MeshPointArray newPoints;
     unsigned long numberOfOldPoints = _rclMesh._aclPointArray.size();
-    for (std::list<std::vector<unsigned long> >::const_iterator it = aBorders.begin(); it != aBorders.end(); ++it) {
+    for (std::list<std::vector<PointIndex> >::const_iterator it = aBorders.begin(); it != aBorders.end(); ++it) {
         MeshFacetArray cFacets;
         MeshPointArray cPoints;
-        std::vector<unsigned long> bound = *it;
+        std::vector<PointIndex> bound = *it;
         if (cAlgo.FillupHole(bound, cTria, cFacets, cPoints, level, &cPt2Fac)) {
             if (bound.front() == bound.back())
                 bound.pop_back();
@@ -1577,10 +1578,10 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
         addFacets.reserve(newFacets.size());
         unsigned long ctPoints = _rclMesh.CountPoints();
         for (MeshFacetArray::_TIterator it = newFacets.begin(); it != newFacets.end(); ++it) {
-            if (it->_aulPoints[0] >= ctPoints || 
-                it->_aulPoints[1] >= ctPoints || 
+            if (it->_aulPoints[0] >= ctPoints ||
+                it->_aulPoints[1] >= ctPoints ||
                 it->_aulPoints[2] >= ctPoints) {
-                Base::Console().Log("Ignore invalid face <%d, %d, %d> (%d vertices)\n", 
+                Base::Console().Log("Ignore invalid face <%d, %d, %d> (%d vertices)\n",
                     it->_aulPoints[0], it->_aulPoints[1], it->_aulPoints[2], ctPoints);
             }
             else {
@@ -1592,24 +1593,24 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
 }
 
 void MeshTopoAlgorithm::FindHoles(unsigned long length,
-                                  std::list<std::vector<unsigned long> >& aBorders) const
+                                  std::list<std::vector<PointIndex> >& aBorders) const
 {
-    std::list<std::vector<unsigned long> > border;
+    std::list<std::vector<PointIndex> > border;
     MeshAlgorithm cAlgo(_rclMesh);
     cAlgo.GetMeshBorders(border);
-    for (std::list<std::vector<unsigned long> >::iterator it = border.begin();
+    for (std::list<std::vector<PointIndex> >::iterator it = border.begin();
         it != border.end(); ++it) {
         if (it->size() <= length) aBorders.push_back(*it);
     }
 }
 
-void MeshTopoAlgorithm::FindComponents(unsigned long count, std::vector<unsigned long>& findIndices)
+void MeshTopoAlgorithm::FindComponents(unsigned long count, std::vector<FacetIndex>& findIndices)
 {
-  std::vector<std::vector<unsigned long> > segments;
+  std::vector<std::vector<FacetIndex> > segments;
   MeshComponents comp(_rclMesh);
   comp.SearchForComponents(MeshComponents::OverEdge,segments);
 
-  for (std::vector<std::vector<unsigned long> >::iterator it = segments.begin(); it != segments.end(); ++it) {
+  for (std::vector<std::vector<FacetIndex> >::iterator it = segments.begin(); it != segments.end(); ++it) {
     if (it->size() <= count)
       findIndices.insert(findIndices.end(), it->begin(), it->end());
   }
@@ -1617,20 +1618,20 @@ void MeshTopoAlgorithm::FindComponents(unsigned long count, std::vector<unsigned
 
 void MeshTopoAlgorithm::RemoveComponents(unsigned long count)
 {
-  std::vector<unsigned long> removeFacets;
+  std::vector<FacetIndex> removeFacets;
   FindComponents(count, removeFacets);
   if (!removeFacets.empty())
     _rclMesh.DeleteFacets(removeFacets);
 }
 
-void MeshTopoAlgorithm::HarmonizeNormals (void)
+void MeshTopoAlgorithm::HarmonizeNormals ()
 {
-  std::vector<unsigned long> uIndices = MeshEvalOrientation(_rclMesh).GetIndices();
-  for ( std::vector<unsigned long>::iterator it = uIndices.begin(); it != uIndices.end(); ++it )
+  std::vector<FacetIndex> uIndices = MeshEvalOrientation(_rclMesh).GetIndices();
+  for ( std::vector<FacetIndex>::iterator it = uIndices.begin(); it != uIndices.end(); ++it )
     _rclMesh._aclFacetArray[*it].FlipNormal();
 }
 
-void MeshTopoAlgorithm::FlipNormals (void)
+void MeshTopoAlgorithm::FlipNormals ()
 {
   for (MeshFacetArray::_TIterator i = _rclMesh._aclFacetArray.begin(); i < _rclMesh._aclFacetArray.end(); ++i)
     i->FlipNormal();
@@ -1670,20 +1671,20 @@ MeshComponents::~MeshComponents()
 {
 }
 
-void MeshComponents::SearchForComponents(TMode tMode, std::vector<std::vector<unsigned long> >& aclT) const
+void MeshComponents::SearchForComponents(TMode tMode, std::vector<std::vector<FacetIndex> >& aclT) const
 {
   // all facets
-  std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
-  unsigned long k = 0;
-  for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
+  std::vector<FacetIndex> aulAllFacets(_rclMesh.CountFacets());
+  FacetIndex k = 0;
+  for (std::vector<FacetIndex>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
     *pI = k++;
 
   SearchForComponents( tMode, aulAllFacets, aclT );
 }
 
-void MeshComponents::SearchForComponents(TMode tMode, const std::vector<unsigned long>& aSegment, std::vector<std::vector<unsigned long> >& aclT) const
+void MeshComponents::SearchForComponents(TMode tMode, const std::vector<FacetIndex>& aSegment, std::vector<std::vector<FacetIndex> >& aclT) const
 {
-  unsigned long ulStartFacet, ulVisited;
+  FacetIndex ulStartFacet;
 
   if (_rclMesh.CountFacets() == 0)
     return;
@@ -1692,14 +1693,14 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<unsigned
   MeshAlgorithm cAlgo(_rclMesh);
   cAlgo.SetFacetFlag(MeshFacet::VISIT);
   cAlgo.ResetFacetsFlag(aSegment, MeshFacet::VISIT);
-  
+
   const MeshFacetArray& rFAry = _rclMesh.GetFacets();
   MeshFacetArray::_TConstIterator iTri = rFAry.begin();
   MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
   MeshFacetArray::_TConstIterator iEnd = rFAry.end();
 
   // start from the first not visited facet
-  ulVisited = cAlgo.CountFacetFlag(MeshFacet::VISIT);
+  unsigned long ulVisited = cAlgo.CountFacetFlag(MeshFacet::VISIT);
   MeshIsNotFlag<MeshFacet> flag;
   iTri = std::find_if(iTri, iEnd, [flag](const MeshFacet& f) {
       return flag(f, MeshFacet::VISIT);
@@ -1707,11 +1708,11 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<unsigned
   ulStartFacet = iTri - iBeg;
 
   // visitor
-  std::vector<unsigned long> aclComponent;
-  std::vector<std::vector<unsigned long> > aclConnectComp;
+  std::vector<FacetIndex> aclComponent;
+  std::vector<std::vector<FacetIndex> > aclConnectComp;
   MeshTopFacetVisitor clFVisitor( aclComponent );
 
-  while ( ulStartFacet !=  ULONG_MAX )
+  while ( ulStartFacet !=  FACET_INDEX_MAX )
   {
     // collect all facets of a component
     aclComponent.clear();
@@ -1734,10 +1735,11 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<unsigned
     if (iTri < iEnd)
       ulStartFacet = iTri - iBeg;
     else
-      ulStartFacet = ULONG_MAX;
+      ulStartFacet = FACET_INDEX_MAX;
   }
 
   // sort components by size (descending order)
-  std::sort(aclConnectComp.begin(), aclConnectComp.end(), CNofFacetsCompare());  
+  std::sort(aclConnectComp.begin(), aclConnectComp.end(), CNofFacetsCompare());
   aclT = aclConnectComp;
+  boost::ignore_unused(ulVisited);
 }

@@ -84,7 +84,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* threads = new Gui::MenuItem;
     threads->setCommand("Python Threads");
     *threads << "Sandbox_PythonLockThread" << "Sandbox_NolockPython"
-             << "Sandbox_PyQtThread" << "Sandbox_PythonThread" << "Sandbox_PythonMainThread";
+             << "Sandbox_PySideThread" << "Sandbox_PythonThread" << "Sandbox_PythonMainThread";
     test->setCommand("Threads");
     *test << "Sandbox_Thread" << "Sandbox_TestThread" << "Sandbox_SaveThread"
           << "Sandbox_WorkerThread" << "Sandbox_SeqThread"
@@ -142,7 +142,7 @@ Gui::DockWindowItems* Workbench::setupDockWindows() const
 // ----------------------------------------------------
 
 
-SO_NODE_SOURCE(SoWidgetShape);
+SO_NODE_SOURCE(SoWidgetShape)
 
 void SoWidgetShape::initClass()
 {
@@ -169,7 +169,8 @@ void SoWidgetShape::GLRender(SoGLRenderAction * /*action*/)
 void SoWidgetShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
 {
     // ignore if node is empty
-    if (this->image.isNull()) return;
+    if (this->image.isNull())
+        return;
 
     SbVec3f v0, v1, v2, v3;
     // this will cause a cache dependency on the view volume,
@@ -237,7 +238,8 @@ SoWidgetShape::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 
 void SoWidgetShape::generatePrimitives(SoAction *action)
 {
-    if (this->image.isNull()) return;
+    if (this->image.isNull())
+        return;
 
     SoState *state = action->getState();
     state->push();

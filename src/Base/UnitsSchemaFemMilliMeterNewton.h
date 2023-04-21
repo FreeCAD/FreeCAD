@@ -25,10 +25,9 @@
 #ifndef BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
 #define BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
 
-
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
+
 
 namespace Base {
 
@@ -42,7 +41,7 @@ namespace Base {
 class UnitsSchemaFemMilliMeterNewton: public UnitsSchema
 {
 public:
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
 };
 
 

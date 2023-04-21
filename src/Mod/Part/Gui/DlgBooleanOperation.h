@@ -25,7 +25,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <boost_signals2.hpp>
+
 
 class QTreeWidgetItem;
 
@@ -35,15 +35,15 @@ class Property;
 }
 namespace PartGui {
 
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 class Ui_DlgBooleanOperation;
 class DlgBooleanOperation : public QWidget
 {
     Q_OBJECT
 
 public:
-    DlgBooleanOperation(QWidget* parent = 0);
-    ~DlgBooleanOperation();
+    explicit DlgBooleanOperation(QWidget* parent = nullptr);
+    ~DlgBooleanOperation() override;
     void accept();
 
 private:
@@ -54,12 +54,10 @@ private:
     bool hasSolids(const App::DocumentObject*) const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
-public Q_SLOTS:
-    void on_swapButton_clicked();
-
-private Q_SLOTS:
+private:
+    void onSwapButtonClicked();
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
@@ -75,16 +73,16 @@ class TaskBooleanOperation : public Gui::TaskView::TaskDialog
 
 public:
     TaskBooleanOperation();
-    ~TaskBooleanOperation();
+    ~TaskBooleanOperation() override;
 
 public:
-    void clicked(int);
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return true; }
-    virtual bool needsFullSpace() const
+    bool needsFullSpace() const override
     { return true; }
 
 private:

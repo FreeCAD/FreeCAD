@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MOUSESELECTION_H
 #define MOUSESELECTION_H
 
 #include <bitset>
 #include <vector>
-#include <Inventor/SbLinear.h>
-#include <Inventor/SbVec2f.h>
 #include <QCursor>
 #include <Gui/GLPainter.h>
 #include <Gui/Namespace.h>
+
 
 // forwards
 class QMouseEvent;
@@ -60,13 +58,13 @@ public:
     enum { Continue=0, Restart=1, Finish=2, Cancel=3, Ignore=4 };
 
     AbstractMouseSelection();
-    virtual ~AbstractMouseSelection(void) {}
+    virtual ~AbstractMouseSelection() {}
     /// implement this in derived classes
     virtual void initialize() = 0;
     /// implement this in derived classes
-    virtual void terminate() = 0;
+    virtual void terminate(bool abort = false) = 0;
     void grabMouseModel(Gui::View3DInventorViewer*);
-    void releaseMouseModel(void);
+    void releaseMouseModel(bool abort = false);
     const std::vector<SbVec2s>& getPositions() const {
         return _clPoly;
     }
@@ -114,7 +112,7 @@ class GuiExport BaseMouseSelection : public AbstractMouseSelection
 {
 public:
     BaseMouseSelection();
-    virtual ~BaseMouseSelection(){}
+    ~BaseMouseSelection() override{}
 };
 
 // -----------------------------------------------------------------------------------
@@ -128,21 +126,21 @@ class GuiExport PolyPickerSelection : public BaseMouseSelection
 {
 public:
     PolyPickerSelection();
-    virtual ~PolyPickerSelection();
+    ~PolyPickerSelection() override;
 
     void setLineWidth(float l);
     void setColor(float r, float g, float b, float a = 1.0);
 
-    virtual void initialize();
-    virtual void terminate();
+    void initialize() override;
+    void terminate(bool abort = false) override;
 
 protected:
-    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
-    virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos);
-    virtual int keyboardEvent(const SoKeyboardEvent*     const e);
+    int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos) override;
+    int locationEvent(const SoLocation2Event*    const e, const QPoint& pos) override;
+    int keyboardEvent(const SoKeyboardEvent*     const e) override;
 
     /// draw the polygon
-    virtual void draw();
+    void draw() override;
     virtual int popupMenu();
 
 protected:
@@ -161,7 +159,7 @@ class GuiExport PolyClipSelection : public PolyPickerSelection
 {
 public:
     PolyClipSelection();
-    virtual ~PolyClipSelection();
+    ~PolyClipSelection() override;
 
     inline void setRole(SelectionRole pos, bool on) {
         selectionBits.set(static_cast<size_t>(pos), on);
@@ -171,7 +169,7 @@ public:
     }
 
 protected:
-    virtual int popupMenu();
+    int popupMenu() override;
 
 private:
     std::bitset<8> selectionBits;
@@ -187,14 +185,14 @@ class GuiExport FreehandSelection : public PolyPickerSelection
 {
 public:
     FreehandSelection();
-    virtual ~FreehandSelection();
+    ~FreehandSelection() override;
 
     void setClosed(bool c);
 
 protected:
-    virtual int popupMenu();
-    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
-    virtual int locationEvent(const SoLocation2Event*  const e, const QPoint& pos);
+    int popupMenu() override;
+    int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos) override;
+    int locationEvent(const SoLocation2Event*  const e, const QPoint& pos) override;
 };
 
 // -----------------------------------------------------------------------------------
@@ -208,20 +206,20 @@ class GuiExport RubberbandSelection : public BaseMouseSelection
 {
 public:
     RubberbandSelection();
-    virtual ~RubberbandSelection();
+    ~RubberbandSelection() override;
 
     void setColor(float r, float g, float b, float a = 1.0);
 
-    virtual void initialize();
-    virtual void terminate();
+    void initialize() override;
+    void terminate(bool abort = false) override;
 
 protected:
-    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
-    virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos);
-    virtual int keyboardEvent(const SoKeyboardEvent*     const e);
+    int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos) override;
+    int locationEvent(const SoLocation2Event*    const e, const QPoint& pos) override;
+    int keyboardEvent(const SoKeyboardEvent*     const e) override;
 
     /// draw the rectangle
-    virtual void draw();
+    void draw() override;
 
 protected:
     Gui::Rubberband rubberband;
@@ -238,7 +236,7 @@ class GuiExport RectangleSelection : public RubberbandSelection
 {
 public:
     RectangleSelection();
-    virtual ~RectangleSelection();
+    ~RectangleSelection() override;
 };
 
 // -----------------------------------------------------------------------------------
@@ -252,8 +250,8 @@ class GuiExport BoxZoomSelection : public RubberbandSelection
 {
 public:
     BoxZoomSelection();
-    ~BoxZoomSelection();
-    void terminate();
+    ~BoxZoomSelection() override;
+    void terminate(bool abort = false) override;
 };
 
 } // namespace Gui

@@ -20,39 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <Python.h>
-# include <iostream>
 # include <climits>
+# include <iostream>
+
+# include <QApplication>
+# include <QDialog>
+# include <QDialogButtonBox>
+# include <QHBoxLayout>
+# include <QPointer>
 # include <QString>
+# include <QStyle>
+# include <QTreeWidget>
+# include <QTreeWidgetItem>
+# include <QTextStream>
+# include <QVBoxLayout>
+
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wextra-semi"
 #endif
-# include <Standard_Version.hxx>
-# include <NCollection_Vector.hxx>
-# include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
-# include <STEPControl_Writer.hxx>
+
+# include <APIHeaderSection_MakeHeader.hxx>
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>
 # include <IGESControl_Controller.hxx>
@@ -60,80 +53,65 @@
 # include <IGESData_IGESModel.hxx>
 # include <IGESToBRep_Actor.hxx>
 # include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
+# include <Standard_Version.hxx>
+# include <STEPCAFControl_Reader.hxx>
+# include <STEPCAFControl_Writer.hxx>
 # include <TColStd_IndexedDataMapOfStringString.hxx>
-#if OCC_VERSION_HEX >= 0x070500
-# include <RWGltf_CafWriter.hxx>
-# include <Message_ProgressRange.hxx>
-#endif
-#if OCC_VERSION_HEX >= 0x060500
+# include <TDataStd.hxx>
+# include <TDataStd_Integer.hxx>
+# include <TDataStd_Name.hxx>
+# include <TDataStd_TreeNode.hxx>
 # include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
+# include <TDF_AttributeIterator.hxx>
+# include <TDF_ChildIterator.hxx>
+# include <TDF_ChildIDIterator.hxx>
+# include <TDF_IDList.hxx>
+# include <TDF_Label.hxx>
+# include <TDF_ListIteratorOfIDList.hxx>
+# include <TDF_TagSource.hxx>
+# include <TDocStd_Document.hxx>
+# include <TDocStd_Owner.hxx>
+# include <TNaming_NamedShape.hxx>
+# include <TNaming_UsedShapes.hxx>
+# include <Transfer_TransientProcess.hxx>
+# include <XCAFApp_Application.hxx>
+# include <XCAFDoc_Color.hxx>
+# include <XCAFDoc_ColorTool.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_LayerTool.hxx>
+# include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_ShapeMapTool.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
+
+# if OCC_VERSION_HEX >= 0x070500
+#  include <Message_ProgressRange.hxx>
+#  include <RWGltf_CafWriter.hxx>
 # endif
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+# if defined(__clang__)
+#  pragma clang diagnostic pop
+# endif
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/ViewProviderLink.h>
+#include <Mod/Import/App/ImportOCAF2.h>
 #include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
+#include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Import/App/ImportOCAF2.h>
-
-#include <TDataStd.hxx>
-#include <TDataStd_Integer.hxx>
-#include <TDataStd_TreeNode.hxx>
-#include <TDF_ChildIDIterator.hxx>
-#include <TDF_AttributeIterator.hxx>
-#include <TDF_Data.hxx>
-#include <TDF_IDList.hxx>
-#include <TDF_ListIteratorOfIDList.hxx>
-#include <TDF_TagSource.hxx>
-#include <TDocStd_Owner.hxx>
-#include <TNaming_NamedShape.hxx>
-#include <TNaming_UsedShapes.hxx>
-#include <XCAFDoc.hxx>
-#include <XCAFDoc_Color.hxx>
-#include <XCAFDoc_LayerTool.hxx>
-#include <XCAFDoc_ShapeMapTool.hxx>
-#include <QApplication>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QPointer>
-#include <QStyle>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QTextStream>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/ViewProviderLink.h>
+#include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/ProgressIndicator.h>
+#include <Mod/Part/Gui/DlgExportStep.h>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
@@ -142,7 +120,7 @@ namespace ImportGui {
 class OCAFBrowser
 {
 public:
-    OCAFBrowser(Handle(TDocStd_Document) h)
+    explicit OCAFBrowser(Handle(TDocStd_Document) h)
         : pDoc(h)
     {
         myGroupIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);
@@ -198,19 +176,16 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
 
     Handle(TDataStd_Name) name;
     if (label.FindAttribute(TDataStd_Name::GetID(),name)) {
-        QString text = QString::fromLatin1("%1 %2").arg(s).arg(QString::fromUtf8(toString(name->Get()).c_str()));
+        QString text = QString::fromLatin1("%1 %2").arg(s, QString::fromUtf8(toString(name->Get()).c_str()));
         item->setText(0, text);
     }
 
-#if 0
-    TDF_IDList localList = myList;
-#else
+
     TDF_IDList localList;
     TDF_AttributeIterator itr (label);
     for ( ; itr.More(); itr.Next()) {
         localList.Append(itr.Value()->ID());
     }
-#endif
 
     for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
         Handle(TDF_Attribute) attr;
@@ -282,15 +257,6 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         }
     }
 
-    //TDF_ChildIDIterator nodeIterator(label, XCAFDoc::ShapeRefGUID());
-    //for (; nodeIterator.More(); nodeIterator.Next()) {
-    //    Handle(TDataStd_TreeNode) node = Handle(TDataStd_TreeNode)::DownCast(nodeIterator.Value());
-    //    //if (node->HasFather())
-    //    //    ;
-    //    QTreeWidgetItem* child = new QTreeWidgetItem();
-    //    child->setText(0, QString::fromLatin1("TDataStd_TreeNode"));
-    //    item->addChild(child);
-    //}
 
     int i=1;
     for (TDF_ChildIterator it(label); it.More(); it.Next(),i++) {
@@ -312,31 +278,32 @@ public:
     }
 
 private:
-    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
-        if (!vp) return;
+        if (!vp)
+            return;
         if(colors.empty()) {
-            // vp->MapFaceColor.setValue(true);
-            // vp->MapLineColor.setValue(true);
-            // vp->updateColors(0,true);
             return;
         }
-        // vp->MapFaceColor.setValue(false);
-        if(colors.size() == 1)
+
+        if(colors.size() == 1) {
             vp->ShapeColor.setValue(colors.front());
-        else 
+            vp->Transparency.setValue(100 * colors.front().a);
+        }
+        else {
             vp->DiffuseColor.setValues(colors);
+        }
     }
-    virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+    void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
-        if (!vp) return;
-        // vp->MapLineColor.setValue(false);
+        if (!vp)
+            return;
         if(colors.size() == 1)
             vp->LineColor.setValue(colors.front());
         else
             vp->LineColorArray.setValues(colors);
     }
-    virtual void applyLinkColor(App::DocumentObject *obj, int index, App::Color color) override {
+    void applyLinkColor(App::DocumentObject *obj, int index, App::Color color) override {
         auto vp = dynamic_cast<Gui::ViewProviderLink*>(Gui::Application::Instance->getViewProvider(obj));
         if(!vp)
             return;
@@ -354,14 +321,13 @@ private:
         mat.diffuseColor = color;
         vp->MaterialList.set1Value(index,mat);
     }
-    virtual void applyElementColors(App::DocumentObject *obj, 
+    void applyElementColors(App::DocumentObject *obj,
             const std::map<std::string,App::Color> &colors) override 
     {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(!vp)
             return;
         (void)colors;
-        // vp->setElementColors(colors);
     }
 };
 
@@ -372,7 +338,7 @@ public:
         : ExportOCAF(h, explicitPlacement)
     {
     }
-    virtual void findColors(Part::Feature* part, std::vector<App::Color>& colors) const
+    void findColors(Part::Feature* part, std::vector<App::Color>& colors) const override
     {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
         if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
@@ -394,6 +360,9 @@ public:
         add_keyword_method("insert",&Module::insert,
             "insert(string,string) -- Insert the file into the given document."
         );
+        add_varargs_method("exportOptions",&Module::exportOptions,
+            "exportOptions(string) -- Return the export options of a file type."
+        );
         add_keyword_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
@@ -403,20 +372,21 @@ public:
         initialize("This module is the ImportGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
-        char* DocName=0;
+        char* DocName=nullptr;
         PyObject *importHidden = Py_None;
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
-                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
+        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",nullptr};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
+                    kwd_list,"utf-8",&Name,&DocName,&PyBool_Type,&importHidden,&PyBool_Type,&merge,
+                    &PyBool_Type,&useLinkGroup,&mode))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -424,24 +394,21 @@ private:
         std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
-            App::Document *pcDoc = 0;
+            App::Document *pcDoc = nullptr;
             if (DocName) {
                 pcDoc = App::GetApplication().getDocument(DocName);
             }
             if (!pcDoc) {
-                pcDoc = App::GetApplication().newDocument("Unnamed");
+                pcDoc = App::GetApplication().newDocument();
             }
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
-            bool optionReadShapeCompoundMode = true;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-            optionReadShapeCompoundMode = hGrp->GetBool("ReadShapeCompoundMode", optionReadShapeCompoundMode);
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+            ocaf.setImportOptions(ImportOCAFExt::customImportOptions());
             FC_TIME_INIT(t);
             FC_DURATION_DECL_INIT2(d1,d2);
 
@@ -498,7 +465,7 @@ private:
                     aReader.SetNameMode(true);
                     aReader.SetLayerMode(true);
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
-                        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot read IGES file");
+                        throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                     }
 
 #if OCC_VERSION_HEX < 0x070500
@@ -524,16 +491,16 @@ private:
                 }
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
             FC_DURATION_PLUS(d1,t);
-            if(merge!=Py_None)
-                ocaf.setMerge(PyObject_IsTrue(merge));
-            if(importHidden!=Py_None)
-                ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
-            if(useLinkGroup!=Py_None)
-                ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
+            if (merge != Py_None)
+                ocaf.setMerge(Base::asBoolean(merge));
+            if (importHidden != Py_None)
+                ocaf.setImportHiddenObject(Base::asBoolean(importHidden));
+            if (useLinkGroup != Py_None)
+                ocaf.setUseLinkGroup(Base::asBoolean(useLinkGroup));
             ocaf.setMode(mode);
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
@@ -553,10 +520,11 @@ private:
             }
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -569,21 +537,75 @@ private:
         return std::map<std::string,App::Color>();
     }
 
-    Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
+    Py::Object exportOptions(const Py::Tuple& args)
     {
-        PyObject* object;
         char* Name;
-        PyObject *exportHidden = Py_None;
-        PyObject *legacy = Py_None;
-        PyObject *keepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",0};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
-                    kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
+        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
+
+        Py::Dict options;
+        Base::FileInfo file(name8bit.c_str());
+
+        if (file.hasExtension("stp") || file.hasExtension("step")) {
+            PartGui::TaskExportStep dlg(Gui::getMainWindow());
+            if (!dlg.showDialog() || dlg.exec()) {
+                auto stepSettings = dlg.getSettings();
+                options.setItem("exportHidden", Py::Boolean(stepSettings.exportHidden));
+                options.setItem("keepPlacement", Py::Boolean(stepSettings.keepPlacement));
+                options.setItem("legacy", Py::Boolean(stepSettings.exportLegacy));
+            }
+        }
+
+        return options;
+    }
+
+    Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
+    {
+        PyObject* object;
+        char* Name;
+        PyObject *pyoptions = nullptr;
+        PyObject *pyexportHidden = Py_None;
+        PyObject *pylegacy = Py_None;
+        PyObject *pykeepPlacement = Py_None;
+        static char* kwd_list[] = {"obj", "name", "options", "exportHidden", "legacy", "keepPlacement", nullptr};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!O!",
+                                         kwd_list, &object,
+                                         "utf-8", &Name,
+                                         &PyDict_Type, &pyoptions,
+                                         &PyBool_Type, &pyexportHidden,
+                                         &PyBool_Type, &pylegacy,
+                                         &PyBool_Type, &pykeepPlacement))
+            throw Py::Exception();
+
+        std::string Utf8Name = std::string(Name);
+        PyMem_Free(Name);
+        std::string name8bit = Part::encodeFilename(Utf8Name);
+
+        // determine export options
+        Part::OCAF::ImportExportSettings settings;
+
+        // still support old way
+        bool legacyExport = (pylegacy == Py_None ? settings.getExportLegacy() : Base::asBoolean(pylegacy));
+        bool exportHidden = (pyexportHidden == Py_None ? settings.getExportHiddenObject() : Base::asBoolean(pyexportHidden));
+        bool keepPlacement = (pykeepPlacement == Py_None ? settings.getExportKeepPlacement() : Base::asBoolean(pykeepPlacement));
+
+        // new way
+        if (pyoptions) {
+            Py::Dict options(pyoptions);
+            if (options.hasKey("legacy")) {
+                legacyExport = static_cast<bool>(Py::Boolean(options.getItem("legacy")));
+            }
+            if (options.hasKey("exportHidden")) {
+                exportHidden = static_cast<bool>(Py::Boolean(options.getItem("exportHidden")));
+            }
+            if (options.hasKey("keepPlacement")) {
+                keepPlacement = static_cast<bool>(Py::Boolean(options.getItem("keepPlacement")));
+            }
+        }
 
         try {
             Py::Sequence list(object);
@@ -598,22 +620,15 @@ private:
                     objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
 
-            if(legacy == Py_None) {
-                auto hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Import");
-                legacy = hGrp->GetBool("ExportLegacy",false)?Py_True:Py_False;
-            }
-
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
-            if(!PyObject_IsTrue(legacy) || !ocaf.canFallback(objs)) {
-                if(exportHidden!=Py_None)
-                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
-                if(keepPlacement!=Py_None)
-                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
+            if (!legacyExport || !ocaf.canFallback(objs)) {
+                ocaf.setExportOptions(Import::ExportOCAF2::customExportOptions());
+                ocaf.setExportHiddenObject(exportHidden);
+                ocaf.setKeepPlacement(keepPlacement);
+
                 ocaf.exportObjects(objs);
             }
             else {
-                //bool keepExplicitPlacement = objs.size() > 1;
                 bool keepExplicitPlacement = Standard_True;
                 ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
@@ -633,39 +648,32 @@ private:
                 ocaf.getPartColors(hierarchical_part,FreeLabels,part_id,Colors);
                 ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
-#if OCC_VERSION_HEX >= 0x070200
-            // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
-                std::string scheme = hGrp_stp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+                std::string scheme = hGrp_stp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
                 if (std::find(supported.begin(), supported.end(), scheme) != supported.end())
-                    Interface_Static::SetCVal("write.step.schema", scheme.c_str());
+                    Part::Interface::writeStepScheme(scheme.c_str());
 
                 STEPCAFControl_Writer writer;
-                Interface_Static::SetIVal("write.step.assembly",1);
-                // writer.SetColorMode(Standard_False);
+                Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
-#if OCC_VERSION_HEX >= 0x060500
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-#else
-                APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
-#endif
+
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
+                // Don't set name because STEP doesn't support UTF-8
                 // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
-                makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
+                makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
                 makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
                 IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
                 if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
@@ -677,9 +685,9 @@ private:
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
-                header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
-                header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-                header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+                header.SetAuthorName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderAuthor()));
+                header.SetCompanyName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderCompany()));
+                header.SetSendName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderProduct()));
                 writer.Model()->SetGlobalSection(header);
                 writer.Transfer(hDoc);
                 Standard_Boolean ret = writer.Write((const char*)name8bit.c_str());
@@ -696,6 +704,9 @@ private:
                 // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
                 aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
                 aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+#if OCC_VERSION_HEX >= 0x070700
+                aWriter.SetParallel(true);
+#endif
                 Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
                 if (!ret) {
                     PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
@@ -709,10 +720,11 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -724,7 +736,6 @@ private:
             throw Py::Exception();
 
         try {
-            //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Name);
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
@@ -782,10 +793,10 @@ private:
                         ->SetModel(new IGESData_IGESModel);
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-            static QPointer<QDialog> dlg = 0;
+            static QPointer<QDialog> dlg = nullptr;
             if (!dlg) {
                 dlg = new QDialog(Gui::getMainWindow());
                 QTreeWidget* tree = new QTreeWidget();
@@ -797,7 +808,7 @@ private:
 
                 QDialogButtonBox* btn = new QDialogButtonBox(dlg);
                 btn->setStandardButtons(QDialogButtonBox::Close);
-                QObject::connect(btn, SIGNAL(rejected()), dlg, SLOT(reject()));
+                QObject::connect(btn, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
                 QHBoxLayout *boxlayout = new QHBoxLayout;
                 boxlayout->addWidget(btn);
                 layout->addLayout(boxlayout);
@@ -812,10 +823,11 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -824,7 +836,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace ImportGui

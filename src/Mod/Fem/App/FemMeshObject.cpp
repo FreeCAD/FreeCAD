@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/GeoFeaturePy.h>
+#include <App/FeaturePythonPyImp.h>
+#include <Base/Placement.h>
 
 #include "FemMeshObject.h"
 #include "FemMesh.h"
-#include <App/DocumentObjectPy.h>
-#include <App/FeaturePythonPyImp.h>
-#include <Base/Placement.h>
+
 
 using namespace Fem;
 using namespace App;
@@ -41,14 +39,15 @@ PROPERTY_SOURCE(Fem::FemMeshObject, App::GeoFeature)
 FemMeshObject::FemMeshObject()
 {
     ADD_PROPERTY_TYPE(FemMesh,(), "FEM Mesh",Prop_NoRecompute,"FEM Mesh object");
-    // in the regard of recomputes see: https://forum.freecadweb.org/viewtopic.php?f=18&t=33329#p279203
+    // in the regard of recomputes see:
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33329#p279203
 }
 
 FemMeshObject::~FemMeshObject()
 {
 }
 
-short FemMeshObject::mustExecute(void) const
+short FemMeshObject::mustExecute() const
 {
     return 0;
 }
@@ -57,7 +56,7 @@ PyObject *FemMeshObject::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::asObject(new GeoFeaturePy(this));
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -68,7 +67,7 @@ void FemMeshObject::onChanged(const Property* prop)
 
     // if the placement has changed apply the change to the mesh data as well
     if (prop == &this->Placement) {
-        const_cast<Fem::FemMesh&>(this->FemMesh.getValue()).setTransform(this->Placement.getValue().toMatrix());
+        this->FemMesh.setTransform(this->Placement.getValue().toMatrix());
     }
 
 }
@@ -78,20 +77,20 @@ void FemMeshObject::onChanged(const Property* prop)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemMeshObjectPython, Fem::FemMeshObject)
-template<> const char* Fem::FemMeshObjectPython::getViewProviderName(void) const {
+template<> const char* Fem::FemMeshObjectPython::getViewProviderName() const {
     return "FemGui::ViewProviderFemMeshPython";
 }
 
-template<> PyObject* Fem::FemMeshObjectPython::getPyObject(void) {
+template<> PyObject* Fem::FemMeshObjectPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+        PythonObject = Py::asObject(new App::FeaturePythonPyT<App::GeoFeaturePy>(this));
     }
     return Py::new_reference_to(PythonObject);
 }
 
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::FemMeshObject>;
+template class FemExport FeaturePythonT<Fem::FemMeshObject>;
 
 /// @endcond
 

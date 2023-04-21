@@ -120,31 +120,20 @@ class PathTwistedArray(DraftLink):
         super(PathTwistedArray, self).linkSetup(obj)
         obj.configLinkProperty(ElementCount='Count')
 
-    def onChanged(self, obj, prop):
-        """Execute when a property is changed."""
-        super(PathTwistedArray, self).onChanged(obj, prop)
-
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
 
         Add properties that don't exist.
         """
         self.set_properties(obj)
-
-        if self.use_link:
-            self.linkSetup(obj)
-        else:
-            obj.setPropertyStatus('Shape', '-Transient')
-
-        if obj.Shape.isNull():
-            if getattr(obj, 'PlacementList', None):
-                self.buildShape(obj, obj.Placement, obj.PlacementList)
-            else:
-                self.execute(obj)
+        super(PathTwistedArray, self).onDocumentRestored(obj)
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if not obj.Base or not obj.PathObject:
+        if self.props_changed_placement_only() \
+                or not obj.Base \
+                or not obj.PathObject:
+            self.props_changed_clear()
             return
 
         # placement of entire PathArray object
@@ -158,8 +147,8 @@ class PathTwistedArray(DraftLink):
                                                         count=count,
                                                         rot_factor=rot_factor)
 
-        return super(PathTwistedArray, self).buildShape(obj,
-                                                        array_placement,
-                                                        copy_placements)
+        self.buildShape(obj, array_placement, copy_placements)
+        self.props_changed_clear()
+        return (not self.use_link)
 
 ## @}

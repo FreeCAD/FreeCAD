@@ -20,20 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
-# include <vtkPointData.h>
-# include <vtkCellData.h>
+# include <vtkDataSet.h>
 #endif
 
 #include "FemPostObject.h"
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
 
 
 using namespace Fem;
@@ -44,7 +37,7 @@ PROPERTY_SOURCE(Fem::FemPostObject, App::GeoFeature)
 
 FemPostObject::FemPostObject()
 {
-    ADD_PROPERTY(Data,(0));
+    ADD_PROPERTY(Data, (nullptr));
 }
 
 FemPostObject::~FemPostObject()
@@ -55,10 +48,11 @@ vtkBoundingBox FemPostObject::getBoundingBox() {
 
     vtkBoundingBox box;
 
-    if(Data.getValue() && Data.getValue()->IsA("vtkDataSet"))
-        box.AddBounds(vtkDataSet::SafeDownCast(Data.getValue())->GetBounds());
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(Data.getValue());
+    if (dset)
+        box.AddBounds(dset->GetBounds());
 
-    //TODO: add calculation of multiblock and Multipiece datasets
+    // TODO: add calculation of multiblock and Multipiece datasets
 
     return box;
 }

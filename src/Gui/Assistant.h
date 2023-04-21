@@ -36,7 +36,7 @@ class Assistant : public QObject
 
 public:
     Assistant();
-    ~Assistant();
+    ~Assistant() override;
     void showDocumentation(const QString &file);
 
 private Q_SLOTS:

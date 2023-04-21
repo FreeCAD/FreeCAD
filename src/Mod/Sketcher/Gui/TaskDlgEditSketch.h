@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_TaskDlgEditSketch_H
 #define SKETCHERGUI_TaskDlgEditSketch_H
 
-#include <Gui/TaskView/TaskDialog.h>
-
-#include "ViewProviderSketch.h"
-#include "TaskSketcherConstrains.h"
-#include "TaskSketcherElements.h"
-#include "TaskSketcherGeneral.h"
-#include "TaskSketcherMessages.h"
-#include "TaskSketcherSolverAdvanced.h"
 #include <boost_signals2.hpp>
 
-typedef boost::signals2::connection Connection;
+#include <Gui/TaskView/TaskDialog.h>
+
+#include "TaskSketcherConstraints.h"
+#include "TaskSketcherElements.h"
+#include "TaskSketcherMessages.h"
+#include "TaskSketcherSolverAdvanced.h"
+#include "ViewProviderSketch.h"
+
+
+using Connection = boost::signals2::connection;
 
 namespace SketcherGui {
 
@@ -45,25 +45,25 @@ class SketcherGuiExport TaskDlgEditSketch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgEditSketch(ViewProviderSketch *sketchView);
-    ~TaskDlgEditSketch();
+    explicit TaskDlgEditSketch(ViewProviderSketch *sketchView);
+    ~TaskDlgEditSketch() override;
     ViewProviderSketch* getSketchView() const
     { return sketchView; }
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
+    bool reject() override;
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Close; }
 
 protected:
@@ -72,9 +72,8 @@ protected:
 
 protected:
     ViewProviderSketch      *sketchView;
-    TaskSketcherConstrains  *Constraints;
+    TaskSketcherConstraints *Constraints;
     TaskSketcherElements    *Elements;
-    TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
     TaskSketcherSolverAdvanced *SolverAdvanced;
 };

@@ -33,7 +33,6 @@ like Wire, BSpline, and BezCurve.
 
 ## \addtogroup draftguitools
 # @{
-import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -76,9 +75,6 @@ class Line(gui_base_original.Creator):
             self.ui.wireUi(title=translate("draft", self.featureName), icon=icon)
         else:
             self.ui.lineUi(title=translate("draft", self.featureName), icon=icon)
-        if sys.version_info.major < 3:
-            if isinstance(self.featureName, unicode):
-                self.featureName = self.featureName.encode("utf8")
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
@@ -106,7 +102,8 @@ class Line(gui_base_original.Creator):
               and arg["State"] == "DOWN"
               and arg["Button"] == "BUTTON1"):
             if arg["Position"] == self.pos:
-                return self.finish(False, cont=True)
+                self.finish(cont=None)
+                return
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
                 (self.point,
@@ -117,29 +114,32 @@ class Line(gui_base_original.Creator):
                 self.node.append(self.point)
                 self.drawSegment(self.point)
                 if not self.isWire and len(self.node) == 2:
-                    self.finish(False, cont=True)
+                    self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # The wire is closed
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
                         if len(self.node) > 2:
-                            self.finish(True, cont=True)
+                            self.finish(cont=None, closed=True)
                         else:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the polyline if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
             Close the line if `True`.
         """
         self.removeTemporaryObject()
         if self.oldWP:
-            App.DraftWorkingPlane = self.oldWP
+            App.DraftWorkingPlane.setFromParameters(self.oldWP)
             if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
+                Gui.Snapper.setGrid(tool=True)
                 Gui.Snapper.restack()
         self.oldWP = None
 
@@ -171,7 +171,7 @@ class Line(gui_base_original.Creator):
                 rot, sup, pts, fil = self.getStrings()
 
                 _base = DraftVecUtils.toString(self.node[0])
-                _cmd = 'Draft.makeWire'
+                _cmd = 'Draft.make_wire'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'placement=pl, '
@@ -189,7 +189,7 @@ class Line(gui_base_original.Creator):
                 self.commit(translate("draft", "Create Wire"),
                             _cmd_list)
         super(Line, self).finish()
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
     def removeTemporaryObject(self):
@@ -266,7 +266,7 @@ class Line(gui_base_original.Creator):
                 v = self.node[-2].sub(self.node[-1])
                 v = v.negative()
                 if not self.oldWP:
-                    self.oldWP = App.DraftWorkingPlane.copy()
+                    self.oldWP = App.DraftWorkingPlane.getParameters()
                 App.DraftWorkingPlane.alignToPointAndAxis(p, n, upvec=v)
                 if hasattr(Gui, "Snapper"):
                     Gui.Snapper.setGrid()
@@ -284,7 +284,7 @@ class Line(gui_base_original.Creator):
         self.node.append(self.point)
         self.drawSegment(self.point)
         if not self.isWire and len(self.node) == 2:
-            self.finish(False, cont=True)
+            self.finish(cont=None, closed=False)
         self.ui.setNextFocus()
 
 
@@ -347,7 +347,7 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
+                    _cmd_list = ['wire = Draft.make_wire([' + pts + '])']
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')

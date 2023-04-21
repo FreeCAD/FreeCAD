@@ -24,9 +24,11 @@
 #ifndef BASE_FILETEMPLATE_H
 #define BASE_FILETEMPLATE_H
 
-// Std. configurations
-
 #include <string>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
+
 
 namespace Base
 {
@@ -65,7 +67,7 @@ namespace Base
  *  <li> mouse events
  *     <ol>
  *     <li>mouse move event
- *     <li>mouse click event\n
+ *     <li>mouse click event
  *         More info about the click event.
  *     <li>mouse double click event
  *     </ol>
@@ -113,11 +115,11 @@ public:
     /** @name a group of methods */
     //@{
     /// I am method one
-    virtual void one(void)=0;
+    virtual void one()=0;
     /// I am method two
-    virtual void two(void)=0;
+    virtual void two()=0;
     /// I am method three
-    virtual void three(void)=0;
+    virtual void three()=0;
     //@}
 
 

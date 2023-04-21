@@ -12,8 +12,8 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})

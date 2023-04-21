@@ -22,12 +22,11 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <Gui/Application.h>
 #include <Mod/Path/App/FeatureArea.h>
+
 #include "ViewProviderArea.h"
+
 
 using namespace PathGui;
 
@@ -42,7 +41,7 @@ ViewProviderArea::~ViewProviderArea()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderArea::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderArea::claimChildren() const
 {
     return std::vector<App::DocumentObject*>(
             static_cast<Path::FeatureArea*>(getObject())->Sources.getValues());
@@ -126,7 +125,7 @@ ViewProviderAreaView::~ViewProviderAreaView()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderAreaView::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderAreaView::claimChildren() const
 {
     std::vector<App::DocumentObject*> ret;
     Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
@@ -148,7 +147,7 @@ bool ViewProviderAreaView::canDragObject(App::DocumentObject* obj) const
 void ViewProviderAreaView::dragObject(App::DocumentObject* )
 {
     Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
-    feature->Source.setValue(NULL);
+    feature->Source.setValue(nullptr);
 }
 
 bool ViewProviderAreaView::canDropObjects() const

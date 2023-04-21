@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskEdge2TracParameter_H
 #define GUI_TASKVIEW_TaskEdge2TracParameter_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskEdge2TracParameter;
@@ -43,20 +39,18 @@ class ViewProvider;
 
 namespace RobotGui { 
 
-
-
 class TaskEdge2TracParameter : public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,QWidget *parent = 0);
-    ~TaskEdge2TracParameter();
+    explicit TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,QWidget *parent = nullptr);
+    ~TaskEdge2TracParameter() override;
 
     void setEdgeAndClusterNbr(int NbrEdges,int NbrClusters);
 
 private Q_SLOTS:
-    void hideShow(void);
+    void hideShow();
     void sizingValueChanged(double Value);
     void orientationToggled(bool Value);
 
@@ -64,7 +58,7 @@ protected:
     Robot::Edge2TracObject *pcObject;
     App::DocumentObject *HideShowObj;
 
-    void setHideShowObject(void);
+    void setHideShowObject();
 private:
 
 private:

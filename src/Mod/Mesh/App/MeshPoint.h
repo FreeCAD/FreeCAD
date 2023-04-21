@@ -20,14 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_MESHPOINT_H
 #define MESH_MESHPOINT_H
 
-#include <Base/Matrix.h>
+#include <climits>
+
 #include <Base/Vector3D.h>
 
-#include "Mesh.h"
+#ifndef MESH_GLOBAL_H
+# include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 using Base::Vector3d;
 
@@ -46,17 +48,17 @@ class MeshExport MeshPoint : public Vector3d
 
 public:
     /// simple constructor
-    MeshPoint(const Vector3d& vec = Vector3d(),MeshObject* obj = 0, unsigned int index = UINT_MAX)
+    explicit MeshPoint(const Vector3d& vec = Vector3d(), const MeshObject* obj = nullptr, unsigned int index = UINT_MAX)
         :Vector3d(vec),Index(index),Mesh(obj)
     {}
 
-    bool isBound(void) const {return Index != UINT_MAX;}
+    bool isBound() const {return Index != UINT_MAX;}
 
     unsigned int Index;
-    Base::Reference<MeshObject> Mesh;
+    Base::Reference<const MeshObject> Mesh;
 };
 
 } // namespace Mesh
 
 
-#endif // MESH_MESH_H
+#endif // MESH_MESHPOINT_H

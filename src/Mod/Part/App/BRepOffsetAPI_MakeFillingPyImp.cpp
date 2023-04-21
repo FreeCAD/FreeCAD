@@ -20,21 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <memory>
 # include <BRepOffsetAPI_MakeFilling.hxx>
-# include <gp_Pnt.hxx>
 # include <GeomAbs_Shape.hxx>
+# include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 #endif
+
+#include <Base/VectorPy.h>
 
 #include "BRepOffsetAPI_MakeFillingPy.h"
 #include "BRepOffsetAPI_MakeFillingPy.cpp"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeFacePy.h"
-#include <Base/VectorPy.h>
+
 
 using namespace Part;
 /*!
@@ -98,7 +100,7 @@ int BRepOffsetAPI_MakeFillingPy::PyInit(PyObject* args, PyObject* kwds)
 
     try {
         std::unique_ptr<BRepOffsetAPI_MakeFilling> ptr(new BRepOffsetAPI_MakeFilling(degree, nbPtsOnCur, nbIter,
-                                                          PyObject_IsTrue(anisotropy) ? Standard_True : Standard_False,
+                                                          Base::asBoolean(anisotropy),
                                                           tol2d, tol3d, tolAng, tolCurv, maxDeg, maxSegments));
 
 
@@ -112,7 +114,7 @@ int BRepOffsetAPI_MakeFillingPy::PyInit(PyObject* args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string BRepOffsetAPI_MakeFillingPy::representation(void) const
+std::string BRepOffsetAPI_MakeFillingPy::representation() const
 {
     return std::string("<BRepOffsetAPI_MakeFilling object>");
 }
@@ -153,7 +155,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::setResolParam(PyObject *args, PyObject *k
 
     try {
         getBRepOffsetAPI_MakeFillingPtr()->SetResolParam(degree, nbPtsOnCur, nbIter,
-                                                         PyObject_IsTrue(anisotropy) ? Standard_True : Standard_False);
+                                                         Base::asBoolean(anisotropy));
         Py_Return;
     }
     catch (const Standard_Failure& e) {
@@ -271,7 +273,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
             }
 
             getBRepOffsetAPI_MakeFillingPtr()->Add(edge, static_cast<GeomAbs_Shape>(order),
-                                                   PyObject_IsTrue(isbound) ? Standard_True : Standard_False);
+                                                   Base::asBoolean(isbound));
             Py_Return;
         }
         catch (const Standard_Failure& e) {
@@ -305,7 +307,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject *args, PyObject *kwds)
             }
 
             getBRepOffsetAPI_MakeFillingPtr()->Add(edge, face, static_cast<GeomAbs_Shape>(order),
-                                                   PyObject_IsTrue(isbound) ? Standard_True : Standard_False);
+                                                   Base::asBoolean(isbound));
             Py_Return;
         }
         catch (const Standard_Failure& e) {
@@ -429,7 +431,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::G2Error(PyObject *args)
 PyObject* BRepOffsetAPI_MakeFillingPy::shape(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     try {
         const TopoDS_Shape& shape = this->getBRepOffsetAPI_MakeFillingPtr()->Shape();
@@ -437,7 +439,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::shape(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 

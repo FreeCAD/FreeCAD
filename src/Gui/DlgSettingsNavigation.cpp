@@ -20,30 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
 # include <QDoubleSpinBox>
-# include <QRegExp>
 # include <QGridLayout>
-# include <QMessageBox>
 # include <memory>
 #endif
+
+#include <App/Application.h>
+#include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "DlgSettingsNavigation.h"
 #include "ui_DlgSettingsNavigation.h"
 #include "MainWindow.h"
+#include "NaviCube.h"
 #include "NavigationStyle.h"
-#include "PrefWidgets.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ui_MouseButtons.h"
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
+
 
 using namespace Gui::Dialog;
 
@@ -59,6 +57,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q0(0), q1(0), q2(0), q3(1)
 {
     ui->setupUi(this);
+    ui->naviCubeButtonColor->setAllowTransparency(true);
     retranslate();
 }
 
@@ -75,15 +74,12 @@ void DlgSettingsNavigation::saveSettings()
     // where we set some attributes afterwards
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
+    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(),
+        Qt::UserRole);
     hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
     int index = ui->comboOrbitStyle->currentIndex();
     hGrp->SetInt("OrbitStyle", index);
-
-    index = ui->naviCubeCorner->currentIndex();
-    hGrp->SetInt("CornerNaviCube", index);
-
     index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
@@ -91,16 +87,20 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
     ui->spinBoxZoomStep->onSave();
-    ui->CheckBox_UseAutoRotation->onSave();
+    ui->checkBoxUseAutoRotation->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
+    ui->naviCubeCorner->onSave();
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
+    ui->naviCubeFontSize->onSave();
+    ui->naviCubeButtonColor->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
 
-    QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(), Qt::UserRole);
+    QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(),
+        Qt::UserRole);
     hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
     if (camera == QByteArray("Custom")) {
         ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
@@ -108,6 +108,25 @@ void DlgSettingsNavigation::saveSettings()
         hCustom->SetFloat("Q1", q1);
         hCustom->SetFloat("Q2", q2);
         hCustom->SetFloat("Q3", q3);
+    }
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
+    hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
+
+    recreateNaviCubes();
+}
+
+void DlgSettingsNavigation::recreateNaviCubes()
+{
+    // we changed the cube's layout, therefore we must re-initialize it
+    // by deleting and the subsequently recreating
+    auto views = getMainWindow()->windows();
+    for (auto view : views) {
+        if (auto view3d = qobject_cast<View3DInventor*>(view)) {
+            auto viewer = view3d->getViewer();
+            viewer->updateNavigationCube();
+        }
     }
 }
 
@@ -117,24 +136,24 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
     ui->spinBoxZoomStep->onRestore();
-    ui->CheckBox_UseAutoRotation->onRestore();
+    ui->checkBoxUseAutoRotation->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
+    ui->naviCubeCorner->onRestore();
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
+    ui->naviCubeFontSize->onRestore();
+    ui->naviCubeButtonColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    std::string model = hGrp->GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+    std::string model = hGrp->GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
     int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) ui->comboNavigationStyle->setCurrentIndex(index);
 
     index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
     index = Base::clamp(index, 0, ui->comboOrbitStyle->count()-1);
     ui->comboOrbitStyle->setCurrentIndex(index);
-
-    index = hGrp->GetInt("CornerNaviCube", 1);
-    ui->naviCubeCorner->setCurrentIndex(index);
 
     index = hGrp->GetInt("RotationMode", 1);
     ui->comboRotationMode->setCurrentIndex(index);
@@ -163,20 +182,53 @@ void DlgSettingsNavigation::loadSettings()
         q3 = hCustom->GetFloat("Q3", q3);
     }
 
-    connect(ui->comboNewDocView, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onNewDocViewChanged(int)));
+    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &DlgSettingsNavigation::onNewDocViewChanged);
+    connect(ui->mouseButton, &QPushButton::clicked,
+        this, &DlgSettingsNavigation::onMouseButtonClicked);
+
+    // fill up font styles
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
+    std::string defaultSansserifFont = NaviCube::getDefaultSansserifFont().toStdString();
+
+    // we purposely allow all available fonts on the system
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
+#else
+    QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
+#endif
+    ui->naviCubeFontName->addItems(familyNames);
+
+    int indexFamilyNames = familyNames.indexOf(
+        QString::fromStdString(hGrp->GetASCII("FontString", defaultSansserifFont.c_str())));
+    if (indexFamilyNames < 0)
+        indexFamilyNames = 0;
+    ui->naviCubeFontName->setCurrentIndex(indexFamilyNames);
+
+    // if the FontSize parameter does not yet exist, set the default value
+    // the default is defined in NaviCubeImplementation::getDefaultFontSize()
+    // but not accessible if there is no cube yet drawn
+    if (hGrp->GetInt("FontSize", 0) == 0) {
+        // the "4" is the hardcoded m_OverSample from getDefaultFontSize()
+        ui->naviCubeFontSize->setValue(int(0.18 * 4 * ui->prefCubeSize->value()));
+        // we purposely don't write to the parameters because the writing would
+        // also be done when the user cancels the preferences dialog
+    }
 }
 
-void DlgSettingsNavigation::on_mouseButton_clicked()
+void DlgSettingsNavigation::onMouseButtonClicked()
 {
     QDialog dlg(this);
     Ui_MouseButtons uimb;
     uimb.setupUi(&dlg);
 
-    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
+    QVariant data =
+        ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    uimb.groupBox->setTitle(uimb.groupBox->title()+QString::fromLatin1(" ")+ui->comboNavigationStyle->currentText());
+    uimb.groupBox->setTitle(uimb.groupBox->title() + QString::fromLatin1(" ")
+                            + ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
@@ -219,9 +271,9 @@ void DlgSettingsNavigation::retranslate()
 
     // add submenu at the end to select navigation style
     std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
-    for (std::map<Base::Type, std::string>::iterator it = styles.begin(); it != styles.end(); ++it) {
-        QByteArray data(it->first.getName());
-        QString name = QApplication::translate(it->first.getName(), it->second.c_str());
+    for (const auto & style : styles) {
+        QByteArray data(style.first.getName());
+        QString name = QApplication::translate(style.first.getName(), style.second.c_str());
 
         ui->comboNavigationStyle->addItem(name, data);
     }
@@ -264,7 +316,7 @@ CameraDialog::CameraDialog(QWidget* parent)
     layout = new QGridLayout(groupBox);
 
     // Q0
-    QLabel* label0 = new QLabel(groupBox);
+    auto label0 = new QLabel(groupBox);
     label0->setText(tr("Q0"));
     layout->addWidget(label0, 0, 0, 1, 1);
 
@@ -274,7 +326,7 @@ CameraDialog::CameraDialog(QWidget* parent)
     layout->addWidget(sb0, 0, 1, 1, 1);
 
     // Q1
-    QLabel* label1 = new QLabel(groupBox);
+    auto label1 = new QLabel(groupBox);
     label1->setText(tr("Q1"));
     layout->addWidget(label1, 1, 0, 1, 1);
 
@@ -284,7 +336,7 @@ CameraDialog::CameraDialog(QWidget* parent)
     layout->addWidget(sb1, 1, 1, 1, 1);
 
     // Q2
-    QLabel* label2 = new QLabel(groupBox);
+    auto label2 = new QLabel(groupBox);
     label2->setText(tr("Q2"));
     layout->addWidget(label2, 2, 0, 1, 1);
 
@@ -294,7 +346,7 @@ CameraDialog::CameraDialog(QWidget* parent)
     layout->addWidget(sb2, 2, 1, 1, 1);
 
     // Q3
-    QLabel* label3 = new QLabel(groupBox);
+    auto label3 = new QLabel(groupBox);
     label3->setText(tr("Q3"));
     layout->addWidget(label3, 3, 0, 1, 1);
 
@@ -303,15 +355,15 @@ CameraDialog::CameraDialog(QWidget* parent)
     sb3->setSingleStep(0.1);
     layout->addWidget(sb3, 3, 1, 1, 1);
 
-    QPushButton *currentViewButton;
-    currentViewButton = new QPushButton(this);
+    auto currentViewButton = new QPushButton(this);
     currentViewButton->setText(tr("Current view"));
     currentViewButton->setObjectName(QString::fromLatin1("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    QMetaObject::connectSlotsByName(this);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(currentViewButton, &QPushButton::clicked, this,
+            &CameraDialog::onCurrentViewClicked);
 }
 
 CameraDialog::~CameraDialog()
@@ -334,9 +386,9 @@ void CameraDialog::getValues(double& q0, double& q1, double& q2, double& q3) con
     q3 = sb3->value();
 }
 
-void CameraDialog::on_currentView_clicked()
+void CameraDialog::onCurrentViewClicked()
 {
-    View3DInventor* mdi = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto mdi = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (mdi) {
         SbRotation rot = mdi->getViewer()->getCameraOrientation();
         const float* q = rot.getValue();

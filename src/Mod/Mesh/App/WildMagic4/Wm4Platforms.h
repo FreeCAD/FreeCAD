@@ -60,15 +60,8 @@ typedef long long Integer64;
 
 #if defined(_MSC_VER)
 
-// Microsoft Visual C++ specific pragmas.  MSVC6 is version 12.00, MSVC7.0 is
-// version 13.00, and MSVC7.1 is version 13.10.  MSVC8.0 is version 14.00.
-#if _MSC_VER < 1300
-#define WM4_USING_VC6
-#elif _MSC_VER < 1310
-#define WM4_USING_VC70
-#elif _MSC_VER < 1400
-#define WM4_USING_VC71
-#else
+// Microsoft Visual C++ specific pragmas.
+#if _MSC_VER
 #define WM4_USING_VC80
 #endif
 
@@ -124,7 +117,7 @@ typedef int64_t Integer64;
 //----------------------------------------------------------------------------
 #else
 
-#include <stdint.h>
+#include <cstdint>
 typedef int64_t Integer64;
 
 #endif

@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-//#ifndef _PreComp_
-//# include <gp.hxx>
-//#endif
-
-#include <Mod/Part/App/Geometry.h>
-#include "SketchObject.h"
 #include "ExternalGeometryExtensionPy.h"
 #include "ExternalGeometryExtensionPy.cpp"
+
 
 using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ExternalGeometryExtensionPy::representation(void) const
+std::string ExternalGeometryExtensionPy::representation() const
 {
     std::stringstream str;
 
@@ -45,7 +39,7 @@ std::string ExternalGeometryExtensionPy::representation(void) const
 
     str << "<ExternalGeometryExtension (";
 
-    if(getExternalGeometryExtensionPtr()->getName().size()>0)
+    if(!getExternalGeometryExtensionPtr()->getName().empty())
         str << "\'" << getExternalGeometryExtensionPtr()->getName() << "\', ";
 
     str << "\"" << ref;
@@ -110,12 +104,12 @@ PyObject* ExternalGeometryExtensionPy::testFlag(PyObject *args)
             return new_reference_to(Py::Boolean(this->getExternalGeometryExtensionPtr()->testFlag(flagtype)));
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
-        return NULL;
+        return nullptr;
 
     }
 
     PyErr_SetString(PyExc_TypeError, "No flag string provided.");
-    return NULL;
+    return nullptr;
 }
 
 PyObject* ExternalGeometryExtensionPy::setFlag(PyObject *args)
@@ -128,19 +122,19 @@ PyObject* ExternalGeometryExtensionPy::setFlag(PyObject *args)
 
         if(getExternalGeometryExtensionPtr()->getFlagsFromName(flag, flagtype)) {
 
-            this->getExternalGeometryExtensionPtr()->setFlag(flagtype,PyObject_IsTrue(bflag) ? true : false);
+            this->getExternalGeometryExtensionPtr()->setFlag(flagtype, Base::asBoolean(bflag));
             Py_Return;
         }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
-        return NULL;
+        return nullptr;
     }
 
     PyErr_SetString(PyExc_TypeError, "No flag string provided.");
     Py_Return;
 }
 
-Py::String ExternalGeometryExtensionPy::getRef(void) const
+Py::String ExternalGeometryExtensionPy::getRef() const
 {
     return Py::String(this->getExternalGeometryExtensionPtr()->getRef());
 }
@@ -153,7 +147,7 @@ void ExternalGeometryExtensionPy::setRef(Py::String value)
 
 PyObject *ExternalGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ExternalGeometryExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

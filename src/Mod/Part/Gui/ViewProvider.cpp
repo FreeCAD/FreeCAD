@@ -20,20 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
+# include <QObject>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Document.h>
 #include <Gui/Command.h>
-
-#include <Mod/Part/App/PartFeature.h>
 
 #include "ViewProvider.h"
 
@@ -51,7 +47,7 @@ ViewProviderPart::~ViewProviderPart()
 {
 }
 
-bool ViewProviderPart::doubleClicked(void)
+bool ViewProviderPart::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));

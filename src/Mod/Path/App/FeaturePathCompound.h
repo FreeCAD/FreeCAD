@@ -20,18 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_FeatureCompound_H
 #define PATH_FeatureCompound_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyUnits.h>
+#include <App/PropertyLinks.h>
 
-#include "Path.h"
 #include "FeaturePath.h"
-#include "PropertyPath.h"
+
 
 namespace Path
 {
@@ -53,7 +48,7 @@ public:
         return "PathGui::ViewProviderPathCompound";
     }
     virtual App::DocumentObjectExecReturn *execute(void);
-    
+
     /// Checks whether the object \a obj is part of this group.
     bool hasObject(const DocumentObject* obj) const;
     /// Adds an object to this group.
@@ -64,7 +59,7 @@ public:
 
 };
 
-typedef App::FeaturePythonT<FeatureCompound> FeatureCompoundPython;
+using FeatureCompoundPython = App::FeaturePythonT<FeatureCompound>;
 
 } //namespace Path
 

@@ -142,12 +142,12 @@
       <translation>يرجي اختيار ثلاثة اعضاء اولا</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>وظيفة غير مدعومة</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>إضغط على 'موافق'</translation>
     </message>

@@ -20,13 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHGUI_SEGMENTATION_H
 #define MESHGUI_SEGMENTATION_H
 
 #include <QWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#ifndef MESH_GLOBAL_H
+# include <Mod/Mesh/MeshGlobal.h>
+#endif
+
 
 // forward declarations
 namespace Mesh { class Feature; }
@@ -37,12 +41,12 @@ class Ui_Segmentation;
 class MeshGuiExport Segmentation : public QWidget
 {
 public:
-    Segmentation(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Segmentation();
+    explicit Segmentation(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~Segmentation() override;
     void accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     Ui_Segmentation* ui;
@@ -55,13 +59,13 @@ private:
 class TaskSegmentation : public Gui::TaskView::TaskDialog
 {
 public:
-    TaskSegmentation(Mesh::Feature* mesh);
-    ~TaskSegmentation();
+    explicit TaskSegmentation(Mesh::Feature* mesh);
+    ~TaskSegmentation() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

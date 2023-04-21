@@ -21,23 +21,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <string>
+# include <string>
 #endif
 
+#include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 
-#include <App/Document.h>
+#include "Origin.h"
 #include "OriginFeature.h"
 
-#include "Origin.h"
 
 #ifndef M_PI
-#define M_PI       3.14159265358979323846
+# define M_PI       3.14159265358979323846
 #endif
 
 using namespace App;
@@ -45,11 +44,8 @@ using namespace App;
 
 PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 
-const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
-const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
-
-Origin::Origin(void) : extension(this) {
-    ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
+Origin::Origin() : extension(this) {
+    ADD_PROPERTY_TYPE ( OriginFeatures, (nullptr), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
 
     setStatus(App::NoAutoExpand,true);
@@ -57,8 +53,7 @@ Origin::Origin(void) : extension(this) {
 }
 
 
-Origin::~Origin(void)
-{ }
+Origin::~Origin() = default;
 
 App::OriginFeature *Origin::getOriginFeature( const char *role) const {
     const auto & features = OriginFeatures.getValues ();
@@ -107,7 +102,7 @@ bool Origin::hasObject (const DocumentObject *obj) const {
     return std::find (features.begin(), features.end(), obj) != features.end ();
 }
 
-short Origin::mustExecute(void) const {
+short Origin::mustExecute() const {
     if (OriginFeatures.isTouched ()) {
         return 1;
     } else {
@@ -115,7 +110,7 @@ short Origin::mustExecute(void) const {
     }
 }
 
-App::DocumentObjectExecReturn *Origin::execute(void) {
+App::DocumentObjectExecReturn *Origin::execute() {
     try { // try to find all base axis and planes in the origin
         for (const char* role: AxisRoles) {
             App::Line *axis = getAxis (role);
@@ -139,14 +134,15 @@ void Origin::setupObject () {
     const static struct {
         const Base::Type type;
         const char *role;
+	const QString label;
         Base::Rotation rot;
     } setupData [] = {
-        {App::Line::getClassTypeId(), "X_Axis", Base::Rotation () },
-        {App::Line::getClassTypeId(), "Y_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
-        {App::Line::getClassTypeId(), "Z_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*4/3 ) },
-        {App::Plane::getClassTypeId (), "XY_Plane", Base::Rotation () },
-        {App::Plane::getClassTypeId (), "XZ_Plane", Base::Rotation ( 1.0, 0.0, 0.0, 1.0 ), },
-        {App::Plane::getClassTypeId (), "YZ_Plane", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
+        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI*4/3)},
+        {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
+        {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0 )},
+        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)}
     };
 
     App::Document *doc = getDocument ();
@@ -157,6 +153,9 @@ void Origin::setupObject () {
         App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
 
         assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
+
+	QByteArray byteArray = data.label.toUtf8();
+        featureObj->Label.setValue(byteArray.constData());
 
         App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
         feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );
@@ -197,7 +196,7 @@ void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
 }
 
 bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                                                    PyObject **, Base::Matrix4D *, bool, int) const {
+                                                    PyObject **pyobj, Base::Matrix4D *mat, bool, int depth) const {
     if (!subname || subname[0] == '\0') {
         return false;
     }
@@ -217,6 +216,14 @@ bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const 
 
     try {
         ret = obj->getOriginFeature(name.c_str());
+        if (!ret)
+            return false;
+        const char *dot = strchr(subname, '.');
+        if (dot)
+            subname = dot+1;
+        else
+            subname = "";
+        ret = ret->getSubObject(subname, pyobj, mat, true, depth+1);
         return true;
     }
     catch (const Base::Exception& e) {

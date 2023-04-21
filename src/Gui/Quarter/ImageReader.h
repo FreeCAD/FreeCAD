@@ -33,7 +33,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
 
 class SbImage;
 class SbString;
@@ -43,8 +42,8 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 
 class ImageReader {
 public:
-  ImageReader(void);
-  ~ImageReader(void);
+  ImageReader();
+  ~ImageReader();
 
   SbBool readImage(const SbString & filename, SbImage & image) const;
 

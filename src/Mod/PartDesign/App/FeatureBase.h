@@ -24,9 +24,7 @@
 #ifndef PARTDESIGN_FeatureBase_H
 #define PARTDESIGN_FeatureBase_H
 
-#include <App/PropertyStandard.h>
 #include "Feature.h"
-
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign
@@ -34,22 +32,22 @@ namespace PartDesign
 
 class PartDesignExport FeatureBase : public PartDesign::Feature
 {
-    PROPERTY_HEADER(PartDesign::FeatureBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureBase);
 
 public:
     FeatureBase();
-      
-    virtual short int mustExecute(void) const;
-    
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
-        
-    virtual const char* getViewProviderName() const {
+
+    short int mustExecute() const override;
+
+    Part::Feature* getBaseObject(bool silent=false) const override;
+
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderBase";
     }
-    
-    virtual void onChanged(const App::Property* prop);
-    virtual App::DocumentObjectExecReturn* execute(void);
-    virtual void onDocumentRestored();
+
+    void onChanged(const App::Property* prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onDocumentRestored() override;
 };
 
 } //namespace PartDesign

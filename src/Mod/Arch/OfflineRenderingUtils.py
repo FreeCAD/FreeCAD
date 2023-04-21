@@ -123,6 +123,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
 
     def __init__(self):
 
+        super().__init__()
         self.guidata = {}
         self.current = None
         self.properties = {}
@@ -187,7 +188,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
                 self.current = None
                 self.properties = {}
         elif tag == "Property":
-            if self.currentprop and (self.currentval != None):
+            if self.currentprop and (self.currentval is not None):
                 self.properties[self.currentprop] = {"type":self.currenttype,"value":self.currentval}
                 self.currentprop = None
                 self.currentval = None
@@ -224,10 +225,7 @@ def getGuiData(filename):
                             df.close()
                             cols = []
                             for i in range(1,int(len(buf)/4)):
-                                if sys.version_info.major < 3:
-                                    cols.append(ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0)
-                                else:
-                                    cols.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
+                                cols.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
                             guidata[key][propname]["value"] = cols
         zdoc.close()
         #print ("guidata:",guidata)
@@ -242,11 +240,7 @@ def saveDiffuseColor(colorlist):
     property. Returns the path to the created temp file"""
 
     def tochr(i):
-        #print("tochr:",i)
-        if sys.version_info.major < 3:
-            return chr(i)
-        else:
-            return bytes((i,))
+        return bytes((i,))
     # if too many colors, bail out and use only the first one for now...
     if len(colorlist) > 254:
         colorlist = colorlist[:1]
@@ -291,7 +285,7 @@ def getColors(filename,nodiffuse=False):
         if ("DiffuseColor" in v) and (not nodiffuse):
             if len(v["DiffuseColor"]["value"]) == 1:
                 # only one color in DiffuseColor: used for the whole object
-                 colors[k] = v["DiffuseColor"]["value"][0]
+                colors[k] = v["DiffuseColor"]["value"][0]
             else:
                 colors[k] = v["DiffuseColor"]["value"]
         elif "ShapeColor" in v:

@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -23,8 +22,7 @@
 import FreeCAD
 import FreeCADGui
 
-FreeCAD.newDocument()
-FreeCADGui.activeDocument().activeView().viewDefaultOrientation()
+FreeCADGui.runCommand('Std_New')
 
 from StartPage import StartPage
 StartPage.postStart()

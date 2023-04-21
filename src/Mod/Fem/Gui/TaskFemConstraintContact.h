@@ -23,21 +23,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintContact_H
 #define GUI_TASKVIEW_TaskFemConstraintContact_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <memory>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintContact.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
 
 class Ui_TaskFemConstraintContact;
 
@@ -47,28 +41,28 @@ class TaskFemConstraintContact : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = 0);
-    ~TaskFemConstraintContact();
-    const std::string getReferences() const;
+    explicit TaskFemConstraintContact(ViewProviderFemConstraintContact* ConstraintView,
+                                      QWidget* parent = nullptr);
+    ~TaskFemConstraintContact() override;
+    const std::string getReferences() const override;
     double get_Slope()const;
     double get_Friction()const;
 
 private Q_SLOTS:
-    void onReferenceDeletedSlave(void);
-    void onReferenceDeletedMaster(void);
+    void onReferenceDeletedSlave();
+    void onReferenceDeletedMaster();
     void addToSelectionSlave();
     void removeFromSelectionSlave();
     void addToSelectionMaster();
     void removeFromSelectionMaster();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
-    Ui_TaskFemConstraintContact* ui;
-
+    std::unique_ptr<Ui_TaskFemConstraintContact> ui;
 };
 
 class TaskDlgFemConstraintContact : public TaskDlgFemConstraint
@@ -76,10 +70,10 @@ class TaskDlgFemConstraintContact : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

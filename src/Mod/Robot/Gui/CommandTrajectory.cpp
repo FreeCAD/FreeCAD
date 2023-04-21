@@ -20,33 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QInputDialog>
 # include <QMessageBox>
 #endif
 
-#include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Placement.h>
-#include <Gui/Control.h>
-
-
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+#include <Gui/Selection.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryDressUpObject.h>
+#include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryCompound.h>
+#include <Mod/Robot/App/TrajectoryDressUpObject.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
+
 #include "TaskDlgEdge2Trac.h"
 
-#include "TrajectorySimulate.h"
 
 using namespace std;
 using namespace RobotGui;
@@ -79,7 +72,7 @@ void CmdRobotCreateTrajectory::activated(int)
 
 }
 
-bool CmdRobotCreateTrajectory::isActive(void)
+bool CmdRobotCreateTrajectory::isActive()
 {
     return hasActiveDocument();
 }
@@ -115,14 +108,14 @@ void CmdRobotInsertWaypoint::activated(int)
 
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
-    Robot::RobotObject *pcRobotObject=0;
+    Robot::RobotObject *pcRobotObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject=0;
+    Robot::TrajectoryObject *pcTrajectoryObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
@@ -130,13 +123,13 @@ void CmdRobotInsertWaypoint::activated(int)
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     openCommand("Insert waypoint");
-    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App.activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAccelaration,tool=1))",TrakName.c_str(),TrakName.c_str(),RoboName.c_str(),RoboName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App.activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",TrakName.c_str(),TrakName.c_str(),RoboName.c_str(),RoboName.c_str());
     updateActive();
     commitCommand();
 
 }
 
-bool CmdRobotInsertWaypoint::isActive(void)
+bool CmdRobotInsertWaypoint::isActive()
 {
     return hasActiveDocument();
 }
@@ -178,29 +171,29 @@ void CmdRobotInsertWaypointPreselect::activated(int)
 
 
     Robot::TrajectoryObject *pcTrajectoryObject;
-    if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
+    if (Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
-    else  {
+    else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Trajectory object."));
         return;
     }
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
-    if(PreSel.pDocName == 0){
+    if (!PreSel.pDocName) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No preselection"),
             QObject::tr("You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details."));
         return;
     }
 
     openCommand("Insert waypoint");
-    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAccelaration,tool=1))",TrakName.c_str(),TrakName.c_str(),x,y,z);
+    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",TrakName.c_str(),TrakName.c_str(),x,y,z);
     updateActive();
     commitCommand();
 
 }
 
-bool CmdRobotInsertWaypointPreselect::isActive(void)
+bool CmdRobotInsertWaypointPreselect::isActive()
 {
     return hasActiveDocument();
 }
@@ -218,7 +211,7 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
     sToolTipText    = QT_TR_NOOP("Set the default orientation for subsequent commands for waypoint creation");
     sWhatsThis      = "Robot_SetDefaultOrientation";
     sStatusTip      = sToolTipText;
-    sPixmap         = 0;
+    sPixmap         = nullptr;
 
 }
 
@@ -227,6 +220,7 @@ void CmdRobotSetDefaultOrientation::activated(int)
 {
     // create placement dialog
     Gui::Dialog::Placement Dlg;
+    Dlg.setSelection(Gui::Selection().getSelectionEx());
     Base::Placement place;
     Dlg.setPlacement(place);
     if (Dlg.exec() == QDialog::Accepted ){
@@ -238,7 +232,7 @@ void CmdRobotSetDefaultOrientation::activated(int)
     }
 }
 
-bool CmdRobotSetDefaultOrientation::isActive(void)
+bool CmdRobotSetDefaultOrientation::isActive()
 {
     return true;
 }
@@ -256,7 +250,7 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
     sToolTipText    = QT_TR_NOOP("Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation");
     sWhatsThis      = "Robot_SetDefaultValues";
     sStatusTip      = sToolTipText;
-    sPixmap         = 0;
+    sPixmap         = nullptr;
 
 }
 
@@ -265,7 +259,7 @@ void CmdRobotSetDefaultValues::activated(int)
 {
 
     bool ok;
-    QString text = QInputDialog::getText(0, QObject::tr("Set default speed"),
+    QString text = QInputDialog::getText(nullptr, QObject::tr("Set default speed"),
                                           QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s"), &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok && !text.isEmpty() ) {
@@ -275,18 +269,18 @@ void CmdRobotSetDefaultValues::activated(int)
     QStringList items;
     items  << QString::fromLatin1("False") << QString::fromLatin1("True");
 
-    QString item = QInputDialog::getItem(0, QObject::tr("Set default continuity"),
+    QString item = QInputDialog::getItem(nullptr, QObject::tr("Set default continuity"),
                                           QObject::tr("continuous ?"), items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (ok && !item.isEmpty())
         doCommand(Doc,"_DefCont = %s",item.toLatin1().constData());
 
     text.clear();
 
-    text = QInputDialog::getText(0, QObject::tr("Set default acceleration"),
+    text = QInputDialog::getText(nullptr, QObject::tr("Set default acceleration"),
                                           QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s^2"), &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok && !text.isEmpty() ) {
-        doCommand(Doc,"_DefAccelaration = '%s'",text.toLatin1().constData());
+        doCommand(Doc,"_DefAcceleration = '%s'",text.toLatin1().constData());
     }
 
 
@@ -304,7 +298,7 @@ void CmdRobotSetDefaultValues::activated(int)
 
 }
 
-bool CmdRobotSetDefaultValues::isActive(void)
+bool CmdRobotSetDefaultValues::isActive()
 {
     return true;
 }
@@ -368,7 +362,7 @@ void CmdRobotEdge2Trac::activated(int)
 
 }
 
-bool CmdRobotEdge2Trac::isActive(void)
+bool CmdRobotEdge2Trac::isActive()
 {
     return true;
 }
@@ -415,7 +409,7 @@ void CmdRobotTrajectoryDressUp::activated(int)
     }
  }
 
-bool CmdRobotTrajectoryDressUp::isActive(void)
+bool CmdRobotTrajectoryDressUp::isActive()
 {
     return true;
 }
@@ -455,7 +449,7 @@ void CmdRobotTrajectoryCompound::activated(int)
     }
 }
 
-bool CmdRobotTrajectoryCompound::isActive(void)
+bool CmdRobotTrajectoryCompound::isActive()
 {
     return true;
 }
@@ -466,7 +460,7 @@ bool CmdRobotTrajectoryCompound::isActive(void)
 
 
 
-void CreateRobotCommandsTrajectory(void)
+void CreateRobotCommandsTrajectory()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

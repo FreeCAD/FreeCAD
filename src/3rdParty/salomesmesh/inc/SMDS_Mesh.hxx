@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMDS : implementaion of Salome mesh data structure
+//  SMESH SMDS : implementation of Salome mesh data structure
 //  File   : SMDS_Mesh.hxx
 //  Module : SMESH
 //
@@ -69,7 +69,7 @@ public:
 
   SMDS_Mesh();
   
-  //! to retreive this SMDS_Mesh instance from its elements (index stored in SMDS_Elements)
+  //! to retrieve this SMDS_Mesh instance from its elements (index stored in SMDS_Elements)
   static std::vector<SMDS_Mesh*> _meshList;
 
   //! actual nodes coordinates, cells definition and reverse connectivity are stored in a vtkUnstructuredGrid
@@ -692,7 +692,7 @@ public:
 
   /*!
    * \brief Raise an exception if free memory (ram+swap) too low
-    * \param doNotRaise - if true, suppres exception, just return free memory size
+    * \param doNotRaise - if true, suppress exception, just return free memory size
     * \retval int - amount of available memory in MB or negative number in failure case
    */
   static int CheckMemory(const bool doNotRaise=false);

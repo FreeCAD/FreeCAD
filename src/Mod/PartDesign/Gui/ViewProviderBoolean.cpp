@@ -25,20 +25,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QAction>
 # include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderBoolean.h"
 #include "TaskBooleanParameters.h"
-#include "ViewProviderBody.h"
 #include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+#include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
-#include <Gui/Application.h>
 #include <Gui/Document.h>
 
 
@@ -46,7 +42,7 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean,PartDesignGui::ViewProvider)
 
-const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result","Tools",NULL};
+const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result","Tools",nullptr};
 
 
 ViewProviderBoolean::ViewProviderBoolean()
@@ -65,9 +61,7 @@ ViewProviderBoolean::~ViewProviderBoolean()
 
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit boolean"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit boolean"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
@@ -80,7 +74,7 @@ bool ViewProviderBoolean::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgBooleanParameters *booleanDlg = qobject_cast<TaskDlgBooleanParameters *>(dlg);
         if (booleanDlg && booleanDlg->getBooleanView() != this)
-            booleanDlg = 0; // another pad left open its task panel
+            booleanDlg = nullptr; // another pad left open its task panel
         if (dlg && !booleanDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -109,7 +103,7 @@ bool ViewProviderBoolean::setEdit(int ModNum)
         return true;
     }
     else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
+        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
     }
 }
 

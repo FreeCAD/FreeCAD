@@ -41,12 +41,7 @@ from femmesh import meshtools
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-if open.__module__ == "__builtin__":
-    # because we'll redefine open below (Python2)
-    pyopen = open
-elif open.__module__ == "io":
-    # because we'll redefine open below (Python3)
-    pyopen = open
+pyopen = open
 
 
 def open(
@@ -180,7 +175,7 @@ def read_z88_mesh(
     nodes_count = int(mesh_info[1])
     elements_count = int(mesh_info[2])
     kflag = int(mesh_info[4])
-    # for non rotational elements ist --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
+    # for non rotational elements is --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
     if kflag:
         Console.PrintError(
             "KFLAG = 1, Rotational coordinates not supported at the moment\n"
@@ -555,60 +550,19 @@ def get_z88_element_type(
     femmesh,
     femelement_table=None
 ):
-    if not femmesh:
-        Console.PrintError("Error: No femmesh.\n")
-    if not femelement_table:
-        Console.PrintError("The femelement_table need to be calculated.\n")
-        femelement_table = meshtools.get_femelement_table(femmesh)
-    # in some cases lowest key in femelement_table is not [1]
-    for elem in sorted(femelement_table):
-        elem_length = len(femelement_table[elem])
-        Console.PrintLog("Node count of first element: {}\n".format(elem_length))
-        break  # break after the first elem
-    if meshtools.is_solid_femmesh(femmesh):
-        if femmesh.TetraCount == femmesh.VolumeCount:
-            if elem_length == 4:
-                return 17
-            elif elem_length == 10:
-                return 16
-            else:
-                Console.PrintMessage("Tetra with neither 4 nor 10 nodes.\n")
-        elif femmesh.HexaCount == femmesh.VolumeCount:
-            if elem_length == 8:
-                return 1
-            elif elem_length == 20:
-                return 10
-            else:
-                Console.PrintError("Hexa with neither 8 nor 20 nodes.\n")
-                return 0
-        else:
-            Console.PrintError("no tetra, no hexa or Mixed Volume Elements.\n")
-    elif meshtools.is_face_femmesh(femmesh):
-        if femmesh.TriangleCount == femmesh.FaceCount:
-            if elem_length == 3:
-                Console.PrintError("tria3mesh, not supported by Z88.\n")
-                return 0
-            elif elem_length == 6:
-                return 24
-            else:
-                Console.PrintError("Tria with neither 3 nor 6 nodes.\n")
-                return 0
-        elif femmesh.QuadrangleCount == femmesh.FaceCount:
-            if elem_length == 4:
-                Console.PrintError("quad4mesh, not supported by Z88.\n")
-                return 0
-            elif elem_length == 8:
-                return 23
-            else:
-                Console.PrintError("Quad with neither 4 nor 8 nodes.\n")
-                return 0
-        else:
-            Console.PrintError("no tria, no quad\n")
-            return 0
-    elif meshtools.is_edge_femmesh(femmesh):
-        Console.PrintMessage("Edge femmesh will be exported as 3D truss element nr 4.\n")
-        return 4
-    else:
-        Console.PrintError("Neither edge nor face nor solid femmesh.\n")
-        return 0
-    return 0
+    return z88_ele_types[meshtools.get_femmesh_eletype(femmesh, femelement_table)]
+
+
+z88_ele_types = {
+    "tetra4": 17,
+    "tetra10": 16,
+    "hexa8": 1,
+    "hexa20": 10,
+    "tria3": 0,  # no tria3 available in Z88
+    "tria6": 24,
+    "quad4": 0,  # no quad4 available in Z88
+    "quad8": 23,
+    "seg2": 4,  # 3D Truss element
+    "seg3": 4,  # 3D Truss element
+    "None": 0,
+}

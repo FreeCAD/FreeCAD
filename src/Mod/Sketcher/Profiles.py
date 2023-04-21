@@ -19,14 +19,11 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Sketcher
+import FreeCAD
 
 if FreeCAD.GuiUp:
-    import FreeCADGui,SketcherGui,os
-    from PySide import QtCore, QtGui
-    from PySide.QtCore import Qt
-    from PySide.QtGui import QApplication, QCursor
-    from FreeCADGui import PySideUic as uic
+    import FreeCADGui
+    from PySide import QtCore
 
     #s=os.path.dirname(__file__)
     #s=os.path.join(s,"ProfileLib")
@@ -57,7 +54,7 @@ class _CommandProfileHexagon1:
                 'Accel': "",
                 'CmdType': "ForEdit",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagonal profile in the sketch")}
-        
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create hexagon profile")
         FreeCADGui.addModule("ProfileLib.Hexagon")

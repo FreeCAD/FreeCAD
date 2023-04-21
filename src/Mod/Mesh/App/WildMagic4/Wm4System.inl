@@ -36,7 +36,7 @@ void Deallocate (T**& raatArray)
     {
         WM4_DELETE[] raatArray[0];
         WM4_DELETE[] raatArray;
-        raatArray = 0;
+        raatArray = nullptr;
     }
 }
 //----------------------------------------------------------------------------

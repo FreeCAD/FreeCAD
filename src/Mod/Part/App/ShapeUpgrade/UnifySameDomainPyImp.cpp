@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
+# include <memory>
 # include <Standard_Failure.hxx>
-#endif
 
 // Needed for OCCT 7.5.2
 #include <TopoDS_Edge.hxx>
+#endif
 
 #include "ShapeUpgrade/UnifySameDomainPy.h"
 #include "ShapeUpgrade/UnifySameDomainPy.cpp"
-#include "TopoShapePy.h"
 #include "PartPyCXX.h"
+#include "TopoShapePy.h"
+
 
 using namespace Part;
 
@@ -62,9 +62,9 @@ int UnifySameDomainPy::PyInit(PyObject* args, PyObject* kwds)
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         std::unique_ptr<ShapeUpgrade_UnifySameDomain> ptr(new ShapeUpgrade_UnifySameDomain(shp,
-                                                          PyObject_IsTrue(unifyEdges) ? Standard_True : Standard_False,
-                                                          PyObject_IsTrue(unifyFaces) ? Standard_True : Standard_False,
-                                                          PyObject_IsTrue(concatBSpl) ? Standard_True : Standard_False));
+                                                          Base::asBoolean(unifyEdges),
+                                                          Base::asBoolean(unifyFaces),
+                                                          Base::asBoolean(concatBSpl)));
 
         setTwinPointer(ptr.release());
         return 0;
@@ -93,9 +93,9 @@ PyObject* UnifySameDomainPy::initialize(PyObject *args, PyObject* kwds)
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         getShapeUpgrade_UnifySameDomainPtr()->Initialize(shp,
-            PyObject_IsTrue(unifyEdges) ? Standard_True : Standard_False,
-            PyObject_IsTrue(unifyFaces) ? Standard_True : Standard_False,
-            PyObject_IsTrue(concatBSpl) ? Standard_True : Standard_False);
+            Base::asBoolean(unifyEdges),
+            Base::asBoolean(unifyFaces),
+            Base::asBoolean(concatBSpl));
 
         Py_Return;
     }
@@ -106,7 +106,7 @@ PyObject* UnifySameDomainPy::initialize(PyObject *args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string UnifySameDomainPy::representation(void) const
+std::string UnifySameDomainPy::representation() const
 {
     return std::string("<ShapeUpgrade_UnifySameDomain object>");
 }
@@ -118,7 +118,7 @@ PyObject* UnifySameDomainPy::allowInternalEdges(PyObject *args)
         return nullptr;
 
     try {
-        getShapeUpgrade_UnifySameDomainPtr()->AllowInternalEdges(PyObject_IsTrue(allow) ? Standard_True : Standard_False);
+        getShapeUpgrade_UnifySameDomainPtr()->AllowInternalEdges(Base::asBoolean(allow));
         Py_Return;
     }
     catch (const Standard_Failure& e) {
@@ -174,7 +174,7 @@ PyObject* UnifySameDomainPy::setSafeInputMode(PyObject *args)
         return nullptr;
 
     try {
-        getShapeUpgrade_UnifySameDomainPtr()->SetSafeInputMode(PyObject_IsTrue(mode) ? Standard_True : Standard_False);
+        getShapeUpgrade_UnifySameDomainPtr()->SetSafeInputMode(Base::asBoolean(mode));
         Py_Return;
     }
     catch (const Standard_Failure& e) {
@@ -247,7 +247,7 @@ PyObject* UnifySameDomainPy::shape(PyObject *args)
 
 PyObject *UnifySameDomainPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int UnifySameDomainPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

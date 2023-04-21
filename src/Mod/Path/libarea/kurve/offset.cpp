@@ -93,7 +93,7 @@ namespace geoff_geometry {
 				if(spannumber > 1) {
 					// see if tangent
 					double d = curSpanOff.p0.Dist(prevSpanOff.p1);
-					if((d > geoff_geometry::TOLERANCE) && (curSpanOff.NullSpan == false && prevSpanOff.NullSpan == false)) {
+					if((d > geoff_geometry::TOLERANCE) && (!curSpanOff.NullSpan && !prevSpanOff.NullSpan)) {
 						// see if offset spans intersect
 
 						double cp = prevSpanOff.ve ^ curSpanOff.vs;
@@ -229,7 +229,7 @@ namespace geoff_geometry {
 							ksaveVertex = ksaveVertex1 ;
 
 							clipped = true ;			// in a clipped section		
-							if(DoesIntersInterfere(pInt, originalk, offset) == false) {
+							if(!DoesIntersInterfere(pInt, originalk, offset)) {
 								sp0.p1 = pInt;			// ok so truncate this span to the intersection
 								clipped = false;		// end of clipped section
 								break;
@@ -240,7 +240,8 @@ namespace geoff_geometry {
 						ksaveVertex1 = ksaveVertex2 ;							// pos AA = BB
 						ksaveVertex2 = kinVertex;								// mark 
 
-						if((kinVertex > k.nSpans() || fwdCount++ > 25) && clipped == false) break;
+						if((kinVertex > k.nSpans() || fwdCount++ > 25) && !clipped)
+							break;
 					}
 				}
 
@@ -273,7 +274,8 @@ namespace geoff_geometry {
 			sp.dir = k.Get(kCheckVertex++, sp.p1, sp.pc);
 			sp.SetProperties(true);
 			// check for interference 
-			if(Dist(sp, pInt, dummy) < offset) return true;
+			if(Dist(sp, pInt, dummy) < offset)
+			    return true;
 			sp.p0 = sp.p1;
 		}
 		return false;	// intersection is ok

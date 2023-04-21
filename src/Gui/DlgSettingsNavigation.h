@@ -24,8 +24,9 @@
 #ifndef GUI_DIALOG_DLGSETTINGSNAVIGATION_H
 #define GUI_DIALOG_DLGSETTINGSNAVIGATION_H
 
-#include "PropertyPage.h"
 #include <memory>
+#include "PropertyPage.h"
+#include <QDialog>
 
 class QDoubleSpinBox;
 
@@ -43,18 +44,19 @@ class DlgSettingsNavigation : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsNavigation(QWidget* parent = nullptr);
-    ~DlgSettingsNavigation();
+    explicit DlgSettingsNavigation(QWidget* parent = nullptr);
+    ~DlgSettingsNavigation() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
-private Q_SLOTS:
-    void on_mouseButton_clicked();
+private:
+    void onMouseButtonClicked();
     void onNewDocViewChanged(int);
+    void recreateNaviCubes();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void retranslate();
 
 private:
@@ -67,14 +69,14 @@ class CameraDialog : public QDialog
     Q_OBJECT
 
 public:
-    CameraDialog(QWidget* parent=0);
-    ~CameraDialog();
+    explicit CameraDialog(QWidget* parent=nullptr);
+    ~CameraDialog() override;
     void setValues(double q0, double q1, double q2, double q3);
     void getValues(double& q0, double& q1, double& q2, double& q3) const;
 
 
-private Q_SLOTS:
-    void on_currentView_clicked();
+private:
+    void onCurrentViewClicked();
 
 private:
     QDoubleSpinBox* sb0;

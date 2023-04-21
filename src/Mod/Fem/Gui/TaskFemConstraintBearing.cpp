@@ -21,87 +21,67 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-
 # include <QAction>
-# include <QKeyEvent>
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <Precision.hxx>
-# include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
+# include <TopoDS.hxx>
 #endif
 
-#include "ui_TaskFemConstraintBearing.h"
-#include "TaskFemConstraintBearing.h"
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Selection.h>
+
 #include <Mod/Fem/App/FemConstraintBearing.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
+#include "ui_TaskFemConstraintBearing.h"
+#include "TaskFemConstraintBearing.h"
+
 
 using namespace FemGui;
 using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintBearing */
 
-TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView,QWidget *parent,
-                                                   const char *pixmapname)
-    : TaskFemConstraint(ConstraintView, parent, pixmapname)
+TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint* ConstraintView,
+                                                   QWidget* parent, const char* pixmapname)
+    : TaskFemConstraint(ConstraintView, parent, pixmapname),
+      ui(new Ui_TaskFemConstraintBearing)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintBearing();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->listReferences);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-
-    connect(ui->spinDistance, SIGNAL(valueChanged(double)),
-            this, SLOT(onDistanceChanged(double)));
-    connect(ui->buttonReference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
-    connect(ui->buttonLocation, SIGNAL(pressed()),
-            this, SLOT(onButtonLocation()));
-    connect(ui->checkAxial, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckAxial(bool)));
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintBearing::onReferenceDeleted);
 
     this->groupLayout()->addWidget(proxy);
 
-    // Temporarily prevent unnecessary feature recomputes
-    ui->spinDistance->blockSignals(true);
-    ui->listReferences->blockSignals(true);
-    ui->buttonReference->blockSignals(true);
-    ui->buttonLocation->blockSignals(true);
-    ui->checkAxial->blockSignals(true);
+    // setup ranges
+    ui->spinDiameter->setMinimum(-FLOAT_MAX);
+    ui->spinDiameter->setMaximum(FLOAT_MAX);
+    ui->spinOtherDiameter->setMinimum(-FLOAT_MAX);
+    ui->spinOtherDiameter->setMaximum(FLOAT_MAX);
+    ui->spinCenterDistance->setMinimum(-FLOAT_MAX);
+    ui->spinCenterDistance->setMaximum(FLOAT_MAX);
+    ui->spinForce->setMinimum(-FLOAT_MAX);
+    ui->spinForce->setMaximum(FLOAT_MAX);
+    ui->spinTensionForce->setMinimum(-FLOAT_MAX);
+    ui->spinTensionForce->setMaximum(FLOAT_MAX);
+    ui->spinDistance->setMinimum(-FLOAT_MAX);
+    ui->spinDistance->setMaximum(FLOAT_MAX);
 
     // Get the feature data
-    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
-    double d = pcConstraint->Dist.getValue();
+    Fem::ConstraintBearing* pcConstraint =
+        static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+    double distance = pcConstraint->Dist.getValue();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<std::string> locStrings = pcConstraint->Location.getSubValues();
@@ -111,16 +91,23 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     bool axialfree = pcConstraint->AxialFree.getValue();
 
     // Fill data into dialog elements
-    ui->spinDistance->setMinimum(-FLOAT_MAX);
-    ui->spinDistance->setMaximum(FLOAT_MAX);
-    ui->spinDistance->setValue(d);
+    ui->spinDistance->setValue(distance);
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
-    if (Objects.size() > 0)
+    if (!Objects.empty())
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineLocation->setText(loc);
     ui->checkAxial->setChecked(axialfree);
+
+    connect(ui->spinDistance, qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this, &TaskFemConstraintBearing::onDistanceChanged);
+    connect(ui->buttonReference, &QPushButton::pressed,
+        this, [=]{onButtonReference(true);});
+    connect(ui->buttonLocation, &QPushButton::pressed,
+        this, [=]{onButtonLocation(true);});
+    connect(ui->checkAxial, &QCheckBox::toggled,
+        this, &TaskFemConstraintBearing::onCheckAxial);
 
     // Hide unwanted ui elements
     ui->labelDiameter->setVisible(false);
@@ -140,12 +127,6 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->lineDirection->setVisible(false);
     ui->checkReversed->setVisible(false);
 
-    ui->spinDistance->blockSignals(false);
-    ui->listReferences->blockSignals(false);
-    ui->buttonReference->blockSignals(false);
-    ui->buttonLocation->blockSignals(false);
-    ui->checkAxial->blockSignals(false);
-
     onButtonReference(true);
 }
 
@@ -163,8 +144,10 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
         if (selectionMode == selnone)
             return;
 
-        Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
-        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
+        Fem::ConstraintBearing* pcConstraint =
+            static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+        App::DocumentObject* obj =
+            ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
         Part::Feature* feat = static_cast<Part::Feature*>(obj);
         TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subName.c_str());
 
@@ -172,11 +155,14 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
             std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-            if (Objects.size() > 0) {
-                QMessageBox::warning(this, tr("Selection error"), tr("Please use only a single reference for bearing constraint"));
+            if (!Objects.empty()) {
+                QMessageBox::warning(
+                    this,
+                    tr("Selection error"),
+                    tr("Please use only a single reference for bearing constraint"));
                 return;
             }
-            if (subName.substr(0,4) != "Face") {
+            if (subName.substr(0, 4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
@@ -184,37 +170,41 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             // Only cylindrical faces allowed
             BRepAdaptor_Surface surface(TopoDS::Face(ref));
             if (surface.GetType() != GeomAbs_Cylinder) {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only cylindrical faces can be picked"));
+                QMessageBox::warning(
+                    this, tr("Selection error"), tr("Only cylindrical faces can be picked"));
                 return;
             }
 
             // add the new reference
             Objects.push_back(obj);
             SubElements.push_back(subName);
-            pcConstraint->References.setValues(Objects,SubElements);
+            pcConstraint->References.setValues(Objects, SubElements);
             ui->listReferences->addItem(makeRefText(obj, subName));
 
             // Turn off reference selection mode
             onButtonReference(false);
         }
         else if (selectionMode == selloc) {
-            if (subName.substr(0,4) == "Face") {
+            if (subName.substr(0, 4) == "Face") {
                 if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
+                    QMessageBox::warning(
+                        this, tr("Selection error"), tr("Only planar faces can be picked"));
                     return;
                 }
             }
-            else if (subName.substr(0,4) == "Edge") {
+            else if (subName.substr(0, 4) == "Edge") {
                 if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
+                    QMessageBox::warning(
+                        this, tr("Selection error"), tr("Only linear edges can be picked"));
                     return;
                 }
             }
             else {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
+                QMessageBox::warning(
+                    this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }
-            std::vector<std::string> references(1,subName);
+            std::vector<std::string> references(1, subName);
             pcConstraint->Location.setValue(obj, references);
             ui->lineLocation->setText(makeRefText(obj, subName));
 
@@ -228,7 +218,8 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
 
 void TaskFemConstraintBearing::onDistanceChanged(double l)
 {
-    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+    Fem::ConstraintBearing* pcConstraint =
+        static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
     pcConstraint->Dist.setValue(l);
 }
 
@@ -251,11 +242,12 @@ void TaskFemConstraintBearing::onButtonLocation(const bool pressed) {
 
 void TaskFemConstraintBearing::onCheckAxial(const bool pressed)
 {
-    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
+    Fem::ConstraintBearing* pcConstraint =
+        static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
     pcConstraint->AxialFree.setValue(pressed);
 }
 
-double TaskFemConstraintBearing::getDistance(void) const
+double TaskFemConstraintBearing::getDistance() const
 {
     return ui->spinDistance->value();
 }
@@ -270,7 +262,7 @@ const std::string TaskFemConstraintBearing::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-const std::string TaskFemConstraintBearing::getLocationName(void) const
+const std::string TaskFemConstraintBearing::getLocationName() const
 {
     std::string loc = ui->lineLocation->text().toStdString();
     if (loc.empty())
@@ -280,7 +272,7 @@ const std::string TaskFemConstraintBearing::getLocationName(void) const
     return loc.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintBearing::getLocationObject(void) const
+const std::string TaskFemConstraintBearing::getLocationObject() const
 {
     std::string loc = ui->lineLocation->text().toStdString();
     if (loc.empty())
@@ -296,9 +288,7 @@ bool TaskFemConstraintBearing::getAxial() const
 }
 
 TaskFemConstraintBearing::~TaskFemConstraintBearing()
-{
-    delete ui;
-}
+{}
 
 bool TaskFemConstraintBearing::event(QEvent *e)
 {
@@ -320,7 +310,8 @@ void TaskFemConstraintBearing::changeEvent(QEvent *e)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintBearing::TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing *ConstraintView)
+TaskDlgFemConstraintBearing::TaskDlgFemConstraintBearing(
+    ViewProviderFemConstraintBearing* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -334,11 +325,15 @@ TaskDlgFemConstraintBearing::TaskDlgFemConstraintBearing(ViewProviderFemConstrai
 bool TaskDlgFemConstraintBearing::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintBearing* parameterBearing = static_cast<const TaskFemConstraintBearing*>(parameter);
+    const TaskFemConstraintBearing* parameterBearing =
+        static_cast<const TaskFemConstraintBearing*>(parameter);
 
     try {
-        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Dist = %f",name.c_str(), parameterBearing->getDistance());
+        // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Dist = %f",
+                                name.c_str(),
+                                parameterBearing->getDistance());
 
         std::string locname = parameterBearing->getLocationName().data();
         std::string locobj = parameterBearing->getLocationObject().data();
@@ -347,12 +342,20 @@ bool TaskDlgFemConstraintBearing::accept()
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(locname));
             buf = buf.arg(QString::fromStdString(locobj));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Location = %s", name.c_str(), buf.toStdString().c_str());
-        } else {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Location = None", name.c_str());
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.Location = %s",
+                                    name.c_str(),
+                                    buf.toStdString().c_str());
+        }
+        else {
+            Gui::Command::doCommand(
+                Gui::Command::Doc, "App.ActiveDocument.%s.Location = None", name.c_str());
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.AxialFree = %s", name.c_str(), parameterBearing->getAxial() ? "True" : "False");
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.AxialFree = %s",
+                                name.c_str(),
+                                parameterBearing->getAxial() ? "True" : "False");
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

@@ -38,15 +38,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPointParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPointParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPointParametric);
 
 public:
     /// constructor
     ViewProviderPointParametric();
     /// destructor
-    virtual ~ViewProviderPointParametric();
+    ~ViewProviderPointParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

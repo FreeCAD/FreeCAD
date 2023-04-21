@@ -26,21 +26,21 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTHEATFLUX_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTHEATFLUX_H
 
-#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui {
 
-class FemGuiExport ViewProviderFemConstraintHeatflux : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintHeatflux : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintHeatflux);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintHeatflux);
 
 public:
     ViewProviderFemConstraintHeatflux();
-    virtual ~ViewProviderFemConstraintHeatflux();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintHeatflux() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

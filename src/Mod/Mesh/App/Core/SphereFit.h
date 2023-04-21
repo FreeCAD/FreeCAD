@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SPHERE_FIT_H
 #define MESH_SPHERE_FIT_H
 
-#include "Approximation.h"
 #include <Eigen/Eigenvalues>
+#include "Approximation.h"
+
 
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
 
-typedef Eigen::Matrix<double,4,4,Eigen::RowMajor> Matrix4x4;
+using Matrix4x4 = Eigen::Matrix<double,4,4,Eigen::RowMajor>;
 
 /**
- * Best-fit sphere for a given set of points. 
+ * Best-fit sphere for a given set of points.
  */
 class MeshExport SphereFit : public MeshCore::Approximation
 {
@@ -45,7 +45,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~SphereFit();
+    ~SphereFit() override;
 
     /**
      * Set approximations before calling Fit()
@@ -75,7 +75,7 @@ public:
     /**
      * Fit a sphere onto the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
      * called FLOAT_MAX is returned.

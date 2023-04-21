@@ -20,32 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QTextStream>
 #endif
 
-#include "ui_TaskOffset.h"
-#include "TaskOffset.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
 #include <Gui/ViewProvider.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Mod/Part/App/FeatureOffset.h>
+
+#include "TaskOffset.h"
+#include "ui_TaskOffset.h"
 
 
 using namespace PartGui;
@@ -74,6 +66,8 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
 
     d->offset = offset;
     d->ui.setupUi(this);
+    setupConnections();
+
     d->ui.spinOffset->setUnit(Base::Unit::Length);
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
@@ -122,54 +116,72 @@ OffsetWidget::~OffsetWidget()
     delete d;
 }
 
+void OffsetWidget::setupConnections()
+{
+    connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &OffsetWidget::onSpinOffsetValueChanged);
+    connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
+            this, &OffsetWidget::onModeTypeActivated);
+    connect(d->ui.joinType, qOverload<int>(&QComboBox::activated),
+            this, &OffsetWidget::onJoinTypeActivated);
+    connect(d->ui.intersection, &QCheckBox::toggled,
+            this, &OffsetWidget::onIntersectionToggled);
+    connect(d->ui.selfIntersection, &QCheckBox::toggled,
+            this, &OffsetWidget::onSelfIntersectionToggled);
+    connect(d->ui.fillOffset, &QCheckBox::toggled,
+            this, &OffsetWidget::onFillOffsetToggled);
+    connect(d->ui.updateView, &QCheckBox::toggled,
+            this, &OffsetWidget::onUpdateViewToggled);
+}
+
 Part::Offset* OffsetWidget::getObject() const
 {
     return d->offset;
 }
 
-void OffsetWidget::on_spinOffset_valueChanged(double val)
+void OffsetWidget::onSpinOffsetValueChanged(double val)
 {
     d->offset->Value.setValue(val);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
 
-void OffsetWidget::on_modeType_activated(int val)
+void OffsetWidget::onModeTypeActivated(int val)
 {
     d->offset->Mode.setValue(val);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
 
-void OffsetWidget::on_joinType_activated(int val)
+void OffsetWidget::onJoinTypeActivated(int val)
 {
     d->offset->Join.setValue((long)val);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
 
-void OffsetWidget::on_intersection_toggled(bool on)
+void OffsetWidget::onIntersectionToggled(bool on)
 {
     d->offset->Intersection.setValue(on);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
 
-void OffsetWidget::on_selfIntersection_toggled(bool on)
+void OffsetWidget::onSelfIntersectionToggled(bool on)
 {
     d->offset->SelfIntersection.setValue(on);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
 
-void OffsetWidget::on_fillOffset_toggled(bool on)
+void OffsetWidget::onFillOffsetToggled(bool on)
 {
     d->offset->Fill.setValue(on);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
 
-void OffsetWidget::on_updateView_toggled(bool on)
+void OffsetWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
         d->offset->getDocument()->recomputeFeature(d->offset);
@@ -182,8 +194,8 @@ bool OffsetWidget::accept()
         double offsetValue = d->ui.spinOffset->value().getValue();
         Gui::cmdAppObjectArgs(d->offset, "Value = %f", offsetValue);
         d->ui.spinOffset->apply();
-        Gui::cmdAppObjectArgs(d->offset, "Mode = %i", d->ui.modeType->currentIndex());
-        Gui::cmdAppObjectArgs(d->offset, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Mode = %d", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Join = %d", d->ui.joinType->currentIndex());
         Gui::cmdAppObjectArgs(d->offset, "Intersection = %s", d->ui.intersection->isChecked() ? "True" : "False");
         Gui::cmdAppObjectArgs(d->offset, "SelfIntersection = %s", d->ui.selfIntersection->isChecked() ? "True" : "False");
         Gui::cmdAppObjectArgs(d->offset, "Fill = %s", d->ui.fillOffset->isChecked() ? "True" : "False");
@@ -234,7 +246,7 @@ TaskOffset::TaskOffset(Part::Offset* offset)
     widget = new OffsetWidget(offset);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Offset"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

@@ -49,15 +49,15 @@
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="text">
-           <string>0.0</string>
+           <string>0 mm</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>1.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>1000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">

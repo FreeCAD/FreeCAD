@@ -22,11 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 #define FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 
+#include <memory>
+
 #include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 
@@ -36,16 +38,16 @@ class DlgSettingsFemExportAbaqusImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemExportAbaqusImp( QWidget* parent = 0 );
-    ~DlgSettingsFemExportAbaqusImp();
+    explicit DlgSettingsFemExportAbaqusImp( QWidget* parent = nullptr );
+    ~DlgSettingsFemExportAbaqusImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
-    Ui_DlgSettingsFemExportAbaqus* ui;
+    std::unique_ptr<Ui_DlgSettingsFemExportAbaqus> ui;
 };
 
 } // namespace FemGui

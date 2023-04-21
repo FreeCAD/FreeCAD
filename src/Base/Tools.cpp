@@ -68,31 +68,76 @@ struct string_comp
         return n;
     }
 };
-}
 
-std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int d)
+class unique_name
 {
-    // find highest suffix
-    std::string num_suffix;
-    for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
-        if (it->substr(0, name.length()) == name) { // same prefix
-            std::string suffix(it->substr(name.length()));
-            if (suffix.size() > 0) {
-                std::string::size_type pos = suffix.find_first_not_of("0123456789");
-                if (pos==std::string::npos)
-                    num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
+public:
+    unique_name(const std::string& name, const std::vector<std::string>& names, int padding)
+        : base_name{name}
+        , padding{padding}
+    {
+        removeDigitsFromEnd();
+        findHighestSuffix(names);
+    }
+
+    std::string get() const
+    {
+        return appendSuffix();
+    }
+
+private:
+    void removeDigitsFromEnd()
+    {
+        std::string::size_type pos = base_name.find_last_not_of("0123456789");
+        if (pos != std::string::npos && (pos +1) < base_name.size()) {
+            num_suffix = base_name.substr(pos + 1);
+            base_name.erase(pos + 1);
+        }
+    }
+
+    void findHighestSuffix(const std::vector<std::string>& names)
+    {
+        for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
+            if (it->substr(0, base_name.length()) == base_name) { // same prefix
+                std::string suffix(it->substr(base_name.length()));
+                if (suffix.size() > 0) {
+                    std::string::size_type pos = suffix.find_first_not_of("0123456789");
+                    if (pos == std::string::npos) {
+                        num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
+                    }
+                }
             }
         }
     }
 
-    std::stringstream str;
-    str << name;
-    if (d > 0) {
-        str.fill('0');
-        str.width(d);
+    std::string appendSuffix() const
+    {
+        std::stringstream str;
+        str << base_name;
+        if (padding > 0) {
+            str.fill('0');
+            str.width(padding);
+        }
+        str << Base::string_comp::increment(num_suffix);
+        return str.str();
     }
-    str << Base::string_comp::increment(num_suffix);
-    return str.str();
+
+private:
+    std::string num_suffix;
+    std::string base_name;
+    int padding;
+};
+
+}
+
+std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int pad)
+{
+    if (names.empty()) {
+        return name;
+    }
+
+    Base::unique_name unique(name, names, pad);
+    return unique.get();
 }
 
 std::string Base::Tools::addNumber(const std::string& name, unsigned int num, int d)
@@ -109,6 +154,8 @@ std::string Base::Tools::addNumber(const std::string& name, unsigned int num, in
 
 std::string Base::Tools::getIdentifier(const std::string& name)
 {
+    if (name.empty())
+        return "_";
     // check for first character whether it's a digit
     std::string CleanName = name;
     if (!CleanName.empty() && CleanName[0] >= 48 && CleanName[0] <= 57)
@@ -166,7 +213,7 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     Base::PyGILStateLocker lock;
     std::string string;
 
-    PyObject* unicode = PyUnicode_DecodeUnicodeEscape(s.c_str(), s.size(), "strict");
+    PyObject* unicode = PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
     if (!unicode)
         return string;
     if (PyUnicode_Check(unicode)) {

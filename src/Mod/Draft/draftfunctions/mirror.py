@@ -30,7 +30,7 @@ It just creates a `Part::Mirroring` object, and sets the appropriate
 # \ingroup draftfunctions
 # \brief Provides functions to produce a mirrored object.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils
@@ -109,8 +109,8 @@ def mirror(objlist, p1, p2):
     result = []
 
     for obj in objlist:
-        mir = App.ActiveDocument.addObject("Part::Mirroring", "mirror")
-        mir.Label = obj.Label + " (" + translate("draft","mirrored") + ") "
+        mir = App.ActiveDocument.addObject("Part::Mirroring", "Mirror")
+        mir.Label = obj.Label + " (" + translate("draft", "mirrored") + ")"
         mir.Source = obj
         mir.Base = p1
         mir.Normal = pnorm

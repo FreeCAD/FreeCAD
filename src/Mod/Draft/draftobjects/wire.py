@@ -91,11 +91,17 @@ class Wire(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The area of this object")
         obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
-        
+
         obj.MakeFace = get_param("fillmode",True)
         obj.Closed = False
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.update_start_end(obj)
+            self.props_changed_clear()
+            return
+
         import Part
         plm = obj.Placement
         if obj.Base and (not obj.Tool):
@@ -195,15 +201,19 @@ class Wire(DraftObject):
 
         obj.Placement = plm
         obj.positionBySupport()
-        self.onChanged(obj,"Placement")
+        self.update_start_end(obj)
+        self.props_changed_clear()
 
     def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
+        tol = 1e-7
+
         if prop == "Start":
             pts = obj.Points
             invpl = App.Placement(obj.Placement).inverse()
             realfpstart = invpl.multVec(obj.Start)
             if pts:
-                if pts[0] != realfpstart:
+                if not pts[0].isEqual(realfpstart, tol):
                     pts[0] = realfpstart
                     obj.Points = pts
 
@@ -212,27 +222,31 @@ class Wire(DraftObject):
             invpl = App.Placement(obj.Placement).inverse()
             realfpend = invpl.multVec(obj.End)
             if len(pts) > 1:
-                if pts[-1] != realfpend:
+                if not pts[-1].isEqual(realfpend, tol):
                     pts[-1] = realfpend
                     obj.Points = pts
 
         elif prop == "Length":
-            if obj.Shape and not obj.Shape.isNull():
-                if obj.Length.Value != obj.Shape.Length:
-                    if len(obj.Points) == 2:
-                        v = obj.Points[-1].sub(obj.Points[0])
-                        v = DraftVecUtils.scaleTo(v,obj.Length.Value)
-                        obj.Points = [obj.Points[0],obj.Points[0].add(v)]
+            if (len(obj.Points) == 2
+                    and obj.Length.Value > tol
+                    and obj.Shape
+                    and (not obj.Shape.isNull())
+                    and abs(obj.Length.Value - obj.Shape.Length) > tol):
+                v = obj.Points[-1].sub(obj.Points[0])
+                v = DraftVecUtils.scaleTo(v, obj.Length.Value)
+                obj.Points = [obj.Points[0], obj.Points[0].add(v)]
 
-        elif prop == "Placement":
-            pl = App.Placement(obj.Placement)
-            if len(obj.Points) >= 2:
-                displayfpstart = pl.multVec(obj.Points[0])
-                displayfpend = pl.multVec(obj.Points[-1])
-                if obj.Start != displayfpstart:
-                    obj.Start = displayfpstart
-                if obj.End != displayfpend:
-                    obj.End = displayfpend
+    def update_start_end(self, obj):
+        tol = 1e-7
+
+        pl = App.Placement(obj.Placement)
+        if len(obj.Points) > 1:
+            displayfpstart = pl.multVec(obj.Points[0])
+            displayfpend = pl.multVec(obj.Points[-1])
+            if not obj.Start.isEqual(displayfpstart, tol):
+                obj.Start = displayfpstart
+            if not obj.End.isEqual(displayfpend, tol):
+                obj.End = displayfpend
 
 
 # Alias for compatibility with v0.18 and earlier

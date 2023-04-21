@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
+# *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,68 +22,77 @@
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.material_multiple_bendingbeam_fivefaces import setup
-setup()
-"""
-
 import FreeCAD
 
 import Fem
 import ObjectsFem
 
-mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
-
-
-def init_doc(doc=None):
-    if doc is None:
-        doc = FreeCAD.newDocument()
-    return doc
+from . import manager
+from .manager import get_meshname
+from .manager import init_doc
 
 
 def get_information():
-    info = {"name": "Multimaterial bending beam 5 faces",
-            "meshtype": "solid",
-            "meshelement": "Tria6",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
-    return info
+    return {
+        "name": "Multimaterial bending beam 5 faces",
+        "meshtype": "face",
+        "meshelement": "Tria6",
+        "constraints": ["fixed", "force"],
+        "solvers": ["calculix", "ccxtools"],
+        "material": "multimaterial",
+        "equations": ["mechanical"]
+    }
+
+
+def get_explanation(header=""):
+    return header + """
+
+To run the example from Python console use:
+from femexamples.material_multiple_bendingbeam_fivefaces import setup
+setup()
+
+
+See forum topic post:
+...
+
+"""
 
 
 def setup(doc=None, solvertype="ccxtools"):
 
+    # init FreeCAD document
     if doc is None:
         doc = init_doc()
 
-    # geometry object
+    # explanation object
+    # just keep the following line and change text string in get_explanation method
+    manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
+
+    # geometric objects
     # name is important because the other method in this module use obj name
     # parts
-    face_obj1 = doc.addObject('Part::Plane', 'Face1')
+    face_obj1 = doc.addObject("Part::Plane", "Face1")
     face_obj1.Width = 10
     face_obj1.Length = 20
-    face_obj2 = doc.addObject('Part::Plane', 'Face2')
+    face_obj2 = doc.addObject("Part::Plane", "Face2")
     face_obj2.Width = 10
     face_obj2.Length = 20
     face_obj2.Placement.Base = (20, 0, 0)
-    face_obj3 = doc.addObject('Part::Plane', 'Face3')
+    face_obj3 = doc.addObject("Part::Plane", "Face3")
     face_obj3.Width = 10
     face_obj3.Length = 20
     face_obj3.Placement.Base = (40, 0, 0)
-    face_obj4 = doc.addObject('Part::Plane', 'Face4')
+    face_obj4 = doc.addObject("Part::Plane", "Face4")
     face_obj4.Width = 10
     face_obj4.Length = 20
     face_obj4.Placement.Base = (60, 0, 0)
-    face_obj5 = doc.addObject('Part::Plane', 'Face5')
+    face_obj5 = doc.addObject("Part::Plane", "Face5")
     face_obj5.Width = 10
     face_obj5.Length = 20
     face_obj5.Placement.Base = (80, 0, 0)
     doc.recompute()
 
-    # make a Shell out of the facees, to be able to remesh with GUI
+    # make a Shell out of the faces, to be able to remesh with GUI
     geom_obj = doc.addObject("Part::MultiFuse", "Fusion")
     geom_obj.Shapes = [face_obj1, face_obj2, face_obj3, face_obj4, face_obj5]
     if FreeCAD.GuiUp:
@@ -102,95 +112,80 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
+        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
+        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
+            "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.ThermoMechSteadyState = False
+        solver_obj.MatrixSolverType = "default"
+        solver_obj.IterationsControlParameterTimeUse = False
+    analysis.addObject(solver_obj)
 
     # shell thickness
-    analysis.addObject(
-        ObjectsFem.makeElementGeometry2D(doc, 10, 'ShellThickness')
-    )
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 10, "ShellThickness")
+    analysis.addObject(thickness_obj)
 
     # materials
-    # material1
-    material_object1 = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial1')
-    )[0]
-    material_object1.References = [(doc.Face3, "Face1")]
-    mat = material_object1.Material
-    mat['Name'] = "Concrete-Generic"
-    mat['YoungsModulus'] = "32000 MPa"
-    mat['PoissonRatio'] = "0.17"
-    mat['Density'] = "0 kg/m^3"
-    material_object1.Material = mat
+    material_obj1 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial1")
+    material_obj1.References = [(doc.Face3, "Face1")]
+    mat = material_obj1.Material
+    mat["Name"] = "Concrete-Generic"
+    mat["YoungsModulus"] = "32000 MPa"
+    mat["PoissonRatio"] = "0.17"
+    material_obj1.Material = mat
+    analysis.addObject(material_obj1)
 
-    # material2
-    material_object2 = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial2')
-    )[0]
-    material_object2.References = [
+    material_obj2 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial2")
+    material_obj2.References = [
         (doc.Face2, "Face1"),
         (doc.Face4, "Face1")
     ]
-    mat = material_object2.Material
-    mat['Name'] = "PLA"
-    mat['YoungsModulus'] = "3640 MPa"
-    mat['PoissonRatio'] = "0.36"
-    mat['Density'] = "0 kg/m^3"
-    material_object2.Material = mat
+    mat = material_obj2.Material
+    mat["Name"] = "PLA"
+    mat["YoungsModulus"] = "3640 MPa"
+    mat["PoissonRatio"] = "0.36"
+    material_obj2.Material = mat
+    analysis.addObject(material_obj2)
 
-    # material3
-    material_object3 = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial3')
-    )[0]
-    material_object3.References = []
-    mat = material_object3.Material
-    mat['Name'] = "Steel-Generic"
-    mat['YoungsModulus'] = "200000 MPa"
-    mat['PoissonRatio'] = "0.30"
-    mat['Density'] = "7900 kg/m^3"
-    material_object3.Material = mat
+    material_obj3 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial3")
+    material_obj3.References = []
+    mat = material_obj3.Material
+    mat["Name"] = "Steel-Generic"
+    mat["YoungsModulus"] = "200000 MPa"
+    mat["PoissonRatio"] = "0.30"
+    material_obj3.Material = mat
+    analysis.addObject(material_obj3)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
-    )[0]
-    fixed_constraint.References = [
+    # constraint fixed
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed.References = [
         (doc.Face1, "Edge1"),
         (doc.Face5, "Edge3")
     ]
+    analysis.addObject(con_fixed)
 
-    # force_constraint
-    force_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    force_constraint.References = [
+    # constraint force
+    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force.References = [
         (doc.Face1, "Edge4"),
         (doc.Face2, "Edge4"),
         (doc.Face3, "Edge4"),
         (doc.Face4, "Edge4"),
         (doc.Face5, "Edge4")
     ]
-    force_constraint.Force = 10000.00
-    force_constraint.Direction = (doc.Face1, ["Edge1"])
-    force_constraint.Reversed = True
+    con_force.Force = 10000.00
+    con_force.Direction = (doc.Face1, ["Edge1"])
+    con_force.Reversed = True
+    analysis.addObject(con_force)
 
     # mesh
     from .meshes.mesh_multibodybeam_tria6 import create_nodes, create_elements
@@ -201,9 +196,7 @@ def setup(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False

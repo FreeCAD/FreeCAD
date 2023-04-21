@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
@@ -28,18 +27,12 @@
 #endif
 
 #include "Projection.h"
-#include "MeshKernel.h"
-#include "Iterator.h"
-#include "Algorithm.h"
 #include "Grid.h"
-
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
+#include "Iterator.h"
+#include "MeshKernel.h"
 
 
 using namespace MeshCore;
-
 
 // ------------------------------------------------------------------------
 
@@ -59,7 +52,7 @@ bool MeshProjection::bboxInsideRectangle(const Base::BoundBox3f& bbox,
 {
     Base::Vector3f dir(p2 - p1);
     Base::Vector3f base(p1), normal(view % dir);
-    normal.Normalize(); 
+    normal.Normalize();
 
     if (bbox.IsCutPlane(base, normal)) {
         dir.Normalize();
@@ -132,15 +125,15 @@ bool MeshProjection::connectLines(std::list< std::pair<Base::Vector3f, Base::Vec
             return false;  // abort because no line was found
         }
 
-        cutLines.erase(pCurr); 
+        cutLines.erase(pCurr);
     }
 
     return true;
 }
 
 bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
-                                       const Base::Vector3f& v1, unsigned long f1,
-                                       const Base::Vector3f& v2, unsigned long f2,
+                                       const Base::Vector3f& v1, FacetIndex f1,
+                                       const Base::Vector3f& v2, FacetIndex f2,
                                        const Base::Vector3f& vd,
                                        std::vector<Base::Vector3f>& polyline)
 {
@@ -150,7 +143,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
     dir.Normalize();
 
 
-    std::vector<unsigned long> facets;
+    std::vector<FacetIndex> facets;
 
     // special case: start and endpoint inside same facet
     if (f1 == f2) {
@@ -172,16 +165,15 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
 
     // cut all facets with plane
     std::list< std::pair<Base::Vector3f, Base::Vector3f> > cutLine;
-    //unsigned long start = 0, end = 0;
-    for (std::vector<unsigned long>::iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (std::vector<FacetIndex>::iterator it = facets.begin(); it != facets.end(); ++it) {
         Base::Vector3f e1, e2;
         MeshGeomFacet tria = kernel.GetFacet(*it);
         if (bboxInsideRectangle(tria.GetBoundBox(), v1, v2, vd)) {
             if (tria.IntersectWithPlane(base, normal, e1, e2)) {
                 if ((*it != f1) && (*it != f2)) {
                     // inside cut line
-                    if ((isPointInsideDistance(v1, v2, e1) == false) ||
-                        (isPointInsideDistance(v1, v2, e2) == false)) {
+                    if (!isPointInsideDistance(v1, v2, e1) ||
+                        !isPointInsideDistance(v1, v2, e2)) {
                         continue;
                     }
 

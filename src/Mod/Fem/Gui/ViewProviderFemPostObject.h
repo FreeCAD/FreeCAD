@@ -20,22 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 #define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-
-#include <CXX/Objects.hxx>
 #include <Base/Observer.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkOutlineFilter.h>
-#include <vtkOutlineCornerFilter.h>
-#include <vtkLookupTable.h>
-#include <vtkExtractEdges.h>
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Fem/FemGlobal.h>
+
 #include <vtkAppendPolyData.h>
+#include <vtkDataObject.h>
+#include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
+#include <vtkOutlineCornerFilter.h>
+#include <vtkSmartPointer.h>
 #include <vtkVertexGlyphFilter.h>
 
 class SoIndexedPointSet;
@@ -58,6 +55,7 @@ class SoIndexedLineSet;
 class SoIndexedTriangleStripSet;
 
 namespace Gui {
+  class SelectionChanges;
   class SoFCColorBar;
 }
 
@@ -69,37 +67,44 @@ class TaskDlgPost;
 class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject,
                                                public Base::Observer<int>
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostObject);
 
 public:
     /// constructor.
     ViewProviderFemPostObject();
 
     /// destructor.
-    ~ViewProviderFemPostObject();
+    ~ViewProviderFemPostObject() override;
 
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
     App::PropertyPercent                Transparency;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
-    void onChanged(const App::Property* prop);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* prop) override;
 
     //edit handling
-    virtual bool doubleClicked(void);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool doubleClicked() override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
-    virtual void hide(void);
-    virtual void show(void);
+    void hide() override;
+    void show() override;
 
-    virtual SoSeparator* getFrontRoot(void) const;
+    SoSeparator* getFrontRoot() const override;
 
-    //observer for the color bar
-    virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
+    // observer for the color bar
+    void OnChange(Base::Subject< int >& rCaller, int rcReason) override;
+    // update color bar
+    void updateMaterial();
+
+    // handling when object is deleted
+    bool onDelete(const std::vector<std::string>&) override;
+    bool canDelete(App::DocumentObject* obj) const override;
+    virtual void onSelectionChanged(const Gui::SelectionChanges& sel);
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -120,6 +125,7 @@ protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void updateVtk();
+    void setRangeOfColorBar(double min, double max);
 
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;
@@ -132,7 +138,7 @@ protected:
     SoNormalBinding*            m_normalBinding;
     SoNormal*                   m_normals;
     SoDrawStyle*                m_drawStyle;
-    SoSeparator*                m_seperator;
+    SoSeparator*                m_separator;
     Gui::SoFCColorBar*          m_colorBar;
     SoSeparator*                m_colorRoot;
     SoDrawStyle*                m_colorStyle;
@@ -145,12 +151,14 @@ protected:
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
 
 private:
+    void filterArtifacts(vtkDataSet* data);
     void updateProperties();
     void update3D();
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
+    void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;

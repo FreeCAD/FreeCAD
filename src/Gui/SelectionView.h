@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_SELECTIONVIEW_H
 #define GUI_DOCKWND_SELECTIONVIEW_H
 
-
 #include "DockWindow.h"
 #include "Selection.h"
+
 
 class QListWidget;
 class QListWidgetItem;
@@ -53,25 +51,25 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    SelectionView(Gui::Document* pcDocument, QWidget *parent=0);
+    explicit SelectionView(Gui::Document* pcDocument, QWidget *parent=nullptr);
 
     /**
      * A destructor.
      * A more elaborate description of the destructor.
     */
-    virtual ~SelectionView();
+    ~SelectionView() override;
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges& msg) override;
+    void onSelectionChanged(const SelectionChanges& msg) override;
 
-    virtual void leaveEvent(QEvent*) override;
+    void leaveEvent(QEvent*) override;
 
     bool onMsg(const char* pMsg,const char** ppReturn) override;
 
-    virtual const char *getName(void) const override {return "SelectionView";}
+    const char *getName() const override {return "SelectionView";}
 
     /// get called when the document is changed or updated
-    virtual void onUpdate(void) override;
+    void onUpdate() override;
 
     QListWidget* selectionView;
     QLabel*      countLabel;
@@ -83,20 +81,20 @@ public Q_SLOTS:
     /// get called when text is entered in the search box
     void search(const QString& text);
     /// get called when enter is pressed in the search box
-    void validateSearch(void);
+    void validateSearch();
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
-    void select(QListWidgetItem* item=0);
-    void deselect(void);
-    void zoom(void);
-    void treeSelect(void);
-    void toPython(void);
-    void touch(void);
-    void showPart(void);
+    void select(QListWidgetItem* item=nullptr);
+    void deselect();
+    void zoom();
+    void treeSelect();
+    void toPython();
+    void touch();
+    void showPart();
     void onEnablePickList();
-    void toggleSelect(QListWidgetItem* item=0);
-    void preselect(QListWidgetItem* item=0);
+    void toggleSelect(QListWidgetItem* item=nullptr);
+    void preselect(QListWidgetItem* item=nullptr);
 
 protected:
     void showEvent(QShowEvent *) override;
@@ -110,6 +108,7 @@ private:
 private:
     float x,y,z;
     std::vector<App::DocumentObject*> searchList;
+    bool openedAutomatically;
 };
 
 } // namespace DockWnd

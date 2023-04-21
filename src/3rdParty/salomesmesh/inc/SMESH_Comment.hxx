@@ -17,7 +17,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 // File      : SMESH_Comment.hxx
 // Created   : Wed Mar 14 18:28:45 2007
 // Author    : Edward AGAPOV (eap)

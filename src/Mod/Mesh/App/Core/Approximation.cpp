@@ -20,40 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstdlib>
-# include <iterator> 
+# include <iterator>
 #endif
-
-#include "Approximation.h"
-#include "Elements.h"
-#include "Utilities.h"
-#include "CylinderFit.h"
-#include "SphereFit.h"
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprPlaneFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Plane3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprCylinderFit3.h>
 
 //#define FC_USE_EIGEN
 #include <Eigen/QR>
 #include <Eigen/Eigen>
-#include <unsupported/Eigen/NonLinearOptimization>
 #ifdef FC_USE_EIGEN
-#include <Eigen/Eigenvalues>
+# include <Eigen/Eigenvalues>
 #endif
+
+#include "Approximation.h"
+#include "CylinderFit.h"
+#include "Elements.h"
+#include "SphereFit.h"
+#include "Utilities.h"
+
 
 using namespace MeshCore;
 
@@ -117,8 +111,8 @@ Base::Vector3f Approximation::GetGravity() const
     return clGravity;
 }
 
-unsigned long Approximation::CountPoints() const
-{ 
+std::size_t Approximation::CountPoints() const
+{
     return _vPoints.size();
 }
 
@@ -220,10 +214,24 @@ float PlaneFit::Fit()
 
     // It may happen that the result have nan values
     for (int i=0; i<3; i++) {
-        if (boost::math::isnan(U[i]) || 
-            boost::math::isnan(V[i]) ||
-            boost::math::isnan(W[i]))
+        if (boost::math::isnan(W[i]))
             return FLOAT_MAX;
+    }
+
+    // In some cases when the points exactly lie on a plane it can happen that
+    // U or V have nan values but W is valid.
+    // In this case create an orthonormal basis
+    bool validUV = true;
+    for (int i = 0; i < 3; i++) {
+        if (boost::math::isnan(U[i]) ||
+            boost::math::isnan(V[i])) {
+            validUV = false;
+            break;
+        }
+    }
+
+    if (!validUV) {
+        Wm4::Vector3<double>::GenerateOrthonormalBasis(U, V, W);
     }
 
     _vDirU.Set(float(U.X()), float(U.Y()), float(U.Z()));
@@ -325,8 +333,8 @@ float PlaneFit::GetStdDeviation() const
 
 float PlaneFit::GetSignedStdDeviation() const
 {
-    // if the nearest point to the gravity is at the side 
-    // of normal direction the value will be 
+    // if the nearest point to the gravity is at the side
+    // of normal direction the value will be
     // positive otherwise negative
     if (!_bIsFitted)
         return FLOAT_MAX;
@@ -418,7 +426,7 @@ Base::BoundBox3f PlaneFit::GetBoundings() const
 {
     Base::BoundBox3f bbox;
     std::vector<Base::Vector3f> pts = GetLocalPoints();
-    for (auto it : pts)
+    for (const auto& it : pts)
         bbox.Add(it);
     return bbox;
 }
@@ -462,7 +470,7 @@ const double& QuadraticFit::GetCoeffArray() const
     return _fCoeff[0];
 }
 
-double QuadraticFit::GetCoeff(unsigned long ulIndex) const
+double QuadraticFit::GetCoeff(std::size_t ulIndex) const
 {
     assert(ulIndex < 10);
 
@@ -496,21 +504,21 @@ void QuadraticFit::CalcEigenValues(double &dLambda1, double &dLambda2, double &d
     /*
      * F(x,y,z) = a11*x*x + a22*y*y + a33*z*z +2*a12*x*y + 2*a13*x*z + 2*a23*y*z + 2*a10*x + 2*a20*y + 2*a30*z * a00 = 0
      *
-     * Formenmatrix:
+     * Form matrix:
      *
      *      ( a11   a12   a13 )
-     * A =  ( a21   a22   a23 )       wobei gilt a[i,j] = a[j,i]
+     * A =  ( a21   a22   a23 )       where a[i,j] = a[j,i]
      *      ( a31   a32   a33 )
      *
-     * Koeffizienten des Quadrik-Fits bezogen auf die hier verwendete Schreibweise:
-     * 
+     * Coefficients of the Quadrik-Fit based on the notation used here:
+     *
      *   0 = C[0] + C[1]*X + C[2]*Y + C[3]*Z + C[4]*X^2 + C[5]*Y^2
      *     + C[6]*Z^2 + C[7]*X*Y + C[8]*X*Z + C[9]*Y*Z
      *
-     * Quadratisch:   a11 := c[4],    a22 := c[5],    a33 := c[6]
-     * Gemischt:      a12 := c[7]/2,  a13 := c[8]/2,  a23 := c[9]/2
+     * Square:        a11 := c[4],    a22 := c[5],    a33 := c[6]
+     * Mixed:         a12 := c[7]/2,  a13 := c[8]/2,  a23 := c[9]/2
      * Linear:        a10 := c[1]/2,  a20 := c[2]/2,  a30 := c[3]/2
-     * Konstant:      a00 := c[0]
+     * Constant:      a00 := c[0]
      *
      */
 
@@ -1461,7 +1469,7 @@ float PolynomialFit::Fit()
 
 float PolynomialFit::Value(float x, float y) const
 {
-    float fValue = 
+    float fValue =
     _fCoeff[0]                   +
     _fCoeff[1] * x               +
     _fCoeff[2] * x * x           +

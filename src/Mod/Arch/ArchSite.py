@@ -24,10 +24,20 @@
 containers for Arch objects, and also define a terrain surface.
 """
 
-import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
+import datetime
+import math
+import re
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchIFC
+import Draft
+
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from PySide import QtGui,QtCore
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -130,7 +140,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
             else:
                 oldversion = True
         if tz:
-            tz = datetime.timezone(datetime.timedelta(hours=-3))
+            tz = datetime.timezone(datetime.timedelta(hours=tz))
         else:
             tz = datetime.timezone.utc
     else:
@@ -232,7 +242,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
     numsep = coin.SoSeparator()
     pathsep = coin.SoSeparator()
     hoursep = coin.SoSeparator()
-    hournumsep = coin.SoSeparator()
+    #hournumsep = coin.SoSeparator()
     mastersep.addChild(circlesep)
     mastersep.addChild(numsep)
     mastersep.addChild(pathsep)
@@ -516,15 +526,15 @@ class _CommandSite:
         link = p.GetBool("FreeLinking",False)
         siteobj = []
         warning = False
-        for obj in sel :
+        for obj in sel:
             if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
                 siteobj.append(obj)
-            else :
-                if link == True :
+            else:
+                if link:
                     siteobj.append(obj)
                 else:
                     warning = True
-        if warning :
+        if warning:
             message = translate( "Arch" ,  "Please either select only Building objects or nothing at all!\n\
 Site is not allowed to accept any other object besides Building.\n\
 Other objects will be removed from the selection.\n\
@@ -534,7 +544,7 @@ Note: You can change that in the preferences.")
             message = translate( "Arch" ,  "There is no valid object in the selection.\n\
 Site creation aborted.") + "\n"
             ArchCommands.printMessage( message )
-        else :
+        else:
             ss = "[ "
             for o in siteobj:
                 ss += "FreeCAD.ActiveDocument." + o.Name + ", "
@@ -609,7 +619,7 @@ class _Site(ArchIFC.IfcProduct):
         if not "Elevation" in pl:
             obj.addProperty("App::PropertyLength","Elevation","Site",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
         if not "Url" in pl:
-            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A url that shows this site in a mapping website"))
+            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A URL that shows this site in a mapping website"))
         if not "Additions" in pl:
             obj.addProperty("App::PropertyLinkList","Additions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
         if not "Subtractions" in pl:
@@ -617,7 +627,7 @@ class _Site(ArchIFC.IfcProduct):
         if not "ProjectedArea" in pl:
             obj.addProperty("App::PropertyArea","ProjectedArea","Site",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
         if not "Perimeter" in pl:
-            obj.addProperty("App::PropertyLength","Perimeter","Site",QT_TRANSLATE_NOOP("App::Property","The perimeter length of this terrain"))
+            obj.addProperty("App::PropertyLength","Perimeter","Site",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the projected area"))
         if not "AdditionVolume" in pl:
             obj.addProperty("App::PropertyVolume","AdditionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be added to this terrain"))
         if not "SubtractionVolume" in pl:
@@ -649,8 +659,6 @@ class _Site(ArchIFC.IfcProduct):
     def execute(self,obj):
         """Method run when the object is recomputed.
 
-        If the site has no Shape or Terrain property assigned, do nothing.
-
         Perform additions and subtractions on terrain, and assign to the site's
         Shape.
         """
@@ -658,144 +666,148 @@ class _Site(ArchIFC.IfcProduct):
         if not hasattr(obj,'Shape'): # old-style Site
             return
 
-        pl = obj.Placement
+        import Part
+        pl = FreeCAD.Placement(obj.Placement)
         shape = None
-        if obj.Terrain:
-            if hasattr(obj.Terrain,'Shape'):
-                if obj.Terrain.Shape:
-                    if not obj.Terrain.Shape.isNull():
-                        shape = obj.Terrain.Shape.copy()
+        if obj.Terrain is not None \
+                and hasattr(obj.Terrain,'Shape') \
+                and not obj.Terrain.Shape.isNull() \
+                and obj.Terrain.Shape.isValid():
+            shape = Part.Shape(obj.Terrain.Shape)
+            # Fuse and cut operations return a shape with a default placement.
+            # We need to transform our shape accordingly to get a consistent
+            # result with or without fuse or cut operations:
+            shape = shape.transformGeometry((shape.Placement * pl).Matrix)
+            shape.Placement = FreeCAD.Placement()
 
-        if shape:
-            shells = []
-            for sub in obj.Subtractions:
-                if hasattr(sub,'Shape'):
-                    if sub.Shape:
-                        if sub.Shape.Solids:
-                            for sol in sub.Shape.Solids:
-                                rest = shape.cut(sol)
-                                shells.append(sol.Shells[0].common(shape.extrude(obj.ExtrusionVector)))
-                                shape = rest
-            for sub in obj.Additions:
-                if hasattr(sub,'Shape'):
-                    if sub.Shape:
-                        if sub.Shape.Solids:
-                            for sol in sub.Shape.Solids:
-                                rest = shape.cut(sol)
-                                shells.append(sol.Shells[0].cut(shape.extrude(obj.ExtrusionVector)))
-                                shape = rest
-            if not shape.isNull():
-                if shape.isValid():
-                    for shell in shells:
-                        shape = shape.fuse(shell)
-                    if obj.RemoveSplitter:
-                        shape = shape.removeSplitter()
-                    obj.Shape = shape
-                    if not pl.isNull():
-                        obj.Placement = pl
-                    self.computeAreas(obj)
+            if shape.Solids:
+                for sub in obj.Additions:
+                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                        for sol in sub.Shape.Solids:
+                            shape = shape.fuse(sol)
+                for sub in obj.Subtractions:
+                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                        for sol in sub.Shape.Solids:
+                            shape = shape.cut(sol)
+            elif shape.Faces:
+                shells = []
+                for sub in obj.Additions:
+                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                        for sol in sub.Shape.Solids:
+                            rest = shape.cut(sol)
+                            shells.append(sol.Shells[0].cut(shape.extrude(obj.ExtrusionVector)))
+                            shape = rest
+                for sub in obj.Subtractions:
+                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                        for sol in sub.Shape.Solids:
+                            rest = shape.cut(sol)
+                            shells.append(sol.Shells[0].common(shape.extrude(obj.ExtrusionVector)))
+                            shape = rest
+                for shell in shells:
+                    shape = shape.fuse(shell)
 
-    def onChanged(self,obj,prop):
-        """Method called when the object has a property changed.
+            if not shape.isNull() and shape.isValid():
+                if obj.RemoveSplitter:
+                    shape = shape.removeSplitter()
+                # Transform the shape to counteract the effect of placement pl
+                # and then apply that placement:
+                obj.Shape = shape.transformGeometry(pl.inverse().Matrix)
+                obj.Placement = pl
+            else:
+                shape = None
 
-        If Terrain has changed, hide the base object terrain, then run
-        .execute().
+        if shape is None:
+            obj.Shape = Part.Shape()
+            obj.Placement = pl
 
-        Also call ArchIFC.IfcProduct.onChanged().
+        self.computeAreas(obj)
 
-        Parameters
-        ----------
-        prop: string
-            The name of the property that has changed.
-        """
+        if FreeCAD.GuiUp:
+            vobj = obj.ViewObject
+            if vobj.Proxy is not None:
+                vobj.Proxy.updateDisplaymodeTerrainSwitches(vobj)
 
-        ArchIFC.IfcProduct.onChanged(self, obj, prop)
-        if prop == "Terrain":
-            if obj.Terrain:
-                if FreeCAD.GuiUp:
-                    obj.Terrain.ViewObject.hide()
-                self.execute(obj)
+    def onBeforeChange(self, obj, prop):
+        ArchComponent.Component.onBeforeChange(self, obj, prop)
+
+    def onChanged(self, obj, prop):
+        ArchComponent.Component.onChanged(self, obj, prop)
+        if prop == "Terrain" and obj.Terrain and FreeCAD.GuiUp:
+            obj.Terrain.ViewObject.hide()
+
+    def getMovableChildren(self, obj):
+        return obj.Additions + obj.Subtractions
 
     def computeAreas(self,obj):
         """Compute the area, perimeter length, and volume of the terrain shape.
 
-        Compute the area of the terrain projected onto an XY hyperplane, IE:
+        Compute the area of the terrain projected onto an XY plane, IE:
         the area of the terrain if viewed from a birds eye view.
 
         Compute the length of the perimeter of this birds eye view area.
 
-        Compute the volume of the terrain that needs to be subtracted and
-        added on account of the Additions and Subtractions to the site.
+        Compute the volume of the terrain that needs to be added and subtracted
+        on account of the Additions and Subtractions of the site.
 
         Assign these values to their respective site properties.
         """
 
-        if not obj.Shape:
-            return
-        if obj.Shape.isNull():
-            return
-        if not obj.Shape.isValid():
-            return
-        if not obj.Shape.Faces:
-            return
         if not hasattr(obj,"Perimeter"): # check we have a latest version site
             return
-        if not obj.Terrain:
+
+        if not obj.Shape.Faces:
+            if obj.ProjectedArea.Value != 0:
+                obj.ProjectedArea = 0
+            if obj.Perimeter.Value != 0:
+                obj.Perimeter = 0
+            if obj.AdditionVolume.Value != 0:
+                obj.AdditionVolume = 0
+            if obj.SubtractionVolume.Value != 0:
+                obj.SubtractionVolume = 0
             return
 
-        # compute area
-        fset = []
-        for f in obj.Shape.Faces:
-            if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < 1.5707:
-                fset.append(f)
-        if fset:
-            import Drawing,Part
-            pset = []
-            for f in fset:
-                try:
-                    pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
-                except Part.OCCError:
-                    # error in computing the area. Better set it to zero than show a wrong value
-                    if obj.ProjectedArea.Value != 0:
-                        print("Error computing areas for ",obj.Label)
-                        obj.ProjectedArea = 0
-                else:
-                    pset.append(pf)
-            if pset:
-                self.flatarea = pset.pop()
-                for f in pset:
-                    self.flatarea = self.flatarea.fuse(f)
-                self.flatarea = self.flatarea.removeSplitter()
-                if obj.ProjectedArea.Value != self.flatarea.Area:
-                    obj.ProjectedArea = self.flatarea.Area
-
-        # compute perimeter
-        lut = {}
-        for e in obj.Shape.Edges:
-            lut.setdefault(e.hashCode(),[]).append(e)
-        l = 0
-        for e in lut.values():
-            if len(e) == 1: # keep only border edges
-                l += e[0].Length
-        if l:
-                if obj.Perimeter.Value != l:
-                    obj.Perimeter = l
-
-        # compute volumes
-        if obj.Terrain.Shape.Solids:
-            shapesolid = obj.Terrain.Shape.copy()
-        else:
-            shapesolid = obj.Terrain.Shape.extrude(obj.ExtrusionVector)
+        import TechDraw
+        import Part
+        area = 0
+        perim = 0
         addvol = 0
         subvol = 0
-        for sub in obj.Subtractions:
-            subvol += sub.Shape.common(shapesolid).Volume
+        edges = []
+
+        for face in obj.Shape.Faces:
+            if face.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < 1.5707:
+                edges.extend(TechDraw.project(face,FreeCAD.Vector(0,0,1))[0].Edges)
+        outer = TechDraw.findOuterWire(edges)
+
+        # compute area
+        try:
+            area = Part.Face(outer).Area # outer.Area does not always work.
+        except Part.OCCError:
+            print("Error computing areas for", obj.Label)
+            area = 0
+
+        # compute perimeter
+        perim = outer.Length
+
+        # compute volumes
+        shape = Part.Shape(obj.Terrain.Shape)
+        shape.Placement = obj.Placement * shape.Placement
+        if not obj.Terrain.Shape.Solids:
+            shape = shape.extrude(obj.ExtrusionVector)
         for sub in obj.Additions:
-            addvol += sub.Shape.cut(shapesolid).Volume
-        if obj.SubtractionVolume.Value != subvol:
-            obj.SubtractionVolume = subvol
+            addvol += sub.Shape.cut(shape).Volume
+        for sub in obj.Subtractions:
+            subvol += sub.Shape.common(shape).Volume
+
+        # update properties
+        if obj.ProjectedArea.Value != area:
+            obj.ProjectedArea = area
+        if obj.Perimeter.Value != perim:
+            obj.Perimeter = perim
         if obj.AdditionVolume.Value != addvol:
             obj.AdditionVolume = addvol
+        if obj.SubtractionVolume.Value != subvol:
+            obj.SubtractionVolume = subvol
 
     def addObject(self,obj,child):
 
@@ -805,6 +817,14 @@ class _Site(ArchIFC.IfcProduct):
             g = obj.Group
             g.append(child)
             obj.Group = g
+
+    def __getstate__(self):
+
+        return None
+
+    def __setstate__(self,state):
+
+        return None
 
 
 class _ViewProviderSite:
@@ -857,10 +877,6 @@ class _ViewProviderSite:
         if not "UpdateDeclination" in pl:
             vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
 
-    def onDocumentRestored(self,vobj):
-        """Method run when the document is restored. Re-add the Arch component properties."""
-        self.setProperties(vobj)
-
     def getIcon(self):
         """Return the path to the appropriate icon.
 
@@ -897,61 +913,66 @@ class _ViewProviderSite:
                 objs.extend(self.Object.Subtractions)
         return objs
 
-    def setEdit(self,vobj,mode):
-        """Method called when the document requests the object to enter edit mode.
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
-        Edit mode is entered when a user double clicks on an object in the tree
-        view, or when they use the menu option [Edit -> Toggle Edit Mode].
+        import ArchComponent
+        taskd = ArchComponent.ComponentTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-        Just display the standard Arch component task panel.
-
-        Parameters
-        ----------
-        mode: int or str
-            The edit mode the document has requested. Set to 0 when requested via
-            a double click or [Edit -> Toggle Edit Mode].
-
-        Returns
-        -------
-        bool
-            If edit mode was entered.
-        """
-
-        if (mode == 0) and hasattr(self,"Object"):
-            import ArchComponent
-            taskd = ArchComponent.ComponentTaskPanel()
-            taskd.obj = self.Object
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        """Method called when the document requests the object exit edit mode.
-
-        Close the Arch component edit task panel.
-
-        Returns
-        -------
-        False
-        """
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
+                                                  translate("Arch", "Toggle subcomponents"),
+                                                  menu)
+        QtCore.QObject.connect(actionToggleSubcomponents,
+                               QtCore.SIGNAL("triggered()"),
+                               self.toggleSubcomponents)
+        menu.addAction(actionToggleSubcomponents)
+
+        # The default Part::FeaturePython context menu contains a `Set colors`
+        # option. This option does not work well for Site objects. We therefore
+        # override this menu and have to add our own `Transform` item.
+        # To override the default menu this function must return `True`.
+        actionTransform = QtGui.QAction(FreeCADGui.getIcon("Std_TransformManip.svg"),
+                                        translate("Command", "Transform"), # Context `Command` instead of `Arch`.
+                                        menu)
+        QtCore.QObject.connect(actionTransform,
+                               QtCore.SIGNAL("triggered()"),
+                               self.transform)
+        menu.addAction(actionTransform)
+
+        return True
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def toggleSubcomponents(self):
+        FreeCADGui.runCommand("Arch_ToggleSubs")
+
+    def transform(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
     def attach(self,vobj):
-        """Add display modes' data to the coin scenegraph.
-
-        Add each display mode as a coin node, whose parent is this view
-        provider.
-
-        Each display mode's node includes the data needed to display the object
-        in that mode. This might include colors of faces, or the draw style of
-        lines. This data is stored as additional coin nodes which are children
-        of the display mode node.
-
-        Doe not add display modes, but do add the solar diagram and compass to
-        the scenegraph.
+        """Adds the solar diagram and compass to the coin scenegraph, but does
+        not add display modes.
         """
 
         self.Object = vobj.Object
@@ -994,7 +1015,7 @@ class _ViewProviderSite:
             The name of the property that has changed.
         """
 
-        if prop in ["Longitude","Latitude"]:
+        if prop in ["Longitude","Latitude","TimeZone"]:
             self.onChanged(obj.ViewObject,"SolarDiagram")
         elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")
@@ -1007,7 +1028,57 @@ class _ViewProviderSite:
         elif prop == "ProjectedArea":
             self.updateCompassScale(obj.ViewObject)
 
+    def addDisplaymodeTerrainSwitches(self,vobj):
+        """Adds 'terrain' switches to the 4 default display modes.
+
+        If the Terrain property of the site is None, the 'normal' display can
+        be switched off with these switches. This avoids 'ghosts' of the objects
+        in the Group property.
+        See:
+        https://forum.freecad.org/viewtopic.php?f=10&t=74731
+        https://forum.freecad.org/viewtopic.php?t=75658
+        https://forum.freecad.org/viewtopic.php?t=75883
+        """
+
+        if not hasattr(self, "terrain_switches"):
+            main_switch = vobj.RootNode.getChild(2) # The display mode switch.
+            if main_switch.getNumChildren() == 4:   # Check if all display modes are available.
+                from pivy import coin
+                self.terrain_switches = []
+                for node in tuple(main_switch.getChildren()):
+                    new_switch = coin.SoSwitch()
+                    sep1 = coin.SoSeparator()
+                    sep1.setName("NoTerrain")
+                    sep2 = coin.SoSeparator()
+                    sep2.setName("Terrain")
+                    child_list = list(node.getChildren())
+                    for child in child_list:
+                        sep2.addChild(child)
+                    new_switch.addChild(sep1)
+                    new_switch.addChild(sep2)
+                    new_switch.whichChild = 0
+                    node.addChild(new_switch)
+                    for i in range(len(child_list)):
+                        node.removeChild(0) # Remove the original children.
+                    self.terrain_switches.append(new_switch)
+
+    def updateDisplaymodeTerrainSwitches(self,vobj):
+        """Updates the 'terrain' switches."""
+
+        if not hasattr(self, "terrain_switches"):
+            return
+
+        idx = 0 if self.Object.Terrain is None else 1
+        for switch in self.terrain_switches:
+            switch.whichChild = idx
+
     def onChanged(self,vobj,prop):
+
+        # onChanged is called multiple times when a document is opened.
+        # Some display mode nodes can be missing during initial calls.
+        # The two methods called below must take that into account.
+        self.addDisplaymodeTerrainSwitches(vobj)
+        self.updateDisplaymodeTerrainSwitches(vobj)
 
         if prop == "SolarDiagramPosition":
             if hasattr(vobj,"SolarDiagramPosition"):

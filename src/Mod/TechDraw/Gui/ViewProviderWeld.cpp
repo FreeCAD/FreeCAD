@@ -28,26 +28,16 @@
 # include <QTextStream>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 
 #include "PreferencesGui.h"
 #include "TaskWeldingSymbol.h"
 #include "ViewProviderWeld.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -62,39 +52,15 @@ ViewProviderWeld::ViewProviderWeld()
     sPixmap = "actions/TechDraw_WeldSymbol";
     static const char *group = "Text";
 
-    ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()),group,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()), group, App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(FontSize, (prefFontSize()), group,
-                                (App::PropertyType)(App::Prop_None),"Tail text size");
+                                (App::PropertyType)(App::Prop_None), "Tail text size");
     ADD_PROPERTY_TYPE(TileFontSize, (prefFontSize() * prefTileTextAdjust()), group,
-                                (App::PropertyType)(App::Prop_None),"Text size on individual symbol tiles");
+                                (App::PropertyType)(App::Prop_None), "Text size on individual symbol tiles");
 }
 
 ViewProviderWeld::~ViewProviderWeld()
 {
-}
-
-void ViewProviderWeld::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderWeld::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderWeld::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-void ViewProviderWeld::updateData(const App::Property* prop)
-{
-    ViewProviderDrawingView::updateData(prop);
 }
 
 void ViewProviderWeld::onChanged(const App::Property* p)
@@ -107,7 +73,7 @@ void ViewProviderWeld::onChanged(const App::Property* p)
     ViewProviderDrawingView::onChanged(p);
 }
 
-std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a DrawWeldSymbol are:
@@ -122,63 +88,45 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren(void) const
         }
       return temp;
     } catch (...) {
-        std::vector<App::DocumentObject*> tmp;
-        return tmp;
+        return std::vector<App::DocumentObject*>();
     }
 }
 
 bool ViewProviderWeld::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPW::setEdit(%d)\n",ModNum);
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskDlgWeldingSymbol(getFeature()));
-        return true;
-    } else {
+//    Base::Console().Message("VPW::setEdit(%d)\n", ModNum);
+    if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }
+    if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+        return false;
+    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgWeldingSymbol(getFeature()));
     return true;
 }
 
-void ViewProviderWeld::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderWeld::doubleClicked(void)
+bool ViewProviderWeld::doubleClicked()
 {
 //    Base::Console().Message("VPW::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
 }
 
-std::string ViewProviderWeld::prefFontName(void)
+std::string ViewProviderWeld::prefFontName()
 {
     return Preferences::labelFont();
 }
 
-double ViewProviderWeld::prefFontSize(void)
+double ViewProviderWeld::prefFontSize()
 {
     return Preferences::labelFontSizeMM();
 }
 
-double ViewProviderWeld::prefTileTextAdjust(void)
+double ViewProviderWeld::prefTileTextAdjust()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                 GetGroup("Mod/TechDraw/Dimensions");
-    double adjust   = hGrp->GetFloat("TileTextAdjust", 0.75);
-    return adjust;
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("TileTextAdjust", 0.75);
 }
 
 bool ViewProviderWeld::onDelete(const std::vector<std::string> &)
@@ -198,9 +146,8 @@ bool ViewProviderWeld::onDelete(const std::vector<std::string> &)
             QMessageBox::Ok);
         return false;
     }
-    else {
-        return true;
-    }
+
+    return true;
 }
 
 bool ViewProviderWeld::canDelete(App::DocumentObject *obj) const

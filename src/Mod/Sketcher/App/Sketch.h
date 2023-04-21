@@ -23,40 +23,41 @@
 #ifndef SKETCHER_SKETCH_H
 #define SKETCHER_SKETCH_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
-#include <Mod/Part/App/Geometry.h>
+#include <Base/Persistence.h>
+#include <CXX/Objects.hxx>
 #include <Mod/Part/App/TopoShape.h>
-#include "Constraint.h"
 
+#include "Constraint.h"
+#include "GeoList.h"
 #include "planegcs/GCS.h"
 
-#include <Base/Persistence.h>
 
 namespace Sketcher
 {
+    // Forward declarations
+    class SolverGeometryExtension;
 
 class SketcherExport Sketch :public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Sketch();
-    ~Sketch();
+    ~Sketch() override;
 
     // from base class
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
     /// solve the actual set up sketch
-    int solve(void);
+    int solve();
     /// resets the solver
     int resetSolver();
     /// get standard (aka fine) solver precision
     double getSolverPrecision(){ return GCSsys.getFinePrecision(); }
     /// delete all geometry and constraints, leave an empty sketch
-    void clear(void);
+    void clear();
     /** set the sketch up with geoms and constraints
       *
       * returns the degree of freedom of a sketch and calculates a list of
@@ -73,7 +74,7 @@ public:
     int setUpSketch(const std::vector<Part::Geometry *> &GeoList, const std::vector<Constraint *> &ConstraintList,
                     int extGeoCount=0);
     /// return the actual geometry of the sketch a TopoShape
-    Part::TopoShape toShape(void) const;
+    Part::TopoShape toShape() const;
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
@@ -89,9 +90,11 @@ public:
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
 
+    GeoListFacade extractGeoListFacade() const;
+
     void updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext);
     /// get the geometry as python objects
-    Py::Tuple getPyGeometry(void) const;
+    Py::Tuple getPyGeometry() const;
 
     /// retrieves the index of a point
     int getPointId(int geoId, PointPos pos) const;
@@ -99,19 +102,21 @@ public:
     Base::Vector3d getPoint(int geoId, PointPos pos) const;
 
     // Inline methods
-    inline bool hasConflicts(void) const { return !Conflicting.empty(); }
-    inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
-    inline bool hasRedundancies(void) const { return !Redundant.empty(); }
-    inline const std::vector<int> &getRedundant(void) const { return Redundant; }
-    inline bool hasPartialRedundancies(void) const { return !PartiallyRedundant.empty(); }
-    inline const std::vector<int> &getPartiallyRedundant(void) const { return PartiallyRedundant; }
+    inline bool hasConflicts() const { return !Conflicting.empty(); }
+    inline const std::vector<int> &getConflicting() const { return Conflicting; }
+    inline bool hasRedundancies() const { return !Redundant.empty(); }
+    inline const std::vector<int> &getRedundant() const { return Redundant; }
+    inline bool hasPartialRedundancies() const { return !PartiallyRedundant.empty(); }
+    inline const std::vector<int> &getPartiallyRedundant() const { return PartiallyRedundant; }
 
     inline float getSolveTime() const { return SolveTime; }
 
-    inline bool hasMalformedConstraints(void) const { return !MalformedConstraints.empty(); }
-    inline const std::vector<int> &getMalformedConstraints(void) const { return MalformedConstraints; }
+    inline bool hasMalformedConstraints() const { return !MalformedConstraints.empty(); }
+    inline const std::vector<int> &getMalformedConstraints() const { return MalformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
+
+    std::shared_ptr<SolverGeometryExtension> getSolverExtension(int geoId) const;
 
 
 public:
@@ -126,9 +131,18 @@ public:
       */
     int initMove(int geoId, PointPos pos, bool fine=true);
 
+    /** Initializes a B-spline piece drag by setting the current
+      * sketch status as a reference. Only moves piece around `firstPoint`.
+      */
+    int initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine=true);
+
     /** Resets the initialization of a point or curve drag
      */
     void resetInitMove();
+
+    /** Limits a b-spline drag to the segment around `firstPoint`.
+     */
+    int limitBSplineMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint);
 
     /** move this point (or curve) to a new location and solve.
       * This will introduce some additional weak constraints expressing
@@ -262,12 +276,23 @@ public:
     *   Parameters array, as the case may be.
     */
     int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value, bool driving = true);
+    /**
+    *   add a length or distance constraint
+    *
+    *   double * value is a pointer to double allocated in the heap, containing the
+    *   constraint value and already inserted into either the FixParameters or
+    *   Parameters array, as the case may be.
+    */
+    int addDistanceConstraint(int geoId1, int geoId2, double * value, bool driving = true);
+
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
     int addPerpendicularConstraint(int geoId1, int geoId2);
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoId1, int geoId2);
+    int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int checkedbsplinegeoId, int checkedknotgeoid);
+    int addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId, PointPos endpointPos, int checkedbsplinegeoId, int checkedknotgeoid);
     int addAngleAtPointConstraint(
             int geoId1, PointPos pos1,
             int geoId2, PointPos pos2,
@@ -326,6 +351,8 @@ public:
     int addEqualConstraint(int geoId1, int geoId2);
     /// add a point on line constraint
     int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, bool driving = true);
+    /// add a point on B-spline constraint: needs a parameter
+    int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2,double* pointparam, bool driving = true);
     /// add a symmetric constraint between two points with respect to a line
     int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a symmetric constraint between three points, the last point is in the middle of the first two
@@ -360,6 +387,7 @@ public:
     int addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2);
     int addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2);
     int addInternalAlignmentParabolaFocus(int geoId1, int geoId2);
+    int addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2);
     int addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex);
     int addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex);
     //@}
@@ -378,7 +406,7 @@ public:
     double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
 
     /// Returns the size of the Geometry
-    int getGeometrySize(void) const {return Geoms.size();}
+    int getGeometrySize() const {return Geoms.size();}
 
     enum GeoType {
         None    = 0,
@@ -404,7 +432,7 @@ protected:
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
-        GeoDef() : geo(0),type(None),external(false),index(-1),
+        GeoDef() : geo(nullptr),type(None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
         Part::Geometry  * geo;             // pointer to the geometry
         GeoType           type;            // type of the geometry
@@ -416,10 +444,10 @@ protected:
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef {
-        ConstrDef() : constr(0)
+        ConstrDef() : constr(nullptr)
                     , driving(true)
-                    , value(0)
-                    , secondvalue(0) {}
+                    , value(nullptr)
+                    , secondvalue(nullptr) {}
         Constraint *    constr;             // pointer to the constraint
         bool            driving;
         double *        value;
@@ -437,10 +465,16 @@ protected:
 
     std::vector<double *> pDependentParametersList;
 
+    // map of geoIds to corresponding solverextensions. This is useful when solved geometry is NOT to be assigned to the SketchObject
+    std::vector<std::shared_ptr<SolverGeometryExtension>> solverExtensions;
+
+    // maps a geoid corresponding to an internalgeometry (focus,knot,pole) to the geometry it defines (ellipse, hyperbola, B-Spline)
+    std::map< int, int > internalAlignmentGeometryMap;
+
     std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
 
-    // this map is intended to convert a parameter (double *) into a GeoId/PointPos pair
-    std::map<double *, std::pair<int,Sketcher::PointPos>> param2geoelement;
+    // this map is intended to convert a parameter (double *) into a GeoId/PointPos and parameter number
+    std::map<double *, std::tuple<int, Sketcher::PointPos, int>> param2geoelement;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
@@ -467,7 +501,7 @@ public:
     GCS::Algorithm defaultSolverRedundant;
     inline void setDogLegGaussStep(GCS::DogLegGaussStep mode){GCSsys.dogLegGaussStep=mode;}
     inline void setDebugMode(GCS::DebugMode mode) {debugMode=mode;GCSsys.debugMode=mode;}
-    inline GCS::DebugMode getDebugMode(void) {return debugMode;}
+    inline GCS::DebugMode getDebugMode() {return debugMode;}
     inline void setMaxIter(int maxiter){GCSsys.maxIter=maxiter;}
     inline void setMaxIterRedundant(int maxiter){GCSsys.maxIterRedundant=maxiter;}
     inline void setSketchSizeMultiplier(bool mult){GCSsys.sketchSizeMultiplier=mult;}
@@ -495,12 +529,14 @@ protected:
 
 private:
 
-    bool updateGeometry(void);
-    bool updateNonDrivingConstraints(void);
+    bool updateGeometry();
+    bool updateNonDrivingConstraints();
 
-    void calculateDependentParametersElements(void);
+    void calculateDependentParametersElements();
 
-    void clearTemporaryConstraints(void);
+    void clearTemporaryConstraints();
+
+    void buildInternalAlignmentGeometryMap(const std::vector<Constraint *> &constraintList);
 
     int internalSolve(std::string & solvername, int level = 0);
 

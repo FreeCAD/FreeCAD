@@ -20,31 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+
+#include "ViewProviderEdge2TracObject.h"
 #include "ViewProviderRobotObject.h"
 #include "ViewProviderTrajectory.h"
-#include "ViewProviderEdge2TracObject.h"
-#include "ViewProviderTrajectoryDressUp.h"
 #include "ViewProviderTrajectoryCompound.h"
+#include "ViewProviderTrajectoryDressUp.h"
 #include "Workbench.h"
 
+
 // use a different name to CreateCommand()
-void CreateRobotCommands(void);
-void CreateRobotCommandsExport(void);
-void CreateRobotCommandsInsertRobots(void);
-void CreateRobotCommandsTrajectory(void);
+void CreateRobotCommands();
+void CreateRobotCommandsExport();
+void CreateRobotCommandsInsertRobots();
+void CreateRobotCommandsTrajectory();
 
 void loadRobotResource()
 {
@@ -62,14 +58,14 @@ public:
         initialize("This module is the RobotGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace RobotGui
@@ -80,7 +76,7 @@ PyMOD_INIT_FUNC(RobotGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     try {
         Base::Interpreter().runString("import PartGui");
@@ -92,7 +88,7 @@ PyMOD_INIT_FUNC(RobotGui)
         // default Cintinuity is off
         Base::Interpreter().runString("_DefCont = False");
         // default Cintinuity is off
-        Base::Interpreter().runString("_DefAccelaration = '1 m/s^2'");
+        Base::Interpreter().runString("_DefAcceleration = '1 m/s^2'");
         // default orientation of a waypoint if no other constraint
         Base::Interpreter().runString("_DefOrientation = FreeCAD.Rotation()");
         // default displacement while e.g. picking
@@ -100,7 +96,7 @@ PyMOD_INIT_FUNC(RobotGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = RobotGui::initModule();
     Base::Console().Log("Loading GUI of Robot module... done\n");

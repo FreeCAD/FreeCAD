@@ -24,11 +24,12 @@
 #define PROPERTYSHEET_H
 
 #include <map>
-#include <App/DocumentObserver.h>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyLinks.h>
+
 #include "Cell.h"
+
 
 namespace Spreadsheet
 {
@@ -42,39 +43,39 @@ class SpreadsheetExport PropertySheet : public App::PropertyExpressionContainer
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
-    PropertySheet(Sheet * _owner = 0);
+    explicit PropertySheet(Sheet * _owner = nullptr);
 
-    ~PropertySheet();
+    ~PropertySheet() override;
 
-    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
-    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
-    virtual void onRelabeledDocument(const App::Document &doc) override;
+    std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
+    void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+    void onRelabeledDocument(const App::Document &doc) override;
 
-    virtual void updateElementReference(
+    void updateElementReference(
             App::DocumentObject *feature,bool reverse=false,bool notify=false) override;
-    virtual bool referenceChanged() const override;
-    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
-    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    bool referenceChanged() const override;
+    bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+    Property *CopyOnLabelChange(App::DocumentObject *obj,
                         const std::string &ref, const char *newLabel) const override;
-    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+    Property *CopyOnLinkReplace(const App::DocumentObject *parent,
                         App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
-    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+    void breakLink(App::DocumentObject *obj, bool clear) override;
 
-    virtual void afterRestore() override;
-    virtual void onContainerRestored() override;
+    void afterRestore() override;
+    void onContainerRestored() override;
 
-    virtual Property *Copy(void) const override;
+    Property *Copy(void) const override;
 
-    virtual void Paste(const Property &from) override;
+    void Paste(const Property &from) override;
 
-    virtual void Save (Base::Writer & writer) const override;
+    void Save (Base::Writer & writer) const override;
 
-    virtual void Restore(Base::XMLReader & reader) override;
+    void Restore(Base::XMLReader & reader) override;
 
     void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
 
-    void pasteCells(Base::XMLReader &reader, const App::CellAddress &addr);
+    void pasteCells(Base::XMLReader &reader, App::Range dstRange);
 
     Cell *createCell(App::CellAddress address);
 
@@ -106,11 +107,19 @@ public:
 
     const Cell * getValue(App::CellAddress key) const;
 
+    Cell * getValueFromAlias(const std::string &alias);
+
     const Cell * getValueFromAlias(const std::string &alias) const;
 
     bool isValidAlias(const std::string &candidate);
 
-    std::set<App::CellAddress> getUsedCells() const;
+    std::vector<App::CellAddress> getUsedCells() const;
+
+    std::tuple<App::CellAddress, App::CellAddress> getUsedRange() const;
+
+    std::vector<App::CellAddress> getNonEmptyCells() const;
+
+    std::tuple<App::CellAddress, App::CellAddress> getNonEmptyRange() const;
 
     Sheet * sheet() const { return owner; }
 
@@ -140,13 +149,17 @@ public:
 
     void removeColumns(int col, int count);
 
-    virtual unsigned int getMemSize (void) const override;
+    unsigned int getMemSize (void) const override;
 
     bool mergeCells(App::CellAddress from, App::CellAddress to);
 
     void splitCell(App::CellAddress address);
 
     void getSpans(App::CellAddress address, int &rows, int &cols) const;
+
+    bool hasSpan() const;
+
+    App::CellAddress getAnchor(App::CellAddress address) const;
 
     bool isMergedCell(App::CellAddress address) const;
 
@@ -161,6 +174,8 @@ public:
     PyObject *getPyObject(void) override;
     void setPyObject(PyObject *) override;
 
+    PyObject *getPyValue(PyObject *key);
+
     void invalidateDependants(const App::DocumentObject *docObj);
 
     void renamedDocumentObject(const App::DocumentObject *docObj);
@@ -170,16 +185,37 @@ public:
 
     void documentSet();
 
+    App::CellAddress getCellAddress(const char *addr, bool silent=false) const;
+    App::Range getRange(const char *range, bool silent=false) const;
+
     std::string getRow(int offset=0) const;
 
     std::string getColumn(int offset=0) const;
 
+    void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
+    const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
+
+    unsigned getBindingBorder(App::CellAddress address) const;
+
+    bool isBindingPath(const App::ObjectIdentifier &path,
+            App::CellAddress *from=nullptr, App::CellAddress *to=nullptr, bool *href=nullptr) const;
+
+    enum BindingType {
+        BindingNone,
+        BindingNormal,
+        BindingHiddenRef,
+    };
+    BindingType getBinding(const App::Range &range,
+                           App::ExpressionPtr *pStart=nullptr,
+                           App::ExpressionPtr *pEnd=nullptr,
+                           App::ObjectIdentifier *pTarget=nullptr) const;
+
 protected:
-    virtual void hasSetValue() override;
-    virtual void hasSetChildValue(App::Property &prop) override;
-    virtual void onBreakLink(App::DocumentObject *obj) override;
-    virtual void onAddDep(App::DocumentObject *obj) override;
-    virtual void onRemoveDep(App::DocumentObject *obj) override;
+    void hasSetValue() override;
+    void hasSetChildValue(App::Property &prop) override;
+    void onBreakLink(App::DocumentObject *obj) override;
+    void onAddDep(App::DocumentObject *obj) override;
+    void onRemoveDep(App::DocumentObject *obj) override;
 
 private:
 
@@ -258,7 +294,7 @@ private:
     std::map<std::string, App::CellAddress> revAliasProp;
 
     /*! The associated python object */
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
 
     std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
 

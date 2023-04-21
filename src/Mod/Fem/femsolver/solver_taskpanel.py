@@ -72,13 +72,13 @@ class ControlTaskPanel(QtCore.QObject):
         self.form.abortClicked.connect(self.abort)
         self.form.directoryChanged.connect(self.updateMachine)
 
-        # Seems that the task panel doesn't get destroyed. Disconnect
+        # Seems that the task panel does not get destroyed. Disconnect
         # as soon as the widget of the task panel gets destroyed.
         self.form.destroyed.connect(self._disconnectMachine)
         self.form.destroyed.connect(self._timer.stop)
-        self.form.destroyed.connect(
-            lambda: self.machineStatusChanged.disconnect(
-                self.form.appendStatus))
+        # self.form.destroyed.connect(
+        #     lambda: self.machineStatusChanged.disconnect(
+        #         self.form.appendStatus))
 
         # Connect all proxy signals.
         self.machineStarted.connect(self._timer.start)
@@ -240,6 +240,9 @@ class ControlWidget(QtGui.QWidget):
         # Solver status log
         self._statusEdt = QtGui.QPlainTextEdit()
         self._statusEdt.setReadOnly(True)
+        # for the log we need a certain height
+        # set it so to almost match the size of the CCX solver panel
+        self._statusEdt.setMinimumHeight(300)
 
         # Elapsed time indicator
         timeHeaderLbl = QtGui.QLabel(self.tr("Elapsed Time:"))
@@ -337,7 +340,7 @@ class ControlWidget(QtGui.QWidget):
             self._writeBtt.setDisabled(False)
             self._editBtt.setDisabled(
                 not machine.solver.Proxy.editSupported()
-                or machine.state < femsolver.run.PREPARE
+                or machine.state <= femsolver.run.PREPARE
             )
 
 ##  @}

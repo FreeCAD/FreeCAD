@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <math_Gauss.hxx>
-#include <math_Householder.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Precision.hxx>
+#ifndef _PreComp_
+# include <QFuture>
+# include <QFutureWatcher>
+# include <QtConcurrentMap>
 
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
+# include <Geom_BSplineSurface.hxx>
+# include <math_Gauss.hxx>
+# include <math_Householder.hxx>
+# include <Precision.hxx>
+#endif
 
-#include <Mod/Mesh/App/Core/Approximation.h>
 #include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
 #include <Base/Tools.h>
+#include <Mod/Mesh/App/Core/Approximation.h>
 
 #include "ApproxSurface.h"
+
 
 using namespace Reen;
 namespace bp = boost::placeholders;
@@ -60,7 +60,7 @@ SplineBasisfunction::SplineBasisfunction(TColStd_Array1OfReal& vKnots,
         sum += vMults(h);
 
     if (vKnots.Length() != vMults.Length() || iSize != sum) {
-        // Werfe Exception
+        // Throw exception
         Standard_ConstructionError::Raise("BSplineBasis");
     }
 
@@ -102,7 +102,7 @@ void SplineBasisfunction::SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1O
         sum += vMults(h);
 
     if (vKnots.Length() != vMults.Length() || _vKnotVector.Length() != sum) {
-        // Werfe Exception
+        // Throw exception
         Standard_RangeError::Raise("BSplineBasis");
     }
     int k=0;
@@ -145,7 +145,7 @@ int BSplineBasis::FindSpan(double fParam)
 
     int low = _iOrder-1;
     int high = n+1;
-    int mid = (low+high)/2; //Binaersuche
+    int mid = (low+high)/2; //Binary search
 
     while (fParam < _vKnotVector(mid) || fParam>= _vKnotVector(mid+1)) {
         if (fParam < _vKnotVector(mid))
@@ -254,7 +254,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
     int iMax = iMaxDer;
     if (Derivat.Length() != iMax+1)
         Standard_RangeError::Raise("BSplineBasis");
-    //k-te Ableitungen (k>Grad) sind Null
+    //kth derivatives (k> degrees) are zero
     if (iMax >= _iOrder) {
         for (int i=_iOrder; i<=iMaxDer; i++)
             Derivat(i) = 0.0;
@@ -266,14 +266,14 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
     math_Matrix N(0,p,0,p);
     double saved;
 
-    // falls Wert ausserhalb Intervall, dann Funktionswert und alle Ableitungen gleich Null
+    // if value is outside the interval, then function value and all derivatives equal null
     if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1)) {
         for (int k=0; k<=iMax; k++)
             Derivat(k) = 0.0;
         return;
     }
 
-    // Berechne die Basisfunktionen der Ordnung 1
+    // Calculate the basis functions of Order 1
     for (int j=0; j<_iOrder; j++) {
         if (fParam >= _vKnotVector(iIndex+j) && fParam < _vKnotVector(iIndex+j+1))
             N(j,0) = 1.0;
@@ -281,7 +281,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
             N(j,0) = 0.0;
     }
 
-    // Berechne Dreieckstabelle der Funktionswerte
+    // Calculate a triangular table of the function values
     for (int k=1; k<_iOrder; k++) {
         if (N(0,k-1) == 0.0)
             saved = 0.0;
@@ -303,12 +303,12 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
         }
     }
 
-    // Funktionswert
+    // Function value
     Derivat(0) = N(0,p);
-    // Berechne aus der Dreieckstabelle die Ableitungen
+    // Calculate the derivatives from the triangle table
     for (int k=1; k<=iMax; k++) {
         for (int j=0; j<=k; j++) {
-            // Lade (p-k)-te Spalte
+            // Load the (p-k)th column
             ND(j) = N(j,p-k);
         }
 
@@ -333,7 +333,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
             }
         }
 
-        Derivat(k) = ND(0); //k-te Ableitung
+        Derivat(k) = ND(0); //kth derivative
     }
 }
 
@@ -341,11 +341,11 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
 {
     int iMax = iMaxDer;
 
-    // Funktionswert (0-te Ableitung)
+    // Function value (0th derivative)
     if (iMax == 0)
         return BasisFunction(iIndex, fParam);
 
-    //k-te Ableitungen (k>Grad) sind Null
+    // The kth derivatives (k>degrees) are null
     if (iMax >= _iOrder) {
         return 0.0;
     }
@@ -355,12 +355,12 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
     math_Matrix N(0,p,0,p);
     double saved;
 
-    // falls Wert ausserhalb Intervall, dann Funktionswert und Ableitungen gleich Null
+    // If value is outside the interval, then function value and derivatives equal null
     if (fParam < _vKnotVector(iIndex) || fParam >= _vKnotVector(iIndex+p+1)) {
         return 0.0;
     }
 
-    // Berechne die Basisfunktionen der Ordnung 1
+    // Calculate the basis functions of Order 1
     for (int j=0; j<_iOrder; j++) {
         if (fParam >= _vKnotVector(iIndex+j) && fParam < _vKnotVector(iIndex+j+1))
             N(j,0) = 1.0;
@@ -368,7 +368,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
             N(j,0) = 0.0;
     }
 
-    // Berechne Dreieckstabelle der Funktionswerte
+    // Calculate triangular table of function values
     for (int k=1; k<_iOrder; k++) {
         if (N(0,k-1) == 0.0)
             saved = 0.0;
@@ -391,9 +391,9 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
         }
     }
 
-    // Berechne aus der Dreieckstabelle die Ableitungen
+    // Use the triangular table to calculate the derivatives
     for (int j=0; j<=iMax; j++) {
-        // Lade (p-iMax)-te Spalte
+        // Loading (p-iMax)th column
         ND(j) = N(j,p-iMax);
     }
 
@@ -418,7 +418,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
         }
     }
 
-    return ND(0); //iMax-te Ableitung
+    return ND(0); //iMax-th derivative
 }
 
 double BSplineBasis::GetIntegralOfProductOfBSplines(int iIdx1, int iIdx2, int iOrd1, int iOrd2)
@@ -430,8 +430,8 @@ double BSplineBasis::GetIntegralOfProductOfBSplines(int iIdx1, int iIdx2, int iO
     TColStd_Array1OfReal vRoots(0,iMax), vWeights(0,iMax);
     GenerateRootsAndWeights(vRoots, vWeights);
 
-    /*Berechne das Integral*/
-    // Integrationsbereich
+    /*Calculate the integral*/
+    // Integration area
     int iBegin=0; int iEnd=0;
     FindIntegrationArea(iIdx1, iIdx2, iBegin, iEnd);
 
@@ -456,7 +456,7 @@ void BSplineBasis::GenerateRootsAndWeights(TColStd_Array1OfReal& vRoots, TColStd
 {
     int iSize = vRoots.Length();
 
-    //Nullstellen der Legendre-Polynome und die zugeh. Gewichte
+    // Zeroing the Legendre-Polynomials and the corresponding weights
     if (iSize == 1) {
         vRoots(0) = 0.0; vWeights(0) = 2.0;
     }
@@ -518,7 +518,7 @@ void BSplineBasis::GenerateRootsAndWeights(TColStd_Array1OfReal& vRoots, TColStd
 
 void BSplineBasis::FindIntegrationArea(int iIdx1, int iIdx2, int& iBegin, int& iEnd)
 {
-    // nach Index ordnen
+    // order by index
     if (iIdx2 < iIdx1) {
         int tmp=iIdx1;
         iIdx1 = iIdx2;
@@ -559,8 +559,8 @@ ParameterCorrection::ParameterCorrection(unsigned usUOrder, unsigned usVOrder,
   , _usVOrder(usVOrder)
   , _usUCtrlpoints(usUCtrlpoints)
   , _usVCtrlpoints(usVCtrlpoints)
-  , _pvcPoints(0)
-  , _pvcUVParam(0)
+  , _pvcPoints(nullptr)
+  , _pvcUVParam(nullptr)
   , _vCtrlPntsOfSurf(0,usUCtrlpoints-1,0,usVCtrlpoints-1)
   , _vUKnots(0,usUCtrlpoints-usUOrder+1)
   , _vVKnots(0,usVCtrlpoints-usVOrder+1)
@@ -588,8 +588,8 @@ void ParameterCorrection::CalcEigenvectors()
 
 bool ParameterCorrection::DoInitialParameterCorrection(double fSizeFactor)
 {
-    // falls Richtungen nicht vorgegeben, selber berechnen
-    if (_bGetUVDir == false)
+    // if directions are not given, calculate yourself
+    if (!_bGetUVDir)
         CalcEigenvectors();
     if (!GetUVParameters(fSizeFactor))
         return false;
@@ -607,23 +607,23 @@ bool ParameterCorrection::DoInitialParameterCorrection(double fSizeFactor)
 
 bool ParameterCorrection::GetUVParameters(double fSizeFactor)
 {
-    // Eigenvektoren als neue Basis
+    // Eigenvectors as a new base
     Base::Vector3d e[3];
     e[0] = _clU;
     e[1] = _clV;
     e[2] = _clW;
 
-    //kanonische Basis des R^3
+    // Canonical base of R^3
     Base::Vector3d b[3];
     b[0]=Base::Vector3d(1.0,0.0,0.0); b[1]=Base::Vector3d(0.0,1.0,0.0);b[2]=Base::Vector3d(0.0,0.0,1.0);
-    // Erzeuge ein Rechtssystem aus den orthogonalen Eigenvektoren
+    // Create a right system from the orthogonal eigenvectors
     if ((e[0]%e[1])*e[2] < 0) {
         Base::Vector3d tmp = e[0];
         e[0] = e[1];
         e[1] = tmp;
     }
 
-    // Nun erzeuge die transpon. Rotationsmatrix
+    // Now generate the transpon. Rotation matrix
     Wm4::Matrix3d clRotMatTrans;
     for (int i=0; i<3; i++) {
         for (int j=0; j<3; j++) {
@@ -634,8 +634,8 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     std::vector<Base::Vector2d> vcProjPts;
     Base::BoundBox2d clBBox;
 
-    // Berechne die Koordinaten der transf. Punkte und projiz. diese auf die x,y-Ebene des neuen
-    // Koordinatensystems
+    // Calculate the coordinates of the transf. Points and project
+    // these on to the x,y-plane of the new coordinate system
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         const gp_Pnt& pnt = (*_pvcPoints)(ii);
         Wm4::Vector3d clProjPnt = clRotMatTrans * Wm4::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
@@ -650,7 +650,7 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     double fDeltaX = (2*fSizeFactor-1.0)*(clBBox.MaxX - clBBox.MinX);
     double fDeltaY = (2*fSizeFactor-1.0)*(clBBox.MaxY - clBBox.MinY);
 
-    // Berechne die u,v-Parameter mit u,v aus [0,1]
+    // Calculate the u,v parameters with u,v from [0,1]
     _pvcUVParam->Init(gp_Pnt2d(0.0, 0.0));
     int ii=0;
     if (clBBox.MaxX - clBBox.MinX >= clBBox.MaxY - clBBox.MinY) {
@@ -721,11 +721,11 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
                                                                bool  bParaCor,
                                                                double fSizeFactor)
 {
-    if (_pvcPoints != NULL) {
+    if (_pvcPoints) {
         delete _pvcPoints;
-        _pvcPoints = NULL;
+        _pvcPoints = nullptr;
         delete _pvcUVParam;
-        _pvcUVParam = NULL;
+        _pvcUVParam = nullptr;
     }
 
     _pvcPoints = new TColgp_Array1OfPnt(points.Lower(), points.Upper());
@@ -733,16 +733,16 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
     _pvcUVParam = new TColgp_Array1OfPnt2d(points.Lower(), points.Upper());
 
     if (_usUCtrlpoints*_usVCtrlpoints > static_cast<unsigned>(_pvcPoints->Length()))
-        return NULL; //LGS unterbestimmt
+        return nullptr; // LGS under-determined
     if (!DoInitialParameterCorrection(fSizeFactor))
-        return NULL;
+        return nullptr;
 
-    // Erzeuge die Approximations-Ebene als B-Spline-Flaeche
+    // Generate the approximation plane as a B-spline area
     if (iIter < 0) {
         bParaCor = false;
         ProjectControlPointsOnPlane();
     }
-    // Keine weiteren Parameterkorrekturen
+    // No further parameter corrections
     else if (iIter == 0) {
         bParaCor = false;
     }
@@ -782,20 +782,20 @@ BSplineParameterCorrection::BSplineParameterCorrection(unsigned usUOrder, unsign
 
 void BSplineParameterCorrection::Init()
 {
-    // Initialisierungen
-    _pvcUVParam       = NULL;
-    _pvcPoints        = NULL;
+    // Initializations
+    _pvcUVParam       = nullptr;
+    _pvcPoints        = nullptr;
     _clFirstMatrix.Init(0.0);
     _clSecondMatrix.Init(0.0);
     _clThirdMatrix.Init(0.0);
     _clSmoothMatrix.Init(0.0);
 
-    /* Berechne die Knotenvektoren */
+    /* Calculate the knot vectors */
     unsigned usUMax = _usUCtrlpoints-_usUOrder+1;
     unsigned usVMax = _usVCtrlpoints-_usVOrder+1;
 
-    // Knotenvektor fuer die CAS.CADE-Klasse
-    // u-Richtung
+    // Knot vector for the CAS.CADE class
+    // u-direction
     for (unsigned i=0;i<=usUMax; i++) {
         _vUKnots(i) = static_cast<double>(i) / static_cast<double>(usUMax);
         _vUMults(i) = 1;
@@ -804,7 +804,7 @@ void BSplineParameterCorrection::Init()
     _vUMults(0) = _usUOrder;
     _vUMults(usUMax) = _usUOrder;
 
-    // v-Richtung
+    // v-direction
     for (unsigned i=0; i<=usVMax; i++) {
         _vVKnots(i) = static_cast<double>(i) / static_cast<double>(usVMax);
         _vVMults(i) = 1;
@@ -813,7 +813,7 @@ void BSplineParameterCorrection::Init()
     _vVMults(0) = _usVOrder;
     _vVMults(usVMax) = _usVOrder;
 
-    // Setzen der B-Spline-Basisfunktionen
+    // Set the B-spline basic functions
     _clUSpline.SetKnots(_vUKnots, _vUMults, _usUOrder);
     _clVSpline.SetKnots(_vVKnots, _vVMults, _usVOrder);
 }
@@ -827,14 +827,14 @@ void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 
     unsigned usUMax = _usUCtrlpoints-_usUOrder+1;
 
-    // Knotenvektor fuer die CAS.CADE-Klasse
-    // u-Richtung
+    // Knot vector for the CAS.CADE class
+    // u-direction
     for (unsigned i=1;i<usUMax; i++) {
         _vUKnots(i) = afKnots[_usUOrder+i-1];
         _vUMults(i) = 1;
     }
 
-    // Setzen der B-Spline-Basisfunktionen
+    // Set the B-spline basic functions
     _clUSpline.SetKnots(_vUKnots, _vUMults, _usUOrder);
 }
 
@@ -847,14 +847,14 @@ void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
 
     unsigned usVMax = _usVCtrlpoints-_usVOrder+1;
 
-    // Knotenvektor fuer die CAS.CADE-Klasse
-    // v-Richtung
+    // Knot vector for the CAS.CADE class
+    // v-direction
     for (unsigned i=1; i<usVMax; i++) {
         _vVKnots(i) = afKnots[_usVOrder+i-1];
         _vVMults(i) = 1;
     }
 
-    // Setzen der B-Spline-Basisfunktionen
+    // Set the B-spline basic functions
     _clVSpline.SetKnots(_vVKnots, _vVMults, _usVOrder);
 }
 
@@ -879,16 +879,16 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
             gp_Vec P(pnt.X(), pnt.Y(), pnt.Z());
             gp_Pnt PntX;
             gp_Vec Xu, Xv, Xuv, Xuu, Xvv;
-            //Berechne die ersten beiden Ableitungen und Punkt an der Stelle (u,v)
+            // Calculate the first two derivatives and point at (u,v)
             gp_Pnt2d& uvValue = (*_pvcUVParam)(ii);
             pclBSplineSurf->D2(uvValue.X(), uvValue.Y(), PntX, Xu, Xv, Xuu, Xvv, Xuv);
             gp_Vec X(PntX.X(), PntX.Y(), PntX.Z());
             gp_Vec ErrorVec = X - P;
 
-            // Berechne Xu x Xv die Normale in X(u,v)
+            // Calculate Xu x Xv the normal in X(u,v)
             gp_Dir clNormal = Xu ^ Xv;
 
-            //Pruefe, ob X = P
+            //Check, if X = P
             if (!(X.IsEqual(P,0.001,0.001))) {
                 ErrorVec.Normalize();
                 if (fabs(clNormal*ErrorVec) < fMaxScalar)
@@ -902,7 +902,7 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
             if (fabs(fDeltaV) < Precision::Confusion())
                 fDeltaV = 0.0;
 
-            //Ersetze die alten u/v-Werte durch die neuen
+            //Replace old u/v values with new ones
             fU = uvValue.X() - fDeltaU;
             fV = uvValue.Y() - fDeltaV;
             if (fU <= 1.0 && fU >= 0.0 &&
@@ -941,14 +941,14 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
     math_Vector by (0, ulSize-1);
     math_Vector bz (0, ulSize-1);
 
-    //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
+    // Determining the coefficient matrix of the overdetermined LGS
     for (unsigned i=0; i<ulSize; i++) {
         const gp_Pnt2d& uvValue = (*_pvcUVParam)(i);
         double fU = uvValue.X();
         double fV = uvValue.Y();
         unsigned ulIdx=0;
 
-        // Vorberechnung der Werte der Basis-Funktionen
+        // Pre-calculation of the values of the base functions
         std::vector<double> basisU(_usUCtrlpoints);
         for (unsigned j=0; j<_usUCtrlpoints; j++) {
             basisU[j] = _clUSpline.BasisFunction(j,fU);
@@ -975,19 +975,19 @@ bool BSplineParameterCorrection::SolveWithoutSmoothing()
         }
     }
 
-    //Bestimmen der rechten Seite
+    // Determine the right side
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         const gp_Pnt& pnt = (*_pvcPoints)(ii);
         bx(ii) = pnt.X(); by(ii) = pnt.Y(); bz(ii) = pnt.Z();
     }
 
-    // Loese das ueberbest. LGS mit der Householder-Transformation
+    // Solve the over-determined LGS with Householder-Transformation
     math_Householder hhX(M,bx);
     math_Householder hhY(M,by);
     math_Householder hhZ(M,bz);
 
     if (!(hhX.IsDone() && hhY.IsDone() && hhZ.IsDone()))
-        //LGS konnte nicht geloest werden
+        // LGS could not be solved
         return false;
     Xx = hhX.AllValues();
     Xy = hhY.AllValues();
@@ -1008,7 +1008,7 @@ namespace Reen {
 class ScalarProduct
 {
 public:
-    ScalarProduct(const math_Matrix& mat) : mat(mat)
+    explicit ScalarProduct(const math_Matrix& mat) : mat(mat)
     {
     }
     std::vector<double> multiply(int col) const
@@ -1041,14 +1041,14 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     math_Vector Mby(0, ulDim-1);
     math_Vector Mbz(0, ulDim-1);
 
-    //Bestimmung der Koeffizientenmatrix des ueberbestimmten LGS
+    // Determining the coefficient matrix of the overdetermined LGS
     for (unsigned i=0; i<ulSize; i++) {
         const gp_Pnt2d& uvValue = (*_pvcUVParam)(i);
         double fU = uvValue.X();
         double fV = uvValue.Y();
         int ulIdx=0;
 
-        // Vorberechnung der Werte der Basis-Funktionen
+        // Pre-calculation of the values of the basis functions
         std::vector<double> basisU(_usUCtrlpoints);
         for (unsigned j=0; j<_usUCtrlpoints; j++) {
             basisU[j] = _clUSpline.BasisFunction(j,fU);
@@ -1075,7 +1075,8 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
         }
     }
 
-    //Das Produkt aus ihrer Transformierten und ihr selbst ergibt die quadratische Systemmatrix (langsam)
+    // The product of its transform and itself results in the quadratic
+    // system matrix (slowly)
 #if 0
     math_Matrix MTM = M.TMultiply(M);
 #elif 0
@@ -1106,7 +1107,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     }
 #endif
 
-    //Bestimmen der rechten Seite
+    // Determine the right side
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         const gp_Pnt& pnt = (*_pvcPoints)(ii);
         bx(ii) = pnt.X(); by(ii) = pnt.Y(); bz(ii) = pnt.Z();
@@ -1118,7 +1119,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
         Mbz(i) = Mi * bz;
     }
 
-    // Loese das LGS mit der LU-Zerlegung
+    // Solve the LGS with the LU decomposition
     math_Gauss mgGaussX(MTM+fWeight*_clSmoothMatrix);
     math_Gauss mgGaussY(MTM+fWeight*_clSmoothMatrix);
     math_Gauss mgGaussZ(MTM+fWeight*_clSmoothMatrix);

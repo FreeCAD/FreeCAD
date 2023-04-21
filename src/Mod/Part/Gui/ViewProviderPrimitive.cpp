@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,16 +27,8 @@
 # include <QMenu>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <App/Document.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
-
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
 #include "ViewProviderPrimitive.h"
@@ -45,7 +36,6 @@
 
 
 using namespace PartGui;
-
 
 PROPERTY_SOURCE(PartGui::ViewProviderPrimitive, PartGui::ViewProviderPart)
 
@@ -65,20 +55,9 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, boost::bind(&ViewProviderPrimitive::startDefaultEditMode, this));
+    func->trigger(act, std::bind(&ViewProviderPrimitive::startDefaultEditMode, this));
 
     ViewProviderPart::setupContextMenu(menu, receiver, member);
-}
-
-void ViewProviderPrimitive::startDefaultEditMode()
-{
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
-    Gui::Document* document = this->getDocument();
-    if (document) {
-        document->setEdit(this, ViewProvider::Default);
-    }
 }
 
 bool ViewProviderPrimitive::setEdit(int ModNum)

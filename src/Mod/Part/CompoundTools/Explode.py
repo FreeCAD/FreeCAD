@@ -1,10 +1,19 @@
+import FreeCAD
+import Part
+
 from .CompoundFilter import makeCompoundFilter
 
 def explodeCompound(compound_obj, b_group = None):
     """explodeCompound(compound_obj, b_group = None): creates a bunch of compound filters, to extract every child of a compound into a separate object.
     group: if True, Group is always made. If False, group is never made. If None, group is made if there is more than one child.
     returns: (group_object, list_of_child_objects)"""
-    sh = compound_obj.Shape
+
+    if (isinstance(compound_obj, FreeCAD.GeoFeature) and
+        isinstance(compound_obj.getPropertyOfGeometry(), Part.Shape)):
+        sh = compound_obj.getPropertyOfGeometry()
+    else:
+        raise TypeError("Object must be App.GeoFeature with Part.Shape property")
+
     n = len(sh.childShapes(False,False))
     if b_group is None:
         b_group = n > 1

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS.hxx>
@@ -28,15 +27,16 @@
 # include <TopoDS_Face.hxx>
 #endif
 
+#include <Base/VectorPy.h>
+
 #include "BRepFeat/MakePrismPy.h"
 #include "BRepFeat/MakePrismPy.cpp"
 #include "Geometry.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeFacePy.h"
-#include <Base/VectorPy.h>
+
 
 using namespace Part;
-
 
 PyObject *MakePrismPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
@@ -66,7 +66,7 @@ int MakePrismPy::PyInit(PyObject* args, PyObject* kwds)
             TopoDS_Face skface = TopoDS::Face(static_cast<TopoShapePy*>(Skface)->getTopoShapePtr()->getShape());
             Base::Vector3d dir = static_cast<Base::VectorPy*>(Direction)->value();
             std::unique_ptr<BRepFeat_MakePrism> ptr(new BRepFeat_MakePrism(sbase, pbase, skface, gp_Dir(dir.x, dir.y, dir.z), Fuse,
-                                                                           PyObject_IsTrue(Modify) ? Standard_True : Standard_False));
+                                                                           Base::asBoolean(Modify)));
 
             setTwinPointer(ptr.release());
             return 0;
@@ -97,7 +97,7 @@ int MakePrismPy::PyInit(PyObject* args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string MakePrismPy::representation(void) const
+std::string MakePrismPy::representation() const
 {
     return std::string("<BRepFeat_MakePrism object>");
 }
@@ -126,7 +126,7 @@ PyObject* MakePrismPy::init(PyObject *args,  PyObject* kwds)
         TopoDS_Face skface = TopoDS::Face(static_cast<TopoShapePy*>(Skface)->getTopoShapePtr()->getShape());
         Base::Vector3d dir = static_cast<Base::VectorPy*>(Direction)->value();
         getBRepFeat_MakePrismPtr()->Init(sbase, pbase, skface, gp_Dir(dir.x, dir.y, dir.z), Fuse,
-                                         PyObject_IsTrue(Modify) ? Standard_True : Standard_False);
+                                         Base::asBoolean(Modify));
 
         Py_Return;
     }
@@ -330,7 +330,7 @@ PyObject* MakePrismPy::shape(PyObject *args)
 
 PyObject *MakePrismPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int MakePrismPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

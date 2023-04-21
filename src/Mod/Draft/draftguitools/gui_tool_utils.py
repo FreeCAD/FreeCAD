@@ -72,10 +72,9 @@ def select_object(arg):
         If it is of type Keyboard and the `ESCAPE` key, it runs the `finish`
         method of the active command.
 
-        If it is of type Mouse button and `BUTTON1` press,
-        it captures the position of the cursor (x, y)
-        and the object below that cursor to add it to the active selection;
-        then it runs the `proceed` method of the active command
+        If Ctrl key is pressed, multiple selection is enabled until the
+        button is released.
+        Then it runs the `proceed` method of the active command
         to continue with the command's logic.
     """
     if arg["Type"] == "SoKeyboardEvent":
@@ -83,16 +82,8 @@ def select_object(arg):
             App.activeDraftCommand.finish()
             # TODO: this part raises a coin3D warning about scene traversal.
             # It needs to be fixed.
-    elif arg["Type"] == "SoMouseButtonEvent":
-        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
-            cursor = arg["Position"]
-            snapped = gui_utils.get_3d_view().getObjectInfo((cursor[0],
-                                                             cursor[1]))
-            if snapped:
-                obj = App.ActiveDocument.getObject(snapped['Object'])
-                Gui.Selection.addSelection(obj)
-                App.activeDraftCommand.component = snapped['Component']
-                App.activeDraftCommand.proceed()
+    elif not arg["CtrlDown"] and Gui.Selection.hasSelection():
+        App.activeDraftCommand.proceed()
 
 
 selectObject = select_object

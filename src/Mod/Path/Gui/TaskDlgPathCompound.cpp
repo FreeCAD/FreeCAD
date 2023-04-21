@@ -20,26 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QRegularExpression>
 #endif
 
-#include "TaskDlgPathCompound.h"
-#include "ui_TaskDlgPathCompound.h"
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 
-#include <Mod/Path/App/Tooltable.h>
+#include "TaskDlgPathCompound.h"
+#include "ui_TaskDlgPathCompound.h"
 
 
 using namespace PathGui;
@@ -79,14 +72,14 @@ TaskWidgetPathCompound::~TaskWidgetPathCompound()
     delete ui;
 }
 
-std::vector<std::string> TaskWidgetPathCompound::getList(void) const {
+std::vector<std::string> TaskWidgetPathCompound::getList() const {
     std::vector<std::string> names;
     for(int i = 0; i < ui->PathsList->count(); i++)
     {
         QListWidgetItem* item = ui->PathsList->item(i);
         QString name = item->text();
         QStringList result;
-        result = name.split(QRegExp(QString::fromLatin1("\\s+")));
+        result = name.split(QRegularExpression(QString::fromLatin1("\\s+")));
         std::cout << result[0].toStdString() << std::endl;
         names.push_back(result[0].toStdString());
     }
@@ -142,13 +135,13 @@ bool TaskDlgPathCompound::accept()
         paths.push_back(pcPath);
     }
     pcCompound->Group.setValues(paths);
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 
 bool TaskDlgPathCompound::reject()
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 

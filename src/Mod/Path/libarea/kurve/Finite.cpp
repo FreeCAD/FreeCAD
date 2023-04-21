@@ -18,7 +18,8 @@ namespace geoff_geometry {
 	int Intof(const Span& sp0, const Span& sp1, Point& p0, Point& p1, double t[4])
 	{
 		// returns the number of intersects (lying within spans sp0, sp1)
-		if(sp0.box.outside(sp1.box) == true) return 0;
+		if(sp0.box.outside(sp1.box))
+		    return 0;
 		if(!sp0.dir) {
 			if(!sp1.dir) {
 				// line line
@@ -64,9 +65,11 @@ namespace geoff_geometry {
 		double toler = geoff_geometry::TOLERANCE / sp0.length;				// calc a parametric tolerance
 
 		t[1] = (v0 ^ v2) / cp;
-		if(t[0] < -toler || t[0] > 1 + toler) return 0;						// intersection on first?
+		if(t[0] < -toler || t[0] > 1 + toler)						// intersection on first?
+		    return 0;
 		toler = geoff_geometry::TOLERANCE / sp1.length;						// calc a parametric tolerance
-		if(t[1] < -toler || t[1] > 1 + toler) return 0;						// intersection on second?
+		if(t[1] < -toler || t[1] > 1 + toler)						// intersection on second?
+		    return 0;
 		return 1;
 	}
 
@@ -125,7 +128,7 @@ namespace geoff_geometry {
 	bool Span::OnSpan(const Point& p, double* t)const {
 		// FAST OnSpan test - assumes that p lies ON the unbounded span
 #if _DEBUG
-		if(this->returnSpanProperties == false) {
+		if(!this->returnSpanProperties) {
 			FAILURE(L"OnSpan - properties no set, incorrect calling code");
 		}
 #endif
@@ -237,7 +240,8 @@ namespace geoff_geometry {
 
 	bool Line::atZ(double z, Point3d& p)const {
 		// returns p at z on line
-		if(FEQZ(this->v.getz())) return false;
+		if(FEQZ(this->v.getz()))
+		    return false;
 		double t = (z - this->p0.z) / this->v.getz();
 		p = Point3d(this->p0.x + t * this->v.getx(), this->p0.y + t * this->v.gety(), z);
 		return true;
@@ -253,13 +257,14 @@ namespace geoff_geometry {
 	Return FALSE if no solution exists.       P Bourke method.
 		Input this 1st line
 		Input l2   2nd line
-		Output lshort shortest line between lines (if lshort.ok == false, the line intersect at a point lshort.p0)
+		Output lshort shortest line between lines (if !lshort.ok, the line intersect at a point lshort.p0)
 		Output t1 parameter at intersection on 1st Line
 		Output t2 parameter at intersection on 2nd Line
 
 	*/
 		Vector3d v13(l2.p0, this->p0);
-		if(this->ok == false || l2.ok == false) return false;
+		if(!this->ok || !l2.ok)
+		    return false;
 
 		double d1343 = v13 * l2.v;		// dot products
 		double d4321 = l2.v * this->v;
@@ -268,7 +273,8 @@ namespace geoff_geometry {
 		double d2121 = this->v * this->v;
 
 		double denom = d2121 * d4343 - d4321 * d4321;
-		if(fabs(denom) < 1.0e-09) return false;
+		if(fabs(denom) < 1.0e-09)
+		    return false;
 		double numer = d1343 * d4321 - d1321 * d4343;
 
 		t1 = numer / denom;
@@ -308,7 +314,8 @@ namespace geoff_geometry {
 		c = Vector3d(l1, l0)
 		*/
 		//	Vector3d a = l0.v;
-		if(l0.box.outside(l1.box) == true) return 0;
+		if(l0.box.outside(l1.box))
+		    return 0;
 		Vector3d b = -l1.v;
 		Vector3d c = Vector3d(l1.p0, l0.p0);
 		Vector3d det = l0.v ^ b;
@@ -331,17 +338,20 @@ namespace geoff_geometry {
 			}
 		}
 
-		if(fabs(d) < 1.0e-06) return 0;
+		if(fabs(d) < 1.0e-06)
+		    return 0;
 
 		t0 /= d;
 		intof = l0.v * t0 + l0.p0;
 
 		Point3d other;
 		double t1;
-		if(Dist(l1, intof, other, t1) > geoff_geometry::TOLERANCE) return 0;
+		if(Dist(l1, intof, other, t1) > geoff_geometry::TOLERANCE)
+		    return 0;
 
 		t0 *= l0.length;
-		if( t0 < -geoff_geometry::TOLERANCE || t0 > l0.length + geoff_geometry::TOLERANCE || t1 < -geoff_geometry::TOLERANCE || t1 > l1.length + geoff_geometry::TOLERANCE ) return 0;
+		if( t0 < -geoff_geometry::TOLERANCE || t0 > l0.length + geoff_geometry::TOLERANCE || t1 < -geoff_geometry::TOLERANCE || t1 > l1.length + geoff_geometry::TOLERANCE )
+		    return 0;
 		return 1;
 	}
 
@@ -419,7 +429,8 @@ namespace geoff_geometry {
 				pnear = v * (sp.radius / radiusp) + sp.pc;
 
 				// check if projected point is on the arc
-				if(sp.OnSpan(pnear)) return fabs(radiusp - sp.radius);
+				if(sp.OnSpan(pnear))
+				    return fabs(radiusp - sp.radius);
 				// double      h1 = pnear.x - sp.p0.x ;
 				// double      v1 = pnear.y - sp.p0.y ;
 				// double      h2 = sp.p1.x - pnear.x ;
@@ -455,7 +466,8 @@ namespace geoff_geometry {
 		if(sp.dir) {
 			// arc
 			if(fabs(p.Dist(sp.pc) - sp.radius) > geoff_geometry::TOLERANCE) {
-				if(!nearPoints) return false;
+				if(!nearPoints)
+				    return false;
 			}
 
 			pNear = On(Circle(sp.pc, sp.radius), p);
@@ -472,7 +484,8 @@ namespace geoff_geometry {
 		else {
 			// straight
 			if(fabs(CLine(sp.p0, sp.vs).Dist(p)) > geoff_geometry::TOLERANCE) {
-				if(!nearPoints) return false;
+				if(!nearPoints)
+				    return false;
 			}
 			Vector2d v(sp.p0, p);
 			double t = v * sp.vs;
@@ -513,7 +526,8 @@ namespace geoff_geometry {
 	// function returns true for intersection, false for no intersection
 	// method based on Möller & Trumbore(1997) (Barycentric coordinates)
 	// based on incorrect Pseudo code from "Geometric Tools for Computer Graphics" p.487
-		if(box.outside(l.box) == true) return false;
+		if(box.outside(l.box))
+		    return false;
 
 		Vector3d line(l.v);
 		line.normalise();
@@ -521,19 +535,23 @@ namespace geoff_geometry {
 		Vector3d p = line ^ v1;				// cross product
 		double tmp = p * v0;				// dot product
 
-		if(FEQZ(tmp)) return false;
+		if(FEQZ(tmp))
+		    return false;
 
 		tmp = 1 / tmp;
 		Vector3d s(vert1, l.p0);
 
 		double u = tmp * (s * p);			// barycentric coordinate
-		if(u < 0 || u > 1) return false;	// not inside triangle
+		if(u < 0 || u > 1)	// not inside triangle
+		    return false;
 
 		Vector3d q = s ^ v0;
 		double v = tmp * (line * q);		// barycentric coordinate
-		if(v < 0 || v > 1) return false;	// not inside triangle
+		if(v < 0 || v > 1)	// not inside triangle
+		    return false;
 
-		if( u + v > 1) return false;		// not inside triangle
+		if( u + v > 1)		// not inside triangle
+		    return false;
 
 		double t = tmp * (v1 * q);
 		intof = line * t + l.p0;
@@ -544,11 +562,16 @@ namespace geoff_geometry {
 	// box class
 	bool Box::outside(const Box& b)const {
 		// returns true if this box is outside b
-		if(b.ok == false || this->ok == false) return false;	// no box set
-		if(this->max.x < b.min.x) return true;
-		if(this->max.y < b.min.y) return true;
-		if(this->min.x > b.max.x) return true;
-		if(this->min.y > b.max.y) return true;
+		if(!b.ok || !this->ok)	// no box set
+		    return false;
+		if(this->max.x < b.min.x)
+		    return true;
+		if(this->max.y < b.min.y)
+		    return true;
+		if(this->min.x > b.max.x)
+		    return true;
+		if(this->min.y > b.max.y)
+		    return true;
 		return false;
 	}
 
@@ -570,24 +593,33 @@ namespace geoff_geometry {
 
 	bool Box3d::outside(const Box3d& b) const{
 		// returns true if this box is outside b
-		if(b.ok == false || this->ok == false) return false;	// no box set
-		if(this->max.x < b.min.x) return true;
-		if(this->max.y < b.min.y) return true;
-		if(this->max.z < b.min.z) return true;
-		if(this->min.x > b.max.x) return true;
-		if(this->min.y > b.max.y) return true;
-		if(this->min.z > b.max.z) return true;
+		if(!b.ok || !this->ok)	// no box set
+		    return false;
+		if(this->max.x < b.min.x)
+		    return true;
+		if(this->max.y < b.min.y)
+		    return true;
+		if(this->max.z < b.min.z)
+		    return true;
+		if(this->min.x > b.max.x)
+		    return true;
+		if(this->min.y > b.max.y)
+		    return true;
+		if(this->min.z > b.max.z)
+		    return true;
 		return false;
 	}
 #if 0
 	Span3d IsPtsSpan3d(const double* a, int n, double tolerance, double* deviation) {
 		// returns a span3d if all points are within tolerance
 		int np = n / 3;					// number of points
-		if(np < 2) return Span3d();		// Invalid span3d
+		if(np < 2)		// Invalid span3d
+		    return Span3d();
 		Point3d sp = Point3d(&a[0]);
 		Point3d ep = Point3d(&a[n-3]);
 		Line line = IsPtsLine(a, n, tolerance, deviation);
-		if(line.ok) return Span3d(sp, ep);	// it's a line
+		if(line.ok)	// it's a line
+		    return Span3d(sp, ep);
 
 		*deviation = 0;					// cumulative deviation
 		Point3d mp = Point3d(&a[np / 2 * 3]);	// mid point
@@ -632,7 +664,8 @@ double tolerance = 10.0 * 1.0e-6;
 		// deviation is returned as the sum of all deviations of interior points to line(sp,ep)
 		int np = n / 3;					// number of points
 		*deviation = 0;					// cumulative deviation
-		if(np < 2) return Line();		// Invalid line
+		if(np < 2)		// Invalid line
+		    return Line();
 
 		Point3d sp(&a[0]);
 		Point3d ep(&a[n-3]);

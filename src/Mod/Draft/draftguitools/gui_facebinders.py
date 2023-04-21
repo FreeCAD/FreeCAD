@@ -81,7 +81,7 @@ class Facebinder(gui_base_original.Creator):
             App.ActiveDocument.openTransaction("Create Facebinder")
             Gui.addModule("Draft")
             Gui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
-            Gui.doCommand("facebinder = Draft.makeFacebinder(s)")
+            Gui.doCommand("facebinder = Draft.make_facebinder(s)")
             Gui.doCommand('Draft.autogroup(facebinder)')
             Gui.doCommand('FreeCAD.ActiveDocument.recompute()')
             App.ActiveDocument.commitTransaction()

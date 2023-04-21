@@ -25,6 +25,7 @@
 #define PART_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace PartGui {
 
@@ -33,19 +34,19 @@ namespace PartGui {
  */
 class PartGuiExport Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
   Workbench();
-  virtual ~Workbench();
+  ~Workbench() override;
 
 protected:
-  Gui::MenuItem* setupMenuBar() const;
-  Gui::ToolBarItem* setupToolBars() const;
-  Gui::ToolBarItem* setupCommandBars() const;
+  Gui::MenuItem* setupMenuBar() const override;
+  Gui::ToolBarItem* setupToolBars() const override;
+  Gui::ToolBarItem* setupCommandBars() const override;
 };
 
 } // namespace PartGui
 
 
-#endif // PART_WORKBENCH_H 
+#endif // PART_WORKBENCH_H

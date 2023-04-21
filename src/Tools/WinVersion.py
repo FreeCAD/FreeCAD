@@ -11,7 +11,7 @@ def main():
 
     input=""
     output="."
-    
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dso:", ["dir=","src=","out="])
     except getopt.GetoptError:
@@ -25,8 +25,8 @@ def main():
         if o in ("-o", "--out"):
             output = a
     git = SubWCRev.GitControl()
-    
-    if(git.extractInfo(input)):
+
+    if(git.extractInfo(input, "")):
         print(git.hash)
         print(git.branch)
         print(git.rev[0:4])
@@ -34,7 +34,7 @@ def main():
         print(git.url)
         print(input)
         print(output)
-        
+
         f = open(input,'r')
         o = open(output,'w')
         for line in f.readlines():

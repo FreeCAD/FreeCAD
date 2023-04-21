@@ -20,64 +20,64 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreCpmp_
 # include <QButtonGroup>
 # include <QPushButton>
 # include <sstream>
-# include <Python.h>
-# include <boost_bind_bind.hpp>
-
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom_ElementarySurface.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_SphericalSurface.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <TopExp.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRep_Tool.hxx>
-# include <TopExp.hxx>
-# include <Geom_ElementarySurface.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom_SphericalSurface.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
 
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoMatrixTransform.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/engines/SoCalculator.h>
+# include <Inventor/engines/SoComposeVec3f.h>
+# include <Inventor/engines/SoConcatenate.h>
+# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/engines/SoComposeRotationFromTo.h>
+
 # include <Inventor/nodekits/SoShapeKit.h>
-# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoNurbsCurve.h>
-# include <Inventor/engines/SoComposeVec3f.h>
-# include <Inventor/engines/SoCalculator.h>
-# include <Inventor/nodes/SoResetTransform.h>
-# include <Inventor/engines/SoConcatenate.h>
-# include <Inventor/engines/SoComposeRotationFromTo.h>
-# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMatrixTransform.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoResetTransform.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <Inventor/nodes/SoVertexProperty.h>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
-#include "../App/PartFeature.h"
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Selection.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskDimension.h"
+
 
 namespace bp = boost::placeholders;
 
@@ -120,13 +120,13 @@ bool PartGui::getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc
 
 bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &shape2)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(0,false);
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
   if (selections.size() != 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
   std::vector<TopoDS_Shape> shapes;
   DimSelections sels[2];
-  
+
   int i=0;
   for (it = selections.begin(); it != selections.end(); ++it)
   {
@@ -147,9 +147,9 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
 
   shape1 = shapes.front();
   shape2 = shapes.back();
-  
+
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc) 
+  if(doc)
     _Measures[doc->getName()].emplace_back(sels[0],sels[1],true);
   return true;
 }
@@ -224,28 +224,48 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
   Base::Console().Message(out.str().c_str());
 }
 
+auto PartGui::getDimensionsFontName()
+{
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
+  std::string fontName = group->GetASCII("DimensionsFontName", "defaultFont");
+  // if there is only italic, we must output ":Italic", otherwise ":Bold Italic"
+  if (group->GetBool("DimensionsFontStyleBold")) {
+      fontName = fontName + " :Bold";
+      if (group->GetBool("DimensionsFontStyleItalic"))
+          fontName = fontName + " Italic";
+  }
+  else {
+      if (group->GetBool("DimensionsFontStyleItalic"))
+          fontName = fontName + " :Italic";
+  }
+  return fontName;
+}
+
+auto PartGui::getDimensionsFontSize()
+{
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
+  return group->GetInt("DimensionsFontSize", 30);
+}
+
 Gui::View3DInventorViewer * PartGui::getViewer()
 {
   Gui::Document *doc = Gui::Application::Instance->activeDocument();
   if (!doc)
-    return 0;
+    return nullptr;
   Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
-    return 0;
+    return nullptr;
   Gui::View3DInventorViewer *viewer = view->getViewer();
   if (!viewer)
-    return 0;
+    return nullptr;
   return viewer;
 }
 
 void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
 {
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-  App::Color c(1.0,0.0,0.0);
-  c.fromHexString(group->GetASCII("Dimensions3dColor", c.asHexString().c_str()));
-  App::Color d(0.0,1.0,0.0);
-  d.fromHexString(group->GetASCII("DimensionsDeltaColor", d.asHexString().c_str()));
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
+  App::Color c((uint32_t) group->GetUnsigned("Dimensions3dColor",    0xFF000000));
+  App::Color d((uint32_t) group->GetUnsigned("DimensionsDeltaColor", 0x00FF0000));
 
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
@@ -302,7 +322,7 @@ void PartGui::eraseAllDimensions()
 
 void PartGui::refreshDimensions() {
   auto doc = App::GetApplication().getActiveDocument();
-  if(!doc) 
+  if(!doc)
       return;
   auto it = _Measures.find(doc->getName());
   if(it == _Measures.end())
@@ -317,7 +337,7 @@ void PartGui::refreshDimensions() {
           PartGui::TaskMeasureAngular::buildDimension(info.sel1,info.sel2);
   }
 }
-    
+
 void PartGui::toggle3d()
 {
   ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -407,6 +427,11 @@ SbBool PartGui::DimensionLinear::affectsState() const
 
 void PartGui::DimensionLinear::setupDimension()
 {
+  //make unpickable
+  SoPickStyle* ps = static_cast<SoPickStyle*>(getPart("pickStyle", true));
+  if (ps)
+      ps->style = SoPickStyle::UNPICKABLE;
+
   //transformation
   SoTransform *trans = static_cast<SoTransform *>(getPart("transformation", true));
   trans->translation.connectFrom(&point1);
@@ -498,8 +523,8 @@ void PartGui::DimensionLinear::setupDimension()
   textSep->addChild(textTransform);
 
   SoFont *fontNode = new SoFont();
-  fontNode->name.setValue("defaultFont");
-  fontNode->size.setValue(30);
+  fontNode->name.setValue(getDimensionsFontName().c_str());
+  fontNode->size.setValue(getDimensionsFontSize());
   textSep->addChild(fontNode);
 
   SoText2 *textNode = new SoText2();
@@ -514,7 +539,7 @@ void PartGui::DimensionLinear::setupDimension()
 }
 
 PartGui::TaskMeasureLinear::TaskMeasureLinear()
-    : Gui::SelectionObserver(true,false)
+    : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , selections1(), selections2(), buttonSelectedIndex(0)
 {
   setUpGui();
@@ -547,7 +572,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
       newSelection.z = msg.z;
       selections1.selections.clear();//we only want one item.
       selections1.selections.push_back(newSelection);
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureLinear::selectionClearDelayedSlot);
       stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
       return;
@@ -569,7 +594,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
       selections2.selections.push_back(newSelection);
       buildDimension();
       clearSelectionStrings();
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureLinear::selectionClearDelayedSlot);
       stepped->getButton(0)->setChecked(true);
       stepped->getButton(1)->setEnabled(false);
       return;
@@ -583,9 +608,9 @@ void PartGui::TaskMeasureLinear::selectionClearDelayedSlot()
   //clearing selections are not working as I hoped. Apparently the observer callback gets called
   //before the actual selection takes place. Resulting in selections being left. this addresses this
   //by being called from the event loop.
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::buildDimension() {
@@ -596,10 +621,10 @@ void PartGui::TaskMeasureLinear::buildDimension(const DimSelections &sel1, const
 {
   if(sel1.selections.size() != 1 || sel2.selections.size() != 1)
     return;
-  
+
   DimSelections::DimSelection current1 = sel1.selections.at(0);
   DimSelections::DimSelection current2 = sel2.selections.at(0);
-  
+
   TopoDS_Shape shape1, shape2;
   if (!getShapeFromStrings(shape1, current1.documentName, current1.objectName, current1.subObjectName))
   {
@@ -612,7 +637,7 @@ void PartGui::TaskMeasureLinear::buildDimension(const DimSelections &sel1, const
     return;
   }
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc) 
+  if(doc)
     _Measures[doc->getName()].emplace_back(sel1,sel2,true);
   goDimensionLinearNoTask(shape1, shape2);
 }
@@ -628,48 +653,48 @@ void PartGui::TaskMeasureLinear::setUpGui()
   QPixmap mainIcon = Gui::BitmapFactory().pixmap("Part_Measure_Linear");
 
   Gui::TaskView::TaskBox* selectionTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Selections"), false, 0);
+    (mainIcon, QObject::tr("Selections"), false, nullptr);
   QVBoxLayout *selectionLayout = new QVBoxLayout();
   stepped = new SteppedSelection(2, selectionTaskBox);
   selectionLayout->addWidget(stepped);
   selectionTaskBox->groupLayout()->addLayout(selectionLayout);
 
   Gui::TaskView::TaskBox* controlTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Control"), false, 0);
+    (mainIcon, QObject::tr("Control"), false, nullptr);
   QVBoxLayout *controlLayout = new QVBoxLayout();
 
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
-  QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
+  QObject::connect(control->resetButton, &QPushButton::clicked, this, &TaskMeasureLinear::resetDialogSlot);
 
-  this->setButtonPosition(TaskDialog::South);
+  this->setButtonPosition(TaskDialog::North);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
 
   stepped->getButton(0)->setChecked(true);//before wired up.
   stepped->getButton(0)->setEnabled(true);
-  QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
-  QObject::connect(stepped->getButton(1), SIGNAL(toggled(bool)), this, SLOT(selection2Slot(bool)));
+  QObject::connect(stepped->getButton(0), &QPushButton::toggled, this, &TaskMeasureLinear::selection1Slot);
+  QObject::connect(stepped->getButton(1), &QPushButton::toggled, this, &TaskMeasureLinear::selection2Slot);
 }
 
 void PartGui::TaskMeasureLinear::selection1Slot(bool checked)
 {
   if (!checked)
   {
-    if (selections1.selections.size() > 0)
+    if (!selections1.selections.empty())
       stepped->setIconDone(0);
     return;
   }
   buttonSelectedIndex = 0;
 
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   //we should only be working with 1 entity, but oh well do the loop anyway.
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections1.selections.begin(); it != selections1.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::selection2Slot(bool checked)
@@ -677,22 +702,22 @@ void PartGui::TaskMeasureLinear::selection2Slot(bool checked)
   if (!checked)
     return;
   buttonSelectedIndex = 1;
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections2.selections.begin(); it != selections2.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::resetDialogSlot(bool)
 {
   clearSelectionStrings();
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
   stepped->getButton(1)->setEnabled(false);
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::toggle3dSlot(bool)
@@ -831,7 +856,7 @@ void PartGui::goDimensionAngularRoot()
 
 bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapter &vector2Out)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(0,false);
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
   if (selections.size() > 4 || selections.size() < 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -845,12 +870,12 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     if (shape.IsNull())
       break;
     mat.inverse();
-    
+
     if (shape.ShapeType() == TopAbs_VERTEX)
     {
-        if(sels.empty() || 
+        if(sels.empty() ||
            sels.back().selections.back().shapeType!=DimSelections::Vertex ||
-           sels.back().selections.size()==1) 
+           sels.back().selections.size()==1)
         {
             sels.emplace_back();
         }
@@ -902,7 +927,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     sel.x = v.x;
     sel.y = v.y;
     sel.z = v.z;
-    
+
     if (shape.ShapeType() == TopAbs_EDGE)
     {
       sel.shapeType = DimSelections::Edge;
@@ -948,7 +973,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
   }
 
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc) 
+  if(doc)
     _Measures[doc->getName()].emplace_back(sels[0],sels[1],false);
   return true;
 }
@@ -1101,10 +1126,8 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     dimSys = dimSys.transpose();
   }
 
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-  App::Color c(0.0,0.0,1.0);
-  c.fromHexString(group->GetASCII("DimensionsAngularColor", c.asHexString().c_str()));
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
+  App::Color c((uint32_t) group->GetUnsigned("DimensionsAngularColor", 0x0000FF00));
 
   DimensionAngular *dimension = new DimensionAngular();
   dimension->ref();
@@ -1283,8 +1306,8 @@ void PartGui::DimensionAngular::setupDimension()
   textSep->addChild(textTransform);
 
   SoFont *fontNode = new SoFont();
-  fontNode->name.setValue("defaultFont");
-  fontNode->size.setValue(30);
+  fontNode->name.setValue(getDimensionsFontName().c_str());
+  fontNode->size.setValue(getDimensionsFontSize());
   textSep->addChild(fontNode);
 
   SoText2 *textNode = new SoText2();
@@ -1379,8 +1402,8 @@ void PartGui::ArcEngine::defaultValues()
 
 PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent)
   : QWidget(parent)
-  , stepActive(0)
-  , stepDone(0)
+  , stepActive(nullptr)
+  , stepDone(nullptr)
 {
   if (buttonCountIn < 1)
     return;
@@ -1394,15 +1417,15 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
   for (uint index = 0; index < buttonCountIn; ++index)
   {
     ButtonIconPairType tempPair;
-
+    QString text = QObject::tr("Selection ");
     std::ostringstream stream;
-    stream << "Selection " << ((index < 10) ? "0" : "") <<  index + 1;
-    QString buttonText = QObject::tr(stream.str().c_str());
+    stream << text.toStdString() << ((index < 10) ? "0" : "") <<  index + 1;
+    QString buttonText = QString::fromStdString(stream.str());
     QPushButton *button = new QPushButton(buttonText, this);
     button->setCheckable(true);
     button->setEnabled(false);
     buttonGroup->addButton(button);
-    connect(button, SIGNAL(toggled(bool)), this, SLOT(selectionSlot(bool)));
+    connect(button, &QPushButton::toggled, this, &SteppedSelection::selectionSlot);
 
     QLabel *label = new QLabel;
 
@@ -1427,12 +1450,12 @@ PartGui::SteppedSelection::~SteppedSelection()
   if(stepActive)
   {
     delete stepActive;
-    stepActive = 0;
+    stepActive = nullptr;
   }
   if (stepDone)
   {
     delete stepDone;
-    stepDone = 0;
+    stepDone = nullptr;
   }
 }
 
@@ -1449,7 +1472,7 @@ void PartGui::SteppedSelection::buildPixmaps()
 void PartGui::SteppedSelection::selectionSlot(bool checked)
 {
   QPushButton *sender = qobject_cast<QPushButton*>(QObject::sender());
-  assert(sender != 0);
+  assert(sender);
   std::vector<ButtonIconPairType>::iterator it;
   for (it = buttons.begin(); it != buttons.end(); ++it)
     if (it->first == sender)
@@ -1483,17 +1506,17 @@ PartGui::DimensionControl::DimensionControl(QWidget* parent): QWidget(parent)
 
   QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3D"),
                                                 QObject::tr("Toggle direct dimensions"), this);
-  QObject::connect(toggle3dButton, SIGNAL(clicked(bool)), this, SLOT(toggle3dSlot(bool)));
+  QObject::connect(toggle3dButton, &QPushButton::clicked, this, &DimensionControl::toggle3dSlot);
   commandLayout->addWidget(toggle3dButton);
 
   QPushButton *toggleDeltaButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_Delta"),
                                                    QObject::tr("Toggle orthogonal dimensions"), this);
-  QObject::connect(toggleDeltaButton, SIGNAL(clicked(bool)), this, SLOT(toggleDeltaSlot(bool)));
+  QObject::connect(toggleDeltaButton, &QPushButton::clicked, this, &DimensionControl::toggleDeltaSlot);
   commandLayout->addWidget(toggleDeltaButton);
 
   QPushButton *clearAllButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Clear_All"),
                                                 QObject::tr("Clear all dimensions"), this);
-  QObject::connect(clearAllButton, SIGNAL(clicked(bool)), this, SLOT(clearAllSlot(bool)));
+  QObject::connect(clearAllButton, &QPushButton::clicked, this, &DimensionControl::clearAllSlot);
   commandLayout->addWidget(clearAllButton);
 }
 
@@ -1513,7 +1536,7 @@ void PartGui::DimensionControl::clearAllSlot(bool)
 }
 
 PartGui::TaskMeasureAngular::TaskMeasureAngular()
-    : Gui::SelectionObserver(true,false)
+    : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , selections1(), selections2(), buttonSelectedIndex(0)
 {
   setUpGui();
@@ -1534,7 +1557,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 {
   TopoDS_Shape shape;
   Base::Matrix4D mat;
-  if (!getShapeFromStrings(shape, std::string(msg.pDocName), 
+  if (!getShapeFromStrings(shape, std::string(msg.pDocName),
               std::string(msg.pObjectName), std::string(msg.pSubName),&mat))
     return;
   mat.inverse();
@@ -1573,8 +1596,8 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
         assert(selections1.selections.size() == 2);
         assert(selections1.selections.at(0).shapeType == DimSelections::Vertex);
         assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
-        
-        QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+
+        QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
         stepped->getButton(1)->setEnabled(true);
         stepped->getButton(1)->setChecked(true);
         return;
@@ -1595,7 +1618,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
         selections1.selections.push_back(newSelection);
       }
 
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
       stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
       return;
@@ -1628,7 +1651,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 
         buildDimension();
         clearSelection();
-        QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+        QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
         stepped->getButton(0)->setChecked(true);
         stepped->getButton(1)->setEnabled(false);
         return;
@@ -1650,7 +1673,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 
       buildDimension();
       clearSelection();
-      QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      QTimer::singleShot(0, this, &PartGui::TaskMeasureAngular::selectionClearDelayedSlot);
       stepped->getButton(0)->setChecked(true);
       stepped->getButton(1)->setEnabled(false);
       return;
@@ -1664,9 +1687,9 @@ void PartGui::TaskMeasureAngular::selectionClearDelayedSlot()
   //clearing selections are not working as I hoped. Apparently the observer callback gets called
   //before the actual selection takes place. Resulting in selections being left. this addresses this
   //by being called from the event loop.
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
@@ -1743,7 +1766,7 @@ void PartGui::TaskMeasureAngular::buildDimension(const DimSelections &sel1, cons
   //build adapters.
   VectorAdapter adapt1 = buildAdapter(sel1);
   VectorAdapter adapt2 = buildAdapter(sel2);
-  
+
   if (!adapt1.isValid() || !adapt2.isValid())
   {
     Base::Console().Message("\ncouldn't build adapter\n\n");
@@ -1766,29 +1789,29 @@ void PartGui::TaskMeasureAngular::setUpGui()
   QPixmap mainIcon = Gui::BitmapFactory().pixmap("Part_Measure_Angular");
 
   Gui::TaskView::TaskBox* selectionTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Selections"), false, 0);
+    (mainIcon, QObject::tr("Selections"), false, nullptr);
   QVBoxLayout *selectionLayout = new QVBoxLayout();
   stepped = new SteppedSelection(2, selectionTaskBox);
   selectionLayout->addWidget(stepped);
   selectionTaskBox->groupLayout()->addLayout(selectionLayout);
 
   Gui::TaskView::TaskBox* controlTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Control"), false, 0);
+    (mainIcon, QObject::tr("Control"), false, nullptr);
   QVBoxLayout *controlLayout = new QVBoxLayout();
 
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
-  QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
+  QObject::connect(control->resetButton, &QPushButton::clicked, this, &TaskMeasureAngular::resetDialogSlot);
 
-  this->setButtonPosition(TaskDialog::South);
+  this->setButtonPosition(TaskDialog::North);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
 
   stepped->getButton(0)->setChecked(true);//before wired up.
   stepped->getButton(0)->setEnabled(true);
-  QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
-  QObject::connect(stepped->getButton(1), SIGNAL(toggled(bool)), this, SLOT(selection2Slot(bool)));
+  QObject::connect(stepped->getButton(0), &QPushButton::toggled, this, &TaskMeasureAngular::selection1Slot);
+  QObject::connect(stepped->getButton(1), &QPushButton::toggled, this, &TaskMeasureAngular::selection2Slot);
 }
 
 void PartGui::TaskMeasureAngular::selection1Slot(bool checked)
@@ -1796,16 +1819,16 @@ void PartGui::TaskMeasureAngular::selection1Slot(bool checked)
   if (checked)
   {
     buttonSelectedIndex = 0;
-    this->blockConnection(true);
+    this->blockSelection(true);
     Gui::Selection().clearSelection();
     std::vector<DimSelections::DimSelection>::const_iterator it;
     for (it = selections1.selections.begin(); it != selections1.selections.end(); ++it)
       Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-    this->blockConnection(false);
+    this->blockSelection(false);
   }
   else
   {
-    if (selections1.selections.size() > 0)
+    if (!selections1.selections.empty())
       stepped->setIconDone(0);
   }
 }
@@ -1814,22 +1837,22 @@ void PartGui::TaskMeasureAngular::selection2Slot(bool checked)
 {
   if (checked)
     buttonSelectedIndex = 1;
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections2.selections.begin(); it != selections2.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureAngular::resetDialogSlot(bool)
 {
   clearSelection();
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
   stepped->getButton(1)->setEnabled(false);
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureAngular::toggle3dSlot(bool)

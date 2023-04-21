@@ -22,15 +22,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/Range.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "PropertyColumnWidths.h"
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <App/Range.h>
+#include "PropertyColumnWidthsPy.h"
 #include "Utils.h"
-#include <PropertyColumnWidthsPy.h>
+
 
 using namespace Spreadsheet;
 
@@ -132,8 +131,8 @@ void PropertyColumnWidths::Restore(Base::XMLReader &reader)
     Cnt = reader.hasAttribute("Count") ? reader.getAttributeAsInteger("Count") : 0;
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Column");
-        const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : 0;
-        const char * width = reader.hasAttribute("width") ? reader.getAttribute("width") : 0;
+        const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : nullptr;
+        const char * width = reader.hasAttribute("width") ? reader.getAttribute("width") : nullptr;
 
         try {
             if (name && width) {

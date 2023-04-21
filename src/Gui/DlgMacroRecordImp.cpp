@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
+# include <QMessageBox>
 #endif
 
-#include "Macro.h"
-#include "Application.h"
-#include "MainWindow.h"
 #include "DlgMacroRecordImp.h"
 #include "ui_DlgMacroRecord.h"
+#include "Application.h"
 #include "FileDialog.h"
+#include "Macro.h"
+#include "MainWindow.h"
 
 
 using namespace Gui::Dialog;
@@ -54,6 +53,7 @@ DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WindowFlags fl )
     , ui(new Ui_DlgMacroRecord)
 {
     ui->setupUi(this);
+    setupConnections();
 
     // get the macro home path
     this->macroPath = QString::fromUtf8(getWindowParameter()->GetASCII("MacroPath",
@@ -78,10 +78,24 @@ DlgMacroRecordImp::~DlgMacroRecordImp()
     // no need to delete child widgets, Qt does it all for us
 }
 
+void DlgMacroRecordImp::setupConnections()
+{
+    connect(ui->buttonStart, &QPushButton::clicked,
+            this, &DlgMacroRecordImp::onButtonStartClicked);
+    connect(ui->buttonStop, &QPushButton::clicked,
+            this, &DlgMacroRecordImp::onButtonStopClicked);
+    connect(ui->buttonClose, &QPushButton::clicked,
+            this, &DlgMacroRecordImp::onButtonCloseClicked);
+    connect(ui->pushButtonChooseDir, &QPushButton::clicked,
+            this, &DlgMacroRecordImp::onButtonChooseDirClicked);
+    connect(ui->lineEditMacroPath, &QLineEdit::textChanged,
+            this, &DlgMacroRecordImp::onMacroPathTextChanged);
+}
+
 /**
  * Starts the record of the macro.
  */
-void DlgMacroRecordImp::on_buttonStart_clicked()
+void DlgMacroRecordImp::onButtonStartClicked()
 {
     // test if the path already set
     if (ui->lineEditPath->text().isEmpty()) {
@@ -99,15 +113,16 @@ void DlgMacroRecordImp::on_buttonStart_clicked()
 
     // search in the macro path first for an already existing macro
     QString fn = this->macroPath + ui->lineEditPath->text();
-    if (!fn.endsWith(QLatin1String(".FCMacro"))) fn += QLatin1String(".FCMacro");
+    if (!fn.endsWith(QLatin1String(".FCMacro"))) {
+        fn += QLatin1String(".FCMacro");
+    }
+
     QFileInfo fi(fn);
     if (fi.isFile() && fi.exists()) {
         if (QMessageBox::question(this, tr("Existing macro"),
                 tr("The macro '%1' already exists. Do you want to overwrite?").arg(fn),
-                QMessageBox::Yes,
-                QMessageBox::No|
-                QMessageBox::Default|
-                QMessageBox::Escape) == QMessageBox::No)
+                QMessageBox::Yes | QMessageBox::No,
+                QMessageBox::No) == QMessageBox::No)
         return;
     }
 
@@ -121,13 +136,17 @@ void DlgMacroRecordImp::on_buttonStart_clicked()
 
     // open the macro recording
     this->macroManager->open(MacroManager::File, fn.toUtf8().constData());
-    accept();
+
+    ui->buttonStart->setEnabled(false);
+    ui->buttonStop->setEnabled(true);
+    ui->buttonClose->setEnabled(false);
+    QDialog::accept();
 }
 
 /**
  * Abort the macro.
  */
-void DlgMacroRecordImp::on_buttonCancel_clicked()
+void DlgMacroRecordImp::onButtonCloseClicked()
 {
     if (this->macroManager->isOpen()) {
         this->macroManager->cancel();
@@ -139,19 +158,22 @@ void DlgMacroRecordImp::on_buttonCancel_clicked()
 /**
  * Stops the record of the macro and save to the file.
  */
-void DlgMacroRecordImp::on_buttonStop_clicked()
+void DlgMacroRecordImp::onButtonStopClicked()
 {
-    if(this->macroManager->isOpen()) {
+    if (this->macroManager->isOpen()) {
         // ends the macrorecording and save the file...
         this->macroManager->commit();
     }
 
+    ui->buttonStart->setEnabled(true);
+    ui->buttonStop->setEnabled(false);
+    ui->buttonClose->setEnabled(true);
     QDialog::accept();
 }
 
-void DlgMacroRecordImp::on_pushButtonChooseDir_clicked()
+void DlgMacroRecordImp::onButtonChooseDirClicked()
 {
-    QString newDir = QFileDialog::getExistingDirectory(0,tr("Choose macro directory"),macroPath);
+    QString newDir = QFileDialog::getExistingDirectory(nullptr,tr("Choose macro directory"),macroPath);
     if (!newDir.isEmpty()) {
         macroPath = QDir::toNativeSeparators(newDir + QDir::separator());
         ui->lineEditMacroPath->setText(macroPath);
@@ -159,7 +181,7 @@ void DlgMacroRecordImp::on_pushButtonChooseDir_clicked()
     }
 }
 
-void DlgMacroRecordImp::on_lineEditMacroPath_textChanged (const QString & newDir)
+void DlgMacroRecordImp::onMacroPathTextChanged (const QString & newDir)
 {
     macroPath = newDir;
 }

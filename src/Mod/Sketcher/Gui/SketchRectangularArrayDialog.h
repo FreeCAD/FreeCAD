@@ -23,8 +23,8 @@
 #ifndef SKETCHERGUI_SketchRectangularArrayDialog_H
 #define SKETCHERGUI_SketchRectangularArrayDialog_H
 
-#include <Base/Placement.h>
 #include <QDialog>
+
 
 namespace SketcherGui {
 
@@ -34,10 +34,10 @@ class SketchRectangularArrayDialog : public QDialog
     Q_OBJECT
 
 public:
-    SketchRectangularArrayDialog(void);
-    ~SketchRectangularArrayDialog();
+    SketchRectangularArrayDialog();
+    ~SketchRectangularArrayDialog() override;
 
-    void accept();
+    void accept() override;
     
     int Rows;
     int Cols;
@@ -46,7 +46,7 @@ public:
     bool Clone;
 
 protected:
-    void updateValues(void);
+    void updateValues();
 private:
     std::unique_ptr<Ui_SketchRectangularArrayDialog> ui;
 };

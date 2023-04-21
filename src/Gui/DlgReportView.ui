@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Output window</string>
+   <string>Report view</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -134,9 +134,6 @@ on-screen while displaying the warning</string>
         <property name="text">
          <string>Show report view on warning</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>checkShowReportViewOnWarning</cstring>
         </property>
@@ -228,22 +225,6 @@ on-screen while displaying the log message</string>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::MinimumExpanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <layout class="QGridLayout">
         <property name="leftMargin">
@@ -304,7 +285,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -362,7 +343,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -420,7 +401,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>170</green>
@@ -478,7 +459,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>0</green>
@@ -495,7 +476,23 @@ on-screen while displaying the log message</string>
         </item>
        </layout>
       </item>
-     </layout>
+     <item row="0" column="1">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::MinimumExpanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">

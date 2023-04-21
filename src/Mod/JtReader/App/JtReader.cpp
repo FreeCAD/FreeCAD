@@ -3,16 +3,19 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-#include <sys/types.h>
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <string.h>
 #include <strstream>
 #include <vector>
+#include <sys/types.h>
+#endif
+
 #include <JtTk/JtkCADImporter.h>
 #include <JtTk/JtkCADExporter.h>
-#include <JtTk/JtkTraverser.h>
 #include <JtTk/JtkEntityFactory.h>
-#include <JtTk/JtkAttrib.h>
-#include <JtTk/JtkStandard.h>
+#include <JtTk/JtkTraverser.h>
+
 
 using std::string;
 using std::vector;

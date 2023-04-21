@@ -34,37 +34,37 @@ namespace App
 
 class AppExport Annotation : public DocumentObject
 {
-    PROPERTY_HEADER(App::Annotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Annotation);
 
 public:
     /// Constructor
-    Annotation(void);
-    virtual ~Annotation();
+    Annotation();
+    ~Annotation() override;
 
     App::PropertyStringList LabelText;
     App::PropertyVector Position;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderAnnotation";
     }
 };
 
 class AppExport AnnotationLabel : public DocumentObject
 {
-    PROPERTY_HEADER(App::AnnotationLabel);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::AnnotationLabel);
 
 public:
     /// Constructor
-    AnnotationLabel(void);
-    virtual ~AnnotationLabel();
+    AnnotationLabel();
+    ~AnnotationLabel() override;
 
     App::PropertyStringList LabelText;
     App::PropertyVector BasePosition;
     App::PropertyVector TextPosition;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderAnnotationLabel";
     }
 };

@@ -24,6 +24,7 @@
  *   Suite 330, Boston, MA  02111-1307  USA                                *
  *                                                                         *
  ***************************************************************************/
+// clazy:excludeall=rule-of-two-soft
 
 /**
  * \file frames.inl
@@ -824,7 +825,7 @@ IMETHOD void Vector2::Set3DYZ(const Vector& v)
     data[1]=v(2);
 }
 IMETHOD void Vector2::Set3DZX(const Vector& v)
-// projects v in its XY plane, and and sets *this to these values
+// projects v in its XY plane, and sets *this to these values
 {
     data[0]=v(2);
     data[1]=v(0);

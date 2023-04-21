@@ -28,6 +28,8 @@
 #include <QFileDialog>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 #include <QToolTip>
@@ -43,20 +45,11 @@ UrlLabel::UrlLabel ( QWidget * parent, Qt::WindowFlags f )
 {
     _url = "http://localhost";
     setToolTip(this->_url);
+    setCursor(Qt::PointingHandCursor);
 }
 
 UrlLabel::~UrlLabel()
 {
-}
-
-void UrlLabel::enterEvent ( QEvent * )
-{
-    setCursor(Qt::PointingHandCursor);
-}
-
-void UrlLabel::leaveEvent ( QEvent * )
-{
-    setCursor(Qt::ArrowCursor);
 }
 
 void UrlLabel::mouseReleaseEvent ( QMouseEvent * )
@@ -140,23 +133,26 @@ void LocationWidget::retranslateUi()
 } 
 
 FileChooser::FileChooser( QWidget *parent )
-  : QWidget( parent ), md( File ), _filter( QString::null )
+  : QWidget( parent ), md( File ), _filter( QString() )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
-    layout->setMargin( 0 );
+    layout->setContentsMargins( 0, 0, 0, 0 );
     layout->setSpacing( 6 );
 
     lineEdit = new QLineEdit( this );
     layout->addWidget( lineEdit );
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SIGNAL(fileNameChanged(const QString &)));
+    connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
 
     button = new QPushButton( "...", this );
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    button->setFixedWidth(2 * button->fontMetrics().horizontalAdvance(" ... "));
+#else
     button->setFixedWidth(2*button->fontMetrics().width( " ... " ));
+#endif
     layout->addWidget( button );
 
-    connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+    connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
 
     setFocusProxy( lineEdit );
 }
@@ -216,8 +212,13 @@ void FileChooser::setFilter ( const QString& filter )
 void FileChooser::setButtonText( const QString& txt )
 {
     button->setText( txt );
-    int w1 = 2*button->fontMetrics().width(txt);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    int w1 = 2 * button->fontMetrics().horizontalAdvance(txt);
+    int w2 = 2 * button->fontMetrics().horizontalAdvance(" ... ");
+#else
+    int w1 = 2 * button->fontMetrics().width(txt);
     int w2 = 2*button->fontMetrics().width(" ... ");
+#endif
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 
@@ -866,10 +867,8 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 {
     d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
-    QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
-                     this, SLOT(userInput(QString)));
-    QObject::connect(this, SIGNAL(editingFinished()),
-                     this, SLOT(handlePendingEmit()));
+    connect(lineEdit(), &QLineEdit::textChanged, this, &QuantitySpinBox::userInput);
+    connect(this, &QuantitySpinBox::editingFinished, this, &QuantitySpinBox::handlePendingEmit);
 }
 
 QuantitySpinBox::~QuantitySpinBox()
@@ -1134,12 +1133,62 @@ void QuantitySpinBox::stepBy(int steps)
 
 QSize QuantitySpinBox::sizeHint() const
 {
-    return QAbstractSpinBox::sizeHint();
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int frameWidth = lineEdit()->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    int iconHeight = fm.height() - frameWidth;
+    int h = lineEdit()->sizeHint().height();
+    int w = 0;
+
+    QString s = QLatin1String("000000000000000000");
+    QString fixedContent = QLatin1String(" ");
+    s += fixedContent;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    w = fm.horizontalAdvance(s);
+#else
+    w = fm.width(s);
+#endif
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
+    return size;
 }
 
 QSize QuantitySpinBox::minimumSizeHint() const
 {
-    return QAbstractSpinBox::minimumSizeHint();
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int frameWidth = lineEdit()->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    int iconHeight = fm.height() - frameWidth;
+    int h = lineEdit()->minimumSizeHint().height();
+    int w = 0;
+
+    QString s = QLatin1String("000000000000000000");
+    QString fixedContent = QLatin1String(" ");
+    s += fixedContent;
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    w = fm.horizontalAdvance(s);
+#else
+    w = fm.width(s);
+#endif
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
+    return size;
 }
 
 void QuantitySpinBox::showEvent(QShowEvent * event)
@@ -1231,27 +1280,16 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QString str = lineEdit()->text();
-    unsigned int i = 0;
-
-    QChar d = locale().decimalPoint();
-    QChar g = locale().groupSeparator();
-    QChar n = locale().negativeSign();
-
-    for (QString::iterator it = str.begin(); it != str.end(); ++it) {
-        if (it->isDigit())
-            i++;
-        else if (*it == d)
-            i++;
-        else if (*it == g)
-            i++;
-        else if (*it == n)
-            i++;
-        else // any non-number character
-            break;
+    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+                   .arg(locale().negativeSign())
+                   .arg(locale().positiveSign())
+                   .arg(locale().groupSeparator())
+                   .arg(locale().decimalPoint())
+                   .arg(locale().exponential());
+    auto rmatch = QRegularExpression(expr).match(lineEdit()->text());
+    if (rmatch.hasMatch()) {
+        lineEdit()->setSelection(0, rmatch.capturedLength());
     }
-
-    lineEdit()->setSelection(0, i);
 }
 
 QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
@@ -1362,8 +1400,7 @@ void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& name)
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
-            this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
+    connect(this, &QListWidget::currentItemChanged, this, &CommandIconView::onSelectionChanged);
 }
 
 CommandIconView::~CommandIconView ()
@@ -1389,9 +1426,9 @@ void CommandIconView::startDrag ( Qt::DropActions /*supportedActions*/ )
 
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
-    drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
+    drag->setHotSpot(QPoint(pixmap.width() / 2, pixmap.height() / 2));
     drag->setPixmap(pixmap);
-    drag->start(Qt::MoveAction);
+    drag->exec(Qt::MoveAction);
 }
 
 void CommandIconView::onSelectionChanged(QListWidgetItem * item, QListWidgetItem *)
@@ -1531,8 +1568,7 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
 {
     d = new UIntSpinBoxPrivate;
     d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
-    connect(this, SIGNAL(valueChanged(int)),
-            this, SLOT(valueChange(int)));
+    connect(this, qOverload<int>(&QSpinBox::valueChanged), this, &UIntSpinBox::valueChange);
     setRange(0, 99);
     setValue(0);
     updateValidator();
@@ -1569,7 +1605,7 @@ void UIntSpinBox::setValue(uint value)
 
 void UIntSpinBox::valueChange(int value)
 {
-    valueChanged(d->mapToUInt(value));
+    unsignedChanged(d->mapToUInt(value));
 }
 
 uint UIntSpinBox::minimum() const
@@ -1712,10 +1748,13 @@ void PrefDoubleSpinBox::setParamGrpPath ( const QByteArray& name )
 // -------------------------------------------------------------
 
 ColorButton::ColorButton(QWidget* parent)
-    : QPushButton( parent ), _allowChange(true), _drawFrame(true)
+    : QPushButton(parent)
+    ,  _allowChange(true)
+    , _allowTransparency(false)
+    , _drawFrame(true)
 {
     _col = palette().color(QPalette::Active,QPalette::Midlight);
-    connect( this, SIGNAL( clicked() ), SLOT( onChooseColor() ));
+    connect(this, &ColorButton::clicked, this, &ColorButton::onChooseColor);
 }
 
 ColorButton::~ColorButton()
@@ -1741,6 +1780,16 @@ void ColorButton::setAllowChangeColor(bool ok)
 bool ColorButton::allowChangeColor() const
 {
     return _allowChange;
+}
+
+void ColorButton::setAllowTransparency(bool ok)
+{
+    _allowTransparency = ok;
+}
+
+bool ColorButton::allowTransparency() const
+{
+    return _allowTransparency;
 }
 
 void ColorButton::setDrawFrame(bool ok)

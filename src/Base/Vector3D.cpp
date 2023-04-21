@@ -22,9 +22,12 @@
 
 
 #include "PreCompiled.h"
+
 #include <limits>
-#include "Tools.h"
+
 #include "Vector3D.h"
+#include "Tools.h"
+
 
 using namespace Base;
 
@@ -33,14 +36,6 @@ Vector3<_Precision>::Vector3 (_Precision fx, _Precision fy, _Precision fz)
   : x(fx),
     y(fy),
     z(fz)
-{
-}
-
-template <class _Precision>
-Vector3<_Precision>::Vector3 (const Vector3<_Precision>& rcVct)
-  : x(rcVct.x),
-    y(rcVct.y),
-    z(rcVct.z)
 {
 }
 
@@ -99,7 +94,7 @@ Vector3<_Precision> Vector3<_Precision>::operator -  (const Vector3<_Precision>&
 }
 
 template <class _Precision>
-Vector3<_Precision> Vector3<_Precision>::operator - (void) const
+Vector3<_Precision> Vector3<_Precision>::operator - () const
 {
     return Vector3(-x, -y, -z);
 }
@@ -150,15 +145,6 @@ template <class _Precision>
 Vector3<_Precision> Vector3<_Precision>::operator / (_Precision fDiv) const
 {
     return Vector3<_Precision>(this->x/fDiv,this->y/fDiv,this->z/fDiv);
-}
-
-template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::operator =  (const Vector3<_Precision>& rcVct)
-{
-    x = rcVct.x;
-    y = rcVct.y;
-    z = rcVct.z;
-    return *this;
 }
 
 template <class _Precision>
@@ -259,16 +245,16 @@ _Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclB
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::Length (void) const
+_Precision Vector3<_Precision>::Length () const
 {
-    return (_Precision)sqrt ((x * x) + (y * y) + (z * z));
+    return static_cast<_Precision>(sqrt ((x * x) + (y * y) + (z * z)));
 }
 
 template <class _Precision>
 _Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBase,
                                                 const Vector3<_Precision> &rclDirect) const
 {
-    return (_Precision) fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length());
+    return static_cast<_Precision>(fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length()));
 }
 
 template <class _Precision>
@@ -303,7 +289,7 @@ Vector3<_Precision> Vector3<_Precision>::Perpendicular(const Vector3<_Precision>
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::Sqr (void) const
+_Precision Vector3<_Precision>::Sqr () const
 {
     return (_Precision) ((x * x) + (y * y) + (z * z));
 }
@@ -374,8 +360,8 @@ void Vector3<_Precision>::RotateX (_Precision f)
     Vector3 cPt (*this);
     _Precision fsin, fcos;
 
-    fsin = (_Precision)sin (f);
-    fcos = (_Precision)cos (f);
+    fsin = static_cast<_Precision>(sin(f));
+    fcos = static_cast<_Precision>(cos(f));
     y = (cPt.y * fcos) - (cPt.z * fsin);
     z = (cPt.y * fsin) + (cPt.z * fcos);
 }
@@ -386,8 +372,8 @@ void Vector3<_Precision>::RotateY (_Precision f)
     Vector3 cPt (*this);
     _Precision fsin, fcos;
 
-    fsin = (_Precision)sin (f);
-    fcos = (_Precision)cos (f);
+    fsin = static_cast<_Precision>(sin(f));
+    fcos = static_cast<_Precision>(cos(f));
     x = (cPt.z * fsin) + (cPt.x * fcos);
     z = (cPt.z * fcos) - (cPt.x * fsin);
 }
@@ -398,22 +384,29 @@ void Vector3<_Precision>::RotateZ (_Precision f)
     Vector3 cPt (*this);
     _Precision fsin, fcos;
 
-    fsin = (_Precision)sin (f);
-    fcos = (_Precision)cos (f);
+    fsin = static_cast<_Precision>(sin(f));
+    fcos = static_cast<_Precision>(cos(f));
     x = (cPt.x * fcos) - (cPt.y * fsin);
     y = (cPt.x * fsin) + (cPt.y * fcos);
 }
 
 template <class _Precision>
-Vector3<_Precision> & Vector3<_Precision>::Normalize (void)
+Vector3<_Precision> & Vector3<_Precision>::Normalize ()
 {
     _Precision fLen = Length ();
-    if (fLen != (_Precision)0.0 && fLen != (_Precision)1.0) {
+    if (fLen != static_cast<_Precision>(0.0) && fLen != static_cast<_Precision>(1.0)) {
         x /= fLen;
         y /= fLen;
         z /= fLen;
     }
     return *this;
+}
+
+template <class _Precision>
+bool Vector3<_Precision>::IsNull() const
+{
+    _Precision n{0.0};
+    return (x == n) && (y == n) && (z == n);
 }
 
 template <class _Precision>

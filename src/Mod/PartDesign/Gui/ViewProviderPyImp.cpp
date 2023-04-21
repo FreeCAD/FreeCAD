@@ -32,14 +32,14 @@
 using namespace PartDesignGui;
 
 // returns a string which represent the object e.g. when printed in python
-std::string ViewProviderPy::representation(void) const
+std::string ViewProviderPy::representation() const
 {
     return std::string("<PartDesign::ViewProvider>");
 }
 
 PyObject *ViewProviderPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderPy::setCustomAttributes(const char* , PyObject *)
@@ -49,26 +49,26 @@ int ViewProviderPy::setCustomAttributes(const char* , PyObject *)
 
 PyObject* ViewProviderPy::setBodyMode(PyObject* args)
 {
-    PartDesignGui::ViewProvider* base = getViewProviderPtr();
-
     PyObject* b_mode;
-    if(PyArg_ParseTuple(args, "O!", &PyBool_Type, &b_mode)){
-        base->setBodyMode(PyObject_IsTrue(b_mode));
-        return Py::new_reference_to(Py::None());
-    };
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &b_mode)) {
+        return nullptr;
+    }
 
-    return nullptr; //error
+    PartDesignGui::ViewProvider* base = getViewProviderPtr();
+    base->setBodyMode(Base::asBoolean(b_mode));
+
+    return Py::new_reference_to(Py::None());
 }
 
 PyObject* ViewProviderPy::makeTemporaryVisible(PyObject* args)
 {
-    PartDesignGui::ViewProvider* base = getViewProviderPtr();
-
     PyObject* b_vis;
-    if(PyArg_ParseTuple(args, "O!", &PyBool_Type, &b_vis)){
-        base->makeTemporaryVisible(PyObject_IsTrue(b_vis));
-        return Py::new_reference_to(Py::None());
-    };
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &b_vis)) {
+        return nullptr;
+    }
 
-    return nullptr; //error
+    PartDesignGui::ViewProvider* base = getViewProviderPtr();
+    base->makeTemporaryVisible(Base::asBoolean(b_vis));
+
+    return Py::new_reference_to(Py::None());
 }

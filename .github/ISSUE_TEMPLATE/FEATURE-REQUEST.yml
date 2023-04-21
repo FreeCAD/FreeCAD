@@ -1,0 +1,73 @@
+name: 🌱 Feature Request
+description: Submit an idea for a new feature
+title: "[Feature Request] <title>"
+labels: ["feature", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to request a feature! Please make sure you've posted about your idea in the FreeCAD Forums before submitting here.
+  - type: checkboxes
+    id: existing_issue
+    attributes:
+      label: Is there an existing request for this?
+      description: Please search to see if a request already exists for your suggestion
+      options:
+      - label: I have searched the existing requests
+        required: true
+  - type: input
+    id: forum_link
+    attributes:
+      label: Forums discussion
+      description: Please start a discussion about your idea at [the FreeCAD Forum](https://forum.freecad.org) and wait for confirmation there before creating a request.
+      placeholder: Paste link to forum discussion here
+    validations:
+      required: true
+  - type: dropdown
+    id: wb
+    attributes:
+      label: Subproject(s) affected?
+      options:
+        - Addon Manager
+        - Arch
+        - Core
+        - Draft
+        - Expressions
+        - FEM
+        - File formats
+        - GCS
+        - OpenSCAD
+        - Part
+        - PartDesign
+        - Path
+        - Project Tools & Websites
+        - Sketcher
+        - Spreadsheet
+        - Techdraw
+        - Other (specify in description)
+  - type: textarea
+    id: description
+    attributes:
+      label: Idea description
+      description: Please include as much detail as possible so that developers understand the request
+      placeholder: Description of the feature
+    validations:
+      required: true
+  - type: textarea
+    id: anything_else
+    attributes:
+      label: Anything else?
+      description: |
+        Links? References? Anything that will give us more context about your idea.
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in. To attach a FCStd file, ZIP it first (GitHub won't recognize the extension otherwise).
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/master/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

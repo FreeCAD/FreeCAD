@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+
+#include <Base/Tools.h>
 
 #include "Smoothing.h"
-#include "MeshKernel.h"
 #include "Algorithm.h"
-#include "Elements.h"
-#include "Iterator.h"
 #include "Approximation.h"
+#include "Iterator.h"
+#include "MeshKernel.h"
 
 
 using namespace MeshCore;
@@ -38,7 +36,6 @@ using namespace MeshCore;
 
 AbstractSmoothing::AbstractSmoothing(MeshKernel& m)
   : kernel(m)
-  , tolerance(0)
   , component(Normal)
   , continuity(C0)
 {
@@ -56,6 +53,7 @@ void AbstractSmoothing::initialize(Component comp, Continuity cont)
 
 PlaneFitSmoothing::PlaneFitSmoothing(MeshKernel& m)
   : AbstractSmoothing(m)
+  , maximum(FLT_MAX)
 {
 }
 
@@ -78,11 +76,11 @@ void PlaneFitSmoothing::Smooth(unsigned int iterations)
             MeshCore::PlaneFit pf;
             pf.AddPoint(*v_it);
             center = *v_it;
-            const std::set<unsigned long>& cv = vv_it[v_it.Position()];
+            const std::set<PointIndex>& cv = vv_it[v_it.Position()];
             if (cv.size() < 3)
                 continue;
 
-            std::set<unsigned long>::const_iterator cv_it;
+            std::set<PointIndex>::const_iterator cv_it;
             for (cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
                 pf.AddPoint(v_beg[*cv_it]);
                 center += v_beg[*cv_it];
@@ -102,21 +100,21 @@ void PlaneFitSmoothing::Smooth(unsigned int iterations)
                 N.Scale(-1.0, -1.0, -1.0);
 
             // maximum value to move is distance to mean plane
-            float d = std::min<float>(fabs(this->tolerance),fabs(N*L));
+            float d = std::min<float>(fabs(this->maximum),fabs(N*L));
             N.Scale(d,d,d);
 
             PointArray[v_it.Position()].Set(v_it->x - N.x, v_it->y - N.y, v_it->z - N.z);
         }
 
         // assign values without affecting iterators
-        unsigned long count = kernel.CountPoints();
-        for (unsigned long idx = 0; idx < count; idx++) {
+        PointIndex count = kernel.CountPoints();
+        for (PointIndex idx = 0; idx < count; idx++) {
             kernel.SetPoint(idx, PointArray[idx]);
         }
     }
 }
 
-void PlaneFitSmoothing::SmoothPoints(unsigned int iterations, const std::vector<unsigned long>& point_indices)
+void PlaneFitSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
 {
     MeshCore::MeshPoint center;
     MeshCore::MeshPointArray PointArray = kernel.GetPoints();
@@ -127,16 +125,16 @@ void PlaneFitSmoothing::SmoothPoints(unsigned int iterations, const std::vector<
 
     for (unsigned int i=0; i<iterations; i++) {
         Base::Vector3f N, L;
-        for (std::vector<unsigned long>::const_iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
+        for (std::vector<PointIndex>::const_iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
             v_it.Set(*it);
             MeshCore::PlaneFit pf;
             pf.AddPoint(*v_it);
             center = *v_it;
-            const std::set<unsigned long>& cv = vv_it[v_it.Position()];
+            const std::set<PointIndex>& cv = vv_it[v_it.Position()];
             if (cv.size() < 3)
                 continue;
 
-            std::set<unsigned long>::const_iterator cv_it;
+            std::set<PointIndex>::const_iterator cv_it;
             for (cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
                 pf.AddPoint(v_beg[*cv_it]);
                 center += v_beg[*cv_it];
@@ -156,15 +154,15 @@ void PlaneFitSmoothing::SmoothPoints(unsigned int iterations, const std::vector<
                 N.Scale(-1.0, -1.0, -1.0);
 
             // maximum value to move is distance to mean plane
-            float d = std::min<float>(fabs(this->tolerance),fabs(N*L));
+            float d = std::min<float>(fabs(this->maximum),fabs(N*L));
             N.Scale(d,d,d);
 
             PointArray[v_it.Position()].Set(v_it->x - N.x, v_it->y - N.y, v_it->z - N.z);
         }
 
         // assign values without affecting iterators
-        unsigned long count = kernel.CountPoints();
-        for (unsigned long idx = 0; idx < count; idx++) {
+        PointIndex count = kernel.CountPoints();
+        for (PointIndex idx = 0; idx < count; idx++) {
             kernel.SetPoint(idx, PointArray[idx]);
         }
     }
@@ -186,9 +184,9 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
     MeshCore::MeshPointArray::_TConstIterator v_it,
     v_beg = points.begin(), v_end = points.end();
 
-    unsigned long pos = 0;
+    PointIndex pos = 0;
     for (v_it = points.begin(); v_it != v_end; ++v_it,++pos) {
-        const std::set<unsigned long>& cv = vv_it[pos];
+        const std::set<PointIndex>& cv = vv_it[pos];
         if (cv.size() < 3)
             continue;
         if (cv.size() != vf_it[pos].size()) {
@@ -201,7 +199,7 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
         w=1.0/double(n_count);
 
         double delx=0.0,dely=0.0,delz=0.0;
-        std::set<unsigned long>::const_iterator cv_it;
+        std::set<PointIndex>::const_iterator cv_it;
         for (cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
             delx += w*static_cast<double>((v_beg[*cv_it]).x-v_it->x);
             dely += w*static_cast<double>((v_beg[*cv_it]).y-v_it->y);
@@ -217,13 +215,13 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
 
 void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
                                 const MeshRefPointToFacets& vf_it, double stepsize,
-                                const std::vector<unsigned long>& point_indices)
+                                const std::vector<PointIndex>& point_indices)
 {
     const MeshCore::MeshPointArray& points = kernel.GetPoints();
     MeshCore::MeshPointArray::_TConstIterator v_beg = points.begin();
 
-    for (std::vector<unsigned long>::const_iterator pos = point_indices.begin(); pos != point_indices.end(); ++pos) {
-        const std::set<unsigned long>& cv = vv_it[*pos];
+    for (std::vector<PointIndex>::const_iterator pos = point_indices.begin(); pos != point_indices.end(); ++pos) {
+        const std::set<PointIndex>& cv = vv_it[*pos];
         if (cv.size() < 3)
             continue;
         if (cv.size() != vf_it[*pos].size()) {
@@ -236,7 +234,7 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
         w=1.0/double(n_count);
 
         double delx=0.0,dely=0.0,delz=0.0;
-        std::set<unsigned long>::const_iterator cv_it;
+        std::set<PointIndex>::const_iterator cv_it;
         for (cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
             delx += w*static_cast<double>((v_beg[*cv_it]).x-(v_beg[*pos]).x);
             dely += w*static_cast<double>((v_beg[*cv_it]).y-(v_beg[*pos]).y);
@@ -260,7 +258,7 @@ void LaplaceSmoothing::Smooth(unsigned int iterations)
     }
 }
 
-void LaplaceSmoothing::SmoothPoints(unsigned int iterations, const std::vector<unsigned long>& point_indices)
+void LaplaceSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
 {
     MeshCore::MeshRefPointToPoints vv_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
@@ -292,7 +290,7 @@ void TaubinSmoothing::Smooth(unsigned int iterations)
     }
 }
 
-void TaubinSmoothing::SmoothPoints(unsigned int iterations, const std::vector<unsigned long>& point_indices)
+void TaubinSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
 {
     MeshCore::MeshRefPointToPoints vv_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
@@ -302,5 +300,130 @@ void TaubinSmoothing::SmoothPoints(unsigned int iterations, const std::vector<un
     for (unsigned int i=0; i<iterations; i++) {
         Umbrella(vv_it, vf_it, lambda, point_indices);
         Umbrella(vv_it, vf_it, -(lambda+micro), point_indices);
+    }
+}
+
+namespace {
+using AngleNormal = std::pair<double, Base::Vector3d>;
+inline Base::Vector3d find_median(std::vector<AngleNormal> &container)
+{
+    auto compare_angle_normal = [](const AngleNormal& an1, const AngleNormal& an2) {
+        return an1.first < an2.first;
+    };
+    size_t n = container.size() / 2;
+    std::nth_element(container.begin(), container.begin() + n, container.end(), compare_angle_normal);
+
+    if ((container.size() % 2) == 1) {
+        return container[n].second;
+    }
+    else {
+        // even sized vector -> average the two middle values
+        auto max_it = std::max_element(container.begin(), container.begin() + n, compare_angle_normal);
+        Base::Vector3d vec = (max_it->second + container[n].second) / 2.0;
+        vec.Normalize();
+        return vec;
+    }
+}
+}
+
+MedianFilterSmoothing::MedianFilterSmoothing(MeshKernel& m)
+  : AbstractSmoothing(m), weights(1)
+{
+}
+
+MedianFilterSmoothing::~MedianFilterSmoothing()
+{
+}
+
+void MedianFilterSmoothing::Smooth(unsigned int iterations)
+{
+    std::vector<unsigned long> point_indices(kernel.CountPoints());
+    std::generate(point_indices.begin(), point_indices.end(), Base::iotaGen<unsigned long>(0));
+    MeshCore::MeshRefFacetToFacets ff_it(kernel);
+    MeshCore::MeshRefPointToFacets vf_it(kernel);
+
+    for (unsigned int i=0; i<iterations; i++) {
+        UpdatePoints(ff_it, vf_it, point_indices);
+    }
+}
+
+void MedianFilterSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
+{
+    MeshCore::MeshRefFacetToFacets ff_it(kernel);
+    MeshCore::MeshRefPointToFacets vf_it(kernel);
+
+    for (unsigned int i=0; i<iterations; i++) {
+        UpdatePoints(ff_it, vf_it, point_indices);
+    }
+}
+
+void MedianFilterSmoothing::UpdatePoints(const MeshRefFacetToFacets& ff_it,
+                                         const MeshRefPointToFacets& vf_it,
+                                         const std::vector<PointIndex>& point_indices)
+{
+    const MeshCore::MeshPointArray& points = kernel.GetPoints();
+    const MeshCore::MeshFacetArray& facets = kernel.GetFacets();
+
+    // Initialize the array with the real normals
+    std::vector<Base::Vector3d> faceNormals;
+    faceNormals.reserve(facets.size());
+    MeshCore::MeshFacetIterator iter(kernel);
+    for (iter.Init(); iter.More(); iter.Next()) {
+        faceNormals.emplace_back(Base::toVector<double>(iter->GetNormal()));
+    }
+
+    // Step 1: determine face normals
+    for (FacetIndex pos = 0; pos < facets.size(); pos++) {
+        iter.Set(pos);
+        Base::Vector3d refNormal = Base::toVector<double>(iter->GetNormal());
+        const std::set<FacetIndex>& cv = ff_it[pos];
+        const MeshCore::MeshFacet& facet = facets[pos];
+
+        std::vector<AngleNormal> anglesWithFaces;
+        for (auto fi : cv) {
+            iter.Set(fi);
+            Base::Vector3d faceNormal = Base::toVector<double>(iter->GetNormal());
+            double angle = refNormal.GetAngle(faceNormal);
+
+            int absWeight = std::abs(weights);
+            if (absWeight > 1 && facet.IsNeighbour(fi)) {
+                if (weights < 0) {
+                    angle = -angle;
+                }
+                for (int i = 0; i < absWeight; i++) {
+                    anglesWithFaces.emplace_back(angle, faceNormal);
+                }
+            }
+            else {
+                anglesWithFaces.emplace_back(angle, faceNormal);
+            }
+        }
+
+        faceNormals[pos] = find_median(anglesWithFaces);
+    }
+
+    // Step 2: move vertices
+    for (auto pos : point_indices) {
+        Base::Vector3d P = Base::toVector<double>(points[pos]);
+        const std::set<FacetIndex>& cv = vf_it[pos];
+
+        double totalArea = 0.0;
+        Base::Vector3d totalvT;
+        for (auto it : cv) {
+            iter.Set(it);
+
+            double faceArea = iter->Area();
+            totalArea += faceArea;
+
+            Base::Vector3d C = Base::toVector<double>(iter->GetGravityPoint());
+
+            Base::Vector3d PC = C - P;
+            Base::Vector3d mT = faceNormals[it];
+            Base::Vector3d vT = (PC * mT) * mT;
+            totalvT += vT * faceArea;
+        }
+
+        P = P + totalvT / totalArea;
+        kernel.SetPoint(pos, Base::toVector<float>(P));
     }
 }

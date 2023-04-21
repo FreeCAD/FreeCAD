@@ -103,7 +103,7 @@ find src/Mod/Draft -name '*.py' ! -name InitGui.py -exec flake8 --ignore=E226,E2
 
 - The online [LGTM service](https://lgtm.com/projects/g/FreeCAD/FreeCAD/latest/files/src/Mod/Draft/)
   is also able to analyze the code and detect problems.
-- Avoid automatic code formaters.
+- Avoid automatic code formatters.
 
 ## C++
 

@@ -20,60 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
 # include <Inventor/SbVec3f.h>
-# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/details/SoPointDetail.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoLightModel.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-
-# include <QFile>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
 
 # include <sstream>
 
 # include <SMESH_Mesh.hxx>
 # include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
 #endif
+
+#include <App/DocumentObject.h>
+#include <Base/BoundBox.h>
+#include <Base/Console.h>
+#include <Base/TimeInfo.h>
+#include <Mod/Fem/App/FemMeshObject.h>
 
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshPy.h"
 
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemMesh.h>
-#include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <Base/TimeInfo.h>
-#include <Base/BoundBox.h>
-
-
 
 using namespace FemGui;
-
 
 struct FemFace
 {
@@ -83,13 +66,13 @@ struct FemFace
     unsigned short Size;
     unsigned short FaceNo;
     bool hide;
-    Base::Vector3d getFirstNodePoint(void) {
+    Base::Vector3d getFirstNodePoint() {
         return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
     }
 
     Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo,
-        const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,
-        const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
+        const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=nullptr,
+        const SMDS_MeshNode* n5=nullptr,const SMDS_MeshNode* n6=nullptr,const SMDS_MeshNode* n7=nullptr,const SMDS_MeshNode* n8=nullptr);
 
     bool isSameFace (FemFace &face);
 };
@@ -262,7 +245,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     ViewProviderGeometryObject::attach(pcObj);
 
     // Move 'coords' before the switch
-    //pcRoot->insertChild(pcCoords,pcRoot->findChild(reinterpret_cast<const SoNode*>(pcModeSwitch)));
+    //pcRoot->insertChild(pcCoords,pcRoot->findChild(static_cast<const SoNode*>(pcModeSwitch)));
 
     // Annotation sets
     SoGroup* pcAnotRoot = new SoAnnotation();
@@ -348,15 +331,15 @@ void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemMesh::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back(Private::dm_face_wire);
-    StrList.push_back(Private::dm_face_wire_node);
-    StrList.push_back(Private::dm_face);
-    StrList.push_back(Private::dm_wire);
-    StrList.push_back(Private::dm_node);
-    StrList.push_back(Private::dm_wire_node);
+    StrList.emplace_back(Private::dm_face_wire);
+    StrList.emplace_back(Private::dm_face_wire_node);
+    StrList.emplace_back(Private::dm_face);
+    StrList.emplace_back(Private::dm_wire);
+    StrList.emplace_back(Private::dm_node);
+    StrList.emplace_back(Private::dm_wire_node);
     return StrList;
 }
 
@@ -451,7 +434,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
         element = element.substr(0,pos);
     }
 
-    SoDetail* detail = 0;
+    SoDetail* detail = nullptr;
     if (index < 0)
         return detail;
     if (element == "Elem") {
@@ -485,7 +468,7 @@ std::set<long> ViewProviderFemMesh::getHighlightNodes() const
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
     if (!HighlightedNodes.empty()) {
-        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
+        const SMESHDS_Mesh* data = static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh.getValue().getSMesh()->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
@@ -510,7 +493,7 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
     }
 }
 
-void ViewProviderFemMesh::resetHighlightNodes(void)
+void ViewProviderFemMesh::resetHighlightNodes()
 {
     pcAnoCoords->point.setNum(0);
     vHighlightedIdx.clear();
@@ -567,7 +550,7 @@ void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color> &
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
-void ViewProviderFemMesh::resetColorByNodeId(void)
+void ViewProviderFemMesh::resetColorByNodeId()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);
@@ -613,7 +596,7 @@ void ViewProviderFemMesh::setDisplacementByNodeIdHelper(const std::vector<Base::
 
 }
 
-void ViewProviderFemMesh::resetDisplacementByNodeId(void)
+void ViewProviderFemMesh::resetDisplacementByNodeId()
 {
     applyDisplacementToNodes(0.0);
     DisplacementVector.clear();
@@ -621,7 +604,7 @@ void ViewProviderFemMesh::resetDisplacementByNodeId(void)
 /// reaply the node displacement with a certain factor and do a redraw
 void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
 {
-    if(DisplacementVector.size() == 0)
+    if(DisplacementVector.empty())
         return;
 
     float x,y,z;
@@ -671,7 +654,7 @@ void ViewProviderFemMesh::setColorByElementId(const std::map<long,App::Color> &E
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
-void ViewProviderFemMesh::resetColorByElementId(void)
+void ViewProviderFemMesh::resetColorByElementId()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);
@@ -684,9 +667,9 @@ void ViewProviderFemMesh::resetColorByElementId(void)
 
 void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
-    SoCoordinate3 *pcPointsCoord=0;
-    SoIndexedFaceSet *pcFaces=0;
-    SoIndexedLineSet *pcLines=0;
+    SoCoordinate3 *pcPointsCoord=nullptr;
+    SoIndexedFaceSet *pcFaces=nullptr;
+    SoIndexedLineSet *pcLines=nullptr;
 
     if (nodes.empty()) {
         pcPointsCoord = new SoCoordinate3();
@@ -739,7 +722,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
 
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = mesh->getValue().getSMesh()->GetMeshDS();
 
     int numFaces = data->NbFaces();
     int numNodes = data->NbNodes();

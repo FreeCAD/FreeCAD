@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="64"
+   width="64"
+   version="1.1"
+   id="svg3542"
+   sodipodi:docname="Draft_Hatch.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1051"
+     id="namedview30"
+     showgrid="false"
+     inkscape:zoom="3.6902135"
+     inkscape:cx="110.72455"
+     inkscape:cy="69.551041"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3542"
+     inkscape:document-rotation="0" />
+  <title
+     id="title854">TechDraw_TreeHatch</title>
+  <metadata
+     id="metadata3552">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>TechDraw_TreeHatch</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>TechDraw_TreeHatch</dc:title>
+        <dc:date>2016-04-27</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_TreeHatch.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3544">
+    <linearGradient
+       id="linearGradient3807">
+      <stop
+         id="stop3809"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1" />
+      <stop
+         id="stop3811"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <pattern
+       height=".1"
+       width=".1"
+       y="0"
+       x="0"
+       patternUnits="userSpaceOnUse"
+       id="cross">
+      <g
+         id="g3382"
+         style="fill:none; stroke:#000000; stroke-width:.005">
+        <path
+           id="path3384"
+           d="M0,0 l.12,.12" />
+        <path
+           id="path3386"
+           d="M.12,0 l-.12,.12" />
+      </g>
+    </pattern>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="10"
+       x2="37"
+       y1="59"
+       x1="44"
+       id="linearGradient3813"
+       xlink:href="#linearGradient3807" />
+  </defs>
+  <path
+     style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+     d="m 35.554173,7.186196 h 21.125503 l 0.2648,49.823336 H 7.2893958 L 7.64097,34.189786 34.151151,33.767917 Z"
+     id="path858"
+     sodipodi:nodetypes="ccccccc" />
+  <rect
+     style="color:#000000;overflow:visible;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-dashoffset:0;stop-opacity:1"
+     id="rect866"
+     width="29.70842"
+     height="5.2460818"
+     x="30.890678"
+     y="-21.753223"
+     transform="rotate(45)" />
+  <rect
+     style="color:#000000;overflow:visible;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-dashoffset:0;stop-opacity:1"
+     id="rect866-3"
+     width="29.70842"
+     height="5.2460818"
+     x="40.526852"
+     y="-11.281341"
+     transform="rotate(45)" />
+  <rect
+     style="color:#000000;overflow:visible;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-dashoffset:0;stop-opacity:1"
+     id="rect866-6"
+     width="29.70842"
+     height="5.2460818"
+     x="46.942085"
+     y="3.5527137e-15"
+     transform="rotate(45)" />
+  <rect
+     style="color:#000000;overflow:visible;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-dashoffset:0;stop-opacity:1"
+     id="rect866-7"
+     width="29.70842"
+     height="5.2460818"
+     x="36.091351"
+     y="11.061804"
+     transform="rotate(45)" />
+  <rect
+     style="color:#000000;overflow:visible;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-dashoffset:0;stop-opacity:1"
+     id="rect866-5"
+     width="21.511063"
+     height="5.3138289"
+     x="34.473373"
+     y="22.273962"
+     transform="rotate(45)" />
+  <rect
+     style="color:#000000;overflow:visible;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-dashoffset:0;stop-opacity:1"
+     id="rect866-5-3"
+     width="12.4612"
+     height="4.907351"
+     x="39.141003"
+     y="-32.287083"
+     transform="rotate(45)" />
+  <g
+     id="rect4151"
+     style="opacity:1;fill:#ffed24;fill-opacity:1;stroke:#433c21;stroke-width:2.11221675;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-variation-settings:normal;vector-effect:none;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0;stop-color:#000000;stop-opacity:1"
+     transform="matrix(0.85218527,0,0,0.85218527,4.7300714,4.7300714)">
+    <path
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#ffed24;fill-opacity:1;fill-rule:nonzero;stroke:#433c21;stroke-width:2.11221675;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+       d="M 35.076172,0.05078125 A 2.950295,2.950295 0 0 0 32.126953,3 V 31.150391 H 3 A 2.950295,2.950295 0 0 0 0.05078125,34.101562 V 61 A 2.950295,2.950295 0 0 0 3,63.949219 H 61 A 2.950295,2.950295 0 0 0 63.949219,61 V 3 A 2.950295,2.950295 0 0 0 61,0.05078125 Z m 2.949219,5.89843755 h 20.02539 V 58.050781 H 5.9492188 v -21 H 35.076172 a 2.950295,2.950295 0 0 0 2.949219,-2.949219 z"
+       id="path859" />
+  </g>
+</svg>

@@ -20,12 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_MENUMANAGER_H
 #define GUI_MENUMANAGER_H
 
 #include <string>
-#include <QStringList>
+#include <QList>
+#include <QString>
+#include <FCGlobal.h>
+
 
 class QAction;
 class QMenu;
@@ -38,7 +40,7 @@ class GuiExport MenuItem
 {
 public:
     MenuItem();
-    MenuItem(MenuItem*);
+    explicit MenuItem(MenuItem*);
     ~MenuItem();
 
     void setCommand(const std::string&);
@@ -46,6 +48,7 @@ public:
 
     bool hasItems() const;
     MenuItem* findItem(const std::string&);
+    MenuItem* findParentOf(const std::string&);
     MenuItem* copy() const;
     uint count() const;
 
@@ -76,6 +79,7 @@ class GuiExport MenuManager
 public:
     /** Sets up the menus of a given workbench. */
     void setup(MenuItem*) const;
+    void setupMenuBarCornerWidgets() const;
     /// sets up a context menu out of item
     void setupContextMenu(MenuItem* item, QMenu &menu) const;
     void retranslate() const;

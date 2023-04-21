@@ -23,36 +23,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <cstring>
 # include <cstdlib>
-# include <exception>
-# include <QString>
-# include <QStringList>
-# include <QRegExp>
-
+# include <cstring>
+# include <sstream>
 #endif
 
-#include <QLocale>
-
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+#include <Mod/TechDraw/App/DrawViewDimExtentPy.h>  // generated from DrawViewDimExtentPy.xml
 
-
-#include "Geometry.h"
-#include "DrawViewPart.h"
 #include "DrawViewDimExtent.h"
 #include "DrawDimHelper.h"
-#include "DrawUtil.h"
-#include "LineGroup.h"
-
-#include <Mod/TechDraw/App/DrawViewDimExtentPy.h>  // generated from DrawViewDimExtentPy.xml
+#include "DrawViewPart.h"
 
 using namespace TechDraw;
 
@@ -65,40 +47,19 @@ PROPERTY_SOURCE(TechDraw::DrawViewDimExtent, TechDraw::DrawViewDimension)
 DrawViewDimExtent::DrawViewDimExtent(void)
 {
     App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
-                                                                 //Cosmetic End points are stored in DVD::References2d
-    App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
+    App::PropertyLinkSubList       Source3d;                     //Part::Feature(s) & SubElements
 
-    ADD_PROPERTY_TYPE(Source,(0,0),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");
+    ADD_PROPERTY_TYPE(Source, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View containing the  dimension");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Source3d,(0,0),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");   //TBI
+
+    //Source3d is a candidate for deprecation as References3D contains the same information
+    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3d geometry to be dimensioned");
     Source3d.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(DirExtent ,(0),"",App::Prop_Output,"Horizontal / Vertical");
+    ADD_PROPERTY_TYPE(DirExtent ,(0), "", App::Prop_Output, "Horizontal / Vertical");
 
-    ADD_PROPERTY_TYPE(CosmeticTags ,(""),"",App::Prop_Output,"Id of cosmetic endpoints");
+    //CosmeticTags is a candidate for deprecation
+    ADD_PROPERTY_TYPE(CosmeticTags ,(""), "", App::Prop_Output, "Id of cosmetic endpoints");
 
-    //hide the properties the user can't edit in the property editor
-    Source3d.setStatus(App::Property::Hidden,true);   //TBI
-
-}
-
-DrawViewDimExtent::~DrawViewDimExtent()
-{
-}
-
-void DrawViewDimExtent::onChanged(const App::Property* prop)
-{
-    if (!isRestoring()) {
-        if (prop == &Source) {
-//            Base::Console().Message("DVDE::onChanged - Source: %X\n", Source.getValue());
-            //recalculate the points?
-        }
-    }
-    DrawViewDimension::onChanged(prop);
-}
-
-short DrawViewDimExtent::mustExecute() const
-{
-    return DrawViewDimension::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
@@ -107,145 +68,88 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-
     App::DocumentObject* docObj = Source.getValue();
-    if (docObj == nullptr) {
+    if (!docObj)
         return App::DocumentObject::StdReturn;
-    }
     DrawViewPart* dvp = dynamic_cast<DrawViewPart*>(docObj);
-     if (dvp == nullptr) {
+    if (!dvp)
         return App::DocumentObject::StdReturn;
+
+    ReferenceVector references = getEffectiveReferences();
+
+    resetLinear();
+    resetAngular();
+    resetArc();
+
+    if ( Type.isValue("Distance")  ||
+        Type.isValue("DistanceX") ||
+        Type.isValue("DistanceY") )  {
+        setLinearPoints(getPointsExtent(references));
     }
 
-    double tolerance = 0.00001;
-    std::vector<std::string> edgeNames = getSubNames();
-    int direction = DirExtent.getValue();
-
-    std::pair<Base::Vector3d, Base::Vector3d> endPoints =
-                                        DrawDimHelper::minMax(dvp,
-                                                              edgeNames,
-                                                              direction);
-    Base::Vector3d refMin = endPoints.first;
-    Base::Vector3d refMax = endPoints.second;
-
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
-    std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() > 1) {
-        v0 = dvp->getProjVertexByCosTag(cTags[0]);
-        v1 = dvp->getProjVertexByCosTag(cTags[1]);
-        if ( (v0 != nullptr) &&
-             (v1 != nullptr) ) {
-            double length00 = (v0->pnt - refMin).Length();
-            double length11 = (v1->pnt - refMax).Length();
-            double length01 = (v0->pnt - refMax).Length();
-            double length10 = (v1->pnt - refMin).Length();
-            if (  ((length00 < tolerance) &&
-                   (length11 < tolerance))  ||
-                  ((length01 < tolerance) &&
-                   (length10 < tolerance))  ) {
-                //nothing changed - nop
-            } else {
-                //update GV
-                v0->pnt = refMin;
-                v1->pnt = refMax;
-        //        v0->occVertex = ???
-        //        v1->occVertex = ???
-                //update CV
-                double scale = dvp->getScale();
-                CosmeticVertex* cvTemp = dvp->getCosmeticVertex(cTags[0]);
-                cvTemp->permaPoint = refMin / scale;
-                cvTemp = dvp->getCosmeticVertex(cTags[1]);
-                cvTemp->permaPoint = refMax / scale;
-            }
-        }
-    }
-
-    return DrawViewDimension::execute();
-}
-
-//getSubValues returns a garbage 1st entry if there are no subelements.
-std::vector<std::string> DrawViewDimExtent::getSubNames(void)
-{
-    std::vector<std::string> result;
-    std::vector<std::string> edgeNames = Source.getSubValues();
-    if (!edgeNames.empty() &&
-         (edgeNames[0].size() == 0)) {
-         //garbage first entry - nop
-    } else {
-        result = edgeNames;
-    }
-    return result;
-}
-
-pointPair DrawViewDimExtent::getPointsTwoVerts()
-{
-//    Base::Console().Message("DVDE::getPointsTwoVerts() - %s\n",getNameInDocument());
-    pointPair result;
-    result.first = Base::Vector3d(0.0, 0.0, 0.0);
-    result.second = Base::Vector3d(0.0, 0.0, 0.0);
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
-    TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
-        return result;
-    }
-
-    std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() > 1) {
-        v0 = dvp->getProjVertexByCosTag(cTags[0]);
-        v1 = dvp->getProjVertexByCosTag(cTags[1]);
-        if ( (v0 != nullptr) &&
-             (v1 != nullptr) ) {
-            result.first  = v0->pnt;
-            result.second = v1->pnt;
-        }
-    }
-    return result;
+    overrideKeepUpdated(false);
+    return DrawView::execute();
 }
 
 //! validate 2D references - only checks if the target exists
 bool DrawViewDimExtent::checkReferences2D() const
 {
-//    Base::Console().Message("DVDE::checkReFerences2d() - %s\n",getNameInDocument());
-    bool result = false;
-    TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp == nullptr) {
-        return result;
+//    Base::Console().Message("DVDE::checkReferences2d() - %s\n", getNameInDocument());
+    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+    if (objects.empty()) {
+        return false;
     }
 
-    std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() > 1) {
-        CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
-        CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
-        if ( (cv0 != nullptr) &&
-             (cv1 != nullptr) ) {
-            result = true;
-        }
+    const std::vector<std::string> &subElements = References2D.getSubValues();
+    //extent dims are the only dims allowed to have no subElements
+    if (subElements.empty() || subElements.front().empty()) {
+        return true;
     }
-    return result;
+
+    //if we have an object and a non-empty subelement list, then extent dims are the same as other dims
+    return DrawViewDimension::checkReferences2D();
 }
-
-void DrawViewDimExtent::unsetupObject()
+pointPair DrawViewDimExtent::getPointsExtent(ReferenceVector references)
 {
-//    bool isRemoving = testStatus(App::ObjectStatus::Remove);
-//    Base::Console().Message("DVDE::unsetupObject - isRemove: %d status: %X\n",
-//                            isRemoving, getStatus());
-    TechDraw::DrawViewPart* dvp = getViewPart();
+//    Base::Console().Message("DVD::getPointsExtent() - %s\n", getNameInDocument());
+    App::DocumentObject* refObject = references.front().getObject();
+    int direction = DirExtent.getValue();
+    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        auto dvp = static_cast<TechDraw::DrawViewPart*>(refObject);
 
-    std::vector<std::string> cTags = CosmeticTags.getValues();
-    dvp->removeCosmeticVertex(cTags);
-    DrawViewDimension::unsetupObject();
+        std::vector<std::string> edgeNames;     //empty list means we are using all the edges
+        if (!references.at(0).getSubName().empty()) {
+            //this is the usual case of selected edges in a dvp
+            for (auto& ref : references) {
+                if (ref.getSubName().empty()) {
+                    continue;
+                }
+                std::string geomType = DrawUtil::getGeomTypeFromName(ref.getSubName());
+                if (geomType == "Edge") {
+                    edgeNames.push_back(ref.getSubName());
+                }
+            }
+        }
+        std::pair<Base::Vector3d, Base::Vector3d> endPoints =
+            DrawDimHelper::minMax(dvp,
+                                  edgeNames,
+                                  direction);
+        return pointPair(endPoints.first, endPoints.second);
+    }
 
-    //dvp probably needs recomp/repaint here.
-    dvp->enforceRecompute();
+    //this is a 3d reference
+    std::pair<Base::Vector3d, Base::Vector3d> endPoints =
+            DrawDimHelper::minMax3d(getViewPart(),
+                                    references,
+                                    direction);
+    return pointPair(endPoints.first, endPoints.second);
 }
 
 PyObject *DrawViewDimExtent::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewDimExtentPy(this),true);
+        PythonObject = Py::Object(new DrawViewDimExtentPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

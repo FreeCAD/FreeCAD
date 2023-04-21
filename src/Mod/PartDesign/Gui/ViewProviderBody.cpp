@@ -24,45 +24,40 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Precision.hxx>
 # include <QMenu>
 #endif
 
-#include <Base/Console.h>
-#include <App/Part.h>
+#include <App/Document.h>
 #include <App/Origin.h>
+#include <App/Part.h>
+#include <Base/Console.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Application.h>
+#include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Gui/ViewProviderOriginFeature.h>
-
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 
-#include "ViewProviderDatum.h"
-#include "Utils.h"
-
 #include "ViewProviderBody.h"
+#include "Utils.h"
 #include "ViewProvider.h"
-#include <Gui/Application.h>
-#include <Gui/MDIView.h>
+#include "ViewProviderDatum.h"
+
 
 using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
-const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",NULL};
+const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",nullptr};
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
@@ -136,19 +131,19 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
-    func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+    func->trigger(act, std::bind(&ViewProviderBody::doubleClicked, this));
 
-    Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
+    Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
-bool ViewProviderBody::doubleClicked(void)
+bool ViewProviderBody::doubleClicked()
 {
     //first, check if the body is already active.
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-    if(!activeView) 
+    if(!activeView)
         return false;
 
     if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
@@ -232,17 +227,28 @@ void ViewProviderBody::updateData(const App::Property* prop)
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }
         }
+
+        if (tip)
+            copyColorsfromTip(tip);
     }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
 
+void ViewProviderBody::copyColorsfromTip(App::DocumentObject* tip) {
+    // update DiffuseColor
+    Gui::ViewProvider* vptip = Gui::Application::Instance->getViewProvider(tip);
+    if (vptip && vptip->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+        auto colors = static_cast<PartGui::ViewProviderPartExt*>(vptip)->DiffuseColor.getValues();
+        this->DiffuseColor.setValues(colors);
+    }
+}
 
 void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
 
     if(App::GetApplication().isRestoring())
         return;
-    
+
     if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
         obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are interested only in Part::Features, not in bodies
         return;
@@ -323,8 +329,8 @@ void ViewProviderBody::updateOriginDatumSize () {
     SbVec3f min = bboxOrigins.getMin();
 
     // obtain an Origin and it's ViewProvider
-    App::Origin* origin = 0;
-    Gui::ViewProviderOrigin* vpOrigin = 0;
+    App::Origin* origin = nullptr;
+    Gui::ViewProviderOrigin* vpOrigin = nullptr;
     try {
         origin = body->getOrigin ();
         assert (origin);
@@ -358,7 +364,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
         auto body = dynamic_cast<PartDesign::Body*>(getObject());
-    
+
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
             //otherwise the maskmode is blocked and won't go into "through"
@@ -436,7 +442,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     }
 }
 
-std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
+std::vector< std::string > ViewProviderBody::getDisplayModes() const {
 
     //we get all display modes and remove the "Group" mode, as this is what we use for "Through"
     //body display mode
@@ -471,7 +477,7 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
     App::Part *actPart = PartDesignGui::getActivePart();
     App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
-    if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
+    if (partOfBaseFeature && partOfBaseFeature != actPart)
         return false;
 
     return true;
@@ -499,7 +505,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             e.ReportException();
         }
     }
-    else if (body->BaseFeature.getValue() == nullptr) {
+    else if (!body->BaseFeature.getValue()) {
         body->BaseFeature.setValue(obj);
     }
 

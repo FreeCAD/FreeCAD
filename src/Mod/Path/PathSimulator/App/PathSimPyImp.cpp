@@ -22,22 +22,22 @@
 
 #include "PreCompiled.h"
 
-#include <Mod/Path/App/ToolPy.h>
 #include <Base/PlacementPy.h>
-#include <Base/VectorPy.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Path/App/CommandPy.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include "Mod/Path/PathSimulator/App/PathSim.h"
 
+#include <Mod/Mesh/App/MeshPy.h>
+#include <Mod/Path/App/CommandPy.h>
+#include <Mod/Part/App/TopoShapePy.h>
+
+#include "PathSim.h"
 // inclusion of the generated files (generated out of PathSimPy.xml)
 #include "PathSimPy.h"
 #include "PathSimPy.cpp"
 
+
 using namespace PathSimulator;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PathSimPy::representation(void) const
+std::string PathSimPy::representation() const
 {
     return std::string("<PathSim object>");
 }
@@ -57,11 +57,11 @@ int PathSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 {
-	static char *kwlist[] = { "stock", "resolution", NULL };
+	static char *kwlist[] = { "stock", "resolution", nullptr };
 	PyObject *pObjStock;
 	float resolution;
 	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!f", kwlist, &(Part::TopoShapePy::Type), &pObjStock, &resolution))
-		return 0;
+		return nullptr;
 	PathSim *sim = getPathSimPtr();
 	Part::TopoShape *stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
 	sim->BeginSimulation(stock, resolution);
@@ -74,7 +74,7 @@ PyObject* PathSimPy::SetToolShape(PyObject * args)
 	PyObject *pObjToolShape;
 	float resolution;
 	if (!PyArg_ParseTuple(args, "O!f", &(Part::TopoShapePy::Type), &pObjToolShape, &resolution))
-		return 0;
+		return nullptr;
 	PathSim *sim = getPathSimPtr();
 	const TopoDS_Shape& toolShape = static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
 	sim->SetToolShape(toolShape, resolution);
@@ -85,12 +85,12 @@ PyObject* PathSimPy::SetToolShape(PyObject * args)
 PyObject* PathSimPy::GetResultMesh(PyObject * args)
 {
 	if (!PyArg_ParseTuple(args, ""))
-		return 0;
+		return nullptr;
 	cStock *stock = getPathSimPtr()->m_stock;
-	if (stock == NULL)
+	if (!stock)
 	{
 		PyErr_SetString(PyExc_RuntimeError, "Simulation has stock object");
-		return 0;
+		return nullptr;
 	}
 
 	Mesh::MeshObject *meshOuter = new Mesh::MeshObject();
@@ -107,11 +107,11 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 
 PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 {
-	static char *kwlist[] = { "position", "command", NULL };
+	static char *kwlist[] = { "position", "command", nullptr };
 	PyObject *pObjPlace;
 	PyObject *pObjCmd;
 	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!", kwlist, &(Base::PlacementPy::Type), &pObjPlace, &(Path::CommandPy::Type), &pObjCmd))
-		return 0;
+		return nullptr;
 	PathSim *sim = getPathSimPtr();
 	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
 	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
@@ -122,7 +122,7 @@ PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 	return newposPy;
 }
 
-Py::Object PathSimPy::getTool(void) const
+Py::Object PathSimPy::getTool() const
 {
     //return Py::Object();
     throw Py::AttributeError("Not yet implemented");
@@ -130,7 +130,7 @@ Py::Object PathSimPy::getTool(void) const
 
 PyObject *PathSimPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PathSimPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

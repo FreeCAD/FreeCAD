@@ -22,14 +22,15 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include "Application.h"
-#include "Transactions.h"
-#include "Document.h"
-#include "AutoTransaction.h"
 
-FC_LOG_LEVEL_INIT("App",true,true)
+#include "AutoTransaction.h"
+#include "Application.h"
+#include "Document.h"
+#include "Transactions.h"
+
+
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
@@ -152,13 +153,15 @@ const char *Application::getActiveTransaction(int *id) const {
     int tid = 0;
     if(Transaction::getLastID() == _activeTransactionID)
         tid = _activeTransactionID;
-    if(id) *id = tid;
-    return tid?_activeTransactionName.c_str():0;
+    if (id)
+        *id = tid;
+    return tid ? _activeTransactionName.c_str() : nullptr;
 }
 
 void Application::closeActiveTransaction(bool abort, int id) {
     if(!id) id = _activeTransactionID;
-    if(!id) return;
+    if(!id)
+        return;
 
     if(_activeTransactionGuard>0 && !abort) {
         FC_LOG("ignore close transaction");
@@ -238,5 +241,4 @@ void TransactionLocker::activate(bool enable)
 bool TransactionLocker::isLocked() {
     return _TransactionLock > 0;
 }
-
 

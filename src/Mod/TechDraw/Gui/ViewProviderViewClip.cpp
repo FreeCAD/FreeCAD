@@ -30,14 +30,7 @@
 # endif
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
-
 #include "ViewProviderViewClip.h"
 
 using namespace TechDrawGui;
@@ -48,39 +41,16 @@ ViewProviderViewClip::ViewProviderViewClip()
 {
     sPixmap = "actions/TechDraw_ClipGroup";
 
-    // Do not show in property editor
-    //DisplayMode.StatusBits.set(3, true);
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+    // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
+    // don't use coin.
+    DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderViewClip::~ViewProviderViewClip()
 {
 }
 
-void ViewProviderViewClip::updateData(const App::Property* prop)
-{
-     ViewProviderDrawingView::updateData(prop);
-}
-
-void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderViewClip::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList;
-    return StrList;
-}
-
-std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren() const
 {
     // Collect any child views
     // for Clip, valid children are any View in Views
@@ -88,7 +58,7 @@ std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) cons
     return views;
 }
 
-void ViewProviderViewClip::show(void)
+void ViewProviderViewClip::show()
 {
     //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
@@ -103,7 +73,7 @@ void ViewProviderViewClip::show(void)
 
 }
 
-void ViewProviderViewClip::hide(void)
+void ViewProviderViewClip::hide()
 {
     //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
@@ -115,11 +85,6 @@ void ViewProviderViewClip::hide(void)
             (*it)->touch();
     }
     ViewProviderDrawingView::hide();
-}
-
-bool ViewProviderViewClip::isShow(void) const
-{
-    return Visibility.getValue();
 }
 
 bool ViewProviderViewClip::canDelete(App::DocumentObject *obj) const

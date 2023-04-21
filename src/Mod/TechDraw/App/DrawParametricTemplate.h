@@ -20,13 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_DrawParametricTemplate_h_
-#define _TECHDRAW_DrawParametricTemplate_h_
+#ifndef TECHDRAW_DrawParametricTemplate_h_
+#define TECHDRAW_DrawParametricTemplate_h_
 
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyFile.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawTemplate.h"
+#include "Geometry.h"
+
 
 namespace TechDraw
 {
@@ -51,23 +54,23 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     //@}
 
 
     short mustExecute() const;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "TechDrawGui::ViewProviderTemplate";
     }
 
     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
+    virtual PyObject *getPyObject();
+    virtual unsigned int getMemSize() const;
 
 public:
-    std::vector<TechDraw::BaseGeom *> getGeometry() { return geom; }
+    std::vector<TechDraw::BaseGeomPtr> getGeometry() { return geom; }
     int clearGeometry();
 
     // Template Drawing Methods
@@ -80,13 +83,13 @@ protected:
     void onChanged(const App::Property* prop);
 
 protected:
-    std::vector<TechDraw::BaseGeom *> geom;
+    std::vector<TechDraw::BaseGeomPtr> geom;
 
 private:
     static const char* OrientationEnums[];
 };
 
-typedef App::FeaturePythonT<DrawParametricTemplate> DrawParametricTemplatePython;
+using DrawParametricTemplatePython = App::FeaturePythonT<DrawParametricTemplate>;
 
 } //namespace TechDraw
 

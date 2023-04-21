@@ -20,25 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMPORT_IMPORTOCAF_H
 #define IMPORT_IMPORTOCAF_H
 
-#include <TDocStd_Document.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <Quantity_Color.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TDF_LabelMapHasher.hxx>
 #include <climits>
-#include <string>
-#include <set>
 #include <map>
+#include <set>
+#include <string>
 #include <unordered_map>
 #include <vector>
-#include <App/Material.h>
+
+#include <Quantity_ColorRGBA.hxx>
+#include <TDocStd_Document.hxx>
+#include <TopoDS_Shape.hxx>
+#include <XCAFDoc_ColorTool.hxx>
+#include <XCAFDoc_ShapeTool.hxx>
+
 #include <App/Part.h>
-#include <Mod/Part/App/FeatureCompound.h>
+#include <Mod/Import/ImportGlobal.h>
 
 
 class TDF_Label;
@@ -68,6 +67,8 @@ private:
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&, std::vector<App::DocumentObject*> &);
     void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
     virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
+    static void tryPlacementFromLoc(App::GeoFeature*, const TopLoc_Location&);
+    static void tryPlacementFromMatrix(App::GeoFeature*, const Base::Matrix4D&);
 
 private:
     Handle(TDocStd_Document) pDoc;
@@ -89,7 +90,7 @@ public:
     }
 
 private:
-    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors);
+    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override;
 
 private:
     std::map<Part::Feature*, std::vector<App::Color> > partColors;
@@ -117,7 +118,7 @@ private:
     std::map<Standard_Integer, TopoDS_Shape> myShells;
     std::map<Standard_Integer, TopoDS_Shape> myCompds;
     std::map<Standard_Integer, TopoDS_Shape> myShapes;
-    std::map<Standard_Integer, Quantity_Color> myColorMap;
+    std::map<Standard_Integer, Quantity_ColorRGBA> myColorMap;
     std::map<Standard_Integer, std::string> myNameMap;
 };
 

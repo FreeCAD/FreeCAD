@@ -33,10 +33,10 @@ class PropertySheet;
 class SheetObserver : public App::DocumentObserver {
 public:
     SheetObserver(App::Document* document, PropertySheet *_sheet);
-    ~SheetObserver() { }
-    virtual void slotCreatedObject(const App::DocumentObject& Obj);
-    virtual void slotDeletedObject(const App::DocumentObject& Obj);
-    virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    ~SheetObserver() override { }
+    void slotCreatedObject(const App::DocumentObject& Obj) override;
+    void slotDeletedObject(const App::DocumentObject& Obj) override;
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
     void ref();
     bool unref();
     App::Document* getDocument() const { return App::DocumentObserver::getDocument(); }

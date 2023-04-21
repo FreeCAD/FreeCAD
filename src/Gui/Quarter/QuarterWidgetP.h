@@ -34,11 +34,10 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbName.h>
-#include <QtGui/QCursor>
-#include <QtCore/QList>
-#include <QtCore/QUrl>
+#include <QList>
+#include <QUrl>
 #include <QtOpenGL.h>
+
 
 class SoNode;
 class SoCamera;
@@ -66,12 +65,12 @@ public:
   ~QuarterWidgetP();
 
   SoCamera * searchForCamera(SoNode * root);
-  uint32_t getCacheContextId(void) const;
-  QMenu * contextMenu(void);
+  uint32_t getCacheContextId() const;
+  QMenu * contextMenu();
 
-  QList<QAction *> transparencyTypeActions(void) const;
-  QList<QAction *> renderModeActions(void) const;
-  QList<QAction *> stereoModeActions(void) const;
+  QList<QAction *> transparencyTypeActions() const;
+  QList<QAction *> renderModeActions() const;
+  QList<QAction *> stereoModeActions() const;
 
   QuarterWidget * const master;
   SoNode * scene;

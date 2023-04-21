@@ -24,14 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include "stdio.h"
 # ifdef FC_OS_WIN32
 #   include "io.h"
-# endif
-# ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
-# include "fcntl.h"
+# include <fcntl.h>
 # include <iostream>
 #endif
 
@@ -84,8 +81,10 @@ GUIConsole::~GUIConsole (void)
       FreeConsole();
 }
 
-void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
+void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+
     int color = -1;
     switch(level){
         case Base::LogStyle::Warning:
@@ -100,6 +99,11 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
         case Base::LogStyle::Log:
             color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
             break;
+        case Base::LogStyle::Critical:
+            color = FOREGROUND_RED | FOREGROUND_GREEN;
+            break;
+        default:
+            break;
     }
 
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), color);
@@ -110,10 +114,12 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 #else /* FC_OS_LINUX */
 
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
-GUIConsole::GUIConsole (void) {}
-GUIConsole::~GUIConsole (void) {}
-void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
+GUIConsole::GUIConsole () {}
+GUIConsole::~GUIConsole () {}
+void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+
     switch(level){
         case Base::LogStyle::Warning:
             std::cerr << "Warning: " << msg;
@@ -126,6 +132,11 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
             break;
         case Base::LogStyle::Log:
             std::clog << msg;
+            break;
+        case Base::LogStyle::Critical:
+            std::cout << "Critical: " << msg;
+            break;
+        default:
             break;
     }
 }

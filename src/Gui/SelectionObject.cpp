@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <sstream>
@@ -28,13 +27,13 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
+#include <Gui/SelectionObjectPy.h>
 
 #include "SelectionObject.h"
 #include "Selection.h"
 #include "Application.h"
 #include "Command.h"
-#include <Gui/SelectionObjectPy.h>
+
 
 using namespace Gui;
 
@@ -51,7 +50,7 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     DocName = msg.pDocName ? msg.pDocName : "";
     TypeName = msg.pTypeName ? msg.pTypeName : "";
     if (msg.pSubName) {
-        SubNames.push_back(msg.pSubName);
+        SubNames.emplace_back(msg.pSubName);
         SelPoses.emplace_back(msg.x, msg.y, msg.z);
     }
 }
@@ -67,24 +66,24 @@ SelectionObject::~SelectionObject()
 {
 }
 
-const App::DocumentObject * SelectionObject::getObject(void) const
+const App::DocumentObject * SelectionObject::getObject() const
 {
     if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
         if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
-    return 0;
+    return nullptr;
 }
 
-App::DocumentObject * SelectionObject::getObject(void)
+App::DocumentObject * SelectionObject::getObject()
 {
     if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
         if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
-    return 0;
+    return nullptr;
 }
 
 bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const
@@ -93,7 +92,7 @@ bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const
     return (obj && obj->getTypeId().isDerivedFrom(typeId));
 }
 
-std::string SelectionObject::getAsPropertyLinkSubString(void)const
+std::string SelectionObject::getAsPropertyLinkSubString()const
 {
     std::ostringstream str;
     str << "(" << Gui::Command::getObjectCmd(getObject()) << ",[";

@@ -23,17 +23,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
-
 #include "FemConstraintPressure.h"
+
 
 using namespace Fem;
 
@@ -53,12 +44,12 @@ ConstraintPressure::ConstraintPressure()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintPressure::execute(void)
+App::DocumentObjectExecReturn *ConstraintPressure::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintPressure::getViewProviderName(void) const
+const char* ConstraintPressure::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintPressure";
 }

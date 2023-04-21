@@ -20,31 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-
 #ifndef _PreComp_
+# include <fstream>
 # include <ios>
 #endif
 
-#include <fstream>
+#include <Base/Builder3D.h>
+#include <Base/Sequencer.h>
+
 #include "SetOperations.h"
 #include "Algorithm.h"
-#include "Elements.h"
-#include "Iterator.h"
-#include "Grid.h"
-#include "MeshIO.h"
-#include "Visitor.h"
 #include "Builder.h"
-#include "Grid.h"
-#include "Evaluation.h"
 #include "Definitions.h"
+#include "Elements.h"
+#include "Grid.h"
+#include "Iterator.h"
 #include "Triangulation.h"
+#include "Visitor.h"
 
-#include <Base/Sequencer.h>
-#include <Base/Builder3D.h>
-#include <Base/Tools2D.h>
 
 using namespace Base;
 using namespace MeshCore;
@@ -59,7 +54,7 @@ SetOperations::SetOperations (const MeshKernel &cutMesh1, const MeshKernel &cutM
 {
 }
 
-SetOperations::~SetOperations (void)
+SetOperations::~SetOperations ()
 {
 }
 
@@ -74,7 +69,7 @@ void SetOperations::Do ()
   // _builder.clear();
 
   //Base::Sequencer().next();
-  std::set<unsigned long> facetsCuttingEdge0, facetsCuttingEdge1;
+  std::set<FacetIndex> facetsCuttingEdge0, facetsCuttingEdge1;
   Cut(facetsCuttingEdge0, facetsCuttingEdge1);
 
   // no intersection curve of the meshes found
@@ -103,7 +98,7 @@ void SetOperations::Do ()
             break;
           }
     }
-    
+
     MeshDefinitions::SetMinPointDistance(saveMinMeshDistance);
     return;
   }
@@ -170,7 +165,7 @@ void SetOperations::Do ()
   MeshDefinitions::SetMinPointDistance(saveMinMeshDistance);
 }
 
-void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<unsigned long>& facetsCuttingEdge1)
+void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<FacetIndex>& facetsCuttingEdge1)
 {
   MeshFacetGrid grid1(_cutMesh0, 20);
   MeshFacetGrid grid2(_cutMesh1, 20);
@@ -179,7 +174,7 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
   grid1.GetCtGrids(ctGx1, ctGy1, ctGz1);
 
   unsigned long gx1;
-  for (gx1 = 0; gx1 < ctGx1; gx1++)  
+  for (gx1 = 0; gx1 < ctGx1; gx1++)
   {
     unsigned long gy1;
     for (gy1 = 0; gy1 < ctGy1; gy1++)
@@ -189,31 +184,31 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
       {
         if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
         {
-          std::vector<unsigned long> vecFacets2;
+          std::vector<FacetIndex> vecFacets2;
           grid2.Inside(grid1.GetBoundBox(gx1, gy1, gz1), vecFacets2);
-      
-          if (vecFacets2.size() > 0)
+
+          if (!vecFacets2.empty())
           {
-            std::set<unsigned long> vecFacets1;
+            std::set<FacetIndex> vecFacets1;
             grid1.GetElements(gx1, gy1, gz1, vecFacets1);
-            
-            std::set<unsigned long>::iterator it1;
+
+            std::set<FacetIndex>::iterator it1;
             for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
             {
-              unsigned long fidx1 = *it1;
+              FacetIndex fidx1 = *it1;
               MeshGeomFacet f1 = _cutMesh0.GetFacet(*it1);
-              
-              std::vector<unsigned long>::iterator it2;
+
+              std::vector<FacetIndex>::iterator it2;
               for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
               {
-                unsigned long fidx2 = *it2;
+                FacetIndex fidx2 = *it2;
                 MeshGeomFacet f2 = _cutMesh1.GetFacet(fidx2);
 
                 MeshPoint p0, p1;
 
                 int isect = f1.IntersectWithFacet(f2, p0, p1);
                 if (isect > 0)
-                { 
+                {
                    // optimize cut line if distance to nearest point is too small
                   float minDist1 = _minDistanceToPoint, minDist2 = _minDistanceToPoint;
                   MeshPoint np0 = p0, np1 = p1;
@@ -298,19 +293,19 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
         } // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
       } // for (gz1 = 0; gz1 < ctGz1; gz1++)
     } // for (gy1 = 0; gy1 < ctGy1; gy1++)
-  } // for (gx1 = 0; gx1 < ctGx1; gx1++)  
+  } // for (gx1 = 0; gx1 < ctGx1; gx1++)
 }
 
 void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
 {
-  // Triangulate Mesh 
-  std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
+  // Triangulate Mesh
+  std::map<FacetIndex, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
   for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
   {
     std::vector<Vector3f> points;
     std::set<MeshPoint>   pointsSet;
 
-    unsigned long fidx = it1->first;
+    FacetIndex fidx = it1->first;
     MeshGeomFacet f = cutMesh.GetFacet(fidx);
 
     //if (side == 1)
@@ -324,7 +319,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
       pointsSet.insert(f._aclPoints[i]);
       points.push_back(f._aclPoints[i]);
     }
-    
+
     // triangulated facets
     std::list<std::set<MeshPoint>::iterator>::iterator it2;
     for (it2 = it1->second.begin(); it2 != it1->second.end(); ++it2)
@@ -366,7 +361,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
       { // two same triangle corner points
         continue;
       }
-  
+
       MeshGeomFacet facet(points[it->_aulPoints[0]],
                           points[it->_aulPoints[1]],
                           points[it->_aulPoints[2]]);
@@ -468,11 +463,11 @@ void SetOperations::CollectFacets (int side, float mult)
   {
     if (!itf->IsFlag(MeshFacet::VISIT))
     { // Facet found, visit neighbours
-      std::vector<unsigned long> facets;
+      std::vector<FacetIndex> facets;
       facets.push_back(itf - rFacets.begin()); // add seed facet
-      CollectFacetVisitor visitor(mesh, facets, _edges, side, mult, _builder); 
+      CollectFacetVisitor visitor(mesh, facets, _edges, side, mult, _builder);
       mesh.VisitNeighbourFacets(visitor, itf - rFacets.begin());
-      
+
       if (visitor._addFacets == 0)
       { // mark all facets to add it to the result
         algo.SetFacetsFlag(facets, MeshFacet::TMP0);
@@ -492,7 +487,7 @@ void SetOperations::CollectFacets (int side, float mult)
   // MeshDefinitions::SetMinPointDistance(distSave);
 }
 
-SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh, std::vector<unsigned long>& facets,
+SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh, std::vector<FacetIndex>& facets,
                                                          std::map<Edge, EdgeInfo>& edges, int side, float mult,
                                                          Base::Builder3D& builder)
   : _facets(facets)
@@ -506,7 +501,7 @@ SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh,
 }
 
 bool SetOperations::CollectFacetVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
-                                                unsigned long ulFInd, unsigned long ulLevel)
+                                                FacetIndex ulFInd, unsigned long ulLevel)
 {
     (void)rclFacet;
     (void)rclFrom;
@@ -517,14 +512,14 @@ bool SetOperations::CollectFacetVisitor::Visit (const MeshFacet &rclFacet, const
 
 //static int matchCounter = 0;
 bool SetOperations::CollectFacetVisitor::AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom,
-                                                     unsigned long ulFInd, unsigned long ulLevel,
+                                                     FacetIndex ulFInd, unsigned long ulLevel,
                                                      unsigned short neighbourIndex)
 {
     (void)ulFInd;
     (void)ulLevel;
     if (rclFacet.IsFlag(MeshFacet::MARKED) && rclFrom.IsFlag(MeshFacet::MARKED)) {
         // facet connected to an edge
-        unsigned long pt0 = rclFrom._aulPoints[neighbourIndex], pt1 = rclFrom._aulPoints[(neighbourIndex+1)%3];
+        PointIndex pt0 = rclFrom._aulPoints[neighbourIndex], pt1 = rclFrom._aulPoints[(neighbourIndex+1)%3];
         Edge edge(_mesh.GetPoint(pt0), _mesh.GetPoint(pt1));
 
         std::map<Edge, EdgeInfo>::iterator it = _edges.find(edge);
@@ -617,4 +612,233 @@ bool SetOperations::CollectFacetVisitor::AllowVisit (const MeshFacet& rclFacet, 
     }
 
     return true;
+}
+
+// ----------------------------------------------------------------------------
+
+bool MeshIntersection::hasIntersection() const
+{
+    Base::BoundBox3f bbox1 = kernel1.GetBoundBox();
+    Base::BoundBox3f bbox2 = kernel2.GetBoundBox();
+    if (!(bbox1 && bbox2))
+        return false;
+
+    if (testIntersection(kernel1, kernel2))
+        return true;
+
+    return false;
+}
+
+void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsct) const
+{
+    const MeshKernel& k1 = kernel1;
+    const MeshKernel& k2 = kernel2;
+
+    // Contains bounding boxes for every facet of 'k1'
+    std::vector<Base::BoundBox3f> boxes1;
+    MeshFacetIterator cMFI1(k1);
+    for (cMFI1.Begin(); cMFI1.More(); cMFI1.Next()) {
+        boxes1.push_back((*cMFI1).GetBoundBox());
+    }
+
+    // Contains bounding boxes for every facet of 'k2'
+    std::vector<Base::BoundBox3f> boxes2;
+    MeshFacetIterator cMFI2(k2);
+    for (cMFI2.Begin(); cMFI2.More(); cMFI2.Next()) {
+        boxes2.push_back((*cMFI2).GetBoundBox());
+    }
+
+    // Splits the mesh using grid for speeding up the calculation
+    MeshFacetGrid cMeshFacetGrid(k1);
+
+    const MeshFacetArray& rFaces2 = k2.GetFacets();
+    Base::SequencerLauncher seq("Checking for intersections...", rFaces2.size());
+    int index = 0;
+    MeshGeomFacet facet1, facet2;
+    Base::Vector3f pt1, pt2;
+
+    // Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
+    for (MeshFacetArray::_TConstIterator it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
+        seq.next();
+        std::vector<FacetIndex> elements;
+        cMeshFacetGrid.Inside(boxes2[index], elements, true);
+
+        cMFI2.Set(index);
+        facet2 = *cMFI2;
+
+        for (std::vector<FacetIndex>::iterator jt = elements.begin(); jt != elements.end(); ++jt) {
+            if (boxes2[index] && boxes1[*jt]) {
+                cMFI1.Set(*jt);
+                facet1 = *cMFI1;
+                int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
+                if (ret == 2) {
+                    Tuple d;
+                    d.p1 = pt1;
+                    d.p2 = pt2;
+                    d.f1 = *jt;
+                    d.f2 = index;
+                    intsct.push_back(d);
+                }
+            }
+        }
+    }
+}
+
+bool MeshIntersection::testIntersection(const MeshKernel& k1,
+                                        const MeshKernel& k2)
+{
+    // Contains bounding boxes for every facet of 'k1'
+    std::vector<Base::BoundBox3f> boxes1;
+    MeshFacetIterator cMFI1(k1);
+    for (cMFI1.Begin(); cMFI1.More(); cMFI1.Next()) {
+        boxes1.push_back((*cMFI1).GetBoundBox());
+    }
+
+    // Contains bounding boxes for every facet of 'k2'
+    std::vector<Base::BoundBox3f> boxes2;
+    MeshFacetIterator cMFI2(k2);
+    for (cMFI2.Begin(); cMFI2.More(); cMFI2.Next()) {
+        boxes2.push_back((*cMFI2).GetBoundBox());
+    }
+
+    // Splits the mesh using grid for speeding up the calculation
+    MeshFacetGrid cMeshFacetGrid(k1);
+
+    const MeshFacetArray& rFaces2 = k2.GetFacets();
+    Base::SequencerLauncher seq("Checking for intersections...", rFaces2.size());
+    int index = 0;
+    MeshGeomFacet facet1, facet2;
+    Base::Vector3f pt1, pt2;
+
+    // Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
+    for (MeshFacetArray::_TConstIterator it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
+        seq.next();
+        std::vector<FacetIndex> elements;
+        cMeshFacetGrid.Inside(boxes2[index], elements, true);
+
+        cMFI2.Set(index);
+        facet2 = *cMFI2;
+
+        for (std::vector<FacetIndex>::iterator jt = elements.begin(); jt != elements.end(); ++jt) {
+            if (boxes2[index] && boxes1[*jt]) {
+                cMFI1.Set(*jt);
+                facet1 = *cMFI1;
+                int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
+                if (ret == 2) {
+                    // abort after the first detected self-intersection
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+void MeshIntersection::connectLines(bool onlyclosed, const std::list<MeshIntersection::Tuple>& rdata,
+                                    std::list< std::list<MeshIntersection::Triple> >& lines)
+{
+    float fMinEps = minDistance * minDistance;
+
+    std::list<Tuple> data = rdata;
+    while (!data.empty()) {
+        std::list<Tuple>::iterator pF;
+        std::list<Triple> newPoly;
+
+        // add first line and delete from the list
+        Triple front, back;
+        front.f1 = data.begin()->f1;
+        front.f2 = data.begin()->f2;
+        front.p = data.begin()->p1; // current start point of the polyline
+        back.f1 = data.begin()->f1;
+        back.f2 = data.begin()->f2;
+        back.p = data.begin()->p2; // current end point of the polyline
+        newPoly.push_back(front);
+        newPoly.push_back(back);
+        data.erase(data.begin());
+
+        // search for the next line on the begin/end of the polyline and add it
+        std::list<Tuple>::iterator pFront, pEnd;
+        bool bFoundLine;
+        do {
+            float  fFrontMin = fMinEps, fEndMin = fMinEps;
+            bool   bFrontFirst=false, bEndFirst=false;
+
+            pFront = data.end();
+            pEnd   = data.end();
+            bFoundLine = false;
+
+            for (pF = data.begin(); pF != data.end(); ++pF) {
+                if (Base::DistanceP2(front.p, pF->p1) < fFrontMin) {
+                    fFrontMin   = Base::DistanceP2(front.p, pF->p1);
+                    pFront      = pF;
+                    bFrontFirst = true;
+                }
+                else if (Base::DistanceP2(back.p, pF->p1) < fEndMin) {
+                    fEndMin     = Base::DistanceP2(back.p, pF->p1);
+                    pEnd        = pF;
+                    bEndFirst   = true;
+                }
+                else if (Base::DistanceP2(front.p, pF->p2) < fFrontMin) {
+                    fFrontMin   = Base::DistanceP2(front.p, pF->p2);
+                    pFront      = pF;
+                    bFrontFirst = false;
+                }
+                else if (Base::DistanceP2(back.p, pF->p2) < fEndMin) {
+                    fEndMin     = Base::DistanceP2(back.p, pF->p2);
+                    pEnd        = pF;
+                    bEndFirst   = false;
+                }
+
+                if (fFrontMin == 0.0f || fEndMin == 0.0f) {
+                    break;
+                }
+            }
+
+            if (pFront != data.end()) {
+                bFoundLine = true;
+                if (bFrontFirst) {
+                    front.f1 = pFront->f1;
+                    front.f2 = pFront->f2;
+                    front.p = pFront->p2;
+                    newPoly.push_front(front);
+                }
+                else {
+                    front.f1 = pFront->f1;
+                    front.f2 = pFront->f2;
+                    front.p = pFront->p1;
+                    newPoly.push_front(front);
+                }
+
+                data.erase(pFront);
+            }
+
+            if (pEnd != data.end()) {
+                bFoundLine = true;
+                if (bEndFirst) {
+                    back.f1 = pEnd->f1;
+                    back.f2 = pEnd->f2;
+                    back.p = pEnd->p2;
+                    newPoly.push_back(back);
+                }
+                else {
+                    back.f1 = pEnd->f1;
+                    back.f2 = pEnd->f2;
+                    back.p = pEnd->p1;
+                    newPoly.push_back(back);
+                }
+
+                data.erase(pEnd);
+            }
+        }
+        while (bFoundLine);
+
+        if (onlyclosed) {
+            if (newPoly.size() > 2 && Base::DistanceP2(newPoly.front().p, newPoly.back().p) < fMinEps)
+                lines.push_back(newPoly);
+        }
+        else {
+            lines.push_back(newPoly);
+        }
+    }
 }

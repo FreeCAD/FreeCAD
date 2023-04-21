@@ -20,13 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _ProjectionAlgos_h_
 #define _ProjectionAlgos_h_
 
-#include <TopoDS_Shape.hxx>
-#include <Base/Vector3D.h>
 #include <string>
+#include <TopoDS_Shape.hxx>
+
+#include <Base/Vector3D.h>
+#include <Mod/Drawing/DrawingGlobal.h>
+
 
 class BRepAdaptor_Curve;
 
@@ -49,7 +51,7 @@ public:
         WithHidden = 1,
         WithSmooth = 2
     };
-    typedef std::map<std::string,std::string> XmlAttributes;
+    using XmlAttributes = std::map<std::string,std::string>;
 
     std::string getSVG(ExtractionType type, double tolerance=0.05,
                        XmlAttributes V_style=XmlAttributes(),

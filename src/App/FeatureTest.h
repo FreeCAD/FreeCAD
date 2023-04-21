@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-
 #ifndef APP_FEATURETEST_H
 #define APP_FEATURETEST_H
 
-
 #include "DocumentObject.h"
-#include "PropertyUnits.h"
 #include "PropertyGeo.h"
 #include "PropertyLinks.h"
+#include "PropertyPythonObject.h"
+#include "PropertyUnits.h"
+
 
 namespace App
 {
@@ -37,12 +37,12 @@ namespace App
 /// The testing feature
 class FeatureTest : public DocumentObject
 {
-  PROPERTY_HEADER(App::FeatureTest);
+  PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTest);
 
 public:
   FeatureTest();
 
-  ~FeatureTest();
+  ~FeatureTest() override;
 
   // Standard Properties (PropertyStandard.h)
   App::PropertyInteger      Integer;
@@ -105,12 +105,12 @@ public:
 
   /** @name methods override Feature */
   //@{
-  virtual short mustExecute(void) const;
+  short mustExecute() const override;
   /// recalculate the Feature
-  virtual DocumentObjectExecReturn *execute(void);
+  DocumentObjectExecReturn *execute() override;
   /// returns the type name of the ViewProvider
-  //FIXME: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
-  virtual const char* getViewProviderName(void) const {
+  //Hint: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
+  const char* getViewProviderName() const override {
     return "Gui::ViewProviderFeature";
   }
   //@}
@@ -119,7 +119,7 @@ public:
 /// The exception testing feature
 class FeatureTestException :public FeatureTest
 {
-  PROPERTY_HEADER(App::FeatureTestException);
+  PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestException);
 
 public:
   FeatureTestException();
@@ -128,13 +128,92 @@ public:
   App::PropertyInteger ExceptionType;
 
   /// recalculate the Feature and throw an exception
-  virtual DocumentObjectExecReturn *execute(void);
+  DocumentObjectExecReturn *execute() override;
   /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const {
+  const char* getViewProviderName() const override {
     return "Gui::ViewProviderFeature";
   }
 };
 
+class FeatureTestColumn : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestColumn);
+
+public:
+    FeatureTestColumn();
+
+    // Standard Properties (PropertyStandard.h)
+    App::PropertyString  Column;
+    App::PropertyBool    Silent;
+    App::PropertyInteger Value;
+
+    /** @name methods override Feature */
+    //@{
+    DocumentObjectExecReturn *execute() override;
+    //@}
+};
+
+class FeatureTestRow : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestRow);
+
+public:
+    FeatureTestRow();
+
+    // Standard Properties (PropertyStandard.h)
+    App::PropertyString  Row;
+    App::PropertyBool    Silent;
+    App::PropertyInteger Value;
+
+    /** @name methods override Feature */
+    //@{
+    DocumentObjectExecReturn *execute() override;
+    //@}
+};
+
+class FeatureTestAbsAddress : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestAbsAddress);
+
+public:
+    FeatureTestAbsAddress();
+    DocumentObjectExecReturn *execute() override;
+
+    App::PropertyString Address;
+    App::PropertyBool Valid;
+};
+
+class FeatureTestPlacement : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestPlacement);
+
+public:
+    FeatureTestPlacement();
+
+    // Standard Properties (PropertyStandard.h)
+    App::PropertyPlacement Input1;
+    App::PropertyPlacement Input2;
+    App::PropertyPlacement MultLeft;
+    App::PropertyPlacement MultRight;
+
+    /** @name methods override Feature */
+    //@{
+    DocumentObjectExecReturn *execute() override;
+    //@}
+};
+
+class FeatureTestAttribute : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestAttribute);
+
+public:
+    FeatureTestAttribute();
+    ~FeatureTestAttribute() override;
+    DocumentObjectExecReturn *execute() override;
+
+    App::PropertyPythonObject Object;
+    App::PropertyString Attribute;
+};
 
 
 } //namespace App

@@ -32,22 +32,8 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
-    <widget class="QCheckBox" name="recompute">
-     <property name="text">
-      <string>Recompute after commit</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_6">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="removeSelection">
-       <property name="text">
-        <string>Remove</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="addSelection">
        <property name="text">
@@ -55,17 +41,24 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="removeAll">
-       <property name="text">
-        <string>Remove all</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="hideSelection">
        <property name="text">
         <string>Hide</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="removeSelection">
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="removeAll">
+       <property name="text">
+        <string>Remove all</string>
        </property>
       </widget>
      </item>
@@ -77,6 +70,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="recompute">
+     <property name="text">
+      <string>Recompute after commit</string>
+     </property>
+    </widget>
    </item>
    <item row="5" column="0">
     <widget class="QCheckBox" name="onTop">

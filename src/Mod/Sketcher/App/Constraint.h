@@ -20,15 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_CONSTRAINT_H
 #define SKETCHER_CONSTRAINT_H
 
+#include <array>
 
 #include <Base/Persistence.h>
 #include <Base/Quantity.h>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
+
+#include "GeoEnum.h"
+
 
 namespace Sketcher
 {
@@ -37,7 +40,7 @@ namespace Sketcher
  This is mandatory in order to keep the handling of constraint types upward compatible which means that
  this program version ignores later introduced constraint types when reading them from a project file.
  */
-enum ConstraintType {
+enum ConstraintType : int {
     None = 0,
     Coincident = 1,
     Horizontal = 2,
@@ -73,19 +76,9 @@ enum InternalAlignmentType {
     ParabolaFocus           = 8,
     BSplineControlPoint     = 9,
     BSplineKnotPoint        = 10,
+    ParabolaFocalAxis       = 11,
+    NumInternalAlignmentType // must be the last item!
 };
-
-/*! PointPos lets us refer to different aspects of a piece of geometry.  sketcher::none refers
- * to an edge itself (eg., for a Perpendicular constraint on two lines). sketcher::start and
- * sketcher::end denote the endpoints of lines or bounded curves.  sketcher::mid denotes
- * geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.  More
- * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
- * in addition to PointPos.
- */
-enum PointPos { none    = 0,
-                start   = 1,
-                end     = 2,
-                mid     = 3 };
 
 class SketcherExport Constraint : public Base::Persistence
 {
@@ -103,19 +96,17 @@ public:
     Constraint(Constraint&&) = delete;
     Constraint& operator=(Constraint&&) = delete;
 
-    virtual ~Constraint() = default;
+    ~Constraint() override = default;
 
-    Constraint *clone(void) const; // does copy the tag, it will be treated as a rename by the expression engine.
-    Constraint *copy(void) const; // does not copy the tag, but generates a new one
-
-    static const int GeoUndef;
+    Constraint *clone() const; // does copy the tag, it will be treated as a rename by the expression engine.
+    Constraint *copy() const; // does not copy the tag, but generates a new one
 
     // from base class
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     Base::Quantity getPresentationValue() const;
     inline void setValue(double newValue) {
@@ -133,6 +124,12 @@ public:
     /// utility function to swap the index in First/Second/Third of the provided constraint from the fromGeoId GeoId to toGeoId
     void substituteIndex(int fromGeoId, int toGeoId);
 
+    std::string typeToString() const {return typeToString(Type);}
+    static std::string typeToString(ConstraintType type);
+
+    std::string internalAlignmentTypeToString() const {return internalAlignmentTypeToString(AlignmentType);}
+    static std::string internalAlignmentTypeToString(InternalAlignmentType alignment);
+
     friend class PropertyConstraintList;
 
 private:
@@ -140,6 +137,17 @@ private:
 
 private:
     double Value;
+
+    constexpr static std::array<const char *,ConstraintType::NumConstraintTypes> type2str {
+        {   "None", "Horizontal", "Vertical","Parallel", "Tangent", "Distance", "DistanceX", "DistanceY", "Angle", "Perpendicular", "Radius",
+            "Equal", "PointOnObject", "Symmetric", "InternalAlignment", "SnellsLaw", "Block", "Diameter", "Weight"}
+    };
+
+    constexpr static std::array<const char *,InternalAlignmentType::NumInternalAlignmentType> internalAlignmentType2str {
+        {   "Undef", "EllipseMajorDiameter", "EllipseMinorDiameter", "EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor",
+            "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint", "ParabolaFocalAxis"}
+    };
+
 public:
     ConstraintType Type;
     InternalAlignmentType AlignmentType;

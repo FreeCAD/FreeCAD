@@ -27,37 +27,47 @@
 # include <QPointer>
 # include <QStatusBar>
 # include <QTimer>
+
+# include <gp_Pnt.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+# include <GeomAPI_PointsToBSpline.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Wire.hxx>
+
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <BRepBuilderAPI_MakePolygon.hxx>
 #endif
 
-#include "CurveOnMesh.h"
-#include <Base/Converter.h>
 #include <App/Document.h>
+#include <Base/Converter.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Projection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "CurveOnMesh.h"
+
 
 #ifndef HAVE_ACOSH
 #define HAVE_ACOSH
@@ -69,17 +79,7 @@
 #define HAVE_ATANH
 #endif
 
-#include <gp_Pnt.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Standard_Failure.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
+
 
 /* XPM */
 static const char *cursor_curveonmesh[]={
@@ -217,7 +217,7 @@ class CurveOnMeshHandler::Private
 public:
     struct PickedPoint
     {
-        unsigned long facet;
+        MeshCore::FacetIndex facet;
         SbVec3f point;
         SbVec3f normal;
     };
@@ -246,9 +246,9 @@ public:
         , cosAngle(0.7071) // 45 degree
         , approximate(true)
         , curve(new ViewProviderCurveOnMesh)
-        , mesh(0)
-        , grid(0)
-        , viewer(0)
+        , mesh(nullptr)
+        , grid(nullptr)
+        , viewer(nullptr)
         , editcursor(QPixmap(cursor_curveonmesh), 7, 7)
     {
     }
@@ -293,7 +293,7 @@ public:
                     cutLines.push_back(polyline);
                 }
                 else {
-                    SbVec3f dir1;
+                    SbVec3f dir1(0.0f, 0.0f, 0.0f);
                     SbVec3f dir2 = pick.point - last.point;
                     dir2.normalize();
                     std::size_t num = pickedPoints.size();
@@ -361,12 +361,12 @@ void CurveOnMeshHandler::setParameters(int maxDegree, GeomAbs_Shape cont, double
 void CurveOnMeshHandler::onContextMenu()
 {
     QMenu menu;
-    menu.addAction(tr("Create"), this, SLOT(onCreate()));
+    menu.addAction(tr("Create"), this, &CurveOnMeshHandler::onCreate);
     if (!d_ptr->wireClosed && d_ptr->pickedPoints.size() >= 3) {
-        menu.addAction(tr("Close wire"), this, SLOT(onCloseWire()));
+        menu.addAction(tr("Close wire"), this, &CurveOnMeshHandler::onCloseWire);
     }
-    menu.addAction(tr("Clear"), this, SLOT(onClear()));
-    menu.addAction(tr("Cancel"), this, SLOT(onCancel()));
+    menu.addAction(tr("Clear"), this, &CurveOnMeshHandler::onClear);
+    menu.addAction(tr("Cancel"), this, &CurveOnMeshHandler::onCancel);
     menu.exec(QCursor::pos());
 }
 
@@ -450,7 +450,7 @@ void CurveOnMeshHandler::disableCallback()
         view3d->removeViewProvider(d_ptr->curve);
         view3d->removeEventCallback(SoEvent::getClassTypeId(), Private::vertexCallback, this);
     }
-    d_ptr->viewer = 0;
+    d_ptr->viewer = nullptr;
 }
 
 std::vector<SbVec3f> CurveOnMeshHandler::getVertexes() const
@@ -588,7 +588,7 @@ void CurveOnMeshHandler::closeWire()
 
 void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * cb)
 {
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     const SoEvent* ev = cb->getEvent();
     if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         // set as handled
@@ -600,7 +600,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * cb
             if (pp) {
                 CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
                 if (!self->d_ptr->wireClosed) {
-                    Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(pp->getPath());
+                    Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(pp->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(MeshGui::ViewProviderMesh::getClassTypeId())) {
                         MeshGui::ViewProviderMesh* mesh = static_cast<MeshGui::ViewProviderMesh*>(vp);
                         const SoDetail* detail = pp->getDetail();
@@ -657,7 +657,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * cb
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
             CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
-            QTimer::singleShot(100, self, SLOT(onContextMenu()));
+            QTimer::singleShot(100, self, &CurveOnMeshHandler::onContextMenu);
         }
     }
 }

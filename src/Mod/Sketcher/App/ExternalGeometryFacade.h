@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_GEOMETRYEXTERNALFACADE_H
 #define SKETCHER_GEOMETRYEXTERNALFACADE_H
 
-#include <Base/BaseClass.h>
-
-#include <Base/Console.h> // Only for Debug - To be removed
 #include <boost/uuid/uuid_io.hpp>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+#include <Base/BaseClass.h>
 #include <Mod/Sketcher/App/ExternalGeometryExtension.h>
+#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+
 
 namespace Sketcher
 {
@@ -54,7 +51,7 @@ class SketcherExport ExternalGeometryFacade : public Base::BaseClass, private IS
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 private:
-    ExternalGeometryFacade(const Part::Geometry * geometry);
+    explicit ExternalGeometryFacade(const Part::Geometry * geometry);
     ExternalGeometryFacade(); // As TYPESYSTEM requirement
 
     friend class ExternalGeometryFacadePy;
@@ -71,30 +68,33 @@ public:
     void setGeometry(Part::Geometry *geometry);
 
     /** External GeometryExtension Interface **/
-    virtual bool testFlag(int flag) const override { return getExternalGeoExt()->testFlag(flag); }
-    virtual void setFlag(int flag, bool v=true) override { getExternalGeoExt()->setFlag(flag, v); }
+    bool testFlag(int flag) const override { return getExternalGeoExt()->testFlag(flag); }
+    void setFlag(int flag, bool v=true) override { getExternalGeoExt()->setFlag(flag, v); }
 
-    virtual bool isClear() const override {return getExternalGeoExt()->isClear();}
-    virtual size_t flagSize() const override {return getExternalGeoExt()->flagSize();}
+    bool isClear() const override {return getExternalGeoExt()->isClear();}
+    size_t flagSize() const override {return getExternalGeoExt()->flagSize();}
 
-    virtual const std::string& getRef() const override {return getExternalGeoExt()->getRef();}
-    virtual void setRef(const std::string & ref) override {getExternalGeoExt()->setRef(ref);}
+    const std::string& getRef() const override {return getExternalGeoExt()->getRef();}
+    void setRef(const std::string & ref) override {getExternalGeoExt()->setRef(ref);}
 
     /** GeometryExtension Interface **/
-    inline virtual long getId() const override {return getGeoExt()->getId();}
-    virtual void setId(long id) override {getGeoExt()->setId(id);}
+    inline long getId() const override {return getGeoExt()->getId();}
+    void setId(long id) override {getGeoExt()->setId(id);}
 
-    virtual InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
-    virtual void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
+    InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
+    void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
 
-    virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
-    virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
+    bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
+    void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
+
+    int getGeometryLayerId() const override { return getGeoExt()->getGeometryLayerId();}
+    void setGeometryLayerId(int geolayer) override { getGeoExt()->setGeometryLayerId(geolayer);}
 
     // Convenience accessor
     bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
     void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}
 
-    inline bool getConstruction(void) const {return this->testGeometryMode(GeometryMode::Construction);};
+    inline bool getConstruction() const {return this->testGeometryMode(GeometryMode::Construction);};
     inline void setConstruction(bool construction) {this->setGeometryMode(GeometryMode::Construction, construction);};
 
     // Geometry Extension Information
@@ -117,43 +117,43 @@ public:
     >
     GeometryT * getGeometry() const {return dynamic_cast<GeometryT *>(Geo);}
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     /** Geometry Interface **/
     TopoDS_Shape toShape() const {return getGeo()->toShape();};
     const Handle(Geom_Geometry)& handle() const {return getGeo()->handle();};
-    Part::Geometry *copy(void) const {return getGeo()->copy();};
-    Part::Geometry *clone(void) const {return getGeo()->clone();};
+    Part::Geometry *copy() const {return getGeo()->copy();};
+    Part::Geometry *clone() const {return getGeo()->clone();};
     boost::uuids::uuid getTag() const {return getGeo()->getTag();};
 
     std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();};
     bool hasExtension(Base::Type type) const {return getGeo()->hasExtension(type);};
-    bool hasExtension(std::string name) const {return getGeo()->hasExtension(name);};
+    bool hasExtension(const std::string & name) const {return getGeo()->hasExtension(name);};
     std::weak_ptr<const Part::GeometryExtension> getExtension(Base::Type type) const {return getGeo()->getExtension(type);};
-    std::weak_ptr<const Part::GeometryExtension> getExtension(std::string name) const {return getGeo()->getExtension(name);};
+    std::weak_ptr<const Part::GeometryExtension> getExtension(const std::string & name) const {return getGeo()->getExtension(name);};
     void setExtension(std::unique_ptr<Part::GeometryExtension> &&geo) {return getGeo()->setExtension(std::move(geo));};
     void deleteExtension(Base::Type type) {return getGeo()->deleteExtension(type);};
-    void deleteExtension(std::string name) {return getGeo()->deleteExtension(name);};
+    void deleteExtension(const std::string & name) {return getGeo()->deleteExtension(name);};
 
-    void mirror(Base::Vector3d point) {return getGeo()->mirror(point);};
-    void mirror(Base::Vector3d point, Base::Vector3d dir) {return getGeo()->mirror(point, dir);};
-    void rotate(Base::Placement plm) {return getGeo()->rotate(plm);};
-    void scale(Base::Vector3d vec, double scale) {return getGeo()->scale(vec, scale);};
-    void transform(Base::Matrix4D mat) {return getGeo()->transform(mat);};
-    void translate(Base::Vector3d vec) {return getGeo()->translate(vec);};
+    void mirror(const Base::Vector3d & point) {return getGeo()->mirror(point);};
+    void mirror(const Base::Vector3d & point, Base::Vector3d dir) {return getGeo()->mirror(point, dir);};
+    void rotate(const Base::Placement & plm) {return getGeo()->rotate(plm);};
+    void scale(const Base::Vector3d & vec, double scale) {return getGeo()->scale(vec, scale);};
+    void transform(const Base::Matrix4D & mat) {return getGeo()->transform(mat);};
+    void translate(const Base::Vector3d & vec) {return getGeo()->translate(vec);};
 
 private:
-    void initExtensions(void);
-    void initExtensions(void) const;
+    void initExtensions();
+    void initExtensions() const;
 
-    const Part::Geometry * getGeo(void) const {return Geo;}
-    Part::Geometry * getGeo(void) {return const_cast<Part::Geometry *>(Geo);}
+    const Part::Geometry * getGeo() const {return Geo;}
+    Part::Geometry * getGeo() {return const_cast<Part::Geometry *>(Geo);}
 
-    std::shared_ptr<const SketchGeometryExtension> getGeoExt(void) const {return SketchGeoExtension;}
-    std::shared_ptr<SketchGeometryExtension> getGeoExt (void) {return std::const_pointer_cast<SketchGeometryExtension>(SketchGeoExtension);}
+    std::shared_ptr<const SketchGeometryExtension> getGeoExt() const {return SketchGeoExtension;}
+    std::shared_ptr<SketchGeometryExtension> getGeoExt () {return std::const_pointer_cast<SketchGeometryExtension>(SketchGeoExtension);}
 
-    std::shared_ptr<const ExternalGeometryExtension> getExternalGeoExt(void) const {return ExternalGeoExtension;}
-    std::shared_ptr<ExternalGeometryExtension> getExternalGeoExt (void) {return std::const_pointer_cast<ExternalGeometryExtension>(ExternalGeoExtension);}
+    std::shared_ptr<const ExternalGeometryExtension> getExternalGeoExt() const {return ExternalGeoExtension;}
+    std::shared_ptr<ExternalGeometryExtension> getExternalGeoExt () {return std::const_pointer_cast<ExternalGeometryExtension>(ExternalGeoExtension);}
 
 private:
     const Part::Geometry * Geo;

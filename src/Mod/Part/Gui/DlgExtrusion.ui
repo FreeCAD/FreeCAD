@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>343</width>
-    <height>798</height>
+    <width>300</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Extrude</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="sizePolicy">
@@ -26,26 +26,6 @@
       <string>Direction</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="4" column="2">
-       <widget class="QCheckBox" name="chkReversed">
-        <property name="toolTip">
-         <string>If checked, direction of extrusion is reversed.</string>
-        </property>
-        <property name="text">
-         <string>Reversed</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QRadioButton" name="rbDirModeCustom">
-        <property name="toolTip">
-         <string>Specify direction manually using X,Y,Z values.</string>
-        </property>
-        <property name="text">
-         <string>Custom direction:</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QRadioButton" name="rbDirModeNormal">
         <property name="toolTip">
@@ -59,6 +39,29 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QRadioButton" name="rbDirModeEdge">
+        <property name="toolTip">
+         <string>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</string>
+        </property>
+        <property name="text">
+         <string>Along edge:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QCheckBox" name="chkReversed">
+        <property name="toolTip">
+         <string>If checked, direction of extrusion is reversed.</string>
+        </property>
+        <property name="text">
+         <string>Reversed</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLineEdit" name="txtLink"/>
+      </item>
       <item row="5" column="2">
        <widget class="QPushButton" name="btnSelectEdge">
         <property name="toolTip">
@@ -69,16 +72,13 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLineEdit" name="txtLink"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QRadioButton" name="rbDirModeEdge">
+      <item row="6" column="0">
+       <widget class="QRadioButton" name="rbDirModeCustom">
         <property name="toolTip">
-         <string>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</string>
+         <string>Specify direction manually using X,Y,Z values.</string>
         </property>
         <property name="text">
-         <string>Along edge:</string>
+         <string>Custom direction:</string>
         </property>
        </widget>
       </item>
@@ -201,7 +201,8 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</string>
+         <string>Length to extrude along direction (can be negative).
+If both lengths are zero, magnitude of direction is used.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -239,7 +240,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Length to extrude against direction (can be negative).</string>
+         <string>Length to extrude against the direction (can be negative).</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -273,7 +274,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Taper outward angle</string>
+        <string>Taper angle along</string>
        </property>
       </widget>
      </item>
@@ -286,7 +287,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Apply slope (draft) to extrusion side faces.</string>
+        <string>Taper (draft) angle along extrusion direction</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
@@ -297,12 +298,16 @@
        <property name="maximum">
         <double>89.999999000000003</double>
        </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Taper angle against</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+    <item row="1" column="1">
       <widget class="Gui::QuantitySpinBox" name="spinTaperAngleRev">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -311,7 +316,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Apply slope (draft) to extrusion side faces.</string>
+        <string>Taper (draft) angle against extrusion direction</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
@@ -322,12 +327,9 @@
        <property name="maximum">
         <double>89.999999000000003</double>
        </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
       </widget>
      </item>
-    </layout>
+     </layout>
    </item>
    <item>
     <widget class="QCheckBox" name="chkSolid">
@@ -353,6 +355,9 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Select shape(s) that should be extruded</string>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>

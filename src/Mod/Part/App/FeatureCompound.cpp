@@ -20,28 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <Standard_Failure.hxx>
 #endif
-
 
 #include "FeatureCompound.h"
 
 
 using namespace Part;
 
-
 PROPERTY_SOURCE(Part::Compound, Part::Feature)
 
 Compound::Compound()
 {
-    ADD_PROPERTY(Links,(0));
+    ADD_PROPERTY(Links,(nullptr));
     Links.setSize(0);
 }
 
@@ -56,7 +53,7 @@ short Compound::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Compound::execute(void)
+App::DocumentObjectExecReturn *Compound::execute()
 {
     try {
         std::vector<ShapeHistory> history;

@@ -47,13 +47,13 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="0">
-      <widget class="QComboBox" name="comboProperty"/>
-     </item>
      <item row="0" column="0">
       <widget class="QComboBox" name="comboPset"/>
      </item>
-    </layout>
+    <item row="1" column="0">
+      <widget class="QComboBox" name="comboProperty"/>
+     </item>
+     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

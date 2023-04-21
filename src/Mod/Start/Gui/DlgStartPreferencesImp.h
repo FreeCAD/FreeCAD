@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef STARTGUI_DLGSTARTPREFERENCESIMP_H
 #define STARTGUI_DLGSTARTPREFERENCESIMP_H
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+#include <Gui/PropertyPage.h>
+
 
 class Ui_DlgStartPreferences;
 namespace StartGui {
@@ -34,13 +34,13 @@ namespace StartGui {
         Q_OBJECT
 
     public:
-        DlgStartPreferencesImp( QWidget* parent = 0 );
-        ~DlgStartPreferencesImp();
+        explicit DlgStartPreferencesImp( QWidget* parent = nullptr );
+        ~DlgStartPreferencesImp() override;
 
     protected:
-        void saveSettings();
-        void loadSettings();
-        void changeEvent(QEvent *e);
+        void saveSettings() override;
+        void loadSettings() override;
+        void changeEvent(QEvent *e) override;
 
     private:
         std::unique_ptr<Ui_DlgStartPreferences> ui;

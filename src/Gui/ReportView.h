@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCKWND_REPORTVIEW_H
 #define GUI_DOCKWND_REPORTVIEW_H
 
+#include <QPointer>
 #include <QTextEdit>
 #include <QSyntaxHighlighter>
-#include <Base/Console.h>
-#include <QPointer>
-#include <QDockWidget>
-#include "DockWindow.h"
+
 #include "Window.h"
+#include <FCGlobal.h>
+
 
 class QTabWidget;
 
@@ -52,15 +51,15 @@ class ReportView : public QWidget
     Q_OBJECT
 
 public:
-    ReportView( QWidget* parent = 0);
-    ~ReportView();
+    explicit ReportView( QWidget* parent = nullptr);
+    ~ReportView() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     QTabWidget* tabWidget;
-    ReportOutput* tabOutput; /**< Output window */
+    ReportOutput* tabOutput; /**< Output 'Report view' window */
     PythonConsole* tabPython; /**< Python console */
 };
 
@@ -71,23 +70,25 @@ class GuiExport ReportHighlighter : public QSyntaxHighlighter
 {
 public:
     enum Paragraph {
-        Message  = 0, /**< normal text */
-        Warning  = 1, /**< Warning */
-        Error    = 2, /**< Error text */
-        LogText  = 3  /**< Log text */
+        Message          = 0, /**< normal text */
+        Warning          = 1, /**< Warning */
+        Error            = 2, /**< Error text */
+        LogText          = 3,  /**< Log text */
+        Critical         = 4, /**< critical text */
     };
 
 public:
-    ReportHighlighter(QTextEdit* );
-    ~ReportHighlighter();
+    explicit ReportHighlighter(QTextEdit* );
+    ~ReportHighlighter() override;
 
     /** Parses the given text and highlight it in the right colors. */
-    void highlightBlock ( const QString & text );
+    void highlightBlock ( const QString & text ) override;
     /**
      * Sets the current paragraph type used in ReportOutput
      * @see ReportOutput::Message
      * @see ReportOutput::Warning
      * @see ReportOutput::Error
+     * @see ReportOutput::Critical
      */
     void setParagraphType(Paragraph);
 
@@ -111,15 +112,20 @@ public:
      */
     void setErrorColor( const QColor& col );
 
+    /**
+     * Sets the text color to  \a col.
+     */
+    void setCriticalColor( const QColor& col );
+
 private:
     /** @name for internal use only */
     //@{
     Paragraph type;
-    QColor txtCol, logCol, warnCol, errCol;
+    QColor txtCol, logCol, warnCol, errCol, criticalCol;
     //@}
 };
 
-/** Output window to show messages.
+/** Output window 'Report view' to show messages.
  * @see Base::ILogger
  * @see QTextEdit
  * \author Werner Mayer
@@ -129,16 +135,16 @@ class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public 
     Q_OBJECT
 
 public:
-    ReportOutput(QWidget* parent=0);
-    virtual ~ReportOutput();
+    explicit ReportOutput(QWidget* parent=nullptr);
+    ~ReportOutput() override;
 
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& msg, Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override;
 
     /// returns the name for observer handling
-    const char* Name(void) override {return "ReportOutput";}
+    const char* Name() override {return "ReportOutput";}
 
     /** Restore the default font settings. */
     void restoreFont ();
@@ -151,6 +157,8 @@ public:
     bool isLogMessage() const;
     /** Returns true whether normal messages are reported. */
     bool isNormalMessage() const;
+    /** Returns true whether critical messages are reported. */
+    bool isCritical() const;
 
 protected:
     /** For internal use only */
@@ -159,6 +167,8 @@ protected:
     void changeEvent(QEvent *) override;
     /** Pops up the context menu with some extensions */
     void contextMenuEvent ( QContextMenuEvent* e ) override;
+    /** Handle shortcut override events */
+    bool event(QEvent* event) override;
 
 public Q_SLOTS:
     /** Save the report messages into a file. */
@@ -171,12 +181,16 @@ public Q_SLOTS:
     void onToggleLogMessage();
     /** Toggles the report of normal messages. */
     void onToggleNormalMessage();
+    /** Toggles the report of normal messages. */
+    void onToggleCritical();
     /** Toggles whether to show report view on warnings*/
     void onToggleShowReportViewOnWarning();
     /** Toggles whether to show report view on errors*/
     void onToggleShowReportViewOnError();
     /** Toggles whether to show report view on normal messages*/
     void onToggleShowReportViewOnNormalMessage();
+    /** Toggles whether to show report view on normal messages*/
+    void onToggleShowReportViewOnCritical();
     /** Toggles whether to show report view on log messages*/
     void onToggleShowReportViewOnLogMessage();
     /** Toggles the redirection of Python stdout. */
@@ -206,12 +220,12 @@ class ReportOutputObserver : public QObject
     Q_OBJECT
 
 public:
-    ReportOutputObserver (ReportOutput* view);
-    bool eventFilter(QObject *obj, QEvent *event);
+    explicit ReportOutputObserver (ReportOutput* view);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected:
     QPointer <ReportOutput> reportView;
-    void showReportView(void);
+    void showReportView();
 };
 
 } // namespace DockWnd

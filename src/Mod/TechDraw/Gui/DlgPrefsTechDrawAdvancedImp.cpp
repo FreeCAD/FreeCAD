@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawAdvancedImp.h"
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
-#include <Gui/PrefWidgets.h>
+#include "ui_DlgPrefsTechDrawAdvanced.h"
+
 
 using namespace TechDrawGui;
 
@@ -45,7 +44,7 @@ DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
 
 void DlgPrefsTechDrawAdvancedImp::saveSettings()
 {
-    ui->cbDetectFaces->onSave(); 
+    ui->cbDetectFaces->onSave();
     ui->cbShowSectionEdges->onSave();
     ui->cbDebugSection->onSave();
     ui->cbDebugDetail->onSave();
@@ -54,10 +53,13 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->cbShowLoose->onSave();
     ui->pdsbEdgeFuzz->onSave();
     ui->pdsbMarkFuzz->onSave();
-    ui->leFormatSpec->onSave();
     ui->cbEndCap->onSave();
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
+    ui->cbReportProgress->onSave();
+    ui->cbAutoCorrectRefs->onSave();
+    ui->cbNewFaceFinder->onSave();
+    ui->sbScrubCount->onSave();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadSettings()
@@ -71,10 +73,13 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbShowLoose->onRestore();
     ui->pdsbEdgeFuzz->onRestore();
     ui->pdsbMarkFuzz->onRestore();
-    ui->leFormatSpec->onRestore();
     ui->cbEndCap->onRestore();
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();
+    ui->cbReportProgress->onRestore();
+    ui->cbAutoCorrectRefs->onRestore();
+    ui->cbNewFaceFinder->onRestore();
+    ui->sbScrubCount->onRestore();
 }
 
 /**

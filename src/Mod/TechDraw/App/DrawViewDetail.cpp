@@ -20,80 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-
-#include <Bnd_Box.hxx>
-#include <BRepAdaptor_Surface.hxx>
 #include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRep_Builder.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepPrim_Cylinder.hxx>
+#include <BRepProj_Projection.hxx>
 #include <BRepTools.hxx>
-#include <Geom_Plane.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
+#include <BRep_Builder.hxx>
+#include <Bnd_Box.hxx>
+#include <QtConcurrentRun>
 #include <TopExp_Explorer.hxx>
-#include <TopExp.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Shell.hxx>
 #include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
-
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <sstream>
 #endif
-
-#include <chrono>
-
-# include <QFile>
-# include <QFileInfo>
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Material.h>
-#include <Base/BoundBox.h>
-#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-
-#include "Preferences.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "Cosmetic.h"
-#include "EdgeWalker.h"
-#include "DrawProjectSplit.h"
-#include "DrawProjGroupItem.h"
-#include "DrawPage.h"
+#include "DrawComplexSection.h"
 #include "DrawUtil.h"
 #include "DrawViewDetail.h"
 #include "DrawViewSection.h"
+#include "GeometryObject.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawViewDetail
@@ -101,149 +70,89 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewDetail, TechDraw::DrawViewPart)
 
-DrawViewDetail::DrawViewDetail()
+DrawViewDetail::DrawViewDetail() : m_waitingForDetail(false), m_saveDvp(nullptr), m_saveDvs(nullptr)
 {
-    static const char *dgroup = "Detail";
+    static const char* dgroup = "Detail";
 
-    ADD_PROPERTY_TYPE(BaseView ,(0),dgroup,App::Prop_None,"2D View source for this Section");
+    ADD_PROPERTY_TYPE(BaseView, (nullptr), dgroup, App::Prop_None,
+                      "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(AnchorPoint ,(0,0,0) ,dgroup,App::Prop_None,"Location of detail in BaseView");
-    ADD_PROPERTY_TYPE(Radius,(10.0),dgroup, App::Prop_None, "Size of detail area");
-    ADD_PROPERTY_TYPE(Reference ,("1"),dgroup,App::Prop_None,"An identifier for this detail");
+    ADD_PROPERTY_TYPE(AnchorPoint, (0, 0, 0), dgroup, App::Prop_None,
+                      "Location of detail in BaseView");
+    ADD_PROPERTY_TYPE(Radius, (10.0), dgroup, App::Prop_None, "Size of detail area");
+    ADD_PROPERTY_TYPE(Reference, ("1"), dgroup, App::Prop_None, "An identifier for this detail");
 
     getParameters();
     m_fudge = 1.01;
 
     //hide Properties not relevant to DVDetail
-    Direction.setStatus(App::Property::ReadOnly,true);   //Should be same as BaseView
-    Rotation.setStatus(App::Property::ReadOnly,true);    //same as BaseView
-    ScaleType.setValue("Custom");                        //dvd uses scale from BaseView
+    Direction.setStatus(App::Property::ReadOnly, true);//Should be same as BaseView
+    Rotation.setStatus(App::Property::ReadOnly, true); //same as BaseView
+    ScaleType.setValue("Custom");                      //dvd uses scale from BaseView
 }
 
 DrawViewDetail::~DrawViewDetail()
 {
+    //don't delete this object while it still has dependent tasks running
+    if (m_detailFuture.isRunning()) {
+        Base::Console().Message("%s is waiting for detail cut to finish\n", Label.getValue());
+        m_detailFuture.waitForFinished();
+    }
 }
 
 short DrawViewDetail::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  = (AnchorPoint.isTouched() ||
-                   Radius.isTouched()     ||
-                   BaseView.isTouched()  ||
-                   Reference.isTouched());
+    if (isRestoring()) {
+        TechDraw::DrawView::mustExecute();
     }
-    if (result) {
-        return result;
+
+    if (AnchorPoint.isTouched() || Radius.isTouched() || BaseView.isTouched()) {
+        return 1;
     }
+
     return TechDraw::DrawView::mustExecute();
 }
 
 void DrawViewDetail::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        if (prop == &Reference) {
-            std::string lblText = "Detail " +
-                                  std::string(Reference.getValue());
-            Label.setValue(lblText);
-        }
-        if ((prop == &Reference) ||
-            (prop == &Radius) ||
-            (prop == &BaseView)) {
-            requestPaint();
-        }
-        if (prop == &AnchorPoint)  {
-            // to see AnchorPoint changes repainting is not enough, we must recompute
-            recomputeFeature(true);
-        }
-        if (prop == &ScaleType) {
-            auto page = findParentPage();
-            // if ScaleType is "Page", the user cannot change it
-            if (ScaleType.isValue("Page")) {
-                Scale.setStatus(App::Property::ReadOnly, true);
-                // apply the page-wide Scale
-                if (page != nullptr) {
-                    if (std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
-                        Scale.setValue(page->Scale.getValue());
-                        Scale.purgeTouched();
-                    }
-                }
-            }
-            else if (ScaleType.isValue("Custom")) {
-                // allow the change Scale
-                Scale.setStatus(App::Property::ReadOnly, false);
-            }
-            else if (ScaleType.isValue("Automatic")) {
-                Scale.setStatus(App::Property::ReadOnly, true);
-                // apply a Scale
-                if (!checkFit(page)) {
-                    double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                    if (std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                        Scale.setValue(newScale);
-                        Scale.purgeTouched();
-                    }
-                }
-            }
-        }
+    if (isRestoring()) {
+        DrawView::onChanged(prop);
+        return;
     }
-    DrawView::onChanged(prop);
+
+    if (prop == &Reference) {
+        std::string lblText = "Detail " + std::string(Reference.getValue());
+        Label.setValue(lblText);
+    }
+
+    DrawViewPart::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
+App::DocumentObjectExecReturn* DrawViewDetail::execute()
 {
-//    Base::Console().Message("DVD::execute() - %s\n", Label.getValue());
+    //    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
-    }
-
-    App::DocumentObject* baseObj = BaseView.getValue();
-    if (!baseObj)  {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVD::execute - No BaseView (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVD::execute - No BaseView(s) linked. - %s\n",
-                                  getNameInDocument());
-        }
         return DrawView::execute();
     }
 
-    DrawViewPart* dvp = nullptr;
+    App::DocumentObject* baseObj = BaseView.getValue();
+    if (!baseObj) {
+        return DrawView::execute();
+    }
+
     if (!baseObj->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
-    } else {
-        dvp = static_cast<DrawViewPart*>(baseObj);
+        //this can only happen via scripting?
+        return DrawView::execute();
     }
 
-    DrawProjGroupItem* dpgi = nullptr;
-    if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        dpgi= static_cast<TechDraw::DrawProjGroupItem*>(dvp);
-    }
-
+    DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
+    TopoDS_Shape shape = dvp->getShapeForDetail();
     DrawViewSection* dvs = nullptr;
     if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        dvs= static_cast<TechDraw::DrawViewSection*>(dvp);
-    }
-
-    TopoDS_Shape shape;
-    if (dvs != nullptr) {
-        shape = dvs->getCutShape();
-    } else if (dpgi != nullptr) {
-        shape = dpgi->getSourceShapeFused();
-    } else {
-        shape = dvp->getSourceShapeFused();
+        dvs = static_cast<TechDraw::DrawViewSection*>(dvp);
     }
 
     if (shape.IsNull()) {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVD::execute - source shape is invalid - (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVD::execute - Source shape is Null. - %s\n",
-                                  getNameInDocument());
-        }
         return DrawView::execute();
     }
 
@@ -252,242 +161,322 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         //block touch/onChanged stuff
         Base::Vector3d newX = getXDirection();
         XDirection.setValue(newX);
-        XDirection.purgeTouched();  //don't trigger updates!
+        XDirection.purgeTouched();//don't trigger updates!
         //unblock
     }
 
     detailExec(shape, dvp, dvs);
     addShapes2d();
 
-    //second pass if required
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            if (geometryObject != nullptr) {
-                delete geometryObject;
-                geometryObject = nullptr;
-                detailExec(shape, dvp, dvs);
-            }
-        }
-    }
-    dvp->requestPaint();  //to refresh detail highlight!
+    dvp->requestPaint();//to refresh detail highlight in base view
     return DrawView::execute();
 }
 
-void DrawViewDetail::detailExec(TopoDS_Shape shape,
-                                DrawViewPart* dvp,
-                                DrawViewSection* dvs)
+//try to create a detail of the solids & shells in shape
+//if there are no solids/shells in shape, use the edges in shape
+void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
 {
-    Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point (in unrotated coords)
+    if (waitingForHlr() || waitingForDetail()) {
+        return;
+    }
+
+    //note that &m_detailWatcher in the third parameter is not strictly required, but using the
+    //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
+    //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
+    connectDetailWatcher =
+        QObject::connect(&m_detailWatcher, &QFutureWatcherBase::finished, &m_detailWatcher,
+                         [this] { this->onMakeDetailFinished(); });
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
+#else
+    m_detailFuture = QtConcurrent::run(&DrawViewDetail::makeDetailShape, this, shape, dvp, dvs);
+#endif
+    m_detailWatcher.setFuture(m_detailFuture);
+    waitingForDetail(true);
+}
+
+//this runs in a separate thread since it can sometimes take a long time
+//make a common of the input shape and a cylinder (or prism depending on
+//the matting style)
+void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
+{
+    showProgressMessage(getNameInDocument(), "is making detail shape");
+
     Base::Vector3d dirDetail = dvp->Direction.getValue();
-
     double radius = getFudgeRadius();
-    double scale = getScale();
 
+    int solidCount = DrawUtil::countSubShapes(shape, TopAbs_SOLID);
+    int shellCount = DrawUtil::countSubShapes(shape, TopAbs_SHELL);
+
+    //make a copy of the input shape so we don't inadvertently change it
     BRepBuilderAPI_Copy BuilderCopy(shape);
-    TopoDS_Shape myShape = BuilderCopy.Shape();
+    TopoDS_Shape copyShape = BuilderCopy.Shape();
+    m_saveShape = copyShape;
+    m_saveDvp = dvp;
+    m_saveDvs = dvs;
 
-    gp_Pnt gpCenter = TechDraw::findCentroid(myShape,
-                                             dirDetail);
-    Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
-    m_saveCentroid = shapeCenter;              //centroid of original shape
+    gp_Pnt gpCenter = TechDraw::findCentroid(copyShape, dirDetail);
+    Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(), gpCenter.Y(), gpCenter.Z());
+    m_saveCentroid = shapeCenter;//centroid of original shape
 
-    if (dvs != nullptr) {
+    if (!dvs) {
         //section cutShape should already be on origin
-    } else {
-        myShape = TechDraw::moveShape(myShape,                     //centre shape on origin
-                                       -shapeCenter);
+        copyShape = TechDraw::moveShape(copyShape,//centre shape on origin
+                                        -shapeCenter);
     }
 
     shapeCenter = Base::Vector3d(0.0, 0.0, 0.0);
 
 
-    gp_Ax2 viewAxis;
+    m_viewAxis = dvp->getProjectionCS(shapeCenter);//save the CS for later
+    Base::Vector3d anchor = AnchorPoint.getValue();//this is a 2D point in base view local coords
+    //    double baseRotationRad = dvp->Rotation.getValue() * M_PI / 180.0;
+    //    anchor.RotateZ(baseRotationRad);
 
-    viewAxis = dvp->getProjectionCS(shapeCenter);
-    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
-    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //anchor displacement in R3
+    anchor = DrawUtil::toR3(m_viewAxis, anchor);//actual anchor coords in R3
+
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
-    BRepBndLib::Add(myShape, bbxSource);
+    BRepBndLib::AddOptimal(copyShape, bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
-    Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor
+    Base::Vector3d toolPlaneOrigin = anchor + dirDetail * diag * -1.0;//center tool about anchor
     double extrudeLength = 2.0 * toolPlaneOrigin.Length();
 
-    gp_Pnt gpnt(toolPlaneOrigin.x,toolPlaneOrigin.y,toolPlaneOrigin.z);
-    gp_Dir gdir(dirDetail.x,dirDetail.y,dirDetail.z);
-    gp_Pln gpln(gpnt,gdir);
-    double hideToolRadius = radius * 1.0;
-    BRepBuilderAPI_MakeFace mkFace(gpln, -hideToolRadius,hideToolRadius,-hideToolRadius,hideToolRadius);
-    TopoDS_Face aProjFace = mkFace.Face();
-    if(aProjFace.IsNull()) {
-        Base::Console().Warning("DVD::execute - %s - failed to create tool base face\n", getNameInDocument());
-        return;
-    }
+    gp_Pnt gpnt(toolPlaneOrigin.x, toolPlaneOrigin.y, toolPlaneOrigin.z);
+    gp_Dir gdir(dirDetail.x, dirDetail.y, dirDetail.z);
 
+    TopoDS_Face extrusionFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
-    gp_Vec extrudeDir(extrudeVec.x,extrudeVec.y,extrudeVec.z);
-    TopoDS_Shape tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
-
-
-    BRep_Builder builder;
-    TopoDS_Compound pieces;
-    builder.MakeCompound(pieces);
-    TopExp_Explorer expl(myShape, TopAbs_SOLID);
-    int indb = 0;
-    int outdb = 0;
-    for (; expl.More(); expl.Next()) {
-        indb++;
-        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-
-        BRepAlgoAPI_Common mkCommon(s,tool);
-        if (!mkCommon.IsDone()) {
-//            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
-            continue;
+    gp_Vec extrudeDir(extrudeVec.x, extrudeVec.y, extrudeVec.z);
+    TopoDS_Shape tool;
+    if (Preferences::mattingStyle()) {
+        //square mat
+        gp_Pln gpln(gpnt, gdir);
+        BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
+        extrusionFace = mkFace.Face();
+        if (extrusionFace.IsNull()) {
+            Base::Console().Warning("DVD::makeDetailShape - %s - failed to create tool base face\n",
+                                    getNameInDocument());
+            return;
         }
-        if (mkCommon.Shape().IsNull()) {
-//            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
-            continue;
+        tool = BRepPrimAPI_MakePrism(extrusionFace, extrudeDir, false, true).Shape();
+        if (tool.IsNull()) {
+            Base::Console().Warning("DVD::makeDetailShape - %s - failed to create tool (prism)\n",
+                                    getNameInDocument());
+            return;
         }
-        //this might be overkill for piecewise algo
-        //Did we get at least 1 solid?
-        TopExp_Explorer xp;
-        xp.Init(mkCommon.Shape(),TopAbs_SOLID);
-        if (!(xp.More() == Standard_True)) {
-//            Base::Console().Warning("DVD::execute - mkCommon.Shape is not a solid!\n");
-            continue;
-        }
-        builder.Add(pieces, mkCommon.Shape());
-        outdb++;
     }
-
-    if (debugDetail()) {
-        BRepTools::Write(tool, "DVDTool.brep");            //debug
-        BRepTools::Write(myShape, "DVDCopy.brep");       //debug
-        BRepTools::Write(pieces, "DVDCommon.brep");        //debug
-    }
-
-    Bnd_Box testBox;
-    testBox.SetGap(0.0);
-    BRepBndLib::Add(pieces, testBox);
-    if (testBox.IsVoid()) {
-        TechDraw::GeometryObject* go = getGeometryObject();
-        if (go != nullptr) {
-            go->clear();
-        }
-        dvp->requestPaint();
-        Base::Console().Warning("DVD::execute - %s - detail area contains no geometry\n", getNameInDocument());
-        return;
-    }
-
-//for debugging show compound instead of common
-//    BRep_Builder builder;
-//    TopoDS_Compound Comp;
-//    builder.MakeCompound(Comp);
-//    builder.Add(Comp, tool);
-//    builder.Add(Comp, myShape);
-
-    gp_Pnt inputCenter;
-    try {
-        inputCenter = TechDraw::findCentroid(tool,
-                                             dirDetail);
-    Base::Vector3d centroid(inputCenter.X(),
-                            inputCenter.Y(),
-                            inputCenter.Z());
-    m_saveCentroid += centroid;              //center of massaged shape
-
-    Base::Vector3d stdOrg(0.0,0.0,0.0);
-    gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);  //sb same CS as base view. 
-
-    //center shape on origin
-//    TopoDS_Shape centeredShape = TechDraw::moveShape(detail,
-    TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
-                                                     centroid * -1.0);
-
-    TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
-                                                    getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-        scaledShape = TechDraw::rotateShape(scaledShape,
-                                            viewAxis,
-                                            Rotation.getValue());
-    }
-
-    if (debugDetail()) {
-        BRepTools::Write(tool, "DVDScaled.brep");            //debug
-    }
-
-    geometryObject =  buildGeometryObject(scaledShape,viewAxis);
-    geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
-                                    Radius.getValue() * scale);      //remove vertices beyond clipradius
-
-#if MOD_TECHDRAW_HANDLE_FACES
-    if (handleFaces()) {
-        try {
-            extractFaces();
-        }
-        catch (Standard_Failure& e4) {
-            Base::Console().Log("LOG - DVD::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+    else {
+        //circular mat
+        gp_Ax2 cs(gpnt, gdir);
+        BRepPrimAPI_MakeCylinder mkTool(cs, radius, extrudeLength);
+        tool = mkTool.Shape();
+        if (tool.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (cylinder)\n",
+                                    getNameInDocument());
             return;
         }
     }
 
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+    //for each solid and shell in the input shape, make a common with the tool and
+    //add the result to a compound.  This avoids issues with some geometry errors in the
+    //input shape.
+    BRep_Builder builder;
+    TopoDS_Compound pieces;
+    builder.MakeCompound(pieces);
+    if (solidCount > 0) {
+        TopExp_Explorer expl(copyShape, TopAbs_SOLID);
+        for (; expl.More(); expl.Next()) {
+            const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
+
+            BRepAlgoAPI_Common mkCommon(s, tool);
+            if (!mkCommon.IsDone()) {
+                continue;
+            }
+            if (mkCommon.Shape().IsNull()) {
+                continue;
+            }
+            //this might be overkill for piecewise algo
+            //Did we get at least 1 solid?
+            TopExp_Explorer xp;
+            xp.Init(mkCommon.Shape(), TopAbs_SOLID);
+            if (xp.More() != Standard_True) {
+                continue;
+            }
+            builder.Add(pieces, mkCommon.Shape());
+        }
     }
+
+    if (shellCount > 0) {
+        TopExp_Explorer expl(copyShape, TopAbs_SHELL);
+        for (; expl.More(); expl.Next()) {
+            const TopoDS_Shell& s = TopoDS::Shell(expl.Current());
+
+            BRepAlgoAPI_Common mkCommon(s, tool);
+            if (!mkCommon.IsDone()) {
+                continue;
+            }
+            if (mkCommon.Shape().IsNull()) {
+                continue;
+            }
+            //this might be overkill for piecewise algo
+            //Did we get at least 1 shell?
+            TopExp_Explorer xp;
+            xp.Init(mkCommon.Shape(), TopAbs_SHELL);
+            if (xp.More() != Standard_True) {
+                continue;
+            }
+            builder.Add(pieces, mkCommon.Shape());
+        }
+    }
+
+    if (debugDetail()) {
+        BRepTools::Write(tool, "DVDTool.brep");     //debug
+        BRepTools::Write(copyShape, "DVDCopy.brep");//debug
+        BRepTools::Write(pieces, "DVDCommon.brep"); //debug
+    }
+
+    gp_Pnt inputCenter;
+    try {
+        //centroid of result
+        inputCenter = TechDraw::findCentroid(pieces, dirDetail);
+        Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
+        m_saveCentroid += centroid;//center of massaged shape
+
+        if ((solidCount > 0) || (shellCount > 0)) {
+            //align shape with detail anchor
+            TopoDS_Shape centeredShape = TechDraw::moveShape(pieces, anchor * -1.0);
+            m_scaledShape = TechDraw::scaleShape(centeredShape, getScale());
+            if (debugDetail()) {
+                BRepTools::Write(m_scaledShape, "DVDScaled.brep");//debug
+            }
+        }
+        else {
+            //no solids, no shells, do what you can with edges
+            TopoDS_Shape projectedEdges = projectEdgesOntoFace(copyShape, extrusionFace, gdir);
+            TopoDS_Shape centeredShape = TechDraw::moveShape(projectedEdges, anchor * -1.0);
+            if (debugDetail()) {
+                BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");//debug
+                BRepTools::Write(centeredShape, "DVDCenteredShape.brep");  //debug
+            }
+            m_scaledShape = TechDraw::scaleShape(centeredShape, getScale());
+        }
+
+        Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+        m_viewAxis = dvp->getProjectionCS(stdOrg);
+
+        if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+            m_scaledShape = TechDraw::rotateShape(m_scaledShape, m_viewAxis, Rotation.getValue());
+        }
+    }//end try block
+
     catch (Standard_Failure& e1) {
-        Base::Console().Message("LOG - DVD::execute - failed to create detail %s - %s **\n",getNameInDocument(),e1.GetMessageString());
+        Base::Console().Message("DVD::makeDetailShape - failed to create detail %s - %s **\n",
+                                getNameInDocument(), e1.GetMessageString());
         return;
     }
 
-    addCosmeticVertexesToGeom();
-    addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
-
-    addReferencesToGeom();   //what if landmarks are outside detail area??
-
+    showProgressMessage(getNameInDocument(), "has finished making detail shape");
 }
 
-double DrawViewDetail::getFudgeRadius()
+void DrawViewDetail::postHlrTasks(void)
 {
-    return Radius.getValue() * m_fudge;
+    //    Base::Console().Message("DVD::postHlrTasks()\n");
+    DrawViewPart::postHlrTasks();
+
+    geometryObject->pruneVertexGeom(Base::Vector3d(0.0, 0.0, 0.0),
+                                    Radius.getValue()
+                                        * getScale());//remove vertices beyond clipradius
+
+    //second pass if required
+    if (ScaleType.isValue("Automatic") && !checkFit()) {
+        double newScale = autoScale();
+        Scale.setValue(newScale);
+        Scale.purgeTouched();
+        detailExec(m_saveShape, m_saveDvp, m_saveDvs);
+    }
+    overrideKeepUpdated(false);
 }
 
-bool DrawViewDetail::debugDetail(void) const
+//continue processing after makeDetailShape thread is finished
+void DrawViewDetail::onMakeDetailFinished(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
+    waitingForDetail(false);
+    QObject::disconnect(connectDetailWatcher);
 
-    bool result = hGrp->GetBool("debugDetail",false);
-    return result;
+    //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
+    m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+}
+
+bool DrawViewDetail::waitingForResult() const
+{
+    if (DrawViewPart::waitingForResult() || waitingForDetail()) {
+        return true;
+    }
+    return false;
+}
+TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape& edgeShape, TopoDS_Face& projFace,
+                                                  gp_Dir& projDir)
+{
+    BRep_Builder builder;
+    TopoDS_Compound edges;
+    builder.MakeCompound(edges);
+    TopExp_Explorer Ex(edgeShape, TopAbs_EDGE);
+    while (Ex.More()) {
+        TopoDS_Edge e = TopoDS::Edge(Ex.Current());
+        BRepProj_Projection mkProj(e, projFace, projDir);
+        if (mkProj.IsDone()) {
+            builder.Add(edges, mkProj.Shape());
+        }
+        Ex.Next();
+    }
+    if (debugDetail()) {
+        BRepTools::Write(edges, "DVDEdges.brep");//debug
+    }
+
+    return TopoDS_Shape(std::move(edges));
+}
+
+//we don't want to paint detail highlights on top of detail views,
+//so tell the Gui that there are no details for this view
+std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs() const
+{
+    return std::vector<DrawViewDetail*>();
+}
+
+double DrawViewDetail::getFudgeRadius() { return Radius.getValue() * m_fudge; }
+
+bool DrawViewDetail::debugDetail() const
+{
+    return Preferences::getPreferenceGroup("debug")->GetBool("debugDetail", false);
 }
 
 void DrawViewDetail::unsetupObject()
 {
-//    Base::Console().Message("DVD::unsetupObject()\n");
+    //    Base::Console().Message("DVD::unsetupObject()\n");
     App::DocumentObject* baseObj = BaseView.getValue();
     DrawView* base = dynamic_cast<DrawView*>(baseObj);
-    if (base != nullptr) {
+    if (base) {
         base->requestPaint();
     }
 }
 
-void DrawViewDetail::getParameters()
-{
-}
+void DrawViewDetail::getParameters() {}
 
 // Python Drawing feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDetailPython, TechDraw::DrawViewDetail)
-template<> const char* TechDraw::DrawViewDetailPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewDetailPython::getViewProviderName() const
+{
     return "TechDrawGui::ViewProviderViewPart";
 }
 /// @endcond
 
 // explicit template instantiation
 template class TechDrawExport FeaturePythonT<TechDraw::DrawViewDetail>;
-}
+}// namespace App

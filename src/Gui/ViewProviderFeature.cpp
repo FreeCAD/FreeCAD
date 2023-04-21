@@ -20,25 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/SbColor.h>
-# include <Inventor/fields/SoSFColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
-#endif
+#include <App/DocumentObject.h>
 
-#include <Base/Parameter.h>
-#include <App/Document.h>
-
-#include "Window.h"
 #include "ViewProviderFeature.h"
-#include "View3DInventorViewer.h"
 
 
 using namespace Gui;

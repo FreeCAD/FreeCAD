@@ -29,35 +29,8 @@
 
 namespace SketcherGui {
 
-bool checkBothExternal(int GeoId1, int GeoId2);
 
-bool checkBothExternalOrBSplinePoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
 
-bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
-
-bool areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2);
-
-bool areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, int GeoId3);
-
-void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, int &GeoId, Sketcher::PointPos &PosId);
-
-bool inline isVertex(int GeoId, Sketcher::PointPos PosId);
-
-bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
-
-bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
-
-bool isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId);
-
-bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
-
-bool isBsplinePole(const Part::Geometry * geo);
-
-bool isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId);
-
-/// Release any currently-active handler for the document.
-/// Returns true if a handler was released, and false if not
-bool ReleaseHandler(Gui::Document* doc);
 
 // These functions are declared here to promote code reuse from other modules
 
@@ -120,22 +93,6 @@ void makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
                                             int geoId2
                                             );
 
-std::string getStrippedPythonExceptionString(const Base::Exception&);
-
-/// This function tries to auto-recompute the active document if the option
-/// is set in the user parameter. If the option is not set nothing will be done
-/// @return true if a recompute was undertaken, false if not.
-bool tryAutoRecompute(Sketcher::SketchObject* obj);
-/// Same as the other overload, but also returns whether redundants shall be removed or not
-bool tryAutoRecompute(Sketcher::SketchObject* obj, bool &autoremoveredundants);
-
-/// This function tries to auto-recompute as tryAutoRecompute. If tryAutoRecompute
-/// is not enabled, then it solves the SketchObject.
-void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
-
-/// Checks whether there is a constraint of the given type with a First element geoid and a FirstPos PosId
-bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher::ConstraintType type, int geoid, Sketcher::PointPos pos);
-
 /// Does an endpoint-to-endpoint tangency
 void doEndpointTangency(Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
 
@@ -146,5 +103,5 @@ void doEndpointToEdgeTangency( Sketcher::SketchObject* Obj, int GeoId1, Sketcher
 void notifyConstraintSubstitutions(const QString & message);
 
 }
-#endif // SKETCHERGUI_DrawSketchHandler_H
+#endif // SKETCHERGUI_CommandConstraints_H
 

@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_DressUp_H
 #define PARTDESIGN_DressUp_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureAddSub.h"
 
 namespace PartDesign
@@ -32,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport DressUp : public PartDesign::FeatureAddSub
 {
-    PROPERTY_HEADER(PartDesign::DressUp);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::DressUp);
 
 public:
     DressUp();
@@ -45,9 +44,9 @@ public:
     App::PropertyLinkSub Base;
     App::PropertyBool SupportTransform;
 
-    short mustExecute() const;
+    short mustExecute() const override;
     /// updates the Placement property from the Placement of the BaseFeature
-    void positionByBaseFeature(void);
+    void positionByBaseFeature();
     /**
      * Returns the BaseFeature property's object if it's set otherwise returns Base's
      * feature property object otherwise feature property's object (if any)
@@ -55,15 +54,17 @@ public:
      *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
+    Part::Feature* getBaseObject(bool silent=false) const override;
     /// extracts all edges from the subshapes (including face edges) and furthermore adds
     /// all C0 continuous edges to the vector
-    void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
+    void getContinuousEdges(Part::TopoShape, std::vector< std::string >&);
+    // add argument to return the selected face that edges were derived from
+    void getContinuousEdges(Part::TopoShape, std::vector< std::string >&, std::vector< std::string >&);
 
-    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+    void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape) override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 };
 
 } //namespace PartDesign

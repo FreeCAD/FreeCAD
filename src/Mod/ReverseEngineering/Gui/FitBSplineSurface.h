@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REENGUI_FITBSPLINESURFACE_H
 #define REENGUI_FITBSPLINESURFACE_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace ReenGui {
 
@@ -35,18 +34,18 @@ class FitBSplineSurfaceWidget : public QWidget
     Q_OBJECT
 
 public:
-    FitBSplineSurfaceWidget(const App::DocumentObjectT&, QWidget* parent = 0);
-    ~FitBSplineSurfaceWidget();
+    explicit FitBSplineSurfaceWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
+    ~FitBSplineSurfaceWidget() override;
 
     bool accept();
 
 private:
     void restoreSettings();
     void saveSettings();
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
-private Q_SLOTS:
-    void on_makePlacement_clicked();
+private:
+    void onMakePlacementClicked();
 
 private:
     class Private;
@@ -58,14 +57,14 @@ class TaskFitBSplineSurface : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskFitBSplineSurface(const App::DocumentObjectT&);
-    ~TaskFitBSplineSurface();
+    explicit TaskFitBSplineSurface(const App::DocumentObjectT&);
+    ~TaskFitBSplineSurface() override;
 
 public:
-    void open();
-    bool accept();
+    void open() override;
+    bool accept() override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

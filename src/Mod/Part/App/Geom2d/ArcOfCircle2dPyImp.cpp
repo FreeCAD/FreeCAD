@@ -20,37 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ2d.hxx>
-# include <Geom2d_Circle.hxx>
 # include <GCE2d_MakeArcOfCircle.hxx>
-# include <GCE2d_MakeCircle.hxx>
+# include <Geom2d_Circle.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
+# include <gp_Circ2d.hxx>
 #endif
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Circle2dPy.h>
-
 #include <Base/GeometryPyCXX.h>
+
+#include "Geom2d/ArcOfCircle2dPy.h"
+#include "Geom2d/ArcOfCircle2dPy.cpp"
+#include "Geom2d/Circle2dPy.h"
+#include "OCCError.h"
+
 
 using namespace Part;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfCircle2dPy::representation(void) const
+std::string ArcOfCircle2dPy::representation() const
 {
     return "<Arc of circle2d object>";
 }
 
 PyObject *ArcOfCircle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ArcOfCirclePy and the Twin object 
+    // create a new instance of ArcOfCirclePy and the Twin object
     return new ArcOfCircle2dPy(new Geom2dArcOfCircle);
 }
 
@@ -64,7 +62,7 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
         try {
             Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast
                 (static_cast<Circle2dPy*>(o)->getGeom2dCirclePtr()->handle());
-            GCE2d_MakeArcOfCircle arc(circle->Circ2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            GCE2d_MakeArcOfCircle arc(circle->Circ2d(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
@@ -110,7 +108,7 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return -1;
 }
 
-Py::Float ArcOfCircle2dPy::getRadius(void) const
+Py::Float ArcOfCircle2dPy::getRadius() const
 {
     return Py::Float(getGeom2dArcOfCirclePtr()->getRadius());
 }
@@ -120,7 +118,7 @@ void  ArcOfCircle2dPy::setRadius(Py::Float arg)
     getGeom2dArcOfCirclePtr()->setRadius((double)arg);
 }
 
-Py::Object ArcOfCircle2dPy::getCircle(void) const
+Py::Object ArcOfCircle2dPy::getCircle() const
 {
     Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(curve->BasisCurve());
@@ -129,10 +127,10 @@ Py::Object ArcOfCircle2dPy::getCircle(void) const
 
 PyObject *ArcOfCircle2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfCircle2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

@@ -1,0 +1,5 @@
+name: freecad
+channels:
+- conda-forge
+dependencies:
+- conda-devenv

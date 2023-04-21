@@ -30,6 +30,8 @@
 
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtensionPy.h"
+#include "ViewProviderExtensionPython.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 
@@ -61,7 +63,7 @@ void ViewProviderExtension::extensionUpdateData(const App::Property*) {
 
 }
 
-PyObject* ViewProviderExtension::getExtensionPyObject(void) {
+PyObject* ViewProviderExtension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1

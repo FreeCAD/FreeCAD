@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_IO_H
 #define MESH_IO_H
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 #include <App/Material.h>
+#include <Base/Matrix.h>
+
+#include "MeshKernel.h"
+
 
 namespace Base {
 class XMLReader;
@@ -44,6 +44,7 @@ namespace MeshIO {
         BMS,
         ASTL,
         BSTL,
+        STL,
         OBJ,
         OFF,
         IDTF,
@@ -60,7 +61,8 @@ namespace MeshIO {
         PY,
         AMF,
         SMF,
-        ASY
+        ASY,
+        ThreeMF
     };
     enum Binding {
         OVERALL,
@@ -73,13 +75,22 @@ struct MeshExport Material
 {
     Material() : binding(MeshIO::OVERALL) {}
     MeshIO::Binding binding;
-    std::string library;
-    std::vector<App::Color> diffuseColor;
+    mutable std::string library;
+
+    std::vector<App::Color> ambientColor;  /**< Defines the ambient color. */
+    std::vector<App::Color> diffuseColor;  /**< Defines the diffuse color. */
+    std::vector<App::Color> specularColor; /**< Defines the specular color. */
+    std::vector<App::Color> emissiveColor; /**< Defines the emissive color. */
+    std::vector<float> shininess;
+    std::vector<float> transparency;
+
+    bool operator == (const Material& mat) const;
+    bool operator != (const Material& mat) const;
 };
 
 struct MeshExport Group
 {
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
     std::string name;
 };
 
@@ -90,11 +101,11 @@ struct MeshExport Group
 class MeshExport MeshInput
 {
 public:
-    MeshInput (MeshKernel &rclM)
-        : _rclMesh(rclM), _material(0){}
+    explicit MeshInput (MeshKernel &rclM)
+        : _rclMesh(rclM), _material(nullptr){}
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
-    virtual ~MeshInput (void) { }
+    virtual ~MeshInput () { }
     const std::vector<std::string>& GetGroupNames() const {
         return _groupNames;
     }
@@ -103,7 +114,7 @@ public:
     bool LoadAny(const char* FileName);
     /// Loads from a stream and the given format
     bool LoadFormat(std::istream &str, MeshIO::Format fmt);
-    /** Loads an STL file either in binary or ASCII format. 
+    /** Loads an STL file either in binary or ASCII format.
      * Therefore the file header gets checked to decide if the file is binary or not.
      */
     bool LoadSTL (std::istream &rstrIn);
@@ -113,8 +124,8 @@ public:
     bool LoadBinarySTL (std::istream &rstrIn);
     /** Loads an OBJ Mesh file. */
     bool LoadOBJ (std::istream &rstrIn);
-    /** Loads the materials of an OBJ file. */
-    bool LoadMTL (std::istream &rstrIn);
+    /** Loads an OBJ Mesh file. */
+    bool LoadOBJ (std::istream &rstrIn, const char* filename);
     /** Loads an SMF Mesh file. */
     bool LoadSMF (std::istream &rstrIn);
     /** Loads an OFF Mesh file. */
@@ -123,6 +134,8 @@ public:
     bool LoadPLY (std::istream &rstrIn);
     /** Loads the mesh object from an XML file. */
     void LoadXML (Base::XMLReader &reader);
+    /** Loads the mesh object from a 3MF file. */
+    bool Load3MF (std::istream &str);
     /** Loads a node from an OpenInventor file. */
     bool LoadMeshNode (std::istream &rstrIn);
     /** Loads an OpenInventor file. */
@@ -133,12 +146,12 @@ public:
     bool LoadCadmouldFE (std::ifstream &rstrIn);
 
     static std::vector<std::string> supportedMeshFormats();
+    static MeshIO::Format getFormat(const char* FileName);
 
 protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
     Material* _material;
     std::vector<std::string> _groupNames;
-    std::vector<std::pair<std::string, unsigned long> > _materialNames;
 };
 
 /**
@@ -148,11 +161,11 @@ protected:
 class MeshExport MeshOutput
 {
 public:
-    MeshOutput (const MeshKernel &rclM)
-        : _rclMesh(rclM), _material(0), apply_transform(false){}
+    explicit MeshOutput (const MeshKernel &rclM)
+        : _rclMesh(rclM), _material(nullptr), apply_transform(false){}
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}
-    virtual ~MeshOutput (void) { }
+    virtual ~MeshOutput () { }
     void SetObjectName(const std::string& n)
     { objectName = n; }
     void SetGroups(const std::vector<Group>& g) {
@@ -183,8 +196,8 @@ public:
     bool SaveBinarySTL (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OBJ file. */
     bool SaveOBJ (std::ostream &rstrOut) const;
-    /** Saves the materials of an OBJ file. */
-    bool SaveMTL(std::ostream &rstrOut) const;
+    /** Saves the mesh object into an OBJ file. */
+    bool SaveOBJ (std::ostream &rstrOut, const char* filename) const;
     /** Saves the mesh object into an SMF file. */
     bool SaveSMF (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OFF file. */
@@ -197,6 +210,8 @@ public:
     bool SaveAsymptote (std::ostream &rstrOut) const;
     /** Saves the mesh object into an XML file. */
     void SaveXML (Base::Writer &writer) const;
+    /** Saves the mesh object into a 3MF file. */
+    bool Save3MF (std::ostream &str) const;
     /** Saves a node to an OpenInventor file. */
     bool SaveMeshNode (std::ostream &rstrIn);
     /** Writes an IDTF file. */

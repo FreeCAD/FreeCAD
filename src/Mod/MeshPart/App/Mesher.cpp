@@ -21,19 +21,22 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
-#include "Mesher.h"
+#ifndef _PreComp_
+# include <algorithm>
+
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <BRepTools.hxx>
+# include <Standard_Version.hxx>
+# include <TopoDS_Shape.hxx>
+#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#include <TopoDS_Shape.hxx>
-#include <BRepTools.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <Standard_Version.hxx>
+#include "Mesher.h"
+
 
 #ifdef HAVE_SMESH
 #if defined(__clang__)
@@ -81,10 +84,10 @@
 
 using namespace MeshPart;
 
-SMESH_Gen* Mesher::_mesh_gen = 0;
+SMESH_Gen* Mesher::_mesh_gen = nullptr;
 
 
-MeshingOutput::MeshingOutput() 
+MeshingOutput::MeshingOutput()
 {
     buffer.reserve(80);
 }
@@ -177,7 +180,7 @@ public:
 
         MeshCore::MeshFacetArray faces;
         std::size_t numTriangles = 0;
-        for (auto it : domains)
+        for (const auto& it : domains)
             numTriangles += it.facets.size();
         faces.reserve(numTriangles);
 
@@ -186,7 +189,7 @@ public:
         Standard_Real x2, y2, z2;
         Standard_Real x3, y3, z3;
 
-        std::vector< std::vector<unsigned long> > meshSegments;
+        std::vector< std::vector<MeshCore::FacetIndex> > meshSegments;
         std::size_t numMeshFaces = 0;
 
         for (std::size_t i = 0; i < domains.size(); ++i) {
@@ -256,8 +259,8 @@ public:
 
             // add a segment for the face
             if (createSegm || this->segments) {
-                std::vector<unsigned long> segment(numDomainFaces);
-                std::generate(segment.begin(), segment.end(), Base::iotaGen<unsigned long>(numMeshFaces));
+                std::vector<MeshCore::FacetIndex> segment(numDomainFaces);
+                std::generate(segment.begin(), segment.end(), Base::iotaGen<MeshCore::FacetIndex>(numMeshFaces));
                 numMeshFaces += numDomainFaces;
                 meshSegments.push_back(segment);
             }
@@ -265,7 +268,7 @@ public:
 
         MeshCore::MeshPointArray verts;
         verts.resize(vertices.size());
-        for (auto it : vertices)
+        for (const auto& it : vertices)
             verts[it.i] = it.toPoint();
 
         MeshCore::MeshKernel kernel;
@@ -275,7 +278,7 @@ public:
         meshdata->swap(kernel);
         if (createSegm) {
             int index = 0;
-            for (auto it : colorMap) {
+            for (const auto& it : colorMap) {
                 Mesh::Segment segm(meshdata, false);
                 for (auto jt : it.second) {
                     segm.addIndices(meshSegments[jt]);
@@ -291,7 +294,7 @@ public:
             }
         }
         else {
-            for (auto it : meshSegments) {
+            for (const auto& it : meshSegments) {
                 meshdata->addSegment(it);
             }
         }

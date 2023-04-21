@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,21 +22,23 @@
 
 #include "PreCompiled.h"
 
-#include "SelectionObject.h"
-#include "Selection.h"
-#include <Base/GeometryPyCXX.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Application.h>
+#include <Base/GeometryPyCXX.h>
+
+#include "Selection.h"
+#include "SelectionObject.h"
+
 
 // inclusion of the generated files (generated out of SelectionObjectPy.xml)
 #include "SelectionObjectPy.h"
 #include "SelectionObjectPy.cpp"
 
+
 using namespace Gui;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SelectionObjectPy::representation(void) const
+std::string SelectionObjectPy::representation() const
 {
     return "<SelectionObject>";
 }
@@ -44,7 +46,7 @@ std::string SelectionObjectPy::representation(void) const
 PyObject* SelectionObjectPy::remove(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     Selection().rmvSelection(getSelectionObjectPtr()->getDocName(),
                              getSelectionObjectPtr()->getFeatName());
     Py_Return;
@@ -54,11 +56,11 @@ PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
 {
     char* type;
     if (!PyArg_ParseTuple(args, "s", &type))
-        return 0;
+        return nullptr;
     Base::Type id = Base::Type::fromName(type);
     if (id.isBad()) {
         PyErr_SetString(PyExc_TypeError, "Not a valid type");
-        return 0;
+        return nullptr;
     }
 
     bool ok = getSelectionObjectPtr()->isObjectTypeOf(id);
@@ -66,39 +68,39 @@ PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-Py::String SelectionObjectPy::getObjectName(void) const
+Py::String SelectionObjectPy::getObjectName() const
 {
     return Py::String(getSelectionObjectPtr()->getFeatName());
 }
 
-Py::Tuple SelectionObjectPy::getSubElementNames(void) const
+Py::Tuple SelectionObjectPy::getSubElementNames() const
 {
     std::vector<std::string> objs = getSelectionObjectPtr()->getSubNames();
 
     Py::Tuple temp(objs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<std::string>::const_iterator it= objs.begin();it!=objs.end();++it)
-        temp.setItem(index++, Py::String(*it));
+    for(const auto & obj : objs)
+        temp.setItem(index++, Py::String(obj));
 
     return temp;
 }
 
-Py::String SelectionObjectPy::getFullName(void) const
+Py::String SelectionObjectPy::getFullName() const
 {
     return Py::String(getSelectionObjectPtr()->getAsPropertyLinkSubString());
 }
 
-Py::String SelectionObjectPy::getTypeName(void) const
+Py::String SelectionObjectPy::getTypeName() const
 {
     return Py::String(getSelectionObjectPtr()->getTypeName());
 }
 
-Py::String SelectionObjectPy::getDocumentName(void) const
+Py::String SelectionObjectPy::getDocumentName() const
 {
     return Py::String(getSelectionObjectPtr()->getDocName());
 }
 
-Py::Object SelectionObjectPy::getDocument(void) const
+Py::Object SelectionObjectPy::getDocument() const
 {
     App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
     if (!obj)
@@ -106,7 +108,7 @@ Py::Object SelectionObjectPy::getDocument(void) const
     return Py::Object(obj->getDocument()->getPyObject(), true);
 }
 
-Py::Object SelectionObjectPy::getObject(void) const
+Py::Object SelectionObjectPy::getObject() const
 {
     App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
     if (!obj)
@@ -114,7 +116,7 @@ Py::Object SelectionObjectPy::getObject(void) const
     return Py::Object(obj->getPyObject(), true);
 }
 
-Py::Tuple SelectionObjectPy::getSubObjects(void) const
+Py::Tuple SelectionObjectPy::getSubObjects() const
 {
     App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
     if (!obj)
@@ -123,7 +125,7 @@ Py::Tuple SelectionObjectPy::getSubObjects(void) const
     std::vector<PyObject *> subObjs;
 
     for(const auto &subname : getSelectionObjectPtr()->getSubNames()) {
-        PyObject *pyObj=0;
+        PyObject *pyObj=nullptr;
         Base::Matrix4D mat;
         obj->getSubObject(subname.c_str(),&pyObj,&mat);
         if(pyObj)
@@ -132,32 +134,32 @@ Py::Tuple SelectionObjectPy::getSubObjects(void) const
 
     Py::Tuple temp(subObjs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<PyObject *>::const_iterator it= subObjs.begin();it!=subObjs.end();++it)
-        temp.setItem(index++, Py::asObject(*it));
+    for(const auto & subObj : subObjs)
+        temp.setItem(index++, Py::asObject(subObj));
 
     return temp;
 }
 
-Py::Boolean SelectionObjectPy::getHasSubObjects(void) const
+Py::Boolean SelectionObjectPy::getHasSubObjects() const
 {
     return Py::Boolean(getSelectionObjectPtr()->hasSubNames());
 }
 
-Py::Tuple SelectionObjectPy::getPickedPoints(void) const
+Py::Tuple SelectionObjectPy::getPickedPoints() const
 {
     const std::vector<Base::Vector3d>& points = getSelectionObjectPtr()->getPickedPoints();
 
     Py::Tuple temp(points.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<Base::Vector3d>::const_iterator it= points.begin();it!=points.end();++it)
-        temp.setItem(index++, Py::Vector(*it));
+    for(const auto & point : points)
+        temp.setItem(index++, Py::Vector(point));
 
     return temp;
 }
 
 PyObject *SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SelectionObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

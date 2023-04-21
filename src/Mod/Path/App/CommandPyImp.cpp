@@ -21,26 +21,22 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-
 #ifndef _PreComp_
 # include <boost/algorithm/string.hpp>
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
-#include "Mod/Path/App/Command.h"
 
 // files generated out of CommandPy.xml
 #include "CommandPy.h"
 #include "CommandPy.cpp"
 
+
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string CommandPy::representation(void) const
+std::string CommandPy::representation() const
 {
     std::stringstream str;
     str.precision(5);
@@ -56,7 +52,7 @@ std::string CommandPy::representation(void) const
     return str.str();
 }
 
-// 
+//
 // Py::Dict parameters_copy_dict is now a class member to avoid delete/create/copy on every read access from python code
 // Now the pre-filled Py::Dict is returned which is more consistent with normal python behaviour.
 // It should be cleared whenever the c++ Parameters object is changed eg setParameters() or other objects invalidate its content, eg setPlacement()
@@ -71,9 +67,9 @@ PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 // constructor method
 int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
-    PyObject *parameters = NULL;
+    PyObject *parameters = nullptr;
     char *name = "";
-    static char *kwlist[] = {"name", "parameters", NULL};
+    static char *kwlist[] = {"name", "parameters", nullptr};
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters) ) {
         std::string sname(name);
         boost::to_upper(sname);
@@ -137,7 +133,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 
 // Name attribute
 
-Py::String CommandPy::getName(void) const
+Py::String CommandPy::getName() const
 {
     return Py::String(getCommandPtr()->Name.c_str());
 }
@@ -151,10 +147,10 @@ void CommandPy::setName(Py::String arg)
 
 // Parameters attribute get/set
 
-Py::Dict CommandPy::getParameters(void) const
+Py::Dict CommandPy::getParameters() const
 {
     // dict now a class member , https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
-    if (parameters_copy_dict.length()==0) {    
+    if (parameters_copy_dict.length()==0) {
       for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
           parameters_copy_dict.setItem(i->first, Py::Float(i->second));
       }
@@ -204,7 +200,7 @@ PyObject* CommandPy::toGCode(PyObject *args)
 
 PyObject* CommandPy::setFromGCode(PyObject *args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         try {
@@ -224,15 +220,14 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
 
 // Placement attribute get/set
 
-Py::Object CommandPy::getPlacement(void) const
+Py::Object CommandPy::getPlacement() const
 {
     return Py::asObject(new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
 }
 
 void CommandPy::setPlacement(Py::Object arg)
 {
-    union PyType_Object pyType = {&(Base::PlacementPy::Type)};
-    Py::Type PlacementType(pyType.o);
+    Py::Type PlacementType(Base::getTypeAsObject(&(Base::PlacementPy::Type)));
     if(arg.isType(PlacementType)) {
         getCommandPtr()->setFromPlacement( *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr() );
         parameters_copy_dict.clear();
@@ -267,7 +262,7 @@ PyObject *CommandPy::getCustomAttributes(const char* attr) const
             return Py_None;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)

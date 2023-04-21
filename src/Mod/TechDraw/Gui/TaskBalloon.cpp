@@ -22,35 +22,22 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 #endif // #ifndef _PreComp_
 
+#include <App/Document.h>
 #include <Base/Console.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
-
+#include "TaskBalloon.h"
+#include "ui_TaskBalloon.h"
 #include "DrawGuiUtil.h"
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
-#include "TaskBalloon.h"
-#include "ui_TaskBalloon.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -65,27 +52,27 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     ui->setupUi(this);
 
-    ui->qsbShapeScale->setValue(parent->dvBalloon->ShapeScale.getValue());
-    connect(ui->qsbShapeScale, SIGNAL(valueChanged(double)), this, SLOT(onShapeScaleChanged()));
+    ui->qsbShapeScale->setValue(parent->getBalloonFeat()->ShapeScale.getValue());
+    connect(ui->qsbShapeScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onShapeScaleChanged);
 
-    ui->qsbSymbolScale->setValue(parent->dvBalloon->EndTypeScale.getValue());
-    connect(ui->qsbSymbolScale, SIGNAL(valueChanged(double)), this, SLOT(onEndSymbolScaleChanged()));
+    ui->qsbSymbolScale->setValue(parent->getBalloonFeat()->EndTypeScale.getValue());
+    connect(ui->qsbSymbolScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onEndSymbolScaleChanged);
 
-    std::string value = parent->dvBalloon->Text.getValue();
+    std::string value = parent->getBalloonFeat()->Text.getValue();
     QString qs = QString::fromUtf8(value.data(), value.size());
     ui->leText->setText(qs);
     ui->leText->selectAll();
-    connect(ui->leText, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged()));
-    QTimer::singleShot(0, ui->leText, SLOT(setFocus()));
+    connect(ui->leText, &QLineEdit::textChanged, this, &TaskBalloon::onTextChanged);
+    QTimer::singleShot(0, ui->leText, qOverload<>(&QLineEdit::setFocus));
 
     DrawGuiUtil::loadArrowBox(ui->comboEndSymbol);
-    i = parent->dvBalloon->EndType.getValue();
+    i = parent->getBalloonFeat()->EndType.getValue();
     ui->comboEndSymbol->setCurrentIndex(i);
-    connect(ui->comboEndSymbol, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
+    connect(ui->comboEndSymbol, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onEndSymbolChanged);
 
-    i = parent->dvBalloon->BubbleShape.getValue();
+    i = parent->getBalloonFeat()->BubbleShape.getValue();
     ui->comboBubbleShape->setCurrentIndex(i);
-    connect(ui->comboBubbleShape, SIGNAL(currentIndexChanged(int)), this, SLOT(onBubbleShapeChanged()));
+    connect(ui->comboBubbleShape, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onBubbleShapeChanged);
 
     ui->qsbFontSize->setUnit(Base::Unit::Length);
     ui->qsbFontSize->setMinimum(0);
@@ -97,20 +84,20 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     // negative kink length is allowed, thus no minimum
     ui->qsbKinkLength->setUnit(Base::Unit::Length);
 
-    if (balloonVP != nullptr) {
+    if (balloonVP) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
-        connect(ui->textColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+        connect(ui->textColor, &ColorButton::changed, this, &TaskBalloon::onColorChanged);
         ui->qsbFontSize->setValue(balloonVP->Fontsize.getValue());
         ui->comboLineVisible->setCurrentIndex(balloonVP->LineVisible.getValue());
         ui->qsbLineWidth->setValue(balloonVP->LineWidth.getValue());
     }
     // new balloons have already the preferences BalloonKink length
-    ui->qsbKinkLength->setValue(parent->dvBalloon->KinkLength.getValue());
+    ui->qsbKinkLength->setValue(parent->getBalloonFeat()->KinkLength.getValue());
 
-    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
-    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
-    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
+    connect(ui->qsbFontSize, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onFontsizeChanged);
+    connect(ui->comboLineVisible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onLineVisibleChanged);
+    connect(ui->qsbLineWidth, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onLineWidthChanged);
+    connect(ui->qsbKinkLength, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onKinkLengthChanged);
 }
 
 TaskBalloon::~TaskBalloon()
@@ -148,7 +135,7 @@ void TaskBalloon::recomputeFeature()
 
 void TaskBalloon::onTextChanged()
 {
-    m_parent->dvBalloon->Text.setValue(ui->leText->text().toUtf8().constData());
+    m_parent->getBalloonFeat()->Text.setValue(ui->leText->text().toUtf8().constData());
     recomputeFeature();
 }
 
@@ -168,25 +155,25 @@ void TaskBalloon::onFontsizeChanged()
 
 void TaskBalloon::onBubbleShapeChanged()
 {
-    m_parent->dvBalloon->BubbleShape.setValue(ui->comboBubbleShape->currentIndex());
+    m_parent->getBalloonFeat()->BubbleShape.setValue(ui->comboBubbleShape->currentIndex());
     recomputeFeature();
 }
 
 void TaskBalloon::onShapeScaleChanged()
 {
-    m_parent->dvBalloon->ShapeScale.setValue(ui->qsbShapeScale->value().getValue());
+    m_parent->getBalloonFeat()->ShapeScale.setValue(ui->qsbShapeScale->value().getValue());
     recomputeFeature();
 }
 
 void TaskBalloon::onEndSymbolChanged()
 {
-    m_parent->dvBalloon->EndType.setValue(ui->comboEndSymbol->currentIndex());
+    m_parent->getBalloonFeat()->EndType.setValue(ui->comboEndSymbol->currentIndex());
     recomputeFeature();
 }
 
 void TaskBalloon::onEndSymbolScaleChanged()
 {
-    m_parent->dvBalloon->EndTypeScale.setValue(ui->qsbSymbolScale->value().getValue());
+    m_parent->getBalloonFeat()->EndTypeScale.setValue(ui->qsbSymbolScale->value().getValue());
     recomputeFeature();
 }
 
@@ -204,7 +191,7 @@ void TaskBalloon::onLineWidthChanged()
 
 void TaskBalloon::onKinkLengthChanged()
 {
-    m_parent->dvBalloon->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
+    m_parent->getBalloonFeat()->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
     recomputeFeature();
 }
 
@@ -214,7 +201,7 @@ TaskDlgBalloon::TaskDlgBalloon(QGIViewBalloon *parent, ViewProviderBalloon *ball
     TaskDialog()
 {
     widget  = new TaskBalloon(parent, balloonVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Balloon"), widget->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Balloon"), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);

@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_GEOMETRYEXTENSION_H
 #define PART_GEOMETRYEXTENSION_H
 
-#include <Base/Persistence.h>
 #include <memory>
 #include <string>
+
+#include <Base/Persistence.h>
+#include <Mod/Part/PartGlobal.h>
 
 
 namespace Part {
@@ -35,13 +36,13 @@ class Geometry;
 
 class PartExport GeometryExtension: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual ~GeometryExtension() = default;
+    ~GeometryExtension() override = default;
 
-    virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
+    virtual std::unique_ptr<GeometryExtension> copy() const = 0;
 
-    virtual PyObject *getPyObject(void) = 0;
+    PyObject *getPyObject() override = 0;
     PyObject* copyPyObject() const;
 
     inline void setName(const std::string& str) {name = str;}
@@ -66,9 +67,9 @@ private:
 
 class PartExport GeometryPersistenceExtension : public Part::GeometryExtension
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual ~GeometryPersistenceExtension() = default;
+    ~GeometryPersistenceExtension() override = default;
 
     // Own Persistence implementer - Not Base::Persistence - managed by Part::Geometry
     void Save(Base::Writer &/*writer*/) const;

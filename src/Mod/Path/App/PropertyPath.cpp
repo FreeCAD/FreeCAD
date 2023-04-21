@@ -20,25 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-
 #include <App/DocumentObject.h>
 #include <App/PropertyContainer.h>
-#include <Base/Console.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
+#include <Base/Writer.h>
 
 #include "PropertyPath.h"
 #include "PathPy.h"
+
 
 using namespace Path;
 
@@ -60,12 +54,12 @@ void PropertyPath::setValue(const Toolpath& pa)
 }
 
 
-const Toolpath &PropertyPath::getValue(void)const
+const Toolpath &PropertyPath::getValue()const
 {
     return _Path;
 }
 
-PyObject *PropertyPath::getPyObject(void)
+PyObject *PropertyPath::getPyObject()
 {
     return new PathPy(new Toolpath(_Path));
 }
@@ -83,7 +77,7 @@ void PropertyPath::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyPath::Copy(void) const
+App::Property *PropertyPath::Copy() const
 {
     PropertyPath *prop = new PropertyPath();
     prop->_Path = this->_Path;
@@ -98,7 +92,7 @@ void PropertyPath::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPath::getMemSize (void) const
+unsigned int PropertyPath::getMemSize () const
 {
     return _Path.getMemSize();
 }
@@ -139,7 +133,7 @@ void PropertyPath::SaveDocFile (Base::Writer &) const
 void PropertyPath::RestoreDocFile(Base::Reader &reader)
 {
     App::PropertyContainer *container = getContainer();
-    App::DocumentObject *obj = 0;
+    App::DocumentObject *obj = nullptr;
     if (container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         obj = static_cast<App::DocumentObject*>(container);
     }

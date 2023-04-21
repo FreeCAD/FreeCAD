@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "CosmeticVertexPy.h"
 
 #include "PropertyCosmeticVertexList.h"
+#include "CosmeticVertexPy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyCosmeticVertexList
@@ -72,7 +60,7 @@ void PropertyCosmeticVertexList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyCosmeticVertexList::getSize(void) const
+int PropertyCosmeticVertexList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -96,7 +84,7 @@ void PropertyCosmeticVertexList::setValues(const std::vector<CosmeticVertex*>& l
     hasSetValue();
 }
 
-PyObject *PropertyCosmeticVertexList::getPyObject(void)
+PyObject *PropertyCosmeticVertexList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -139,18 +127,19 @@ void PropertyCosmeticVertexList::setPyObject(PyObject *value)
 
 void PropertyCosmeticVertexList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CosmeticVertexList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticVertexList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CosmeticVertex  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CosmeticVertex>" << endl;
+        writer.Stream() << writer.ind() << "</CosmeticVertex>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CosmeticVertexList>" << endl ;
+    writer.Stream() << writer.ind() << "</CosmeticVertexList>" << std::endl;
 }
 
 void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)
@@ -165,11 +154,11 @@ void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("CosmeticVertex");
         const char* TypeName = reader.getAttribute("type");
-        CosmeticVertex *newG = (CosmeticVertex *)Base::Type::fromName(TypeName).createInstance();
+        CosmeticVertex *newG = static_cast<CosmeticVertex *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("CosmeticVertex \"%s\" within a PropertyCosmeticVertexList was subject to a partial restore.\n",reader.localName());
+            Base::Console().Error("CosmeticVertex \"%s\" within a PropertyCosmeticVertexList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CosmeticVertex class
                 values.push_back(newG);
@@ -192,7 +181,7 @@ void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCosmeticVertexList::Copy(void) const
+App::Property *PropertyCosmeticVertexList::Copy() const
 {
     PropertyCosmeticVertexList *p = new PropertyCosmeticVertexList();
     p->setValues(_lValueList);
@@ -205,7 +194,7 @@ void PropertyCosmeticVertexList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyCosmeticVertexList::getMemSize(void) const
+unsigned int PropertyCosmeticVertexList::getMemSize() const
 {
     int size = sizeof(PropertyCosmeticVertexList);
     for (int i = 0; i < getSize(); i++)

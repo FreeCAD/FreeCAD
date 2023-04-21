@@ -21,21 +21,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 #endif
 
+#include "ViewProviderPlane.h"
 #include "ViewProviderOrigin.h"
 
-#include "ViewProviderPlane.h"
 
 using namespace Gui;
 
@@ -64,19 +63,23 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
 
     SoSeparator *sep = getOriginFeatureRoot ();
 
-    SoCoordinate3 *pCoords = new SoCoordinate3 ();
+    auto pCoords = new SoCoordinate3 ();
     pCoords->point.setNum (4);
     pCoords->point.setValues ( 0, 4, verts );
     sep->addChild ( pCoords );
 
-    SoIndexedLineSet *pLines  = new SoIndexedLineSet ();
+    auto pLines  = new SoIndexedLineSet ();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
     sep->addChild ( pLines );
 
-    SoTranslation *textTranslation = new SoTranslation ();
+    auto textTranslation = new SoTranslation ();
     textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size * 9./10., 0 ) );
     sep->addChild ( textTranslation );
+
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
+    sep->addChild(ps);
 
     sep->addChild ( getLabel () );
 }

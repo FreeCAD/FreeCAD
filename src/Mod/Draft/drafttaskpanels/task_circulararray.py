@@ -168,16 +168,6 @@ class TaskPanelCircularArray:
         self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
         self.form.checkbox_link.stateChanged.connect(self.set_link)
 
-        # Old style for Qt4, avoid!
-        # QtCore.QObject.connect(self.form.button_reset,
-        #                        QtCore.SIGNAL("clicked()"),
-        #                        self.reset_point)
-        # QtCore.QObject.connect(self.form.checkbox_fuse,
-        #                        QtCore.SIGNAL("stateChanged(int)"),
-        #                        self.set_fuse)
-        # QtCore.QObject.connect(self.form.checkbox_link,
-        #                        QtCore.SIGNAL("stateChanged(int)"),
-        #                        self.set_link)
 
     def accept(self):
         """Execute when clicking the OK button or Enter key."""

@@ -24,13 +24,13 @@
 #ifndef APP_PROPERTY_H
 #define APP_PROPERTY_H
 
-// Std. configurations
-
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <string>
+#include <boost/signals2.hpp>
 #include <bitset>
+#include <string>
+#include <FCGlobal.h>
 
 namespace Py {
 class Object;
@@ -75,6 +75,9 @@ public:
                       // relevant for the container using it
         EvalOnRestore = 14, // In case of expression binding, evaluate the
                             // expression on restore and touch the object on value change.
+        Busy = 15, // internal use to avoid recursive signaling
+        CopyOnChange = 16, // for Link to copy the linked object on change of the property with this flag
+        UserEdit = 17, // cause property editor to create button for user defined editing
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
@@ -98,7 +101,7 @@ public:
     };
 
     Property();
-    virtual ~Property();
+    ~Property() override;
 
     /// For safe deleting of a dynamic property
     static void destroy(Property *p);
@@ -109,33 +112,45 @@ public:
      * This method is defined in Base::Persistence
      * @see Base::Persistence
      */
-    virtual unsigned int getMemSize (void) const override {
+    unsigned int getMemSize () const override {
         // you have to implement this method in all property classes!
         return sizeof(father) + sizeof(StatusBits);
     }
 
-    /// get the name of this property in the belonging container
-    const char* getName(void) const;
+    /** Get the name of this property in the belonging container
+     * With \ref hasName() it can be checked beforehand if a valid name is set.
+     * @note If no name is set this function returns an empty string, i.e. "".
+     */
+    const char* getName() const;
+    /** Check if the property has a name set.
+     * If no name is set then \ref getName() will return an empty string
+     */
+    bool hasName() const;
+    /** Check if the passed name is valid.
+     * If \a name is null or an empty string it's considered invalid,
+     * and valid otherwise.
+     */
+    static bool isValidName(const char* name);
 
     std::string getFullName() const;
 
     /// Get the class name of the associated property editor item
-    virtual const char* getEditorName(void) const { return ""; }
+    virtual const char* getEditorName() const { return ""; }
 
     /// Get the type of the property in the container
-    short getType(void) const;
+    short getType() const;
 
     /// Get the group of this property
-    const char* getGroup(void) const;
+    const char* getGroup() const;
 
     /// Get the documentation of this property
-    const char* getDocumentation(void) const;
+    const char* getDocumentation() const;
 
     /// Is called by the framework to set the father (container)
     void setContainer(PropertyContainer *Father);
 
     /// Get a pointer to the PropertyContainer derived class the property belongs to
-    PropertyContainer *getContainer(void) const {return father;}
+    PropertyContainer *getContainer() const {return father;}
 
     /// Set value of property
     virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
@@ -191,11 +206,11 @@ public:
     /// Set the property touched
     void touch();
     /// Test if this property is touched
-    inline bool isTouched(void) const {
+    inline bool isTouched() const {
         return StatusBits.test(Touched);
     }
     /// Reset this property touched
-    inline void purgeTouched(void) {
+    inline void purgeTouched() {
         StatusBits.reset(Touched);
     }
     /// return the status bits
@@ -224,7 +239,7 @@ public:
     //@}
 
     /// Returns a new copy of the property (mainly for Undo/Redo and transactions)
-    virtual Property *Copy(void) const = 0;
+    virtual Property *Copy() const = 0;
     /// Paste the value from the property (mainly for Undo/Redo and transactions)
     virtual void Paste(const Property &from) = 0;
 
@@ -232,6 +247,19 @@ public:
     virtual void hasSetChildValue(Property &) {}
     /// Called before a child property changing value
     virtual void aboutToSetChildValue(Property &) {}
+
+    /// Compare if this property has the same content as the given one
+    virtual bool isSame(const Property &other) const;
+
+    /** Return a unique ID for the property
+     *
+     * The ID of a property is generated from a monotonically increasing
+     * internal counter. The intention of the ID is to be used as a key for
+     * mapping, instead of using the raw pointer. Because, it is possible for
+     * the runtime memory allocator to reuse just deleted memory, which will
+     * cause hard to debug problem if use pointer as key. 
+     */
+    int64_t getID() const {return _id;}
 
     friend class PropertyContainer;
     friend struct PropertyData;
@@ -251,9 +279,9 @@ protected:
 
 protected:
     /// Gets called by all setValue() methods after the value has changed
-    virtual void hasSetValue(void);
+    virtual void hasSetValue();
     /// Gets called by all setValue() methods before the value has changed
-    virtual void aboutToSetValue(void);
+    virtual void aboutToSetValue();
 
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
@@ -269,6 +297,10 @@ private:
 private:
     PropertyContainer *father;
     const char *myName;
+    int64_t _id;
+
+public:
+    boost::signals2::signal<void (const App::Property&)> signalChanged;
 };
 
 
@@ -313,7 +345,7 @@ public:
          *                    hasn't been marked before, and calls its
          *                    aboutToSetValue().
          */
-        AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
+        explicit AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
             mProp.signalCounter++;
             if (markChange)
                 aboutToChange();
@@ -391,7 +423,7 @@ class AppExport PropertyListsBase
 {
 public:
     virtual void setSize(int newSize)=0;   
-    virtual int getSize(void) const =0;   
+    virtual int getSize() const =0;
 
     const std::set<int> &getTouchList() const {
         return _touchList;
@@ -424,14 +456,14 @@ class AppExport PropertyLists : public Property, public PropertyListsBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual void setPyObject(PyObject *obj) override {
+    void setPyObject(PyObject *obj) override {
         _setPyObject(obj);
     }
 
     // if the order of the elements in the list relevant?
     // if yes, certain operations, like restoring must make sure that the
     // order is kept despite errors.
-    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
+    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); }
     inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
 
 };
@@ -442,11 +474,11 @@ class PropertyListsT: public ParentT
                     , public AtomicPropertyChangeInterface<PropertyListsT<T,ListT,ParentT> >
 {
 public:
-    typedef typename ListT::const_reference const_reference;
-    typedef ListT list_type;
-    typedef ParentT parent_type;
-    typedef typename AtomicPropertyChangeInterface<
-        PropertyListsT<T,ListT,ParentT> >::AtomicPropertyChange atomic_change;
+    using const_reference = typename ListT::const_reference;
+    using list_type = ListT;
+    using parent_type = ParentT;
+    using atomic_change = typename AtomicPropertyChangeInterface<
+        PropertyListsT<T,ListT,ParentT> >::AtomicPropertyChange;
 
     friend atomic_change;
 
@@ -454,11 +486,11 @@ public:
         _lValueList.resize(newSize,def);
     }
 
-    virtual void setSize(int newSize) override {
+    void setSize(int newSize) override {
         _lValueList.resize(newSize);
     }
 
-    virtual int getSize(void) const override {
+    int getSize() const override {
         return static_cast<int>(_lValueList.size());
     }
 
@@ -479,14 +511,21 @@ public:
         setValues(newValues);
     }
 
-    const ListT &getValues(void) const{return _lValueList;}
+    const ListT &getValues() const{return _lValueList;}
 
     // alias to getValues
-    const ListT &getValue(void) const{return getValues();}
+    const ListT &getValue() const{return getValues();}
 
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
 
-    virtual void setPyObject(PyObject *value) override {
+    bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
+        return this->getTypeId() == other.getTypeId()
+            && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
+    void setPyObject(PyObject *value) override {
         try {
             setValue(getPyValue(value));
             return;
@@ -511,24 +550,28 @@ public:
 
 protected:
 
-    void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
+    void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
         if (indices.empty()) {
-            ListT values;
-            values.resize(vals.size());
-            for (std::size_t i=0,count=vals.size();i<count;++i)
-                values[i] = getPyValue(vals[i]);
+            ListT values {};
+            values.reserve(vals.size());
+            for (auto *valsContent : vals) {
+                values.push_back(getPyValue(valsContent));
+            }
             setValues(std::move(values));
             return;
         }
-        assert(vals.size()==indices.size());
+        assert(vals.size() == indices.size());
         atomic_change guard(*this);
-        for (int i=0,count=indices.size();i<count;++i)
-            set1Value(indices[i],getPyValue(vals[i]));
+        int i {0};
+        for (auto index : indices) {
+            set1Value(index, getPyValue(vals[i]));
+            i++;
+        }
         guard.tryInvoke();
     }
 
-    virtual T getPyValue(PyObject *item) const = 0;
+    virtual T getPyValue(PyObject* item) const = 0;
 
 protected:
     ListT _lValueList;

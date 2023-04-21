@@ -800,7 +800,7 @@ namespace MED
 
 
     //----------------------------------------------------------------------------
-    //! Read the values for MEDWrapper MED TIEMSTAMP from defined MED file
+    //! Read the values for MEDWrapper MED TIMESTAMP from defined MED file
     virtual 
     void
     GetTimeStampValue(const PTimeStampValueBase& theTimeStampValue,
@@ -808,13 +808,13 @@ namespace MED
                       const TKey2Gauss& theKey2Gauss,
                       TErr* theErr = NULL) = 0;
     
-    //! Write the values for MEDWrapper MED TIEMSTAMP to defined MED file
+    //! Write the values for MEDWrapper MED TIMESTAMP to defined MED file
     virtual 
     void
     SetTimeStampValue(const PTimeStampValueBase& theTimeStampValue,
                       TErr* theErr = NULL) = 0;
     
-    //! Creates the values for MEDWrapper MED TIEMSTAMP representation
+    //! Creates the values for MEDWrapper MED TIMESTAMP representation
     virtual
     PTimeStampValueBase
     CrTimeStampValue(const PTimeStampInfo& theTimeStampInfo,
@@ -822,27 +822,27 @@ namespace MED
                      const TGeom2Profile& theGeom2Profile = TGeom2Profile(),
                      EModeSwitch theMode = eFULL_INTERLACE) = 0;
 
-    //! Creates the values for MEDWrapper MED TIEMSTAMP representation
+    //! Creates the values for MEDWrapper MED TIMESTAMP representation
     virtual
     PTimeStampValueBase
     CrTimeStampValue(const PTimeStampInfo& theTimeStampInfo,
                      const TGeom2Profile& theGeom2Profile = TGeom2Profile(),
                      EModeSwitch theMode = eFULL_INTERLACE);
 
-    //! A copy-constructor for the values for MEDWrapper MED TIEMSTAMP representation
+    //! A copy-constructor for the values for MEDWrapper MED TIMESTAMP representation
     virtual 
     PTimeStampValueBase
     CrTimeStampValue(const PTimeStampInfo& theTimeStampInfo,
                      const PTimeStampValueBase& theInfo,
                      ETypeChamp theTypeChamp) = 0;
     
-    //! A copy-constructor for the values for MEDWrapper MED TIEMSTAMP representation
+    //! A copy-constructor for the values for MEDWrapper MED TIMESTAMP representation
     virtual 
     PTimeStampValueBase
     CrTimeStampValue(const PTimeStampInfo& theTimeStampInfo,
                      const PTimeStampValueBase& theInfo);
     
-    //! Read the values for MEDWrapper MED TIEMSTAMP from defined MED file
+    //! Read the values for MEDWrapper MED TIMESTAMP from defined MED file
     PTimeStampValueBase
     GetPTimeStampValue(const PTimeStampInfo& theTimeStampInfo,
                        const TMKey2Profile& theMKey2Profile,
@@ -851,7 +851,7 @@ namespace MED
     
     //----------------------------------------------------------------------------
     // Backward compatibility  declarations
-    //! Read the values for MEDWrapper MED TIEMSTAMP from defined MED file
+    //! Read the values for MEDWrapper MED TIMESTAMP from defined MED file
     virtual 
     void
     GetTimeStampVal(const PTimeStampVal& theVal,
@@ -859,26 +859,26 @@ namespace MED
                     const TKey2Gauss& theKey2Gauss,
                     TErr* theErr = NULL);
     
-    //! Write the values for MEDWrapper MED TIEMSTAMP to defined MED file
+    //! Write the values for MEDWrapper MED TIMESTAMP to defined MED file
     virtual 
     void
     SetTimeStamp(const PTimeStampVal& theVal,
                  TErr* theErr = NULL);
     
-    //! Creates the values for MEDWrapper MED TIEMSTAMP representation
+    //! Creates the values for MEDWrapper MED TIMESTAMP representation
     virtual
     PTimeStampVal
     CrTimeStampVal(const PTimeStampInfo& theTimeStampInfo,
                    const TGeom2Profile& theGeom2Profile = TGeom2Profile(),
                    EModeSwitch theMode = eFULL_INTERLACE);
 
-    //! A copy-constructor for the values for MEDWrapper MED TIEMSTAMP representation
+    //! A copy-constructor for the values for MEDWrapper MED TIMESTAMP representation
     virtual 
     PTimeStampVal
     CrTimeStampVal(const PTimeStampInfo& theTimeStampInfo,
                    const PTimeStampVal& theInfo);
     
-    //! Read the values for MEDWrapper MED TIEMSTAMP from defined MED file
+    //! Read the values for MEDWrapper MED TIMESTAMP from defined MED file
     PTimeStampVal
     GetPTimeStampVal(const PTimeStampInfo& theTimeStampInfo,
                      const TMKey2Profile& theMKey2Profile,

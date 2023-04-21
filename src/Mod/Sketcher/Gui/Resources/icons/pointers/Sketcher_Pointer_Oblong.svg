@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" width="64" height="64" id="svg12" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <defs id="defs16" />
+  <g style="stroke:#feffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;fill:maroon;stroke-opacity:1" id="g10">
+    <path d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9" id="path8" style="fill:maroon;stroke:#feffff;stroke-opacity:1" />
+  </g>
+  <rect style="fill:none;fill-opacity:1;stroke:#c00;stroke-width:3.02362205;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" id="rect1303" width="30.236221" height="22.677166" x="18.897638" y="34.015747" ry="7.5590539" />
+</svg>

@@ -46,7 +46,6 @@ class SpreadsheetCases(unittest.TestCase):
     def testAggregates(self):
         """ Test all aggregate functions """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('B13',  '4')
         sheet.set('B14',  '5')
         sheet.set('B15',  '6')
@@ -165,7 +164,6 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testFunctions(self):
         """ Test all built-in simple functions """
-        doc = FreeCAD.newDocument()
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('A1',  '=cos(60)')   # Cos
         sheet.set('B1',  '=cos(60deg)')
@@ -366,7 +364,6 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.B27, l)
         self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
-        FreeCAD.closeDocument(doc.Name)
 
     def testRelationalOperators(self):
         """ Test relational operators """
@@ -894,7 +891,7 @@ class SpreadsheetCases(unittest.TestCase):
         pla = FreeCAD.Placement(vec,rot)
         ipla = pla.inverse()
 
-        sheet.set('A1', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('A1', '=vector(2, 1, 2)')
 
         # different ways of calling mscale()
         sheet.set('B1', '=mscale(create(<<matrix>>), A1)')
@@ -907,10 +904,10 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('D2', '=A2^0')
         sheet.set('E2', '=A2^1')
         sheet.set('F2', '=A2^2')
-        sheet.set('G2', '=create(<<matrix>>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
+        sheet.set('G2', '=matrix(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
         sheet.set('H2', '=G2^-1')
 
-        sheet.set('A3', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('A3', '=rotation(vector(0, 1, 0), 45)')
 
         # test rotation power operation
         sheet.set('B3', '=A3^-2')
@@ -919,7 +916,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('E3', '=A3^1')
         sheet.set('F3', '=A3^2')
 
-        sheet.set('A4', '=create(<<placement>>, A1, A3)')
+        sheet.set('A4', '=placement(A1, A3)')
 
         # test placement power operation
         sheet.set('B4', '=A4^-2')
@@ -943,6 +940,20 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('D6', '=minvert(D4*D2) * minvert(D3) * D5')
         sheet.set('E6', '=(E2 * E3)^-1 * E4^-1 * E5')
         sheet.set('F6', '=(F3*F4*F2)^-1 * F5')
+
+        # Rotate and translate.
+        sheet.set('A7', '=placement(vector(1; 2; 3), vector(1; 0; 0); 0)')
+        sheet.set('B7', '=mrotate(A7; vector(1; 0; 0); 90)')
+        sheet.set('C7', '=mrotatex(A7; 90)')
+        sheet.set('D7', '=mrotatey(A7; 90)')
+        sheet.set('E7', '=mrotatez(A7; 90)')
+        sheet.set('F7', '=mtranslate(A7; vector(1; 2; 3))')
+        sheet.set('G7', '=mtranslate(A7; 1; 2; 3)')
+
+        # Compatibility with old syntax.
+        sheet.set('A8', '=create(<<vector>>, 2, 1, 2)')
+        sheet.set('B8', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+        sheet.set('C8', '=create(<<placement>>, A8, B8)')
 
         self.doc.recompute()
 
@@ -1013,6 +1024,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertLess(sheet.D6.distanceToPoint(vec),tol)
         self.assertLess(sheet.E6.distanceToPoint(vec),tol)
         self.assertLess(sheet.F6.distanceToPoint(vec),tol)
+
+        self.assertTrue(sheet.A7.Base.isEqual(FreeCAD.Vector(1, 2, 3), tol))
+        self.assertTrue(sheet.B7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.C7.Base.isEqual(FreeCAD.Vector(1, -3, 2), tol))
+        self.assertTrue(sheet.D7.Base.isEqual(FreeCAD.Vector(3, 2.0, -1), tol))
+        self.assertTrue(sheet.E7.Base.isEqual(FreeCAD.Vector(-2, 1, 3.0), tol))
+        self.assertTrue(sheet.F7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+        self.assertTrue(sheet.G7.Base.isEqual(FreeCAD.Vector(2, 4, 6), tol))
+
+        self.assertEqual(sheet.A8, vec)
+        self.assertEqual(sheet.B8, rot)
+        self.assertEqual(sheet.C8, pla)
 
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
@@ -1142,6 +1165,288 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.undo()
         self.doc.recompute()
         sheet.setAlias('C3','test')
+
+    def testCrossLinkEmptyPropertyName(self):
+        # https://forum.freecadweb.org/viewtopic.php?f=3&t=58603
+        base = FreeCAD.newDocument("base")
+        sheet = base.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('A1', 'x')
+        sheet.set('x', '42mm')
+        base.recompute()
+
+        square = FreeCAD.newDocument("square")
+        body = square.addObject('PartDesign::Body','Body')
+        box = square.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+        box.Length = 10.00
+        box.Width = 10.00
+        box.Height = 10.00
+        square.recompute()
+
+        basePath = self.TempPath + os.sep + 'base.FCStd'
+        base.saveAs(basePath)
+        squarePath = self.TempPath + os.sep + 'square.FCStd'
+        square.saveAs(squarePath)
+
+        base.save()
+        square.save()
+
+        FreeCAD.closeDocument(square.Name)
+        FreeCAD.closeDocument(base.Name)
+
+        ##
+        ## preparation done
+        base = FreeCAD.openDocument(basePath)
+        square = FreeCAD.openDocument(squarePath)
+
+        square.Box.setExpression('Length', u'base#Spreadsheet.x')
+        square.recompute()
+
+        square.save()
+        base.save()
+        FreeCAD.closeDocument(square.Name)
+        FreeCAD.closeDocument(base.Name)
+
+    def testExpressionWithAlias(self):
+        # https://forum.freecadweb.org/viewtopic.php?p=564502#p564502
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Input")
+        ss1.setAlias('A1', 'one')
+        ss1.setAlias('A2', 'two')
+        ss1.set("A1","1")
+        ss1.set("A2","2")
+        self.doc.recompute()
+
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Output")
+        ss2.set("A1","=Input.A1 + Input.A2")
+        ss2.set("A2","=Input.one + Input.two")
+        ss2.set("A3","=<<Input>>.A1 + <<Input>>.A2")
+        ss2.set("A4","=<<Input>>.one + <<Input>>.two")
+        self.doc.recompute()
+
+        self.assertEqual(ss2.get("A1"), 3)
+        self.assertEqual(ss2.get("A2"), 3)
+        self.assertEqual(ss2.get("A3"), 3)
+        self.assertEqual(ss2.get("A4"), 3)
+
+        project_path = self.TempPath + os.sep + 'alias.FCStd'
+        self.doc.saveAs(project_path)
+        FreeCAD.closeDocument(self.doc.Name)
+        self.doc = FreeCAD.openDocument(project_path)
+        ss1 = self.doc.Input
+        ss2 = self.doc.Output
+
+        self.assertEqual(ss2.get("A1"), 3)
+        self.assertEqual(ss2.get("A2"), 3)
+        self.assertEqual(ss2.get("A3"), 3)
+        self.assertEqual(ss2.get("A4"), 3)
+
+        ss1.set("A1","2")
+        self.doc.recompute()
+
+        self.assertEqual(ss1.get("A1"), 2)
+        self.assertEqual(ss1.get("one"), 2)
+
+        self.assertEqual(ss2.get("A1"), 4)
+        self.assertEqual(ss2.get("A2"), 4)
+        self.assertEqual(ss2.get("A3"), 4)
+        self.assertEqual(ss2.get("A4"), 4)
+
+    def testIssue6844(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.UndoMode = 0
+        self.doc.removeObject("Body")
+        sheet.clearAll()
+
+    def testIssue6840(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.clearDocument()
+
+    def testFixPR6843(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.set("A5", "a")
+        sheet.set("A6", "b")
+        self.doc.recompute()
+        sheet.insertRows("6", 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A5, "a")
+        self.assertEqual(sheet.A7, "b")
+        with self.assertRaises(AttributeError):
+            self.assertEqual(sheet.A6, "")
+
+    def testBindAcrossSheets(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet2")
+        ss2.set("B1", "B1")
+        ss2.set("B2", "B2")
+        ss2.set("C1", "C1")
+        ss2.set("C2", "C2")
+        ss2.set("D1", "D1")
+        ss2.set("D2", "D2")
+
+        ss1.setExpression('.cells.Bind.A3.C4', 'tuple(Spreadsheet2.cells, <<B1>>, <<D2>>)')
+        self.doc.recompute()
+
+        self.assertEqual(ss1.A3, ss2.B1)
+        self.assertEqual(ss1.A4, ss2.B2)
+        self.assertEqual(ss1.B3, ss2.C1)
+        self.assertEqual(ss1.B4, ss2.C2)
+        self.assertEqual(ss1.C3, ss2.D1)
+        self.assertEqual(ss1.C4, ss2.D2)
+
+        self.assertEqual(len(ss1.ExpressionEngine), 1)
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        self.doc.recompute()
+
+    def testBindHiddenRefAcrossSheets(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet2")
+        ss2.set("B1", "B1")
+        ss2.set("B2", "B2")
+        ss2.set("C1", "C1")
+        ss2.set("C2", "C2")
+        ss2.set("D1", "D1")
+        ss2.set("D2", "D2")
+
+        self.doc.recompute()
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        ss1.setExpression('.cells.BindHiddenRef.A3.C4', 'hiddenref(tuple(Spreadsheet2.cells, <<B1>>, <<D2>>))')
+        self.doc.recompute()
+
+        ss1.recompute() # True
+        self.assertEqual(ss1.A3, ss2.B1)
+
+        ss1.setExpression('.cells.Bind.A3.C4', None)
+        ss1.setExpression('.cells.BindHiddenRef.A3.C4', None)
+        self.doc.recompute()
+        self.assertEqual(len(ss1.ExpressionEngine), 0)
+
+    def testMergeCells(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss1.mergeCells('A1:B4')
+        ss1.mergeCells('C1:D4')
+        self.doc.recompute()
+        ss1.set("B1", "fail")
+        self.doc.recompute()
+        with self.assertRaises(AttributeError):
+            self.assertEqual(ss1.B1, "fail")
+
+    def testMergeCellsAndBind(self):
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet1")
+        ss1.mergeCells('A1:B1')
+        ss1.setExpression('.cells.Bind.A1.A1', 'tuple(.cells, <<A2>>, <<A2>>)')
+        ss1.set("A2", "test")
+        self.doc.recompute()
+        self.assertEqual(ss1.A1, ss1.A2)
+        ss1.set("B1", "fail")
+        self.doc.recompute()
+        with self.assertRaises(AttributeError):
+            self.assertEqual(ss1.B1, "fail")
+
+    def testGetUsedCells(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        test_cells = ['B13','C14','D15']
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,str(i))
+
+        used_cells = sheet.getUsedCells()
+        self.assertEqual(len(used_cells), len(test_cells))
+        for cell in test_cells:
+            self.assertTrue(cell in used_cells)
+
+        for cell in test_cells:
+            sheet.set(cell,"")
+            sheet.setAlignment(cell,"center")
+        non_empty_cells = sheet.getUsedCells()
+        self.assertEqual(len(non_empty_cells), len(test_cells)) # Alignment counts as "used"
+
+    def testGetUsedRange(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        test_cells = ['C5','Z3','D10','E20']
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,str(i))
+        used_range = sheet.getUsedRange()
+        self.assertEquals(used_range,("C3","Z20"))
+
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,"")
+            sheet.setAlignment(cell,"center")
+        used_range = sheet.getUsedRange()
+        self.assertEquals(used_range,("C3","Z20"))
+
+    def testGetNonEmptyCells(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        test_cells = ['B13','C14','D15']
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,str(i))
+
+        non_empty_cells = sheet.getNonEmptyCells()
+        self.assertEqual(len(non_empty_cells), len(test_cells))
+        for cell in test_cells:
+            self.assertTrue(cell in non_empty_cells)
+
+        for cell in test_cells:
+            sheet.set(cell,"")
+            sheet.setAlignment(cell,"center")
+        non_empty_cells = sheet.getNonEmptyCells()
+        self.assertEqual(len(non_empty_cells), 0) # Alignment does not count as "non-empty"
+
+    def testGetNonEmptyRange(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        test_cells = ['C5','Z3','D10','E20']
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,str(i))
+        non_empty_range = sheet.getNonEmptyRange()
+        self.assertEquals(non_empty_range,("C3","Z20"))
+
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,"")
+            sheet.setAlignment(cell,"center")
+        more_cells = ['D10','X5','E10','K15']
+        for i,cell in enumerate(more_cells):
+            sheet.set(cell,str(i))
+        non_empty_range = sheet.getNonEmptyRange()
+        self.assertEquals(non_empty_range,("D5","X15"))
+
+    def testAliasEmptyCell(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/7841
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('A1', 'aliasOfEmptyCell')
+        self.assertEqual(sheet.getCellFromAlias("aliasOfEmptyCell"),"A1")
+
+    def testParensAroundCondition(self):
+        """ Parens around a condition should be accepted """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        sheet.set('A1', '=(1 == 1) ? 1 : 0')
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents('A1'), '=1 == 1 ? 1 : 0')
+        self.assertEqual(sheet.A1, 1)
 
     def tearDown(self):
         #closing doc

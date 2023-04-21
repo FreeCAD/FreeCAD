@@ -222,6 +222,11 @@ If there is no such constraint an exception is raised.
         <UserDocu>split a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="join">
+      <Documentation>
+        <UserDocu>join two curves at the given end points</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addSymmetric">
       <Documentation>
         <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
@@ -240,6 +245,11 @@ If there is no such constraint an exception is raised.
     <Methode Name="addRectangularArray">
       <Documentation>
         <UserDocu>add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeAxesAlignment">
+      <Documentation>
+        <UserDocu>modifies constraints so that the shape is not forced to be aligned with axes.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="ExposeInternalGeometry">
@@ -280,6 +290,11 @@ If there is no such constraint an exception is raised.
     <Methode Name="modifyBSplineKnotMultiplicity">
         <Documentation>
             <UserDocu>Increases or reduces the given BSpline knot multiplicity</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="insertBSplineKnot">
+        <Documentation>
+            <UserDocu>Inserts a knot into the BSpline at the given param with given multiplicity. If the knot already exists, this increases the knot multiplicity by the given multiplicity.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="calculateAngleViaPoint">

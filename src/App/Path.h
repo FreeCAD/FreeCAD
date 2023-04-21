@@ -25,29 +25,29 @@
 #define APP_Path_H
 
 #include <Base/Persistence.h>
-
+#include <FCGlobal.h>
 
 
 namespace App
 {
-
 
 /** Base class of all geometric document objects.
  */
 class AppExport Path
 {
 protected:
-	std::vector<Base::Persistence *> _PathVector;
+    std::vector<Base::Persistence *> _PathVector;
 
 public:
     /// Constructor
-    Path(void);
-	Path(const std::vector<Base::Persistence *> & PathVector);
+    Path() = default;
+    explicit Path(const std::vector<Base::Persistence *> & PathVector);
 
-    virtual ~Path();
+    virtual ~Path() = default;
 
-	const std::vector<Base::Persistence *> & getVector(void)const{return _PathVector;}
-
+    const std::vector<Base::Persistence *> & getVector() const {
+        return _PathVector;
+    }
 };
 
 } //namespace App

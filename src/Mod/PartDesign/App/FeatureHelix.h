@@ -40,7 +40,7 @@ enum class HelixMode {
 
 class PartDesignExport Helix : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Helix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Helix);
 
 public:
     Helix();
@@ -52,7 +52,7 @@ public:
     App::PropertyFloatConstraint   Turns;
     App::PropertyBool        LeftHanded;
     App::PropertyAngle       Angle;
-    App::PropertyLength      Growth;
+    App::PropertyDistance    Growth;
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
@@ -64,23 +64,23 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderHelix";
     }
     //@}
 
     void proposeParameters(bool force = false);
-    double safePitch(void);
+    double safePitch();
 
 protected:
     /// updates Axis from ReferenceAxis
-    void updateAxis(void);
+    void updateAxis();
 
     /// generate helix and move it to the right location.
-    TopoDS_Shape generateHelixPath(void);
+    TopoDS_Shape generateHelixPath(double startOffset0 = 0.0);
 
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);
@@ -88,17 +88,25 @@ protected:
     // center of profile bounding box
     Base::Vector3d getProfileCenterPoint();
 
-    // handle changed property
-    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    // handle changed property types for backward compatibility
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+
+    void onChanged(const App::Property* prop) override;
+
+    static const App::PropertyFloatConstraint::Constraints floatTurns;
+    static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* ModeEnums[];
+
+    // Sets the read-only status bit for properties depending on the input mode.
+    void setReadWriteStatusForMode(HelixMode inputMode);
 };
 
 
 class PartDesignExport AdditiveHelix : public Helix {
 
-    PROPERTY_HEADER(PartDesign::AdditiveHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveHelix);
 public:
     AdditiveHelix();
 };
@@ -106,7 +114,7 @@ public:
 
 class PartDesignExport SubtractiveHelix : public Helix {
 
-    PROPERTY_HEADER(PartDesign::SubtractiveHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveHelix);
 public:
     SubtractiveHelix();
 };

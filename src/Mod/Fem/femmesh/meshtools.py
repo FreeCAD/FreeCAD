@@ -27,6 +27,8 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import numpy as np
+
 import FreeCAD
 
 from femtools import geomtools
@@ -485,7 +487,10 @@ def get_femelement_sets(
     # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
-    referenced_femelements = []
+    referenced_femelements = np.zeros(
+        (max(femelement_table.keys()) + 1,),
+        dtype=int
+    )
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object["Object"]
@@ -503,17 +508,21 @@ def get_femelement_sets(
                 obj.References,
                 femnodes_ele_table
             )
-            referenced_femelements += ref_shape_femelements
+            ref_shape_femelements_array = np.zeros_like(referenced_femelements)
+            ref_shape_femelements_array[ref_shape_femelements] = 1
+            referenced_femelements += ref_shape_femelements_array
             count_femelements += len(ref_shape_femelements)
             fem_object["FEMElements"] = ref_shape_femelements
         else:
             has_remaining_femelements = obj.Name
     # get remaining femelements for the fem_objects
     if has_remaining_femelements:
-        remaining_femelements = []
-        for elemid in femelement_table:
-            if elemid not in referenced_femelements:
-                remaining_femelements.append(elemid)
+        femelement_table_array = np.zeros_like(referenced_femelements)
+        femelement_table_array[list(femelement_table.keys())] = 1
+        remaining_femelements_array = femelement_table_array > referenced_femelements
+        remaining_femelements = [
+            i.item() for i in np.nditer(remaining_femelements_array.nonzero())
+        ]
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
             obj = fem_object["Object"]
@@ -537,14 +546,14 @@ def get_femelement_direction1D_set(
     theshape=None
 ):
     """
-    get for each geometry edge direction, the normal and the element ids and
+    get for each geometry edge direction, the local direction m and the element ids and
     # write all into the beamrotation_objects
     means no return value, we're going to write into the beamrotation_objects dictionary
     FEMRotations1D is a list of dictionaries for every beamdirection of all edges
     beamrot_obj["FEMRotations1D"] = [{
         "ids" : [theids],
         "direction" : direction,
-        "normal" : normal
+        "beam_axis_m" : beam_axis_m
     }, ... ]
     """
     if len(beamrotation_objects) == 0:
@@ -555,7 +564,7 @@ def get_femelement_direction1D_set(
         # add normals for each direction
         rotation_angle = 0
         for rot in rotations_ids:
-            rot["normal"] = get_beam_normal(rot["direction"], rotation_angle)
+            rot["beam_axis_m"] = get_beam_main_axis_m(rot["direction"], rotation_angle)
         # key "Object" will be empty
         beamrotation_objects.append({"FEMRotations1D": rotations_ids, "ShortName": "Rstd"})
     elif len(beamrotation_objects) == 1:
@@ -567,7 +576,7 @@ def get_femelement_direction1D_set(
         # add normals for each direction
         rotation_angle = beamrotation_objects[0]["Object"].Rotation
         for rot in rotations_ids:
-            rot["normal"] = get_beam_normal(rot["direction"], rotation_angle)
+            rot["beam_axis_m"] = get_beam_main_axis_m(rot["direction"], rotation_angle)
         beamrotation_objects[0]["FEMRotations1D"] = rotations_ids
         beamrotation_objects[0]["ShortName"] = "R0"
     elif len(beamrotation_objects) > 1:
@@ -611,7 +620,30 @@ def get_femelement_directions_theshape(femmesh, femelement_table, theshape):
 
 
 # ************************************************************************************************
-def get_beam_normal(beam_direction, defined_angle):
+def get_beam_main_axis_m(beam_direction, defined_angle):
+
+    # former name was get_beam_normal
+    # see forum topic https://forum.freecadweb.org/viewtopic.php?f=18&t=24878
+    # beam_direction ... FreeCAD vector
+    # defined_angle ... degree
+    # base for the rotation:
+    # a beam_direction = (1, 0, 0) and angle = 0, returns (-0, 1, 0)
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=24878&start=30#p195567
+    # https://forum.freecadweb.org/viewtopic.php?f=13&t=59239&start=140#p521999
+    # changing the angle, changes the normal accordingly, 360 would again return (0,1,0)
+
+    # CalxuliX uses negative z axis as base, if nothing is given in input file
+    # see the standard direction of 1-direction in CalxuliX manual
+
+    # here the local main axis is called beam_axis_m the minor axis will be beam_axis_n
+
+    # eventually a better name might be get_beam_rotation
+
+    # FIXME: since we fix the base ange we would get this information out of the mesh edge too
+    print("beam_axis_m is retrieved from the geometry but we could get if from mesh edge too")
+    # print("beam_direction: {}".format(beam_direction))
+    # print("defined_angle: {}".format(defined_angle))
+
     import math
     vector_a = beam_direction
     angle_rad = (math.pi / 180) * defined_angle
@@ -667,6 +699,7 @@ def get_beam_normal(beam_direction, defined_angle):
     # dummy usage of the axis dot to get flake8 quiet
     del dot_x, dot_y, dot_z, dot, dot_nt
 
+    # print("normal_n: {}".format(normal_n))
     return normal_n
 
 
@@ -734,6 +767,7 @@ def get_elset_short_name(
     obj,
     i
 ):
+    # ATM for CalculiX needed for all objects which will write element sets into solver input file
     from femtools.femutils import is_of_type
     if is_of_type(obj, "Fem::MaterialCommon"):
         return "M" + str(i)
@@ -745,6 +779,8 @@ def get_elset_short_name(
         return "F" + str(i)
     elif is_of_type(obj, "Fem::ElementGeometry2D"):
         return "S" + str(i)
+    elif is_of_type(obj, "Fem::ConstraintCentrif"):
+        return "C" + str(i)
     else:
         FreeCAD.Console.PrintError(
             "Error in creating short elset name "
@@ -904,7 +940,7 @@ def get_force_obj_edge_nodeload_table(
 
         # try debugging of the last bad refedge
         FreeCAD.Console.PrintMessage("DEBUGGING\n")
-        FreeCAD.Console.PrintMessage("\n".format(bad_refedge))
+        FreeCAD.Console.PrintMessage("{}\n".format(bad_refedge))
 
         FreeCAD.Console.PrintMessage("bad_refedge_nodes\n")
         bad_refedge_nodes = femmesh.getNodesByEdge(bad_refedge)
@@ -920,7 +956,7 @@ def get_force_obj_edge_nodeload_table(
         FreeCAD.Console.PrintMessage("{}\n".format(len(bad_edge_table)))
         bad_edge_table_nodes = []
         for elem in bad_edge_table:
-            FreeCAD.Console.PrintMessage(elem, " --> \n".format(bad_edge_table[elem]))
+            FreeCAD.Console.PrintMessage(elem, " --> {}\n".format(bad_edge_table[elem]))
             for node in bad_edge_table[elem]:
                 if node not in bad_edge_table_nodes:
                     bad_edge_table_nodes.append(node)
@@ -988,7 +1024,7 @@ def get_ref_edgenodes_table(
                     nodecount += 1
             if nodecount > 1:
                 refedge_fem_faceelements.append(elem)
-        # for every refedge_fem_faceelement look which of his nodes is in
+        # for every refedge_fem_faceelement look which of its nodes is in
         # refedge_nodes --> add all these nodes to edge_table
         for elem in refedge_fem_faceelements:
             fe_refedge_nodes = []
@@ -1968,7 +2004,7 @@ def get_reference_group_elements(
                 FreeCAD.Console.PrintError(
                     "Error, two refshapes in References with different ShapeTypes.\n"
                 )
-            FreeCAD.Console.PrintLog("\n".format(ref_shape))
+            FreeCAD.Console.PrintLog("{}\n".format(ref_shape))
             found_element = geomtools.find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
                 elements.append(found_element)
@@ -2133,8 +2169,8 @@ def sortlistoflistvalues(
     listoflists
 ):
     new_list = []
-    for l in listoflists:
-        new_list.append(sorted(l))
+    for li in listoflists:
+        new_list.append(sorted(li))
     return new_list
 
 
@@ -2184,10 +2220,78 @@ def is_zplane_2D_mesh(
         for n in femmesh.Nodes:
             z = femmesh.Nodes[n].z
             if ((0 - tol) < z < (0 + tol)) is not True:
-                    return False
+                return False
         return True
     else:
         return False
+
+
+# ************************************************************************************************
+def get_femmesh_eletype(
+    femmesh,
+    femelement_table=None
+):
+    if not femmesh:
+        FreeCAD.Console.PrintError("Error: No femmesh.\n")
+    if not femelement_table:
+        FreeCAD.Console.PrintWarning("The femelement_table needs to be calculated.\n")
+        femelement_table = get_femelement_table(femmesh)
+    # in some cases lowest key in femelement_table is not [1]
+    for elem in sorted(femelement_table):
+        elem_length = len(femelement_table[elem])
+        FreeCAD.Console.PrintLog("Node count of first element: {}\n".format(elem_length))
+        break  # break after the first elem
+    if is_solid_femmesh(femmesh):
+        if femmesh.TetraCount == femmesh.VolumeCount:
+            if elem_length == 4:
+                return "tetra4"
+            elif elem_length == 10:
+                return "tetra10"
+            else:
+                FreeCAD.Console.PrintMessage("Tetra with neither 4 nor 10 nodes.\n")
+                return "None"
+        elif femmesh.HexaCount == femmesh.VolumeCount:
+            if elem_length == 8:
+                return "hexa8"
+            elif elem_length == 20:
+                return "hexa20"
+            else:
+                FreeCAD.Console.PrintError("Hexa with neither 8 nor 20 nodes.\n")
+                return "None"
+        else:
+            FreeCAD.Console.PrintError("no tetra, no hexa or Mixed Volume Elements.\n")
+    elif is_face_femmesh(femmesh):
+        if femmesh.TriangleCount == femmesh.FaceCount:
+            if elem_length == 3:
+                return "tria3"
+            elif elem_length == 6:
+                return "tria6"
+            else:
+                FreeCAD.Console.PrintError("Tria with neither 3 nor 6 nodes.\n")
+                return "None"
+        elif femmesh.QuadrangleCount == femmesh.FaceCount:
+            if elem_length == 4:
+                return "quad4"
+            elif elem_length == 8:
+                return "quad8"
+            else:
+                FreeCAD.Console.PrintError("Quad with neither 4 nor 8 nodes.\n")
+                return "None"
+        else:
+            FreeCAD.Console.PrintError("no tria, no quad\n")
+            return "None"
+    elif is_edge_femmesh(femmesh):
+        if elem_length == 2:
+            return "seg2"
+        elif elem_length == 3:
+            return "seg3"
+        else:
+            FreeCAD.Console.PrintError("Seg with neither 2 nor 3 nodes.\n")
+            return "None"
+    else:
+        FreeCAD.Console.PrintError("Neither edge nor face nor solid femmesh.\n")
+        return "None"
+    return "None"
 
 
 # ************************************************************************************************

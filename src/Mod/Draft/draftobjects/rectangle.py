@@ -50,22 +50,22 @@ class Rectangle(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property", "Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face")
         obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal subdivisions of this rectangle")
         obj.addProperty("App::PropertyInteger", "Rows", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property", "Vertical subdivisions of this rectangle")
         obj.addProperty("App::PropertyInteger", "Columns", "Draft", _tip)
-        
+
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
-        
+
         obj.MakeFace = get_param("fillmode",True)
         obj.Length=1
         obj.Height=1
@@ -74,6 +74,11 @@ class Rectangle(DraftObject):
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
 
         if (obj.Length.Value == 0) or (obj.Height.Value == 0):
@@ -83,7 +88,7 @@ class Rectangle(DraftObject):
         plm = obj.Placement
 
         shape = None
-        
+
         if hasattr(obj,"Rows") and hasattr(obj,"Columns"):
             # TODO: verify if this is needed:
             if obj.Rows > 1:
@@ -157,15 +162,18 @@ class Rectangle(DraftObject):
                     shape = Part.Face(shape)
             else:
                 shape = Part.Face(shape)
-                
+
         obj.Shape = shape
 
         if hasattr(obj,"Area") and hasattr(shape,"Area"):
             obj.Area = shape.Area
 
         obj.Placement = plm
-
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

@@ -20,43 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/draggers/SoJackDragger.h>
-# include <Inventor/VRMLnodes/SoVRMLTransform.h>
+# include <sstream>
+# include <QAction>
+# include <QMenu>
+
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <QFile>
-# include <QAction>
-# include <QMenu>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
 
 #include "ViewProviderTrajectory.h"
 
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Trajectory.h>
-#include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <sstream>
+
 using namespace Gui;
 using namespace RobotGui;
 using namespace Robot;
@@ -96,7 +81,7 @@ ViewProviderTrajectory::~ViewProviderTrajectory()
 
 void ViewProviderTrajectory::attach(App::DocumentObject *pcObj)
 {
-    ViewProviderDocumentObject::attach(pcObj);
+    ViewProviderGeometryObject::attach(pcObj);
 
     // Draw trajectory lines
     SoSeparator* linesep = new SoSeparator;
@@ -130,10 +115,10 @@ void ViewProviderTrajectory::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderTrajectory::getDisplayModes(void) const
+std::vector<std::string> ViewProviderTrajectory::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Waypoints");
+    StrList.emplace_back("Waypoints");
     return StrList;
 }
 

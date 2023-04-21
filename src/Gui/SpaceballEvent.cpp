@@ -21,15 +21,20 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #include "SpaceballEvent.h"
-#include "Application.h"
+
 
 using namespace Spaceball;
 
 int MotionEvent::MotionEventType = -1;
 int ButtonEvent::ButtonEventType = -1;
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event)), handled(false)
+#else
+EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>(event), QPointingDevice::primaryPointingDevice()), handled(false)
+#endif
 {
 
 }

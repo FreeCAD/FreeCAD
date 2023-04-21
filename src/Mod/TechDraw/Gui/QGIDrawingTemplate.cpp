@@ -22,33 +22,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QContextMenuEvent>
-# include <QGraphicsScene>
-# include <QGraphicsSceneMouseEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QPainter>
 # include <QPainterPath>
 #endif
-
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawParametricTemplate.h>
 
 #include "QGIDrawingTemplate.h"
 
+
 using namespace TechDrawGui;
 
-QGIDrawingTemplate::QGIDrawingTemplate(QGraphicsScene *scene) : QGITemplate(scene),
-                                                                                    pathItem(0)
+QGIDrawingTemplate::QGIDrawingTemplate(QGSPage* scene) : QGITemplate(scene),
+                                                                                    pathItem(nullptr)
 {
     pathItem = new QGraphicsPathItem;
 
@@ -63,14 +49,8 @@ QGIDrawingTemplate::QGIDrawingTemplate(QGraphicsScene *scene) : QGITemplate(scen
 
 QGIDrawingTemplate::~QGIDrawingTemplate()
 {
-    pathItem = 0;
+    pathItem = nullptr;
 }
-
-QVariant QGIDrawingTemplate::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGraphicsItemGroup::itemChange(change, value);
-}
-
 
 void QGIDrawingTemplate::clearContents()
 {
@@ -82,7 +62,7 @@ TechDraw::DrawParametricTemplate * QGIDrawingTemplate::getParametricTemplate()
     if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId()))
         return static_cast<TechDraw::DrawParametricTemplate *>(pageTemplate);
     else
-        return 0;
+        return nullptr;
 }
 
 void QGIDrawingTemplate::draw()
@@ -97,19 +77,19 @@ void QGIDrawingTemplate::draw()
     // Clear the previous geometry stored
 
     // Get a list of geometry and iterate
-    const std::vector<TechDraw::BaseGeom *> &geoms =  tmplte->getGeometry();
+    const TechDraw::BaseGeomPtrVector &geoms =  tmplte->getGeometry();
 
-    std::vector<TechDraw::BaseGeom *>::const_iterator it = geoms.begin();
+    TechDraw::BaseGeomPtrVector::const_iterator it = geoms.begin();
 
     QPainterPath path;
 
     // Draw Edges
     // iterate through all the geometries
     for(; it != geoms.end(); ++it) {
-        switch((*it)->geomType) {
+        switch((*it)->getGeomType()) {
           case TechDraw::GENERIC: {
 
-            TechDraw::Generic *geom = static_cast<TechDraw::Generic *>(*it);
+            TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(*it);
 
             path.moveTo(geom->points[0].x, geom->points[0].y);
             std::vector<Base::Vector3d>::const_iterator it = geom->points.begin();

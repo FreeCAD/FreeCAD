@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer writer"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -33,6 +34,7 @@ import os
 import os.path
 import subprocess
 import tempfile
+from platform import system
 
 from FreeCAD import Console
 from FreeCAD import Units
@@ -40,18 +42,29 @@ from FreeCAD import ParamGet
 
 import Fem
 from . import sifio
+from . import solver as solverClass
 from .. import settings
 from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
+from .equations import deformation_writer as DEF_writer
+from .equations import elasticity_writer as EL_writer
+from .equations import electricforce_writer as EF_writer
+from .equations import electrostatic_writer as ES_writer
+from .equations import flow_writer
+from .equations import flux_writer
+from .equations import heat_writer
+from .equations import magnetodynamic_writer as MgDyn_writer
+from .equations import magnetodynamic2D_writer as MgDyn2D_writer
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
-_SOLID_PREFIX = "Solid"
+_COORDS_NON_MAGNETO_2D = ["Polar 2D", "Polar 3D", "Cartesian 3D",
+                          "Cylindric", "Cylindric Symmetric"]
 
 
 def _getAllSubObjects(obj):
@@ -79,15 +92,18 @@ class Writer(object):
     def getHandledConstraints(self):
         return self._handledObjects
 
-    def write(self):
+    def write_solver_input(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
-        self._handleHeat()
+        self._handleDeformation()
         self._handleElasticity()
-        self._handleElectrostatic()
-        self._handleFlux()
         self._handleElectricforce()
+        self._handleElectrostatic()
+        self._handleHeat()
         self._handleFlow()
+        self._handleFlux()
+        self._handleMagnetodynamic()
+        self._handleMagnetodynamic2D()
         self._addOutputSolver()
 
         self._writeSif()
@@ -95,7 +111,14 @@ class Writer(object):
         self._writeStartinfo()
 
     def _handleUnits(self):
-        # TODO constants and units
+        # Elmer solver writer no longer uses FreeCAD unit system
+        # to retrieve units for writing the sif file
+        #
+        # ATM Elmer writer uses SI units only
+        #
+        # see forum topic: https://forum.freecadweb.org/viewtopic.php?f=18&t=70150
+        #
+        # TODO: adapt method and comment
         # should be only one system for all solver and not in each solver
         # https://forum.freecadweb.org/viewtopic.php?t=47895
         # https://forum.freecadweb.org/viewtopic.php?t=48451
@@ -110,7 +133,7 @@ class Writer(object):
         # instead of hard coding them here for a second once
         self.unit_schema = Units.Scheme.SI1
         self.unit_system = {  # standard FreeCAD Base units = unit schema 0
-            "L": "mm",
+            "L": "m",
             "M": "kg",
             "T": "s",
             "I": "A",
@@ -123,7 +146,7 @@ class Writer(object):
         if self.unit_schema == Units.Scheme.SI1:
             Console.PrintMessage(
                 "The FreeCAD standard unit schema mm/kg/s is used. "
-                "Elmer sif-file writing is done in Standard FreeCAD units.\n"
+                "Elmer sif-file writing is however done in SI units.\n"
             )
         elif self.unit_schema == Units.Scheme.SI2:
             Console.PrintMessage(
@@ -143,11 +166,11 @@ class Writer(object):
             # see also unit comment in calculix writer
             Console.PrintMessage(
                 "The FEM unit schema mm/N/s is used. "
-                "Elmer sif-file writing is done in FEM-units.\n"
+                "Elmer sif-file writing is however done in SI units.\n"
             )
             self.unit_system = {
-                "L": "mm",
-                "M": "t",
+                "L": "m",
+                "M": "kg",
                 "T": "s",
                 "I": "A",
                 "O": "K",
@@ -165,11 +188,11 @@ class Writer(object):
                 .format(Units.listSchemas(self.unit_schema))
             )
 
-    def _getFromUi(self, value, unit, outputDim):
+    def getFromUi(self, value, unit, outputDim):
         quantity = Units.Quantity(str(value) + str(unit))
-        return self._convert(quantity, outputDim)
+        return self.convert(quantity, outputDim)
 
-    def _convert(self, quantityStr, unit):
+    def convert(self, quantityStr, unit):
         quantity = Units.Quantity(quantityStr)
         for key, setting in self.unit_system.items():
             unit = unit.replace(key, setting)
@@ -179,23 +202,13 @@ class Writer(object):
         self.constsdef = {
             "Gravity": constants.gravity(),
             "StefanBoltzmann": constants.stefan_boltzmann(),
+            "PermeabilityOfVacuum": constants.vacuum_permeability(),
             "PermittivityOfVacuum": constants.vacuum_permittivity(),
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
 
-    def _getConstant(self, name, unit_dimension):
-        # TODO without method directly use self.constsdef[name]
-        return self._convert(self.constsdef[name], unit_dimension)
-
-    def _setConstant(self, name, quantityStr):
-        # TODO without method directly use self.constsdef[name]
-        if name == "PermittivityOfVacuum":
-            theUnit = "s^4*A^2 / (m^3*kg)"
-            self.constsdef[name] = "{} {}".format(self._convert(quantityStr, theUnit), theUnit)
-        return True
-
     def _writeMesh(self):
-        mesh = self._getSingleMember("Fem::FemMeshObject")
+        mesh = self.getSingleMember("Fem::FemMeshObject")
         unvPath = os.path.join(self.directory, "mesh.unv")
         groups = []
         groups.extend(self._builder.getBodyNames())
@@ -208,14 +221,37 @@ class Writer(object):
             )
         else:
             binary = settings.get_binary("ElmerGrid")
+            num_cores = settings.get_cores("ElmerGrid")
             if binary is None:
                 raise WriteError("Could not find ElmerGrid binary.")
-            args = [binary,
-                    _ELMERGRID_IFORMAT,
-                    _ELMERGRID_OFORMAT,
-                    unvPath,
-                    "-out", self.directory]
-            subprocess.call(args, stdout=subprocess.DEVNULL)
+            # for multithreading we first need a normal mesh creation run
+            # then a second to split the mesh into the number of used cores
+            argsBasic = [binary,
+                         _ELMERGRID_IFORMAT,
+                         _ELMERGRID_OFORMAT,
+                         unvPath]
+            args = argsBasic
+            args.extend(["-out", self.directory])
+            if system() == "Windows":
+                subprocess.call(
+                    args,
+                    stdout=subprocess.DEVNULL,
+                    startupinfo=femutils.startProgramInfo("hide")
+                )
+            else:
+                subprocess.call(args, stdout=subprocess.DEVNULL)
+            if num_cores > 1:
+                args = argsBasic
+                args.extend(["-partdual", "-metiskway", str(num_cores),
+                             "-out", self.directory])
+                if system() == "Windows":
+                    subprocess.call(
+                        args,
+                        stdout=subprocess.DEVNULL,
+                        startupinfo=femutils.startProgramInfo("hide")
+                    )
+                else:
+                    subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
@@ -266,558 +302,385 @@ class Writer(object):
         """
         redefine constants in self.constsdef according constant redefine objects
         """
-        permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
-        if len(permittivity_objs) == 1:
-            Console.PrintLog("Constand permittivity overwriting.\n")
-            self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
-        elif len(permittivity_objs) > 1:
+        objs = self.getMember("Fem::ConstantVacuumPermittivity")
+        if len(objs) == 1:
+            permittivity = float(objs[0].VacuumPermittivity.getValueAs("F/m"))
+            # since the base unit of FC is in mm, we must scale it to get plain SI
+            permittivity = permittivity * 1e-9
+            Console.PrintLog("Overwriting vacuum permittivity with: {}\n".format(permittivity))
+            self.constsdef["PermittivityOfVacuum"] = "{} {}".format(permittivity, "F/m")
+            self.handled(objs[0])
+        elif len(objs) > 1:
             Console.PrintError(
                 "More than one permittivity constant overwriting objects ({} objs). "
                 "The permittivity constant overwriting is ignored.\n"
-                .format(len(permittivity_objs))
+                .format(len(objs))
             )
 
     def _handleSimulation(self):
-        self._simulation("Coordinate System", "Cartesian 3D")
-        self._simulation("Coordinate Mapping", (1, 2, 3))
-        if self.unit_schema == Units.Scheme.SI2:
-            self._simulation("Coordinate Scaling", 0.001)
-            Console.PrintMessage(
-                "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
-            )
-        self._simulation("Simulation Type", "Steady state")
-        self._simulation("Steady State Max Iterations", 1)
-        self._simulation("Output Intervals", 1)
-        self._simulation("Timestepping Method", "BDF")
-        self._simulation("BDF Order", 1)
-        self._simulation("Use Mesh Names", True)
-        self._simulation(
-            "Steady State Max Iterations",
-            self.solver.SteadyStateMaxIterations)
-        self._simulation(
-            "Steady State Min Iterations",
-            self.solver.SteadyStateMinIterations)
+        # check if we need to update the equation
+        self._updateSimulation(self.solver)
+        # output the equation parameters
+        # first check what equations we have
 
-    def _handleHeat(self):
+        # hasHeat ist not used, thus commented ATM
+        # hasHeat = False
+        # for equation in self.solver.Group:
+        #    if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+        #        hasHeat = True
+
+        self._simulation("Coordinate System", self.solver.CoordinateSystem)
+        self._simulation("Coordinate Mapping", (1, 2, 3))
+        # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
+        # the solver that we have another scale
+        self._simulation("Coordinate Scaling", 0.001)
+        self._simulation("Simulation Type", self.solver.SimulationType)
+        if self.solver.SimulationType == "Steady State":
+            self._simulation(
+                "Steady State Max Iterations",
+                self.solver.SteadyStateMaxIterations
+            )
+            self._simulation(
+                "Steady State Min Iterations",
+                self.solver.SteadyStateMinIterations
+            )
+        if (
+            self.solver.SimulationType == "Scanning"
+            or self.solver.SimulationType == "Transient"
+        ):
+            self._simulation("BDF Order", self.solver.BDFOrder)
+            self._simulation("Output Intervals", self.solver.OutputIntervals)
+            self._simulation("Timestep Intervals", self.solver.TimestepIntervals)
+            self._simulation("Timestep Sizes", self.solver.TimestepSizes)
+            self._simulation("Timestepping Method", "BDF")
+        self._simulation("Use Mesh Names", True)
+
+    def _updateSimulation(self, solver):
+        # updates older simulations
+        if not hasattr(self.solver, "CoordinateSystem"):
+            solver.addProperty(
+                "App::PropertyEnumeration",
+                "CoordinateSystem",
+                "Coordinate System",
+                ""
+            )
+            solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
+            solver.CoordinateSystem = "Cartesian"
+        if not hasattr(self.solver, "BDFOrder"):
+            solver.addProperty(
+                "App::PropertyIntegerConstraint",
+                "BDFOrder",
+                "Timestepping",
+                "Order of time stepping method 'BDF'"
+            )
+            solver.BDFOrder = (2, 1, 5, 1)
+        if not hasattr(self.solver, "ElmerTimeResults"):
+            solver.addProperty(
+                "App::PropertyLinkList",
+                "ElmerTimeResults",
+                "Base",
+                "",
+                4 | 8
+            )
+        if not hasattr(self.solver, "OutputIntervals"):
+            solver.addProperty(
+                "App::PropertyIntegerList",
+                "OutputIntervals",
+                "Timestepping",
+                "After how many time steps a result file is output"
+            )
+            solver.OutputIntervals = [1]
+        if not hasattr(self.solver, "SimulationType"):
+            solver.addProperty(
+                "App::PropertyEnumeration",
+                "SimulationType",
+                "Type",
+                ""
+            )
+            solver.SimulationType = solverClass.SIMULATION_TYPE
+            solver.SimulationType = "Steady State"
+        if not hasattr(self.solver, "TimestepIntervals"):
+            solver.addProperty(
+                "App::PropertyIntegerList",
+                "TimestepIntervals",
+                "Timestepping",
+                (
+                    "List of maximum optimization rounds if 'Simulation Type'\n"
+                    "is either 'Scanning' or 'Transient'"
+                )
+            )
+            solver.TimestepIntervals = [100]
+        if not hasattr(self.solver, "TimestepSizes"):
+            solver.addProperty(
+                "App::PropertyFloatList",
+                "TimestepSizes",
+                "Timestepping",
+                (
+                    "List of time steps of optimization if 'Simulation Type'\n"
+                    "is either 'Scanning' or 'Transient'"
+                )
+            )
+            solver.TimestepSizes = [0.1]
+
+    # -------------------------------------------------------------------------------------------
+    # Deformation
+
+    def _handleDeformation(self):
+        DEFW = DEF_writer.DeformationWriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerDeformation"):
+                if not self._haveMaterialSolid():
+                    raise WriteError(
+                        "The Deformation equation requires at least one body with a solid material!"
+                    )
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getHeatSolver(equation)
+                    activeIn = self.getAllBodies()
+                solverSection = DEFW.getDeformationSolver(equation)
                 for body in activeIn:
-                    self._addSolver(body, solverSection)
+                    if not self.isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        DEFW.handleDeformationEquation(activeIn, equation)
         if activeIn:
-            self._handleHeatConstants()
-            self._handleHeatBndConditions()
-            self._handleHeatInitial(activeIn)
-            self._handleHeatBodyForces(activeIn)
-            self._handleHeatMaterial(activeIn)
+            DEFW.handleDeformationConstants()
+            DEFW.handleDeformationBndConditions()
+            DEFW.handleDeformationInitial(activeIn)
+            DEFW.handleDeformationBodyForces(activeIn)
+            DEFW.handleDeformationMaterial(activeIn)
 
-    def _getHeatSolver(self, equation):
-        s = self._createNonlinearSolver(equation)
-        s["Equation"] = equation.Name
-        s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
-        s["Variable"] = self._getUniqueVarName("Temperature")
-        s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
-        s["Optimize Bandwidth"] = True
-        return s
+    # -------------------------------------------------------------------------------------------
+    # Elasticity
 
-    def _handleHeatConstants(self):
-        self._constant(
-            "Stefan Boltzmann",
-            self._getConstant("StefanBoltzmann", "M/(O^4*T^3)"))
+    def _handleElasticity(self):
+        ELW = EL_writer.ElasticityWriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
+                if not self._haveMaterialSolid():
+                    raise WriteError(
+                        "The Elasticity equation requires at least one body with a solid material!"
+                    )
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                solverSection = ELW.getElasticitySolver(equation)
+                for body in activeIn:
+                    if not self.isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        ELW.handleElasticityEquation(activeIn, equation)
+        if activeIn:
+            ELW.handleElasticityConstants()
+            ELW.handleElasticityBndConditions()
+            ELW.handleElasticityInitial(activeIn)
+            ELW.handleElasticityBodyForces(activeIn)
+            ELW.handleElasticityMaterial(activeIn)
 
-    def _handleHeatBndConditions(self):
-        for obj in self._getMember("Fem::ConstraintTemperature"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.ConstraintType == "Temperature":
-                        temp = self._getFromUi(obj.Temperature, "K", "O")
-                        self._boundary(name, "Temperature", temp)
-                    elif obj.ConstraintType == "CFlux":
-                        flux = self._getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
-                        self._boundary(name, "Temperature Load", flux)
-                self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintHeatflux"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.ConstraintType == "Convection":
-                        film = self._getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
-                        temp = self._getFromUi(obj.AmbientTemp, "K", "O")
-                        self._boundary(name, "Heat Transfer Coefficient", film)
-                        self._boundary(name, "External Temperature", temp)
-                    elif obj.ConstraintType == "DFlux":
-                        flux = self._getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
-                        self._boundary(name, "Heat Flux BC", True)
-                        self._boundary(name, "Heat Flux", flux)
-                self._handled(obj)
-
-    def _handleHeatInitial(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintInitialTemperature")
-        if obj is not None:
-            for name in bodies:
-                temp = self._getFromUi(obj.initialTemperature, "K", "O")
-                self._initial(name, "Temperature", temp)
-            self._handled(obj)
-
-    def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
-        if obj is not None:
-            for name in bodies:
-                heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
-                # according Elmer forum W/kg is correct
-                # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
-                # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
-                self._bodyForce(name, "Heat Source", heatSource)
-            self._handled(obj)
-
-    def _handleHeatMaterial(self, bodies):
-        tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
-        if tempObj is not None:
-            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
-            for name in bodies:
-                self._material(name, "Reference Temperature", refTemp)
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self._getAllBodies())
-            for name in (n for n in refs if n in bodies):
-                self._material(
-                    name, "Density",
-                    self._getDensity(m))
-                self._material(
-                    name, "Heat Conductivity",
-                    self._convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
-                self._material(
-                    name, "Heat Capacity",
-                    self._convert(m["SpecificHeat"], "L^2/(T^2*O)"))
+    # -------------------------------------------------------------------------------------------
+    # Electrostatic
 
     def _handleElectrostatic(self):
+        ESW = ES_writer.ESwriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElectrostatic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getElectrostaticSolver(equation)
+                    activeIn = self.getAllBodies()
+                solverSection = ESW.getElectrostaticSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
         if activeIn:
-            self._handleElectrostaticConstants()
-            self._handleElectrostaticBndConditions()
-            # self._handleElectrostaticInitial(activeIn)
-            # self._handleElectrostaticBodyForces(activeIn)
-            self._handleElectrostaticMaterial(activeIn)
+            ESW.handleElectrostaticConstants()
+            ESW.handleElectrostaticBndConditions()
+            ESW.handleElectrostaticMaterial(activeIn)
 
-    def _getElectrostaticSolver(self, equation):
-        s = self._createLinearSolver(equation)
-        s["Equation"] = "Stat Elec Solver"  # equation.Name
-        s["Procedure"] = sifio.FileAttr("StatElecSolve/StatElecSolver")
-        s["Variable"] = self._getUniqueVarName("Potential")
-        s["Variable DOFs"] = 1
-        s["Calculate Electric Field"] = equation.CalculateElectricField
-        # s["Calculate Electric Flux"] = equation.CalculateElectricFlux
-        s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
-        s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
-        s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
-        s["Displace mesh"] = False
-        s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
-        s["Optimize Bandwidth"] = True
-        return s
-
-    def _handleElectrostaticConstants(self):
-        self._constant(
-            "Permittivity Of Vacuum",
-            self._getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
-        )
-        # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-
-    def _handleElectrostaticMaterial(self, bodies):
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self._getAllBodies())
-            for name in (n for n in refs if n in bodies):
-                if "RelativePermittivity" in m:
-                    self._material(
-                        name, "Relative Permittivity",
-                        float(m["RelativePermittivity"])
-                    )
-
-    def _handleElectrostaticBndConditions(self):
-        for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
-                    if obj.PotentialEnabled:
-                        if hasattr(obj, "Potential"):
-                            potential = self._getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
-                            self._boundary(name, "Potential", potential)
-                    if obj.PotentialConstant:
-                        self._boundary(name, "Potential Constant", True)
-                    if obj.ElectricInfinity:
-                        self._boundary(name, "Electric Infinity BC", True)
-                    if obj.ElectricForcecalculation:
-                        self._boundary(name, "Calculate Electric Force", True)
-                    if obj.CapacitanceBodyEnabled:
-                        if hasattr(obj, "CapacitanceBody"):
-                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
-                self._handled(obj)
-
-    def _handleFlux(self):
-        activeIn = []
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
-                if equation.References:
-                    activeIn = equation.References[0][1]
-                else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getFlux(equation)
-                for body in activeIn:
-                    self._addSolver(body, solverSection)
-
-    def _getFlux(self, equation):
-        s = self._createLinearSolver(equation)
-        s["Equation"] = "Flux Solver"  # equation.Name
-        s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
-        s["Flux Variable"] = equation.FluxVariable
-        s["Calculate Flux"] = equation.CalculateFlux
-        s["Calculate Grad"] = equation.CalculateGrad
-        return s
+    # -------------------------------------------------------------------------------------------
+    # Electricforce
 
     def _handleElectricforce(self):
+        EFW = EF_writer.EFwriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElectricforce"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getElectricforceSolver(equation)
+                    activeIn = self.getAllBodies()
+                solverSection = EFW.getElectricforceSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
 
-    def _getElectricforceSolver(self, equation):
-        s = self._createEmptySolver(equation)
-        s["Equation"] = "Electric Force"  # equation.Name
-        s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
-        return s
-
-    def _handleElasticity(self):
-        activeIn = []
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
-                if equation.References:
-                    activeIn = equation.References[0][1]
-                else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getElasticitySolver(equation)
-                for body in activeIn:
-                    self._addSolver(body, solverSection)
-        if activeIn:
-            self._handleElasticityConstants()
-            self._handleElasticityBndConditions()
-            self._handleElasticityInitial(activeIn)
-            self._handleElasticityBodyForces(activeIn)
-            self._handleElasticityMaterial(activeIn)
-
-    def _getElasticitySolver(self, equation):
-        s = self._createLinearSolver(equation)
-        s["Equation"] = equation.Name
-        s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
-        s["Variable"] = self._getUniqueVarName("Displacement")
-        s["Variable DOFs"] = 3
-        s["Eigen Analysis"] = equation.DoFrequencyAnalysis
-        s["Eigen System Values"] = equation.EigenmodesCount
-        s["Calculate Strains"] = equation.CalculateStrains
-        s["Calculate Stresses"] = equation.CalculateStresses
-        s["Calculate Principal"] = equation.CalculatePrincipal
-        s["Calculate Pangle"] = equation.CalculatePangle
-        s["Displace mesh"] = False
-        s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
-        s["Optimize Bandwidth"] = True
-        return s
-
-    def _handleElasticityConstants(self):
-        pass
-
-    def _handleElasticityBndConditions(self):
-        for obj in self._getMember("Fem::ConstraintPressure"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    pressure = self._getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
-                    if not obj.Reversed:
-                        pressure *= -1
-                    self._boundary(name, "Normal Force", pressure)
-                self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintFixed"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    self._boundary(name, "Displacement 1", 0.0)
-                    self._boundary(name, "Displacement 2", 0.0)
-                    self._boundary(name, "Displacement 3", 0.0)
-                self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintForce"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    force = self._getFromUi(obj.Force, "N", "M*L*T^-2")
-                    self._boundary(name, "Force 1", obj.DirectionVector.x * force)
-                    self._boundary(name, "Force 2", obj.DirectionVector.y * force)
-                    self._boundary(name, "Force 3", obj.DirectionVector.z * force)
-                    self._boundary(name, "Force 1 Normalize by Area", True)
-                    self._boundary(name, "Force 2 Normalize by Area", True)
-                    self._boundary(name, "Force 3 Normalize by Area", True)
-                self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintDisplacement"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if not obj.xFree:
-                        self._boundary(
-                            name, "Displacement 1", obj.xDisplacement * 0.001)
-                    elif obj.xFix:
-                        self._boundary(name, "Displacement 1", 0.0)
-                    if not obj.yFree:
-                        self._boundary(
-                            name, "Displacement 2", obj.yDisplacement * 0.001)
-                    elif obj.yFix:
-                        self._boundary(name, "Displacement 2", 0.0)
-                    if not obj.zFree:
-                        self._boundary(
-                            name, "Displacement 3", obj.zDisplacement * 0.001)
-                    elif obj.zFix:
-                        self._boundary(name, "Displacement 3", 0.0)
-                self._handled(obj)
-
-    def _handleElasticityInitial(self, bodies):
-        pass
-
-    def _handleElasticityBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintSelfWeight")
-        if obj is not None:
-            for name in bodies:
-                gravity = self._getConstant("Gravity", "L/T^2")
-                m = self._getBodyMaterial(name).Material
-
-                densityQuantity = Units.Quantity(m["Density"])
-                dimension = "M/L^3"
-                if name.startswith("Edge"):
-                    # not tested, bernd
-                    # TODO: test
-                    densityQuantity.Unit = Units.Unit(-2, 1)
-                    dimension = "M/L^2"
-                density = self._convert(densityQuantity, dimension)
-
-                force1 = gravity * obj.Gravity_x * density
-                force2 = gravity * obj.Gravity_y * density
-                force3 = gravity * obj.Gravity_z * density
-                self._bodyForce(name, "Stress Bodyforce 1", force1)
-                self._bodyForce(name, "Stress Bodyforce 2", force2)
-                self._bodyForce(name, "Stress Bodyforce 3", force3)
-            self._handled(obj)
-
-    def _getBodyMaterial(self, name):
-        for obj in self._getMember("App::MaterialObject"):
-            if not obj.References or name in obj.References[0][1]:
-                return obj
-        return None
-
-    def _handleElasticityMaterial(self, bodies):
-        # density
-        # is needed for self weight constraints and frequency analysis
-        density_needed = False
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
-                if equation.DoFrequencyAnalysis is True:
-                    density_needed = True
-                    break  # there could be a second equation without frequency
-        gravObj = self._getSingleMember("Fem::ConstraintSelfWeight")
-        if gravObj is not None:
-            density_needed = True
-        # temperature
-        tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
-        if tempObj is not None:
-            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
-            for name in bodies:
-                self._material(name, "Reference Temperature", refTemp)
-        # get the material data for all boddies
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self._getAllBodies()
-            )
-            for name in (n for n in refs if n in bodies):
-                if density_needed is True:
-                    self._material(
-                        name, "Density",
-                        self._getDensity(m)
-                    )
-                self._material(
-                    name, "Youngs Modulus",
-                    self._getYoungsModulus(m)
-                )
-                self._material(
-                    name, "Poisson ratio",
-                    float(m["PoissonRatio"])
-                )
-                if tempObj:
-                    self._material(
-                        name, "Heat expansion Coefficient",
-                        self._convert(m["ThermalExpansionCoefficient"], "O^-1")
-                    )
-
-    def _getDensity(self, m):
-        density = self._convert(m["Density"], "M/L^3")
-        if self._getMeshDimension() == 2:
-            density *= 1e3
-        return density
-
-    def _getYoungsModulus(self, m):
-        youngsModulus = self._convert(m["YoungsModulus"], "M/(L*T^2)")
-        if self._getMeshDimension() == 2:
-            youngsModulus *= 1e3
-        return youngsModulus
+    # -------------------------------------------------------------------------------------------
+    # Flow
 
     def _handleFlow(self):
+        FlowW = flow_writer.Flowwriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
+                if not self._haveMaterialFluid():
+                    raise WriteError(
+                        "The Flow equation requires at least one body with a fluid material!"
+                    )
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getFlowSolver(equation)
+                    activeIn = self.getAllBodies()
+                solverSection = FlowW.getFlowSolver(equation)
+                for body in activeIn:
+                    if self.isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        FlowW.handleFlowEquation(activeIn, equation)
+        if activeIn:
+            FlowW.handleFlowConstants()
+            FlowW.handleFlowBndConditions()
+            FlowW.handleFlowInitialPressure(activeIn)
+            FlowW.handleFlowInitialVelocity(activeIn)
+            FlowW.handleFlowMaterial(activeIn)
+
+    # -------------------------------------------------------------------------------------------
+    # Flux
+
+    def _handleFlux(self):
+        FluxW = flux_writer.Fluxwriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                solverSection = FluxW.getFluxSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
+
+    # -------------------------------------------------------------------------------------------
+    # Heat
+
+    def _handleHeat(self):
+        HeatW = heat_writer.Heatwriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                solverSection = HeatW.getHeatSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+                HeatW.handleHeatEquation(activeIn, equation)
         if activeIn:
-            self._handleFlowConstants()
-            self._handleFlowBndConditions()
-            self._handleFlowInitialVelocity(activeIn)
-            # self._handleFlowInitial(activeIn)
-            # self._handleFlowBodyForces(activeIn)
-            self._handleFlowMaterial(activeIn)
-            self._handleFlowEquation(activeIn)
+            HeatW.handleHeatConstants()
+            HeatW.handleHeatBndConditions()
+            HeatW.handleHeatInitial(activeIn)
+            HeatW.handleHeatBodyForces(activeIn)
+            HeatW.handleHeatMaterial(activeIn)
 
-    def _getFlowSolver(self, equation):
-        s = self._createNonlinearSolver(equation)
-        s["Equation"] = "Navier-Stokes"
-        # s["Equation"] = equation.Name
-        s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
-        s["Exec Solver"] = "Always"
-        s["Stabilize"] = equation.Stabilize
-        s["Bubbles"] = equation.Bubbles
-        s["Optimize Bandwidth"] = True
-        return s
+    # -------------------------------------------------------------------------------------------
+    # Magnetodynamic
 
-    def _handleFlowConstants(self):
-        gravity = self._getConstant("Gravity", "L/T^2")
-        self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
+    def _handleMagnetodynamic(self):
+        MgDyn = MgDyn_writer.MgDynwriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerMagnetodynamic"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
 
-    def _handleFlowMaterial(self, bodies):
-        tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
-        if tempObj is not None:
-            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
-            for name in bodies:
-                self._material(name, "Reference Temperature", refTemp)
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self._getAllBodies())
-            for name in (n for n in refs if n in bodies):
-                if "Density" in m:
-                    self._material(
-                        name, "Density",
-                        self._getDensity(m)
+                solverSection = MgDyn.getMagnetodynamicSolver(equation)
+                solverPostSection = MgDyn.getMagnetodynamicSolverPost(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+                    self._addSolver(body, solverPostSection)
+        if activeIn:
+            MgDyn.handleMagnetodynamicConstants()
+            MgDyn.handleMagnetodynamicBndConditions(equation)
+            MgDyn.handleMagnetodynamicBodyForces(activeIn, equation)
+            MgDyn.handleMagnetodynamicMaterial(activeIn)
+
+    # -------------------------------------------------------------------------------------------
+    # Magnetodynamic2D
+
+    def _handleMagnetodynamic2D(self):
+        MgDyn2D = MgDyn2D_writer.MgDyn2Dwriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerMagnetodynamic2D"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                # Magnetodynamic2D cannot handle all coordinate sysytems
+                if self.solver.CoordinateSystem in _COORDS_NON_MAGNETO_2D:
+                    raise WriteError(
+                        "The coordinate setting '{}'\n is not "
+                        "supported by the equation 'Magnetodynamic2D'.\n\n"
+                        "Possible is:\n'Cartesian 2D' or 'Axi Symmetric'"
+                        .format(self.solver.CoordinateSystem)
                     )
-                if "ThermalConductivity" in m:
-                    self._material(
-                        name, "Heat Conductivity",
-                        self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
-                    )
-                if "KinematicViscosity" in m:
-                    density = self._getDensity(m)
-                    kViscosity = self._convert(m["KinematicViscosity"], "L^2/T")
-                    self._material(
-                        name, "Viscosity", kViscosity * density)
-                if "ThermalExpansionCoefficient" in m:
-                    value = self._convert(m["ThermalExpansionCoefficient"], "O^-1")
-                    if value > 0:
-                        self._material(
-                            name, "Heat expansion Coefficient", value)
-                if "ReferencePressure" in m:
-                    pressure = self._convert(m["ReferencePressure"], "M/(L*T^2)")
-                    self._material(name, "Reference Pressure", pressure)
-                if "SpecificHeatRatio" in m:
-                    self._material(
-                        name, "Specific Heat Ratio",
-                        float(m["SpecificHeatRatio"])
-                    )
-                if "CompressibilityModel" in m:
-                    self._material(
-                        name, "Compressibility Model",
-                        m["CompressibilityModel"])
 
-    def _handleFlowInitialVelocity(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintInitialFlowVelocity")
-        if obj is not None:
-            for name in bodies:
-                if obj.VelocityXEnabled:
-                    velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
-                    self._initial(name, "Velocity 1", velocity)
-                if obj.VelocityYEnabled:
-                    velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
-                    self._initial(name, "Velocity 2", velocity)
-                if obj.VelocityZEnabled:
-                    velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
-                    self._initial(name, "Velocity 3", velocity)
-            self._handled(obj)
+                solverSection = MgDyn2D.getMagnetodynamic2DSolver(equation)
+                solverPostSection = MgDyn2D.getMagnetodynamic2DSolverPost(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+                    self._addSolver(body, solverPostSection)
+                    MgDyn2D.handleMagnetodynamic2DEquation(activeIn, equation)
+        if activeIn:
+            MgDyn2D.handleMagnetodynamic2DConstants()
+            MgDyn2D.handleMagnetodynamic2DBndConditions()
+            MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn, equation)
+            MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
 
-    def _handleFlowBndConditions(self):
-        for obj in self._getMember("Fem::ConstraintFlowVelocity"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.VelocityXEnabled:
-                        velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
-                        self._boundary(name, "Velocity 1", velocity)
-                    if obj.VelocityYEnabled:
-                        velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
-                        self._boundary(name, "Velocity 2", velocity)
-                    if obj.VelocityZEnabled:
-                        velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
-                        self._boundary(name, "Velocity 3", velocity)
-                    if obj.NormalToBoundary:
-                        self._boundary(name, "Normal-Tangential Velocity", True)
-                self._handled(obj)
+    # -------------------------------------------------------------------------------------------
+    # Solver handling
 
-    def _handleFlowEquation(self, bodies):
-        for b in bodies:
-            self._equation(b, "Convection", "Computed")
-
-    def _createEmptySolver(self, equation):
+    def createEmptySolver(self):
         s = sifio.createSection(sifio.SOLVER)
         return s
 
-    def _createLinearSolver(self, equation):
+    def _updateLinearSolver(self, equation):
+        if self._hasExpression(equation) != equation.LinearTolerance:
+            equation.setExpression("LinearTolerance", str(equation.LinearTolerance))
+        if self._hasExpression(equation) != equation.SteadyStateTolerance:
+            equation.setExpression("SteadyStateTolerance", str(equation.SteadyStateTolerance))
+        if equation.BiCGstablDegree == 0:
+            equation.BiCGstablDegree = 2
+        if not hasattr(equation, "LinearSystemSolverDisabled"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "LinearSystemSolverDisabled",
+                "Linear System",
+                (
+                    "Disable the linear system.\n"
+                    "Only use for special cases\n"
+                    "and consult the Elmer docs."
+                )
+            )
+        if not hasattr(equation, "IdrsParameter"):
+            equation.addProperty(
+                "App::PropertyIntegerConstraint",
+                "IdrsParameter",
+                "Linear System",
+                "Parameter for iterative method 'Idrs'"
+            )
+            equation.IdrsParameter = (2, 1, 10, 1)
+
+    def createLinearSolver(self, equation):
+        # first check if we have to update
+        self._updateLinearSolver(equation)
+        # write the solver
         s = sifio.createSection(sifio.SOLVER)
         s.priority = equation.Priority
         s["Linear System Solver"] = equation.LinearSolverType
+        if equation.LinearSystemSolverDisabled is True:
+            s["Linear System Solver Disabled"] = equation.LinearSystemSolverDisabled
         if equation.LinearSolverType == "Direct":
             s["Linear System Direct Method"] = \
                 equation.LinearDirectMethod
@@ -827,6 +690,9 @@ class Writer(object):
             if equation.LinearIterativeMethod == "BiCGStabl":
                 s["BiCGstabl polynomial degree"] = \
                     equation.BiCGstablDegree
+            if equation.LinearIterativeMethod == "Idrs":
+                s["Idrs Parameter"] = \
+                    equation.IdrsParameter
             s["Linear System Max Iterations"] = \
                 equation.LinearIterations
             s["Linear System Convergence Tolerance"] = \
@@ -840,8 +706,21 @@ class Writer(object):
         s["Linear System Precondition Recompute"] = 1
         return s
 
-    def _createNonlinearSolver(self, equation):
-        s = self._createLinearSolver(equation)
+    def _updateNonlinearSolver(self, equation):
+        if self._hasExpression(equation) != equation.NonlinearTolerance:
+            equation.setExpression("NonlinearTolerance", str(equation.NonlinearTolerance))
+        if self._hasExpression(equation) != equation.NonlinearNewtonAfterTolerance:
+            equation.setExpression(
+                "NonlinearNewtonAfterTolerance",
+                str(equation.NonlinearNewtonAfterTolerance)
+            )
+
+    def createNonlinearSolver(self, equation):
+        # first check if we have to update
+        self._updateNonlinearSolver(equation)
+        # write the linear solver
+        s = self.createLinearSolver(equation)
+        # write the nonlinear solver
         s["Nonlinear System Max Iterations"] = \
             equation.NonlinearIterations
         s["Nonlinear System Convergence Tolerance"] = \
@@ -854,7 +733,56 @@ class Writer(object):
             equation.NonlinearNewtonAfterTolerance
         return s
 
-    def _getUniqueVarName(self, varName):
+    # -------------------------------------------------------------------------------------------
+    # Helper functions
+
+    def _haveMaterialSolid(self):
+        for obj in self.getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined
+            if "KinematicViscosity" not in m:
+                return True
+        return False
+
+    def _haveMaterialFluid(self):
+        for obj in self.getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has a viscosity defined
+            if ("DynamicViscosity" in m) or ("KinematicViscosity" in m):
+                return True
+        return False
+
+    def isBodyMaterialFluid(self, body):
+        # we can have the case that a body has no assigned material
+        # then assume it is a solid
+        if self.getBodyMaterial(body) is not None:
+            m = self.getBodyMaterial(body).Material
+            return ("DynamicViscosity" in m) or ("KinematicViscosity" in m)
+        return False
+
+    def getBodyMaterial(self, name):
+        for obj in self.getMember("App::MaterialObject"):
+            # we can have e.g. the case there are 2 bodies and 2 materials
+            # body 2 has material 2 as reference while material 1 has no reference
+            # therefore we must not return a material when it is not referenced
+            if obj.References and (name in obj.References[0][1]):
+                return obj
+        # 'name' was not in the reference of any material
+        return None
+
+    def getDensity(self, m):
+        density = self.convert(m["Density"], "M/L^3")
+        if self.getMeshDimension() == 2:
+            density *= 1e3
+        return density
+
+    def _hasExpression(self, equation):
+        for (obj, exp) in equation.ExpressionEngine:
+            if obj == equation:
+                return exp
+        return None
+
+    def getUniqueVarName(self, varName):
         postfix = 1
         if varName in self._usedVarNames:
             varName += "%2d" % postfix
@@ -864,8 +792,8 @@ class Writer(object):
         self._usedVarNames.add(varName)
         return varName
 
-    def _getAllBodies(self):
-        obj = self._getSingleMember("Fem::FemMeshObject")
+    def getAllBodies(self):
+        obj = self.getSingleMember("Fem::FemMeshObject")
         bodyCount = 0
         prefix = ""
         if obj.Part.Shape.Solids:
@@ -879,30 +807,43 @@ class Writer(object):
             bodyCount = len(obj.Part.Shape.Edges)
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
-    def _getMeshDimension(self):
-        obj = self._getSingleMember("Fem::FemMeshObject")
+    def getMeshDimension(self):
+        obj = self.getSingleMember("Fem::FemMeshObject")
         if obj.Part.Shape.Solids:
             return 3
-        elif obj.Part.Shape.Faces:
+        if obj.Part.Shape.Faces:
             return 2
-        elif obj.Part.Shape.Edges:
+        if obj.Part.Shape.Edges:
             return 1
         return None
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
+        # Since FreeCAD meshes are in mm we let Elmer scale it
+        # _handleSimulation(self).
+        # To get it back in the original size we let Elmer scale it back
+        s["Coordinate Scaling Revert"] = True
         s["Equation"] = "ResultOutput"
-        s["Exec Solver"] = "After simulation"
+        if (
+            self.solver.SimulationType == "Scanning"
+            or self.solver.SimulationType == "Transient"
+        ):
+            # we must execute the post solver every time we output a result
+            # therefore we must use the same as self.solver.OutputIntervals
+            s["Exec Intervals"] = self.solver.OutputIntervals
+        else:
+            s["Exec Solver"] = "After simulation"
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
-        s["Output File Name"] = sifio.FileAttr("case")
+        s["Output File Name"] = sifio.FileAttr("FreeCAD")
         s["Vtu Format"] = True
+        s["Vtu Time Collection"] = True
         if self.unit_schema == Units.Scheme.SI2:
             s["Coordinate Scaling Revert"] = True
             Console.PrintMessage(
                 "'Coordinate Scaling Revert = Logical True' was "
                 "inserted into the solver input file.\n"
             )
-        for name in self._getAllBodies():
+        for name in self.getAllBodies():
             self._addSolver(name, s)
 
     def _writeSif(self):
@@ -911,40 +852,40 @@ class Writer(object):
             sif = sifio.Sif(self._builder)
             sif.write(fstream)
 
-    def _handled(self, obj):
+    def handled(self, obj):
         self._handledObjects.add(obj)
 
     def _simulation(self, key, attr):
         self._builder.simulation(key, attr)
 
-    def _constant(self, key, attr):
+    def constant(self, key, attr):
         self._builder.constant(key, attr)
 
-    def _initial(self, body, key, attr):
+    def initial(self, body, key, attr):
         self._builder.initial(body, key, attr)
 
-    def _material(self, body, key, attr):
+    def material(self, body, key, attr):
         self._builder.material(body, key, attr)
 
-    def _equation(self, body, key, attr):
+    def equation(self, body, key, attr):
         self._builder.equation(body, key, attr)
 
-    def _bodyForce(self, body, key, attr):
+    def bodyForce(self, body, key, attr):
         self._builder.bodyForce(body, key, attr)
 
     def _addSolver(self, body, solverSection):
         self._builder.addSolver(body, solverSection)
 
-    def _boundary(self, boundary, key, attr):
+    def boundary(self, boundary, key, attr):
         self._builder.boundary(boundary, key, attr)
 
     def _addSection(self, section):
         self._builder.addSection(section)
 
-    def _getMember(self, t):
+    def getMember(self, t):
         return membertools.get_member(self.analysis, t)
 
-    def _getSingleMember(self, t):
+    def getSingleMember(self, t):
         return membertools.get_single_member(self.analysis, t)
 
 

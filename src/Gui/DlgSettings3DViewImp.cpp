@@ -20,30 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QDoubleSpinBox>
-# include <QRegExp>
-# include <QGridLayout>
 # include <QMessageBox>
-# include <memory>
 #endif
+
+#include <App/Application.h>
+#include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "DlgSettings3DViewImp.h"
 #include "ui_DlgSettings3DView.h"
-#include "MainWindow.h"
-#include "NavigationStyle.h"
-#include "PrefWidgets.h"
-#include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "ui_MouseButtons.h"
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
+
 
 using namespace Gui::Dialog;
 
@@ -89,10 +80,9 @@ void DlgSettings3DViewImp::saveSettings()
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
     ui->CheckBox_CornerCoordSystem->onSave();
+    ui->SpinBox_CornerCoordSystemSize->onSave();
     ui->CheckBox_ShowAxisCross->onSave();
-    ui->CheckBox_WbByTab->onSave();
     ui->CheckBox_ShowFPS->onSave();
-    ui->spinPickRadius->onSave();
     ui->CheckBox_use_SW_OpenGL->onSave();
     ui->CheckBox_useVBO->onSave();
     ui->FloatSpinBox_EyeDistance->onSave();
@@ -106,10 +96,9 @@ void DlgSettings3DViewImp::saveSettings()
 void DlgSettings3DViewImp::loadSettings()
 {
     ui->CheckBox_CornerCoordSystem->onRestore();
+    ui->SpinBox_CornerCoordSystemSize->onRestore();
     ui->CheckBox_ShowAxisCross->onRestore();
-    ui->CheckBox_WbByTab->onRestore();
     ui->CheckBox_ShowFPS->onRestore();
-    ui->spinPickRadius->onRestore();
     ui->CheckBox_use_SW_OpenGL->onRestore();
     ui->CheckBox_useVBO->onRestore();
     ui->FloatSpinBox_EyeDistance->onRestore();
@@ -126,8 +115,8 @@ void DlgSettings3DViewImp::loadSettings()
     index = Base::clamp(index, 0, ui->comboAliasing->count()-1);
     ui->comboAliasing->setCurrentIndex(index);
     // connect after setting current item of the combo box
-    connect(ui->comboAliasing, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onAliasingChanged(int)));
+    connect(ui->comboAliasing, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgSettings3DViewImp::onAliasingChanged);
 
     index = hGrp->GetInt("RenderCache", 0);
     ui->renderCache->setCurrentIndex(index);

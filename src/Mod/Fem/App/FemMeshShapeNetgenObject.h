@@ -20,26 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemMeshShapeNetgenObject_H
 #define Fem_FemMeshShapeNetgenObject_H
 
-
-#include "FemMesh.h"
-#include "FemMeshShapeObject.h"
 #include <App/PropertyStandard.h>
+#include "FemMeshShapeObject.h"
 
 namespace Fem
 {
 
-class AppFemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
+class FemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeNetgenObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshShapeNetgenObject);
 
 public:
     /// Constructor
-    FemMeshShapeNetgenObject(void);
-    virtual ~FemMeshShapeNetgenObject();
+    FemMeshShapeNetgenObject();
+    ~FemMeshShapeNetgenObject() override;
 
     App::PropertyFloat          MaxSize;
     App::PropertyBool           SecondOrder;
@@ -50,10 +47,10 @@ public:
     App::PropertyBool           Optimize;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemMeshShapeNetgen";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     //virtual short mustExecute(void) const;
     //virtual PyObject *getPyObject(void);

@@ -20,23 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Cut.hxx>
 #endif
 
-
 #include "FeaturePartCut.h"
 
-#include <Base/Exception.h>
 
 using namespace Part;
 
 PROPERTY_SOURCE(Part::Cut, Part::Boolean)
 
 
-Cut::Cut(void)
+Cut::Cut()
 {
 }
 

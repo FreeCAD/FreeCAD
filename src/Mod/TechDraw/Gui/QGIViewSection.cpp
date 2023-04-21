@@ -22,35 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QFile>
-#include <QFileInfo>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QTextOption>
+# include <cmath>
 #endif
 
-#include <qmath.h>
-
-#include <Base/Console.h>
-#include <App/Material.h>
-
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
-
-#include "ZVALUE.h"
-#include "ViewProviderViewSection.h"
-#include "QGIFace.h"
 #include "QGIViewSection.h"
+#include "QGIFace.h"
+#include "ViewProviderViewSection.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 
@@ -67,33 +48,30 @@ void QGIViewSection::draw()
 void QGIViewSection::drawSectionFace()
 {
     auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
-    if( section == nullptr ) {
+    if (!section) {
         return;
     }
 
-    if ( !section->hasGeometry()) {
+    if (!section->hasGeometry()) {
         return;
     }
+
     Gui::ViewProvider* gvp = QGIView::getViewProvider(section);
     ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(gvp);
-    if ((sectionVp == nullptr)  ||
-        (!sectionVp->ShowCutSurface.getValue())) {
+    if (!sectionVp || !sectionVp->ShowCutSurface.getValue())
+        return;
+
+    auto sectionFaces( section->getTDFaceGeometry() );
+    if (sectionFaces.empty()) {
         return;
     }
 
     float lineWidth    = sectionVp->LineWidth.getValue();
 
-    auto sectionFaces( section->getTDFaceGeometry() );
-    if (sectionFaces.empty()) {
-        Base::Console().
-             Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
-        return;
-    }
-
-    std::vector<TechDraw::Face *>::iterator fit = sectionFaces.begin();
+    std::vector<TechDraw::FacePtr>::iterator fit = sectionFaces.begin();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit,-1);
+        QGIFace* newFace = drawFace(*fit, -1);
         newFace->setZValue(ZVALUE::SECTIONFACE);
         if (section->showSectionEdges()) {
             newFace->setDrawEdges(true);
@@ -120,7 +98,8 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
-//                std::string hatchSpec = section->FileHatchPattern.getValue();
+            newFace->setHatchRotation(section->HatchRotation.getValue());
+            newFace->setHatchOffset(section->HatchOffset.getValue());
             std::string hatchSpec = section->SvgIncluded.getValue();
             newFace->setHatchFile(hatchSpec);
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
@@ -129,6 +108,8 @@ void QGIViewSection::drawSectionFace()
             newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
+            newFace->setHatchRotation(section->HatchRotation.getValue());
+            newFace->setHatchOffset(section->HatchOffset.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
                 newFace->clearLineSets();
@@ -137,7 +118,7 @@ void QGIViewSection::drawSectionFace()
                 }
             }
         } else {
-            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n", 
+            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
                                     section->CutSurfaceDisplay.getValue());
         }
 
@@ -152,17 +133,8 @@ void QGIViewSection::updateView(bool update)
 {
     Q_UNUSED(update);
     auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
-    if( viewPart == nullptr ) {
+    if (!viewPart)
         return;
-    }
     draw();
     QGIView::updateView(update);
 }
-
-void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
-{
-    Q_UNUSED(b);
-    Q_UNUSED(s);
-   //override QGIVP::drawSectionLine
-}
-

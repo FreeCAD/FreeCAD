@@ -23,7 +23,11 @@
 #ifndef TASKCHECKGEOMETRY_H
 #define TASKCHECKGEOMETRY_H
 
+#include <functional>
 #include <tuple>
+#include <QAbstractItemModel>
+#include <QElapsedTimer>
+#include <QProgressDialog>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Status.hxx>
 #include <Message_ProgressIndicator.hxx>
@@ -31,14 +35,13 @@
 #include <TopTools_MapOfShape.hxx>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <QAbstractItemModel>
-#include <QProgressDialog>
-#include <QElapsedTimer>
+
 
 class SoSeparator;
 class SoSwitch;
 class QCheckBox;
 class QTextEdit;
+class QTreeView;
 
 namespace PartGui {
 
@@ -72,21 +75,21 @@ void goSetupResultInvalidCurveSurface(ResultEntry *entry);
 void goSetupResultInvalidSameParameterFlag(ResultEntry *entry);
 void goSetupResultUnorientableShapeFace(ResultEntry *entry);
 
-typedef boost::function<void (ResultEntry *entry)> ResultFunction;
-typedef std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction> FunctionMapType;
+using ResultFunction = std::function<void (ResultEntry *entry)>;
+using FunctionMapType = std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction>;
 
 class ResultModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ResultModel(QObject *parent = 0);
-    ~ResultModel();
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    virtual int rowCount(const QModelIndex &parent) const;
-    virtual int columnCount(const QModelIndex &parent) const;
-    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    explicit ResultModel(QObject *parent = nullptr);
+    ~ResultModel() override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 //    virtual Qt::ItemFlags flags (const QModelIndex &index) const;
 
     void setResults(ResultEntry *resultsIn);
@@ -100,8 +103,8 @@ class TaskCheckGeometryResults : public QWidget
 {
     Q_OBJECT
 public:
-    TaskCheckGeometryResults(QWidget *parent = 0);
-    ~TaskCheckGeometryResults();
+    explicit TaskCheckGeometryResults(QWidget *parent = nullptr);
+    ~TaskCheckGeometryResults() override;
     QString getShapeContentString();
     void goCheck();
 
@@ -125,7 +128,7 @@ private:
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Message_ProgressScope& theScope);
 #endif
-    void buildShapeContent(const QString &baseName, const TopoDS_Shape &shape);
+    void buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
     QLabel *message;
@@ -141,31 +144,31 @@ class TaskCheckGeometryDialog : public Gui::TaskView::TaskDialog
     Q_OBJECT
 public:
     TaskCheckGeometryDialog();
-    ~TaskCheckGeometryDialog();
+    ~TaskCheckGeometryDialog() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
         {return QDialogButtonBox::Ok | QDialogButtonBox::Close;}
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
         {return false;}
-    virtual bool needsFullSpace() const {return true;}
+    bool needsFullSpace() const override {return true;}
 
-private Q_SLOTS:
-    void on_runBOPCheckBox_toggled(bool isOn);
-    void on_runSingleThreadedCheckBox_toggled(bool isOn);
-    void on_logErrorsCheckBox_toggled(bool isOn);
-    void on_expandShapeContentCheckBox_toggled(bool isOn);
-    void on_advancedShapeContentCheckBox_toggled(bool isOn);
-    void on_autoRunCheckBox_toggled(bool isOn);
-    void on_argumentTypeModeCheckBox_toggled(bool isOn);
-    void on_selfInterModeCheckBox_toggled(bool isOn);
-    void on_smallEdgeModeCheckBox_toggled(bool isOn);
-    void on_rebuildFaceModeCheckBox_toggled(bool isOn);
-    void on_continuityModeCheckBox_toggled(bool isOn);
-    void on_tangentModeCheckBox_toggled(bool isOn);
-    void on_mergeVertexModeCheckBox_toggled(bool isOn);
-    void on_mergeEdgeModeCheckBox_toggled(bool isOn);
-    void on_curveOnSurfaceModeCheckBox_toggled(bool isOn);
-    void on_clicked(QAbstractButton* btn);
+private:
+    void onRunBOPCheckBoxToggled(bool isOn);
+    void onRunSingleThreadedCheckBoxToggled(bool isOn);
+    void onLogErrorsCheckBoxToggled(bool isOn);
+    void onExpandShapeContentCheckBoxToggled(bool isOn);
+    void onAdvancedShapeContentCheckBoxToggled(bool isOn);
+    void onAutoRunCheckBoxToggled(bool isOn);
+    void onArgumentTypeModeCheckBoxToggled(bool isOn);
+    void onSelfInterModeCheckBoxToggled(bool isOn);
+    void onSmallEdgeModeCheckBoxToggled(bool isOn);
+    void onRebuildFaceModeCheckBoxToggled(bool isOn);
+    void onContinuityModeCheckBoxToggled(bool isOn);
+    void onTangentModeCheckBoxToggled(bool isOn);
+    void onMergeVertexModeCheckBoxToggled(bool isOn);
+    void onMergeEdgeModeCheckBoxToggled(bool isOn);
+    void onCurveOnSurfaceModeCheckBoxToggled(bool isOn);
+    void onClicked(QAbstractButton* btn);
 
 private:
     TaskCheckGeometryResults* widget;
@@ -188,9 +191,9 @@ private:
     QCheckBox *mergeVertexModeCheckBox;
     QCheckBox *mergeEdgeModeCheckBox;
     QCheckBox *curveOnSurfaceModeCheckBox;
-    bool accept();
-    bool reject();
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    bool accept() override;
+    bool reject() override;
+    void modifyStandardButtons(QDialogButtonBox*) override;
     QPushButton *okBtn;
     QPushButton *settingsBtn;
     QPushButton *resultsBtn;
@@ -200,16 +203,16 @@ class BOPProgressIndicator : public Message_ProgressIndicator
 {
 public:
     BOPProgressIndicator (const QString &title, QWidget* parent);
-    virtual ~BOPProgressIndicator ();
+    ~BOPProgressIndicator () override;
 
 #if OCC_VERSION_HEX < 0x070500
-    virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
+    Standard_Boolean Show (const Standard_Boolean theForce = Standard_True) override;
 #else
-    virtual void Show (const Message_ProgressScope& theScope,
-                       const Standard_Boolean isForce);
-    virtual void Reset();
+    void Show (const Message_ProgressScope& theScope,
+                       const Standard_Boolean isForce) override;
+    void Reset() override;
 #endif
-    virtual Standard_Boolean UserBreak();
+    Standard_Boolean UserBreak() override;
 
 private:
     int steps;

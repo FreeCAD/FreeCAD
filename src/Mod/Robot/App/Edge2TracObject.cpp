@@ -20,27 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <BRepAdaptor_Curve.hxx>
+# include <CPnts_AbscissaPoint.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
 #endif
 
-#include "Edge2TracObject.h"
-//#include <App/DocumentObjectPy.h>
-//#include <Base/Placement.h>
 #include <Base/Sequencer.h>
 #include <Mod/Part/App/edgecluster.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <CPnts_AbscissaPoint.hxx>
-#include <TopExp.hxx>
-#include "Waypoint.h"
+
+#include "Edge2TracObject.h"
 #include "Trajectory.h"
+#include "Waypoint.h"
+
 
 using namespace Robot;
 using namespace App;
@@ -51,7 +46,7 @@ PROPERTY_SOURCE(Robot::Edge2TracObject, Robot::TrajectoryObject)
 Edge2TracObject::Edge2TracObject()
 {
 
-    ADD_PROPERTY_TYPE( Source,      (0)  , "Edge2Trac",Prop_None,"Edges to generate the Trajectory");
+    ADD_PROPERTY_TYPE( Source,      (nullptr)  , "Edge2Trac",Prop_None,"Edges to generate the Trajectory");
     ADD_PROPERTY_TYPE( SegValue,    (0.5), "Edge2Trac",Prop_None,"Max deviation from original geometry");
     ADD_PROPERTY_TYPE( UseRotation, (0)  , "Edge2Trac",Prop_None,"use orientation of the edge");
     NbrOfEdges = 0;
@@ -73,7 +68,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
     const Part::TopoShape& TopShape = base->Shape.getShape();
 
     const std::vector<std::string>& SubVals = Source.getSubValuesStartsWith("Edge");
-    if (SubVals.size() == 0)
+    if (SubVals.empty())
         return new App::DocumentObjectExecReturn("No Edges specified");
 
     // container for all the edges 
@@ -89,7 +84,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
     Part::Edgecluster acluster(edges);
     Part::tEdgeClusterVector aclusteroutput = acluster.GetClusters();
 
-    if(aclusteroutput.size() == 0)
+    if(aclusteroutput.empty())
         return new App::DocumentObjectExecReturn("No Edges specified");
 
     // set the number of cluster and edges 

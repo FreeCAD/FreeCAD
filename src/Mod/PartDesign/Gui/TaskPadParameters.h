@@ -20,18 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPadParameters_H
 #define GUI_TASKVIEW_TaskPadParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
-#include "TaskSketchBasedParameters.h"
+#include "TaskExtrudeParameters.h"
 #include "ViewProviderPad.h"
 
-class Ui_TaskPadParameters;
 
 namespace App {
 class Property;
@@ -44,55 +38,20 @@ class ViewProvider;
 namespace PartDesignGui {
 
 
-class TaskPadParameters : public TaskSketchBasedParameters
+class TaskPadParameters : public TaskExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = 0, bool newObj=false);
-    ~TaskPadParameters();
+    explicit TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
+    ~TaskPadParameters() override;
 
-    virtual void saveHistory() override;
-    virtual void apply() override;
-
-private Q_SLOTS:
-    void onLengthChanged(double);
-    void onLength2Changed(double);
-    void onAlongSketchNormalChanged(bool);
-    void onDirectionToggled(bool);
-    void onXDirectionEditChanged(double);
-    void onYDirectionEditChanged(double);
-    void onZDirectionEditChanged(double);
-    void onOffsetChanged(double);
-    void onMidplaneChanged(bool);
-    void onReversedChanged(bool);
-    void onButtonFace(const bool pressed = true);
-    void onFaceName(const QString& text);
-    void onModeChanged(int);
-
-protected:
-    void changeEvent(QEvent *e) override;
+    void apply() override;
 
 private:
-    double getLength(void) const;
-    double getLength2(void) const;
-    bool   getAlongSketchNormal(void) const;
-    bool   getCustom(void) const;
-    double getXDirection(void) const;
-    double getYDirection(void) const;
-    double getZDirection(void) const;
-    double getOffset(void) const;
-    bool   getReversed(void) const;
-    bool   getMidplane(void) const;
-    int    getMode(void) const;
-    QString getFaceName(void) const;
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void updateUI(int index);
-    void updateDirectionEdits(void);
-
-private:
-    QWidget* proxy;
-    std::unique_ptr<Ui_TaskPadParameters> ui;
+    void onModeChanged(int index) override;
+    void translateModeList(int index) override;
+    void updateUI(int index) override;
 };
 
 /// simulation dialog for the TaskView
@@ -101,7 +60,7 @@ class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
+    explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
     ViewProviderPad* getPadView() const
     { return static_cast<ViewProviderPad*>(vp); }

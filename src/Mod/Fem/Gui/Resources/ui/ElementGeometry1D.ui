@@ -20,7 +20,16 @@
       <string>Cross section parameter</string>
      </property>
      <layout class="QGridLayout" name="_2">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -36,7 +45,16 @@
         </property>
         <widget class="QWidget" name="page_all">
          <layout class="QGridLayout" name="_3">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -69,15 +87,15 @@
                </size>
               </property>
               <property name="text">
-               <string>0.0</string>
+               <string>0 mm</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
-              <property name="singleStep" stdset="0">
+              <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum" stdset="0">
+              <property name="maximum">
                <double>1000000000.000000000000000</double>
               </property>
               <property name="unit" stdset="0">
@@ -113,15 +131,15 @@
                </size>
               </property>
               <property name="text">
-               <string>0.0</string>
+               <string>0 mm</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
-              <property name="singleStep" stdset="0">
+              <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum" stdset="0">
+              <property name="maximum">
                <double>1000000000.000000000000000</double>
               </property>
               <property name="unit" stdset="0">
@@ -141,7 +159,16 @@
         </widget>
         <widget class="QWidget" name="page_remaining">
          <layout class="QGridLayout" name="_5">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -170,15 +197,15 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>0.0</string>
+               <string>0 mm</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
-              <property name="singleStep" stdset="0">
+              <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum" stdset="0">
+              <property name="maximum">
                <double>1000000000.000000000000000</double>
               </property>
               <property name="unit" stdset="0">
@@ -232,15 +259,15 @@
                </size>
               </property>
               <property name="text">
-               <string>0.0</string>
+               <string>0 mm</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
-              <property name="singleStep" stdset="0">
+              <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum" stdset="0">
+              <property name="maximum">
                <double>1000000000.000000000000000</double>
               </property>
               <property name="unit" stdset="0">
@@ -276,15 +303,15 @@
                </size>
               </property>
               <property name="text">
-               <string>0.0</string>
+               <string>0 mm</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
-              <property name="singleStep" stdset="0">
+              <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum" stdset="0">
+              <property name="maximum">
                <double>1000000000.000000000000000</double>
               </property>
               <property name="unit" stdset="0">

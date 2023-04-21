@@ -23,11 +23,13 @@
 #ifndef PARTGUI_DLGEXTRUSION_H
 #define PARTGUI_DLGEXTRUSION_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+#include <QDialog>
 #include <string>
 
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
+
 
 class TopoDS_Shape;
 
@@ -39,11 +41,11 @@ class DlgExtrusion : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgExtrusion(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgExtrusion();
-    void accept();
+    DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgExtrusion() override;
+    void accept() override;
     void apply();
-    void reject();
+    void reject() override;
 
     Base::Vector3d getDir() const;
     void setDir(Base::Vector3d newDir);
@@ -64,24 +66,25 @@ public:
 protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent*) override;
 
-private Q_SLOTS:
-    void on_rbDirModeCustom_toggled(bool on);
-    void on_rbDirModeEdge_toggled(bool on);
-    void on_rbDirModeNormal_toggled(bool on);
-    void on_btnSelectEdge_clicked();
-    void on_btnX_clicked();
-    void on_btnY_clicked();
-    void on_btnZ_clicked();
-    void on_chkSymmetric_toggled(bool on);
-    void on_txtLink_textChanged(QString);
+private:
+    void setupConnections();
+    void onDirModeCustomToggled(bool on);
+    void onDirModeEdgeToggled(bool on);
+    void onDirModeNormalToggled(bool on);
+    void onSelectEdgeClicked();
+    void onButtnoXClicked();
+    void onButtonYClicked();
+    void onButtonZClicked();
+    void onCheckSymmetricToggled(bool on);
+    void onTextLinkTextChanged(QString);
 
 private:
     ///updates enabling of controls
-    void on_DirMode_changed();
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onDirModeChanged();
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToExtrude() const;
     ///if dirMode is not custom, it tries to compute the actual extrusion direction. Also, it does some auto-magic manipulation of length value.
@@ -103,14 +106,14 @@ class TaskExtrusion : public Gui::TaskView::TaskDialog
 
 public:
     TaskExtrusion();
-    ~TaskExtrusion();
+    ~TaskExtrusion() override;
 
 public:
-    bool accept();
-    bool reject();
-    void clicked(int);
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close; }
 
 private:

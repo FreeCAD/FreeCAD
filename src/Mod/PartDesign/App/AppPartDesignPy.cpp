@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,18 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <Base/Tools.h>
+
 
 namespace PartDesign {
 class Module : public Py::ExtensionModule<Module>
@@ -45,7 +40,7 @@ public:
         initialize("This module is the PartDesign module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object makeFilletArc(const Py::Tuple& args)
@@ -115,7 +110,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace PartDesign

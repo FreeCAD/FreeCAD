@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="BaseClassPy" 
-      Name="AttachEnginePy" 
-      Twin="AttachEngine" 
-      TwinPointer="AttachEngine" 
-      Include="Mod/Part/App/Attacher.h" 
-      FatherInclude="Base/BaseClassPy.h" 
-      Namespace="Attacher" 
+  <PythonExport
+      Father="BaseClassPy"
+      Name="AttachEnginePy"
+      Twin="AttachEngine"
+      TwinPointer="AttachEngine"
+      Include="Mod/Part/App/Attacher.h"
+      FatherInclude="Base/BaseClassPy.h"
+      Namespace="Attacher"
       Constructor="true"
       Delete="true"
       FatherNamespace="Base">

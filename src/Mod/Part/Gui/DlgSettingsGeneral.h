@@ -36,13 +36,13 @@ class DlgSettingsGeneral : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsGeneral(QWidget* parent = 0);
-    ~DlgSettingsGeneral();
+    explicit DlgSettingsGeneral(QWidget* parent = nullptr);
+    ~DlgSettingsGeneral() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsGeneral> ui;
@@ -54,35 +54,39 @@ class DlgImportExportIges : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgImportExportIges(QWidget* parent = 0);
-    ~DlgImportExportIges();
+    explicit DlgImportExportIges(QWidget* parent = nullptr);
+    ~DlgImportExportIges() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgImportExportIges> ui;
     QButtonGroup* bg;
 };
 
-class Ui_DlgImportExportStep;
+class DlgExportStep;
+class DlgImportStep;
+class DlgExportHeaderStep;
 class DlgImportExportStep : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    DlgImportExportStep(QWidget* parent = 0);
-    ~DlgImportExportStep();
+    explicit DlgImportExportStep(QWidget* parent = nullptr);
+    ~DlgImportExportStep() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
-    std::unique_ptr<Ui_DlgImportExportStep> ui;
+    DlgExportStep* exportStep;
+    DlgImportStep* importStep;
+    DlgExportHeaderStep* headerStep;
 };
 
 } // namespace Gui

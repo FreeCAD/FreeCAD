@@ -24,6 +24,9 @@
 #ifndef BASE_TOOLS_H
 #define BASE_TOOLS_H
 
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 #include <functional>
 #include <algorithm>
 #include <cmath>
@@ -32,7 +35,6 @@
 #include <string>
 #include <boost_signals2.hpp>
 #include <QString>
-#include <QObject>
 
 // ----------------------------------------------------------------------------
 
@@ -227,15 +229,14 @@ private:
 // ----------------------------------------------------------------------------
 
 class ConnectionBlocker {
-    typedef boost::signals2::connection Connection;
-    typedef boost::signals2::shared_connection_block ConnectionBlock;
+    using Connection = boost::signals2::connection;
+    using ConnectionBlock = boost::signals2::shared_connection_block;
     ConnectionBlock blocker;
 
 public:
     ConnectionBlocker(Connection& c) : blocker(c) {
     }
-    ~ConnectionBlocker() {
-    }
+    ~ConnectionBlocker() = default;
 };
 
 // ----------------------------------------------------------------------------
@@ -260,14 +261,19 @@ struct BaseExport Tools
      * @param s String to convert.
      * @return A std::string encoded as UTF-8.
      */
-    static inline std::string toStdString(const QString& s) { QByteArray tmp = s.toUtf8(); return std::string(tmp.constData(), tmp.size()); }
+    static inline std::string toStdString(const QString& s) {
+        QByteArray tmp = s.toUtf8();
+        return std::string(tmp.constData(), static_cast<size_t>(tmp.size()));
+    }
 
     /**
      * @brief fromStdString Convert a std::string encoded as UTF-8 into a QString.
      * @param s std::string, expected to be UTF-8 encoded.
      * @return String represented as a QString.
      */
-    static inline QString fromStdString(const std::string & s) { return QString::fromUtf8(s.c_str(), s.size()); }
+    static inline QString fromStdString(const std::string & s) {
+        return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
+    }
 };
 
 

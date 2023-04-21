@@ -26,13 +26,7 @@ set(DrawingGui_UIC_SRCS
     TaskOrthoViews.ui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
-    qt5_wrap_ui(DrawingGui_UIC_HDRS ${DrawingGui_UIC_SRCS})
-else()
-    qt4_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
-    qt4_wrap_ui(DrawingGui_UIC_HDRS ${DrawingGui_UIC_SRCS})
-endif()
+qt_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
 
 SET(DrawingGui_SRCS
     ${DrawingGui_SRCS}
@@ -69,6 +63,18 @@ SET(DrawingGuiTaskDlgs_SRCS
     TaskOrthoViews.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${DrawingGuiTaskDlgs_SRCS})
+
+SET(DrawingGuiComplete_SRCS
+    ${DrawingGui_SRCS}
+    ${DrawingGuiView_SRCS}
+    ${DrawingGuiViewProvider_SRCS}
+)
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${DrawingGuiComplete_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(DrawingGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(DrawingGuiIcon_SVG
     Resources/icons/DrawingWorkbench.svg

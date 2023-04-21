@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>309</width>
-    <height>207</height>
+    <width>300</width>
+    <height>137</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,16 +24,34 @@
    <item>
     <layout class="QHBoxLayout" name="hLayout1">
      <item>
-      <widget class="QPushButton" name="btnAdd">
+      <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnRemove">
+      <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

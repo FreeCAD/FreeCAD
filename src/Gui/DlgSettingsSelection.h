@@ -44,13 +44,13 @@ class DlgSettingsSelection : public PreferencePage
 
 public:
     DlgSettingsSelection(QWidget* parent = nullptr);
-    ~DlgSettingsSelection();
+    ~DlgSettingsSelection() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsSelection> ui;

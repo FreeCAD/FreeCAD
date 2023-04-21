@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef INSPECTIONGUI_VISUALINSPECTION_H
 #define INSPECTIONGUI_VISUALINSPECTION_H
 
 #include <QDialog>
-#include <vector>
+
 
 class QTreeWidgetItem;
 class QPushButton;
@@ -37,10 +36,10 @@ class VisualInspection : public QDialog
     Q_OBJECT
 
 public:
-    VisualInspection(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-  ~ VisualInspection();
+    explicit VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+  ~ VisualInspection() override;
 
-    void accept();
+    void accept() override;
 
 protected Q_SLOTS:
     void onActivateItem(QTreeWidgetItem*);

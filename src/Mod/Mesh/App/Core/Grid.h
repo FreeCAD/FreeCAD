@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_GRID_H
 #define MESH_GRID_H
 
 #include <set>
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
 #include <Base/BoundBox.h>
+
+#include "MeshKernel.h"
+
 
 #define  MESH_CT_GRID          256     // Default value for number of elements per grid
 #define  MESH_MAX_GRIDS        100000  // Default value for maximum number of grids
@@ -41,7 +41,6 @@ class MeshKernel;
 class MeshGeomFacet;
 class MeshGrid;
 
-//#define MESHGRID_BBOX_EXTENSION 1.0e-3f
 #define MESHGRID_BBOX_EXTENSION 10.0f
 
 /**
@@ -58,17 +57,17 @@ protected:
   /** @name Construction */
   //@{
   /// Construction
-  MeshGrid (const MeshKernel &rclM);
+  explicit MeshGrid (const MeshKernel &rclM);
   /// Construction
-  MeshGrid (void);
+  MeshGrid ();
   //@}
 
 public:
   /// Destruction
-  virtual ~MeshGrid (void) { }
+  virtual ~MeshGrid () { }
 
 public:
-  /** Attaches the mesh kernel to this grid, an already attached mesh gets detached. The grid gets rebuilt 
+  /** Attaches the mesh kernel to this grid, an already attached mesh gets detached. The grid gets rebuilt
    * automatically. */
   virtual void Attach (const MeshKernel &rclM);
   /** Rebuilds the grid structure. */
@@ -81,21 +80,21 @@ public:
   /** @name Search */
   //@{
   /** Searches for elements lying in the intersection area of the grid and the bounding box. */
-  virtual unsigned long Inside (const Base::BoundBox3f &rclBB, std::vector<unsigned long> &raulElements, bool bDelDoubles = true) const;
+  virtual unsigned long Inside (const Base::BoundBox3f &rclBB, std::vector<ElementIndex> &raulElements, bool bDelDoubles = true) const;
   /** Searches for elements lying in the intersection area of the grid and the bounding box. */
-  virtual unsigned long Inside (const Base::BoundBox3f &rclBB, std::set<unsigned long> &raulElementss) const;
+  virtual unsigned long Inside (const Base::BoundBox3f &rclBB, std::set<ElementIndex> &raulElementss) const;
   /** Searches for elements lying in the intersection area of the grid and the bounding box. */
-  virtual unsigned long Inside (const Base::BoundBox3f &rclBB, std::vector<unsigned long> &raulElements,
+  virtual unsigned long Inside (const Base::BoundBox3f &rclBB, std::vector<ElementIndex> &raulElements,
                                 const Base::Vector3f &rclOrg, float fMaxDist, bool bDelDoubles = true) const;
   /** Searches for the nearest grids that contain elements from a point, the result are grid indices. */
-  void SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<unsigned long> &rclInd) const;
+  void SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<ElementIndex> &rclInd) const;
   //@}
 
   /** @name Getters */
   //@{
   /** Returns the indices of the elements in the given grid. */
-  unsigned long GetElements (unsigned long ulX, unsigned long ulY, unsigned long ulZ,  std::set<unsigned long> &raclInd) const;
-  unsigned long GetElements (const Base::Vector3f &rclPoint, std::vector<unsigned long>& aulFacets) const;
+  unsigned long GetElements (unsigned long ulX, unsigned long ulY, unsigned long ulZ,  std::set<ElementIndex> &raclInd) const;
+  unsigned long GetElements (const Base::Vector3f &rclPoint, std::vector<ElementIndex>& aulFacets) const;
   //@}
 
   /** Returns the lengths of the grid elements in x,y and z direction. */
@@ -110,17 +109,17 @@ public:
   /** Returns the bounding box of a given grid element. */
   inline Base::BoundBox3f  GetBoundBox (unsigned long ulX, unsigned long ulY, unsigned long ulZ) const;
   /** Returns the bounding box of the whole. */
-  inline Base::BoundBox3f  GetBoundBox     (void) const;
+  inline Base::BoundBox3f  GetBoundBox     () const;
   /** Returns an extended bounding box of the mesh object. */
-  inline Base::BoundBox3f  GetMeshBoundBox (void) const;
+  inline Base::BoundBox3f  GetMeshBoundBox () const;
   //@}
-  /** Returns an index for the given grid position. If the specified triple is not a valid grid position ULONG_MAX is returned. 
+  /** Returns an index for the given grid position. If the specified triple is not a valid grid position ULONG_MAX is returned.
    * If the index is valid than its value is between zero and the number of grid elements. For each different grid position
    * a different index is returned.
    */
   unsigned long GetIndexToPosition(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const;
   /** Returns the grid position to the given index. If the index is equal to or higher than the number of grid elements false is returned
-   * and the triple is set to ULONG_MAX. 
+   * and the triple is set to ULONG_MAX.
    */
   bool GetPositionToIndex(unsigned long id, unsigned long& ulX, unsigned long& ulY, unsigned long& ulZ) const;
   /** Returns the number of elements in a given grid. */
@@ -134,30 +133,30 @@ public:
    * otherwise false is returned and the grid position is undefined.
    */
   bool CheckPosition (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
-  /** Returns the indices of the grid this point lies in. If the point is outside the grid the indices of 
+  /** Returns the indices of the grid this point lies in. If the point is outside the grid the indices of
    * the nearest grid element are taken.*/
   virtual void Position (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
   /** Checks if this is a valid grid position. */
   inline bool CheckPos (unsigned long ulX, unsigned long ulY, unsigned long ulZ) const;
   /** Get the indices of all elements lying in the grids around a given grid with distance \a ulDistance. */
-  void GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance, std::set<unsigned long> &raclInd) const;
+  void GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance, std::set<ElementIndex> &raclInd) const;
 
 protected:
   /** Initializes the size of the internal structure. */
-  virtual void InitGrid (void);
+  virtual void InitGrid ();
   /** Deletes the grid structure. */
-  virtual void Clear (void);
+  virtual void Clear ();
   /** Calculates the grid length dependent on maximum number of grids. */
   virtual void CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids);
   /** Calculates the grid length dependent on the number of grids per axis. */
   virtual void CalculateGridLength (int    iCtGridPerAxis);
   /** Rebuilds the grid structure. Must be implemented in sub-classes. */
-  virtual void RebuildGrid (void) = 0;
+  virtual void RebuildGrid () = 0;
   /** Returns the number of stored elements. Must be implemented in sub-classes. */
-  virtual unsigned long HasElements (void) const = 0;
+  virtual unsigned long HasElements () const = 0;
 
 protected:
-  std::vector<std::vector<std::vector<std::set<unsigned long> > > >  _aulGrid;   /**< Grid data structure. */
+  std::vector<std::vector<std::vector<std::set<ElementIndex> > > >  _aulGrid;   /**< Grid data structure. */
   const MeshKernel* _pclMesh;     /**< The mesh kernel. */
   unsigned long     _ulCtElements;/**< Number of grid elements for validation issues. */
   unsigned long     _ulCtGridsX;  /**< Number of grid elements in z. */
@@ -167,7 +166,7 @@ protected:
   float             _fGridLenY;   /**< Length of grid elements in y. */
   float             _fGridLenZ;   /**< Length of grid elements in z. */
   float             _fMinX;       /**< Grid null position in x. */
-  float             _fMinY;       /**< Grid null position in y. */ 
+  float             _fMinY;       /**< Grid null position in y. */
   float             _fMinZ;       /**< Grid null position in z. */
 
   // friends
@@ -184,9 +183,9 @@ public:
   /** @name Construction */
   //@{
   /// Construction
-  MeshFacetGrid (const MeshKernel &rclM);
+  explicit MeshFacetGrid (const MeshKernel &rclM);
   /// Construction
-  MeshFacetGrid (void) : MeshGrid() { }
+  MeshFacetGrid () : MeshGrid() { }
   /// Construction
   MeshFacetGrid (const MeshKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
   /// Construction
@@ -194,9 +193,9 @@ public:
   /// Construction
   MeshFacetGrid (const MeshKernel &rclM, float fGridLen);
   /// Destruction
-  virtual ~MeshFacetGrid (void) { }
+  ~MeshFacetGrid () override { }
   //@}
- 
+
   /** @name Search */
   //@{
   /** Searches for the nearest facet from a point. */
@@ -205,34 +204,34 @@ public:
   unsigned long SearchNearestFromPoint (const Base::Vector3f &rclPt, float fMaxSearchArea) const;
   /** Searches for the nearest facet in a given grid element and returns the facet index and the actual distance. */
   void SearchNearestFacetInGrid(unsigned long ulX, unsigned long ulY, unsigned long ulZ, const Base::Vector3f &rclPt,
-                                float &rfMinDist, unsigned long &rulFacetInd) const;
+                                float &rfMinDist, ElementIndex &rulFacetInd) const;
   /** Does basically the same as the method above unless that grid neighbours up to the order of \a ulDistance
    * are introduced into the search. */
-  void SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance, 
-                                 const Base::Vector3f &rclPt, unsigned long &rulFacetInd, float &rfMinDist) const;
+  void SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance,
+                                 const Base::Vector3f &rclPt, ElementIndex &rulFacetInd, float &rfMinDist) const;
   //@}
 
   /** Validates the grid structure and rebuilds it if needed. */
-  virtual void Validate (const MeshKernel &rclM);
+  void Validate (const MeshKernel &rclM) override;
   /** Validates the grid structure and rebuilds it if needed. */
-  virtual void Validate (void);
+  virtual void Validate ();
   /** Verifies the grid structure and returns false if inconsistencies are found. */
-  virtual bool Verify() const;
+  bool Verify() const override;
 
 protected:
   /** Returns the grid numbers to the given point \a rclPoint. */
   inline void Pos (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
   /** Returns the grid numbers to the given point \a rclPoint. */
   inline void PosWithCheck (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
-  /** Adds a new facet element to the grid structure. \a rclFacet is the geometric facet and \a ulFacetIndex 
-   * the corresponding index in the mesh kernel. The facet is added to each grid element that intersects 
+  /** Adds a new facet element to the grid structure. \a rclFacet is the geometric facet and \a ulFacetIndex
+   * the corresponding index in the mesh kernel. The facet is added to each grid element that intersects
    * the facet. */
-  inline void AddFacet (const MeshGeomFacet &rclFacet, unsigned long ulFacetIndex, float fEpsilon = 0.0f);
+  inline void AddFacet (const MeshGeomFacet &rclFacet, ElementIndex ulFacetIndex, float fEpsilon = 0.0f);
   /** Returns the number of stored elements. */
-  unsigned long HasElements (void) const
+  unsigned long HasElements () const override
   { return _pclMesh->CountFacets(); }
   /** Rebuilds the grid structure. */
-  virtual void RebuildGrid (void);
+  void RebuildGrid () override;
 };
 
 /**
@@ -245,9 +244,9 @@ public:
   /** @name Construction */
   //@{
   /// Construction
-  MeshPointGrid (void);
+  MeshPointGrid ();
   /// Construction
-  MeshPointGrid (const MeshKernel &rclM);
+  explicit MeshPointGrid (const MeshKernel &rclM);
   /// Construction
   MeshPointGrid (const MeshKernel &rclM, int   iCtGridPerAxis);
   /// Construction
@@ -255,29 +254,29 @@ public:
   /// Construction
   MeshPointGrid (const MeshKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
   /// Destruction
-  virtual ~MeshPointGrid (void) {}
+  ~MeshPointGrid () override {}
   //@}
 
   /** Finds all points that lie in the same grid as the point \a rclPoint. */
-  unsigned long FindElements(const Base::Vector3f &rclPoint, std::set<unsigned long>& aulElements) const;
+  unsigned long FindElements(const Base::Vector3f &rclPoint, std::set<ElementIndex>& aulElements) const;
   /** Validates the grid structure and rebuilds it if needed. */
-  virtual void Validate (const MeshKernel &rclM);
+  void Validate (const MeshKernel &rclM) override;
   /** Validates the grid structure and rebuilds it if needed. */
-  virtual void Validate (void);
+  virtual void Validate ();
   /** Verifies the grid structure and returns false if inconsistencies are found. */
-  virtual bool Verify() const;
+  bool Verify() const override;
 
 protected:
-  /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a ulPtIndex 
+  /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a ulPtIndex
    * the corresponding index in the mesh kernel. */
-  void AddPoint (const MeshPoint &rclPt, unsigned long ulPtIndex, float fEpsilon = 0.0f);
+  void AddPoint (const MeshPoint &rclPt, ElementIndex ulPtIndex, float fEpsilon = 0.0f);
   /** Returns the grid numbers to the given point \a rclPoint. */
   void Pos(const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
   /** Returns the number of stored elements. */
-  unsigned long HasElements (void) const
+  unsigned long HasElements () const override
   { return _pclMesh->CountPoints(); }
   /** Rebuilds the grid structure. */
-  virtual void RebuildGrid (void);
+  void RebuildGrid () override;
 };
 
 /**
@@ -288,12 +287,12 @@ class MeshExport MeshGridIterator
 {
 public:
   /// Construction
-  MeshGridIterator (const MeshGrid &rclG);
+  explicit MeshGridIterator (const MeshGrid &rclG);
   /** Returns the bounding box of the current grid element. */
-  Base::BoundBox3f GetBoundBox (void) const
+  Base::BoundBox3f GetBoundBox () const
   { return _rclGrid.GetBoundBox(_ulX, _ulY, _ulZ); }
   /** Returns indices of the elements in the current grid. */
-  void GetElements (std::vector<unsigned long> &raulElements) const
+  void GetElements (std::vector<ElementIndex> &raulElements) const
   {
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
   }
@@ -305,13 +304,13 @@ public:
   /** @name Iteration */
   //@{
   /** Sets the iterator to the first element*/
-  void  Init (void)
+  void  Init ()
   { _ulX = _ulY = _ulZ = 0; }
-  /** Checks if the iterator has not yet reached the end position. */  
-  bool  More (void) const
+  /** Checks if the iterator has not yet reached the end position. */
+  bool  More () const
   { return (_ulZ < _rclGrid._ulCtGridsZ); }
   /** Go to the next grid. */
-  void  Next (void)
+  void  Next ()
   {
     if (++_ulX >= (_rclGrid._ulCtGridsX)) _ulX = 0; else return;
     if (++_ulY >= (_rclGrid._ulCtGridsY)) { _ulY = 0; _ulZ++; } else return;
@@ -321,13 +320,13 @@ public:
   /** @name Tests with rays */
   //@{
   /** Searches for facets around the ray. */
-  bool InitOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, std::vector<unsigned long> &raulElements);
+  bool InitOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, std::vector<ElementIndex> &raulElements);
   /** Searches for facets around the ray. */
-  bool InitOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxSearchArea, std::vector<unsigned long> &raulElements);
+  bool InitOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxSearchArea, std::vector<ElementIndex> &raulElements);
   /** Searches for facets around the ray. */
-  bool NextOnRay (std::vector<unsigned long> &raulElements);
+  bool NextOnRay (std::vector<ElementIndex> &raulElements);
   //@}
-  
+
   /** Returns the grid number of the current position. */
   void GetGridPos (unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const
   { rulX = _ulX; rulY = _ulY; rulZ = _ulZ; }
@@ -336,13 +335,13 @@ protected:
   const MeshGrid& _rclGrid; /**< The mesh kernel. */
   unsigned long   _ulX;     /**< Number of grids in x. */
   unsigned long   _ulY;     /**< Number of grids in y. */
-  unsigned long   _ulZ;     /**< Number of grids in z. */ 
+  unsigned long   _ulZ;     /**< Number of grids in z. */
   Base::Vector3f        _clPt;    /**< Base point of search ray. */
   Base::Vector3f        _clDir;   /**< Direction of search ray. */
   bool            _bValidRay; /**< Search ray ok? */
   float           _fMaxSearchArea;
   /** Checks if a grid position is already visited by NextOnRay(). */
-  struct GridElement 
+  struct GridElement
   {
     GridElement( unsigned long x, unsigned long y, unsigned long z)
     { this->x = x; this->y = y; this->z = z; }
@@ -350,7 +349,7 @@ protected:
     {
       if ( x == pos.x)
       { if ( y == pos.y) return z < pos.z; else return y < pos.y; }
-      else 
+      else
       { return x < pos.x; }
     }
   private:
@@ -364,7 +363,7 @@ protected:
 inline Base::BoundBox3f  MeshGrid::GetBoundBox (unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
   float fX, fY, fZ;
-  
+
   fX = _fMinX + (float(ulX) * _fGridLenX);
   fY = _fMinY + (float(ulY) * _fGridLenY);
   fZ = _fMinZ + (float(ulZ) * _fGridLenZ);
@@ -372,13 +371,13 @@ inline Base::BoundBox3f  MeshGrid::GetBoundBox (unsigned long ulX, unsigned long
   return Base::BoundBox3f(fX, fY, fZ, fX + _fGridLenX, fY + _fGridLenY, fZ + _fGridLenZ);
 }
 
-inline Base::BoundBox3f  MeshGrid::GetBoundBox (void) const
+inline Base::BoundBox3f  MeshGrid::GetBoundBox () const
 {
   return Base::BoundBox3f(_fMinX, _fMinY, _fMinZ, _fMinX + (_fGridLenX * float(_ulCtGridsX)),
                     _fMinY + (_fGridLenY * float(_ulCtGridsY)), _fMinZ + (_fGridLenZ * float(_ulCtGridsZ)));
 }
 
-inline Base::BoundBox3f  MeshGrid::GetMeshBoundBox (void) const
+inline Base::BoundBox3f  MeshGrid::GetMeshBoundBox () const
 {
   Base::BoundBox3f clBBenlarged = _pclMesh->GetBoundBox();
   clBBenlarged.Enlarge(MESHGRID_BBOX_EXTENSION);
@@ -434,38 +433,8 @@ inline void MeshFacetGrid::PosWithCheck (const Base::Vector3f &rclPoint, unsigne
   assert((rulX < _ulCtGridsX) && (rulY < _ulCtGridsY) && (rulZ < _ulCtGridsZ));
 }
 
-inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned long ulFacetIndex, float /*fEpsilon*/)
+inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, ElementIndex ulFacetIndex, float /*fEpsilon*/)
 {
-#if 0
-  unsigned long  i, ulX, ulY, ulZ, ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
-  
-  ulX1 = ulY1 = ulZ1 = ULONG_MAX;
-  ulX2 = ulY2 = ulZ2 = 0;
-
-  for (i = 0; i < 3; i++)
-  {
-    Pos(rclFacet._aclPoints[i], ulX, ulY, ulZ);
-    _aulGrid[ulX][ulY][ulZ].insert(ulFacetIndex);
-    ulX1 = RSmin<unsigned long>(ulX1, ulX); ulY1 = RSmin<unsigned long>(ulY1, ulY); ulZ1 = RSmin<unsigned long>(ulZ1, ulZ);
-    ulX2 = RSmax<unsigned long>(ulX2, ulX); ulY2 = RSmax<unsigned long>(ulY2, ulY); ulZ2 = RSmax<unsigned long>(ulZ2, ulZ);
-  }
-  
-  // falls Facet ueber mehrere BB reicht
-  if ((ulX1 < ulX2) || (ulY1 < ulY2) || (ulZ1 < ulZ2))
-  {
-    for (ulX = ulX1; ulX <= ulX2; ulX++)
-    {
-      for (ulY = ulY1; ulY <= ulY2; ulY++)
-      {
-        for (ulZ = ulZ1; ulZ <= ulZ2; ulZ++)
-        {
-          if (CMeshFacetFunc::BBoxContainFacet(GetBoundBox(ulX, ulY, ulZ), rclFacet) == true)
-            _aulGrid[ulX][ulY][ulZ].insert(ulFacetIndex);
-        }
-      }
-    }
-  }
-#else
   unsigned long ulX, ulY, ulZ;
 
   unsigned long ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
@@ -482,12 +451,12 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned lon
 
   Pos(Base::Vector3f(clBB.MinX,clBB.MinY,clBB.MinZ), ulX1, ulY1, ulZ1);
   Pos(Base::Vector3f(clBB.MaxX,clBB.MaxY,clBB.MaxZ), ulX2, ulY2, ulZ2);
-  
+
   /*
   if (ulX1 > 0) ulX1--;
   if (ulY1 > 0) ulY1--;
   if (ulZ1 > 0) ulZ1--;
-  
+
   if (ulX2 < (_ulCtGridsX-1)) ulX2++;
   if (ulY2 < (_ulCtGridsY-1)) ulY2++;
   if (ulZ2 < (_ulCtGridsZ-1)) ulZ2++;
@@ -510,8 +479,6 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned lon
   }
   else
     _aulGrid[ulX1][ulY1][ulZ1].insert(ulFacetIndex);
-
-#endif
 }
 
 } // namespace MeshCore

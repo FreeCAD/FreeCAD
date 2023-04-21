@@ -20,10 +20,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, ArchComponent
+import FreeCAD
+import ArchComponent
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc
-    from DraftTools import translate
+    import FreeCADGui
+    import Arch_rc
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -144,7 +146,7 @@ class _CommandPipeConnector:
         return {'Pixmap'  : 'Arch_PipeConnector',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
                 'Accel': "P, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a connector between 2 or 3 selected pipes")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeConnector","Creates a connector between 2 or 3 selected pipes")}
 
     def IsActive(self):
 
@@ -214,7 +216,9 @@ class _ArchPipe(ArchComponent.Component):
 
     def execute(self,obj):
 
-        import Part,DraftGeomUtils,math
+        import math
+        import Part
+        import DraftGeomUtils
         pl = obj.Placement
         w = self.getWire(obj)
         if not w:
@@ -372,7 +376,10 @@ class _ArchPipeConnector(ArchComponent.Component):
         tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
         ptol = 0.001 # tolerance for coincident points
 
-        import math,Part,DraftGeomUtils,ArchCommands
+        import math
+        import Part
+        import DraftGeomUtils
+        import ArchCommands
         if len(obj.Pipes) < 2:
             return
         if len(obj.Pipes) > 3:
@@ -407,6 +414,9 @@ class _ArchPipeConnector(ArchComponent.Component):
         else:
             v2 = wires[1].Vertexes[-2].Point.sub(wires[1].Vertexes[-1].Point).normalize()
         p = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
+        # If the pipe has a non-zero WallThickness p is a shape instead of a wire:
+        if p.ShapeType != "Wire":
+            p = p.Wires
         p = Part.Face(p)
         if len(obj.Pipes) == 2:
             if obj.ConnectorType != "Corner":

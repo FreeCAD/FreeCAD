@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Ax1.hxx>
-# include <TopoDS.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <gp_Lin.hxx>
+# include <gp_Ax1.hxx>
 # include <gp_Circ.hxx>
+# include <gp_Lin.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 #endif
 
-
 #include "FeatureRevolution.h"
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
 #include "FaceMaker.h"
+
 
 using namespace Part;
 
@@ -46,10 +42,10 @@ PROPERTY_SOURCE(Part::Revolution, Part::Feature)
 
 Revolution::Revolution()
 {
-    ADD_PROPERTY_TYPE(Source,(0), "Revolve", App::Prop_None, "Shape to revolve");
+    ADD_PROPERTY_TYPE(Source,(nullptr), "Revolve", App::Prop_None, "Shape to revolve");
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)), "Revolve", App::Prop_None, "Base point of revolution axis");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,0.0,1.0)), "Revolve", App::Prop_None, "Direction of revolution axis");
-    ADD_PROPERTY_TYPE(AxisLink,(0),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
+    ADD_PROPERTY_TYPE(AxisLink,(nullptr),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
     ADD_PROPERTY_TYPE(Angle,(360.0), "Revolve", App::Prop_None, "Angle span of revolution. If angle is zero, and an arc is used for axis link, angle span of arc will be used.");
     Angle.setConstraints(&angleRangeU);
     ADD_PROPERTY_TYPE(Symmetric,(false),"Revolve",App::Prop_None,"Extend revolution symmetrically from the profile.");
@@ -93,8 +89,8 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     auto linked = axisLink.getValue();
 
     TopoDS_Shape axEdge;
-    if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = Feature::getTopoShape(linked).getSubShape(axisLink.getSubValues()[0].c_str());
+    if (!axisLink.getSubValues().empty()  &&  axisLink.getSubValues()[0].length() > 0){
+        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
     } else {
         axEdge = Feature::getShape(linked);
     }
@@ -125,7 +121,7 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     return true;
 }
 
-App::DocumentObjectExecReturn *Revolution::execute(void)
+App::DocumentObjectExecReturn *Revolution::execute()
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)

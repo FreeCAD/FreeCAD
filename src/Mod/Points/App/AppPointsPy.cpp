@@ -20,31 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <memory>
 #endif
-
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Property.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/FileInfo.h>
 
 #include "Points.h"
-#include "PointsPy.h"
 #include "PointsAlgos.h"
-#include "Structured.h"
+#include "PointsPy.h"
 #include "Properties.h"
+#include "Structured.h"
+
 
 namespace Points {
 class Module : public Py::ExtensionModule<Module>
@@ -52,31 +47,41 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("Points")
     {
-        add_varargs_method("open",&Module::open
+        add_varargs_method("open", &Module::open
         );
-        add_varargs_method("insert",&Module::importer
+        add_varargs_method("insert", &Module::importer
         );
-        add_varargs_method("export",&Module::exporter
+        add_varargs_method("export", &Module::exporter
         );
-        add_varargs_method("show",&Module::show,
+        add_varargs_method("show", &Module::show,
             "show(points,[string]) -- Add the points to the active document or create one if no document exists."
         );
         initialize("This module is the Points module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
+    std::tuple<bool, bool, float> readE57Settings() const
+    {
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
+        bool useColor = hGrp->GetBool("UseColor", true);
+        bool checkState = hGrp->GetBool("CheckInvalidState", true);
+        float minDistance = hGrp->GetFloat("MinDistance", -1.);
+
+        return std::make_tuple(useColor, checkState, minDistance);
+    }
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
-        if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Name))
+        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name))
             throw Py::Exception();
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
         try {
-            Base::Console().Log("Open in Points with %s",EncodedName.c_str());
+            Base::Console().Log("Open in Points with %s", EncodedName.c_str());
             Base::FileInfo file(EncodedName.c_str());
 
             // extract ending
@@ -86,6 +91,10 @@ private:
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
+            }
+            else if (file.hasExtension("e57")) {
+                auto setting = readE57Settings();
+                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
@@ -99,9 +108,9 @@ private:
 
             reader->read(EncodedName);
 
-            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+            App::Document* pcDoc = App::GetApplication().newDocument();
 
-            Points::Feature *pcFeature = 0;
+            Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {
                 // Scattered or structured points?
                 if (reader->isStructured()) {
@@ -182,13 +191,13 @@ private:
     {
         char* Name;
         const char* DocName;
-        if (!PyArg_ParseTuple(args.ptr(), "ets","utf-8",&Name,&DocName))
+        if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName))
             throw Py::Exception();
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
         try {
-            Base::Console().Log("Import in Points with %s",EncodedName.c_str());
+            Base::Console().Log("Import in Points with %s", EncodedName.c_str());
             Base::FileInfo file(EncodedName.c_str());
 
             // extract ending
@@ -198,6 +207,10 @@ private:
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
+            }
+            else if (file.hasExtension("e57")) {
+                auto setting = readE57Settings();
+                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
@@ -211,12 +224,12 @@ private:
 
             reader->read(EncodedName);
 
-            App::Document *pcDoc = App::GetApplication().getDocument(DocName);
+            App::Document* pcDoc = App::GetApplication().getDocument(DocName);
             if (!pcDoc) {
                 pcDoc = App::GetApplication().newDocument(DocName);
             }
 
-            Points::Feature *pcFeature = 0;
+            Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {
                 // Scattered or structured points?
                 if (reader->isStructured()) {
@@ -269,7 +282,7 @@ private:
                 pcFeature->purgeTouched();
             }
             else {
-                Points::Feature *pcFeature = static_cast<Points::Feature*>
+                Points::Feature* pcFeature = static_cast<Points::Feature*>
                     (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
@@ -285,8 +298,8 @@ private:
 
     Py::Object exporter(const Py::Tuple& args)
     {
-        PyObject *object;
-        char *Name;
+        PyObject* object;
+        char* Name;
 
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &object, "utf-8", &Name))
             throw Py::Exception();
@@ -372,19 +385,20 @@ private:
 
     Py::Object show(const Py::Tuple& args)
     {
-        PyObject *pcObj;
-        char *name = "Points";
+        PyObject* pcObj;
+        char* name = "Points";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PointsPy::Type), &pcObj, &name))
             throw Py::Exception();
 
         try {
-            App::Document *pcDoc = App::GetApplication().getActiveDocument();
+            App::Document* pcDoc = App::GetApplication().getActiveDocument();
             if (!pcDoc)
                 pcDoc = App::GetApplication().newDocument();
             PointsPy* pPoints = static_cast<PointsPy*>(pcObj);
-            Points::Feature *pcFeature = static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
+            Points::Feature* pcFeature = static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
             // copy the data
             pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
+	    return Py::asObject(pcFeature->getPyObject());
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
@@ -396,7 +410,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Points

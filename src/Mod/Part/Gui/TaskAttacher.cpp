@@ -21,43 +21,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <QMessageBox>
-# include <Precision.hxx>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <Standard_Failure.hxx>
-# include <boost_bind_bind.hpp>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/DocumentObserver.h>
-#include <App/Origin.h>
+#include <App/ObjectIdentifier.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <App/ObjectIdentifier.h>
-#include <App/PropertyExpressionEngine.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/CommandT.h>
-#include <Mod/Part/Gui/TaskAttacher.h>
-#include <Mod/Part/Gui/AttacherTexts.h>
+#include <Gui/Document.h>
+#include <Gui/DocumentObserver.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/Gui/AttacherTexts.h>
+#include <Mod/Part/Gui/TaskAttacher.h>
 
-#include "ui_TaskAttacher.h"
 #include "TaskAttacher.h"
+#include "ui_TaskAttacher.h"
+
 
 using namespace PartGui;
 using namespace Gui;
@@ -69,7 +62,7 @@ namespace bp = boost::placeholders;
 // Create reference name from PropertyLinkSub values in a translatable fashion
 const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
 {
-    if (obj == NULL)
+    if (!obj)
         return QObject::tr("No reference selected");
 
     if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
@@ -100,11 +93,14 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     refnames = pcAttach->Support.getSubValues();
 
     for (size_t r = 0; r < 4; r++) {
-        if ((r < refs.size()) && (refs[r] != NULL)) {
+        if ((r < refs.size()) && (refs[r])) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
+            // for Origin or Datum features refnames is empty but we need a non-empty return value
+            if (refnames[r].empty())
+                refnames[r] = refs[r]->getNameInDocument();
         } else {
             refstrings.push_back(QObject::tr("No reference selected"));
-            refnames.push_back("");
+            refnames.emplace_back("");
         }
     }
 }
@@ -116,6 +112,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     , ViewProvider(ViewProvider)
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
+    , completed(false)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
@@ -126,32 +123,38 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->attachmentOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetXChanged(double)));
-    connect(ui->attachmentOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYChanged(double)));
-    connect(ui->attachmentOffsetZ, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetZChanged(double)));
-    connect(ui->attachmentOffsetYaw, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYawChanged(double)));
-    connect(ui->attachmentOffsetPitch, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetPitchChanged(double)));
-    connect(ui->attachmentOffsetRoll, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetRollChanged(double)));
-    connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckFlip(bool)));
-    connect(ui->buttonRef1, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef1(bool)));
-    connect(ui->lineRef1, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName1(QString)));
-    connect(ui->buttonRef2, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef2(bool)));
-    connect(ui->lineRef2, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName2(QString)));
-    connect(ui->buttonRef3, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef3(bool)));
-    connect(ui->lineRef3, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName3(QString)));
-    connect(ui->buttonRef4, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef4(bool)));
-    connect(ui->lineRef4, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName4(QString)));
-    connect(ui->listOfModes,SIGNAL(itemSelectionChanged()),
-            this, SLOT(onModeSelect()));
+    connect(ui->attachmentOffsetX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetXChanged);
+    connect(ui->attachmentOffsetY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetYChanged);
+    connect(ui->attachmentOffsetZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetZChanged);
+    connect(ui->attachmentOffsetYaw, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetYawChanged);
+    connect(ui->attachmentOffsetPitch, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetPitchChanged);
+    connect(ui->attachmentOffsetRoll, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetRollChanged);
+    connect(ui->checkBoxFlip, &QCheckBox::toggled,
+            this, &TaskAttacher::onCheckFlip);
+    connect(ui->buttonRef1, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef1);
+    connect(ui->lineRef1, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName1);
+    connect(ui->buttonRef2, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef2);
+    connect(ui->lineRef2, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName2);
+    connect(ui->buttonRef3, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef3);
+    connect(ui->lineRef3, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName3);
+    connect(ui->buttonRef4, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef4);
+    connect(ui->lineRef4, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName4);
+    connect(ui->listOfModes, &QListWidget::itemSelectionChanged,
+            this, &TaskAttacher::onModeSelect);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -195,7 +198,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->lineRef4->blockSignals(false);
     ui->listOfModes->blockSignals(false);
 
-    this->iActiveRef = 0;
+    // only activate the ref when there is no existing first attachment
+    if (refnames[0].empty())
+        this->iActiveRef = 0;
+    else
+        this->iActiveRef = -1;
     if (pcAttach->Support.getSize() == 0){
         autoNext = true;
     } else {
@@ -282,7 +289,7 @@ void TaskAttacher::updateReferencesUI()
     pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
 
     if (this->lastSuggestResult.message != SuggestResult::srOK) {
-        if(this->lastSuggestResult.nextRefTypeHint.size() > 0){
+        if(!this->lastSuggestResult.nextRefTypeHint.empty()){
             //message = "Need more references";
         }
     } else {
@@ -339,7 +346,7 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
         case 1: return ui->lineRef2;
         case 2: return ui->lineRef3;
         case 3: return ui->lineRef4;
-        default: return NULL;
+        default: return nullptr;
     }
 }
 
@@ -357,8 +364,9 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
-        
+        if (!selObj || selObj == ViewProvider->getObject())//prevent self-referencing
+            return;
+
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
@@ -371,7 +379,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
             if ((refs[r] == selObj) && (refnames[r] == subname))
                 return;
 
-        if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size()){
+        if (autoNext && iActiveRef > 0 && iActiveRef == static_cast<int>(refnames.size())){
             if (refs[iActiveRef-1] == selObj
                 && refnames[iActiveRef-1].length() != 0 && subname.length() == 0){
                 //A whole object was selected by clicking it twice. Fill it
@@ -381,7 +389,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
                 iActiveRef--;
             }
         }
-        if (iActiveRef < (ssize_t) refs.size()) {
+        if (iActiveRef < static_cast<int>(refs.size())) {
             refs[iActiveRef] = selObj;
             refnames[iActiveRef] = subname;
         } else {
@@ -411,7 +419,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         QLineEdit* line = getLine(iActiveRef);
-        if (line != NULL) {
+        if (line) {
             line->blockSignals(true);
             line->setText(makeRefString(selObj, subname));
             line->setProperty("RefName", QByteArray(subname.c_str()));
@@ -421,7 +429,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (autoNext) {
             if (iActiveRef == -1){
                 //nothing to do
-            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
+            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.empty()){
                 iActiveRef = -1;
             } else {
                 iActiveRef++;
@@ -555,7 +563,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         return;
 
     QLineEdit* line = getLine(idx);
-    if (line == NULL) return;
+    if (!line)
+        return;
 
     if (text.length() == 0) {
         // Reference was removed
@@ -598,7 +607,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == NULL) return;
+    if (!obj)
+        return;
 
     std::string subElement;
 
@@ -613,34 +623,43 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     } else {
         // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
 
-        // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
-        QRegExp rx;
-        std::stringstream ss;
+        auto getSubshapeName = [](const QString& part) -> std::string {
+            // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
+            QRegularExpression rx;
+            QRegularExpressionMatch match;
+            std::stringstream ss;
 
-        rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
-        if (parts[1].indexOf(rx) >= 0) {
-            int faceId = rx.cap(1).toInt();
-            ss << "Face" << faceId;
-        } else {
-            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
-            if (parts[1].indexOf(rx) >= 0) {
-                int lineId = rx.cap(1).toInt();
-                ss << "Edge" << lineId;
-            } else {
-                rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
-                if (parts[1].indexOf(rx) >= 0) {
-                    int vertexId = rx.cap(1).toInt();
-                    ss << "Vertex" << vertexId;
-                } else {
-                    //none of Edge/Vertex/Face. May be empty string.
-                    //Feed in whatever user supplied, even if invalid.
-                    ss << parts[1].toLatin1().constData();
-                }
+            rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
+            if (part.indexOf(rx, 0, &match) >= 0) {
+                int faceId = match.captured(1).toInt();
+                ss << "Face" << faceId;
+                return ss.str();
             }
-        }
 
-        line->setProperty("RefName", QByteArray(ss.str().c_str()));
-        subElement = ss.str();
+            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
+            if (part.indexOf(rx, 0, &match) >= 0) {
+                int lineId = match.captured(1).toInt();
+                ss << "Edge" << lineId;
+                return ss.str();
+            }
+
+            rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
+            if (part.indexOf(rx, 0, &match) >= 0) {
+                int vertexId = match.captured(1).toInt();
+                ss << "Vertex" << vertexId;
+                return ss.str();
+            }
+
+            //none of Edge/Vertex/Face. May be empty string.
+            //Feed in whatever user supplied, even if invalid.
+            ss << part.toLatin1().constData();
+            return ss.str();
+        };
+
+        auto name = getSubshapeName(parts[1]);
+
+        line->setProperty("RefName", QByteArray(name.c_str()));
+        subElement = name;
     }
 
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
@@ -651,7 +670,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames[idx] = subElement.c_str();
     } else {
         refs.push_back(obj);
-        refnames.push_back(subElement.c_str());
+        refnames.emplace_back(subElement.c_str());
     }
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();
@@ -682,7 +701,7 @@ void TaskAttacher::updateRefButton(int idx)
     bool enable = true;
     if (idx > numrefs)
         enable = false;
-    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.size() == 0)
+    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.empty())
         enable = false;
     b->setEnabled(enable);
 
@@ -795,8 +814,8 @@ void TaskAttacher::updateListOfModes()
     //populate list
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
-    QListWidgetItem* iSelect = 0;
-    if (modesInList.size()>0) {
+    QListWidgetItem* iSelect = nullptr;
+    if (!modesInList.empty()) {
         for (size_t i = 0  ;  i < modesInList.size()  ;  ++i){
             eMapMode mmode = modesInList[i];
             std::vector<QString> mstr = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),mmode);
@@ -964,7 +983,8 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                     QString::fromLatin1(editSubName.c_str()),
                     QString::fromLatin1(postfix.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
-        } else if(postfix.size()) {
+        }
+        else if (!postfix.empty()) {
             QString code = QString::fromLatin1(
                 "_tv_%1.restore()\n"
                 "del(_tv_%1)"
@@ -987,14 +1007,14 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         auto editDoc = Gui::Application::Instance->editDocument();
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
-        auto sels = Gui::Selection().getSelection(0,0,true);
-        if(sels.size() && sels[0].pResolvedObject 
-                       && sels[0].pResolvedObject->getLinkedObject()==editObj) 
+        auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
+        if(!sels.empty() && sels[0].pResolvedObject
+                       && sels[0].pResolvedObject->getLinkedObject()==editObj)
         {
             editObj = sels[0].pObject;
             editSubName = sels[0].SubName;
         } else {
-            ViewProviderDocumentObject *editVp = 0;
+            ViewProviderDocumentObject *editVp = nullptr;
             if (editDoc) {
                 editDoc->getInEdit(&editVp,&editSubName);
                 if (editVp)
@@ -1053,7 +1073,8 @@ TaskDlgAttacher::~TaskDlgAttacher()
 void TaskDlgAttacher::open()
 {
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    if (!document->hasPendingCommand())
+        document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
 }
 
 void TaskDlgAttacher::clicked(int)

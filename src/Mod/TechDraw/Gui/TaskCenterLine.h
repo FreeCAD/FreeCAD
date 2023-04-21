@@ -23,28 +23,12 @@
 #ifndef TECHDRAWGUI_TASKCENTERLINE_H
 #define TECHDRAWGUI_TASKCENTERLINE_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/CenterLine.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
-
-/*#include "QGTracker.h"*/
-
-//TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
-#define TRACKERFINISHED 4
-#define TRACKERSAVE 5
-
-class Ui_TaskCenterLine;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
@@ -52,73 +36,57 @@ class DrawPage;
 class DrawView;
 class DrawViewPart;
 class CosmeticEdge;
-class LineFormat;
-}
-
-namespace TechDraw
-{
 class Face;
+class LineFormat;
+class CenterLine;
 }
 
 namespace TechDrawGui
 {
+class QGSPage;
 class QGVPage;
 class QGIView;
 class QGIPrimPath;
 class MDIViewPage;
 class ViewProviderViewPart;
+class Ui_TaskCenterLine;
 
 class TaskCenterLine : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCenterLine(TechDraw::DrawViewPart* partFeat,
                    TechDraw::DrawPage* page,
                    std::vector<std::string> subNames,
                    bool editMode);
-    TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCenterLine(TechDraw::DrawViewPart* partFeat,
                    TechDraw::DrawPage* page,
                    std::string edgeName,
                    bool editMode);
-    ~TaskCenterLine();
+    ~TaskCenterLine() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
-    virtual void setCreateMode(bool b) { m_createMode = b; }
-    virtual bool getCreateMode(void) { return m_createMode; }
+    virtual void setCreateMode(bool mode) { m_createMode = mode; }
+    virtual bool getCreateMode() const { return m_createMode; }
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
-
-protected Q_SLOTS:
+    void enableTaskButtons(bool isEnabled);
 
 protected:
-    void changeEvent(QEvent *e);
-    void setUiConnect(void);
-    void setUiPrimary(void);
-    void setUiEdit(void);
-    void createCenterLine(void);
-    void updateOrientation(void);
+    void changeEvent(QEvent *event) override;
+    void setUiConnect();
+    void setUiPrimary();
+    void setUiEdit();
+    void createCenterLine();
+    void updateOrientation();
 
     double getCenterWidth();
     QColor getCenterColor();
     Qt::PenStyle getCenterStyle();
     double getExtendBy();
-
-private Q_SLOTS:
-    void onOrientationChanged();
-    void onShiftHorizChanged();
-    void onShiftVertChanged();
-    void onRotationChanged();
-    void onExtendChanged();
-    void onColorChanged();
-    void onWeightChanged();
-    void onStyleChanged();
 
 private:
     std::unique_ptr<Ui_TaskCenterLine> ui;
@@ -138,6 +106,17 @@ private:
     int m_type;
     int m_mode;
     bool m_editMode;
+
+private Q_SLOTS:
+    void onOrientationChanged();
+    void onShiftHorizChanged();
+    void onShiftVertChanged();
+    void onRotationChanged();
+    void onExtendChanged();
+    void onColorChanged();
+    void onWeightChanged();
+    void onStyleChanged();
+
 };
 
 class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
@@ -145,32 +124,32 @@ class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                       TechDraw::DrawPage* page,
                       std::vector<std::string> subNames,
                       bool editMode);
-    TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                       TechDraw::DrawPage* page,
                       std::string edgeName,
                       bool editMode);
-    ~TaskDlgCenterLine();
+    ~TaskDlgCenterLine() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 protected:
 

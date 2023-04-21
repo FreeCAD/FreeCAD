@@ -35,13 +35,14 @@
 #include <fcntl.h>
 #include <cstdio>
 #include <cassert>
-#include <time.h>
+#include <ctime>
 #include <cfloat>
 #ifdef FC_OS_WIN32
 #define _USE_MATH_DEFINES
 #endif // FC_OS_WIN32
 #include <cmath>
 #include <climits>
+#include <codecvt>
 
 #ifdef FC_OS_WIN32
 #include <direct.h>
@@ -63,8 +64,10 @@
 
 // STL
 #include <string>
+#include <string_view>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <set>
 #include <stack>
@@ -83,9 +86,6 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#if (XERCES_VERSION_MAJOR == 2)
-#include <xercesc/dom/DOMWriter.hpp>
-#endif
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMElement.hpp>
 #include <xercesc/dom/DOMText.hpp>
@@ -112,7 +112,11 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
+#include <boost/tokenizer.hpp>
 
 // QtCore
 #include <QBuffer>

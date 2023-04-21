@@ -33,22 +33,22 @@ namespace App
 
 class AppExport InventorObject : public GeoFeature
 {
-    PROPERTY_HEADER(App::InventorObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::InventorObject);
 
 public:
     /// Constructor
-    InventorObject(void);
-    virtual ~InventorObject();
+    InventorObject();
+    ~InventorObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderInventorObject";
     }
-    virtual DocumentObjectExecReturn *execute(void) {
+    DocumentObjectExecReturn *execute() override {
         return DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
     PropertyString Buffer;
     PropertyString FileName;

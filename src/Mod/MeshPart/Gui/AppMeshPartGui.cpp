@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,23 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+
 #include "CurveOnMesh.h"
 #include "Workbench.h"
 
+
 // use a different name to CreateCommand()
-void CreateMeshPartCommands(void);
+void CreateMeshPartCommands();
 
 void loadMeshPartResource()
 {
@@ -54,14 +51,14 @@ public:
         initialize("This module is the MeshPartGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace MeshPartGui
@@ -72,7 +69,7 @@ PyMOD_INIT_FUNC(MeshPartGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = MeshPartGui::initModule();

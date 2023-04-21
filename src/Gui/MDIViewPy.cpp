@@ -20,27 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "MDIViewPy.h"
-#include "Application.h"
-#include "Document.h"
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/PlacementPy.h>
-#include <Base/Rotation.h>
-#include <Base/RotationPy.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
-
-#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-#include <App/GeoFeature.h>
-#include <CXX/Objects.hxx>
+#include <Base/Exception.h>
+
+#include "MDIViewPy.h"
+#include "MDIView.h"
+
 
 using namespace Gui;
 
@@ -53,11 +41,41 @@ void MDIViewPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
+    behaviors().set_tp_new(extension_object_new);
 
-    add_varargs_method("message",&MDIViewPy::message,"message()");
+    add_varargs_method("printView",&MDIViewPy::printView,"printView()");
+    add_varargs_method("printPdf",&MDIViewPy::printPdf,"printPdf()");
+    add_varargs_method("printPreview",&MDIViewPy::printPreview,"printPreview()");
+
+    add_varargs_method("undoActions",&MDIViewPy::undoActions,"undoActions()");
+    add_varargs_method("redoActions",&MDIViewPy::redoActions,"redoActions()");
+
+    add_varargs_method("message",&MDIViewPy::sendMessage,"deprecated: use sendMessage");
+    add_varargs_method("sendMessage",&MDIViewPy::sendMessage,"sendMessage(str)");
+    add_varargs_method("supportMessage",&MDIViewPy::supportMessage,"supportMessage(str)");
     add_varargs_method("fitAll",&MDIViewPy::fitAll,"fitAll()");
     add_varargs_method("setActiveObject", &MDIViewPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &MDIViewPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
+    add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+}
+
+PyObject *MDIViewPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
+{
+    return new MDIViewPy(nullptr);
+}
+
+Py::Object MDIViewPy::type()
+{
+    return Py::Object( reinterpret_cast<PyObject *>( behaviors().type_object() ) );
+}
+
+Py::ExtensionObject<MDIViewPy> MDIViewPy::create(MDIView *mdi)
+{
+    Py::Callable class_type(type());
+    Py::Tuple arg;
+    auto inst = Py::ExtensionObject<MDIViewPy>(class_type.apply(arg, Py::Dict()));
+    inst.extensionObject()->_view = mdi;
+    return inst;
 }
 
 MDIViewPy::MDIViewPy(MDIView *mdi)
@@ -67,6 +85,8 @@ MDIViewPy::MDIViewPy(MDIView *mdi)
 
 MDIViewPy::~MDIViewPy()
 {
+    // in case the class is instantiated on the stack
+    ob_refcnt = 0;
 }
 
 Py::Object MDIViewPy::repr()
@@ -75,20 +95,85 @@ Py::Object MDIViewPy::repr()
     std::ostringstream s_out;
     if (!_view)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "MDIView";
+    s_out << _view->getTypeId().getName();
     return Py::String(s_out.str());
 }
 
-Py::Object MDIViewPy::message(const Py::Tuple& args)
+Py::Object MDIViewPy::printView(const Py::Tuple& args)
 {
-    const char **ppReturn = 0;
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->print();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::printPdf(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->printPdf();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::printPreview(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->printPreview();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::undoActions(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    Py::List list;
+    if (_view) {
+        QStringList undo = _view->undoActions();
+        for (const auto& it : undo)
+            list.append(Py::String(it.toStdString()));
+    }
+
+    return list;
+}
+
+Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    Py::List list;
+    if (_view) {
+        QStringList redo = _view->redoActions();
+        for (const auto& it : redo)
+            list.append(Py::String(it.toStdString()));
+    }
+
+    return list;
+}
+
+Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
+{
+    const char **ppReturn = nullptr;
     char *psMsgStr;
-    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
         throw Py::Exception();
 
     try {
+        bool ok = false;
         if (_view)
-            _view->onMsg(psMsgStr,ppReturn);
+            ok = _view->onMsg(psMsgStr,ppReturn);
+        return Py::Boolean(ok);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -99,7 +184,29 @@ Py::Object MDIViewPy::message(const Py::Tuple& args)
     catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
-    return Py::None();
+}
+
+Py::Object MDIViewPy::supportMessage(const Py::Tuple& args)
+{
+    char *psMsgStr;
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
+        throw Py::Exception();
+
+    try {
+        bool ok = false;
+        if (_view)
+            _view->onHasMsg(psMsgStr);
+        return Py::Boolean(ok);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
 }
 
 Py::Object MDIViewPy::fitAll(const Py::Tuple& args)
@@ -127,21 +234,21 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
 {
     PyObject* docObject = Py_None;
     char* name;
-    char *subname = 0;
+    char *subname = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
         throw Py::Exception();
 
-    if (_view) {
-        if (docObject == Py_None) {
-            _view->setActiveObject(0, name);
-        }
-        else {
-            if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
-                throw Py::TypeError("Expect the second argument to be a document object or None");
-
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+    try {
+        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
+            "Expect the second argument to be a document object or None");
+        if (_view) {
+            App::DocumentObject* obj = docObject ?
+                static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
             _view->setActiveObject(obj, name, subname);
         }
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.getPyExceptionType(), e.what());
     }
 
     return Py::None();
@@ -151,7 +258,7 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
 {
     const char* name;
     PyObject *resolve = Py_True;
-    if (!PyArg_ParseTuple(args.ptr(), "s|O", &name,&resolve))
+    if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve))
         throw Py::Exception();
 
     App::DocumentObject *parent = nullptr;
@@ -162,11 +269,16 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
     if (!obj)
         return Py::None();
 
-    if (PyObject_IsTrue(resolve))
+    if (Base::asBoolean(resolve))
         return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(
             Py::asObject(obj->getPyObject()),
             Py::asObject(parent->getPyObject()),
             Py::String(subname.c_str()));
+}
+
+Py::Object MDIViewPy::cast_to_base(const Py::Tuple&)
+{
+    return Py::Object(this);
 }

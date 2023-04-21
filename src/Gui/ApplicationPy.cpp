@@ -20,242 +20,411 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <qfileinfo.h>
-# include <qdir.h>
+# include <QDir>
 # include <QPrinter>
 # include <QFileInfo>
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <xercesc/util/TranscodingException.hpp>
+# include <xercesc/util/XMLString.hpp>
 #endif
 
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/TranscodingException.hpp>
 #include <boost/regex.hpp>
 
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "Macro.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
-#include "SoFCDB.h"
-#include "View3DInventor.h"
-#include "SplitView3DInventor.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
-#include "WidgetFactory.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "Language/Translator.h"
-#include "DownloadManager.h"
-#include "DlgPreferencesImp.h"
-#include "DocumentObserverPython.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <CXX/Objects.hxx>
-#include <Inventor/MarkerBitmaps.h>
+
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "DlgPreferencesImp.h"
+#include "Document.h"
+#include "DocumentObserverPython.h"
+#include "DownloadManager.h"
+#include "EditorView.h"
+#include "FileHandler.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "MainWindowPy.h"
+#include "PythonEditor.h"
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
+#include "SplitView3DInventor.h"
+#include "View3DInventor.h"
+#include "ViewProvider.h"
+#include "WaitCursor.h"
+#include "WidgetFactory.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+#include "Inventor/MarkerBitmaps.h"
+#include "Language/Translator.h"
+
 
 using namespace Gui;
 
-// FCApplication Methods						// Methods structure
+// Application methods structure
 PyMethodDef Application::Methods[] = {
   {"activateWorkbench",(PyCFunction) Application::sActivateWorkbenchHandler, METH_VARARGS,
-   "activateWorkbench(string) -> None\n\n"
-   "Activate the workbench by name"},
+   "activateWorkbench(name) -> bool\n"
+    "\n"
+   "Activate workbench by its name. Return False if the workbench is\n"
+   "already active.\n"
+    "\n"
+    "name : str\n    Name of the workbench to activate."},
   {"addWorkbench",     (PyCFunction) Application::sAddWorkbenchHandler, METH_VARARGS,
-   "addWorkbench(string, object) -> None\n\n"
-   "Add a workbench under a defined name."},
+   "addWorkbench(workbench) -> None\n"
+    "\n"
+   "Add a workbench.\n"
+    "\n"
+    "workbench : Workbench, Workbench type\n"
+    "    Instance of a Workbench subclass or subclass of the\n"
+    "    Workbench class."},
   {"removeWorkbench",  (PyCFunction) Application::sRemoveWorkbenchHandler, METH_VARARGS,
-   "removeWorkbench(string) -> None\n\n"
-   "Remove the workbench with name"},
+   "removeWorkbench(name) -> None\n"
+   "\n"
+   "Remove a workbench.\n"
+   "\n"
+   "name : str\n    Name of the workbench to remove."},
   {"getWorkbench",     (PyCFunction) Application::sGetWorkbenchHandler, METH_VARARGS,
-   "getWorkbench(string) -> object\n\n"
-   "Get the workbench by its name"},
+   "getWorkbench(name) -> Workbench\n"
+   "\n"
+   "Get the workbench by its name.\n"
+   "\n"
+   "name : str\n    Name of the workbench to return."},
   {"listWorkbenches",   (PyCFunction) Application::sListWorkbenchHandlers, METH_VARARGS,
-   "listWorkbenches() -> list\n\n"
-   "Show a list of all workbenches"},
+   "listWorkbenches() -> dict\n"
+   "\n"
+   "Get a dictionary with all workbenches."},
   {"activeWorkbench", (PyCFunction) Application::sActiveWorkbenchHandler, METH_VARARGS,
-   "activeWorkbench() -> object\n\n"
-   "Return the active workbench object"},
+   "activeWorkbench() -> Workbench\n"
+   "\n"
+   "Return the active workbench object."},
   {"addResourcePath",             (PyCFunction) Application::sAddResPath, METH_VARARGS,
-   "addResourcePath(string) -> None\n\n"
+   "addResourcePath(path) -> None\n"
+   "\n"
    "Add a new path to the system where to find resource files\n"
-   "like icons or localization files"},
+   "like icons or localization files.\n"
+   "\n"
+   "path : str, bytes, bytearray\n    Path to resource files."},
   {"addLanguagePath",             (PyCFunction) Application::sAddLangPath, METH_VARARGS,
-   "addLanguagePath(string) -> None\n\n"
-   "Add a new path to the system where to find language files"},
+   "addLanguagePath(path) -> None\n"
+   "\n"
+   "Add a new path to the system where to find language files.\n"
+   "\n"
+   "path : str, bytes, bytearray\n    Path to language files."},
   {"addIconPath",             (PyCFunction) Application::sAddIconPath, METH_VARARGS,
-   "addIconPath(string) -> None\n\n"
-   "Add a new path to the system where to find icon files"},
+   "addIconPath(path) -> None\n"
+   "\n"
+   "Add a new path to the system where to find icon files.\n"
+   "\n"
+   "path : str, bytes, bytearray\n    Path to icon files."},
   {"addIcon",                 (PyCFunction) Application::sAddIcon, METH_VARARGS,
-   "addIcon(string, string or list) -> None\n\n"
-   "Add an icon as file name or in XPM format to the system"},
+   "addIcon(name, content, format='XPM') -> None\n"
+   "\n"
+   "Add an icon to the system.\n"
+   "\n"
+   "name : str\n    Name of the icon.\n"
+   "content : str, bytes-like\n    Content of the icon.\n"
+   "format : str\n    Format of the icon."},
   {"getIcon",                 (PyCFunction) Application::sGetIcon, METH_VARARGS,
-   "getIcon(string) -> QIcon\n\n"
-   "Get an icon in the system"},
+   "getIcon(name) -> QIcon or None\n"
+   "\n"
+   "Get an icon in the system. If the pixmap is null, return None.\n"
+   "\n"
+   "name : str\n    Name of the icon."},
   {"isIconCached",           (PyCFunction) Application::sIsIconCached, METH_VARARGS,
-   "isIconCached(String) -> Bool\n\n"
-   "Check if an icon with the given name is cached"},
+   "isIconCached(name) -> Bool\n"
+   "\n"
+   "Check if an icon with the given name is cached.\n"
+   "\n"
+   "name : str\n    Name of the icon."},
   {"getMainWindow",           (PyCFunction) Application::sGetMainWindow, METH_VARARGS,
-   "getMainWindow() -> QMainWindow\n\n"
-   "Return the main window instance"},
+   "getMainWindow() -> QMainWindow\n"
+   "\n"
+   "Return the main window instance."},
   {"updateGui",               (PyCFunction) Application::sUpdateGui, METH_VARARGS,
-   "updateGui() -> None\n\n"
-   "Update the main window and all its windows"},
+   "updateGui() -> None\n"
+   "\n"
+   "Update the main window and all its windows."},
   {"updateLocale",            (PyCFunction) Application::sUpdateLocale, METH_VARARGS,
-   "updateLocale() -> None\n\n"
-   "Update the localization"},
+   "updateLocale() -> None\n"
+   "\n"
+   "Update the localization."},
   {"getLocale",            (PyCFunction) Application::sGetLocale, METH_VARARGS,
-   "getLocale() -> string\n\n"
-   "Returns the locale currently used by FreeCAD"},
+   "getLocale() -> str\n"
+   "\n"
+   "Returns the locale currently used by FreeCAD."},
   {"setLocale",            (PyCFunction) Application::sSetLocale, METH_VARARGS,
-   "getLocale(string) -> None\n\n"
-   "Sets the locale used by FreeCAD. You can set it by\n"
-   "top-level domain (e.g. \"de\") or the language name (e.g. \"German\")"},
+   "setLocale(name) -> None\n"
+   "\n"
+   "Sets the locale used by FreeCAD. Can be set by top-level\n"
+   "domain (e.g. \"de\") or the language name (e.g. \"German\").\n"
+   "\n"
+   "name : str\n    Locale name."},
   {"supportedLocales", (PyCFunction) Application::sSupportedLocales, METH_VARARGS,
-   "supportedLocales() -> dict\n\n"
-   "Returns a dict of all supported languages/top-level domains"},
+   "supportedLocales() -> dict\n"
+   "\n"
+   "Returns a dict of all supported locales. The keys are the language\n"
+   "names and the values the top-level domains."},
   {"createDialog",            (PyCFunction) Application::sCreateDialog, METH_VARARGS,
-   "createDialog(string) -- Open a UI file"},
+   "createDialog(path) -> PyResource\n"
+   "\n"
+   "Open a UI file.\n"
+   "\n"
+   "path : str\n    UI file path."},
   {"addPreferencePage",       (PyCFunction) Application::sAddPreferencePage, METH_VARARGS,
-   "addPreferencePage(string,string) -- Add a UI form to the\n"
-   "preferences dialog. The first argument specifies the file name"
-   "and the second specifies the group name"},
+   "addPreferencePage(path, group) -> None\n"
+   "addPreferencePage(dialog, group) -> None\n"
+   "\n"
+   "Add a UI form to the preferences dialog in the specified group.\n"
+   "\n"
+   "path : str\n    UI file path.\n"
+   "group : str\n    Group name.\n"
+   "dialog : type\n    Preference page."},
   {"addCommand",              (PyCFunction) Application::sAddCommand, METH_VARARGS,
-   "addCommand(string, object) -> None\n\n"
-   "Add a command object"},
+   "addCommand(name, cmd, activation) -> None\n"
+   "\n"
+   "Add a command object.\n"
+   "\n"
+   "name : str\n    Name of the command.\n"
+   "cmd : object\n    Command instance.\n"
+   "activation : str\n    Activation sequence. Optional."},
   {"runCommand",              (PyCFunction) Application::sRunCommand, METH_VARARGS,
-   "runCommand(string) -> None\n\n"
-   "Run command with name"},
+   "runCommand(name, index=0) -> None\n"
+   "\n"
+   "Run command by its name.\n"
+   "\n"
+   "name : str\n    Name of the command.\n"
+   "index : int\n    Index of the child command."},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
-   "deprecated -- use class View"},
+   "SendMsgToActiveView(name, suppress=False) -> str or None\n"
+   "\n"
+   "Send message to the active view. Deprecated, use class View.\n"
+   "\n"
+   "name : str\n    Name of the view command.\n"
+   "suppress : bool\n    If the sent message fail, suppress warning message."},
   {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
-   "send message to the focused view"},
+   "sendMsgToFocusView(name, suppress=False) -> str or None\n"
+   "\n"
+   "Send message to the focused view.\n"
+   "\n"
+   "name : str\n    Name of the view command.\n"
+   "suppress : bool\n    If send message fail, suppress warning message."},
   {"hide",                    (PyCFunction) Application::sHide, METH_VARARGS,
-   "deprecated"},
+   "hide(name) -> None\n"
+   "\n"
+   "Hide the given feature. Deprecated.\n"
+   "\n"
+   "name : str\n    Feature name."},
   {"show",                    (PyCFunction) Application::sShow, METH_VARARGS,
-   "deprecated"},
+   "show(name) -> None\n"
+   "\n"
+   "Show the given feature. Deprecated.\n"
+   "\n"
+   "name : str\n    Feature name."},
   {"hideObject",              (PyCFunction) Application::sHideObject, METH_VARARGS,
-   "hideObject(object) -> None\n\n"
-   "Hide the view provider to the given object"},
+   "hideObject(obj) -> None\n"
+   "\n"
+   "Hide the view provider of the given object.\n"
+   "\n"
+   "obj : App.DocumentObject"},
   {"showObject",              (PyCFunction) Application::sShowObject, METH_VARARGS,
-   "showObject(object) -> None\n\n"
-   "Show the view provider to the given object"},
+   "showObject(obj) -> None\n"
+   "\n"
+   "Show the view provider of the given object.\n"
+   "\n"
+   "obj : App.DocumentObject"},
   {"open",                    (PyCFunction) Application::sOpen, METH_VARARGS,
-   "Open a macro, Inventor or VRML file"},
+   "open(fileName) -> None\n"
+   "\n"
+   "Open a macro, Inventor or VRML file.\n"
+   "\n"
+   "fileName : str, bytes, bytearray\n    File name."},
   {"insert",                  (PyCFunction) Application::sInsert, METH_VARARGS,
-   "Open a macro, Inventor or VRML file"},
+   "insert(fileName, docName) -> None\n"
+   "\n"
+   "Insert a macro, Inventor or VRML file. If no document name\n"
+   "is given the active document is used.\n"
+   "\n"
+   "fileName : str, bytes, bytearray\n    File name.\n"
+   "docName : str\n    Document name."},
   {"export",                  (PyCFunction) Application::sExport, METH_VARARGS,
-   "save scene to Inventor or VRML file"},
+   "export(objs, fileName) -> None\n"
+   "\n"
+   "Save scene to Inventor or VRML file.\n"
+   "\n"
+   "objs : sequence of App.DocumentObject\n    Sequence of objects to save.\n"
+   "fileName : str, bytes, bytearray\n    File name."},
   {"activeDocument",          (PyCFunction) Application::sActiveDocument, METH_VARARGS,
-   "activeDocument() -> object or None\n\n"
-   "Return the active document or None if no one exists"},
+   "activeDocument() -> Gui.Document or None\n"
+   "\n"
+   "Return the active document. If no one exists, return None."},
   {"setActiveDocument",       (PyCFunction) Application::sSetActiveDocument, METH_VARARGS,
-   "setActiveDocument(string or App.Document) -> None\n\n"
-   "Activate the specified document"},
+   "setActiveDocument(doc) -> None\n"
+   "\n"
+   "Activate the specified document.\n"
+   "\n"
+   "doc : str, App.Document\n    Document to activate."},
   {"activeView", (PyCFunction)Application::sActiveView, METH_VARARGS,
-   "activeView(typename=None) -> object or None\n\n"
-   "Return the active view of the active document or None if no one exists" },
+   "activeView(typeName) -> object or None\n"
+   "\n"
+   "Return the active view of the active document. If no one\n"
+   "exists, return None.\n"
+   "\n"
+   "typeName : str\n    Type name."},
   {"activateView", (PyCFunction)Application::sActivateView, METH_VARARGS,
-   "activateView(type)\n\n"
-   "Activate a view of the given type of the active document"},
+   "activateView(typeName, create=False) -> None\n"
+   "\n"
+   "Activate a view of the given type in the active document.\n"
+   "If a view of this type doesn't exist and create is True, a\n"
+   "new view of this type is created.\n"
+   "\n"
+   "type : str\n    Type name.\n"
+   "create : bool"},
   {"editDocument", (PyCFunction)Application::sEditDocument, METH_VARARGS,
-   "editDocument() -> object or None\n\n"
-   "Return the current editing document or None if no one exists" },
+   "editDocument() -> Gui.Document or None\n"
+   "\n"
+   "Return the current editing document. If no one exists,\n"
+   "return None."},
   {"getDocument",             (PyCFunction) Application::sGetDocument, METH_VARARGS,
-   "getDocument(string) -> object\n\n"
-   "Get a document by its name"},
+   "getDocument(doc) -> Gui.Document\n"
+   "\n"
+   "Get a document.\n"
+   "\n"
+   "doc : str, App.Document\n    `App.Document` name or `App.Document` object."},
   {"doCommand",               (PyCFunction) Application::sDoCommand, METH_VARARGS,
-   "doCommand(string) -> None\n\n"
-   "Prints the given string in the python console and runs it"},
+   "doCommand(cmd) -> None\n"
+   "\n"
+   "Prints the given string in the python console and runs it.\n"
+   "\n"
+   "cmd : str"},
   {"doCommandGui",               (PyCFunction) Application::sDoCommandGui, METH_VARARGS,
-   "doCommandGui(string) -> None\n\n"
-   "Prints the given string in the python console and runs it but doesn't record it in macros"},
+   "doCommandGui(cmd) -> None\n"
+   "\n"
+   "Prints the given string in the python console and runs it\n"
+   "but doesn't record it in macros.\n"
+   "\n"
+   "cmd : str"},
   {"addModule",               (PyCFunction) Application::sAddModule, METH_VARARGS,
-   "addModule(string) -> None\n\n"
-   "Prints the given module import only once in the macro recording"},
+   "addModule(mod) -> None\n"
+   "\n"
+   "Prints the given module import only once in the macro recording.\n"
+   "\n"
+   "mod : str"},
   {"showDownloads",               (PyCFunction) Application::sShowDownloads, METH_VARARGS,
    "showDownloads() -> None\n\n"
-   "Shows the downloads manager window"},
+   "Show the downloads manager window."},
   {"showPreferences",               (PyCFunction) Application::sShowPreferences, METH_VARARGS,
-   "showPreferences([string,int]) -> None\n\n"
-   "Shows the preferences window. If string and int are provided, the given page index in the given group is shown."},
+   "showPreferences(grp, index=0) -> None\n"
+   "\n"
+   "Show the preferences window.\n"
+   "\n"
+   "grp: str\n    Group to show.\n"
+   "index : int\n    Page index."},
   {"createViewer",               (PyCFunction) Application::sCreateViewer, METH_VARARGS,
-   "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
-   "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
-
+   "createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy\n"
+   "\n"
+   "Show and returns a viewer.\n"
+   "\n"
+   "views : int\n    If > 1 a `AbstractSplitViewPy` object is returned.\n"
+   "name : str\n    Viewer title."},
   {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, METH_VARARGS,
-   "Get marker index according to marker size setting"},
-
-    {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
-     "addDocumentObserver() -> None\n\n"
-     "Add an observer to get notified about changes on documents."},
-    {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver, METH_VARARGS,
-     "removeDocumentObserver() -> None\n\n"
-     "Remove an added document observer."},
-
+   "getMarkerIndex(marker, size=9) -> int\n"
+   "\n"
+   "Get marker index according to marker name and size.\n"
+   "\n"
+   "marker : str\n    Marker style name.\n"
+   "size : int\n    Marker size."},
+  {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
+   "addDocumentObserver(obj) -> None\n"
+   "\n"
+   "Add an observer to get notifications about changes on documents.\n"
+   "\n"
+   "obj : object"},
+  {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver, METH_VARARGS,
+   "removeDocumentObserver(obj) -> None\n"
+   "\n"
+   "Remove an added document observer.\n"
+   "\n"
+   "obj : object"},
+  {"listUserEditModes", (PyCFunction) Application::sListUserEditModes, METH_VARARGS,
+   "listUserEditModes() -> list\n"
+   "\n"
+   "List available user edit modes."},
+  {"getUserEditMode", (PyCFunction) Application::sGetUserEditMode, METH_VARARGS,
+   "getUserEditMode() -> str\n"
+   "\n"
+   "Get current user edit mode."},
+  {"setUserEditMode", (PyCFunction) Application::sSetUserEditMode, METH_VARARGS,
+   "setUserEditMode(mode) -> bool\n"
+   "\n"
+   "Set user edit mode. Returns True if exists, False otherwise.\n"
+   "\n"
+   "mode : str"},
   {"reload",                    (PyCFunction) Application::sReload, METH_VARARGS,
-   "reload(name) -> doc\n\n"
-   "Reload a partial opened document"},
-
+   "reload(name) -> App.Document or None\n"
+   "\n"
+   "Reload a partial opened document. If the document is not open,\n"
+   "return None.\n"
+   "\n"
+   "name : str\n    `App.Document` name."},
   {"loadFile",       (PyCFunction) Application::sLoadFile, METH_VARARGS,
-   "loadFile(string=filename,[string=module]) -> None\n\n"
-   "Loads an arbitrary file by delegating to the given Python module:\n"
-   "* If no module is given it will be determined by the file extension.\n"
-   "* If more than one module can load a file the first one will be taken.\n"
-   "* If no module exists to load the file an exception will be raised."},
-
+   "loadFile(fileName, module) -> None\n"
+   "\n"
+   "Loads an arbitrary file by delegating to the given Python module.\n"
+   "If no module is given it will be determined by the file extension.\n"
+   "If more than one module can load a file the first one will be taken.\n"
+   "If no module exists to load the file an exception will be raised.\n"
+   "\n"
+   "fileName : str\n"
+   "module : str"},
   {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
-   "Remove all children from a group node"},
-
-  {NULL, NULL, 0, NULL}		/* Sentinel */
+   "coinRemoveAllChildren(node) -> None\n"
+   "\n"
+   "Remove all children from a group node.\n"
+   "\n"
+   "node : object"},
+  {nullptr, nullptr, 0, nullptr}    /* Sentinel */
 };
 
 PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
 {
-	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-		return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
-	Document *pcDoc = Instance->editDocument();
-	if (pcDoc) {
-		return pcDoc->getPyObject();
-	}
-	else {
-		Py_Return;
-	}
+    Document *pcDoc = Instance->editDocument();
+    if (pcDoc)
+        return pcDoc->getPyObject();
+    else
+        Py_Return;
 }
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Document *pcDoc = Instance->activeDocument();
-    if (pcDoc) {
+    if (pcDoc)
         return pcDoc->getPyObject();
-    }
-    else {
+    else
         Py_Return;
-    }
 }
 
 PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
 {
-    const char *typeName=0;
+    const char *typeName = nullptr;
     if (!PyArg_ParseTuple(args, "|s", &typeName))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Base::Type type;
@@ -263,7 +432,7 @@ PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
             type = Base::Type::fromName(typeName);
             if(type.isBad()) {
                 PyErr_Format(PyExc_TypeError, "Invalid type '%s'", typeName);
-                return 0;
+                return nullptr;
             }
         }
 
@@ -283,7 +452,8 @@ PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
 
         Py_Return;
 
-    } PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
@@ -291,24 +461,25 @@ PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
     char* typeStr;
     PyObject *create = Py_False;
     if (!PyArg_ParseTuple(args, "sO!", &typeStr, &PyBool_Type, &create))
-        return NULL;
+        return nullptr;
 
     Base::Type type = Base::Type::fromName(typeStr);
-    Instance->activateView(type, PyObject_IsTrue(create) ? true : false);
+    Instance->activateView(type, Base::asBoolean(create));
+
     Py_Return;
 }
 
 PyObject* Gui::Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args)
 {
-    Document *pcDoc = 0;
+    Document *pcDoc = nullptr;
 
     do {
-        char *pstr=0;
+        char *pstr = nullptr;
         if (PyArg_ParseTuple(args, "s", &pstr)) {
             pcDoc = Instance->getDocument(pstr);
             if (!pcDoc) {
                 PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
-                return 0;
+                return nullptr;
             }
             break;
         }
@@ -319,7 +490,7 @@ PyObject* Gui::Application::sSetActiveDocument(PyObject * /*self*/, PyObject *ar
             pcDoc = Instance->getDocument(static_cast<App::DocumentPy*>(doc)->getDocumentPtr());
             if (!pcDoc) {
                 PyErr_Format(PyExc_KeyError, "Unknown document instance");
-                return 0;
+                return nullptr;
             }
             break;
         }
@@ -328,24 +499,25 @@ PyObject* Gui::Application::sSetActiveDocument(PyObject * /*self*/, PyObject *ar
 
     if (!pcDoc) {
         PyErr_SetString(PyExc_TypeError, "Either string or App.Document expected");
-        return 0;
+        return nullptr;
     }
 
     if (Instance->activeDocument() != pcDoc) {
         Gui::MDIView* view = pcDoc->getActiveView();
         getMainWindow()->setActiveWindow(view);
     }
+
     Py_Return;
 }
 
 PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr=0;
+    char *pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         Document *pcDoc = Instance->getDocument(pstr);
         if (!pcDoc) {
             PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
-            return 0;
+            return nullptr;
         }
         return pcDoc->getPyObject();
     }
@@ -356,20 +528,20 @@ PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
         Document *pcDoc = Instance->getDocument(static_cast<App::DocumentPy*>(doc)->getDocumentPtr());
         if (!pcDoc) {
             PyErr_Format(PyExc_KeyError, "Unknown document instance");
-            return 0;
+            return nullptr;
         }
         return pcDoc->getPyObject();
     }
 
     PyErr_SetString(PyExc_TypeError, "Either string or App.Document exprected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* Application::sHide(PyObject * /*self*/, PyObject *args)
 {
     char *psFeatStr;
     if (!PyArg_ParseTuple(args, "s;Name of the object to hide has to be given!",&psFeatStr))
-        return NULL;
+        return nullptr;
 
     Document *pcDoc = Instance->activeDocument();
 
@@ -383,7 +555,7 @@ PyObject* Application::sShow(PyObject * /*self*/, PyObject *args)
 {
     char *psFeatStr;
     if (!PyArg_ParseTuple(args, "s;Name of the object to show has to be given!",&psFeatStr))
-        return NULL;
+        return nullptr;
 
     Document *pcDoc = Instance->activeDocument();
 
@@ -397,7 +569,7 @@ PyObject* Application::sHideObject(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type),&object))
-        return 0;
+        return nullptr;
 
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
     Instance->hideViewProvider(obj);
@@ -409,7 +581,7 @@ PyObject* Application::sShowObject(PyObject * /*self*/, PyObject *args)
 {
     PyObject *object;
     if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type),&object))
-        return 0;
+        return nullptr;
 
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
     Instance->showViewProvider(obj);
@@ -422,67 +594,19 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
     // only used to open Python files
     char* Name;
     if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
-        return NULL;
+        return nullptr;
+
     std::string Utf8Name = std::string(Name);
     PyMem_Free(Name);
     PY_TRY {
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
-        QFileInfo fi;
-        fi.setFile(fileName);
-        QString ext = fi.suffix().toLower();
-        QList<EditorView*> views = getMainWindow()->findChildren<EditorView*>();
-        for (QList<EditorView*>::Iterator it = views.begin(); it != views.end(); ++it) {
-            if ((*it)->fileName() == fileName) {
-                (*it)->setFocus();
-                Py_Return;
-            }
-        }
-
-        if (ext == QLatin1String("iv")) {
-            if (!Application::Instance->activeDocument())
-                App::GetApplication().newDocument();
-            //QString cmd = QString("Gui.activeDocument().addAnnotation(\"%1\",\"%2\")").arg(fi.baseName()).arg(fi.absoluteFilePath());
-            QString cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"App::InventorObject\",\"%1\")."
-                "FileName=\"%2\"\n"
-                "App.ActiveDocument.ActiveObject.Label=\"%1\"\n"
-                "App.ActiveDocument.recompute()")
-                .arg(fi.baseName(), fi.absoluteFilePath());
-            Base::Interpreter().runString(cmd.toUtf8());
-        }
-        else if (ext == QLatin1String("wrl") ||
-                 ext == QLatin1String("vrml") ||
-                 ext == QLatin1String("wrz")) {
-            if (!Application::Instance->activeDocument())
-                App::GetApplication().newDocument();
-
-            // Add this to the search path in order to read inline files (#0002029)
-            QByteArray path = fi.absolutePath().toUtf8();
-            SoInput::addDirectoryFirst(path.constData());
-
-            //QString cmd = QString("Gui.activeDocument().addAnnotation(\"%1\",\"%2\")").arg(fi.baseName()).arg(fi.absoluteFilePath());
-            QString cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"App::VRMLObject\",\"%1\")."
-                "VrmlFile=\"%2\"\n"
-                "App.ActiveDocument.ActiveObject.Label=\"%1\"\n"
-                "App.ActiveDocument.recompute()")
-                .arg(fi.baseName(), fi.absoluteFilePath());
-            Base::Interpreter().runString(cmd.toUtf8());
-            SoInput::removeDirectory(path.constData());
-        }
-        else if (ext == QLatin1String("py") || ext == QLatin1String("fcmacro") ||
-                 ext == QLatin1String("fcscript")) {
-            PythonEditor* editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
-            edit->open(fileName);
-            edit->resize(400, 300);
-            getMainWindow()->addWindow( edit );
-        }
-        else {
+        FileHandler handler(fileName);
+        if (!handler.openFile()) {
+            QString ext = handler.extension();
             Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
-    } PY_CATCH;
+    }
+    PY_CATCH;
 
     Py_Return;
 }
@@ -490,67 +614,18 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
 PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
 {
     char* Name;
-    char* DocName=0;
+    char* DocName = nullptr;
     if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
-        return NULL;
+        return nullptr;
+
     std::string Utf8Name = std::string(Name);
     PyMem_Free(Name);
 
     PY_TRY {
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
-        QFileInfo fi;
-        fi.setFile(fileName);
-        QString ext = fi.suffix().toLower();
-        if (ext == QLatin1String("iv")) {
-            App::Document *doc = 0;
-            if (DocName)
-                doc = App::GetApplication().getDocument(DocName);
-            else
-                doc = App::GetApplication().getActiveDocument();
-            if (!doc)
-                doc = App::GetApplication().newDocument(DocName);
-
-            App::DocumentObject* obj = doc->addObject("App::InventorObject",
-                (const char*)fi.baseName().toUtf8());
-            obj->Label.setValue((const char*)fi.baseName().toUtf8());
-            static_cast<App::PropertyString*>(obj->getPropertyByName("FileName"))
-                ->setValue((const char*)fi.absoluteFilePath().toUtf8());
-            doc->recompute();
-        }
-        else if (ext == QLatin1String("wrl") ||
-                 ext == QLatin1String("vrml") ||
-                 ext == QLatin1String("wrz")) {
-            App::Document *doc = 0;
-            if (DocName)
-                doc = App::GetApplication().getDocument(DocName);
-            else
-                doc = App::GetApplication().getActiveDocument();
-            if (!doc)
-                doc = App::GetApplication().newDocument(DocName);
-
-            // Add this to the search path in order to read inline files (#0002029)
-            QByteArray path = fi.absolutePath().toUtf8();
-            SoInput::addDirectoryFirst(path.constData());
-
-            App::DocumentObject* obj = doc->addObject("App::VRMLObject",
-                (const char*)fi.baseName().toUtf8());
-            obj->Label.setValue((const char*)fi.baseName().toUtf8());
-            static_cast<App::PropertyFileIncluded*>(obj->getPropertyByName("VrmlFile"))
-                ->setValue((const char*)fi.absoluteFilePath().toUtf8());
-            doc->recompute();
-
-            SoInput::removeDirectory(path.constData());
-        }
-        else if (ext == QLatin1String("py") || ext == QLatin1String("fcmacro") ||
-                 ext == QLatin1String("fcscript")) {
-            PythonEditor* editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
-            edit->open(fileName);
-            edit->resize(400, 300);
-            getMainWindow()->addWindow( edit );
-        }
-        else {
+        FileHandler handler(fileName);
+        if (!handler.importFile(std::string(DocName ? DocName : ""))) {
+            QString ext = handler.extension();
             Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
@@ -563,12 +638,13 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
     PyObject* object;
     char* Name;
     if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
-        return NULL;
+        return nullptr;
+
     std::string Utf8Name = std::string(Name);
     PyMem_Free(Name);
 
     PY_TRY {
-        App::Document* doc = 0;
+        App::Document* doc = nullptr;
         Py::Sequence list(object);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
@@ -592,7 +668,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
             ext == QLatin1String("xhtml")) {
 
             // build up the graph
-            SoSeparator* sep = new SoSeparator();
+            auto sep = new SoSeparator();
             sep->ref();
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -627,7 +703,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
             if (gui_doc) {
                 Gui::MDIView* view = gui_doc->getActiveView();
                 if (view) {
-                    View3DInventor* view3d = qobject_cast<View3DInventor*>(view);
+                    auto view3d = qobject_cast<View3DInventor*>(view);
                     if (view3d)
                         view3d->viewAll();
                     QPrinter printer(QPrinter::ScreenResolution);
@@ -650,11 +726,11 @@ PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args)
     char *psCommandStr;
     PyObject *suppress=Py_False;
     if (!PyArg_ParseTuple(args, "s|O!",&psCommandStr,&PyBool_Type,&suppress))
-        return NULL;
+        return nullptr;
 
-    const char* ppReturn=0;
+    const char* ppReturn = nullptr;
     if (!Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
-        if (!PyObject_IsTrue(suppress))
+        if (!Base::asBoolean(suppress))
             Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
     }
 
@@ -663,8 +739,7 @@ PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args)
         return Py_BuildValue("s",ppReturn);
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
@@ -672,11 +747,11 @@ PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
     char *psCommandStr;
     PyObject *suppress=Py_False;
     if (!PyArg_ParseTuple(args, "s|O!",&psCommandStr,&PyBool_Type,&suppress))
-        return NULL;
+        return nullptr;
 
-    const char* ppReturn=0;
+    const char* ppReturn = nullptr;
     if (!Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
-        if (!PyObject_IsTrue(suppress))
+        if (!Base::asBoolean(suppress))
             Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
     }
 
@@ -685,56 +760,46 @@ PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
         return Py_BuildValue("s",ppReturn);
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
-    PythonWrapper wrap;
-    if (!wrap.loadCoreModule() ||
-        !wrap.loadGuiModule() ||
-        !wrap.loadWidgetsModule()) {
-        PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
-        return 0;
-    }
     try {
-        return Py::new_reference_to(wrap.fromQWidget(Gui::getMainWindow(), "QMainWindow"));
+        return Py::new_reference_to(MainWindowPy::createWrapper(Gui::getMainWindow()));
     }
     catch (const Py::Exception&) {
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* Application::sUpdateGui(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     qApp->processEvents();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sUpdateLocale(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Translator::instance()->refresh();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sGetLocale(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     std::string locale = Translator::instance()->activeLanguage();
     return PyUnicode_FromString(locale.c_str());
@@ -744,7 +809,7 @@ PyObject* Application::sSetLocale(PyObject * /*self*/, PyObject *args)
 {
     char* name;
     if (!PyArg_ParseTuple(args, "s", &name))
-        return NULL;
+        return nullptr;
 
     std::string cname(name);
     TStringMap map = Translator::instance()->supportedLocales();
@@ -756,14 +821,13 @@ PyObject* Application::sSetLocale(PyObject * /*self*/, PyObject *args)
         }
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sSupportedLocales(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TStringMap map = Translator::instance()->supportedLocales();
     Py::Dict dict;
@@ -778,18 +842,18 @@ PyObject* Application::sSupportedLocales(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sCreateDialog(PyObject * /*self*/, PyObject *args)
 {
-    char* fn = 0;
+    char* fn = nullptr;
     if (!PyArg_ParseTuple(args, "s", &fn))
-        return NULL;
+        return nullptr;
 
-    PyObject* pPyResource=0L;
+    PyObject* pPyResource = nullptr;
     try{
         pPyResource = new PyResource();
-        ((PyResource*)pPyResource)->load(fn);
+        static_cast<PyResource*>(pPyResource)->load(fn);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_AssertionError, e.what());
-        return NULL;
+        return nullptr;
     }
 
     return pPyResource;
@@ -802,51 +866,37 @@ PyObject* Application::sAddPreferencePage(PyObject * /*self*/, PyObject *args)
         QFileInfo fi(QString::fromUtf8(fn));
         if (!fi.exists()) {
             PyErr_SetString(PyExc_RuntimeError, "UI file does not exist");
-            return 0;
+            return nullptr;
         }
 
         // add to the preferences dialog
         new PrefPageUiProducer(fn, grp);
-
-        Py_INCREF(Py_None);
-        return Py_None;
+        Py_Return;
     }
-    PyErr_Clear();
 
+    PyErr_Clear();
     PyObject* dlg;
-    // old style classes
-    if (PyArg_ParseTuple(args, "O!s", &PyType_Type, &dlg, &grp)) {
-        // add to the preferences dialog
-        new PrefPagePyProducer(Py::Object(dlg), grp);
-
-        Py_INCREF(Py_None);
-        return Py_None;
-    }
-    PyErr_Clear();
-
     // new style classes
     if (PyArg_ParseTuple(args, "O!s", &PyType_Type, &dlg, &grp)) {
         // add to the preferences dialog
         new PrefPagePyProducer(Py::Object(dlg), grp);
-
-        Py_INCREF(Py_None);
-        return Py_None;
+        Py_Return;
     }
 
-    return 0;
+    return nullptr;
 }
 
 PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
-    char*       psKey;
+    char* psKey;
     if (!PyArg_ParseTuple(args, "s", &psKey))
-        return NULL;
+        return nullptr;
 
     // search for workbench handler from the dictionary
     PyObject* pcWorkbench = PyDict_GetItemString(Instance->_pcWorkbenchDictionary, psKey);
     if (!pcWorkbench) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
-        return NULL;
+        return nullptr;
     }
 
     try {
@@ -856,8 +906,8 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (const Base::Exception& e) {
         std::stringstream err;
         err << psKey << ": " << e.what();
-        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
-        return 0;
+        PyErr_SetString(e.getPyExceptionType(), err.str().c_str());
+        return nullptr;
     }
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
         std::stringstream err;
@@ -869,22 +919,21 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
             << pMsg;
         XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&pMsg);
         PyErr_SetString(PyExc_RuntimeError, err.str().c_str());
-        return 0;
+        return nullptr;
     }
     catch (...) {
         std::stringstream err;
         err << "Unknown C++ exception raised in activateWorkbench('" << psKey << "')";
-        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
-        return 0;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
+        return nullptr;
     }
 }
 
 PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
-    PyObject*   pcObject;
-    std::string item;
+    PyObject* pcObject;
     if (!PyArg_ParseTuple(args, "O", &pcObject))
-        return NULL;
+        return nullptr;
 
     try {
         // get the class object 'Workbench' from the main module that is expected
@@ -912,62 +961,60 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         else {
             PyErr_SetString(PyExc_TypeError, "arg must be a subclass or an instance of "
                                              "a subclass of 'Workbench'");
-            return NULL;
+            return nullptr;
         }
 
         // Search for some methods and members without invoking them
         Py::Callable(object.getAttr(std::string("Initialize")));
         Py::Callable(object.getAttr(std::string("GetClassName")));
-        item = name.as_std_string("ascii");
+        std::string item = name.as_std_string("ascii");
 
         PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,item.c_str());
         if (wb) {
             PyErr_Format(PyExc_KeyError, "'%s' already exists.", item.c_str());
-            return NULL;
+            return nullptr;
         }
 
         PyDict_SetItemString(Instance->_pcWorkbenchDictionary,item.c_str(),object.ptr());
         Instance->signalAddWorkbench(item.c_str());
     }
     catch (const Py::Exception&) {
-        return NULL;
+        return nullptr;
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
-    char*       psKey;
+    char* psKey;
     if (!PyArg_ParseTuple(args, "s", &psKey))
-        return NULL;
+        return nullptr;
 
     PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,psKey);
     if (!wb) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
-        return NULL;
+        return nullptr;
     }
 
     Instance->signalRemoveWorkbench(psKey);
     WorkbenchManager::instance()->removeWorkbench(psKey);
     PyDict_DelItemString(Instance->_pcWorkbenchDictionary,psKey);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
     char* psKey;
     if (!PyArg_ParseTuple(args, "s", &psKey))
-        return NULL;
+        return nullptr;
 
     // get the python workbench object from the dictionary
     PyObject* pcWorkbench = PyDict_GetItemString(Instance->_pcWorkbenchDictionary, psKey);
     if (!pcWorkbench) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
-        return NULL;
+        return nullptr;
     }
 
     Py_INCREF(pcWorkbench);
@@ -977,7 +1024,7 @@ PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Py_INCREF(Instance->_pcWorkbenchDictionary);
     return Instance->_pcWorkbenchDictionary;
@@ -986,12 +1033,12 @@ PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *arg
 PyObject* Application::sActiveWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Workbench* actWb = WorkbenchManager::instance()->active();
     if (!actWb) {
         PyErr_SetString(PyExc_AssertionError, "No active workbench\n");
-        return NULL;
+        return nullptr;
     }
 
     // get the python workbench object from the dictionary
@@ -999,7 +1046,7 @@ PyObject* Application::sActiveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
     PyObject* pcWorkbench = PyDict_GetItemString(Instance->_pcWorkbenchDictionary, key.c_str());
     if (!pcWorkbench) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", key.c_str());
-        return NULL;
+        return nullptr;
     }
 
     // object get incremented
@@ -1011,96 +1058,101 @@ PyObject* Application::sAddResPath(PyObject * /*self*/, PyObject *args)
 {
     char* filePath;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath))
-        return NULL;
+        return nullptr;
+
     QString path = QString::fromUtf8(filePath);
     PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
-        QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+        QString home = QString::fromStdString(App::Application::getHomePath());
         path = home + path;
     }
 
     BitmapFactory().addPath(path);
     Translator::instance()->addPath(path);
-    Py_INCREF(Py_None);
-    return Py_None;
+
+    Py_Return;
 }
 
 PyObject* Application::sAddLangPath(PyObject * /*self*/, PyObject *args)
 {
     char* filePath;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath))
-        return NULL;
+        return nullptr;
+
     QString path = QString::fromUtf8(filePath);
     PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
-        QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+        QString home = QString::fromStdString(App::Application::getHomePath());
         path = home + path;
     }
 
     Translator::instance()->addPath(path);
-    Py_INCREF(Py_None);
-    return Py_None;
+
+    Py_Return;
 }
 
 PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args)
 {
     char* filePath;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath))
-        return NULL;
+        return nullptr;
+
     QString path = QString::fromUtf8(filePath);
     PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
-        QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+        QString home = QString::fromStdString(App::Application::getHomePath());
         path = home + path;
     }
 
     BitmapFactory().addPath(path);
-    Py_INCREF(Py_None);
-    return Py_None;
+
+    Py_Return;
 }
 
 PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 {
     const char *iconName;
-    const char *content;
-    Py_ssize_t size = 0;
+    Py_buffer content;
     const char *format = "XPM";
-    if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
-        return NULL;
+    if (!PyArg_ParseTuple(args, "ss*|s", &iconName, &content, &format))
+        return nullptr;
 
     QPixmap icon;
     if (BitmapFactory().findPixmapInCache(iconName, icon)) {
         PyErr_SetString(PyExc_AssertionError, "Icon with this name already registered");
-        return NULL;
+        PyBuffer_Release(&content);
+        return nullptr;
     }
 
-    QByteArray ary(content,size);
+    const char* contentStr = static_cast<const char*>(content.buf);
+    QByteArray ary(contentStr, content.len);
     icon.loadFromData(ary, format);
 
     if (icon.isNull()){
-        QString file = QString::fromUtf8(content);
+        QString file = QString::fromUtf8(contentStr, content.len);
         icon.load(file);
     }
 
+    PyBuffer_Release(&content);
+
     if (icon.isNull()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Invalid icon added to application");
-        return NULL;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Invalid icon added to application");
+        return nullptr;
     }
 
     BitmapFactory().addPixmapToCache(iconName, icon);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
 {
     char *iconName;
     if (!PyArg_ParseTuple(args, "s", &iconName))
-        return NULL;
+        return nullptr;
 
     PythonWrapper wrap;
     wrap.loadGuiModule();
@@ -1108,6 +1160,7 @@ PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
     auto pixmap = BitmapFactory().pixmap(iconName);
     if(!pixmap.isNull())
         return Py::new_reference_to(wrap.fromQIcon(new QIcon(pixmap)));
+
     Py_Return;
 }
 
@@ -1115,19 +1168,20 @@ PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
 {
     char *iconName;
     if (!PyArg_ParseTuple(args, "s", &iconName))
-        return NULL;
+        return nullptr;
 
     QPixmap icon;
+
     return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
 
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
 {
-    char*       pName;
-    char*       pSource=0;
-    PyObject*   pcCmdObj;
+    char* pName;
+    char* pSource = nullptr;
+    PyObject* pcCmdObj;
     if (!PyArg_ParseTuple(args, "sO|s", &pName,&pcCmdObj,&pSource))
-        return NULL;
+        return nullptr;
 
     // get the call stack to find the Python module name
     //
@@ -1137,7 +1191,7 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         Py::Module mod(PyImport_ImportModule("inspect"), true);
         if (mod.isNull()) {
             PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
-            return 0;
+            return nullptr;
         }
         Py::Callable inspect(mod.getAttr("stack"));
         Py::List list(inspect.apply());
@@ -1148,8 +1202,8 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
         if(!pyfile)
             throw Py::Exception();
-        file = Py::Object(pyfile).as_string();
 
+        file = Py::Object(pyfile).as_string();
         Base::FileInfo fi(file);
         // convert backslashes to slashes
         file = fi.filePath();
@@ -1172,7 +1226,6 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
     catch (Py::Exception& e) {
         e.clear();
     }
-
     try {
         Base::PyGILStateLocker lock;
 
@@ -1199,16 +1252,15 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         }
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return 0;
+        e.setPyException();
+        return nullptr;
     }
     catch (...) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in Application::sAddCommand()");
-        return 0;
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Unknown C++ exception raised in Application::sAddCommand()");
+        return nullptr;
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
@@ -1216,7 +1268,7 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
     char* pName;
     int item = 0;
     if (!PyArg_ParseTuple(args, "s|i", &pName, &item))
-        return NULL;
+        return nullptr;
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1224,20 +1276,19 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
         cmd->invoke(item);
-        Py_INCREF(Py_None);
-        return Py_None;
+        Py_Return;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command '%s'", pName);
+        return nullptr;
     }
 }
 
 PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
 {
-    char *sCmd=0;
+    char *sCmd = nullptr;
     if (!PyArg_ParseTuple(args, "s", &sCmd))
-        return NULL;
+        return nullptr;
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1249,20 +1300,21 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
 
     Base::PyGILStateLocker locker;
     module = PyImport_AddModule("__main__");
-    if (module == NULL)
-        return 0;
+    if (!module)
+        return nullptr;
+
     dict = PyModule_GetDict(module);
-    if (dict == NULL)
-        return 0;
+    if (!dict)
+        return nullptr;
 
     return PyRun_String(sCmd, Py_file_input, dict, dict);
 }
 
 PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
 {
-    char *sCmd=0;
+    char *sCmd = nullptr;
     if (!PyArg_ParseTuple(args, "s", &sCmd))
-        return NULL;
+        return nullptr;
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1274,59 +1326,59 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
 
     Base::PyGILStateLocker locker;
     module = PyImport_AddModule("__main__");
-    if (module == NULL)
-        return 0;
+    if (!module)
+        return nullptr;
+
     dict = PyModule_GetDict(module);
-    if (dict == NULL)
-        return 0;
+    if (!dict)
+        return nullptr;
 
     return PyRun_String(sCmd, Py_file_input, dict, dict);
 }
 
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr=0;
+    char *pstr;
     if (!PyArg_ParseTuple(args, "s", &pstr))
-        return NULL;
+        return nullptr;
 
     try {
         Command::addModule(Command::Doc,pstr);
-
-        Py_INCREF(Py_None);
-        return Py_None;
+        Py_Return;
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
+
     Gui::Dialog::DownloadManager::getInstance();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr=0;
+    char *pstr = nullptr;
     int idx=0;
     if (!PyArg_ParseTuple(args, "|si", &pstr, &idx))
-        return NULL;
+        return nullptr;
+
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     if (pstr)
         cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
+
     WaitCursor wc;
     wc.restoreCursor();
     cDlg.exec();
     wc.setWaitCursor();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
@@ -1334,36 +1386,35 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
     int num_of_views = 1;
     char* title = nullptr;
     // if one argument (int) is given
-    if (PyArg_ParseTuple(args, "|is", &num_of_views, &title))
-    {
-        if (num_of_views < 0)
-            return NULL;
-        else if (num_of_views==1)
-        {
-            View3DInventor* viewer = new View3DInventor(0, 0);
-            if (title)
-                viewer->setWindowTitle(QString::fromUtf8(title));
-            Gui::getMainWindow()->addWindow(viewer);
-            return viewer->getPyObject();
-        }
-        else
-        {
-            SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, 0, 0);
-            if (title)
-                viewer->setWindowTitle(QString::fromUtf8(title));
-            Gui::getMainWindow()->addWindow(viewer);
-            return viewer->getPyObject();
-        }
+    if (!PyArg_ParseTuple(args, "|is", &num_of_views, &title))
+        return nullptr;
+
+    if (num_of_views <= 0) {
+        PyErr_Format(PyExc_ValueError, "views must be > 0");
+        return nullptr;
     }
-    return Py_None;
+    else if (num_of_views == 1) {
+        auto viewer = new View3DInventor(nullptr, nullptr);
+        if (title)
+            viewer->setWindowTitle(QString::fromUtf8(title));
+        Gui::getMainWindow()->addWindow(viewer);
+        return viewer->getPyObject();
+    }
+    else {
+        auto viewer = new SplitView3DInventor(num_of_views, nullptr, nullptr);
+        if (title)
+            viewer->setWindowTitle(QString::fromUtf8(title));
+        Gui::getMainWindow()->addWindow(viewer);
+        return viewer->getPyObject();
+    }
 }
 
 PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr   = 0;
+    char *pstr;
     int  defSize = 9;
-    if (!PyArg_ParseTuple(args, "|si", &pstr, &defSize))
-        return NULL;
+    if (!PyArg_ParseTuple(args, "s|i", &pstr, &defSize))
+        return nullptr;
 
     PY_TRY {
         ParameterGrp::handle const hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -1401,33 +1452,36 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
             defSize = 9;
 
         return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex(marker_arg, defSize));
-    }PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
 {
     const char *name;
     if (!PyArg_ParseTuple(args, "s", &name))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         auto doc = Application::Instance->reopen(App::GetApplication().getDocument(name));
         if(doc)
             return doc->getPyObject();
-    }PY_CATCH;
-    Py_Return;
+        Py_Return;
+    }
+    PY_CATCH;
 }
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    char *path, *mod="";
-    if (!PyArg_ParseTuple(args, "s|s", &path, &mod))     // convert args: Python->C
-        return 0;                             // NULL triggers exception
+    char *path, *mod = "";
+    if (!PyArg_ParseTuple(args, "s|s", &path, &mod))
+        return nullptr;
+
     PY_TRY {
         Base::FileInfo fi(path);
         if (!fi.isFile() || !fi.exists()) {
             PyErr_Format(PyExc_IOError, "File %s doesn't exist.", path);
-            return 0;
+            return nullptr;
         }
 
         std::string module = mod;
@@ -1436,7 +1490,7 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             std::vector<std::string> modules = App::GetApplication().getImportModules(ext.c_str());
             if (modules.empty()) {
                 PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
-                return 0;
+                return nullptr;
             }
             else {
                 module = modules.front();
@@ -1446,42 +1500,79 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
         Application::Instance->open(path,module.c_str());
 
         Py_Return;
-    } PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O",&o))
-        return NULL;
+        return nullptr;
+
     PY_TRY {
         DocumentObserverPython::addObserver(Py::Object(o));
         Py_Return;
-    } PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O",&o))
-        return NULL;
+        return nullptr;
+
     PY_TRY {
         DocumentObserverPython::removeObserver(Py::Object(o));
         Py_Return;
-    } PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *args)
 {
     PyObject *pynode;
     if (!PyArg_ParseTuple(args, "O", &pynode))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
-        void* ptr = 0;
+        void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoGroup", pynode, &ptr, 0);
-        coinRemoveAllChildren(reinterpret_cast<SoGroup*>(ptr));
+        coinRemoveAllChildren(static_cast<SoGroup*>(ptr));
         Py_Return;
-    }PY_CATCH;
+    }
+    PY_CATCH;
 }
 
+PyObject* Application::sListUserEditModes(PyObject * /*self*/, PyObject *args)
+{
+    Py::List ret;
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    for (auto const &uem : Instance->listUserEditModes()) {
+        ret.append(Py::String(uem.second));
+    }
+
+    return Py::new_reference_to(ret);
+}
+
+PyObject* Application::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    return Py::new_reference_to(Py::String(Instance->getUserEditModeName()));
+}
+
+PyObject* Application::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
+{
+    char *mode = "";
+    if (!PyArg_ParseTuple(args, "s", &mode))
+        return nullptr;
+
+    bool ok = Instance->setUserEditMode(std::string(mode));
+
+    return Py::new_reference_to(Py::Boolean(ok));
+}

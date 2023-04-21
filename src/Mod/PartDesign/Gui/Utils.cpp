@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
+ *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,34 +24,27 @@
 
 #ifndef _PreComp_
 #include <QMessageBox>
-# include <Precision.hxx>
 # include <gp_Pln.hxx>
+# include <Precision.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
-#include <App/DocumentObjectGroup.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
-#include <Gui/ViewProviderPart.h>
-
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include <Mod/PartDesign/App/Feature.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/DatumCS.h>
-
-#include "ReferenceSelection.h"
 #include "Utils.h"
+#include "DlgActiveBody.h"
+#include "ReferenceSelection.h"
 #include "WorkflowManager.h"
+
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -63,26 +56,27 @@ using namespace Attacher;
 namespace PartDesignGui {
 
 bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
-    if(!obj || !obj->getNameInDocument()) {
+    if (!obj || !obj->getNameInDocument()) {
         FC_ERR("invalid object");
         return false;
     }
-    if(body == 0) {
+    if (!body) {
         body = getBodyFor(obj, false);
-        if(!body) {
+        if (!body) {
             FC_ERR("no body found");
             return false;
         }
     }
     auto *activeView = Gui::Application::Instance->activeView();
-    if(!activeView) return false;
-    App::DocumentObject *parent = 0;
+    if (!activeView)
+        return false;
+    App::DocumentObject *parent = nullptr;
     std::string subname;
     auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
-    if(activeBody != body) {
+    if (activeBody != body) {
         parent = obj;
         subname.clear();
-    }else{
+    } else {
         subname += obj->getNameInDocument();
         subname += '.';
     }
@@ -101,56 +95,73 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern, 
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern,
         App::DocumentObject **topParent, std::string *subname)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
     if (activeView) {
-        bool singleBodyDocument = activeView->getAppDocument()->
-            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
-        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        auto doc = activeView->getAppDocument();
+        bool singleBodyDocument = doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
+        if (assertModern && PartDesignGui::assureModernWorkflow (doc) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
             if (!activeBody && singleBodyDocument && autoActivate) {
-                auto doc = activeView->getAppDocument();
                 auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-                App::DocumentObject *parent = 0;
-                App::DocumentObject *body = 0;
-                std::string sub;
+                App::DocumentObject *body = nullptr;
                 if(bodies.size()==1) {
                     body = bodies[0];
-                    for(auto &v : body->getParents()) {
-                        if(v.first->getDocument()!=doc)
-                            continue;
-                        if(parent) {
-                            body = 0;
-                            break;
-                        }
-                        parent = v.first;
-                        sub = v.second;
-                    }
-                }
-                if(body) {
-                    auto doc = parent?parent->getDocument():body->getDocument();
-                    _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
-                            << Gui::Command::getObjectCmd(parent?parent:body) << ",'" << sub << "')");
-                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+                    activeBody = makeBodyActive(body, doc, topParent, subname);
                 }
             }
             if (!activeBody && messageIfNot) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                DlgActiveBody dia(
+                    Gui::getMainWindow(),
+                    doc,
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one.\n\nIf you have a legacy document "
-                                "with PartDesign objects without Body, use the migrate function in "
-                                "PartDesign to put them into a Body."
-                                ));
+                                "Please make one active (double click) or create one."
+                                "\n\nIf you have a legacy document with PartDesign objects without Body, "
+                                "use the migrate function in PartDesign to put them into a Body."
+                        ));
+                if (dia.exec() == QDialog::DialogCode::Accepted)
+                    activeBody = dia.getActiveBody();
             }
         }
     }
 
     return activeBody;
+}
+
+PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
+                                  App::DocumentObject **topParent,
+                                  std::string *subname)
+{
+    App::DocumentObject *parent = nullptr;
+    std::string sub;
+
+    for(auto &v : body->getParents()) {
+        if(v.first->getDocument()!=doc)
+            continue;
+        if(parent) {
+            body = nullptr;
+            break;
+        }
+        parent = v.first;
+        sub = v.second;
+    }
+
+    if(body) {
+        auto _doc = parent?parent->getDocument():body->getDocument();
+        Gui::cmdGuiDocument(_doc, std::stringstream()
+                      << "ActiveView.setActiveObject('" << PDBODYKEY
+                      << "'," << Gui::Command::getObjectCmd(parent?parent:body)
+                      << ",'" << sub << "')");
+        return Gui::Application::Instance->activeView()->
+            getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+    }
+
+    return dynamic_cast<PartDesign::Body*>(body);
 }
 
 void needActiveBodyError(void)
@@ -170,13 +181,8 @@ PartDesign::Body * makeBody(App::Document *doc)
                              "App.getDocument('%s').addObject('PartDesign::Body','%s')",
                              doc->getName(), bodyName.c_str() );
     auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
-    if(body) {
-        auto vp = Gui::Application::Instance->getViewProvider(body);
-        if(vp) {
-            // make the new body active
-            vp->doubleClicked();
-        }
-    }
+    if(body)
+        makeBodyActive(body, doc);
     return body;
 }
 
@@ -209,7 +215,7 @@ App::Part* getActivePart() {
     if ( activeView ) {
         return activeView->getActiveObject<App::Part*> (PARTKEY);
     } else {
-        return 0;
+        return nullptr;
     }
 }
 
@@ -275,7 +281,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     bool reverseSketch = (sketchVector.x + sketchVector.y + sketchVector.z) < 0.0 ;
     if (reverseSketch) sketchVector *= -1.0;
 
-    App::Plane *plane =0;
+    App::Plane *plane =nullptr;
 
     if (sketchVector == Base::Vector3d(0,0,1))
         plane = origin->getXY ();
@@ -422,7 +428,7 @@ void relinkToBody (PartDesign::Feature *feature) {
                     }
                 }
 
-                if ( !valueStr.empty () ) {
+                if ( !valueStr.empty () && prop->hasName()) {
                     FCMD_OBJ_CMD(obj,prop->getName() << '=' << valueStr);
                 }
             }
@@ -447,7 +453,9 @@ bool isFeatureMovable(App::DocumentObject* const feat)
             return false;
 
         if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
-            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj){return !isFeatureMovable(obj); }))
+            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj){
+                return !isFeatureMovable(obj);
+            }))
                 return false;
         }
 

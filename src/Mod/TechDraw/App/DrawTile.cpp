@@ -22,18 +22,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-
-#include "DrawUtil.h"
-
-#include <Mod/TechDraw/App/DrawTilePy.h>  // generated from DrawTilePy.xml
 #include "DrawTile.h"
+#include "DrawTilePy.h"  // generated from DrawTilePy.xml
+
 
 using namespace TechDraw;
 
@@ -43,11 +34,11 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawTile, App::DocumentObject)
 
-DrawTile::DrawTile(void)
+DrawTile::DrawTile()
 {
     static const char *group = "Tile";
 
-    ADD_PROPERTY_TYPE(TileParent,(0),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TileParent, (nullptr), group, (App::PropertyType)(App::Prop_None),
                       "Object to which this tile is attached");
     ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent object\n 0 for arrow side, -1 for other side");
     ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent object");
@@ -60,10 +51,6 @@ DrawTile::DrawTile(void)
     TileRowConstraints.UpperBound = 0;
     TileRowConstraints.StepSize = 1;
     TileRow.setConstraints(&TileRowConstraints);
-}
-
-DrawTile::~DrawTile()
-{
 }
 
 void DrawTile::onChanged(const App::Property* prop)
@@ -80,7 +67,7 @@ short DrawTile::mustExecute() const
     return DocumentObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawTile::execute(void)
+App::DocumentObjectExecReturn *DrawTile::execute()
 {
 //    Base::Console().Message("DT::execute()\n");
     return DocumentObject::execute();
@@ -98,25 +85,17 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
     }
 }
 
-DrawView* DrawTile::getParent(void) const
+DrawView* DrawTile::getParent() const
 {
 //    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
-    DrawView* result = nullptr;
-    App::DocumentObject* baseObj = TileParent.getValue();
-    if (baseObj != nullptr) {
-        DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-        if (cast != nullptr) {
-            result = cast;
-        }
-    }
-    return result;
+    return dynamic_cast<DrawView*>(TileParent.getValue());
 }
 
-PyObject *DrawTile::getPyObject(void)
+PyObject *DrawTile::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawTilePy(this),true);
+        PythonObject = Py::Object(new DrawTilePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -126,7 +105,7 @@ PyObject *DrawTile::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTilePython, TechDraw::DrawTile)
-template<> const char* TechDraw::DrawTilePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawTilePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderTile";
 }
 /// @endcond

@@ -16,13 +16,11 @@ data of the second object like this:
 
 """
 
-import sys, struct
+import sys
+import struct
 
 import numpy
 
-# xrange is not available in python3
-if sys.version_info.major >= 3:
-    xrange = range
 
 # Exceptions
 
@@ -88,7 +86,7 @@ class FileLikeBuffer(object):
     def seek(self,pos):
         self.index = pos
         if self.index < 0 or self.index > self.end:
-            raise FBufError("Invalid position in fbuf")    
+            raise FBufError("Invalid position in fbuf")
     def advance(self,n):
         self.index += n
         if self.index > self.end:
@@ -394,11 +392,11 @@ class ChunkBase(object):
         for attr in self.single_order:
             self.out_chunk(attr,flo,indent,flags)
         for attr in self.multiple_order:
-            for i in xrange(len(getattr(self,attr))):
+            for i in range(len(getattr(self,attr))):
                 self.out_chunk_index(attr,i,flo,indent,flags)
         if self.freechunks:
             attr = "subchunks"
-            for i in xrange(len(self.subchunks)):
+            for i in range(len(self.subchunks)):
                 self.out_chunk_index(attr,i,flo,indent,flags)
 
     # Dump self to stream flo at a certain indentation
@@ -636,7 +634,7 @@ class MatrixChunk(ArrayChunk):
         super(MatrixChunk,self).dump_array(flo,indent,flags)
         if flags['arraylines'] == 0:
             return
-        for i in xrange(4):
+        for i in range(4):
             flo.write("%s    %12.4g%12.4g%12.4g%12.4g\n"
                       % (indent,self.array[i,0],self.array[i,1],
                          self.array[i,2],self.array[i,3]))
@@ -650,7 +648,7 @@ class TrackChunk(ChunkBase):
     struct = "short flags, long unused1, long unused2, long nkeys"
     def read_array(self,fbuf,flags):
         self.keys = []
-        for i in xrange(self.nkeys):
+        for i in range(self.nkeys):
             kf = self.Key()
             kf.frameno = self.get_long(fbuf,flags)
             kf.flags = self.get_short(fbuf,flags)
@@ -693,7 +691,7 @@ class TrackChunk(ChunkBase):
             n = self.nkeys
         else:
             n = min(flags['arraylines'],self.nkeys)
-        for i in xrange(n):
+        for i in range(n):
             kf = self.keys[i]
             flo.write("%skeys[0] = %s.Key\n" % (indent,self.label))
             flo.write("%s    frameno = %r\n" % (indent,kf.frameno))
@@ -1007,7 +1005,7 @@ class POINT_ARRAY(ArrayChunk):
             n = self.npoints
         else:
             n = min(flags['arraylines'],self.npoints)
-        for i in xrange(n):
+        for i in range(n):
             flo.write("%s    %12.4g%12.4g%12.4g\n"
                       % (indent,self.array[i,0],self.array[i,1],
                          self.array[i,2]))
@@ -1047,7 +1045,7 @@ class FACE_ARRAY(ArrayChunk):
             n = self.nfaces
         else:
             n = min(flags['arraylines'],self.nfaces)
-        for i in xrange(n):
+        for i in range(n):
             flo.write("%s    %10d%10d%10d%10d\n"
                       % (indent,self.array[i,0],self.array[i,1],
                          self.array[i,2],self.array[i,3]))
@@ -1071,7 +1069,7 @@ class MSH_MAT_GROUP(ArrayChunk):
             n = self.mfaces
         else:
             n = min(flags['arraylines'],self.mfaces)
-        for i in xrange(n):
+        for i in range(n):
             flo.write("%s    %10d\n" % (indent,self.array[i]))
         if n < self.mfaces:
             flo.write("%s            ...\n" % indent)
@@ -1096,7 +1094,7 @@ class TEX_VERTS(ArrayChunk):
             n = self.npoints
         else:
             n = min(flags['arraylines'],self.npoints)
-        for i in xrange(n):
+        for i in range(n):
             flo.write("%s    %12.4g%12.4g\n"
                       % (indent,self.array[i,0],self.array[i,1]))
         if n < self.npoints:
@@ -1118,7 +1116,7 @@ class SMOOTH_GROUP(ArrayChunk):
             n = len(self.array)
         else:
             n = min(flags['arraylines'],len(self.array))
-        for i in xrange(n):
+        for i in range(n):
             flo.write("%s    %10d\n" % (indent,self.array[i]))
         if n < len(self.array):
             flo.write("%s            ...\n" % indent)
@@ -1618,7 +1616,7 @@ class CAMERA_NODE_TAG(ChunkBase):
               "ROLL_TRACK_TAG roll_track")
 
 class TARGET_NODE_TAG(ChunkBase):
-    tag = 0xB004    
+    tag = 0xB004
     single = ("NODE_ID node_id,"
               "NODE_HDR node_hdr,"
               "POS_TRACK_TAG pos_track")
@@ -1642,7 +1640,7 @@ class SPOTLIGHT_NODE_TAG(ChunkBase):
               "ROLL_TRACK_TAG roll_track")
 
 class L_TARGET_NODE_TAG(ChunkBase):
-    tag = 0xB006 
+    tag = 0xB006
     single = ("NODE_ID node_id,"
               "NODE_HDR node_hdr,"
               "POS_TRACK_TAG pos_track,"
@@ -1868,7 +1866,7 @@ def dump_3ds_file(filename,flo,arraylines=10,tight=False,recover=True):
     otherwise raise an exception.
 
     """
-    
+
     check_magic = False
     dom = read_3ds_file(filename,check_magic,tight,recover)
     dump_3ds_chunk(dom,flo,arraylines)

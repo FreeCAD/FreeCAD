@@ -26,14 +26,15 @@
 
 #include "PreCompiled.h"
 
-#include "QDomNodeModel.h"
-
-#include <QDomNode>
 #include <QDomDocument>
-#include <QUrl>
-#include <QVector>
+#include <QDomNode>
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#include "QDomNodeModel.h"
 #include <QSourceLocation>
+#include <QUrl>
 #include <QVariant>
+#include <QVector>
+
 
 class PrivateDomNodeWrapper: public QDomNode
 {
@@ -232,8 +233,8 @@ QVector<QXmlName> QDomNodeModel::namespaceBindings(const QXmlNodeModelIndex & ni
     }
 
     // Per the XML standard:
-    // "The prefix xml is by definition bound to the namespace name http://www.w3.org/XML/1998/namespace. It MAY, but 
-    // need not, be declared, and MUST NOT be bound to any other namespace name. Other prefixes MUST NOT be bound to 
+    // "The prefix xml is by definition bound to the namespace name http://www.w3.org/XML/1998/namespace. It MAY, but
+    // need not, be declared, and MUST NOT be bound to any other namespace name. Other prefixes MUST NOT be bound to
     // this namespace name, and it MUST NOT be declared as the default namespace."
     //
     // If the document does not specifically include this namespace, add it now:
@@ -359,3 +360,4 @@ QXmlNodeModelIndex QDomNodeModel::nextFromSimpleAxis ( SimpleAxis axis, const QX
 
     return QXmlNodeModelIndex();
 }
+#endif

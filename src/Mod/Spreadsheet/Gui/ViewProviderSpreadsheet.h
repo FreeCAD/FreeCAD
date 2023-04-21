@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jrgen Riegel (juergen.riegel@web.de)               *
- *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
+ *   Copyright (c) 2011 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,12 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SPREADSHEET_ViewProviderImagePlane_H
 #define SPREADSHEET_ViewProviderImagePlane_H
 
-#include <Gui/ViewProviderDocumentObject.h>
 #include <QPointer>
+
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+
 
 namespace Spreadsheet {
 class Sheet;
@@ -46,26 +49,30 @@ public:
     ViewProviderSheet();
 
     /// destructor.
-    ~ViewProviderSheet();
+    ~ViewProviderSheet() override;
 
     void setDisplayMode(const char* ModeName) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
+    bool useNewSelectionModel(void) const override {return false;}
     std::vector<std::string> getDisplayModes() const override;
 
-    virtual bool doubleClicked(void) override;
+    bool doubleClicked(void) override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
     Spreadsheet::Sheet* getSpreadsheetObject() const;
 
-    virtual void beforeDelete() override;
+    void beforeDelete() override;
 
     QIcon getIcon() const override;
 
-    virtual bool setEdit(int ModNum) override;
+    bool setEdit(int ModNum) override;
 
-    virtual bool isShow(void) const override { return true; }
+    bool isShow(void) const override { return true; }
 
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
+
+    inline SheetView* getView() const { return view; }
+
+    PyObject *getPyObject() override;
 
 protected:
     SheetView* showSpreadsheetView();
@@ -73,6 +80,8 @@ protected:
 private:
     QPointer<SheetView> view;
 };
+
+using ViewProviderSheetPython = Gui::ViewProviderPythonFeatureT<ViewProviderSheet>;
 
 } //namespace Spreadsheet
 

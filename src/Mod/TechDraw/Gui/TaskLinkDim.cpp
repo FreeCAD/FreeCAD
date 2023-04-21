@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
+# include <QTreeWidget>
 #endif // #ifndef _PreComp_
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 
 #include <Gui/Application.h>
@@ -34,20 +36,12 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/Part/App/PartFeature.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskLinkDim.h"
-#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
+#include "ui_TaskLinkDim.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -64,10 +58,10 @@ TaskLinkDim::TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<st
     ui->selector->setAvailableLabel(tr("Available"));
     ui->selector->setSelectedLabel(tr("Selected"));
 
-    connect(ui->selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(ui->selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(ui->selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &TaskLinkDim::onCurrentItemChanged);
+    connect(ui->selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &TaskLinkDim::onCurrentItemChanged);
 
     loadAvailDims();
 
@@ -99,26 +93,26 @@ void TaskLinkDim::loadAvailDims()
     std::vector<App::DocumentObject*>::iterator itView = pageViews.begin();
     std::string result;
     int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
-    int found = 0;
+    //int found = 0;
     for (; itView != pageViews.end(); itView++) {
         if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
             TechDraw::DrawViewDimension* dim = static_cast<TechDraw::DrawViewDimension*>((*itView));
             int dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
-                found++;
+    //            found++;
                 if (dim->has3DReferences()) {
                     if (dimReferencesSelection(dim))  {
-                        loadToTree(dim,true,guiDoc);
+                        loadToTree(dim, true, guiDoc);
                     } else {
                         continue;                                               //already linked to something else
                     }
                 } else {
-                    loadToTree(dim,false,guiDoc);
+                    loadToTree(dim, false, guiDoc);
                 }
             }
         }
     }
-    //if (found == 0) { "No matching Dimensions found in %s",m_page->getNameInDocument())
+    //if (found == 0) { "No matching Dimensions found in %s", m_page->getNameInDocument())
 }
 
 void TaskLinkDim::loadToTree(const TechDraw::DrawViewDimension* dim, const bool selected, Gui::Document* guiDoc)
@@ -143,37 +137,38 @@ void TaskLinkDim::loadToTree(const TechDraw::DrawViewDimension* dim, const bool 
 //! does this dim already have a reference to the selection?
 bool TaskLinkDim::dimReferencesSelection(const TechDraw::DrawViewDimension* dim) const
 {
-    bool result = false;
     if (!dim->has3DReferences()) {
-        return result;
+        return false;
     }
 
     std::vector<App::DocumentObject*> refParts = dim->References3D.getValues();
     std::vector<std::string> refSubs = dim->References3D.getSubValues();
-    if (refParts.size() == m_parts.size()) {
-        if(refParts.size() == 0) {
-            //shouldn't happen!
-        } else if (refParts.size() == 1) {
-            if ((refParts[0] == m_parts[0]) &&
-                 (refSubs[0] == m_subs[0]) ) {         //everything matches
-                result = true;
-            }
-        } else if (refParts.size() == 2) {
-            if (( (refParts[0] == m_parts[0]) &&
-                  (refParts[1] == m_parts[1]) )  &&
-                ( (refSubs[0] == m_subs[0])   &&
-                  (refSubs[1] == m_subs[1]) ) ) {
-                result = true;
-            } else if (( (refParts[0] == m_parts[1]) &&
-                         (refParts[1] == m_parts[0]) )  &&
-                       ( (refSubs[0] == m_subs[1])   &&
-                         (refSubs[1] == m_subs[0]) ) ) {
-                result = true;
-            }
+    if (refParts.size() != m_parts.size()) {
+        return false;
+    }
+
+    if(refParts.empty()) {
+        //shouldn't happen!
+    } else if (refParts.size() == 1) {
+        if ((refParts[0] == m_parts[0]) &&
+                (refSubs[0] == m_subs[0]) ) {         //everything matches
+            return true;
+        }
+    } else if (refParts.size() == 2) {
+        if (( (refParts[0] == m_parts[0]) &&
+                (refParts[1] == m_parts[1]) )  &&
+            ( (refSubs[0] == m_subs[0])   &&
+                (refSubs[1] == m_subs[1]) ) ) {
+            return true;
+        } else if (( (refParts[0] == m_parts[1]) &&
+                        (refParts[1] == m_parts[0]) )  &&
+                    ( (refSubs[0] == m_subs[1])   &&
+                        (refSubs[1] == m_subs[0]) ) ) {
+            return true;
         }
     }
 
-    return result;
+    return false;
 }
 
 void TaskLinkDim::updateDims()
@@ -191,11 +186,11 @@ void TaskLinkDim::updateDims()
 //        for (unsigned int iPart = 0; iPart < m_subs.size(); iPart++) {
 //            parts.push_back(m_part);
 //        }
-        dim->References3D.setValues(m_parts,m_subs);
+        dim->References3D.setValues(m_parts, m_subs);
         std::string DimName = dim->getNameInDocument();
         std::string measureType = "True";
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
-                            DimName.c_str(),measureType.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.MeasureType = \'%s\'",
+                            DimName.c_str(), measureType.c_str());
         //dim->MeasureType.setValue("True");
     }
     count = ui->selector->availableTreeWidget()->topLevelItemCount();
@@ -207,9 +202,9 @@ void TaskLinkDim::updateDims()
         if (dim && dimReferencesSelection(dim))  {
            std::string measureType = "Projected";
            std::string DimName = dim->getNameInDocument();
-           Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
-                            DimName.c_str(),measureType.c_str());
-           dim->References3D.setValue(0,"");            //DVD.References3D
+           Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.MeasureType = \'%s\'",
+                            DimName.c_str(), measureType.c_str());
+           dim->References3D.setValue(nullptr, "");            //DVD.References3D
            dim->clear3DMeasurements();                  //DVD.measurement.References3D
         }
     }
@@ -221,7 +216,7 @@ void TaskLinkDim::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     Q_UNUSED(previous);
 //    if (previous) {
 //        Base::Console().Message("TRACE - TLD::onCurrent - text: %s data: %s is previous\n",
-//                                qPrintable(previous->text(0)),qPrintable(previous->data(0, Qt::UserRole).toString()));
+//                                qPrintable(previous->text(0)), qPrintable(previous->data(0, Qt::UserRole).toString()));
 //        if (previous->treeWidget() == ui->selector->selectedTreeWidget()) {
 //            Base::Console().Message("TRACE - TLD::onCurrent - previous belongs to selected\n");
 //        }
@@ -231,7 +226,7 @@ void TaskLinkDim::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
 //    }
 //    if (current) {
 //        Base::Console().Message("TRACE - TLD::onCurrent - text: %s data: %s is current\n",
-//                                 qPrintable(current->text(0)),qPrintable(current->data(0, Qt::UserRole).toString()));
+//                                 qPrintable(current->text(0)), qPrintable(current->data(0, Qt::UserRole).toString()));
 //        if (current->treeWidget() == ui->selector->selectedTreeWidget()) {
 //            Base::Console().Message("TRACE - TLD::onCurrent - current belongs to selected\n");
 //        }
@@ -252,21 +247,21 @@ bool TaskLinkDim::reject()
     return true;
 }
 
-void TaskLinkDim::changeEvent(QEvent *e)
+void TaskLinkDim::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TaskDlgLinkDim::TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page) :
+TaskDlgLinkDim::TaskDlgLinkDim(std::vector<App::DocumentObject*> parts, std::vector<std::string>& subs, TechDraw::DrawPage* page) :
     TaskDialog()
 {
-    widget  = new TaskLinkDim(parts,subs,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension_Link"),
-                                         widget->windowTitle(), true, 0);
+    widget  = new TaskLinkDim(parts, subs, page);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_LinkDimension"),
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

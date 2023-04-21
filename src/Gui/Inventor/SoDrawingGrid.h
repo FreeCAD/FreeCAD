@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_INVENTOR_SODRAWINGGRID_H
 #define GUI_INVENTOR_SODRAWINGGRID_H
 
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 
 namespace Gui { namespace Inventor {
 
 class GuiExport SoDrawingGrid : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoDrawingGrid);
 

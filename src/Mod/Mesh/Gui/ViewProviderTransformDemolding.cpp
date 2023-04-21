@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -35,21 +33,14 @@
 # include <Inventor/manips/SoTransformerManip.h>
 #endif
 
-#include "ViewProviderTransformDemolding.h"
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
-#include <Gui/Selection.h>
 #include <Gui/SoFCSelection.h>
-#include <Base/Sequencer.h>
-
 
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
+
+#include "ViewProviderTransformDemolding.h"
+
 
 using Mesh::Feature;
 using MeshCore::MeshKernel;
@@ -65,8 +56,8 @@ ViewProviderMeshTransformDemolding::ViewProviderMeshTransformDemolding()
 {
   pcTrackballDragger = new SoTrackballDragger;
   pcTrackballDragger->ref();
-  pcTransformDrag = 0;
-  pcColorMat = 0;
+  pcTransformDrag = nullptr;
+  pcColorMat = nullptr;
 }
 
 ViewProviderMeshTransformDemolding::~ViewProviderMeshTransformDemolding()
@@ -131,7 +122,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
   //SbVector3f Center = boxAction->getCenter();
 }
 
-void ViewProviderMeshTransformDemolding::calcNormalVector(void)
+void ViewProviderMeshTransformDemolding::calcNormalVector()
 {
   const MeshKernel& cMesh = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel();
 
@@ -147,25 +138,25 @@ void ViewProviderMeshTransformDemolding::calcNormalVector(void)
 
 void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation &rot)
 {
-  // 3.1415926535897932384626433832795
-  SbVec3f Up(0,0,1),result;
+    SbVec3f Up(0, 0, 1), result;
 
-  unsigned long i=0;
-  for( std::vector<SbVec3f>::const_iterator it=normalVector.begin();it != normalVector.end(); ++it,i++)
-  {
-    rot.multVec(*it,result);
+    int i = 0;
+    for (std::vector<SbVec3f>::const_iterator it = normalVector.begin(); it != normalVector.end(); ++it, i++)
+    {
+        rot.multVec(*it, result);
 
-    float Angle = acos( (result.dot(Up)) / (result.length() * Up.length()) ) * (180/3.1415926535);
+        float Angle = acos((result.dot(Up)) / (result.length() * Up.length())) * (180 / M_PI);
 
-    if(Angle < 87.0){
-//      pcMeshFaces->materialIndex .set1Value(i, 2);
-    }else if(Angle > 90.0){
-//      pcMeshFaces->materialIndex .set1Value(i, 1 );
-    }else{
-//      pcMeshFaces->materialIndex .set1Value(i, 0 );
+        if (Angle < 87.0) {
+            //      pcMeshFaces->materialIndex .set1Value(i, 2);
+        }
+        else if (Angle > 90.0) {
+            //      pcMeshFaces->materialIndex .set1Value(i, 1 );
+        }
+        else {
+            //      pcMeshFaces->materialIndex .set1Value(i, 0 );
+        }
     }
-
-  }
 }
 
 void ViewProviderMeshTransformDemolding::sValueChangedCallback(void *This, SoDragger *)
@@ -178,7 +169,7 @@ void ViewProviderMeshTransformDemolding::sDragEndCallback(void *This, SoDragger 
   static_cast<ViewProviderMeshTransformDemolding*>(This)->DragEndCallback();
 }
 
-void ViewProviderMeshTransformDemolding::DragEndCallback(void)
+void ViewProviderMeshTransformDemolding::DragEndCallback()
 {
   SbRotation rot = pcTrackballDragger->rotation.getValue();
   calcMaterialIndex(rot);
@@ -187,7 +178,7 @@ void ViewProviderMeshTransformDemolding::DragEndCallback(void)
 
 }
 
-void ViewProviderMeshTransformDemolding::valueChangedCallback(void)
+void ViewProviderMeshTransformDemolding::valueChangedCallback()
 {
   //Base::Console().Log("Value change Callback\n");
   //setTransformation(pcTrackballDragger->getMotionMatrix());
@@ -217,9 +208,9 @@ const char* ViewProviderMeshTransformDemolding::getDefaultDisplayMode() const
   return "Demold";
 }
 
-std::vector<std::string> ViewProviderMeshTransformDemolding::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeshTransformDemolding::getDisplayModes() const
 {
   std::vector<std::string> StrList = ViewProviderMesh::getDisplayModes();
-  StrList.push_back("Demold");
+  StrList.emplace_back("Demold");
   return StrList;
 }

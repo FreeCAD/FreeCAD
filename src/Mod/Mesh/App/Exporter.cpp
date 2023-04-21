@@ -22,29 +22,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-    #include <algorithm>
-    #include <vector>
-    #include <boost/algorithm/string/replace.hpp>
-#endif  //  #ifndef _PreComp_
+# include <algorithm>
+# include <vector>
+# include <boost/algorithm/string/replace.hpp>
+# include <boost/core/ignore_unused.hpp>
+#endif
+
+#include <App/Application.h>
+#include <App/ComplexGeoData.h>
+#include <App/ComplexGeoDataPy.h>
+#include <App/DocumentObject.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
+#include <Base/Sequencer.h>
+#include <Base/Stream.h>
+#include <Base/Tools.h>
+#include "Core/Iterator.h"
+#include "Core/IO/Writer3MF.h"
+#include <zipios++/zipoutputstream.h>
 
 #include "Exporter.h"
-#include "MeshFeature.h"
 
-#include "Core/Iterator.h"
-
-#include "Base/Console.h"
-#include "Base/Exception.h"
-#include "Base/FileInfo.h"
-#include "Base/Sequencer.h"
-#include "Base/Stream.h"
-#include "Base/Tools.h"
-
-#include "App/Application.h"
-#include "App/ComplexGeoData.h"
-#include "App/ComplexGeoDataPy.h"
-#include "App/DocumentObject.h"
-
-#include <zipios++/zipoutputstream.h>
 
 using namespace Mesh;
 using namespace MeshCore;
@@ -109,8 +108,9 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
             if (linked->isDerivedFrom(Mesh::Feature::getClassTypeId())) {
                 it = meshCache.emplace(linked,
                         static_cast<Mesh::Feature*>(linked)->Mesh.getValue()).first;
-                it->second.setTransform(Base::Matrix4D());
-            } else {
+                it->second.setTransform(matrix);
+            }
+            else {
                 Base::PyGILStateLocker lock;
                 PyObject *pyobj = nullptr;
                 linked->getSubObject("", &pyobj, nullptr, false);
@@ -123,17 +123,32 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
                     geoData->getFaces(aPoints, aTopo, tol);
                     it = meshCache.emplace(linked, MeshObject()).first;
                     it->second.setFacets(aTopo, aPoints);
+                    it->second.setTransform(matrix);
                 }
                 Py_DECREF(pyobj);
             }
         }
-        MeshObject mesh(it->second);
-        mesh.transformGeometry(matrix);
-        if (addMesh(sobj->Label.getValue(), mesh))
-            ++count;
+
+        // Add a new mesh
+        if (it != meshCache.end()) {
+            if (addMesh(sobj->Label.getValue(), it->second))
+                ++count;
+        }
     }
     return count;
 }
+
+void Exporter::throwIfNoPermission(const std::string& filename)
+{
+    // ask for write permission
+    Base::FileInfo fi(filename);
+    Base::FileInfo di(fi.dirPath());
+    if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable()) {
+        throw Base::FileException("No write permission for file", filename);
+    }
+}
+
+// ----------------------------------------------------------------------------
 
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
     :fName(fileName)
@@ -141,6 +156,11 @@ MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
 }
 
 MergeExporter::~MergeExporter()
+{
+    write();
+}
+
+void MergeExporter::write()
 {
     // if we have more than one segment set the 'save' flag
     if (mergingMesh.countSegments() > 1) {
@@ -157,10 +177,10 @@ MergeExporter::~MergeExporter()
     }
 }
 
-
 bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 {
-    const auto & kernel = mesh.getKernel();
+    auto kernel = mesh.getKernel();
+    kernel.Transform(mesh.getTransform());
     auto countFacets( mergingMesh.countFacets() );
     if (countFacets == 0) {
         mergingMesh.setKernel(kernel);
@@ -180,9 +200,9 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
         for (unsigned long i=0; i<numSegm; i++) {
             const Segment& segm = mesh.getSegment(i);
             if (segm.isSaved()) {
-                std::vector<unsigned long> indices = segm.getIndices();
+                std::vector<FacetIndex> indices = segm.getIndices();
                 std::for_each( indices.begin(), indices.end(),
-                               [countFacets] (unsigned long &v) {
+                               [countFacets] (FacetIndex &v) {
                                    v += countFacets;
                                } );
                 Segment new_segm(&mergingMesh, indices, true);
@@ -192,9 +212,9 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
         }
     } else {
         // now create a segment for the added mesh
-        std::vector<unsigned long> indices;
+        std::vector<FacetIndex> indices;
         indices.resize(mergingMesh.countFacets() - countFacets);
-        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+        std::generate(indices.begin(), indices.end(), Base::iotaGen<FacetIndex>(countFacets));
         Segment segm(&mergingMesh, indices, true);
         segm.setName(name);
         mergingMesh.addSegment(segm);
@@ -203,18 +223,100 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
     return true;
 }
 
-AmfExporter::AmfExporter( std::string fileName,
+// ----------------------------------------------------------------------------
+
+AbstractFormatExtensionPtr GuiExtension3MFProducer::create() const
+{
+    return nullptr;
+}
+
+void GuiExtension3MFProducer::initialize()
+{
+    Base::PyGILStateLocker lock;
+    PyObject* module = PyImport_ImportModule("MeshGui");
+    if (module)
+        Py_DECREF(module);
+    else
+        PyErr_Clear();
+}
+
+void Extension3MFFactory::addProducer(Extension3MFProducer* ext)
+{
+    producer.emplace_back(ext);
+}
+
+void Extension3MFFactory::initialize()
+{
+    std::vector<Extension3MFProducerPtr> ext = producer;
+    for (const auto& it : ext) {
+        it->initialize();
+    }
+}
+
+std::vector<Extension3MFPtr> Extension3MFFactory::createExtensions()
+{
+    std::vector<Extension3MFPtr> ext;
+    for (const auto& it : producer) {
+        Extension3MFPtr ptr = std::dynamic_pointer_cast<Extension3MF>(it->create());
+        if (ptr)
+            ext.push_back(ptr);
+    }
+    return ext;
+}
+
+std::vector<Extension3MFProducerPtr> Extension3MFFactory::producer;
+
+class Exporter3MF::Private {
+public:
+    explicit Private(const std::string& filename,
+                     const std::vector<Extension3MFPtr>& ext)
+      : writer3mf(filename)
+      , ext(ext) {
+    }
+    MeshCore::Writer3MF writer3mf;
+    std::vector<Extension3MFPtr> ext;
+};
+
+Exporter3MF::Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& ext)
+{
+    throwIfNoPermission(fileName);
+    d.reset(new Private(fileName, ext));
+}
+
+Exporter3MF::~Exporter3MF()
+{
+    write();
+}
+
+bool Exporter3MF::addMesh(const char *name, const MeshObject & mesh)
+{
+    boost::ignore_unused(name);
+    bool ok = d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform());
+    if (ok) {
+        for (const auto& it : d->ext) {
+            d->writer3mf.AddResource(it->addMesh(mesh));
+        }
+    }
+
+    return ok;
+}
+
+void Exporter3MF::write()
+{
+    d->writer3mf.Save();
+}
+
+// ----------------------------------------------------------------------------
+
+ExporterAMF::ExporterAMF( std::string fileName,
                           const std::map<std::string, std::string> &meta,
                           bool compress ) :
     outputStreamPtr(nullptr), nextObjectIndex(0)
 {
     // ask for write permission
-    Base::FileInfo fi(fileName.c_str());
-    Base::FileInfo di(fi.dirPath().c_str());
-    if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable()) {
-        throw Base::FileException("No write permission for file", fileName);
-    }
+    throwIfNoPermission(fileName);
 
+    Base::FileInfo fi(fileName);
     if (compress) {
         auto *zipStreamPtr( new zipios::ZipOutputStream(fi.filePath()) );
 
@@ -240,7 +342,12 @@ AmfExporter::AmfExporter( std::string fileName,
     }
 }
 
-AmfExporter::~AmfExporter()
+ExporterAMF::~ExporterAMF()
+{
+    write();
+}
+
+void ExporterAMF::write()
 {
     if (outputStreamPtr) {
         *outputStreamPtr << "\t<constellation id=\"0\">\n";
@@ -257,9 +364,31 @@ AmfExporter::~AmfExporter()
     }
 }
 
-bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
+class ExporterAMF::VertLess
 {
-    const auto & kernel = mesh.getKernel();
+public:
+    bool operator()(const Base::Vector3f &a, const Base::Vector3f &b) const
+    {
+        if (a.x == b.x) {
+            if (a.y == b.y) {
+                if (a.z == b.z) {
+                    return false;
+                } else {
+                    return a.z < b.z;
+                }
+            } else {
+                return a.y < b.y;
+            }
+        } else {
+            return a.x < b.x;
+        }
+    }
+};
+
+bool ExporterAMF::addMesh(const char *name, const MeshObject & mesh)
+{
+    auto kernel = mesh.getKernel();
+    kernel.Transform(mesh.getTransform());
 
     if (!outputStreamPtr || outputStreamPtr->bad()) {
         return false;
@@ -286,8 +415,8 @@ bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
     // Iterate through all facets of the mesh, and construct a:
     //   * Cache (map) of used vertices, outputting each new unique vertex to
     //     the output stream as we find it
-    //   * Vector of the vertices, referred to by the indices from 1 
-    std::map<Base::Vector3f, unsigned long, AmfExporter::VertLess> vertices;
+    //   * Vector of the vertices, referred to by the indices from 1
+    std::map<Base::Vector3f, unsigned long, ExporterAMF::VertLess> vertices;
     auto vertItr(vertices.begin());
     auto vertexCount(0UL);
 
@@ -328,7 +457,7 @@ bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
 
     *outputStreamPtr << "\t\t\t</vertices>\n"
                      << "\t\t\t<volume>\n";
-    
+
     // Now that we've output all the vertices, we can
     // output the facets that refer to them!
     for (auto triItr(facets.begin()); triItr != facets.end(); ) {
@@ -348,4 +477,3 @@ bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
     ++nextObjectIndex;
     return true;
 }
-

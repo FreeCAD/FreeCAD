@@ -21,18 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include "OriginGroupExtension.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
 #include <App/Document.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Tools.h>
+
+#include "OriginGroupExtension.h"
+#include "GeoFeature.h"
 #include "Origin.h"
 
-#include "GeoFeature.h"
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
@@ -44,12 +42,11 @@ OriginGroupExtension::OriginGroupExtension () {
 
     initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
+    EXTENSION_ADD_PROPERTY_TYPE ( Origin, (nullptr), 0, App::Prop_Hidden, "Origin linked to the group" );
     Origin.setScope(LinkScope::Child);
 }
 
-OriginGroupExtension::~OriginGroupExtension ()
-{ }
+OriginGroupExtension::~OriginGroupExtension () = default;
 
 App::Origin *OriginGroupExtension::getOrigin () const {
     App::DocumentObject *originObj = Origin.getValue ();
@@ -132,10 +129,17 @@ App::DocumentObjectExecReturn *OriginGroupExtension::extensionExecute() {
     return GeoFeatureGroupExtension::extensionExecute ();
 }
 
+App::DocumentObject *OriginGroupExtension::getLocalizedOrigin(App::Document *doc) {
+    App::DocumentObject *originObject = doc->addObject ( "App::Origin", "Origin" );
+    QByteArray byteArray = tr("Origin").toUtf8();
+    originObject->Label.setValue(byteArray.constData());
+    return originObject;
+}
+
 void OriginGroupExtension::onExtendedSetupObject () {
     App::Document *doc = getExtendedObject()->getDocument ();
 
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", "Origin" );
+    App::DocumentObject *originObj = getLocalizedOrigin(doc);
 
     assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
     Origin.setValue (originObj);
@@ -163,10 +167,11 @@ void OriginGroupExtension::extensionOnChanged(const Property* p) {
                    && owner->getDocument()->testStatus(Document::Importing)) {
             for (auto o : origin->getInList()) {
                 if(o != owner && o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+                    App::Document *document = owner->getDocument();
                     // Temporarily reset 'Restoring' status to allow document to auto label new objects
                     Base::ObjectStatusLocker<Document::Status, Document> guard(
-                            Document::Restoring, owner->getDocument(), false);
-                    Origin.setValue(owner->getDocument()->addObject("App::Origin", "Origin"));
+                            Document::Restoring, document, false);
+                    Origin.setValue(getLocalizedOrigin(document));
                     FC_WARN("Reset origin in " << owner->getFullName());
                     return;
                 }

@@ -20,22 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
-#include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #endif
 
-
-#include "FeatureDressUp.h"
 #include <App/Document.h>
 #include <Base/Exception.h>
 
+#include "FeatureDressUp.h"
 
 
 using namespace PartDesign;
@@ -47,7 +46,7 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 
 DressUp::DressUp()
 {
-    ADD_PROPERTY(Base,(0));
+    ADD_PROPERTY(Base,(nullptr));
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
@@ -61,10 +60,10 @@ short DressUp::mustExecute() const
 {
     if (Base.getValue() && Base.getValue()->isTouched())
         return 1;
-    return PartDesign::Feature::mustExecute();
+    return PartDesign::FeatureAddSub::mustExecute();
 }
 
-void DressUp::positionByBaseFeature(void)
+void DressUp::positionByBaseFeature()
 {
     Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
     if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
@@ -97,7 +96,14 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
     return rv;
 }
 
-void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
+void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
+
+    std::vector< std::string > FaceNames;
+
+    getContinuousEdges(TopShape, SubNames, FaceNames);
+}
+
+void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames, std::vector< std::string >& FaceNames) {
 
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
@@ -109,7 +115,7 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+        if (aSubName.compare(0, 4, "Edge") == 0) {
             TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
             const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
 
@@ -131,7 +137,7 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
 
             i++;
         }
-        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+        else if(aSubName.compare(0, 4, "Face") == 0) {
             TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
 
             TopTools_IndexedMapOfShape mapOfFaces;
@@ -153,6 +159,7 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
 
             }
 
+            FaceNames.emplace_back(aSubName.c_str());
             SubNames.erase(SubNames.begin()+i);
         }
         // empty name or any other sub-element
@@ -211,7 +218,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
                     base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
                     if(!base)
-                        FC_THROWM(Base::CADKernelError, 
+                        FC_THROWM(Base::CADKernelError,
                                 "Cannot find additive or subtractive support for " << getFullName());
                     if(!base->isDerivedFrom(DressUp::getClassTypeId()))
                         break;
@@ -224,7 +231,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 baseShape.move(base->getLocation().Inverted());
                 if (base->getAddSubType() == Additive) {
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-                        shapes.push_back(shape.cut(baseShape.getShape()));
+                        shapes.emplace_back(shape.cut(baseShape.getShape()));
                     else
                         shapes.push_back(shape);
                 } else {
@@ -234,21 +241,21 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     // push an empty compound to indicate null additive shape
                     shapes.emplace_back(comp);
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-                        shapes.push_back(baseShape.cut(shape.getShape()));
+                        shapes.emplace_back(baseShape.cut(shape.getShape()));
                     else
                         shapes.push_back(shape);
                 }
             } else {
                 baseShape = getBaseTopoShape();
                 baseShape.move(getLocation().Inverted());
-                shapes.push_back(shape.cut(baseShape.getShape()));
-                shapes.push_back(baseShape.cut(shape.getShape()));
+                shapes.emplace_back(shape.cut(baseShape.getShape()));
+                shapes.emplace_back(baseShape.cut(shape.getShape()));
             }
 
             // Make a compound to contain both additive and subtractive shape,
             // bceause a dressing (e.g. a fillet) can either be additive or
             // subtractive. And the dressup feature can contain mixture of both.
-            AddSubShape.setValue(Part::TopoShape().makECompound(shapes));
+            AddSubShape.setValue(Part::TopoShape().makeCompound(shapes));
 
         } catch (Standard_Failure &e) {
             FC_THROWM(Base::CADKernelError, "Failed to calculate AddSub shape: "

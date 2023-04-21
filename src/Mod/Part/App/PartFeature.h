@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FEATURE_H
 #define PART_FEATURE_H
 
-#include "TopoShape.h"
-#include "PropertyTopoShape.h"
-#include <App/GeoFeature.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyGeo.h>
-// includes for findAllFacesCutBy()
-#include <TopoDS_Face.hxx>
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-class gp_Dir;
+#include <App/GeoFeature.h>
+#include <Mod/Part/PartGlobal.h>
 
+#include <TopoDS_Face.hxx>
+
+#include "PropertyTopoShape.h"
+
+
+class gp_Dir;
 class BRepBuilderAPI_MakeShape;
 
 namespace Part
@@ -50,28 +48,28 @@ class PartExport Feature : public App::GeoFeature
 
 public:
     /// Constructor
-    Feature(void);
-    virtual ~Feature();
+    Feature();
+    ~Feature() override;
 
     PropertyPartShape Shape;
 
     /** @name methods override feature */
     //@{
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override;
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
+    const char* getViewProviderName() const override;
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
-    virtual PyObject* getPyObject() override;
+    PyObject* getPyObject() override;
 
     TopLoc_Location getLocation() const;
 
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+    DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    /** Convenience function to extract shape from fully qualified subname 
+    /** Convenience function to extract shape from fully qualified subname
      *
      * @param obj: the parent object
      *
@@ -92,29 +90,29 @@ public:
      * if pmat already include obj's transformation matrix.
      */
     static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
-            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true);
+            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
+            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
 
     static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
-            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
+            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
+            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
             bool noElementMap=false);
 
     static void clearShapeCache();
 
-    static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
+    static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr);
 
-    static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {
+    static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr) {
         auto owner = getShapeOwner(obj,subname);
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
 protected:
     /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute() override;
+    App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual void onChanged(const App::Property* prop) override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onChanged(const App::Property* prop) override;
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
@@ -129,7 +127,7 @@ protected:
 
 class FilletBase : public Part::Feature
 {
-    PROPERTY_HEADER(Part::FilletBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
 public:
     FilletBase();
@@ -137,20 +135,20 @@ public:
     App::PropertyLink   Base;
     PropertyFilletEdges Edges;
 
-    short mustExecute() const;
+    short mustExecute() const override;
 };
 
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 
 /** Base class of all shape feature classes in FreeCAD
  */
 class PartExport FeatureExt : public Feature
 {
-    PROPERTY_HEADER(Part::FeatureExt);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureExt);
 
 public:
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderPartExt";
     }
 };

@@ -24,6 +24,7 @@
 #ifndef MESH_DECIMATION_H
 #define MESH_DECIMATION_H
 
+#include <Mod/Mesh/MeshGlobal.h>
 
 namespace MeshCore
 {
@@ -32,7 +33,7 @@ class MeshKernel;
 class MeshExport MeshSimplify
 {
 public:
-    MeshSimplify(MeshKernel&);
+    MeshSimplify(MeshKernel&);//explicit bombs
     ~MeshSimplify();
     void simplify(float tolerance, float reduction);
     void simplify(int targetSize);

@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Denne veiviseren installerer FreeCAD på datamas
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Kompilerer Python script..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Lager snarveg på skrivebordet"
-${LangFileString} TEXT_FINISH_WEBSITE "Besøk freecadweb.org for de seneste nyhetene, hjelp og støtte"
+${LangFileString} TEXT_FINISH_WEBSITE "Besøk freecad.org for de seneste nyhetene, hjelp og støtte"
 
 #${LangFileString} FileTypeTitle "FreeCAD-dokument"
 

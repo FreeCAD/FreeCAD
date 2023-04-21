@@ -21,8 +21,6 @@
 #*                                                                         *
 #***************************************************************************/
 
-
-import sys
 import os
 import ast
 import unittest
@@ -35,8 +33,7 @@ def test_python_syntax(rootdir, whitelist=None):
     for sub_dir, dirs, files in os.walk(rootdir):
         for fn in files:
             kargs = {}
-            if sys.version_info.major >= 3:
-                kargs["encoding"] = "utf-8"
+            kargs["encoding"] = "utf-8"
             if (not fn in whitelist) and os.path.splitext(fn)[1] == '.py':
                 with open(os.path.join(sub_dir, fn), **kargs) as py_file:
                     try:
@@ -58,10 +55,10 @@ class PythonSyntaxTestCase(unittest.TestCase):
     """
     def setUp(self):
         self.whitelist = []
+        self.whitelist += ["ap203_configuration_controlled_3d_design_of_mechanical_parts_and_assemblies_mim_lf.py"]
         self.whitelist += ["automotive_design.py"]
         self.whitelist += ["ifc2x3.py"]
         self.whitelist += ["ifc4.py"]
-
 
     def testAll(self):
         mod_dir = os.path.join(App.getHomePath(), "Mod")

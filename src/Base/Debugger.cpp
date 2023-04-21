@@ -30,6 +30,7 @@
 #include "Debugger.h"
 #include "Console.h"
 
+
 using namespace Base;
 
 Debugger::Debugger(QObject* parent)
@@ -37,9 +38,7 @@ Debugger::Debugger(QObject* parent)
 {
 }
 
-Debugger::~Debugger()
-{
-}
+Debugger::~Debugger() = default;
 
 void Debugger::attach()
 {

@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 
-#include <Mod/TechDraw/App/DrawView.h>
-
+#include "DrawView.h"
 // inclusion of the generated files (generated out of DrawViewPy.xml)
 #include <Mod/TechDraw/App/DrawViewPy.h>
 #include <Mod/TechDraw/App/DrawViewPy.cpp>
+
 
 using namespace TechDraw;
 
@@ -39,7 +39,7 @@ std::string DrawViewPy::representation(void) const
 
 PyObject *DrawViewPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

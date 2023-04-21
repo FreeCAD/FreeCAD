@@ -20,43 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAFTUTILS_PRECOMPILED_H
 #define DRAFTUTILS_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define DraftUtilsExport  __declspec(dllexport)
-# define PartExport __declspec(dllexport)
-# define BaseExport  __declspec(dllimport)
-#else // for Linux
-# define DraftUtilsExport
-# define PartExport
-# define BaseExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4275)
 #endif
 
-#ifdef _PreComp_
-
-// standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-#include <cctype>
-
-#include <Python.h>
-
-#endif // _PreComp_
 #endif
-

@@ -46,7 +46,7 @@ from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
+    from draftutils.translate import translate
 else:
     def translate(context, txt):
         return txt
@@ -331,37 +331,6 @@ def parse(filename, doc):
             color = (float(c[1])/255,
                      float(c[2])/255,
                      float(c[3])/255)
-
-    del color
-
-
-def decodeName(name):
-    """Decode encoded name.
-
-    Parameters
-    ----------
-    name : str
-        The string to decode.
-
-    Returns
-    -------
-    tuple
-    (string)
-        A tuple containing the decoded `name` in 'utf8', otherwise in 'latin1'.
-        If it fails it returns the original `name`.
-    """
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FCC.PrintError(translate("importOCA",
-                                     "OCA error: "
-                                     "couldn't determine character encoding")
-                           + "\n")
-            decodedName = name
-    return decodedName
 
 
 def open(filename):

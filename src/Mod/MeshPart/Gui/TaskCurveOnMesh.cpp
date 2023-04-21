@@ -22,15 +22,11 @@
 
 #include "PreCompiled.h"
 
+#include <Gui/View3DInventor.h>
 
 #include "TaskCurveOnMesh.h"
 #include "ui_TaskCurveOnMesh.h"
 #include "CurveOnMesh.h"
-
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 
 using namespace MeshPartGui;
@@ -42,6 +38,8 @@ CurveOnMeshWidget::CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent)
     , myView(view)
 {
     ui->setupUi(this);
+    connect(ui->startButton, &QPushButton::clicked,
+            this, &CurveOnMeshWidget::onStartButtonClicked);
     this->setup();
 }
 
@@ -78,7 +76,7 @@ void CurveOnMeshWidget::changeEvent(QEvent *e)
     }
 }
 
-void CurveOnMeshWidget::on_startButton_clicked()
+void CurveOnMeshWidget::onStartButtonClicked()
 {
     int cont = ui->continuity->itemData(ui->continuity->currentIndex()).toInt();
     myCurveHandler->enableApproximation(ui->groupBox_2->isChecked());
@@ -101,7 +99,7 @@ TaskCurveOnMesh::TaskCurveOnMesh(Gui::View3DInventor* view)
     widget = new CurveOnMeshWidget(view);
     taskbox = new Gui::TaskView::TaskBox(
         QPixmap(),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

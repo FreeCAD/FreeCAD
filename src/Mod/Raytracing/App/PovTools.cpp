@@ -23,24 +23,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRep_Tool.hxx>
+# include <sstream>
+
 # include <BRepMesh_IncrementalMesh.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <Poly_Triangulation.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-# include <sstream>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/ComplexGeoData.h>
-
+#include <Base/Console.h>
+#include <Base/Sequencer.h>
+#include <Base/Stream.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "PovTools.h"
+
 
 using Base::Console;
 
@@ -158,7 +156,7 @@ void PovTools::writeData(const char *FileName, const char *PartName,
         std::vector<Base::Vector3d> normals;
         std::vector<Data::ComplexGeoData::Facet> facets;
         Data::Segment* segm = data->getSubElement("Face", i);
-        data->getFacesFromSubelement(segm, points, normals, facets);
+        data->getFacesFromSubElement(segm, points, normals, facets);
         delete segm;
 
         // writing per face header
@@ -242,52 +240,52 @@ void PovTools::writeShape(std::ostream &out, const char *PartName,
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
 
-        // this block mesh the face and transfers it in a C array of vertices and face indexes
-        Standard_Integer nbNodesInFace,nbTriInFace;
-        gp_Vec* vertices=0;
-        gp_Vec* vertexnormals=0;
-        long* cons=0;
+        std::vector<gp_Pnt> points;
+        std::vector<gp_Vec> vertexnormals;
+        std::vector<Poly_Triangle> facets;
+        if (!Part::Tools::getTriangulation(aFace, points, facets)) {
+            break;
+        }
+        Part::Tools::getPointNormals(points, facets, vertexnormals);
+        Part::Tools::getPointNormals(points, aFace, vertexnormals);
 
-        transferToArray(aFace,&vertices,&vertexnormals,&cons,nbNodesInFace,nbTriInFace);
-
-        if (!vertices) break;
         // writing per face header
         out << "// face number" << l << " +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl
         << "#declare " << PartName << l << " = mesh2{" << endl
         << "  vertex_vectors {" << endl
-        << "    " << nbNodesInFace << "," << endl;
+        << "    " << points.size() << "," << endl;
         // writing vertices
-        for (int i=0; i < nbNodesInFace; i++) {
-            out << "    <" << vertices[i].X() << ","
-            << vertices[i].Z() << ","
-            << vertices[i].Y() << ">,"
-            << endl;
+        for (std::size_t i=0; i < points.size(); i++) {
+            out << "    <"
+                << points[i].X() << ","
+                << points[i].Z() << ","
+                << points[i].Y() << ">,"
+                << endl;
         }
         out << "  }" << endl
         // writing per vertex normals
         << "  normal_vectors {" << endl
-        << "    " << nbNodesInFace << "," << endl;
-        for (int j=0; j < nbNodesInFace; j++) {
-            out << "    <" << vertexnormals[j].X() << ","
-            << vertexnormals[j].Z() << ","
-            << vertexnormals[j].Y() << ">,"
-            << endl;
+        << "    " << vertexnormals.size() << "," << endl;
+        for (std::size_t j=0; j < vertexnormals.size(); j++) {
+            out << "    <"
+                << vertexnormals[j].X() << ","
+                << vertexnormals[j].Z() << ","
+                << vertexnormals[j].Y() << ">,"
+                << endl;
         }
 
         out << "  }" << endl
         // writing triangle indices
         << "  face_indices {" << endl
-        << "    " << nbTriInFace << "," << endl;
-        for (int k=0; k < nbTriInFace; k++) {
-            out << "    <" << cons[3*k] << ","<< cons[3*k+2] << ","<< cons[3*k+1] << ">," << endl;
+        << "    " << facets.size() << "," << endl;
+        for (std::size_t k=0; k < facets.size(); k++) {
+            Standard_Integer n1, n2, n3;
+            facets[k].Get(n1, n2, n3);
+            out << "    <" << n1 << ","<< n3 << "," << n2 << ">," << endl;
         }
         // end of face
         out << "  }" << endl
         << "} // end of Face"<< l << endl << endl;
-
-        delete [] vertexnormals;
-        delete [] vertices;
-        delete [] cons;
 
         seq.next();
 
@@ -315,7 +313,8 @@ void PovTools::writeShapeCSV(const char *FileName,
     BRepMesh_IncrementalMesh MESH(Shape,fMeshDeviation);
 
     // open the file and write
-    std::ofstream fout(FileName);
+    Base::FileInfo fi(FileName);
+    Base::ofstream fout(fi);
 
     // counting faces and start sequencer
     int l = 1;
@@ -323,167 +322,36 @@ void PovTools::writeShapeCSV(const char *FileName,
     Base::SequencerLauncher seq("Writing file", l);
 
     // write the file
-    l = 1;
-    for (ex.Init(Shape, TopAbs_FACE); ex.More(); ex.Next(),l++) {
+    for (ex.Init(Shape, TopAbs_FACE); ex.More(); ex.Next()) {
 
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
 
-        // this block mesh the face and transfers it in a C array of vertices and face indexes
-        Standard_Integer nbNodesInFace,nbTriInFace;
-        gp_Vec* vertices=0;
-        gp_Vec* vertexnormals=0;
-        long* cons=0;
-
-        transferToArray(aFace,&vertices,&vertexnormals,&cons,nbNodesInFace,nbTriInFace);
-
-        if (!vertices) break;
-        // writing per face header
-        // writing vertices
-        for (int i=0; i < nbNodesInFace; i++) {
-            fout << vertices[i].X() << cSeperator
-            << vertices[i].Z() << cSeperator
-            << vertices[i].Y() << cSeperator
-            << vertexnormals[i].X() * fLength <<cSeperator
-            << vertexnormals[i].Z() * fLength <<cSeperator
-            << vertexnormals[i].Y() * fLength <<cSeperator
-            << endl;
+        std::vector<gp_Pnt> points;
+        std::vector<gp_Vec> vertexnormals;
+        std::vector<Poly_Triangle> facets;
+        if (!Part::Tools::getTriangulation(aFace, points, facets)) {
+            break;
         }
 
-        delete [] vertexnormals;
-        delete [] vertices;
-        delete [] cons;
+        Part::Tools::getPointNormals(points, facets, vertexnormals);
+        Part::Tools::getPointNormals(points, aFace, vertexnormals);
+
+        // writing per face header
+        // writing vertices
+        for (std::size_t i=0; i < points.size(); i++) {
+            fout << points[i].X() << cSeperator
+                 << points[i].Z() << cSeperator
+                 << points[i].Y() << cSeperator
+                 << vertexnormals[i].X() * fLength << cSeperator
+                 << vertexnormals[i].Z() * fLength << cSeperator
+                 << vertexnormals[i].Y() * fLength << cSeperator
+                 << endl;
+        }
 
         seq.next();
 
     } // end of face loop
 
     fout.close();
-}
-
-void PovTools::transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec** vertexnormals, long** cons,int &nbNodesInFace,int &nbTriInFace )
-{
-    TopLoc_Location aLoc;
-
-    // doing the meshing and checking the result
-    //BRepMesh_IncrementalMesh MESH(aFace,fDeflection);
-    Handle(Poly_Triangulation) aPoly = BRep_Tool::Triangulation(aFace,aLoc);
-    if (aPoly.IsNull()) {
-        Base::Console().Log("Empty face triangulation\n");
-        nbNodesInFace =0;
-        nbTriInFace = 0;
-        vertices = 0l;
-        cons = 0l;
-        return;
-    }
-
-    // getting the transformation of the shape/face
-    gp_Trsf myTransf;
-    Standard_Boolean identity = true;
-    if (!aLoc.IsIdentity())  {
-        identity = false;
-        myTransf = aLoc.Transformation();
-    }
-
-    Standard_Integer i;
-    // getting size and create the array
-    nbNodesInFace = aPoly->NbNodes();
-    nbTriInFace = aPoly->NbTriangles();
-    *vertices = new gp_Vec[nbNodesInFace];
-    *vertexnormals = new gp_Vec[nbNodesInFace];
-    for (i=0; i < nbNodesInFace; i++) {
-        (*vertexnormals)[i]= gp_Vec(0.0,0.0,0.0);
-    }
-
-    *cons = new long[3*(nbTriInFace)+1];
-
-    // check orientation
-    TopAbs_Orientation orient = aFace.Orientation();
-
-    // cycling through the poly mesh
-    const Poly_Array1OfTriangle& Triangles = aPoly->Triangles();
-    const TColgp_Array1OfPnt& Nodes = aPoly->Nodes();
-    for (i=1; i<=nbTriInFace; i++) {
-        // Get the triangle
-        Standard_Integer N1,N2,N3;
-        Triangles(i).Get(N1,N2,N3);
-
-        // change orientation of the triangles
-        if ( orient != TopAbs_FORWARD )
-        {
-            Standard_Integer tmp = N1;
-            N1 = N2;
-            N2 = tmp;
-        }
-
-        gp_Pnt V1 = Nodes(N1);
-        gp_Pnt V2 = Nodes(N2);
-        gp_Pnt V3 = Nodes(N3);
-
-        // transform the vertices to the place of the face
-        if (!identity) {
-            V1.Transform(myTransf);
-            V2.Transform(myTransf);
-            V3.Transform(myTransf);
-        }
-
-        // Calculate triangle normal
-        gp_Vec v1(V1.X(),V1.Y(),V1.Z()),v2(V2.X(),V2.Y(),V2.Z()),v3(V3.X(),V3.Y(),V3.Z());
-        gp_Vec Normal = (v2-v1)^(v3-v1);
-
-        //Standard_Real Area = 0.5 * Normal.Magnitude();
-
-        // add the triangle normal to the vertex normal for all points of this triangle
-        (*vertexnormals)[N1-1] += gp_Vec(Normal.X(),Normal.Y(),Normal.Z());
-        (*vertexnormals)[N2-1] += gp_Vec(Normal.X(),Normal.Y(),Normal.Z());
-        (*vertexnormals)[N3-1] += gp_Vec(Normal.X(),Normal.Y(),Normal.Z());
-
-        (*vertices)[N1-1].SetX((float)(V1.X()));
-        (*vertices)[N1-1].SetY((float)(V1.Y()));
-        (*vertices)[N1-1].SetZ((float)(V1.Z()));
-        (*vertices)[N2-1].SetX((float)(V2.X()));
-        (*vertices)[N2-1].SetY((float)(V2.Y()));
-        (*vertices)[N2-1].SetZ((float)(V2.Z()));
-        (*vertices)[N3-1].SetX((float)(V3.X()));
-        (*vertices)[N3-1].SetY((float)(V3.Y()));
-        (*vertices)[N3-1].SetZ((float)(V3.Z()));
-
-        int j = i - 1;
-        N1--;
-        N2--;
-        N3--;
-        (*cons)[3*j] = N1;
-        (*cons)[3*j+1] = N2;
-        (*cons)[3*j+2] = N3;
-    }
-
-    // normalize all vertex normals
-    for (i=0; i < nbNodesInFace; i++) {
-
-        gp_Dir clNormal;
-
-        try {
-            Handle(Geom_Surface) Surface = BRep_Tool::Surface(aFace);
-
-            gp_Pnt vertex((*vertices)[i].XYZ());
-//     gp_Pnt vertex((*vertices)[i][0], (*vertices)[i][1], (*vertices)[i][2]);
-            GeomAPI_ProjectPointOnSurf ProPntSrf(vertex, Surface);
-            Standard_Real fU, fV;
-            ProPntSrf.Parameters(1, fU, fV);
-
-            GeomLProp_SLProps clPropOfFace(Surface, fU, fV, 2, gp::Resolution());
-
-            clNormal = clPropOfFace.Normal();
-            gp_Vec temp = clNormal;
-            //Base::Console().Log("unterschied:%.2f",temp.dot((*vertexnormals)[i]));
-            if ( temp * (*vertexnormals)[i] < 0 )
-                temp = -temp;
-            (*vertexnormals)[i] = temp;
-
-        }
-        catch (...) {
-        }
-
-        (*vertexnormals)[i].Normalize();
-    }
 }

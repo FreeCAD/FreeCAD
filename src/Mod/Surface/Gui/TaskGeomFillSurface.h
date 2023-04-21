@@ -23,16 +23,21 @@
 #ifndef SURFACEGUI_TASKGEOMFILLSURFACE_H
 #define SURFACEGUI_TASKGEOMFILLSURFACE_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureGeomFillSurface.h>
 #include <GeomFill_FillingStyle.hxx>
 
+#include <Gui/DocumentObserver.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Mod/Surface/App/FeatureGeomFillSurface.h>
+
+
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -41,12 +46,12 @@ class Ui_GeomFillSurface;
 
 class ViewProviderGeomFillSurface : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderGeomFillSurface);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderGeomFillSurface);
 public:
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    QIcon getIcon(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    QIcon getIcon() const override;
     void highlightReferences(bool on);
 };
 
@@ -66,10 +71,11 @@ protected:
 private:
     Ui_GeomFillSurface* ui;
     ViewProviderGeomFillSurface* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
-    ~GeomFillSurface();
+    ~GeomFillSurface() override;
 
     void open();
     void checkOpenCommand();
@@ -78,27 +84,31 @@ public:
     void setEditedObject(Surface::GeomFillSurface* obj);
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
+    void slotUndoDocument(const Gui::Document& Doc) override;
     /** Notifies on redo */
-    virtual void slotRedoDocument(const Gui::Document& Doc);
+    void slotRedoDocument(const Gui::Document& Doc) override;
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     void changeFillType(GeomFill_FillingStyle);
     void flipOrientation(QListWidgetItem*);
 
-private Q_SLOTS:
-    void on_fillType_stretch_clicked();
-    void on_fillType_coons_clicked();
-    void on_fillType_curved_clicked();
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
-    void on_listWidget_itemDoubleClicked(QListWidgetItem*);
-    void onDeleteEdge(void);
+private:
+    void setupConnections();
+    void onFillTypeStretchClicked();
+    void onFillTypeCoonsClicked();
+    void onFillTypeCurvedClicked();
+    void onButtonEdgeAddToggled(bool checked);
+    void onButtonEdgeRemoveToggled(bool checked);
+    void onListWidgetItemDoubleClicked(QListWidgetItem*);
+    void onDeleteEdge();
     void onFlipOrientation();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 class TaskGeomFillSurface : public Gui::TaskView::TaskDialog
@@ -107,15 +117,15 @@ class TaskGeomFillSurface : public Gui::TaskView::TaskDialog
 
 public:
     TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
-    ~TaskGeomFillSurface();
+    ~TaskGeomFillSurface() override;
     void setEditedObject(Surface::GeomFillSurface* obj);
 
 public:
-    void open();
-    bool accept();
-    bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

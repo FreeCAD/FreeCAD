@@ -20,16 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskLinearPatternParameters_H
 #define GUI_TASKVIEW_TaskLinearPatternParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderLinearPattern.h"
+
 
 class QTimer;
 class Ui_TaskLinearPatternParameters;
@@ -52,12 +48,12 @@ class TaskLinearPatternParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskLinearPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    explicit TaskLinearPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
-    virtual ~TaskLinearPatternParameters();
+    ~TaskLinearPatternParameters() override;
 
-    virtual void apply();
+    void apply() override;
 
 private Q_SLOTS:
     void onUpdateViewTimer();
@@ -65,19 +61,19 @@ private Q_SLOTS:
     void onCheckReverse(const bool on);
     void onLength(const double l);
     void onOccurrences(const uint n);
-    virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    void onUpdateView(bool) override;
+    void onFeatureDeleted() override;
 
 protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
+    void addObject(App::DocumentObject*) override;
+    void removeObject(App::DocumentObject*) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void clearButtons() override;
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    bool getReverse(void) const;
-    double getLength(void) const;
-    unsigned getOccurrences(void) const;
+    bool getReverse() const;
+    double getLength() const;
+    unsigned getOccurrences() const;
 
 private:
     void connectSignals();
@@ -99,8 +95,8 @@ class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
     Q_OBJECT
 
 public:
-    TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
-    virtual ~TaskDlgLinearPatternParameters() {}
+    explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
+    ~TaskDlgLinearPatternParameters() override {}
 };
 
 } //namespace PartDesignGui

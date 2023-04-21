@@ -35,7 +35,7 @@ SET(Python_SRCS
     Robot6AxisPy.xml
     Robot6AxisPyImp.cpp
     TrajectoryPy.xml
-    TrajectoryPyImp.cpp 
+    TrajectoryPyImp.cpp
     RobotObjectPy.xml
     RobotObjectPyImp.cpp
     WaypointPy.xml
@@ -74,6 +74,12 @@ SET(Robot_SRCS
     ${Mod_SRCS}
     ${Python_SRCS}
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Robot_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Robot PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 # FIXME: The bundled KDL has some extensions which makes it incompatible
 # to an installed KDL. To fix the issue two things must be done:
@@ -129,6 +135,10 @@ unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
 if (_flag_found)
   target_compile_options(Robot PRIVATE -Wno-deprecated-copy)
+endif()
+
+if(MINGW)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
 endif()
 
 SET_BIN_DIR(Robot Robot /Mod/Robot)

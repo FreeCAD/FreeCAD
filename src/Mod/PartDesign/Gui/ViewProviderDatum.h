@@ -27,8 +27,10 @@
 
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
+#include <QCoreApplication>
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 class SoPickStyle;
 class SbBox3f;
@@ -38,30 +40,31 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject, PartGui::ViewProviderAttachExtension
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderDatum)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum);
 
 public:
     /// constructor
     ViewProviderDatum();
     /// destructor
-    virtual ~ViewProviderDatum();
+    ~ViewProviderDatum() override;
 
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual bool onDelete(const std::vector<std::string> &) override;
-    virtual bool doubleClicked(void) override;
+    void attach(App::DocumentObject *) override;
+    bool onDelete(const std::vector<std::string> &) override;
+    bool doubleClicked(void) override;
     std::vector<std::string> getDisplayModes(void) const override;
     void setDisplayMode(const char* ModeName) override;
 
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const override { return true; }
+    bool useNewSelectionModel(void) const override { return true; }
     /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const override;
+    bool isSelectable(void) const override;
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const override;
-    virtual SoDetail* getDetail(const char*) const override;
+    std::string getElement(const SoDetail *) const override;
+    SoDetail* getDetail(const char*) const override;
 
     /**
      * Enable/Disable the selectability of the datum
@@ -89,6 +92,7 @@ public:
     // TODO remove this attribute (2015-09-08, Fat-Zer)
     QString datumType;
     QString datumText;
+    QString datumMenuText;
 
     /**
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()
@@ -110,8 +114,8 @@ public:
     static double marginFactor () { return 0.1; };
 
 protected:
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     /**
      * Guesses the context this datum belongs to and returns appropriate bounding box of all

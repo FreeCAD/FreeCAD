@@ -20,21 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef PART_FEATUREPARTIMPORTIGES_H
 #define PART_FEATUREPARTIMPORTIGES_H
 
-
 #include "PartFeature.h"
+
 
 namespace Part
 {
 
-
 class ImportIges :public Part::Feature
 {
-    PROPERTY_HEADER(Part::FeaturePartImportIges);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeaturePartImportIges);
 
 public:
     ImportIges();
@@ -44,10 +41,10 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartGui::ViewProviderImport";
     }
     //@}

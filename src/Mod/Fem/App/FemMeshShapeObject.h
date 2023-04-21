@@ -20,30 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemMeshShapeObject_H
 #define Fem_FemMeshShapeObject_H
 
-
 #include "FemMeshObject.h"
+
 
 namespace Fem
 {
 
-class AppFemExport FemMeshShapeObject : public FemMeshObject
+class FemExport FemMeshShapeObject : public FemMeshObject
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshShapeObject);
 
 public:
     /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
+    FemMeshShapeObject();
+    ~FemMeshShapeObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemMeshShape";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     //virtual short mustExecute(void) const;
     //virtual PyObject *getPyObject(void);

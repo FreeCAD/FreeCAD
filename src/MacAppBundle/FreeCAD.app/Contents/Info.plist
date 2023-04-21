@@ -2,6 +2,56 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>FCStd</string>
+				<string>FCMat</string>
+				<string>FCParam</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>freecad-doc.icns</string>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>FCMacro</string>
+				<string>FCScript</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>freecad-script.icns</string>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>FreeCAD Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.freecad.fcstd</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>FCStd</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -31,23 +81,8 @@
 	<key>NSHumanReadableCopyright</key>
 	<string></string>
 	<key>NSPrincipalClass</key>
-   	<string>NSApplication</string>	
+	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
 	<string>True</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>FCStd</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>freecad-doc.icns</string>
-			<key>LSIsAppleDefaultForType</key>
-			<true/>
-		</dict>
-	</array>
 </dict>
 </plist>

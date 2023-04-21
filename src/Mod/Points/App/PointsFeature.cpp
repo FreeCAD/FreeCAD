@@ -20,24 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <vector>
 #endif
-#include <vector>
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
-
 
 #include "PointsFeature.h"
 
-using namespace Points;
 
+using namespace Points;
 
 //===========================================================================
 // Feature
@@ -45,7 +37,7 @@ using namespace Points;
 
 PROPERTY_SOURCE(Points::Feature, App::GeoFeature)
 
-Feature::Feature() 
+Feature::Feature()
 {
     ADD_PROPERTY(Points, (PointKernel()));
 }
@@ -59,7 +51,7 @@ short Feature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Feature::execute(void)
+App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Points.touch();
     return App::DocumentObject::StdReturn;
@@ -80,17 +72,20 @@ void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well
     if (prop == &this->Placement) {
-        PointKernel& pts = const_cast<PointKernel&>(this->Points.getValue());
-        pts.setTransform(this->Placement.getValue().toMatrix());
+        this->Points.setTransform(this->Placement.getValue().toMatrix());
     }
     // if the point data has changed check and adjust the transformation as well
     else if (prop == &this->Points) {
-        Base::Placement p;
-        p.fromMatrix(this->Points.getValue().getTransform());
-        if (p != this->Placement.getValue())
-            this->Placement.setValue(p);
+        try {
+            Base::Placement p;
+            p.fromMatrix(this->Points.getTransform());
+            if (p != this->Placement.getValue())
+                this->Placement.setValue(p);
+        }
+        catch (const Base::ValueError&) {
+        }
     }
-    
+
     GeoFeature::onChanged(prop);
 }
 
@@ -110,7 +105,7 @@ template class PointsExport FeatureCustomT<Points::Feature>;
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Points::FeaturePython, Points::Feature)
-template<> const char* Points::FeaturePython::getViewProviderName(void) const {
+template<> const char* Points::FeaturePython::getViewProviderName() const {
     return "PointsGui::ViewProviderPython";
 }
 /// @endcond

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013      Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,16 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Measurement.h"
 #include "MeasurementPy.h"
+
 
 namespace Measure {
 class Module : public Py::ExtensionModule<Module>
@@ -41,14 +38,14 @@ public:
         initialize("This module is the Measure module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Measure
@@ -63,7 +60,7 @@ PyMOD_INIT_FUNC(Measure)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = Measure::initModule();
     // Add Types to module

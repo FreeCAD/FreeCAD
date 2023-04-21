@@ -20,38 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <QApplication>
+# include <QCheckBox>
+# include <QGridLayout>
 # include <QInputDialog>
+# include <QLabel>
+# include <QMenu>
 # include <QMessageBox>
+# include <QSignalBlocker>
+# include <QWidgetAction>
 #endif
 
 #include <App/DocumentObjectGroup.h>
-#include <App/OriginFeature.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
+#include <App/OriginFeature.h>
+#include <Gui/Action.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
+#include <Gui/PrefWidgets.h>
+#include <Gui/QuantitySpinBox.h>
 #include <Gui/SelectionFilter.h>
-
-#include <Mod/Sketcher/App/SketchObjectSF.h>
+#include <Gui/SelectionObject.h>
+#include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 
-#include "SketchOrientationDialog.h"
 #include "SketchMirrorDialog.h"
-#include "ViewProviderSketch.h"
+#include "SketchOrientationDialog.h"
 #include "TaskSketcherValidation.h"
-#include "../App/Constraint.h"
+#include "ViewProviderSketch.h"
+#include "Utils.h"
+
 
 using namespace std;
 using namespace SketcherGui;
@@ -70,27 +75,27 @@ namespace SketcherGui {
         }
 
         //Pass untranslated strings, enclosed in QT_TR_NOOP()
-        ExceptionWrongInput(const char* ErrMsg){
+        explicit ExceptionWrongInput(const char* ErrMsg){
             this->ErrMsg = QObject::tr( ErrMsg );
             this->setMessage(ErrMsg);
         }
 
-        virtual ~ExceptionWrongInput() throw() {}
+        ~ExceptionWrongInput() throw() override {}
 
         QString ErrMsg;
     };
 
 
-    Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* pMsgId = 0,
-                                      QString* message = 0,
-                                      std::vector<Attacher::eMapMode>* allmodes = 0){
+    Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* pMsgId = nullptr,
+                                      QString* message = nullptr,
+                                      std::vector<Attacher::eMapMode>* allmodes = nullptr){
         //convert pointers into valid references, to avoid checking for null pointers everywhere
         Attacher::SuggestResult::eSuggestResult buf;
-        if (pMsgId == 0)
+        if (!pMsgId)
             pMsgId = &buf;
         Attacher::SuggestResult::eSuggestResult &msg = *pMsgId;
         QString buf2;
-        if (message == 0)
+        if (!message)
             message = &buf2;
         QString &msg_str = *message;
 
@@ -139,7 +144,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
     :Command("Sketcher_NewSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create sketch");
     sToolTipText    = QT_TR_NOOP("Create a new sketch.");
     sWhatsThis      = "Sketcher_NewSketch";
@@ -180,7 +185,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
                 qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
                 qApp->translate("Sketcher_NewSketch", "Select the method to attach this sketch to selected object"),
                 items, iSugg, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
-            if (!ok) return;
+            if (!ok)
+                return;
             int index = items.indexOf(text);
             if (index == 0){
                 bAttach = false;
@@ -248,7 +254,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
 }
 
-bool CmdSketcherNewSketch::isActive(void)
+bool CmdSketcherNewSketch::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -262,7 +268,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
     :Command("Sketcher_EditSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Edit sketch");
     sToolTipText    = QT_TR_NOOP("Edit the selected sketch.");
     sWhatsThis      = "Sketcher_EditSketch";
@@ -281,7 +287,7 @@ void CmdSketcherEditSketch::activated(int iMsg)
     }
 }
 
-bool CmdSketcherEditSketch::isActive(void)
+bool CmdSketcherEditSketch::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
@@ -292,7 +298,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
   : Command("Sketcher_LeaveSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Leave sketch");
     sToolTipText    = QT_TR_NOOP("Finish editing the active sketch.");
     sWhatsThis      = "Sketcher_LeaveSketch";
@@ -318,16 +324,9 @@ void CmdSketcherLeaveSketch::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.recompute()");
 }
 
-bool CmdSketcherLeaveSketch::isActive(void)
+bool CmdSketcherLeaveSketch::isActive()
 {
-    Gui::Document *doc = getActiveGuiDocument();
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp /*&& vp->getSketchMode() == ViewProviderSketch::STATUS_NONE*/)
-            return true;
-    }
-    return false;
+    return isSketchInEdit(getActiveGuiDocument());
 }
 
 DEF_STD_CMD_A(CmdSketcherStopOperation)
@@ -336,7 +335,7 @@ CmdSketcherStopOperation::CmdSketcherStopOperation()
   : Command("Sketcher_StopOperation")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Stop operation");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "stop the active operation "
@@ -360,15 +359,9 @@ void CmdSketcherStopOperation::activated(int iMsg)
     }
 }
 
-bool CmdSketcherStopOperation::isActive(void)
+bool CmdSketcherStopOperation::isActive()
 {
-    Gui::Document *doc = getActiveGuiDocument();
-    if (doc) {
-        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp)
-            return true;
-    }
-    return false;
+    return isSketchInEdit(getActiveGuiDocument());
 }
 
 DEF_STD_CMD_A(CmdSketcherReorientSketch)
@@ -377,7 +370,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     :Command("Sketcher_ReorientSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Reorient sketch...");
     sToolTipText    = QT_TR_NOOP("Place the selected sketch on one of the global coordinate planes.\n"
                                  "This will clear the 'Support' property, if any.");
@@ -398,7 +391,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
             QMessageBox::Yes|QMessageBox::No);
         if (ret == QMessageBox::No)
             return;
-        sketch->Support.setValue(0);
+        sketch->Support.setValue(nullptr);
     }
 
     // ask user for orientation
@@ -493,7 +486,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
 }
 
-bool CmdSketcherReorientSketch::isActive(void)
+bool CmdSketcherReorientSketch::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
@@ -504,7 +497,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
   : Command("Sketcher_MapSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Map sketch to face...");
     sToolTipText    = QT_TR_NOOP("Set the 'Support' of a sketch.\n"
                                  "First select the supporting geometry, for example, a face or an edge of a solid object,\n"
@@ -556,7 +549,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 assert(0);
                 throw Base::ValueError("Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
-            std::vector<App::DocumentObject*> input = part->getOutList();
+            std::vector<App::DocumentObject*> input = part->getOutListRecursive();
             if (std::find(input.begin(), input.end(), sketch) != input.end()) {
                 throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. "
                                                      "Circular dependencies are not allowed."));
@@ -621,7 +614,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                                      items,
                                      bCurIncompatible ? iSugg : iCurr,
                                      false,
-                                     &ok, 
+                                     &ok,
                                      Qt::MSWindowsFixedSizeDialogHint);
         // * collect dialog result
         if (!ok)
@@ -645,11 +638,13 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = %s",supportString.c_str());
             commitCommand();
+            doCommand(Gui,"App.activeDocument().recompute()");
         } else {
             openCommand(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = None");
             commitCommand();
+            doCommand(Gui,"App.activeDocument().recompute()");
         }
     } catch (ExceptionWrongInput &e) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -660,11 +655,12 @@ void CmdSketcherMapSketch::activated(int iMsg)
     }
 }
 
-bool CmdSketcherMapSketch::isActive(void)
+bool CmdSketcherMapSketch::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     Base::Type sketch_type = Base::Type::fromName("Sketcher::SketchObject");
-    if (doc && doc->countObjectsOfType(sketch_type) > 0)
+    std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
+    if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
         return true;
 
     return false;
@@ -676,13 +672,14 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
     : Command("Sketcher_ViewSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("View sketch");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "set the camera orientation perpendicular to the sketch plane.");
     sWhatsThis      = "Sketcher_ViewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSketch";
+    sAccel          = "Q, P";
     eType           = 0;
 }
 
@@ -697,16 +694,9 @@ void CmdSketcherViewSketch::activated(int iMsg)
     }
 }
 
-bool CmdSketcherViewSketch::isActive(void)
+bool CmdSketcherViewSketch::isActive()
 {
-    Gui::Document *doc = getActiveGuiDocument();
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp /*&& vp->getSketchMode() == ViewProviderSketch::STATUS_NONE*/)
-            return true;
-    }
-    return false;
+    return isSketchInEdit(getActiveGuiDocument());
 }
 
 DEF_STD_CMD_A(CmdSketcherValidateSketch)
@@ -715,7 +705,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
   : Command("Sketcher_ValidateSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Validate sketch...");
     sToolTipText    = QT_TR_NOOP("Validate a sketch by looking at missing coincidences,\n"
                                  "invalid constraints, degenerated geometry, etc.");
@@ -728,7 +718,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
 void CmdSketcherValidateSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherValidateSketch", "Wrong selection"),
@@ -740,7 +730,7 @@ void CmdSketcherValidateSketch::activated(int iMsg)
     Gui::Control().showDialog(new TaskSketcherValidation(Obj));
 }
 
-bool CmdSketcherValidateSketch::isActive(void)
+bool CmdSketcherValidateSketch::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
@@ -753,7 +743,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
     : Command("Sketcher_MirrorSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Mirror sketch");
     sToolTipText    = QT_TR_NOOP("Create a new mirrored sketch for each selected sketch\n"
                                  "by using the X or Y axes, or the origin point,\n"
@@ -767,8 +757,8 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
 void CmdSketcherMirrorSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
-    if (selection.size() < 1) {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
             qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches."));
@@ -776,7 +766,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     }
 
     int refgeoid = -1;
-    Sketcher::PointPos refposid = Sketcher::none;
+    Sketcher::PointPos refposid = Sketcher::PointPos::none;
     // Ask the user the type of mirroring
     SketchMirrorDialog smd;
     if (smd.exec() != QDialog::Accepted)
@@ -824,17 +814,17 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
 
-            if ((*itc)->First != Sketcher::Constraint::GeoUndef
+            if ((*itc)->First != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->First == Sketcher::GeoEnum::HAxis
                     || (*itc)->First == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 (*itc)->First -= (addedGeometries + 1);
-            if ((*itc)->Second != Sketcher::Constraint::GeoUndef
+            if ((*itc)->Second != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->Second == Sketcher::GeoEnum::HAxis
                     || (*itc)->Second == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 (*itc)->Second -= (addedGeometries + 1);
-            if ((*itc)->Third != Sketcher::Constraint::GeoUndef
+            if ((*itc)->Third != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->Third == Sketcher::GeoEnum::HAxis
                     || (*itc)->Third == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
@@ -849,7 +839,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     doCommand(Gui,"App.activeDocument().recompute()");
 }
 
-bool CmdSketcherMirrorSketch::isActive(void)
+bool CmdSketcherMirrorSketch::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0;
 }
@@ -860,7 +850,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 : Command("Sketcher_MergeSketches")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Merge sketches");
     sToolTipText    = QT_TR_NOOP("Create a new sketch from merging two or more selected sketches.");
     sWhatsThis      = "Sketcher_MergeSketches";
@@ -872,7 +862,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 void CmdSketcherMergeSketches::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
@@ -902,17 +892,17 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         for (int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
 
-            if (constraint->First != Sketcher::Constraint::GeoUndef &&
+            if (constraint->First != Sketcher::GeoEnum::GeoUndef &&
                     constraint->First != Sketcher::GeoEnum::HAxis &&
                     constraint->First != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::Constraint::GeoUndef &&
+            if (constraint->Second != Sketcher::GeoEnum::GeoUndef &&
                     constraint->Second != Sketcher::GeoEnum::HAxis &&
                     constraint->Second != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::Constraint::GeoUndef &&
+            if (constraint->Third != Sketcher::GeoEnum::GeoUndef &&
                     constraint->Third != Sketcher::GeoEnum::HAxis &&
                     constraint->Third != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
@@ -930,7 +920,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().recompute()");
 }
 
-bool CmdSketcherMergeSketches::isActive(void)
+bool CmdSketcherMergeSketches::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 1;
 }
@@ -944,35 +934,512 @@ CmdSketcherViewSection::CmdSketcherViewSection()
 : Command("Sketcher_ViewSection")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("View section");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "switch between section view and full view.");
     sWhatsThis      = "Sketcher_ViewSection";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSection";
+    sAccel          = "Q, S";
     eType           = 0;
 }
 
 void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Doc,"ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch)");
+    QString cmdStr = QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
+    Gui::Document *doc = getActiveGuiDocument();
+    bool revert = false;
+    if(doc) {
+        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp) {
+            revert = vp->getViewOrientationFactor() < 0?true:false;
+        }
+    }
+    cmdStr = cmdStr.arg(revert?QLatin1String("True"):QLatin1String("False"));
+    doCommand(Doc, cmdStr.toLatin1());
 }
 
-bool CmdSketcherViewSection::isActive(void)
+bool CmdSketcherViewSection::isActive()
 {
-    Gui::Document *doc = getActiveGuiDocument();
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp /*&& vp->getSketchMode() == ViewProviderSketch::STATUS_NONE*/)
-            return true;
+    return isSketchInEdit(getActiveGuiDocument());
+}
+
+/* Grid tool */
+class GridSpaceAction : public QWidgetAction
+{
+public:
+    GridSpaceAction(QObject* parent) : QWidgetAction(parent) {
+        setEnabled(false);
     }
+
+    void updateWidget() {
+
+        auto* sketchView = getView();
+
+        if(sketchView) {
+
+            auto updateCheckBox = [](QCheckBox * checkbox, bool value) {
+                auto checked = checkbox->checkState() == Qt::Checked;
+
+                if( value != checked ) {
+                    const QSignalBlocker blocker(checkbox);
+                    checkbox->setChecked(value);
+                }
+            };
+
+            auto updateCheckBoxFromProperty = [updateCheckBox](QCheckBox * checkbox, App::PropertyBool & property) {
+                auto propvalue = property.getValue();
+
+                updateCheckBox(checkbox, propvalue);
+            };
+
+            updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
+
+            gridSizeBox->setValue(sketchView->GridSize.getValue());
+        }
+    }
+
+    void languageChange()
+    {
+        gridAutoSpacing->setText(tr("Grid Auto Spacing"));
+        gridAutoSpacing->setToolTip(tr("Resize grid automatically depending on zoom."));
+        gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
+
+        sizeLabel->setText(tr("Spacing"));
+        gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines"));
+    }
+
+protected:
+    QWidget* createWidget(QWidget* parent) override
+    {
+        gridAutoSpacing = new QCheckBox();
+
+        sizeLabel = new QLabel();
+
+        gridSizeBox = new Gui::QuantitySpinBox();
+        gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
+        gridSizeBox->setObjectName(QStringLiteral("gridSize"));
+        gridSizeBox->setMaximum(99999999.0);
+        gridSizeBox->setMinimum(0.001);
+
+        QWidget* gridSizeW = new QWidget(parent);
+        auto* layout = new QGridLayout(gridSizeW);
+        layout->addWidget(gridAutoSpacing, 0, 0, 1, 2);
+        layout->addWidget(sizeLabel, 1, 0);
+        layout->addWidget(gridSizeBox, 1, 1);
+
+        languageChange();
+
+        QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
+            auto* sketchView = getView();
+
+            if(sketchView) {
+                auto enable = (state == Qt::Checked);
+                sketchView->GridAuto.setValue(enable);
+            }
+        });
+
+        QObject::connect(gridSizeBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
+            auto* sketchView = getView();
+            if(sketchView) {
+                sketchView->GridSize.setValue(val);
+            }
+        });
+
+        return gridSizeW;
+    }
+
+private:
+    ViewProviderSketch * getView() {
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+        if(doc) {
+            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        }
+
+        return nullptr;
+    }
+
+private:
+    QCheckBox * gridAutoSpacing;
+    QLabel * sizeLabel;
+    Gui::QuantitySpinBox * gridSizeBox;
+};
+
+class CmdSketcherGrid : public Gui::Command
+{
+public:
+    CmdSketcherGrid();
+    virtual ~CmdSketcherGrid(){}
+    virtual const char* className() const override
+    { return "CmdSketcherGrid"; }
+    virtual void languageChange() override;
+protected:
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action * createAction(void) override;
+private:
+    void updateIcon(bool value);
+    void updateInactiveHandlerIcon();
+
+    CmdSketcherGrid(const CmdSketcherGrid&) = delete;
+    CmdSketcherGrid(CmdSketcherGrid&&) = delete;
+    CmdSketcherGrid& operator= (const CmdSketcherGrid&) = delete;
+    CmdSketcherGrid& operator= (CmdSketcherGrid&&) = delete;
+};
+
+CmdSketcherGrid::CmdSketcherGrid()
+    : Command("Sketcher_Grid")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Activate Grid");
+    sToolTipText = QT_TR_NOOP("Activate grid and grid settings");
+    sWhatsThis = "Sketcher_Grid";
+    sStatusTip = sToolTipText;
+    eType = 0;
+}
+
+void CmdSketcherGrid::updateIcon(bool value)
+{
+    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle");
+    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle_Deactivated");
+
+    auto * pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    pcAction->setIcon(value ? active : inactive);
+}
+
+void CmdSketcherGrid::updateInactiveHandlerIcon()
+{
+    auto * vp = getInactiveHandlerEditModeSketchViewProvider();
+
+    if(vp) {
+        auto value = vp->ShowGrid.getValue();
+
+        updateIcon(value);
+    }
+}
+
+void CmdSketcherGrid::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Document* doc = getActiveGuiDocument();
+    assert(doc);
+    auto* sketchView = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    assert(sketchView);
+
+    auto value = sketchView->ShowGrid.getValue();
+    sketchView->ShowGrid.setValue(!value);
+
+    updateIcon(!value);
+}
+
+Gui::Action* CmdSketcherGrid::createAction()
+{
+    auto * pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setExclusive(false);
+    applyCommandData(this->className(), pcAction);
+
+    GridSpaceAction* gsa = new GridSpaceAction(pcAction);
+    pcAction->addAction(gsa);
+
+    _pcAction = pcAction;
+
+    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [gsa](QMenu * menu) {
+        Q_UNUSED(menu)
+        gsa->updateWidget();
+    });
+
+    // set the right pixmap
+    updateInactiveHandlerIcon();
+
+    return pcAction;
+}
+
+void CmdSketcherGrid::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* gsa = static_cast<GridSpaceAction *>(a[0]);
+    gsa->languageChange();
+}
+
+bool CmdSketcherGrid::isActive()
+{
+    auto * vp = getInactiveHandlerEditModeSketchViewProvider();
+
+    if (vp) {
+        auto value = vp->ShowGrid.getValue();
+
+        updateIcon(value);
+
+        return true;
+    }
+
     return false;
 }
 
-void CreateSketcherCommands(void)
+/* Snap tool */
+class SnapSpaceAction : public QWidgetAction
+{
+public:
+    SnapSpaceAction(QObject* parent) : QWidgetAction(parent) {
+        setEnabled(false);
+    }
+
+    void updateWidget(bool snapenabled) {
+
+        auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
+            auto checked = checkbox->checkState() == Qt::Checked;
+
+            if (value != checked) {
+                const QSignalBlocker blocker(checkbox);
+                checkbox->setChecked(value);
+            }
+        };
+
+        auto updateSpinBox = [](Gui::QuantitySpinBox* spinbox, double value) {
+            auto currentvalue = spinbox->rawValue();
+
+            if (currentvalue != value) {
+                const QSignalBlocker blocker(spinbox);
+                spinbox->setValue(value);
+            }
+        };
+
+        ParameterGrp::handle hGrp = getParameterPath();
+
+        updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
+
+        updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
+
+        updateSpinBox(snapAngle, hGrp->GetFloat("SnapAngle", 5.0));
+
+        snapToObjects->setEnabled(snapenabled);
+        snapToGrid->setEnabled(snapenabled);
+        angleLabel->setEnabled(snapenabled);
+        snapAngle->setEnabled(snapenabled);
+    }
+
+    void languageChange()
+    {
+        snapToObjects->setText(tr("Snap to objects"));
+        snapToObjects->setToolTip(tr("New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs."));
+        snapToObjects->setStatusTip(snapToObjects->toolTip());
+
+        snapToGrid->setText(tr("Snap to Grid"));
+        snapToGrid->setToolTip(tr("New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
+        snapToGrid->setStatusTip(snapToGrid->toolTip());
+
+        angleLabel->setText(tr("Snap angle"));
+        snapAngle->setToolTip(tr("Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)"));
+    }
+
+protected:
+    QWidget* createWidget(QWidget* parent) override
+    {
+        snapToObjects = new QCheckBox();
+
+        snapToGrid = new QCheckBox();
+
+        angleLabel = new QLabel();
+
+        snapAngle = new Gui::QuantitySpinBox();
+        snapAngle->setProperty("unit", QVariant(QStringLiteral("deg")));
+        snapAngle->setObjectName(QStringLiteral("snapAngle"));
+        snapAngle->setMaximum(99999999.0);
+        snapAngle->setMinimum(0);
+
+        QWidget* snapW = new QWidget(parent);
+        auto* layout = new QGridLayout(snapW);
+        layout->addWidget(snapToGrid, 0, 0, 1, 2);
+        layout->addWidget(snapToObjects, 1, 0, 1, 2);
+        layout->addWidget(angleLabel, 2, 0);
+        layout->addWidget(snapAngle, 2, 1);
+
+        languageChange();
+
+        QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
+            ParameterGrp::handle hGrp = this->getParameterPath();
+            hGrp->SetBool("SnapToObjects", state == Qt::Checked);
+        });
+
+        QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
+            ParameterGrp::handle hGrp = this->getParameterPath();
+            hGrp->SetBool("SnapToGrid", state == Qt::Checked);
+        });
+
+        QObject::connect(snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
+            ParameterGrp::handle hGrp = this->getParameterPath();
+            hGrp->SetFloat("SnapAngle", val);
+        });
+
+        return snapW;
+    }
+
+private:
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    }
+
+private:
+    QCheckBox* snapToObjects;
+    QCheckBox* snapToGrid;
+    QLabel* angleLabel;
+    Gui::QuantitySpinBox* snapAngle;
+};
+
+class CmdSketcherSnap : public Gui::Command, public ParameterGrp::ObserverType
+{
+public:
+    CmdSketcherSnap();
+    virtual ~CmdSketcherSnap();
+    virtual const char* className() const override
+    {
+        return "CmdSketcherSnap";
+    }
+    virtual void languageChange() override;
+
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+protected:
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action* createAction(void) override;
+private:
+    void updateIcon(bool value);
+
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    }
+
+    CmdSketcherSnap(const CmdSketcherSnap&) = delete;
+    CmdSketcherSnap(CmdSketcherSnap&&) = delete;
+    CmdSketcherSnap& operator= (const CmdSketcherSnap&) = delete;
+    CmdSketcherSnap& operator= (CmdSketcherSnap&&) = delete;
+
+    bool snapEnabled = true;
+};
+
+CmdSketcherSnap::CmdSketcherSnap()
+    : Command("Sketcher_Snap")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Toggle Snap");
+    sToolTipText = QT_TR_NOOP("Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings");
+    sWhatsThis = "Sketcher_Snap";
+    sStatusTip = sToolTipText;
+    eType = 0;
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Attach(this);
+}
+
+CmdSketcherSnap::~CmdSketcherSnap() {
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Detach(this);
+}
+
+void CmdSketcherSnap::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    Q_UNUSED(rCaller)
+
+    if (strcmp(sReason, "Snap") == 0) {
+        snapEnabled = getParameterPath()->GetBool("Snap", true);
+    }
+}
+
+void CmdSketcherSnap::updateIcon(bool value)
+{
+    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap");
+    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap_Deactivated");
+
+    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    pcAction->setIcon(value ? active : inactive);
+}
+
+void CmdSketcherSnap::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    getParameterPath()->SetBool("Snap", !snapEnabled);
+
+    // snapEnable updated via observer
+    updateIcon(snapEnabled);
+
+    //Update the widget :
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* ssa = static_cast<SnapSpaceAction*>(a[0]);
+    ssa->updateWidget(snapEnabled);
+}
+
+Gui::Action* CmdSketcherSnap::createAction()
+{
+    auto* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setExclusive(false);
+    applyCommandData(this->className(), pcAction);
+
+    SnapSpaceAction* ssa = new SnapSpaceAction(pcAction);
+    pcAction->addAction(ssa);
+
+    _pcAction = pcAction;
+
+    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [ssa, this](QMenu* menu) {
+        Q_UNUSED(menu)
+            ssa->updateWidget(snapEnabled);
+    });
+
+    // set the right pixmap
+    updateIcon(snapEnabled);
+
+    return pcAction;
+}
+
+void CmdSketcherSnap::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* ssa = static_cast<SnapSpaceAction*>(a[0]);
+    ssa->languageChange();
+}
+
+bool CmdSketcherSnap::isActive()
+{
+    auto* vp = getInactiveHandlerEditModeSketchViewProvider();
+
+    if (vp) {
+        updateIcon(snapEnabled);
+
+        return true;
+    }
+
+    return false;
+}
+
+void CreateSketcherCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
@@ -987,4 +1454,6 @@ void CreateSketcherCommands(void)
     rcCmdMgr.addCommand(new CmdSketcherMirrorSketch());
     rcCmdMgr.addCommand(new CmdSketcherMergeSketches());
     rcCmdMgr.addCommand(new CmdSketcherViewSection());
+    rcCmdMgr.addCommand(new CmdSketcherGrid());
+    rcCmdMgr.addCommand(new CmdSketcherSnap());
 }

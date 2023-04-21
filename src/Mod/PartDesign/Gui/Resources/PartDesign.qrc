@@ -97,5 +97,10 @@
         <file>translations/PartDesign_vi.qm</file>
         <file>translations/PartDesign_zh-CN.qm</file>
         <file>translations/PartDesign_zh-TW.qm</file>
+        <file>translations/PartDesign_es-AR.qm</file>
+        <file>translations/PartDesign_bg.qm</file>
+        <file>translations/PartDesign_ka.qm</file>
+        <file>translations/PartDesign_sr-CS.qm</file>
+        <file>translations/PartDesign_be.qm</file>
     </qresource>
 </RCC>

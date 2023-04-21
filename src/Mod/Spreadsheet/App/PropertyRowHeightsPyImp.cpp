@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "PropertyRowHeights.h"
-
 // inclusion of the generated files (generated out of PropertyRowHeightsPy.xml)
 #include "PropertyRowHeightsPy.h"
 #include "PropertyRowHeightsPy.cpp"
+
 
 using namespace Spreadsheet;
 
@@ -39,7 +38,7 @@ std::string PropertyRowHeightsPy::representation(void) const
 
 PyObject *PropertyRowHeightsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PropertyRowHeightsPy and the Twin object 
+    // create a new instance of PropertyRowHeightsPy and the Twin object
     return new PropertyRowHeightsPy(new PropertyRowHeights);
 }
 
@@ -51,10 +50,10 @@ int PropertyRowHeightsPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject *PropertyRowHeightsPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PropertyRowHeightsPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

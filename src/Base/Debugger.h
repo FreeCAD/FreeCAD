@@ -24,8 +24,11 @@
 #ifndef BASE_DEBUGGER_H
 #define BASE_DEBUGGER_H
 
-#include <QObject>
 #include <QEventLoop>
+#include <QObject>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 /**
@@ -45,7 +48,7 @@ namespace Base {
     btn->setText("Continue");
     btn->show();
     Base::Debugger dbg;
-    connect(btn, SIGNAL(clicked()), &dbg, SLOT(quit()));
+    connect(btn, &QPushButton::clicked, &dbg, &Debugger::quit);
     dbg.exec();
   \endcode
  \author Werner Mayer
@@ -55,12 +58,17 @@ class BaseExport Debugger : public QObject
     Q_OBJECT
 
 public:
-    Debugger(QObject* parent=0);
-    ~Debugger();
+    Debugger(QObject* parent=nullptr);
+    ~Debugger() override;
+
+    Debugger(const Debugger&) = delete;
+    Debugger(Debugger&&) = delete;
+    Debugger& operator= (const Debugger&) = delete;
+    Debugger& operator= (Debugger&&) = delete;
 
     void attach();
     void detach();
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject* obj, QEvent* event) override;
     int exec();
 
 public Q_SLOTS:

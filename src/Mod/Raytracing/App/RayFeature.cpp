@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Standard.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "RayFeature.h"
@@ -46,7 +42,7 @@ PROPERTY_SOURCE(Raytracing::RayFeature, Raytracing::RaySegment)
 
 RayFeature::RayFeature(void)
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
     ADD_PROPERTY(Transparency,(0));
 }

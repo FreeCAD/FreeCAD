@@ -154,6 +154,7 @@ class TestObjectExistance(unittest.TestCase):
 
         expected_vtk_obj_types = [
             "Fem::FemPostClipFilter",
+            "Fem::FemPostContoursFilter",
             "Fem::FemPostCutFilter",
             "Fem::FemPostDataAlongLineFilter",
             "Fem::FemPostDataAtPointFilter",

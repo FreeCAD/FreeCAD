@@ -1,0 +1,35 @@
+# This file lists the Python packages that the Addon Manager allows to be installed
+# automatically via pip. To request that a package be added to this list, submit a
+# pull request to the FreeCAD git repository with the requested package added. Only
+# packages in this list will be processed from the metadata.txt and requirements.txt
+# files specified by an Addon. Note that this is NOT a requirements.txt-format file,
+# no version information may be specified, and no wildcards are supported.
+
+# Allow these packages to be installed:
+aiofiles
+autobahn
+ezdxf
+gmsh
+gmsh-dev
+lxml
+markdown
+matplotlib
+msgpack
+numpy
+ocp
+olefile
+openpyxl
+pandas
+pillow
+ply
+py-slvs
+pycollada
+pygit2
+pynastran
+requests
+rhino3dm
+scipy
+xlrd
+xlutils
+xlwt
+PyYAML

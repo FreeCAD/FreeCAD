@@ -20,32 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
 #include <numeric>
-#include <gp_Pnt.hxx>
+
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp_Face.hxx>
+#include <gp_Pnt.hxx>
+#include <TopExp.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
 
 #include <QEventLoop>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#include <boost_bind_bind.hpp>
+#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FutureWatcherProgress.h>
-#include <Base/Parameter.h>
 #include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <Mod/Mesh/App/Mesh.h>
+#include <Base/Stream.h>
+
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>
@@ -106,15 +104,30 @@ Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 
 InspectActualShape::InspectActualShape(const Part::TopoShape& shape) : _rShape(shape)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    float deviation = hGrp->GetFloat("MeshDeviation",0.2);
+    Standard_Real deflection = _rShape.getAccuracy();
+    fetchPoints(deflection);
+}
 
-    Base::BoundBox3d bbox = _rShape.getBoundBox();
-    Standard_Real deflection = (bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation;
-
-    std::vector<Data::ComplexGeoData::Facet> f;
-    _rShape.getFaces(points, f, (float)deflection);
+void InspectActualShape::fetchPoints(double deflection)
+{
+    // get points from faces or sub-sampled edges
+    TopTools_IndexedMapOfShape mapOfShapes;
+    TopExp::MapShapes(_rShape.getShape(), TopAbs_FACE, mapOfShapes);
+    if (!mapOfShapes.IsEmpty()) {
+        std::vector<Data::ComplexGeoData::Facet> faces;
+        _rShape.getFaces(points, faces, deflection);
+    }
+    else {
+        TopExp::MapShapes(_rShape.getShape(), TopAbs_EDGE, mapOfShapes);
+        if (!mapOfShapes.IsEmpty()) {
+            std::vector<Data::ComplexGeoData::Line> lines;
+            _rShape.getLines(points, lines, deflection);
+        }
+        else {
+            std::vector<Base::Vector3d> normals;
+            _rShape.getPoints(points, normals, deflection);
+        }
+    }
 }
 
 unsigned long InspectActualShape::countPoints() const
@@ -142,7 +155,7 @@ namespace Inspection {
                     std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
         }
 
-        void Validate (const MeshCore::MeshKernel&)
+        void Validate (const MeshCore::MeshKernel&) override
         {
             // do nothing
         }
@@ -152,24 +165,24 @@ namespace Inspection {
             // do nothing
         }
 
-        bool Verify() const
+        bool Verify() const override
         {
             // do nothing
             return true;
         }
 
     protected:
-        void CalculateGridLength (unsigned long /*ulCtGrid*/, unsigned long /*ulMaxGrids*/)
+        void CalculateGridLength (unsigned long /*ulCtGrid*/, unsigned long /*ulMaxGrids*/) override
         {
             // do nothing
         }
 
-        void CalculateGridLength (int /*iCtGridPerAxis*/)
+        void CalculateGridLength (int /*iCtGridPerAxis*/) override
         {
             // do nothing
         }
 
-        unsigned long HasElements (void) const
+        unsigned long HasElements (void) const override
         {
             return _pclMesh->CountFacets();
         }
@@ -211,7 +224,7 @@ namespace Inspection {
                 _aulGrid[ulX1][ulY1][ulZ1].insert(ulFacetIndex);
         }
 
-        void InitGrid (void)
+        void InitGrid (void) override
         {
             unsigned long i, j;
 
@@ -239,7 +252,7 @@ namespace Inspection {
             }
         }
 
-        void RebuildGrid (void)
+        void RebuildGrid (void) override
         {
             _ulCtElements = _pclMesh->CountFacets();
             InitGrid();
@@ -375,9 +388,9 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
     unsigned long ulX, ulY, ulZ;
     _pGrid->Position(point, ulX, ulY, ulZ);
     unsigned long ulLevel = 0;
-    while (indices.size() == 0 && ulLevel <= max_level)
+    while (indices.empty() && ulLevel <= max_level)
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel++, indices);
-    if (indices.size() == 0 || ulLevel==1)
+    if (indices.empty() || ulLevel==1)
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel, indices);
 #endif
 
@@ -475,37 +488,49 @@ float InspectNominalShape::getDistance(const Base::Vector3f& point) const
         fMinDist = (float)distss->Value();
         // the shape is a solid, check if the vertex is inside
         if (isSolid) {
-            const Standard_Real tol = 0.001;
-            BRepClass3d_SolidClassifier classifier(_rShape);
-            classifier.Perform(pnt3d, tol);
-            if (classifier.State() == TopAbs_IN) {
+            if (isInsideSolid(pnt3d))
                 fMinDist = -fMinDist;
-            }
-
         }
         else if (fMinDist > 0) {
-            // check if the distance was compued from a face
-            for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
-                if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
-                    TopoDS_Shape face = distss->SupportOnShape1(index);
-                    Standard_Real u, v;
-                    distss->ParOnFaceS1(index, u, v);
-                    //gp_Pnt pnt = distss->PointOnShape1(index);
-                    BRepGProp_Face props(TopoDS::Face(face));
-                    gp_Vec normal;
-                    gp_Pnt center;
-                    props.Normal(u, v, center, normal);
-                    gp_Vec dir(center, pnt3d);
-                    Standard_Real scalar = normal.Dot(dir);
-                    if (scalar < 0) {
-                        fMinDist = -fMinDist;
-                    }
-                    break;
-                }
-            }
+            // check if the distance was computed from a face
+            if (isBelowFace(pnt3d))
+                fMinDist = -fMinDist;
         }
     }
     return fMinDist;
+}
+
+bool InspectNominalShape::isInsideSolid(const gp_Pnt& pnt3d) const
+{
+    const Standard_Real tol = 0.001;
+    BRepClass3d_SolidClassifier classifier(_rShape);
+    classifier.Perform(pnt3d, tol);
+    return (classifier.State() == TopAbs_IN);
+}
+
+bool InspectNominalShape::isBelowFace(const gp_Pnt& pnt3d) const
+{
+    // check if the distance was computed from a face
+    for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
+        if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
+            TopoDS_Shape face = distss->SupportOnShape1(index);
+            Standard_Real u, v;
+            distss->ParOnFaceS1(index, u, v);
+            //gp_Pnt pnt = distss->PointOnShape1(index);
+            BRepGProp_Face props(TopoDS::Face(face));
+            gp_Vec normal;
+            gp_Pnt center;
+            props.Normal(u, v, center, normal);
+            gp_Vec dir(center, pnt3d);
+            Standard_Real scalar = normal.Dot(dir);
+            if (scalar < 0) {
+                return true;
+            }
+            break;
+        }
+    }
+
+    return false;
 }
 
 // ----------------------------------------------------------------
@@ -701,6 +726,8 @@ public:
     }
     double getRMS()
     {
+        if (this->m_numv == 0)
+            return 0.0;
         return sqrt(this->m_sumsq / (double)this->m_numv);
     }
     int m_numv;
@@ -714,8 +741,8 @@ Feature::Feature()
 {
     ADD_PROPERTY(SearchRadius,(0.05));
     ADD_PROPERTY(Thickness,(0.0));
-    ADD_PROPERTY(Actual,(0));
-    ADD_PROPERTY(Nominals,(0));
+    ADD_PROPERTY(Actual,(nullptr));
+    ADD_PROPERTY(Nominals,(nullptr));
     ADD_PROPERTY(Distances,(0.0));
 }
 
@@ -744,7 +771,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     if (!pcActual)
         throw Base::ValueError("No actual geometry to inspect specified");
 
-    InspectActualGeometry* actual = 0;
+    InspectActualGeometry* actual = nullptr;
     if (pcActual->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(pcActual);
         actual = new InspectActualMesh(mesh->Mesh.getValue());
@@ -766,7 +793,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::vector<InspectNominalGeometry*> inspectNominal;
     const std::vector<App::DocumentObject*>& nominals = Nominals.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator it = nominals.begin(); it != nominals.end(); ++it) {
-        InspectNominalGeometry* nominal = 0;
+        InspectNominalGeometry* nominal = nullptr;
         if ((*it)->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
             Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
             nominal = new InspectNominalMesh(mesh->Mesh.getValue(), this->SearchRadius.getValue());
@@ -795,12 +822,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;
-    QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-                     &progress, SLOT(progressValueChanged(int)));
+    QObject::connect(&watcher, &QFutureWatcher<float>::progressValueChanged,
+                     &progress, &Base::FutureWatcherProgress::progressValueChanged);
 
     // keep it responsive during computation
     QEventLoop loop;
-    QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(&watcher, &QFutureWatcher::finished, &loop, &QEventLoop::quit);
     watcher.setFuture(future);
     loop.exec();
 
@@ -881,11 +908,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         // Setup progress bar
         Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
         QFutureWatcher<DistanceInspectionRMS> watcher;
-        QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-            &progress, SLOT(progressValueChanged(int)));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
+                         &progress, &Base::FutureWatcherProgress::progressValueChanged);
         // Keep UI responsive during computation
         QEventLoop loop;
-        QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::finished,
+                         &loop, &QEventLoop::quit);
         watcher.setFuture(future);
         loop.exec();
         res = future.result();
@@ -909,7 +937,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)
         delete *it;
 
-    return 0;
+    return nullptr;
 }
 
 // ----------------------------------------------------------------

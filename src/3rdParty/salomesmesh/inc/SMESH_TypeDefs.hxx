@@ -130,7 +130,7 @@ struct SMESH_OrientedLink: public SMESH_TLink
 
 //------------------------------------------
 /*!
- * \brief SMDS_MeshNode -> gp_XYZ convertor
+ * \brief SMDS_MeshNode -> gp_XYZ converter
  */
 //------------------------------------------
 struct SMESH_TNodeXYZ : public gp_XYZ

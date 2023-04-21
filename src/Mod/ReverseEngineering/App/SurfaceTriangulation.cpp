@@ -20,39 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "SurfaceTriangulation.h"
+#include <Base/Exception.h>
 #include <Mod/Points/App/Points.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Base/Exception.h>
+
+#include "SurfaceTriangulation.h"
+
 
 // http://svn.pointclouds.org/pcl/tags/pcl-1.5.1/test/
 #if defined(HAVE_PCL_SURFACE)
-#include <pcl/pcl_config.h>
-#include <pcl/point_types.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/surface/mls.h>
-#include <pcl/point_traits.h>
-#include <pcl/surface/gp3.h>
-#include <pcl/surface/grid_projection.h>
-#include <pcl/surface/poisson.h>
-//#include <pcl/surface/convex_hull.h>
-//#include <pcl/surface/concave_hull.h>
-#include <pcl/surface/organized_fast_mesh.h>
-#include <pcl/surface/marching_cubes_rbf.h>
-#include <pcl/surface/marching_cubes_hoppe.h>
-#include <pcl/surface/ear_clipping.h>
-#include <pcl/common/common.h>
-#include <boost/random.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
+# include <boost/random.hpp>
+# include <boost/math/special_functions/fpclassify.hpp>
+# include <pcl/pcl_config.h>
+# include <pcl/point_types.h>
+# include <pcl/features/normal_3d.h>
+# include <pcl/surface/mls.h>
+# include <pcl/point_traits.h>
+# include <pcl/surface/gp3.h>
+# include <pcl/surface/grid_projection.h>
+# include <pcl/surface/poisson.h>
+# include <pcl/surface/organized_fast_mesh.h>
+# include <pcl/surface/marching_cubes_rbf.h>
+# include <pcl/surface/marching_cubes_hoppe.h>
+# include <pcl/surface/ear_clipping.h>
+# include <pcl/common/common.h>
+# include <pcl/common/io.h>
 
 #ifndef PCL_REVISION_VERSION
-#define PCL_REVISION_VERSION 0
+# define PCL_REVISION_VERSION 0
 #endif
 
 using namespace pcl;
@@ -465,7 +465,7 @@ void ImageTriangulation::perform()
     const MeshCore::MeshFacetArray& face = kernel.GetFacets();
     MeshCore::MeshAlgorithm meshAlg(kernel);
     meshAlg.SetPointFlag(MeshCore::MeshPoint::INVALID);
-    std::vector<unsigned long> validPoints;
+    std::vector<MeshCore::PointIndex> validPoints;
     validPoints.reserve(face.size()*3);
     for (MeshCore::MeshFacetArray::_TConstIterator it = face.begin(); it != face.end(); ++it) {
         validPoints.push_back(it->_aulPoints[0]);
@@ -480,7 +480,7 @@ void ImageTriangulation::perform()
 
     unsigned long countInvalid = meshAlg.CountPointFlag(MeshCore::MeshPoint::INVALID);
     if (countInvalid > 0) {
-        std::vector<unsigned long> invalidPoints;
+        std::vector<MeshCore::PointIndex> invalidPoints;
         invalidPoints.reserve(countInvalid);
         meshAlg.GetPointsFlag(invalidPoints, MeshCore::MeshPoint::INVALID);
 
@@ -764,4 +764,3 @@ void MeshConversion::convert(const pcl::PolygonMesh& pclMesh, Mesh::MeshObject& 
 }
 
 #endif // HAVE_PCL_SURFACE
-

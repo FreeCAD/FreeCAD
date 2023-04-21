@@ -23,9 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIView.h"
 
@@ -42,20 +40,19 @@ class TechDrawGuiExport QGIViewImage : public QGIView
 {
 public:
     QGIViewImage();
-    ~QGIViewImage();
+    ~QGIViewImage() override;
 
     enum {Type = QGraphicsItem::UserType + 200};
     int type() const override { return Type;}
 
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
     void setViewImageFeature(TechDraw::DrawViewImage *obj);
 
-    virtual void draw() override;
-    virtual void rotateView(void) override;
+    void draw() override;
+    void rotateView() override;
 
 protected:
     virtual void drawImage();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGCustomImage* m_imageItem;
     QGCustomClip*  m_cliparea;

@@ -131,7 +131,7 @@ namespace MED
   //! Define a base class which represents MED Family entity
   struct MEDWRAPPER_EXPORT TFamilyInfo: virtual TNameInfo
   {
-    PMeshInfo myMeshInfo; //!< A reference to correspondig MED Mesh
+    PMeshInfo myMeshInfo; //!< A reference to corresponding MED Mesh
     //! Get a reference to corresponding MED Mesh
     const PMeshInfo& GetMeshInfo() const { return myMeshInfo;} 
 
@@ -181,17 +181,17 @@ namespace MED
   typedef TIntVector TElemNum;
   typedef SharedPtr<TElemNum> PElemNum;
   
-  //! Define a parent class for all MED entities that describes mesh entites such as nodes and cells.
+  //! Define a parent class for all MED entities that describes mesh entities such as nodes and cells.
   struct MEDWRAPPER_EXPORT TElemInfo: virtual TBase
   {
-    PMeshInfo myMeshInfo; //!< A reference to correspondig MED Mesh
+    PMeshInfo myMeshInfo; //!< A reference to corresponding MED Mesh
     //! Get a reference to corresponding MED Mesh
     const PMeshInfo& GetMeshInfo() const { return myMeshInfo;}
 
     TInt myNbElem; //<! Number of corresponding mesh entities
     TInt GetNbElem() const { return myNbElem;} //! Get number of mesh elements
     
-    //! Defines sequence MED Family indexes for corresponding mesh entites
+    //! Defines sequence MED Family indexes for corresponding mesh entities
     PElemNum myFamNum; 
     //! Get number of a MED FAMILY by order number of the mesh element
     TInt GetFamNum(TInt theId) const;
@@ -218,7 +218,7 @@ namespace MED
 
     //! Defines if the mesh elements are named
     EBooleen myIsElemNames;
-    //! Let know if the mesh elements havew names
+    //! Let know if the mesh elements have names
     EBooleen IsElemNames() const { return myIsElemNames;}
 
     //! Contains sequence of the names for the mesh elements
@@ -291,7 +291,7 @@ namespace MED
     EGeometrieElement GetGeom() const { return myGeom;}
 
     EConnectivite myConnMode; //!< Defines connectivity mode
-    //! Let known in what connectivity the cells are writen
+    //! Let known in what connectivity the cells are written
     EConnectivite GetConnMode() const { return myConnMode;}
 
     virtual TInt GetConnDim() const = 0; //!< Gives step in the connectivity sequence
@@ -321,7 +321,7 @@ namespace MED
 
     //! Defines connectivity mode
     EConnectivite myConnMode; // eNOD|eDESC(eDESC not used)
-    //! Let known in what connectivity the cells are writen
+    //! Let known in what connectivity the cells are written
     EConnectivite GetConnMode() const { return myConnMode;}
 
     PElemNum myConn; //!< Table de connectivities
@@ -369,7 +369,7 @@ namespace MED
 
     //! Defines connectivity mode
     EConnectivite myConnMode; // eNOD|eDESC(eDESC not used)
-    //! Let known in what connectivity the cells are writen
+    //! Let known in what connectivity the cells are written
     EConnectivite GetConnMode() const { return myConnMode;}
 
     PElemNum myConn; //!< Table de connectivities
@@ -392,7 +392,7 @@ namespace MED
   struct MEDWRAPPER_EXPORT TFieldInfo: 
     virtual TNameInfo
   {
-    PMeshInfo myMeshInfo; //!< A reference to correspondig MED Mesh
+    PMeshInfo myMeshInfo; //!< A reference to corresponding MED Mesh
     //! Get a reference to corresponding MED Mesh
     const PMeshInfo& GetMeshInfo() const { return myMeshInfo;}
 
@@ -408,7 +408,7 @@ namespace MED
     //! Let known is the MED FIELD is local or not
     EBooleen GetIsLocal() const { return myIsLocal;}
 
-    TInt myNbRef; //!< Defines number of refereces of the field
+    TInt myNbRef; //!< Defines number of references of the field
     //! Let known number of references for the MED FIELD
     TInt GetNbRef() const { return myNbRef;}
 
@@ -499,7 +499,7 @@ namespace MED
   struct MEDWRAPPER_EXPORT TTimeStampInfo: 
     virtual TBase
   {
-    PFieldInfo myFieldInfo; //!< A reference to correspondig MED Field
+    PFieldInfo myFieldInfo; //!< A reference to corresponding MED Field
     //! Get a reference to corresponding MED Field
     const PFieldInfo& GetFieldInfo() const { return myFieldInfo;}
 
@@ -589,7 +589,7 @@ namespace MED
     size_t
     GetSize() const;
     
-    //! Returns MED interpetation of the value size
+    //! Returns MED interpretation of the value size
     size_t
     GetNbVal() const;
     
@@ -773,9 +773,9 @@ namespace MED
   struct MEDWRAPPER_EXPORT TTimeStampValueBase: 
     virtual TModeSwitchInfo 
   {
-    //! A reference to correspondig MED TimeStamp
+    //! A reference to corresponding MED TimeStamp
     PTimeStampInfo myTimeStampInfo;
-    //!< Get a reference to correspondig MED TimeStamp
+    //!< Get a reference to corresponding MED TimeStamp
     const PTimeStampInfo& GetTimeStampInfo() const { return myTimeStampInfo;}
 
     //! Keeps set of MED EGeometrieElement which contains values for the timestamp
@@ -1047,7 +1047,7 @@ namespace MED
     void SetGrilleStructure(TInt theAxis,TInt theNb);
     
     /*!
-     *Defines sequence MED Family indexes for corresponding mesh entites
+     *Defines sequence MED Family indexes for corresponding mesh entities
      */
     TElemNum myFamNum; 
     //! Get number of a MED FAMILY by order number of the mesh element
@@ -1056,7 +1056,7 @@ namespace MED
     void SetFamNum(TInt theId, TInt theVal);
     
     /*!
-     *Defines sequence MED Family indexes for sub entites
+     *Defines sequence MED Family indexes for sub entities
      */
     TElemNum myFamSubNum; 
     //! Get number of a MED FAMILY by order number of sub element

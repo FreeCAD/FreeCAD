@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_TaskDriver_H
 #define FEMGUI_TaskDriver_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
-#include <Mod/Fem/App/FemSetNodesObject.h>
-
 
 class Ui_TaskDriver;
 class SoEventCallback;
@@ -59,19 +54,15 @@ class TaskDriver : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = 0);
-    ~TaskDriver();
-
-
-private Q_SLOTS:
-    void SwitchMethod(int Value);
+    explicit TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
+    ~TaskDriver() override;
 
 protected:
     Fem::FemAnalysis *pcObject;
 
 private:
     QWidget* proxy;
-    Ui_TaskDriver* ui;
+    std::unique_ptr<Ui_TaskDriver> ui;
 };
 
 } //namespace FemGui

@@ -25,17 +25,20 @@
 
 #include <App/DocumentObjectExtension.h>
 #include <App/PropertyUnits.h>
+#include <Mod/Part/PartGlobal.h>
+
 #include <TopoDS_Face.hxx>
+
 
 namespace Part
 {
 
 class PartExport PrismExtension : public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::PrismExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::PrismExtension);
 public:
     PrismExtension();
-    virtual ~PrismExtension();
+    ~PrismExtension() override;
 
 
     App::PropertyAngle FirstAngle;
@@ -43,11 +46,11 @@ public:
 
     TopoDS_Shape makePrism(double height, const TopoDS_Face& face) const;
 
-    virtual short int extensionMustExecute(void);
-    virtual App::DocumentObjectExecReturn *extensionExecute(void);
+    short int extensionMustExecute() override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
 
 protected:
-    virtual void extensionOnChanged(const App::Property* /*prop*/);
+    void extensionOnChanged(const App::Property* /*prop*/) override;
 };
 
 } // namespace Part

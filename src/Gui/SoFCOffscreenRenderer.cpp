@@ -21,7 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <iomanip>
+# include <ios>
+# include <sstream>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/fields/SoSFImage.h>
@@ -31,7 +35,6 @@
 # include <QFile>
 # include <QImage>
 # include <QImageWriter>
-# include <QPainter>
 #endif
 
 #if !defined(FC_OS_MACOSX)
@@ -40,23 +43,17 @@
 # include <GL/glext.h>
 #endif
 
-//gcc
-# include <iomanip>
-# include <ios>
-# include <sstream>
+#include <QOffscreenSurface>
 
+#include <App/Application.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
-#include <App/Application.h>
+#include <Base/Interpreter.h>
 
 #include "SoFCOffscreenRenderer.h"
 #include "BitmapFactory.h"
 
-#if defined(HAVE_QT5_OPENGL)
-# include <QOffscreenSurface>
-# include <QOpenGLContext>
-#endif
 
 using namespace Gui;
 using namespace std;
@@ -66,12 +63,12 @@ void writeJPEGComment(const std::string&, QByteArray&);
 
 // ---------------------------------------------------------------
 
-SoFCOffscreenRenderer* SoFCOffscreenRenderer::inst = 0;
+SoFCOffscreenRenderer* SoFCOffscreenRenderer::inst = nullptr;
 
 
 SoFCOffscreenRenderer& SoFCOffscreenRenderer::instance()
 {
-    if (inst==0)
+    if (!inst)
         inst = new SoFCOffscreenRenderer(SbViewportRegion());
     return *inst;
 }
@@ -124,7 +121,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
-        image.save(&buffer, "JPG");
+        image.save(&buffer, "JPG", 90);
         writeJPEGComment(com, ba);
 
         QFile file(QString::fromUtf8(filename));
@@ -166,7 +163,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
                     img.setText(QLatin1String("Description"), QString::fromUtf8(comment));
                 img.setText(QLatin1String("Creation Time"), QDateTime::currentDateTime().toString());
                 img.setText(QLatin1String("Software"),
-                    QString::fromUtf8(App::GetApplication().getExecutableName()));
+                    QString::fromStdString(App::Application::getExecutableName()));
             }
 
             QFile f(QString::fromUtf8(filename));
@@ -296,7 +293,7 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
     com << " <Source>\n" ;
     com << "  <Creator>Unknown</Creator>\n" ;
     com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData() << "</CreationDate>\n" ;
-    com << "  <CreatingSystem>" << App::GetApplication().getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
+    com << "  <CreatingSystem>" << App::Application::getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
     com << "  <PartNumber>Unknown</PartNumber>\n";
     com << "  <Revision>1.0</Revision>\n";
     com << " </Source>\n" ;
@@ -324,8 +321,24 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
     const unsigned char M_EOI   = 0xd9;
     const unsigned char M_COM   = 0xfe;
 
-    union Byte {
-        char c; unsigned char u;
+    class Byte {
+        char c{};
+        unsigned char u{};
+    public:
+        void setc(char v) {
+            c = v;
+            std::memcpy(&u, &c, sizeof(u));
+        }
+        void setu(unsigned char v) {
+            u = v;
+            std::memcpy(&c, &u, sizeof(c));
+        }
+        char getc() const {
+            return c;
+        }
+        unsigned char getu() const {
+            return u;
+        }
     };
 
     if (comment.empty() || ba.length() < 2)
@@ -333,21 +346,21 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
 
     // first marker
     Byte a,b;
-    a.c = ba[0];
-    b.c = ba[1];
-    if (a.u == 0xff && b.u == M_SOI) {
+    a.setc(ba[0]);
+    b.setc(ba[1]);
+    if (a.getu() == 0xff && b.getu() == M_SOI) {
         int index = 2;
         int len = ba.length();
         while (index < len) {
             // next marker
-            a.c = ba[index++];
-            while (a.u != 0xff && index < len) {
-                a.c = ba[index++];
+            a.setc(ba[index++]);
+            while (a.getu() != 0xff && index < len) {
+                a.setc(ba[index++]);
             }
             do {
-                b.c = ba[index++];
-            } while (b.u == 0xff && index < len);
-            switch (b.u) {
+                b.setc(ba[index++]);
+            } while (b.getu() == 0xff && index < len);
+            switch (b.getu()) {
                 case M_SOF0:
                 case M_SOF1:
                 case M_SOF2:
@@ -364,11 +377,11 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
                 case M_EOI:
                     {
                         Byte a, b;
-                        a.u = 0xff;
-                        b.u = M_COM;
+                        a.setu(0xff);
+                        b.setu(M_COM);
                         index -= 2; // insert comment before marker
-                        ba.insert(index++, a.c);
-                        ba.insert(index++, b.c);
+                        ba.insert(index++, a.getc());
+                        ba.insert(index++, b.getc());
                         int val = comment.size() + 2;
                         ba.insert(index++,(val >> 8) & 0xff);
                         ba.insert(index++,val & 0xff);
@@ -379,9 +392,9 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
                 default:
                     {
                         Byte a, b;
-                        a.c = ba[index++];
-                        b.c = ba[index++];
-                        int off = ((unsigned int)a.u << 8) + (unsigned int)b.u;
+                        a.setc(ba[index++]);
+                        b.setc(ba[index++]);
+                        int off = ((unsigned int)a.getu() << 8) + (unsigned int)b.getu();
                         index += off;
                         index -= 2; // next marker
                     }   break;
@@ -410,22 +423,13 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     }
 
     this->didallocation = glrenderaction ? false : true;
-    this->viewport = vpr;
+    this->viewport = vpr; // clazy:exclude=rule-of-two-soft
 
-#if !defined(HAVE_QT5_OPENGL)
-    this->pixelbuffer = NULL;                // constructed later
-#endif
-    this->framebuffer = NULL;
+    this->framebuffer = nullptr;
     this->numSamples = -1;
-#if defined(HAVE_QT5_OPENGL)
     //this->texFormat = GL_RGBA32F_ARB;
     this->texFormat = GL_RGB32F_ARB;
-#else
-    //this->texFormat = GL_RGBA;
-    this->texFormat = GL_RGB;
-#endif
     this->cache_context = 0;
-    this->pbuffer = false;
 }
 
 /*!
@@ -452,9 +456,6 @@ SoQtOffscreenRenderer::SoQtOffscreenRenderer(SoGLRenderAction * action)
 */
 SoQtOffscreenRenderer::~SoQtOffscreenRenderer()
 {
-#if !defined(HAVE_QT5_OPENGL)
-    delete pixelbuffer;
-#endif
     delete framebuffer;
 
     if (this->didallocation) {
@@ -472,14 +473,14 @@ SoQtOffscreenRenderer::~SoQtOffscreenRenderer()
 void
 SoQtOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
 {
-    PRIVATE(this)->viewport = region;
+    PRIVATE(this)->viewport = region; // clazy:exclude=rule-of-two-soft
 }
 
 /*!
   Returns the viewerport region.
 */
 const SbViewportRegion &
-SoQtOffscreenRenderer::getViewportRegion(void) const
+SoQtOffscreenRenderer::getViewportRegion() const
 {
     return PRIVATE(this)->viewport;
 }
@@ -501,7 +502,7 @@ SoQtOffscreenRenderer::setBackgroundColor(const SbColor4f & color)
   Returns the background color.
 */
 const SbColor4f &
-SoQtOffscreenRenderer::getBackgroundColor(void) const
+SoQtOffscreenRenderer::getBackgroundColor() const
 {
     return PRIVATE(this)->backgroundcolor;
 }
@@ -512,7 +513,9 @@ SoQtOffscreenRenderer::getBackgroundColor(void) const
 void
 SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 {
-    if (action == PRIVATE(this)->renderaction) { return; }
+    if (action == PRIVATE(this)->renderaction) {
+        return;
+    }
 
     if (PRIVATE(this)->didallocation) { delete PRIVATE(this)->renderaction; }
     PRIVATE(this)->renderaction = action;
@@ -523,7 +526,7 @@ SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
   Returns the rendering action currently used.
 */
 SoGLRenderAction *
-SoQtOffscreenRenderer::getGLRenderAction(void) const
+SoQtOffscreenRenderer::getGLRenderAction() const
 {
     return PRIVATE(this)->renderaction;
 }
@@ -535,7 +538,7 @@ SoQtOffscreenRenderer::setNumPasses(const int num)
 }
 
 int
-SoQtOffscreenRenderer::getNumPasses(void) const
+SoQtOffscreenRenderer::getNumPasses() const
 {
     return PRIVATE(this)->numSamples;
 }
@@ -552,18 +555,6 @@ SoQtOffscreenRenderer::internalTextureFormat() const
     return PRIVATE(this)->texFormat;
 }
 
-void
-SoQtOffscreenRenderer::setPbufferEnable(SbBool enable)
-{
-    PRIVATE(this)->pbuffer = enable;
-}
-
-SbBool
-SoQtOffscreenRenderer::getPbufferEnable(void) const
-{
-    return PRIVATE(this)->pbuffer;
-}
-
 // *************************************************************************
 
 void
@@ -573,43 +564,12 @@ SoQtOffscreenRenderer::pre_render_cb(void * /*userdata*/, SoGLRenderAction * act
     action->setRenderingIsRemote(false);
 }
 
-#if !defined(HAVE_QT5_OPENGL)
-void
-SoQtOffscreenRenderer::makePixelBuffer(int width, int height, int samples)
-{
-    if (pixelbuffer) {
-        delete pixelbuffer;
-        pixelbuffer = NULL;
-    }
-
-    viewport.setWindowSize(width, height);
-
-    QGLFormat fmt;
-    // With enabled alpha a transparent background is supported but
-    // at the same time breaks semi-transparent models. A workaround
-    // is to use a certain background color using GL_RGB as texture
-    // format and in the output image search for the above color and
-    // replaces it with the color requested by the user.
-    //fmt.setAlpha(true);
-    if (samples > 0) {
-        fmt.setSampleBuffers(true);
-        fmt.setSamples(samples);
-    }
-    else {
-        fmt.setSampleBuffers(false);
-    }
-
-    pixelbuffer = new QGLPixelBuffer(width, height, fmt);
-    cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
-}
-#endif
-
 void
 SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
 {
     if (framebuffer) {
         delete framebuffer;
-        framebuffer = NULL;
+        framebuffer = nullptr;
     }
 
     viewport.setWindowSize(width, height);
@@ -633,7 +593,6 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 {
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
 
-#if defined(HAVE_QT5_OPENGL)
     QSurfaceFormat format;
     format.setSamples(PRIVATE(this)->numSamples);
     QOpenGLContext context;
@@ -644,33 +603,16 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
     offscreen.setFormat(format);
     offscreen.create();
     context.makeCurrent(&offscreen);
-#endif
 
-#if !defined(HAVE_QT5_OPENGL)
-    if (PRIVATE(this)->pbuffer) {
-        if (!pixelbuffer) {
-            makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-        else if (pixelbuffer->width() != fullsize[0] || pixelbuffer->height() != fullsize[1]) {
-            // get the size right!
-            makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-
-        pixelbuffer->makeCurrent();                // activate us!
+    if (!framebuffer) {
+        makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
     }
-    else
-#endif
-    {
-        if (!framebuffer) {
-            makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-        else if (framebuffer->width() != fullsize[0] || framebuffer->height() != fullsize[1]) {
-            // get the size right!
-            makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-
-        framebuffer->bind();                // activate us!
+    else if (framebuffer->width() != fullsize[0] || framebuffer->height() != fullsize[1]) {
+        // get the size right!
+        makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
     }
+
+    framebuffer->bind();                // activate us!
 
     // oldcontext is used to restore the previous context id, in case
     // the render action is not allocated by us.
@@ -685,7 +627,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 
     // needed to clear viewport after glViewport() is called from
     // SoGLRenderAction
-    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+    this->renderaction->addPreRenderCallback(pre_render_cb, nullptr);
     this->renderaction->setViewportRegion(this->viewport);
 
     if (base->isOfType(SoNode::getClassTypeId()))
@@ -696,24 +638,13 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
         assert(false && "Cannot apply to anything else than an SoNode or an SoPath");
     }
 
-    this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
-
-#if !defined(HAVE_QT5_OPENGL)
-    if (pixelbuffer) {
-        pixelbuffer->doneCurrent();
-    }
-    else
-#endif
-    {
-        framebuffer->release();
-    }
+    this->renderaction->removePreRenderCallback(pre_render_cb, nullptr);
+    framebuffer->release();
 
     this->renderaction->setCacheContext(oldcontext); // restore old
 
-#if defined(HAVE_QT5_OPENGL)
     glImage = framebuffer->toImage();
     context.doneCurrent();
-#endif
 
     return true;
 }
@@ -780,14 +711,7 @@ SoQtOffscreenRenderer::render(SoPath * scene)
 void
 SoQtOffscreenRenderer::writeToImage (QImage& img) const
 {
-#if !defined(HAVE_QT5_OPENGL)
-    if (pixelbuffer)
-        img = pixelbuffer->toImage();
-    else if (framebuffer)
-        img = framebuffer->toImage();
-#else
     img = this->glImage;
-#endif
     if (PRIVATE(this)->backgroundcolor[3] < 1.0) {
         QColor c1, c2;
         c1.setRedF(PRIVATE(this)->backgroundcolor[0]);
@@ -834,3 +758,180 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
 
 #undef PRIVATE
 #undef PUBLIC
+
+// ---------------------------------------------------------------
+
+void SoQtOffscreenRendererPy::init_type()
+{
+    behaviors().name("SoQtOffscreenRenderer");
+    behaviors().doc("Python interface for SoQtOffscreenRenderer");
+    behaviors().set_tp_new(PyMake);
+
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    behaviors().readyType();
+
+    add_varargs_method("setViewportRegion",&SoQtOffscreenRendererPy::setViewportRegion,"setViewportRegion(int, int)");
+    add_varargs_method("getViewportRegion",&SoQtOffscreenRendererPy::getViewportRegion,"getViewportRegion() -> tuple");
+    add_varargs_method("setBackgroundColor",&SoQtOffscreenRendererPy::setBackgroundColor,"setBackgroundColor(float, float, float, [float])");
+    add_varargs_method("getBackgroundColor",&SoQtOffscreenRendererPy::getBackgroundColor,"getBackgroundColor() -> tuple");
+    add_varargs_method("setNumPasses",&SoQtOffscreenRendererPy::setNumPasses,"setNumPasses(int)");
+    add_varargs_method("getNumPasses",&SoQtOffscreenRendererPy::getNumPasses,"getNumPasses() -> int");
+    add_varargs_method("setInternalTextureFormat",&SoQtOffscreenRendererPy::setInternalTextureFormat,"setInternalTextureFormat(int)");
+    add_varargs_method("getInternalTextureFormat",&SoQtOffscreenRendererPy::getInternalTextureFormat,"getInternalTextureFormat() -> int");
+    add_varargs_method("render",&SoQtOffscreenRendererPy::render,"render(node)");
+    add_varargs_method("writeToImage",&SoQtOffscreenRendererPy::writeToImage,"writeToImage(string)");
+    add_varargs_method("getWriteImageFiletypeInfo",&SoQtOffscreenRendererPy::getWriteImageFiletypeInfo,"getWriteImageFiletypeInfo() -> tuple");
+}
+
+PyObject *SoQtOffscreenRendererPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
+{
+    short w, h;
+    if (!PyArg_ParseTuple(args, "hh", &w, &h))
+        return nullptr;
+
+    return new SoQtOffscreenRendererPy(SbViewportRegion(w, h));
+}
+
+SoQtOffscreenRendererPy::SoQtOffscreenRendererPy(const SbViewportRegion& vpr)
+  : renderer(vpr)
+{
+}
+
+SoQtOffscreenRendererPy::~SoQtOffscreenRendererPy()
+{
+}
+
+Py::Object SoQtOffscreenRendererPy::repr()
+{
+    std::stringstream s;
+    s << "<SoQtOffscreenRenderer at " << this << ">";
+    return Py::String(s.str());
+}
+
+Py::Object SoQtOffscreenRendererPy::setViewportRegion(const Py::Tuple& args)
+{
+    short w, h;
+    if (!PyArg_ParseTuple(args.ptr(), "hh", &w, &h))
+        throw Py::Exception();
+
+    renderer.setViewportRegion(SbViewportRegion(w, h));
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getViewportRegion(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    const SbViewportRegion& vpr = renderer.getViewportRegion();
+    SbVec2s size = vpr.getWindowSize();
+    return Py::TupleN(Py::Long(size[0]), Py::Long(size[1]));
+}
+
+Py::Object SoQtOffscreenRendererPy::setBackgroundColor(const Py::Tuple& args)
+{
+    float r, g, b, a = 1.0f;
+    if (!PyArg_ParseTuple(args.ptr(), "fff|f", &r, &g, &b, &a))
+        throw Py::Exception();
+
+    renderer.setBackgroundColor(SbColor4f(r, g, b, a));
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getBackgroundColor(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    SbColor4f color = renderer.getBackgroundColor();
+    return Py::TupleN(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]), Py::Float(color[3]));
+}
+
+Py::Object SoQtOffscreenRendererPy::setNumPasses(const Py::Tuple& args)
+{
+    int num;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &num))
+        throw Py::Exception();
+
+    renderer.setNumPasses(num);
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getNumPasses(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    int num = renderer.getNumPasses();
+    return Py::Long(num);
+}
+
+Py::Object SoQtOffscreenRendererPy::setInternalTextureFormat(const Py::Tuple& args)
+{
+    unsigned int format;
+    if (!PyArg_ParseTuple(args.ptr(), "I", &format))
+        throw Py::Exception();
+
+    renderer.setInternalTextureFormat(format);
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getInternalTextureFormat(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    unsigned long format = renderer.internalTextureFormat();
+    return Py::Long(format);
+}
+
+Py::Object SoQtOffscreenRendererPy::render(const Py::Tuple& args)
+{
+    PyObject* proxy;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &proxy))
+        throw Py::Exception();
+
+    try {
+        void* ptr = nullptr;
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        auto node = static_cast<SoNode*>(ptr);
+        bool ok = false;
+        if (node) {
+            ok = renderer.render(node);
+        }
+        return Py::Boolean(ok);
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
+}
+
+Py::Object SoQtOffscreenRendererPy::writeToImage(const Py::Tuple& args)
+{
+    const char* filename;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &filename))
+        throw Py::Exception();
+
+    QImage img;
+    renderer.writeToImage(img);
+    img.save(QString::fromUtf8(filename));
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getWriteImageFiletypeInfo(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    QStringList list = renderer.getWriteImageFiletypeInfo();
+    Py::Tuple tuple(list.size());
+    for (int i = 0; i < list.size(); i++) {
+        tuple.setItem(i, Py::String(list[i].toStdString()));
+    }
+
+    return tuple;
+}

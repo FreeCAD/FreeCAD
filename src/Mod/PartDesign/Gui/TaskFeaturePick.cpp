@@ -25,37 +25,31 @@
 
 #ifndef _PreComp_
 # include <QListIterator>
-# include <QTimer>
 # include <QListWidgetItem>
+# include <QTimer>
 #endif
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-#include <Gui/ViewProviderOrigin.h>
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <Base/Tools.h>
-#include <Base/Reader.h>
 #include <Base/Console.h>
-
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-
-#include "Utils.h"
 
 #include "ui_TaskFeaturePick.h"
 #include "TaskFeaturePick.h"
-#include <Mod/PartDesign/App/ShapeBinder.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include "Utils.h"
+
 
 using namespace PartDesignGui;
 using namespace Attacher;
@@ -91,14 +85,14 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     proxy = new QWidget(this);
     ui->setupUi(proxy);
 
-    connect(ui->checkUsed, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->checkOtherBody, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->checkOtherPart, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->radioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
-    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(onDoubleClick(QListWidgetItem *)));
+    connect(ui->checkUsed, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
+    connect(ui->checkOtherBody, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
+    connect(ui->checkOtherPart, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
+    connect(ui->radioIndependent, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
+    connect(ui->radioDependent, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
+    connect(ui->radioXRef, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
+    connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, &TaskFeaturePick::onItemSelectionChanged);
+    connect(ui->listWidget, &QListWidget::itemDoubleClicked, this, &TaskFeaturePick::onDoubleClick);
 
 
     if (!singleFeatureSelect) {
@@ -118,8 +112,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
         QListWidgetItem* item = new QListWidgetItem(
                 QString::fromLatin1("%1 (%2)")
-                    .arg(QString::fromUtf8((*objIt)->Label.getValue()))
-                    .arg(getFeatureStatusString(*statusIt)
+                    .arg(QString::fromUtf8((*objIt)->Label.getValue()),
+                         getFeatureStatusString(*statusIt)
                 )
         );
         item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
@@ -340,7 +334,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             App::Property* cprop = *it++;
 
-            if( strcmp(prop->getName(), "Label") == 0 ) {
+            if( prop->getName() && strcmp(prop->getName(), "Label") == 0 ) {
                 static_cast<App::PropertyString*>(cprop)->setValue(name.c_str());
                 continue;
             }
@@ -442,7 +436,14 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
     return copy;
 }
 
-void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
+bool TaskFeaturePick::isSingleSelectionEnabled() const
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                      GetGroup("Preferences")->GetGroup("Selection");
+    return hGrp->GetBool("singleClickFeatureSelect", true);
+}
+
+void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (doSelection)
         return;
@@ -454,6 +455,12 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
             QString t = item->data(Qt::UserRole).toString();
             if (t.compare(QString::fromLatin1(obj.FeatName))==0) {
                 item->setSelected(true);
+
+                if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                    if (isSingleSelectionEnabled()) {
+                        QMetaObject::invokeMethod(qobject_cast<Gui::ControlSingleton*>(&Gui::Control()), "accept", Qt::QueuedConnection);
+                    }
+                }
             }
         }
     }
@@ -502,14 +509,14 @@ void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& O
 void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
 {
     if (origins.empty()) {
-        QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
 }
 
 void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
 {
     origins.clear();
-    QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+    QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
 }
 
 void TaskFeaturePick::showExternal(bool val)
@@ -527,10 +534,10 @@ void TaskFeaturePick::showExternal(bool val)
 
 TaskDlgFeaturePick::TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objects,
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
-                                        boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
-                                        boost::function<void (std::vector<App::DocumentObject*>)> wfunc,
+                                        std::function<bool (std::vector<App::DocumentObject*>)> afunc,
+                                        std::function<void (std::vector<App::DocumentObject*>)> wfunc,
                                         bool singleFeatureSelect,
-                                        boost::function<void (void)> abortfunc /* = NULL */ )
+                                        std::function<void (void)> abortfunc /* = NULL */ )
     : TaskDialog(), accepted(false)
 {
     pick  = new TaskFeaturePick(objects, status, singleFeatureSelect);

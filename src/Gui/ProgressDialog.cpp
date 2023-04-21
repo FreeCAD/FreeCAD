@@ -20,22 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QElapsedTimer>
 # include <QMessageBox>
 # include <QPushButton>
-# include <QElapsedTimer>
 # include <QThread>
 # include <QTime>
 #endif
+
 #include "ProgressDialog.h"
 #include "MainWindow.h"
 
 
 using namespace Gui;
-
 
 namespace Gui {
 struct SequencerDialogPrivate
@@ -49,8 +48,7 @@ struct SequencerDialogPrivate
 };
 }
 
-
-SequencerDialog* SequencerDialog::_pclSingleton = 0;
+SequencerDialog* SequencerDialog::_pclSingleton = nullptr;
 
 SequencerDialog* SequencerDialog::instance()
 {
@@ -219,7 +217,7 @@ void SequencerDialog::showRemainingTime()
             QTime time( 0,0, 0);
             time = time.addSecs( rest/1000 );
             QString remain = Gui::ProgressDialog::tr("Remaining: %1").arg(time.toString());
-            QString status = QString::fromLatin1("%1\t[%2]").arg(txt).arg(remain);
+            QString status = QString::fromLatin1("%1\t[%2]").arg(txt, remain);
 
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->dlg, "setLabelText",
@@ -305,7 +303,7 @@ ProgressDialog::ProgressDialog (SequencerDialog* s, QWidget * parent)
     m_taskbarButton = nullptr;
     m_taskbarButton = nullptr;
 #endif
-    connect(this, SIGNAL(canceled()), this, SLOT(onCancel()));
+    connect(this, &QProgressDialog::canceled, this, &ProgressDialog::onCancel);
 }
 
 ProgressDialog::~ProgressDialog ()
@@ -319,9 +317,9 @@ void ProgressDialog::onCancel()
 
 bool ProgressDialog::canAbort() const
 {
-    int ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes,
-    QMessageBox::No|QMessageBox::Default);
+    auto ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
+    tr("Do you really want to abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
+    QMessageBox::No);
 
     return (ret == QMessageBox::Yes) ? true : false;
 }

@@ -22,16 +22,14 @@
 #ifndef PATH_VORONOI_H
 #define PATH_VORONOI_H
 
+#include <climits>
 #include <map>
-#include <string>
+#include <vector>
 #include <Base/BaseClass.h>
 #include <Base/Handle.h>
 #include <Base/Vector3D.h>
 
-#include <vector>
-#include <boost/polygon/point_concept.hpp>
 #include <boost/polygon/polygon.hpp>
-#include <boost/polygon/segment_concept.hpp>
 #include <boost/polygon/voronoi.hpp>
 
 #if (SIZE_MAX == UINT_MAX)
@@ -52,16 +50,16 @@ namespace Path
     Voronoi();
     ~Voronoi();
 
-    typedef std::size_t   color_type;
+    using color_type = std::size_t;
     static const int        InvalidIndex = INT_MAX;
     static const color_type ColorMask    = PATH_VORONOI_COLOR_MASK;
 
     // types
-    typedef double coordinate_type;
-    typedef boost::polygon::voronoi_vertex<double> vertex_type;
-    typedef boost::polygon::point_data<coordinate_type> point_type;
-    typedef boost::polygon::segment_data<coordinate_type> segment_type;
-    typedef boost::polygon::voronoi_diagram<double> voronoi_diagram_type;
+    using coordinate_type = double;
+    using vertex_type = boost::polygon::voronoi_vertex<double>;
+    using point_type = boost::polygon::point_data<coordinate_type>;
+    using segment_type = boost::polygon::segment_data<coordinate_type>;
+    using voronoi_diagram_type = boost::polygon::voronoi_diagram<double>;
 
     class diagram_type
       : public voronoi_diagram_type
@@ -77,9 +75,9 @@ namespace Path
       Base::Vector3d scaledVector(const point_type &p, double z) const;
       Base::Vector3d scaledVector(const vertex_type &v, double z) const;
 
-      typedef std::map<intptr_t, int> cell_map_type;
-      typedef std::map<intptr_t, int> edge_map_type;
-      typedef std::map<intptr_t, int> vertex_map_type;
+      using cell_map_type = std::map<intptr_t, int>;
+      using edge_map_type = std::map<intptr_t, int>;
+      using vertex_map_type = std::map<intptr_t, int>;
 
       int index(const cell_type   *cell)   const;
       int index(const edge_type   *edge)   const;
@@ -93,8 +91,8 @@ namespace Path
       point_type    retrievePoint(const cell_type *cell) const;
       segment_type  retrieveSegment(const cell_type *cell) const;
 
-      typedef std::map<int, double> angle_map_t;
-      double angleOfSegment(int i, angle_map_t *angle = 0) const;
+      using angle_map_t = std::map<int, double>;
+      double angleOfSegment(int i, angle_map_t *angle = nullptr) const;
       bool segmentsAreConnected(int i, int j) const;
 
     private:

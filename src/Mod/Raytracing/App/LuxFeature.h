@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _LuxFeature_h_
 #define _LuxFeature_h_
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyStandard.h>
 
 #include "RaySegment.h"
 
@@ -39,10 +36,9 @@ class Property;
 
 /** Base class of all Feature classes in FreeCAD
  */
-//class LuxFeature: public Part::PartFeature
-class AppRaytracingExport LuxFeature: public Raytracing::RaySegment
+class RaytracingExport LuxFeature: public Raytracing::RaySegment
 {
-    PROPERTY_HEADER(Raytracing::LuxFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::LuxFeature);
 public:
     /// Constructor
     LuxFeature(void);
@@ -53,12 +49,12 @@ public:
 
     /** @name methods override Feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const { 
+    const char* getViewProviderName(void) const override {
         return "Gui::ViewProviderDocumentObject"; 
     }
     //@}

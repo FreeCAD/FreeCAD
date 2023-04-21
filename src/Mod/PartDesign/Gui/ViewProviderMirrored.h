@@ -30,16 +30,18 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGuii::ViewProviderMirrored)
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMirrored);
 public:
-    ViewProviderMirrored()
-        { featureName = std::string("Mirrored");
-	   sPixmap = "PartDesign_Mirrored.svg";
-	}
+    ViewProviderMirrored() {
+        featureName = std::string("Mirrored");
+        menuName = tr("Mirrored parameters");
+        sPixmap = "PartDesign_Mirrored.svg";
+    }
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

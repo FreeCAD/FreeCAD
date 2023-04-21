@@ -21,22 +21,16 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-#endif
 
-#include <Base/MatrixPy.h>
-#include <Base/VectorPy.h>
 #include <Base/BoundBoxPy.h>
-#include <App/MaterialPy.h>
+#include <Base/MatrixPy.h>
 #include <App/DocumentObjectPy.h>
-
-#include "ViewProviderDocumentObjectPy.h"
-#include "ViewProviderLink.h"
-#include "WidgetFactory.h"
+#include <App/MaterialPy.h>
 
 #include "LinkViewPy.h"
 #include "LinkViewPy.cpp"
+#include "ViewProviderDocumentObjectPy.h"
+
 
 using namespace Gui;
 
@@ -52,19 +46,19 @@ int LinkViewPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 
 // returns a string which represent the object e.g. when printed in python
-std::string LinkViewPy::representation(void) const
+std::string LinkViewPy::representation() const
 {
     return "<Link view>";
 }
 
 PyObject* LinkViewPy::reset(PyObject *args) {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     PY_TRY {
         auto lv = getLinkViewPtr();
         lv->setSize(0);
-        lv->setLink(0);
+        lv->setLink(nullptr);
         Py_Return;
     } PY_CATCH;
 }
@@ -72,12 +66,12 @@ PyObject* LinkViewPy::reset(PyObject *args) {
 PyObject* LinkViewPy::setMaterial(PyObject *args) {
     PyObject *pyObj;
     if (!PyArg_ParseTuple(args, "O", &pyObj))
-        return 0;
+        return nullptr;
 
     PY_TRY {
         auto lv = getLinkViewPtr();
         if(pyObj == Py_None) {
-            lv->setMaterial(-1,0);
+            lv->setMaterial(-1,nullptr);
             Py_Return;
         }
         if(PyObject_TypeCheck(pyObj,&App::MaterialPy::Type)) {
@@ -91,10 +85,10 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
             while(PyDict_Next(pyObj, &pos, &key, &value)) {
                 Py::Int idx(key);
                 if(value == Py_None)
-                    materials[(int)idx] = 0;
+                    materials[(int)idx] = nullptr;
                 else if(!PyObject_TypeCheck(value,&App::MaterialPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of material");
-                    return 0;
+                    return nullptr;
                 }else
                     materials[(int)idx] = static_cast<App::MaterialPy*>(value)->getMaterialPtr();
             }
@@ -105,13 +99,13 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
         if(PySequence_Check(pyObj)) {
             Py::Sequence seq(pyObj);
             std::vector<App::Material*> materials;
-            materials.resize(seq.size(),0);
+            materials.resize(seq.size(),nullptr);
             for(Py_ssize_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
                 if(item == Py_None) continue;
                 if(!PyObject_TypeCheck(item,&App::MaterialPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of material");
-                    return 0;
+                    return nullptr;
                 }
                 materials[i] = static_cast<App::MaterialPy*>(item)->getMaterialPtr();
             }
@@ -121,14 +115,14 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
         }
 
         PyErr_SetString(PyExc_TypeError, "exepcting a type of Material, [Material,...] or {Int:Material,}");
-        return 0;
+        return nullptr;
     } PY_CATCH;
 }
 
 PyObject* LinkViewPy::setTransform(PyObject *args) {
     PyObject *pyObj;
     if (!PyArg_ParseTuple(args, "O", &pyObj))
-        return 0;
+        return nullptr;
 
     PY_TRY {
         auto lv = getLinkViewPtr();
@@ -144,7 +138,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
                 Py::Int idx(key);
                 if(!PyObject_TypeCheck(value,&Base::MatrixPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
-                    return 0;
+                    return nullptr;
                 }else
                     mat[(int)idx] = static_cast<Base::MatrixPy*>(value)->getMatrixPtr();
             }
@@ -155,12 +149,12 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
         if(PySequence_Check(pyObj)) {
             Py::Sequence seq(pyObj);
             std::vector<Base::Matrix4D*> mat;
-            mat.resize(seq.size(),0);
+            mat.resize(seq.size(),nullptr);
             for(Py_ssize_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
                 if(!PyObject_TypeCheck(item,&Base::MatrixPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
-                    return 0;
+                    return nullptr;
                 }
                 mat[i] = static_cast<Base::MatrixPy*>(item)->getMatrixPtr();
             }
@@ -170,18 +164,18 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
         }
 
         PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix, [Matrix,...] or {Int:Matrix,...}");
-        return 0;
+        return nullptr;
     } PY_CATCH;
 }
 
 PyObject* LinkViewPy::setType(PyObject *args) {
     short type;
     PyObject *sublink = Py_True;
-    if (!PyArg_ParseTuple(args, "h|O", &type,&sublink))
-        return 0;
+    if (!PyArg_ParseTuple(args, "h|O!", &type, &PyBool_Type, &sublink))
+        return nullptr;
 
     PY_TRY{
-        getLinkViewPtr()->setNodeType((LinkView::SnapshotType)type,PyObject_IsTrue(sublink));
+        getLinkViewPtr()->setNodeType((LinkView::SnapshotType)type, Base::asBoolean(sublink));
         Py_Return;
     } PY_CATCH;
 }
@@ -191,7 +185,7 @@ PyObject*  LinkViewPy::setChildren(PyObject *args) {
     PyObject *pyVis = Py_None;
     short type=0;
     if (!PyArg_ParseTuple(args, "O|Os",&pyObj,&pyVis,&type))
-        return 0;
+        return nullptr;
 
     PY_TRY{
         App::PropertyBoolList vis;
@@ -200,7 +194,7 @@ PyObject*  LinkViewPy::setChildren(PyObject *args) {
             links.setPyObject(pyObj);
         if(pyVis!=Py_None)
             vis.setPyObject(pyVis);
-        getLinkViewPtr()->setChildren(links.getValue(),vis.getValue(),(LinkView::SnapshotType)type);
+        getLinkViewPtr()->setChildren(links.getValue(),vis.getValue(),static_cast<LinkView::SnapshotType>(type));
         Py_Return;
     } PY_CATCH;
 }
@@ -210,11 +204,11 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
     PyObject *pyObj;
     PyObject *pySubName = Py_None;
     if (!PyArg_ParseTuple(args, "O|O",&pyObj,&pySubName))
-        return 0;
+        return nullptr;
 
     PY_TRY {
-        ViewProviderDocumentObject *vpd = 0;
-        App::DocumentObject *obj = 0;
+        ViewProviderDocumentObject *vpd = nullptr;
+        App::DocumentObject *obj = nullptr;
         if(pyObj!=Py_None) {
             if(PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
                 obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
@@ -223,7 +217,7 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
             else {
                 PyErr_SetString(PyExc_TypeError,
                         "exepcting a type of DocumentObject or ViewProviderDocumentObject");
-                return 0;
+                return nullptr;
             }
         }
 
@@ -242,12 +236,13 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
 
 Py::Object LinkViewPy::getOwner() const {
     auto owner = getLinkViewPtr()->getOwner();
-    if(!owner) return Py::Object();
+    if(!owner)
+        return Py::Object();
     return Py::Object(owner->getPyObject(),true);
 }
 
 void LinkViewPy::setOwner(Py::Object owner) {
-    ViewProviderDocumentObject *vp = 0;
+    ViewProviderDocumentObject *vp = nullptr;
     if(!owner.isNone()) {
         if(!PyObject_TypeCheck(owner.ptr(),&ViewProviderDocumentObjectPy::Type))
             throw Py::TypeError("exepcting the owner to be of ViewProviderDocumentObject");
@@ -279,10 +274,10 @@ PyObject* LinkViewPy::getElementPicked(PyObject* args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O",&obj))
-        return NULL;
-    void *ptr = 0;
+        return nullptr;
+    void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPickedPoint *", obj, &ptr, 0);
-    SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
+    auto pp = static_cast<SoPickedPoint*>(ptr);
     if(!pp)
         throw Py::TypeError("type must be of coin.SoPickedPoint");
     PY_TRY{
@@ -298,43 +293,43 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
     const char *sub;
     PyObject *path;
     if (!PyArg_ParseTuple(args, "sO",&sub,&path))
-        return NULL;
-    void *ptr = 0;
+        return nullptr;
+    void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", path, &ptr, 0);
-    SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
+    auto pPath = static_cast<SoPath*>(ptr);
     if(!pPath)
         throw Py::TypeError("type must be of coin.SoPath");
     PY_TRY{
-        SoDetail *det = 0;
+        SoDetail *det = nullptr;
         getLinkViewPtr()->linkGetDetailPath(sub,static_cast<SoFullPath*>(pPath),det);
         if(!det)
             Py_Return;
-        return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+        return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", static_cast<void*>(det), 0);
     }PY_CATCH
 }
 
-PyObject* LinkViewPy::getBoundBox(PyObject* args) {
+PyObject* LinkViewPy::getBoundBox(PyObject* args)
+{
     PyObject *vobj = Py_None;
     if (!PyArg_ParseTuple(args, "O",&vobj))
-        return 0;
-    ViewProviderDocumentObject *vpd = 0;
-    if(vobj!=Py_None) {
-        if(!PyObject_TypeCheck(vobj,&ViewProviderDocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting a type of ViewProviderDocumentObject");
-            return 0;
-        }
-        vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
-    }
+        return nullptr;
+
     PY_TRY {
+        Base::PyTypeCheck(&vobj, &ViewProviderDocumentObjectPy::Type);
+        ViewProviderDocumentObject *vpd = nullptr;
+        if (vobj)
+            vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
+
         auto bbox = getLinkViewPtr()->getBoundBox(vpd);
         Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
         return Py::new_reference_to(ret);
-    }PY_CATCH
+    }
+    PY_CATCH
 }
 
 PyObject *LinkViewPy::getCustomAttributes(const char*) const
 {
-    return 0;
+    return nullptr;
 }
 
 int LinkViewPy::setCustomAttributes(const char*, PyObject*)
@@ -342,7 +337,7 @@ int LinkViewPy::setCustomAttributes(const char*, PyObject*)
     return 0;
 }
 
-Py::Object LinkViewPy::getRootNode(void) const
+Py::Object LinkViewPy::getRootNode() const
 {
     try {
         SoNode* node = getLinkViewPtr()->getLinkRoot();
@@ -378,7 +373,7 @@ void LinkViewPy::setVisibilities(Py::Object value) {
 
 PyObject* LinkViewPy::getChildren(PyObject *args) {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     auto children = getLinkViewPtr()->getChildren();
     if(children.empty())
         Py_Return;

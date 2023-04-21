@@ -27,17 +27,20 @@
 // Std. configurations
 
 
-#include <stdio.h>
+#include <cstdio>
 #if defined(FC_OS_BSD)
 #include <sys/time.h>
 #else
 #include <sys/timeb.h>
 #endif
-#include <time.h>
+#include <ctime>
 
 #ifdef __GNUC__
-# include <stdint.h>
+# include <cstdint>
 #endif
+
+#include <string>
+#include <FCGlobal.h>
 
 #if defined(FC_OS_BSD)
 struct timeb
@@ -56,17 +59,18 @@ class BaseExport TimeInfo
 public:
     /// Construction
     TimeInfo();
+    TimeInfo(const TimeInfo&) = default;
     /// Destruction
     virtual ~TimeInfo();
 
     /// sets the object to the actual system time
-    void setCurrent(void);
-    void setTime_t (uint64_t seconds);
+    void setCurrent();
+    void setTime_t (int64_t seconds);
 
-    uint64_t getSeconds(void) const;
-    unsigned short  getMiliseconds(void) const;
+    int64_t getSeconds() const;
+    unsigned short  getMiliseconds() const;
 
-    //void operator =  (const TimeInfo &time);
+    void operator =  (const TimeInfo &time);
     bool operator == (const TimeInfo &time) const;
     bool operator != (const TimeInfo &time) const;
 
@@ -90,12 +94,12 @@ protected:
 };
 
 
- inline uint64_t TimeInfo::getSeconds(void) const
+ inline int64_t TimeInfo::getSeconds() const
  {
      return timebuffer.time;
  }
 
- inline unsigned short  TimeInfo::getMiliseconds(void) const
+ inline unsigned short  TimeInfo::getMiliseconds() const
  {
      return timebuffer.millitm;
  }
@@ -106,11 +110,11 @@ TimeInfo::operator != (const TimeInfo &time) const
     return (timebuffer.time != time.timebuffer.time || timebuffer.millitm != time.timebuffer.millitm);
 }
 
-//inline void
-//TimeInfo::operator = (const TimeInfo &time)
-//{
-    //timebuffer = time.timebuffer;
-//}
+inline void
+TimeInfo::operator = (const TimeInfo &time)
+{
+    timebuffer = time.timebuffer;
+}
 
 inline bool
 TimeInfo::operator == (const TimeInfo &time) const

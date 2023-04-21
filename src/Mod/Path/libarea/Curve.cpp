@@ -65,7 +65,8 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 	// this examines the vertices in might_be_an_arc
 	// if they do fit an arc, set arc to be the arc that they fit and return true
 	// returns true, if arc added
-	if(might_be_an_arc.size() < 2)return false;
+	if(might_be_an_arc.size() < 2)
+	    return false;
 
 	// find middle point
 	std::size_t num = might_be_an_arc.size();
@@ -125,7 +126,8 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 		if(angs < ange)angs += 6.2831853071795864;
 	}
 
-	if(arc.IncludedAngle() >= 3.15)return false; // We don't want full arcs, so limit to about 180 degrees
+	if(arc.IncludedAngle() >= 3.15) // We don't want full arcs, so limit to about 180 degrees
+	    return false;
 
 	for(std::list<const CVertex*>::iterator It = might_be_an_arc.begin(); It != might_be_an_arc.end(); It++)
 	{
@@ -135,13 +137,15 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 		{
 			// make sure angp > angs
 			if(angp < angs)angp += 6.2831853071795864;
-			if(angp > ange)return false;
+			if(angp > ange)
+			    return false;
 		}
 		else
 		{
 			// make sure angp > ange
 			if(angp < ange)angp += 6.2831853071795864;
-			if(angp > angs)return false;
+			if(angp > angs)
+			    return false;
 		}
 	}
 
@@ -489,7 +493,8 @@ double CCurve::GetArea()const
 
 bool CCurve::IsClosed()const
 {
-	if(m_vertices.size() == 0)return false;
+	if(m_vertices.size() == 0)
+	    return false;
 	return m_vertices.front().m_p == m_vertices.back().m_p;
 }
 
@@ -775,7 +780,7 @@ bool CCurve::Offset(double leftwards_value)
 		success = false;
 	}
 
-	if(success == false)
+	if(!success)
 	{
 		if(this->IsClosed())
 		{
@@ -911,7 +916,8 @@ double CCurve::Perim()const
 
 Point CCurve::PerimToPoint(double perim)const
 {
-	if(m_vertices.size() == 0)return Point(0, 0);
+	if(m_vertices.size() == 0)
+	    return Point(0, 0);
 
 	const Point *prev_p = NULL;
 	double kperim = 0.0;
@@ -1037,7 +1043,8 @@ Point Span::NearestPointNotOnSpan(const Point& p)const
 	{
 		double radius = m_p.dist(m_v.m_c);
 		double r = p.dist(m_v.m_c);
-		if(r < Point::tolerance)return m_p;
+		if(r < Point::tolerance)
+		    return m_p;
 		Point vc = (m_v.m_c - p);
 		return p + vc * ((r - radius) / r);
 	}
@@ -1047,12 +1054,14 @@ Point Span::NearestPoint(const Point& p)const
 {
 	Point np = NearestPointNotOnSpan(p);
 	double t = Parameter(np);
-	if(t >= 0.0 && t <= 1.0)return np;
+	if(t >= 0.0 && t <= 1.0)
+	    return np;
 
 	double d1 = p.dist(this->m_p);
 	double d2 = p.dist(this->m_v.m_p);
 
-	if(d1 < d2)return this->m_p;
+	if(d1 < d2)
+	    return this->m_p;
 	else return m_v.m_p;
 }
 
@@ -1075,8 +1084,10 @@ Point Span::MidPerim(double d)const {
 
 Point Span::MidParam(double param)const {
 	/// returns a point which is 0-1 along span
-	if(fabs(param) < 0.00000000000001)return m_p;
-	if(fabs(param - 1.0) < 0.00000000000001)return m_v.m_p;
+	if(fabs(param) < 0.00000000000001)
+	    return m_p;
+	if(fabs(param - 1.0) < 0.00000000000001)
+	    return m_v.m_p;
 
 	Point p;
 	if(m_v.m_type == 0) {
@@ -1189,7 +1200,8 @@ void Span::GetBox(CBox2D &box)
 double IncludedAngle(const Point& v0, const Point& v1, int dir) {
 	// returns the absolute included angle between 2 vectors in the direction of dir ( 1=acw  -1=cw)
 	double inc_ang = v0 * v1;
-	if(inc_ang > 1. - 1.0e-10) return 0;
+	if(inc_ang > 1. - 1.0e-10)
+	    return 0;
 	if(inc_ang < -1. + 1.0e-10)
 		inc_ang = PI;  
 	else {									// dot product,   v1 . v2  =  cos ang
@@ -1264,7 +1276,8 @@ double Span::Parameter(const Point& p)const
 
 bool Span::On(const Point& p, double* t)const
 {
-	if(p != NearestPoint(p))return false;
+	if(p != NearestPoint(p))
+	    return false;
 	if(t)*t = Parameter(p);
 	return true;
 }

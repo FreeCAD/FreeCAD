@@ -151,9 +151,9 @@ $( document ).ready(function() {
     searchBox.CloseResultsWindow();
   });
 
-  $('body').append('<div id="MSearchClose"></div>');
-  $('body').append('<div id="MSearchBox"></div>');
-  $('body').append('<div id="MSearchSelectWindow"></div>');
+  $('wrapper').append('<div id="MSearchClose"></div>');
+  $('wrapper').append('<div id="MSearchBox"></div>');
+  $('wrapper').append('<div id="MSearchSelectWindow"></div>');
 
   searchBox.searchLabel = '';
   searchBox.DOMSearchField = function() {

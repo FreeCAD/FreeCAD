@@ -22,17 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
 
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "ui_DlgPrefsTechDrawGeneral.h"
-#include <Gui/PrefWidgets.h>
-
 #include "PreferencesGui.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -44,6 +39,9 @@ DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
     ui->setupUi(this);
     ui->plsb_LabelSize->setUnit(Base::Unit::Length);
     ui->plsb_LabelSize->setMinimum(0);
+
+    ui->psb_GridSpacing->setUnit(Base::Unit::Length);
+    ui->psb_GridSpacing->setMinimum(0);
 }
 
 DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
@@ -71,6 +69,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->pfc_Welding->onSave();
     ui->pfc_FilePattern->onSave();
     ui->le_NamePattern->onSave();
+    ui->cb_ShowGrid->onSave();
+    ui->psb_GridSpacing->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -90,15 +90,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->plsb_LabelSize->onRestore();
 
     ui->cbProjAngle->onRestore();
-    ui->cbHiddenLineStyle->onRestore(); 
-    
-    ui->pfc_DefTemp->setFileName(Preferences::defaultTemplate());
-    ui->pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
-    ui->pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
-    ui->pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
-    ui->pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
-    ui->pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
-    
+    ui->cbHiddenLineStyle->onRestore();
+
     ui->pfc_DefTemp->onRestore();
     ui->pfc_DefDir->onRestore();
     ui->pfc_HatchFile->onRestore();
@@ -106,6 +99,14 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->pfc_Welding->onRestore();
     ui->pfc_FilePattern->onRestore();
     ui->le_NamePattern->onRestore();
+
+    bool gridDefault = PreferencesGui::showGrid();
+    ui->cb_ShowGrid->setChecked(gridDefault);
+    ui->cb_ShowGrid->onRestore();
+
+    double spacingDefault = PreferencesGui::gridSpacing();
+    ui->psb_GridSpacing->setValue(spacingDefault);
+    ui->psb_GridSpacing->onRestore();
 }
 
 /**

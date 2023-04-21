@@ -28,30 +28,28 @@
 # include <QFileDialog>
 # include <QMutex>
 # include <QMutexLocker>
-# include <QThread>
-# include <QTimer>
 # include <QMdiArea>
 # include <QMdiSubWindow>
-# include <QWaitCondition>
-# include <QTranslator>
 # include <QRunnable>
+# include <QThread>
 # include <QThreadPool>
+# include <QTimer>
+# include <QTranslator>
+# include <QWaitCondition>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Sequencer.h>
+
+#include "CommandT.h"
 #include "Application.h"
+#include "Command.h"
 #include "MainWindow.h"
 #include "MDIView.h"
-#include "Command.h"
-#include "CommandT.h"
 #include "Language/Translator.h"
-
-#include "ProgressBar.h"
 
 
 using namespace Gui;
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
 // Std_TestQM
@@ -80,7 +78,7 @@ void Std_TestQM::activated(int iMsg)
         for (QList<QTranslator*>::Iterator it = i18n.begin(); it != i18n.end(); ++it)
             qApp->removeTranslator(*it);
         for (QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
-            QTranslator* translator = new QTranslator(qApp);
+            auto translator = new QTranslator(qApp);
             if (translator->load(*it)) {
                 qApp->installTranslator(translator);
             }
@@ -134,7 +132,7 @@ void FCCmdTest1::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool FCCmdTest1::isActive(void)
+bool FCCmdTest1::isActive()
 {
     //return (GetActiveOCCDocument()!=NULL);
     return true;
@@ -162,9 +160,9 @@ void FCCmdTest2::activated(int iMsg)
     Q_UNUSED(iMsg);
 }
 
-bool FCCmdTest2::isActive(void)
+bool FCCmdTest2::isActive()
 {
-    return (getDocument()!=NULL);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -187,13 +185,14 @@ void FCCmdTest3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if (!pcDoc) return;
+    if (!pcDoc)
+        return;
 }
 
 
-bool FCCmdTest3::isActive(void)
+bool FCCmdTest3::isActive()
 {
-    return (getDocument()!=NULL);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -217,13 +216,14 @@ void FCCmdTest4::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 
-bool FCCmdTest4::isActive(void)
+bool FCCmdTest4::isActive()
 {
-    return (getDocument()!=NULL);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -246,12 +246,13 @@ void FCCmdTest5::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
-bool FCCmdTest5::isActive(void)
+bool FCCmdTest5::isActive()
 {
-  return (getDocument()!=NULL);
+  return (getDocument() != nullptr);
 }
 
 
@@ -275,12 +276,13 @@ void FCCmdTest6::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
-bool FCCmdTest6::isActive(void)
+bool FCCmdTest6::isActive()
 {
-    return (getDocument()!=NULL);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -303,7 +305,8 @@ void CmdTestCmdFuncs::activated(int iMsg)
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     auto obj = doc->addObject("App::Annotation", "obj");
-    if (!obj) return;
+    if (!obj)
+        return;
 
     std::string objName = obj->getNameInDocument();
 
@@ -327,9 +330,9 @@ void CmdTestCmdFuncs::activated(int iMsg)
     Gui::copyVisualT(objName.c_str(), "DisplayMode", objName.c_str());
 }
 
-bool CmdTestCmdFuncs::isActive(void)
+bool CmdTestCmdFuncs::isActive()
 {
-    return (getDocument()!=NULL);
+    return (getDocument() != nullptr);
 }
 
 //===========================================================================
@@ -369,7 +372,7 @@ void CmdTestProgress1::activated(int iMsg)
     }
 }
 
-bool CmdTestProgress1::isActive(void)
+bool CmdTestProgress1::isActive()
 {
     return (!Base::Sequencer().isRunning());
 }
@@ -412,7 +415,7 @@ void CmdTestProgress2::activated(int iMsg)
     }
 }
 
-bool CmdTestProgress2::isActive(void)
+bool CmdTestProgress2::isActive()
 {
     return ( !Base::Sequencer().isRunning() );
 }
@@ -482,7 +485,7 @@ void CmdTestProgress3::activated(int iMsg)
     }
 }
 
-bool CmdTestProgress3::isActive(void)
+bool CmdTestProgress3::isActive()
 {
     return ( !Base::Sequencer().isRunning() );
 }
@@ -512,14 +515,14 @@ void CmdTestProgress4::activated(int iMsg)
     try
     {
         unsigned long steps = 50;
-        Base::SequencerLauncher* seq = new Base::SequencerLauncher("Starting progress bar", steps);
+        auto seq = new Base::SequencerLauncher("Starting progress bar", steps);
 
         for (unsigned long i=0; i<steps;i++)
         {
             QWaitCondition().wait(&mutex, 5);
             if (i == 45) {
                 delete seq;
-                seq = 0;
+                seq = nullptr;
             }
             if (seq) {
                 seq->next(false);
@@ -537,7 +540,7 @@ void CmdTestProgress4::activated(int iMsg)
     }
 }
 
-bool CmdTestProgress4::isActive(void)
+bool CmdTestProgress4::isActive()
 {
     return (!Base::Sequencer().isRunning());
 }
@@ -561,13 +564,13 @@ CmdTestProgress5::CmdTestProgress5()
 class BarThread : public QThread
 {
 public:
-    BarThread(unsigned long s) : steps(s)
+    explicit BarThread(unsigned long s) : steps(s)
     {
     }
-    ~BarThread()
+    ~BarThread() override
     {
     }
-    void run()
+    void run() override
     {
         QMutex mutex;
         QMutexLocker ml(&mutex);
@@ -599,25 +602,25 @@ void CmdTestProgress5::activated(int iMsg)
     Q_UNUSED(iMsg);
     QEventLoop loop;
 
-    BarThread* thr1 = new BarThread(2000);
-    QObject::connect(thr1, SIGNAL(finished()), &loop, SLOT(quit()));
+    auto thr1 = new BarThread(2000);
+    QObject::connect(thr1, &QThread::finished, &loop, &QEventLoop::quit);
     thr1->start();
     loop.exec();
 
-    BarThread* thr2 = new BarThread(1500);
+    auto thr2 = new BarThread(1500);
 
     QTimer timer;
     timer.setSingleShot(true);
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
     thr2->start();
     timer.start(2000); // 2s timeout
     loop.exec();
 
-    BarThread* thr3 = new BarThread(1000);
+    auto thr3 = new BarThread(1000);
     thr3->start();
 }
 
-bool CmdTestProgress5::isActive(void)
+bool CmdTestProgress5::isActive()
 {
     return (!Base::Sequencer().isRunning());
 }
@@ -644,7 +647,7 @@ void CmdTestMDI1::activated(int iMsg)
     getMainWindow()->removeWindow(mdi);
 }
 
-bool CmdTestMDI1::isActive(void)
+bool CmdTestMDI1::isActive()
 {
     return getMainWindow()->activeWindow();
 }
@@ -672,7 +675,7 @@ void CmdTestMDI2::activated(int iMsg)
     }
 }
 
-bool CmdTestMDI2::isActive(void)
+bool CmdTestMDI2::isActive()
 {
     return getMainWindow()->activeWindow();
 }
@@ -694,13 +697,13 @@ void CmdTestMDI3::activated(int iMsg)
     Q_UNUSED(iMsg);
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
-    mdi->setParent(0, Qt::Window | Qt::WindowTitleHint |
+    mdi->setParent(nullptr, Qt::Window | Qt::WindowTitleHint |
                    Qt::WindowSystemMenuHint |
                    Qt::WindowMinMaxButtonsHint);
     mdi->show();
 }
 
-bool CmdTestMDI3::isActive(void)
+bool CmdTestMDI3::isActive()
 {
     return getMainWindow()->activeWindow();
 }
@@ -710,7 +713,7 @@ DEF_STD_CMD(CmdTestConsoleOutput)
 CmdTestConsoleOutput::CmdTestConsoleOutput()
   : Command("Std_TestConsoleOutput")
 {
-    sGroup      = QT_TR_NOOP("Standard-Test");
+    sGroup      = "Standard-Test";
     sMenuText   = QT_TR_NOOP("Test console output");
     sToolTipText= QT_TR_NOOP("Test console output");
     sStatusTip  = QT_TR_NOOP("Test console output");
@@ -721,11 +724,13 @@ class TestConsoleObserver : public Base::ILogger
 {
     QMutex mutex;
 public:
-    int matchMsg, matchWrn, matchErr, matchLog;
-    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
+    int matchMsg, matchWrn, matchErr, matchLog, matchCritical;
+    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0), matchCritical(0)
     {
     }
-    void SendLog(const std::string& msg, Base::LogStyle level){
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override{
+
+        (void) notifiername;
 
         QMutexLocker ml(&mutex);
 
@@ -742,6 +747,11 @@ public:
             case Base::LogStyle::Log:
                 matchLog += strcmp(msg.c_str(), "Write a log to the console output.\n");
                 break;
+            case Base::LogStyle::Critical:
+                matchMsg += strcmp(msg.c_str(), "Write a critical message to the console output.\n");
+                break;
+            default:
+                break;
         }
     }
 };
@@ -749,7 +759,7 @@ public:
 class ConsoleMessageTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Message("Write a message to the console output.\n");
@@ -759,7 +769,7 @@ public:
 class ConsoleWarningTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Warning("Write a warning to the console output.\n");
@@ -769,7 +779,7 @@ public:
 class ConsoleErrorTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Error("Write an error to the console output.\n");
@@ -779,10 +789,20 @@ public:
 class ConsoleLogTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Log("Write a log to the console output.\n");
+    }
+};
+
+class ConsoleCriticalTask : public QRunnable
+{
+public:
+    void run() override
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Critical("Write a critical message to the console output.\n");
     }
 };
 
@@ -797,10 +817,11 @@ void CmdTestConsoleOutput::activated(int iMsg)
     QThreadPool::globalInstance()->start(new ConsoleWarningTask);
     QThreadPool::globalInstance()->start(new ConsoleErrorTask);
     QThreadPool::globalInstance()->start(new ConsoleLogTask);
+    QThreadPool::globalInstance()->start(new ConsoleCriticalTask);
     QThreadPool::globalInstance()->waitForDone();
     Base::Console().DetachObserver(&obs);
 
-    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0) {
+    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0 || obs.matchCritical > 0) {
         Base::Console().Error("Race condition in Console class\n");
     }
 }
@@ -808,7 +829,7 @@ void CmdTestConsoleOutput::activated(int iMsg)
 
 namespace Gui {
 
-void CreateTestCommands(void)
+void CreateTestCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

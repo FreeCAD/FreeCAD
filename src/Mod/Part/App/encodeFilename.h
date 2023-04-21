@@ -24,23 +24,11 @@
 #ifndef PART_ENCODEFILENAME_H
 #define PART_ENCODEFILENAME_H
 
-#if (OCC_VERSION_HEX < 0x060800 && defined(_WIN32))
-#include <QString>
-#endif
-
 namespace Part
 {
 inline std::string encodeFilename(std::string fn)
 {
-#if (OCC_VERSION_HEX < 0x060800 && defined(_WIN32))
-    // Workaround to support latin1 characters in path until OCCT supports
-    // conversion from UTF8 to wchar_t on windows
-    // http://tracker.dev.opencascade.org/view.php?id=22484
-    QByteArray str8bit = QString::fromUtf8(fn.c_str()).toLocal8Bit();
-    return std::string(str8bit.constData());
-#else
     return fn;
-#endif
 }
 
 } //namespace Part

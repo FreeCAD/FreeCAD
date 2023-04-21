@@ -43,6 +43,9 @@ class WorkingPlaneProxy:
 
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
 
+        obj.addExtension("Part::AttachExtensionPython")
+        obj.changeAttacherType("Attacher::AttachEnginePlane")
+
         self.Type = "WorkingPlaneProxy"
 
     def execute(self,obj):

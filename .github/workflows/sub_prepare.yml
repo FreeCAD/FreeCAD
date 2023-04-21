@@ -1,0 +1,162 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is the pre-check workflow for CI of FreeCAD.
+# It aims at running some basic checks about the workflow run ...
+# ... and gathering some data needed for the next steps.
+
+name: Prepare
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      dontFailOnOldRebase:
+        default: true
+        type: boolean
+        required: false
+      maxRebaseHours:
+        default: "48"
+        type: string
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Prepare.outputs.reportFile }}
+      changedFiles:
+        value: ${{ jobs.Prepare.outputs.changedFiles }}
+      changedPythonFiles:
+        value: ${{ jobs.Prepare.outputs.changedPythonFiles }}
+      changedCppFiles:
+        value: ${{ jobs.Prepare.outputs.changedCppFiles }}
+
+jobs:
+
+  Prepare:
+    env:
+      isPR: ${{ github.event_name == 'pull_request' }}
+      isPush: ${{ github.event_name == 'push' }}
+      logdir: /tmp/logs/
+      reportdir: /tmp/report/
+      reportfilename: ${{ inputs.artifactBasename }}-report.md
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+      changedFiles: ${{ steps.Output.outputs.changedFiles }}
+      changedPythonFiles: ${{ steps.Output.outputs.changedPythonFiles }}
+      changedCppFiles: ${{ steps.Output.outputs.changedCppFiles }}
+
+    steps:
+      - name: Make needed directories, files and initializations
+        id: Init
+        run: |
+          mkdir -p ${{ env.logdir }}
+          mkdir -p ${{ env.reportdir }}
+          commitCnt=0
+          touch ${{ env.logdir }}changedFiles.lst ${{ env.logdir }}changedCppFiles.lst ${{ env.logdir }}changedPythonFiles.lst
+          echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+      - name: Determine base and head SHA in case of PR
+        if: env.isPR == 'true'
+        run: |
+          baseSha=${{ github.event.pull_request.base.sha }}
+          headSha=${{ github.event.pull_request.head.sha }}
+          echo "baseSha=$baseSha" >> $GITHUB_ENV
+          echo "headSha=$headSha" >> $GITHUB_ENV
+          echo "This CI run is performed on a Pull Request" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+          echo "Base SHA is $baseSha, Head SHA is $headSha" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+      - name: Check if PR has been recently rebased
+        if: env.isPR == 'true'
+        continue-on-error: ${{ inputs.dontFailOnOldRebase }}
+        run: |
+          baseDate=$(curl -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$baseSha | jq -r '.commit.committer.date')
+          dateDiff=$(( ( $(date +%s) - $(date -d $baseDate +%s) ) / 3600 ))
+          echo "Pull request is based on a $dateDiff hour-old commit" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+          # Exit the step with appropriate code
+          if [ $dateDiff -gt ${{ inputs.maxRebaseHours }} ]
+          then
+            echo -n ":warning: Pull request should be rebased" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+            exit 1
+          fi
+      - name: Determine base and head SHA in case of push
+        if: env.isPush == 'true'
+        run: |
+          baseSha=${{ github.event.before }}
+          headSha=${{ github.event.after }}
+          echo "headSha=$headSha" >> $GITHUB_ENV
+          if [ $baseSha -eq 0 ]
+          then
+            echo "This CI run is performed on a Push that created a new branch : files changed will be ignored" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+            echo "Head SHA is $headSha" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+            echo "isPush='false'" >> $GITHUB_ENV
+          else
+            echo "This CI run is performed on a Push" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+            echo "Base SHA is $baseSha, Head SHA is $headSha" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+            echo "baseSha=$baseSha" >> $GITHUB_ENV
+          fi
+      - name: Get compare between head and base
+        if: env.isPR == 'true' || env.isPush == 'true'
+        run: |
+          echo "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/compare/$baseSha...$headSha"
+          curl -H "Accept: application/vnd.github+json" -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/compare/$baseSha...$headSha > ${{ env.logdir }}compare.json
+      - name: Get number of commits in the changeset
+        if: env.isPR == 'true' || env.isPush == 'true'
+        run: |
+          commitCnt=$(jq -re '.ahead_by' ${{ env.logdir }}compare.json)
+          echo "Changeset is composed of $commitCnt commit(s)" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
+      - name: Get files modified in changeset #TODO check what happens with deleted file in the subsequent process
+        if: env.isPR == 'true' || env.isPush == 'true'
+        run: |
+          jq '.files[] | if .status != "removed" then .filename else empty end' ${{ env.logdir }}compare.json > ${{ env.logdir }}changedFiles.lst
+          grep -E '\.(py|py3)"' ${{ env.logdir }}changedFiles.lst > ${{ env.logdir }}changedPythonFiles.lst || true
+          grep -E '\.(c|c\+\+|cc|cpp|cu|cuh|cxx|h|h\+\+|hh|hpp|hxx)"' ${{ env.logdir }}changedFiles.lst > ${{ env.logdir }}changedCppFiles.lst || true
+          # Write the report
+          echo "::group::Modified files in changeset (removed files are ignored) :" ; cat ${{ env.logdir }}changedFiles.lst ; echo "::endgroup::"
+          echo "<details><summary>Modified files (removed files are ignored):</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          cat ${{ env.logdir }}changedFiles.lst >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
+          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
+      - name: Transmitting outputs
+        id: Output
+        run: |
+          echo "changedFiles=$(cat ${{ env.logdir }}changedFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "changedPythonFiles=$(cat ${{ env.logdir }}changedPythonFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "changedCppFiles=$(cat ${{ env.logdir }}changedCppFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.artifactBasename }}-Logs
+          path: |
+            ${{ env.logdir }}
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.reportfilename }}
+          path: |
+            ${{env.reportdir}}${{ env.reportfilename }}

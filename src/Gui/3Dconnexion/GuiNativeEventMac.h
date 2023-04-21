@@ -55,26 +55,26 @@ extern int16_t ConnexionSetButtonLabels(uint8_t *labels, uint16_t size);
 
 namespace Gui
 {
-	class GUIApplicationNativeEventAware;
+        class GUIApplicationNativeEventAware;
 
-	class GuiNativeEvent : public GuiAbstractNativeEvent
-	{
-	Q_OBJECT
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override;
-		void initSpaceball(QMainWindow *window) override final;
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(const GuiNativeEvent&);
-		GuiNativeEvent& operator=(const GuiNativeEvent&);
-	private:
+        class GuiNativeEvent : public GuiAbstractNativeEvent
+        {
+        Q_OBJECT
+        public:
+                explicit GuiNativeEvent(GUIApplicationNativeEventAware *app);
+                ~GuiNativeEvent() override;
+                void initSpaceball(QMainWindow *window) final;
+        private:
+                GuiNativeEvent();
+                GuiNativeEvent(const GuiNativeEvent&);
+                GuiNativeEvent& operator=(const GuiNativeEvent&);
+        private:
         static UInt16 tdxClientID; /* ID assigned by the driver */
         static uint32_t lastButtons;
         static void tdx_drv_handler( io_connect_t connection,
                                      natural_t messageType,
                                      void *messageArgument );
-	};
+        };
 }
 
 #endif //GUINATIVEEVENT_H

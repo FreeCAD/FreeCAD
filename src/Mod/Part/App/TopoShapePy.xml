@@ -115,8 +115,10 @@ importBrepFromString(str,False) to not display a progress bar.
     </Methode>
     <Methode Name="extrude" Const="true">
       <Documentation>
-        <UserDocu>Extrude the shape along a direction.
-extrude(direction, length)</UserDocu>
+        <UserDocu>Extrude the shape along a vector.
+extrude(vector) -> Shape
+--
+Shp2 = Shp1.extrude(App.Vector(0,0,10)) - extrude the shape 10 mm in the +Z direction.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="revolve" Const="true">
@@ -124,7 +126,7 @@ extrude(direction, length)</UserDocu>
         <UserDocu>Revolve the shape around an Axis to a given degree.
 revolve(base, direction, angle)
 --
-Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
+Part.revolve(App.Vector(0,0,0),App.Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
 
 Hints: Sometimes you want to create a rotation body out of a closed edge or wire.
 Example:
@@ -386,7 +388,7 @@ translate(vector)
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="translated">
+    <Methode Name="translated" Const="true">
       <Documentation>
           <UserDocu>Create a new shape with translation
 translated(vector) -> shape
@@ -398,11 +400,11 @@ translated(vector) -> shape
         <UserDocu>Apply the rotation (base,dir,degree) to the current location of this shape
 rotate(base,dir,degree)
 --
-Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+Shp.rotate(App.Vector(0,0,0),App.Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="rotated">
+    <Methode Name="rotated" Const="true">
       <Documentation>
         <UserDocu>Create a new shape with rotation.
 rotated(base,dir,degree) -> shape
@@ -412,14 +414,14 @@ rotated(base,dir,degree) -> shape
     <Methode Name="scale">
       <Documentation>
         <UserDocu>Apply scaling with point and factor to this shape.
-scale(factor,[base=Vector(0,0,0)])
+scale(factor,[base=App.Vector(0,0,0)])
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="scaled">
+    <Methode Name="scaled" Const="true">
       <Documentation>
           <UserDocu>Create a new shape with scale.
-scaled(factor,[base=Vector(0,0,0)]) -> shape
+scaled(factor,[base=App.Vector(0,0,0)]) -> shape
           </UserDocu>
       </Documentation>
     </Methode>
@@ -509,7 +511,7 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeWires">
+    <Methode Name="makeWires" Const="true">
       <Documentation>
         <UserDocu>make wire(s) using the edges of this shape
 makeWires([op=None])
@@ -533,7 +535,7 @@ reverse()
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="reversed">
+    <Methode Name="reversed" Const="true">
       <Documentation>
         <UserDocu>Reverses the orientation of a copy of this shape.
 reversed() -> Shape
@@ -787,9 +789,9 @@ distToShape(shape) -> (dist, vectors, infos)
 dist is the minimum distance, in mm (float value).
 
 vectors is a list of pairs of App.Vector. Each pair corresponds to solution.
-Example: [(Vector (2.0, -1.0, 2.0), Vector (2.0, 0.0, 2.0)), (Vector (2.0,
--1.0, 2.0), Vector (2.0, -1.0, 3.0))] First vector is a point on self, second
-vector is a point on s.
+Example: [(App.Vector(2.0, -1.0, 2.0), App.Vector(2.0, 0.0, 2.0)),
+(App.Vector(2.0, -1.0, 2.0), App.Vector(2.0, -1.0, 3.0))]
+First vector is a point on self, second vector is a point on s.
 
 infos contains additional info on the solutions. It is a list of tuples:
 (topo1, index1, params1, topo2, index2, params2)

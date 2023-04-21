@@ -23,22 +23,21 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
+#include <deque>
+#include <set>
 #include <string>
-#include <tuple>
-#include <Base/Exception.h>
-#include <Base/Unit.h>
+
 #include <App/PropertyLinks.h>
 #include <App/ObjectIdentifier.h>
-#include <Base/BaseClass.h>
-#include <Base/Quantity.h>
-#include <set>
-#include <deque>
 #include <App/Range.h>
+#include <Base/Exception.h>
+#include <Base/BaseClass.h>
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Woverloaded-virtual"
-#endif
+
+namespace Base
+{
+class Quantity;
+}
 
 namespace App  {
 
@@ -46,34 +45,34 @@ class DocumentObject;
 class Expression;
 class Document;
 
-typedef std::unique_ptr<Expression> ExpressionPtr;
+using ExpressionPtr = std::unique_ptr<Expression>;
 
 AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
-AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = 0);
+AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = nullptr);
 
-typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > > ExpressionDeps;
+// Map of depending objects to a map of depending property name to the full referencing object identifier
+using ExpressionDeps = std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > >;
+
 class AppExport ExpressionVisitor {
 public:
-    virtual ~ExpressionVisitor() {}
+    virtual ~ExpressionVisitor() = default;
     virtual void visit(Expression &e) = 0;
     virtual void aboutToChange() {}
     virtual int changed() const { return 0;}
     virtual void reset() {}
-    virtual App::PropertyLinkBase* getPropertyLink() {return 0;}
+    virtual App::PropertyLinkBase* getPropertyLink() {return nullptr;}
 
 protected:
-    void getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &); 
-    void getDeps(Expression &e, ExpressionDeps &); 
-    void getDepObjects(Expression &e, std::set<App::DocumentObject*> &, std::vector<std::string> *); 
+    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &);
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
     bool relabeledDocument(Expression &e, const std::string &oldName, const std::string &newName);
     bool renameObjectIdentifier(Expression &e,
             const std::map<ObjectIdentifier,ObjectIdentifier> &, const ObjectIdentifier &);
-    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &,
             const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
     void importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap);
-    void updateLabelReference(Expression &e, App::DocumentObject *obj, 
+    void updateLabelReference(Expression &e, App::DocumentObject *obj,
             const std::string &ref, const char *newLabel);
     void moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount);
     void offsetCells(Expression &e, int rowOffset, int colOffset);
@@ -81,25 +80,25 @@ protected:
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
-    ExpressionModifier(P & _prop)
+    explicit ExpressionModifier(P & _prop)
         : prop(_prop)
         , propLink(Base::freecad_dynamic_cast<App::PropertyLinkBase>(&prop))
         , signaller(_prop,false)
-        , _changed(0) 
+        , _changed(0)
     {}
 
-    virtual ~ExpressionModifier() { }
+    ~ExpressionModifier() override = default;
 
-    virtual void aboutToChange() override{
+    void aboutToChange() override{
         ++_changed;
         signaller.aboutToChange();
     }
 
-    virtual int changed() const override { return _changed; }
+    int changed() const override { return _changed; }
 
-    virtual void reset() override {_changed = 0;}
+    void reset() override {_changed = 0;}
 
-    virtual App::PropertyLinkBase* getPropertyLink() override {return propLink;}
+    App::PropertyLinkBase* getPropertyLink() override {return propLink;}
 
 protected:
     P & prop;
@@ -114,13 +113,13 @@ protected:
   */
 
 class AppExport Expression : public Base::BaseClass {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
-    Expression(const App::DocumentObject * _owner);
+    explicit Expression(const App::DocumentObject * _owner);
 
-    virtual ~Expression();
+    ~Expression() override;
 
     virtual bool isTouched() const { return false; }
 
@@ -135,18 +134,23 @@ public:
 
     virtual int priority() const;
 
-    void getIdentifiers(std::set<App::ObjectIdentifier> &) const;
-    std::set<App::ObjectIdentifier> getIdentifiers() const;
+    void getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const;
+    std::map<App::ObjectIdentifier,bool> getIdentifiers() const;
 
-    void getDeps(ExpressionDeps &deps) const;
-    ExpressionDeps getDeps() const;
+    enum DepOption {
+        DepNormal,
+        DepHidden,
+        DepAll,
+    };
+    void getDeps(ExpressionDeps &deps, int option=DepNormal) const;
+    ExpressionDeps getDeps(int option=DepNormal) const;
 
-    std::set<App::DocumentObject*> getDepObjects(std::vector<std::string> *labels=0) const;
-    void getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *labels=0) const;
+    std::map<App::DocumentObject*,bool> getDepObjects(std::vector<std::string> *labels=nullptr) const;
+    void getDepObjects(std::map<App::DocumentObject*,bool> &, std::vector<std::string> *labels=nullptr) const;
 
     ExpressionPtr importSubNames(const std::map<std::string,std::string> &nameMap) const;
 
-    ExpressionPtr updateLabelReference(App::DocumentObject *obj, 
+    ExpressionPtr updateLabelReference(App::DocumentObject *obj,
             const std::string &ref, const char *newLabel) const;
 
     ExpressionPtr replaceObject(const App::DocumentObject *parent,
@@ -160,7 +164,7 @@ public:
 
     class Exception : public Base::Exception {
     public:
-        Exception(const char *sMessage) : Base::Exception(sMessage) { }
+        explicit Exception(const char *sMessage) : Base::Exception(sMessage) { }
     };
 
     App::DocumentObject *  getOwner() const { return owner; }
@@ -168,11 +172,11 @@ public:
 
     virtual void addComponent(Component* component);
 
-    typedef std::vector<Component*> ComponentList;
+    using ComponentList = std::vector<Component*>;
 
     static Component *createComponent(const std::string &n);
-    static Component *createComponent(Expression *e1, Expression *e2=0,
-            Expression *e3=0, bool isRange=false);
+    static Component *createComponent(Expression *e1, Expression *e2=nullptr,
+            Expression *e3=nullptr, bool isRange=false);
 
     bool hasComponent() const {return !components.empty();}
 
@@ -180,26 +184,24 @@ public:
 
     Py::Object getPyValue() const;
 
-    bool isSame(const Expression &other) const;
+    bool isSame(const Expression &other, bool checkComment=true) const;
 
-    friend ExpressionVisitor;
+    friend class ExpressionVisitor;
 
 protected:
     virtual bool _isIndexable() const {return false;}
     virtual Expression *_copy() const = 0;
     virtual void _toString(std::ostream &ss, bool persistent, int indent=0) const = 0;
-    virtual void _getDeps(ExpressionDeps &) const  {}
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const  {}
-    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const  {}
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) {return false;}
     virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) {}
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}
-    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) {return false;}
     virtual void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &,
-        const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const 
+        const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const
     {
         (void)parent;
         (void)oldObj;
@@ -220,9 +222,5 @@ public:
 };
 
 }
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
 
 #endif // EXPRESSION_H

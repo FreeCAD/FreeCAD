@@ -23,35 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QGraphicsItem>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QString>
-#include <sstream>
-#include <QRectF>
+# include <cmath>
+# include <sstream>
+
+# include <QGraphicsColorizeEffect>
+# include <QGraphicsItem>
+# include <QRectF>
 #endif
 
-//#include <qmath.h>
-
-#include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
+#include <Mod/TechDraw/App/DrawViewDraft.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
 
+#include "QGIViewSymbol.h"
+#include "PreferencesGui.h"
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
-#include "QGIViewSymbol.h"
-#include "DrawGuiUtil.h"
 #include "Rez.h"
 
+
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIViewSymbol::QGIViewSymbol()
 {
@@ -64,11 +57,11 @@ QGIViewSymbol::QGIViewSymbol()
 
     m_displayArea = new QGDisplayArea();
     addToGroup(m_displayArea);
-    m_displayArea->centerAt(0.,0.);
+    m_displayArea->centerAt(0., 0.);
 
     m_svgItem = new QGCustomSvg();
     m_displayArea->addToGroup(m_svgItem);
-    m_svgItem->centerAt(0.,0.);
+    m_svgItem->centerAt(0., 0.);
 }
 
 QGIViewSymbol::~QGIViewSymbol()
@@ -76,28 +69,19 @@ QGIViewSymbol::~QGIViewSymbol()
     // m_svgItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewSymbol::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
-void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
+void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol* obj)
 {
     // called from QGVPage. (once)
-    setViewFeature(static_cast<TechDraw::DrawView *>(obj));
+    setViewFeature(static_cast<TechDraw::DrawView*>(obj));
 }
 
 void QGIViewSymbol::updateView(bool update)
 {
-    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
-    if( viewSymbol == nullptr ) {
+    auto viewSymbol(dynamic_cast<TechDraw::DrawViewSymbol*>(getViewObject()));
+    if (!viewSymbol)
         return;
-    }
 
-    if (update ||
-        viewSymbol->isTouched() ||
-        viewSymbol->Symbol.isTouched()) {
+    if (update || viewSymbol->isTouched() || viewSymbol->Symbol.isTouched()) {
         draw();
     }
 
@@ -120,26 +104,26 @@ void QGIViewSymbol::draw()
 
 void QGIViewSymbol::drawSvg()
 {
-    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
-    if( viewSymbol == nullptr ) {
+    auto viewSymbol(dynamic_cast<TechDraw::DrawViewSymbol*>(getViewObject()));
+    if (!viewSymbol)
         return;
-    }
 
     double rezfactor = Rez::getRezFactor();
     double scaling = viewSymbol->getScale();
-    double pxMm = 3.78;                 //96px/25.4mm ( CSS/SVG defined value of 96 pixels per inch)
-//    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
-                                        //some software uses different px/in, so symbol will need Scale adjusted.
+    double pxMm = 3.78;//96px/25.4mm ( CSS/SVG defined value of 96 pixels per inch)
+    //    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
+    //some software uses different px/in, so symbol will need Scale adjusted.
     //Arch/Draft views are in px and need to be scaled @ rezfactor px/mm to ensure proper representation
-    if (viewSymbol->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId()) ||
-        viewSymbol->isDerivedFrom(TechDraw::DrawViewDraft::getClassTypeId()) ) {
+    if (viewSymbol->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId())
+        || viewSymbol->isDerivedFrom(TechDraw::DrawViewDraft::getClassTypeId())) {
         scaling = scaling * rezfactor;
-    } else {
+    }
+    else {
         scaling = scaling * rezfactor / pxMm;
     }
     m_svgItem->setScale(scaling);
 
-    QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
+    QByteArray qba(viewSymbol->Symbol.getValue(), strlen(viewSymbol->Symbol.getValue()));
     symbolToSvg(qba);
     rotateView();
 }
@@ -152,16 +136,29 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
 
     prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
-        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewName());
+        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n",
+                              getViewName());
     }
-    m_svgItem->centerAt(0.,0.);
+    m_svgItem->centerAt(0., 0.);
+
+    if (Preferences::lightOnDark()) {
+        QColor color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
+        QGraphicsColorizeEffect* colorizeEffect = new QGraphicsColorizeEffect();
+        colorizeEffect->setColor(color);
+        m_svgItem->setGraphicsEffect(colorizeEffect);
+    }
+    else {
+        //remove and delete any existing graphics effect
+        if (m_svgItem->graphicsEffect()) {
+            m_svgItem->setGraphicsEffect(nullptr);
+        }
+    }
 }
 
-void QGIViewSymbol::rotateView(void)
+void QGIViewSymbol::rotateView()
 {
     QRectF r = m_displayArea->boundingRect();
     m_displayArea->setTransformOriginPoint(r.center());
     double rot = getViewObject()->Rotation.getValue();
     m_displayArea->setRotation(-rot);
 }
-

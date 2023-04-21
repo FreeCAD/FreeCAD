@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_Pipe_H
 #define PARTDESIGN_Pipe_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureSketchBased.h"
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 
@@ -33,36 +32,36 @@ namespace PartDesign
 
 class PartDesignExport Pipe : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Pipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Pipe);
 
 public:
     Pipe();
 
-
-    App::PropertyLinkSub     Spine;
-    App::PropertyBool        SpineTangent;
-    App::PropertyLinkSub     AuxillerySpine;
-    App::PropertyBool        AuxillerySpineTangent;
-    App::PropertyBool        AuxilleryCurvelinear;
+    App::PropertyLinkSub Spine;
+    App::PropertyBool SpineTangent;
+    App::PropertyLinkSub AuxillerySpine;
+    App::PropertyBool AuxillerySpineTangent;
+    App::PropertyBool AuxilleryCurvelinear;
     App::PropertyEnumeration Mode;
-    App::PropertyVector      Binormal;
+    App::PropertyVector Binormal;
     App::PropertyEnumeration Transition;
     App::PropertyEnumeration Transformation;
-    App::PropertyLinkList    Sections;
+    App::PropertyLinkSubList Sections;
 
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPipe";
     }
-    //@}
 
 protected:
-    ///get the given edges and all their tangent ones
-    void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
+    /// get the given edges and all their tangent ones
+    void getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
     void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);
+    /// handle changed property
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
 
 private:
     static const char* TypeEnums[];
@@ -73,14 +72,14 @@ private:
 
 class PartDesignExport AdditivePipe : public Pipe {
 
-    PROPERTY_HEADER(PartDesign::AdditivePipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditivePipe);
 public:
     AdditivePipe();
 };
 
 class PartDesignExport SubtractivePipe : public Pipe {
 
-    PROPERTY_HEADER(PartDesign::SubtractivePipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractivePipe);
 public:
     SubtractivePipe();
 };

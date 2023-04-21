@@ -43,7 +43,7 @@ using namespace Gui;
  */
 
 // returns a string which represent the object e.g. when printed in python
-std::string WorkbenchPy::representation(void) const
+std::string WorkbenchPy::representation() const
 {
     return std::string("<Workbench object>");
 }
@@ -83,8 +83,8 @@ PyObject* WorkbenchPy::listMenus(PyObject *args)
         std::list<std::string> menus = getWorkbenchPtr()->listMenus();
 
         Py::List list;
-        for (std::list<std::string>::iterator it = menus.begin(); it != menus.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & menu : menus) {
+            list.append(Py::String(menu));
         }
         return Py::new_reference_to(list);
     } PY_CATCH;
@@ -100,8 +100,8 @@ PyObject* WorkbenchPy::listToolbars(PyObject *args)
         std::list<std::string> bars = getWorkbenchPtr()->listToolbars();
 
         Py::List list;
-        for (std::list<std::string>::iterator it = bars.begin(); it != bars.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & bar : bars) {
+            list.append(Py::String(bar));
         }
         return Py::new_reference_to(list);
     } PY_CATCH;
@@ -138,10 +138,24 @@ PyObject* WorkbenchPy::listCommandbars(PyObject *args)
         std::list<std::string> bars = getWorkbenchPtr()->listCommandbars();
 
         Py::List list;
-        for (std::list<std::string>::iterator it = bars.begin(); it != bars.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & bar : bars) {
+            list.append(Py::String(bar));
         }
         return Py::new_reference_to(list);
+    } PY_CATCH;
+}
+
+/** Reload the workbench */
+PyObject*  WorkbenchPy::reloadActive(PyObject *args)
+{
+    PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return nullptr;
+
+        Workbench* active = Gui::WorkbenchManager::instance()->active();
+        if (active)
+            active->activate();
+        Py_Return;
     } PY_CATCH;
 }
 

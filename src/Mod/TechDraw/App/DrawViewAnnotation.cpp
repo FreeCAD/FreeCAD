@@ -21,27 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-
-#include "Preferences.h"
 #include "DrawViewAnnotation.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawViewAnnotation
@@ -53,30 +44,26 @@ const char* DrawViewAnnotation::TextStyleEnums[]= {"Normal",
                                       "Bold",
                                       "Italic",
                                       "Bold-Italic",
-                                      NULL};
+                                      nullptr};
 
-DrawViewAnnotation::DrawViewAnnotation(void)
+DrawViewAnnotation::DrawViewAnnotation()
 {
     static const char *vgroup = "Annotation";
 
-    ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"Annotation text");
+    ADD_PROPERTY_TYPE(Text ,("Default Text"), vgroup, App::Prop_None, "Annotation text");
     ADD_PROPERTY_TYPE(Font ,(Preferences::labelFont().c_str()),
-                             vgroup,App::Prop_None, "Font name");
-    ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"Text color");
+                             vgroup, App::Prop_None, "Font name");
+    ADD_PROPERTY_TYPE(TextColor, (Preferences::normalColor()), vgroup, App::Prop_None, "Text color");
     ADD_PROPERTY_TYPE(TextSize, (Preferences::labelFontSizeMM()),
-                                 vgroup,App::Prop_None,"Text size");
-    ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"Maximum width of the annotation block.\n -1 means no maximum width.");
-    ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing in %. 100 means the height of a line.");
+                                 vgroup, App::Prop_None, "Text size");
+    ADD_PROPERTY_TYPE(MaxWidth, (-1.0), vgroup, App::Prop_None, "Maximum width of the annotation block.\n -1 means no maximum width.");
+    ADD_PROPERTY_TYPE(LineSpace, (80), vgroup, App::Prop_None, "Line spacing in %. 100 means the height of a line.");
 
     TextStyle.setEnums(TextStyleEnums);
-    ADD_PROPERTY_TYPE(TextStyle,((long)0),vgroup,App::Prop_None,"Text style");
+    ADD_PROPERTY_TYPE(TextStyle, ((long)0), vgroup, App::Prop_None, "Text style");
 
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-}
-
-DrawViewAnnotation::~DrawViewAnnotation()
-{
+    Scale.setStatus(App::Property::Hidden, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
 }
 
 void DrawViewAnnotation::onChanged(const App::Property* prop)
@@ -100,7 +87,7 @@ void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, cons
 {
 	// also check for changed properties of the base class
 	DrawView::handleChangedPropertyType(reader, TypeName, prop);
-	
+
 	// property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
 	if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
 		App::PropertyInteger LineSpaceProperty;
@@ -118,7 +105,6 @@ void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, cons
 
 QRectF DrawViewAnnotation::getRect() const
 {
-    QRectF result;
     double tSize = TextSize.getValue();
     int lines = Text.getValues().size();
     int chars = 1;
@@ -127,13 +113,12 @@ QRectF DrawViewAnnotation::getRect() const
             chars = (int)l.size();
         }
     }
-    int w = chars * std::max(1,(int)tSize);
-    int h = lines * std::max(1,(int)tSize);
-    result = QRectF(0,0,getScale() * w,getScale() * h);
-    return result;
+    int w = chars * std::max(1, (int)tSize);
+    int h = lines * std::max(1, (int)tSize);
+    return { 0, 0, getScale() * w, getScale() * h};
 }
 
-App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)
+App::DocumentObjectExecReturn *DrawViewAnnotation::execute()
 {
     requestPaint();
     return TechDraw::DrawView::execute();
@@ -144,7 +129,7 @@ App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewAnnotationPython, TechDraw::DrawViewAnnotation)
-template<> const char* TechDraw::DrawViewAnnotationPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewAnnotationPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderAnnotation";
 }
 /// @endcond

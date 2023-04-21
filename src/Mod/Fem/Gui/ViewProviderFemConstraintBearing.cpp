@@ -21,27 +21,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-
 # include <QMessageBox>
+# include <Inventor/SbRotation.h>
+# include <Inventor/SbVec3f.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "ViewProviderFemConstraintBearing.h"
-#include <Mod/Fem/App/FemConstraintBearing.h>
-#include "TaskFemConstraintBearing.h"
-#include "Gui/Control.h"
-#include "Gui/MainWindow.h"
-
 #include <Base/Console.h>
+#include "Gui/Control.h"
+#include <Mod/Fem/App/FemConstraintBearing.h>
+#include "ViewProviderFemConstraintBearing.h"
+#include "TaskFemConstraintBearing.h"
+
 
 using namespace FemGui;
 
@@ -67,11 +61,11 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFemConstraintBearing *constrDlg = qobject_cast<TaskDlgFemConstraintBearing *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = 0; // another constraint left open its task panel
+            constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
             // This case will occur in the ShaftWizard application
             checkForWizard();
-            if ((wizardWidget == NULL) || (wizardSubLayout == NULL)) {
+            if (!wizardWidget || !wizardSubLayout) {
                 // No shaft wizard is running
                 QMessageBox msgBox;
                 msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -83,7 +77,7 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
                     Gui::Control().reject();
                 else
                     return false;
-            } else if (constraintDialog != NULL) {
+            } else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;
@@ -105,19 +99,19 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);
+        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
     }
 }
 
 void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(this->getObject());
+    Fem::ConstraintBearing *pcConstraint = static_cast<Fem::ConstraintBearing *>(this->getObject());
 
-    if (strcmp(prop->getName(),"References") == 0)
+    if (prop == &pcConstraint->References)
         Base::Console().Error("\n"); // enable a breakpoint here
 
-    if (strcmp(prop->getName(),"BasePoint") == 0) {
+    if (prop == &pcConstraint->BasePoint) {
         // Remove and recreate the symbol
         Gui::coinRemoveAllChildren(pShapeSep);
 
@@ -129,11 +123,12 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 
         SbVec3f b(base.x, base.y, base.z);
         SbVec3f dir(normal.x, normal.y, normal.z);
-        SbRotation rot(SbVec3f(0,-1,0), dir);
+        SbRotation rot(SbVec3f(0, -1, 0), dir);
 
         createPlacement(pShapeSep, b, rot);
-        pShapeSep->addChild(createFixed(radius/2, radius/2 * 1.5, pcConstraint->AxialFree.getValue()));
-    } else if (strcmp(prop->getName(),"AxialFree") == 0) {
+        pShapeSep->addChild(
+            createFixed(radius / 2, radius / 2 * 1.5, pcConstraint->AxialFree.getValue()));
+    } else if (prop == &pcConstraint->AxialFree) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
@@ -143,11 +138,11 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f dir(normal.x, normal.y, normal.z);
-            SbRotation rot(SbVec3f(0,-1,0), dir);
+            SbRotation rot(SbVec3f(0, -1, 0), dir);
 
             updatePlacement(pShapeSep, 0, b, rot);
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
-            updateFixed(sep, 0, radius/2, radius/2 * 1.5, pcConstraint->AxialFree.getValue());
+            updateFixed(sep, 0, radius / 2, radius / 2 * 1.5, pcConstraint->AxialFree.getValue());
         }
     }
 

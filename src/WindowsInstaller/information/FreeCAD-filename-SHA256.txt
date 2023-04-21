@@ -1,0 +1,3 @@
+Name: FreeCAD-0.19.3-WIN-x64-installer-1.exe
+Size: 583773656 bytes (556 MiB)
+SHA256: d4cc7869b7bb1c3e5c7b4fe75a578bc825d191d4cd4054fa015d7ae83c6f51f7

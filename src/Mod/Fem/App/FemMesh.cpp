@@ -20,38 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <cstdlib>
 # include <memory>
-# include <Python.h>
+
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 # include <gp_Pnt.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
 # include <ShapeAnalysis_ShapeTolerance.hxx>
-
-# include <boost/assign/list_of.hpp>
-# include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
-
+# include <SMDS_MeshGroup.hxx>
 # include <SMESH_Gen.hxx>
+# include <SMESH_Group.hxx>
 # include <SMESH_Mesh.hxx>
 # include <SMESH_MeshEditor.hxx>
-# include <SMESH_Group.hxx>
-# include <SMDS_MeshGroup.hxx>
-# include <SMESHDS_GroupBase.hxx>
 # include <SMESHDS_Group.hxx>
+# include <SMESHDS_GroupBase.hxx>
 # include <SMESHDS_Mesh.hxx>
-//# include <SMDS_PolyhedralVolumeOfNodes.hxx>
-# include <SMDS_VolumeTool.hxx>
 # include <StdMeshers_MaxLength.hxx>
 # include <StdMeshers_LocalLength.hxx>
 # include <StdMeshers_MaxElementArea.hxx>
@@ -61,32 +51,31 @@
 # include <StdMeshers_StartEndLength.hxx>
 # include <StdMeshers_QuadranglePreference.hxx>
 # include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_QuadraticMesh.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Vertex.hxx>
 
+# include <boost/assign/list_of.hpp>
+# include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
 #endif
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
+#include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/TimeInfo.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
+#include <Base/Writer.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
 
 #include "FemMesh.h"
+#include <FemMeshPy.h>
+
 #ifdef FC_USE_VTK
-#include "FemVTKTools.h"
+# include "FemVTKTools.h"
 #endif
-
-# include <FemMeshPy.h>
-
-
 
 
 using namespace Fem;
@@ -97,7 +86,7 @@ using namespace boost;
 static int StatCount = 0;
 #endif
 
-SMESH_Gen* FemMesh::_mesh_gen = 0;
+SMESH_Gen* FemMesh::_mesh_gen = nullptr;
 
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence)
 
@@ -154,7 +143,8 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 {
     _Mtrx = mesh._Mtrx;
 
-    // See file SMESH_I/SMESH_Gen_i.cxx in the git repo of smesh at https://git.salome-platform.org
+    // See file SMESH_I/SMESH_Gen_i.cxx in the git repo of smesh at
+    // https://git.salome-platform.org
 #if 1
     // 1. Get source mesh
     SMESHDS_Mesh* srcMeshDS = mesh.myMesh->GetMeshDS();
@@ -191,15 +181,11 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             switch (elem->GetEntityType()) {
             case SMDSEntity_Polyhedra:
 #if SMESH_VERSION_MAJOR >= 9
-                editor.GetMeshDS()->
-                    AddPolyhedralVolumeWithID(nodes,
-                                              static_cast<const SMDS_MeshVolume*>(elem)->GetQuantities(),
-                                              ID);
+                editor.GetMeshDS()->AddPolyhedralVolumeWithID(
+                    nodes, static_cast<const SMDS_MeshVolume*>(elem)->GetQuantities(), ID);
 #else
-                editor.GetMeshDS()->
-                    AddPolyhedralVolumeWithID(nodes,
-                                              static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
-                                              ID);
+                editor.GetMeshDS()->AddPolyhedralVolumeWithID(
+                    nodes, static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(), ID);
 #endif
                 break;
             case SMDSEntity_Ball:
@@ -276,7 +262,8 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 #else
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
-    // Some further information is still not copied: http://forum.freecadweb.org/viewtopic.php?f=18&t=18982#p148114
+    // Some further information is still not copied:
+    // http://forum.freecadweb.org/viewtopic.php?f=18&t=18982#p148114
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -327,14 +314,12 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
                                       aFace->GetNode(7),
                                       aFace->GetID());
                 break;
-            default:
-                {
-                    std::vector<const SMDS_MeshNode*> aNodes;
-                    for (int i=0; aFace->NbNodes(); i++)
-                        aNodes.push_back(aFace->GetNode(0));
-                    meshds->AddPolygonalFaceWithID(aNodes, aFace->GetID());
-                }
-                break;
+            default: {
+                std::vector<const SMDS_MeshNode*> aNodes;
+                for (int i = 0; aFace->NbNodes(); i++)
+                    aNodes.push_back(aFace->GetNode(0));
+                meshds->AddPolygonalFaceWithID(aNodes, aFace->GetID());
+            } break;
         }
     }
 
@@ -447,19 +432,19 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
                                         aVol->GetNode(19),
                                         aVol->GetID());
                 break;
-            default:
-                {
-                    if (aVol->IsPoly()) {
-                        const SMDS_PolyhedralVolumeOfNodes* aPolyVol = dynamic_cast<const SMDS_PolyhedralVolumeOfNodes*>(aVol);
-                        if (!aPolyVol) break;
+            default: {
+                if (aVol->IsPoly()) {
+                        const SMDS_PolyhedralVolumeOfNodes* aPolyVol =
+                            dynamic_cast<const SMDS_PolyhedralVolumeOfNodes*>(aVol);
+                        if (!aPolyVol)
+                            break;
                         std::vector<const SMDS_MeshNode*> aNodes;
-                        for (int i=0; i<aPolyVol->NbNodes(); i++)
+                        for (int i = 0; i < aPolyVol->NbNodes(); i++)
                             aNodes.push_back(aPolyVol->GetNode(i));
-                        meshds->AddPolyhedralVolumeWithID(aNodes,
-                            aPolyVol->GetQuanities(), aPolyVol->GetID());
-                    }
+                        meshds->AddPolyhedralVolumeWithID(
+                            aNodes, aPolyVol->GetQuanities(), aPolyVol->GetID());
                 }
-                break;
+            } break;
         }
     }
 
@@ -472,24 +457,28 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 
         int aId;
         if (sourceGroupDS->GetType() == SMDSAbs_Node) {
-            SMESH_Group* targetGroup = this->myMesh->AddGroup(SMDSAbs_Node, sourceGroupDS->GetStoreName(), aId);
-            if (targetGroup) {
-                SMESHDS_Group* targetGroupDS = dynamic_cast<SMESHDS_Group*>(targetGroup->GetGroupDS());
-                if (targetGroupDS) {
-                    SMDS_ElemIteratorPtr aIter = sourceGroupDS->GetElements();
-                    while (aIter->more()) {
-                        const SMDS_MeshElement* aElem = aIter->next();
-                        const SMDS_MeshNode* aNode = meshds->FindNode(aElem->GetID());
-                        if (aNode)
-                            targetGroupDS->SMDSGroup().Add(aNode);
+                SMESH_Group* targetGroup =
+                    this->myMesh->AddGroup(SMDSAbs_Node, sourceGroupDS->GetStoreName(), aId);
+                if (targetGroup) {
+                    SMESHDS_Group* targetGroupDS =
+                        dynamic_cast<SMESHDS_Group*>(targetGroup->GetGroupDS());
+                    if (targetGroupDS) {
+                        SMDS_ElemIteratorPtr aIter = sourceGroupDS->GetElements();
+                        while (aIter->more()) {
+                            const SMDS_MeshElement* aElem = aIter->next();
+                            const SMDS_MeshNode* aNode = meshds->FindNode(aElem->GetID());
+                            if (aNode)
+                                targetGroupDS->SMDSGroup().Add(aNode);
+                        }
                     }
                 }
-            }
         }
         else {
-            SMESH_Group* targetGroup = this->myMesh->AddGroup(sourceGroupDS->GetType(), sourceGroupDS->GetStoreName(), aId);
+            SMESH_Group* targetGroup = this->myMesh->AddGroup(
+                sourceGroupDS->GetType(), sourceGroupDS->GetStoreName(), aId);
             if (targetGroup) {
-                SMESHDS_Group* targetGroupDS = dynamic_cast<SMESHDS_Group*>(targetGroup->GetGroupDS());
+                SMESHDS_Group* targetGroupDS =
+                    dynamic_cast<SMESHDS_Group*>(targetGroup->GetGroupDS());
                 if (targetGroupDS) {
                     SMDS_ElemIteratorPtr aIter = sourceGroupDS->GetElements();
                     while (aIter->more()) {
@@ -604,7 +593,7 @@ void FemMesh::setStandardHypotheses()
 #endif
 
     // Apply hypothesis
-    for (int i=0; i<hyp;i++)
+    for (int i = 0; i < hyp; i++)
         myMesh->AddHypothesis(myMesh->GetShapeToMesh(), i);
 }
 
@@ -633,7 +622,8 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
     std::set<int> nodes_on_face = getNodesByFace(face);
 
 #if SMESH_VERSION_MAJOR >= 7
-    // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible to iterate volume faces
+    // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible
+    // to iterate volume faces
     // In SMESH9 this function has been removed
     //
     std::map< int, std::set<int> > face_nodes;
@@ -652,8 +642,11 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
         }
 
         std::vector<int> element_face_nodes;
-        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), node_ids.begin(), node_ids.end(),
-            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+        std::set_intersection(nodes_on_face.begin(),
+                              nodes_on_face.end(),
+                              node_ids.begin(),
+                              node_ids.end(),
+                              std::back_insert_iterator<std::vector<int>>(element_face_nodes));
 
         if (element_face_nodes.size() == node_ids.size()) {
             face_nodes[face->GetID()] = node_ids;
@@ -673,8 +666,11 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
 
         for (const auto& it : face_nodes) {
             std::vector<int> element_face_nodes;
-            std::set_intersection(node_ids.begin(), node_ids.end(), it.second.begin(), it.second.end(),
-                std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+            std::set_intersection(node_ids.begin(),
+                                  node_ids.end(),
+                                  it.second.begin(),
+                                  it.second.end(),
+                                  std::back_insert_iterator<std::vector<int>>(element_face_nodes));
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == it.second.size()) {
@@ -693,13 +689,16 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
             int numNodes = face->NbNodes();
 
             std::set<int> face_nodes;
-            for (int i=0; i<numNodes; i++) {
+            for (int i = 0; i < numNodes; i++) {
                 face_nodes.insert(face->GetNode(i)->GetID());
             }
 
             std::vector<int> element_face_nodes;
-            std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), face_nodes.begin(), face_nodes.end(),
-                std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+            std::set_intersection(nodes_on_face.begin(),
+                                  nodes_on_face.end(),
+                                  face_nodes.begin(),
+                                  face_nodes.end(),
+                                  std::back_insert_iterator<std::vector<int>>(element_face_nodes));
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
@@ -727,13 +726,16 @@ std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
         int numNodes = face->NbNodes();
 
         std::set<int> face_nodes;
-        for (int i=0; i<numNodes; i++) {
+        for (int i = 0; i < numNodes; i++) {
             face_nodes.insert(face->GetNode(i)->GetID());
         }
 
         std::vector<int> element_face_nodes;
-        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), face_nodes.begin(), face_nodes.end(),
-            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+        std::set_intersection(nodes_on_face.begin(),
+                              nodes_on_face.end(),
+                              face_nodes.begin(),
+                              face_nodes.end(),
+                              std::back_insert_iterator<std::vector<int>>(element_face_nodes));
 
         // For curved faces it is possible that a volume contributes more than one face
         if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
@@ -756,13 +758,16 @@ std::list<int> FemMesh::getEdgesByEdge(const TopoDS_Edge &edge) const
         int numNodes = edge->NbNodes();
 
         std::set<int> edge_nodes;
-        for (int i=0; i<numNodes; i++) {
+        for (int i = 0; i < numNodes; i++) {
             edge_nodes.insert(edge->GetNode(i)->GetID());
         }
 
         std::vector<int> element_edge_nodes;
-        std::set_intersection(nodes_on_edge.begin(), nodes_on_edge.end(), edge_nodes.begin(), edge_nodes.end(),
-            std::back_insert_iterator<std::vector<int> >(element_edge_nodes));
+        std::set_intersection(nodes_on_edge.begin(),
+                              nodes_on_edge.end(),
+                              edge_nodes.begin(),
+                              edge_nodes.end(),
+                              std::back_insert_iterator<std::vector<int>>(element_edge_nodes));
 
         if (element_edge_nodes.size() == static_cast<std::size_t>(numNodes)) {
             result.push_back(edge->GetID());
@@ -813,15 +818,19 @@ std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face &face) const
         std::vector<int> element_face_nodes;
         std::set<int> element_nodes;
         element_nodes.insert(apair.second.begin(), apair.second.end());
-        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), element_nodes.begin(), element_nodes.end(),
-        std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+        std::set_intersection(nodes_on_face.begin(),
+                              nodes_on_face.end(),
+                              element_nodes.begin(),
+                              element_nodes.end(),
+                              std::back_insert_iterator<std::vector<int>>(element_face_nodes));
 
-        if ((element_face_nodes.size() == 3 && num_of_nodes == 4) ||
-            (element_face_nodes.size() == 6 && num_of_nodes == 10)) {
+        if ((element_face_nodes.size() == 3 && num_of_nodes == 4)
+            || (element_face_nodes.size() == 6 && num_of_nodes == 10)) {
             int missing_node = 0;
-            for (int i=0; i<4; i++) {
+            for (int i = 0; i < 4; i++) {
                 // search for the ID of the volume which is not part of 'element_face_nodes'
-                if (std::find(element_face_nodes.begin(), element_face_nodes.end(), apair.second[i]) == element_face_nodes.end()) {
+                if (std::find(element_face_nodes.begin(), element_face_nodes.end(), apair.second[i])
+                    == element_face_nodes.end()) {
                     missing_node = i + 1;
                     break;
                 }
@@ -867,30 +876,43 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().Log("The limit if a node is in or out: %.12lf in scientific: %.4e \n", limit, limit);
+    Base::Console().Log(
+        "The limit if a node is in or out: %.12lf in scientific: %.4e \n", limit, limit);
 
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(solid,s);
+            BRepExtrema_DistShapeShape measure(solid, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
     return result;
@@ -901,7 +923,10 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     std::set<int> result;
 
     Bnd_Box box;
-    BRepBndLib::Add(face, box, Standard_False);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70#p221591
+    BRepBndLib::Add(
+        face,
+        box,
+        Standard_False);// https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70#p221591
     // limit where the mesh node belongs to the face:
     double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
@@ -909,25 +934,37 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(face,s);
+            BRepExtrema_DistShapeShape measure(face, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
 
@@ -947,25 +984,37 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(edge,s);
+            BRepExtrema_DistShapeShape measure(edge, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
 
@@ -984,13 +1033,24 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         vec = Mtrx * vec;
 
-        if (Base::DistanceP2(node, vec) <= limit) {
+        if (Base::DistanceP2(node, vec) <= limit)
+#pragma omp critical
+        {
             result.insert(aNode->GetID());
         }
     }
@@ -1006,10 +1066,26 @@ std::list<int> FemMesh::getElementNodes(int id) const
         for (int i = 0; i < elem->NbNodes(); i++)
             result.push_back(elem->GetNode(i)->GetID());
     }
+
     return result;
 }
 
-std::set<int> FemMesh::getEdgesOnly(void) const
+std::list<int> FemMesh::getNodeElements(int id, SMDSAbs_ElementType type) const
+{
+    std::list<int> result;
+    const SMDS_MeshNode* node = myMesh->GetMeshDS()->FindNode(id);
+    if (node) {
+        SMDS_ElemIteratorPtr it = node->GetInverseElementIterator(type);
+        while (it->more()) {
+            const SMDS_MeshElement* elem = it->next();
+            result.push_back(elem->GetID());
+        }
+    }
+
+    return result;
+}
+
+std::set<int> FemMesh::getEdgesOnly() const
 {
     std::set<int> resultIDs;
 
@@ -1039,14 +1115,14 @@ std::set<int> FemMesh::getEdgesOnly(void) const
                 break;
             }
         }
-        if (edgeBelongsToAFace == false)
+        if (!edgeBelongsToAFace)
             resultIDs.insert(aEdge->GetID());
     }
 
     return resultIDs;
 }
 
-std::set<int> FemMesh::getFacesOnly(void) const
+std::set<int> FemMesh::getFacesOnly() const
 {
     // How it works ATM:
     // for each face
@@ -1098,7 +1174,7 @@ std::set<int> FemMesh::getFacesOnly(void) const
                 break;
             }
         }
-        if (faceBelongsToAVolume == false)
+        if (!faceBelongsToAVolume)
             resultIDs.insert(aFace->GetID());
     }
 
@@ -1120,10 +1196,10 @@ protected:
     std::vector<int> elements;
 };
 
-typedef std::shared_ptr<NastranElement> NastranElementPtr;
+using NastranElementPtr = std::shared_ptr<NastranElement>;
 
 class GRIDElement : public NastranElement {
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddNodeWithID(node.x, node.y, node.z, element_id);
     }
 
@@ -1132,10 +1208,10 @@ protected:
 };
 
 class GRIDFreeFieldElement : public GRIDElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
-        std::vector<string> token_results;
+        std::vector<std::string> token_results;
         token_results.assign(tokens.begin(),tokens.end());
         if (token_results.size() < 6)
             return;//Line does not include Nodal coordinates
@@ -1148,7 +1224,7 @@ class GRIDFreeFieldElement : public GRIDElement {
 };
 
 class GRIDLongFieldElement : public GRIDElement {
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         element_id = atoi(str1.substr(8,24).c_str());
         node.x = atof(str1.substr(40,56).c_str());
         node.y = atof(str1.substr(56,72).c_str());
@@ -1157,13 +1233,13 @@ class GRIDLongFieldElement : public GRIDElement {
 };
 
 class GRIDSmallFieldElement : public GRIDElement {
-    void read(const std::string&, const std::string&) {
+    void read(const std::string&, const std::string&) override {
     }
 };
 
 class CTRIA3Element : public NastranElement {
 public:
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         const SMDS_MeshNode* n0 = meshds->FindNode(elements[0]);
         const SMDS_MeshNode* n1 = meshds->FindNode(elements[1]);
         const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
@@ -1186,10 +1262,10 @@ public:
 
 class CTRIA3FreeFieldElement : public CTRIA3Element {
 public:
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
-        std::vector<string> token_results;
+        std::vector<std::string> token_results;
         token_results.assign(tokens.begin(),tokens.end());
         if (token_results.size() < 6)
             return;//Line does not include enough nodal IDs
@@ -1203,7 +1279,7 @@ public:
 
 class CTRIA3LongFieldElement : public CTRIA3Element {
 public:
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
@@ -1213,13 +1289,13 @@ public:
 
 class CTRIA3SmallFieldElement : public CTRIA3Element {
 public:
-    void read(const std::string&, const std::string&) {
+    void read(const std::string&, const std::string&) override {
     }
 };
 
 class CTETRAElement : public NastranElement {
 public:
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         const SMDS_MeshNode* n0 = meshds->FindNode(elements[1]);
         const SMDS_MeshNode* n1 = meshds->FindNode(elements[0]);
         const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
@@ -1256,10 +1332,10 @@ public:
 
 class CTETRAFreeFieldElement : public CTETRAElement {
 public:
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
-        std::vector<string> token_results;
+        std::vector<std::string> token_results;
         token_results.assign(tokens.begin(),tokens.end());
         if (token_results.size() < 14)
             return;//Line does not include enough nodal IDs
@@ -1280,11 +1356,11 @@ public:
 
 class CTETRALongFieldElement : public CTETRAElement {
 public:
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         int id = atoi(str1.substr(8,16).c_str());
         int offset = 0;
 
-        if(id < 1000000)
+        if (id < 1000000)
             offset = 0;
         else if (id < 10000000)
             offset = 1;
@@ -1309,14 +1385,14 @@ public:
 
 class CTETRASmallFieldElement : public CTETRAElement {
 public:
-    void read(const std::string&, const std::string&) {
+    void read(const std::string&, const std::string&) override {
     }
 };
 
 // NASTRAN-95
 
 class GRIDNastran95Element : public GRIDElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8, 16).c_str());
         node.x = atof(str.substr(24, 32).c_str());
         node.y = atof(str.substr(32, 40).c_str());
@@ -1325,12 +1401,12 @@ class GRIDNastran95Element : public GRIDElement {
 };
 
 class CBARElement : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddEdgeWithID(
             elements[0],
             elements[1],
@@ -1340,13 +1416,13 @@ class CBARElement : public NastranElement {
 };
 
 class CTRMEMElement : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
         elements.push_back(atoi(str.substr(40,48).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1357,13 +1433,13 @@ class CTRMEMElement : public NastranElement {
 };
 
 class CTRIA1Element : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24, 32).c_str()));
         elements.push_back(atoi(str.substr(32, 40).c_str()));
         elements.push_back(atoi(str.substr(40, 48).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1374,14 +1450,14 @@ class CTRIA1Element : public NastranElement {
 };
 
 class CQUAD1Element : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24, 32).c_str()));
         elements.push_back(atoi(str.substr(32, 40).c_str()));
         elements.push_back(atoi(str.substr(40, 48).c_str()));
         elements.push_back(atoi(str.substr(48, 56).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1393,14 +1469,14 @@ class CQUAD1Element : public NastranElement {
 };
 
 class CTETRANastran95Element : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24, 32).c_str()));
         elements.push_back(atoi(str.substr(32, 40).c_str()));
         elements.push_back(atoi(str.substr(40, 48).c_str()));
         elements.push_back(atoi(str.substr(48, 56).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1412,7 +1488,7 @@ class CTETRANastran95Element : public NastranElement {
 };
 
 class CWEDGEElement : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
@@ -1421,7 +1497,7 @@ class CWEDGEElement : public NastranElement {
         elements.push_back(atoi(str.substr(56,64).c_str()));
         elements.push_back(atoi(str.substr(64,72).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddVolumeWithID(
             elements[0],
             elements[1],
@@ -1435,7 +1511,7 @@ class CWEDGEElement : public NastranElement {
 };
 
 class CHEXA1Element : public NastranElement {
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         element_id = atoi(str1.substr(8,16).c_str());
         elements.push_back(atoi(str1.substr(24,32).c_str()));
         elements.push_back(atoi(str1.substr(32,40).c_str()));
@@ -1447,7 +1523,7 @@ class CHEXA1Element : public NastranElement {
         elements.push_back(atoi(str2.substr(8,16).c_str()));
         elements.push_back(atoi(str2.substr(16,24).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddVolumeWithID(
             elements[0],
             elements[1],
@@ -1463,7 +1539,7 @@ class CHEXA1Element : public NastranElement {
 };
 
 class CHEXA2Element : public NastranElement {
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         element_id = atoi(str1.substr(8,16).c_str());
         elements.push_back(atoi(str1.substr(24,32).c_str()));
         elements.push_back(atoi(str1.substr(32,40).c_str()));
@@ -1475,7 +1551,7 @@ class CHEXA2Element : public NastranElement {
         elements.push_back(atoi(str2.substr(8,16).c_str()));
         elements.push_back(atoi(str2.substr(16,24).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddVolumeWithID(
             elements[0],
             elements[1],
@@ -1499,8 +1575,9 @@ void FemMesh::readNastran(const std::string &Filename)
 
     _Mtrx = Base::Matrix4D();
 
-    std::ifstream inputfile;
-    inputfile.open(Filename.c_str());
+    Base::FileInfo fi(Filename);
+    Base::ifstream inputfile;
+    inputfile.open(fi);
     inputfile.seekg(std::ifstream::beg);
     std::string line1,line2;
     std::vector<NastranElementPtr> mesh_elements;
@@ -1514,7 +1591,7 @@ void FemMesh::readNastran(const std::string &Filename)
     do
     {
         std::getline(inputfile,line1);
-        if (line1.size() == 0)
+        if (line1.empty())
             continue;
         if (line1.find(',') != std::string::npos)
             nastranFormat = Format::FreeField;
@@ -1590,8 +1667,9 @@ void FemMesh::readNastran95(const std::string &Filename)
 
     _Mtrx = Base::Matrix4D();
 
-    std::ifstream inputfile;
-    inputfile.open(Filename.c_str());
+    Base::FileInfo fi(Filename);
+    Base::ifstream inputfile;
+    inputfile.open(fi);
     inputfile.seekg(std::ifstream::beg);
     std::string line1,line2,tcard;
 
@@ -1604,7 +1682,7 @@ void FemMesh::readNastran95(const std::string &Filename)
         NastranElementPtr elem;
         std::getline(inputfile, line1);
         //cout << line1 << endl;
-        if (line1.size() == 0)
+        if (line1.empty())
             continue;
 
         tcard = line1.substr(0, 8).c_str();
@@ -1628,15 +1706,15 @@ void FemMesh::readNastran95(const std::string &Filename)
             node = std::make_shared<GRIDNastran95Element>();
             node->read(line1, "");
         }
-        
+
         //1D
-        else if (line1.substr(0,6)=="CBAR")
+        else if (line1.substr(0, 6) == "CBAR")
         {
             elem = std::make_shared<CBARElement>();
             elem->read(line1, "");
         }
         //2d
-        else if (line1.substr(0,6)=="CTRMEM")
+        else if (line1.substr(0, 6) == "CTRMEM")
         {
             //D06
             //CTRMEM  322     1       179     180     185
@@ -1653,40 +1731,40 @@ void FemMesh::readNastran95(const std::string &Filename)
         else if (line1.substr(0, 6) == "CQUAD1")
         {
             //D06
-            //CTRMEM  322     1       179     180     185                                     
+            //CTRMEM  322     1       179     180     185
             elem = std::make_shared<CQUAD1Element>();
             elem->read(line1, "");
         }
-        
+
         //3d element
         else if (line1.find("CTETRA")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CTETRA  3       200     104     114     3       103                             
+            //d011121a.inp
+            //CTETRA  3       200     104     114     3       103
             elem = std::make_shared<CTETRANastran95Element>();
             elem->read(line1, "");
         }
         else if (line1.find("CWEDGE")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CWEDGE  11      200     6       17      16      106     117     116             
+            //d011121a.inp
+            //CWEDGE  11      200     6       17      16      106     117     116
             elem = std::make_shared<CTETRANastran95Element>();
             elem->read(line1, "");
         }
         else if (line1.find("CHEXA1")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
-            //+SOL1   113     112                                                             
+            //d011121a.inp
+            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1
+            //+SOL1   113     112
             std::getline(inputfile,line2);
             elem = std::make_shared<CHEXA1Element>();
             elem->read(line1, line2);
         }
         else if (line1.find("CHEXA2")!= std::string::npos)
         {
-            //d011121a.inp    
-            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
-            //+SOL1   113     112                                                             
+            //d011121a.inp
+            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1
+            //+SOL1   113     112
             std::getline(inputfile,line2);
             elem = std::make_shared<CHEXA2Element>();
             elem->read(line1, line2);
@@ -1833,7 +1911,7 @@ void FemMesh::read(const char *FileName)
         readNastran(File.filePath());
     }
 #ifdef FC_USE_VTK
-    else if (File.hasExtension("vtk") || File.hasExtension("vtu")) {
+    else if (File.hasExtension("vtk") || File.hasExtension("vtu") || File.hasExtension("pvtu")) {
         // read *.vtk legacy format or *.vtu XML unstructure Mesh
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
@@ -1865,7 +1943,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     static std::map<int, std::string> faceTypeMap;
     static std::map<int, std::string> volTypeMap;
     if (elemOrderMap.empty()) {
-        // node order fits with node order in importCcxFrdResults.py module to import CalculiX result meshes
+        // node order fits with node order in importCcxFrdResults.py module to import
+        // CalculiX result meshes
 
         // dimension 1
         //
@@ -1919,7 +1998,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         //std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
 
         // since master 0.15
-        // added by werner (wmayer) March 2015, http://forum.freecadweb.org/viewtopic.php?f=18&t=10110&start=10#p81681
+        // added by werner (wmayer) March 2015,
+        // http://forum.freecadweb.org/viewtopic.php?f=18&t=10110&start=10#p81681
         // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
         // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
         // tetra4 FreeCAD --> C3D4 CalculiX
@@ -1945,7 +2025,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         //
         // hexa20 FreeCAD --> C3D20 CalculiX
         // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
-        std::vector<int> c3d20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(10)(11)(8)(17)(18)(19)(16) ;
+        std::vector<int> c3d20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(
+            10)(11)(8)(17)(18)(19)(16);
         //
         // penta6 FreeCAD --> C3D6 CalculiX
         // N5, N6, N4, N2, N3, N1
@@ -1953,7 +2034,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         //
         // penta15 FreeCAD --> C3D15 CalculiX
         // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
-        std::vector<int> c3d15 = boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12) ;
+        std::vector<int> c3d15 = boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12);
 
         elemOrderMap.insert(std::make_pair("C3D4", c3d4));
         volTypeMap.insert(std::make_pair(elemOrderMap["C3D4"].size(), "C3D4"));
@@ -1970,9 +2051,9 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // get all data --> Extract Nodes and Elements of the current SMESH datastructure
-    typedef std::map<int, Base::Vector3d> VertexMap;
-    typedef std::map<int, std::vector<int> > NodesMap;
-    typedef std::map<std::string, NodesMap> ElementsMap;
+    using VertexMap = std::map<int, Base::Vector3d>;
+    using NodesMap = std::map<int, std::vector<int> >;
+    using ElementsMap = std::map<std::string, NodesMap>;
 
     // get nodes
     VertexMap vertexMap;  // empty nodes map
@@ -2003,7 +2084,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     //get faces
-    ElementsMap elementsMapFac;  // empty faces map used for elemParam = 1  and elementsMapVol is not empty
+    ElementsMap elementsMapFac;  // empty faces map used for elemParam = 1
+                                 // and elementsMapVol is not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty())) {
         // for elemParam = 1 we only fill the elementsMapFac if the elmentsMapVol is empty
         // we're going to fill the elementsMapFac with all faces
@@ -2041,10 +2123,11 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // get edges
-    ElementsMap elementsMapEdg;  // empty edges map used for elemParam == 1 and either elementMapVol or elementsMapFac are not empty
+    ElementsMap elementsMapEdg;  // empty edges map used for elemParam == 1
+                                 // and either elementMapVol or elementsMapFac are not empty
     if ((elemParam == 0) || (elemParam == 1 && elementsMapVol.empty() && elementsMapFac.empty())) {
-        // for elemParam = 1 we only fill the elementsMapEdg if the elmentsMapVol and elmentsMapFac are empty
-        // we're going to fill the elementsMapEdg with all edges
+        // for elemParam = 1 we only fill the elementsMapEdg if the elmentsMapVol
+        // and elmentsMapFac are empty we're going to fill the elementsMapEdg with all edges
         SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
         while (aEdgeIter->more()) {
             const SMDS_MeshEdge* aEdge = aEdgeIter->next();
@@ -2079,21 +2162,34 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // write all data to file
-    // take also care of special characters in path https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
+    // take also care of special characters in path
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
     Base::FileInfo fi(Filename);
     Base::ofstream anABAQUS_Output(fi);
-    anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+    anABAQUS_Output.precision(13);
 
     // add some text and make sure one of the known elemParam values is used
-    anABAQUS_Output << "** written by FreeCAD inp file writer for CalculiX,Abaqus meshes" << std::endl;
+    anABAQUS_Output << "** written by FreeCAD inp file writer for CalculiX,Abaqus meshes"
+        << std::endl;
     switch(elemParam){
-        case 0: anABAQUS_Output << "** all mesh elements." << std::endl << std::endl; break;
-        case 1: anABAQUS_Output << "** highest dimension mesh elements only." << std::endl << std::endl; break;
-        case 2: anABAQUS_Output << "** FEM mesh elements only (edges if they do not belong to faces and faces if they do not belong to volumes)." << std::endl << std::endl; break;
+        case 0:
+            anABAQUS_Output << "** all mesh elements." << std::endl << std::endl;
+            break;
+        case 1:
+            anABAQUS_Output << "** highest dimension mesh elements only." << std::endl << std::endl;
+            break;
+        case 2:
+            anABAQUS_Output << "** FEM mesh elements only (edges if they do not belong to faces "
+                               "and faces if they do not belong to volumes)."
+                            << std::endl
+                            << std::endl;
+            break;
         default:
             anABAQUS_Output << "** Problem on writing" << std::endl;
             anABAQUS_Output.close();
-            throw std::runtime_error("Unknown ABAQUS element choice parameter, [0|1|2] are allowed.");
+            throw std::runtime_error(
+                "Unknown ABAQUS element choice parameter, [0|1|2] are allowed.");
     }
 
     // write nodes
@@ -2111,7 +2207,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
 
     // write volumes to file
-    std::string elsetname = "";
+    std::string elsetname;
     if (!elementsMapVol.empty()) {
         for (ElementsMap::iterator it = elementsMapVol.begin(); it != elementsMapVol.end(); ++it) {
             anABAQUS_Output << "** Volume elements" << std::endl;
@@ -2121,12 +2217,13 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                 // Calculix allows max 16 entries in one line, a hexa20 has more !
                 int ct = 0;  // counter
                 bool first_line = true;
-                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt, ++ct) {
+                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end();
+                     ++kt, ++ct) {
                     if (ct < 15) {
                         anABAQUS_Output  << ", " << *kt;
                     }
                     else {
-                        if (first_line == true) {
+                        if (first_line) {
                             anABAQUS_Output << "," << std::endl;
                             first_line = false;
                         }
@@ -2147,13 +2244,14 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
             anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Efaces" << std::endl;
             for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
                 anABAQUS_Output << jt->first;
-                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end();
+                     ++kt) {
                     anABAQUS_Output << ", " << *kt;
                 }
                 anABAQUS_Output << std::endl;
             }
         }
-        if (elsetname == "")
+        if (elsetname.empty())
             elsetname += "Efaces";
         else
             elsetname += ", Efaces";
@@ -2167,13 +2265,14 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
             anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eedges" << std::endl;
             for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
                 anABAQUS_Output << jt->first;
-                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end();
+                     ++kt) {
                     anABAQUS_Output << ", " << *kt;
                 }
                 anABAQUS_Output << std::endl;
             }
         }
-        if (elsetname == "")
+        if (elsetname.empty())
             elsetname += "Eedges";
         else
             elsetname += ", Eedges";
@@ -2186,7 +2285,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     anABAQUS_Output << elsetname << std::endl;
 
     // groups
-    if (groupParam == false) {
+    if (!groupParam) {
         anABAQUS_Output.close();
     }
     else {
@@ -2197,7 +2296,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
 
             // get and write group info and group definition
-            // TODO group element type code has duplicate code of PyObject* FemMeshPy::getGroupElementType()
+            // TODO group element type code has duplicate code of
+            // PyObject* FemMeshPy::getGroupElementType()
             SMDSAbs_ElementType aElementType = myMesh->GetGroup(*it)->GetGroupDS()->GetType();
             const char* groupElementType = "";
             switch(aElementType) {
@@ -2211,7 +2311,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                 default                     : groupElementType = "Unknown"; break;
             }
             const char* groupName = myMesh->GetGroup(*it)->GetName();
-            anABAQUS_Output << "** GroupID: " << (*it) << " --> GroupName: " << groupName << " --> GroupElementType: " << groupElementType << std::endl;
+            anABAQUS_Output << "** GroupID: " << (*it) << " --> GroupName: " << groupName
+                            << " --> GroupElementType: " << groupElementType << std::endl;
 
             if (aElementType == SMDSAbs_Node) {
                 anABAQUS_Output << "*NSET, NSET=" << groupName << std::endl;
@@ -2277,9 +2378,12 @@ void FemMesh::write(const char *FileName) const
         // write UNV file
         myMesh->ExportUNV(File.filePath().c_str());
     }
-    else if (File.hasExtension("med") ) {
+    else if (File.hasExtension("med")) {
         Base::Console().Log("FEM mesh object will be exported to med format.\n");
-        myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
+        myMesh->ExportMED(File.filePath().c_str(),
+                          File.fileNamePure().c_str(),
+                          false,
+                          2); // 2 means MED_V2_2 version!
     }
     else if (File.hasExtension("stl") ) {
         Base::Console().Log("FEM mesh object will be exported to stl format.\n");
@@ -2294,7 +2398,8 @@ void FemMesh::write(const char *FileName) const
     else if (File.hasExtension("inp") ) {
         Base::Console().Log("FEM mesh object will be exported to inp format.\n");
         // get Abaqus inp prefs
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
         int elemParam = hGrp->GetInt("AbaqusElementChoice", 1);
         bool groupParam = hGrp->GetBool("AbaqusWriteGroups", false);
         // write ABAQUS Output
@@ -2319,7 +2424,7 @@ void FemMesh::write(const char *FileName) const
 
 // ==== Base class implementer ==============================================================
 
-unsigned int FemMesh::getMemSize (void) const
+unsigned int FemMesh::getMemSize () const
 {
     return 0;
 }
@@ -2328,20 +2433,28 @@ void FemMesh::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
         //See SaveDocFile(), RestoreDocFile()
-        writer.Stream() << writer.ind() << "<FemMesh file=\"" ;
+        writer.Stream() << writer.ind() << "<FemMesh file=\"";
         writer.Stream() << writer.addFile("FemMesh.unv", this) << "\"";
-        writer.Stream() << " a11=\"" <<  _Mtrx[0][0] << "\" a12=\"" <<  _Mtrx[0][1] << "\" a13=\"" <<  _Mtrx[0][2] << "\" a14=\"" <<  _Mtrx[0][3] << "\"";
-        writer.Stream() << " a21=\"" <<  _Mtrx[1][0] << "\" a22=\"" <<  _Mtrx[1][1] << "\" a23=\"" <<  _Mtrx[1][2] << "\" a24=\"" <<  _Mtrx[1][3] << "\"";
-        writer.Stream() << " a31=\"" <<  _Mtrx[2][0] << "\" a32=\"" <<  _Mtrx[2][1] << "\" a33=\"" <<  _Mtrx[2][2] << "\" a34=\"" <<  _Mtrx[2][3] << "\"";
-        writer.Stream() << " a41=\"" <<  _Mtrx[3][0] << "\" a42=\"" <<  _Mtrx[3][1] << "\" a43=\"" <<  _Mtrx[3][2] << "\" a44=\"" <<  _Mtrx[3][3] << "\"";
+        writer.Stream() << " a11=\"" << _Mtrx[0][0] << "\" a12=\"" << _Mtrx[0][1] << "\" a13=\""
+                        << _Mtrx[0][2] << "\" a14=\"" << _Mtrx[0][3] << "\"";
+        writer.Stream() << " a21=\"" << _Mtrx[1][0] << "\" a22=\"" << _Mtrx[1][1] << "\" a23=\""
+                        << _Mtrx[1][2] << "\" a24=\"" << _Mtrx[1][3] << "\"";
+        writer.Stream() << " a31=\"" << _Mtrx[2][0] << "\" a32=\"" << _Mtrx[2][1] << "\" a33=\""
+                        << _Mtrx[2][2] << "\" a34=\"" << _Mtrx[2][3] << "\"";
+        writer.Stream() << " a41=\"" << _Mtrx[3][0] << "\" a42=\"" << _Mtrx[3][1] << "\" a43=\""
+                        << _Mtrx[3][2] << "\" a44=\"" << _Mtrx[3][3] << "\"";
         writer.Stream() << "/>" << std::endl;
     }
     else {
-        writer.Stream() << writer.ind() << "<FemMesh file=\"\"" ;
-        writer.Stream() << " a11=\"" <<  _Mtrx[0][0] << "\" a12=\"" <<  _Mtrx[0][1] << "\" a13=\"" <<  _Mtrx[0][2] << "\" a14=\"" <<  _Mtrx[0][3] << "\"";
-        writer.Stream() << " a21=\"" <<  _Mtrx[1][0] << "\" a22=\"" <<  _Mtrx[1][1] << "\" a23=\"" <<  _Mtrx[1][2] << "\" a24=\"" <<  _Mtrx[1][3] << "\"";
-        writer.Stream() << " a31=\"" <<  _Mtrx[2][0] << "\" a32=\"" <<  _Mtrx[2][1] << "\" a33=\"" <<  _Mtrx[2][2] << "\" a34=\"" <<  _Mtrx[2][3] << "\"";
-        writer.Stream() << " a41=\"" <<  _Mtrx[3][0] << "\" a42=\"" <<  _Mtrx[3][1] << "\" a43=\"" <<  _Mtrx[3][2] << "\" a44=\"" <<  _Mtrx[3][3] << "\"";
+        writer.Stream() << writer.ind() << "<FemMesh file=\"\"";
+        writer.Stream() << " a11=\"" << _Mtrx[0][0] << "\" a12=\"" << _Mtrx[0][1] << "\" a13=\""
+                        << _Mtrx[0][2] << "\" a14=\"" << _Mtrx[0][3] << "\"";
+        writer.Stream() << " a21=\"" << _Mtrx[1][0] << "\" a22=\"" << _Mtrx[1][1] << "\" a23=\""
+                        << _Mtrx[1][2] << "\" a24=\"" << _Mtrx[1][3] << "\"";
+        writer.Stream() << " a31=\"" << _Mtrx[2][0] << "\" a32=\"" << _Mtrx[2][1] << "\" a33=\""
+                        << _Mtrx[2][2] << "\" a34=\"" << _Mtrx[2][3] << "\"";
+        writer.Stream() << " a41=\"" << _Mtrx[3][0] << "\" a42=\"" << _Mtrx[3][1] << "\" a43=\""
+                        << _Mtrx[3][2] << "\" a44=\"" << _Mtrx[3][3] << "\"";
         writer.Stream() << "/>" << std::endl;
     }
 }
@@ -2355,7 +2468,7 @@ void FemMesh::Restore(Base::XMLReader &reader)
         // initiate a file read
         reader.addFile(file.c_str(),this);
     }
-    if( reader.hasAttribute("a11")){
+    if (reader.hasAttribute("a11")) {
         _Mtrx[0][0] = (float)reader.getAttributeAsFloat("a11");
         _Mtrx[0][1] = (float)reader.getAttributeAsFloat("a12");
         _Mtrx[0][2] = (float)reader.getAttributeAsFloat("a13");
@@ -2434,16 +2547,16 @@ void FemMesh::setTransform(const Base::Matrix4D& rclTrf)
     _Mtrx = rclTrf;
 }
 
-Base::Matrix4D FemMesh::getTransform(void) const
+Base::Matrix4D FemMesh::getTransform() const
 {
     return _Mtrx;
 }
 
-Base::BoundBox3d FemMesh::getBoundBox(void) const
+Base::BoundBox3d FemMesh::getBoundBox() const
 {
     Base::BoundBox3d box;
 
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = getSMesh()->GetMeshDS();
 
     SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
     for (;aNodeIter->more();) {
@@ -2457,7 +2570,7 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
     return box;
 }
 
-std::vector<const char*> FemMesh::getElementTypes(void) const
+std::vector<const char*> FemMesh::getElementTypes() const
 {
     std::vector<const char*> temp;
     temp.push_back("Vertex");
@@ -2480,14 +2593,31 @@ Data::Segment* FemMesh::getSubElement(const char* /*Type*/, unsigned long /*n*/)
     //str << Type << n;
     //std::string temp = str.str();
     //return new ShapeSegment(getSubShape(temp.c_str()));
-    return 0;
+    return nullptr;
 }
 
-struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
+void FemMesh::getPoints(std::vector<Base::Vector3d> &Points,
+                        std::vector<Base::Vector3d> & /*Normals*/,
+                        double /*Accuracy*/, uint16_t /*flags*/) const
+{
+    const SMESHDS_Mesh* data = getSMesh()->GetMeshDS();
+    std::vector<Base::Vector3d> nodes;
+    nodes.reserve(data->NbNodes());
+
+    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+    for (;aNodeIter->more();) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        nodes.emplace_back(aNode->X(), aNode->Y(), aNode->Z());
+    }
+
+    Points = transformPointsToOutside(nodes);
+}
+
+struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo() const{
 
     struct FemMeshInfo rtrn;
 
-    SMESHDS_Mesh* data =  const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data =  getSMesh()->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();
     rtrn.numFaces = data->NbFaces();
     rtrn.numNode = info.NbNodes();
@@ -2504,7 +2634,7 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
     return rtrn;
 
 }
-//    for(unsigned int i=0;i<all_elements.size();i++)
+//    for (unsigned int i = 0; i < all_elements.size(); i++)
 //        {
 //                // an consistent data structure is only possible
 //                // if the elements are added in the right order
@@ -2524,7 +2654,7 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 //            );
 //        }
 
-Base::Quantity FemMesh::getVolume(void)const
+Base::Quantity FemMesh::getVolume()const
 {
     SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
 
@@ -2553,53 +2683,77 @@ Base::Quantity FemMesh::getVolume(void)const
 
 
         //1,5,8,7
-        a = v4 -v0 ;
-        b = v7 -v0 ;
-        c = v6 -v0 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v4 - v0;
+        b = v7 - v0;
+        c = v6 - v0;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //5,9,8,7
-        a = v8 -v4 ;
-        b = v7 -v4 ;
-        c = v6 -v4 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v8 - v4;
+        b = v7 - v4;
+        c = v6 - v4;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //5,2,9,7
-        a = v1 -v4 ;
-        b = v8 -v4 ;
-        c = v6 -v4 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v1 - v4;
+        b = v8 - v4;
+        c = v6 - v4;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //2,6,9,7
-        a = v5 -v1 ;
-        b = v8 -v1 ;
-        c = v6 -v1 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v5 - v1;
+        b = v8 - v1;
+        c = v6 - v1;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //9,6,10,7
-        a = v5 -v8 ;
-        b = v9 -v8 ;
-        c = v6 -v8 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v5 - v8;
+        b = v9 - v8;
+        c = v6 - v8;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //6,3,10,7
-        a = v2 -v5 ;
-        b = v9 -v5 ;
-        c = v6 -v5 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v2 - v5;
+        b = v9 - v5;
+        c = v6 - v5;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //8,9,10,7
-        a = v8 -v7 ;
-        b = v9 -v7 ;
-        c = v6 -v7 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v8 - v7;
+        b = v9 - v7;
+        c = v6 - v7;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
         //8,9,10,4
-        a = v8 -v7 ;
-        b = v9 -v7 ;
-        c = v3 -v7 ;
-        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        a = v8 - v7;
+        b = v9 - v7;
+        c = v3 - v7;
+        a_b_product.x = a.y * b.z - b.y * a.z;
+        a_b_product.y = a.z * b.x - b.z * a.x;
+        a_b_product.z = a.x * b.y - b.x * a.y;
+        volume +=
+            1.0 / 6.0 * fabs((a_b_product.x * c.x) + (a_b_product.y * c.y) + (a_b_product.z * c.z));
 
     }
 
@@ -2612,7 +2766,7 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
 {
     // define mapping between typestring and ElementType
     // TODO: remove code doubling by providing mappings for all FemMesh functions
-    typedef std::map<std::string, SMDSAbs_ElementType> string_eltype_map;
+    using string_eltype_map = std::map<std::string, SMDSAbs_ElementType>;
     string_eltype_map mapping;
     mapping["All"] = SMDSAbs_All;
     mapping["Node"] = SMDSAbs_Node;
@@ -2633,7 +2787,8 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
             typeStringValid = true;
     }
     if (!typeStringValid)
-        throw std::runtime_error("AddGroup: Invalid type string! Allowed: All, Node, Edge, Face, Volume, 0DElement, Ball");
+        throw std::runtime_error("AddGroup: Invalid type string! Allowed: All, Node, Edge, Face, "
+                                 "Volume, 0DElement, Ball");
     // add group to mesh
     SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);
     if (!group)

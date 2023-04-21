@@ -33,9 +33,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QThread>
-#include <QtCore/QWaitCondition>
-#include <QtCore/QMutex>
+#include <QMutex>
+#include <QThread>
+#include <QWaitCondition>
+
 
 class SoQtP;
 
@@ -44,16 +45,16 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 class SignalThread : public QThread {
   Q_OBJECT
 public:
-  SignalThread(void);
+  SignalThread();
   virtual ~SignalThread();
 
-  virtual void run(void);
-  void trigger(void);
-  void stopThread(void);
+  virtual void run();
+  void trigger();
+  void stopThread();
 
 Q_SIGNALS:
 
-  void triggerSignal(void);
+  void triggerSignal();
 
 private:
   QWaitCondition waitcond;

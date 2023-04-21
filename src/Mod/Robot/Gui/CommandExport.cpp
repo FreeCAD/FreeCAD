@@ -20,24 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
 #endif
 
-#include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
-
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryObject.h>
 
-#include "TrajectorySimulate.h"
 
 using namespace std;
 
@@ -70,14 +66,14 @@ void CmdRobotExportKukaCompact::activated(int)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
 
-    Robot::RobotObject *pcRobotObject=0;
+    Robot::RobotObject *pcRobotObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject=0;
+    Robot::TrajectoryObject *pcTrajectoryObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
@@ -95,7 +91,7 @@ void CmdRobotExportKukaCompact::activated(int)
     doCommand(Doc,"ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
 }
 
-bool CmdRobotExportKukaCompact::isActive(void)
+bool CmdRobotExportKukaCompact::isActive()
 {
     return hasActiveDocument();
 }
@@ -132,14 +128,14 @@ void CmdRobotExportKukaFull::activated(int)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
 
-    Robot::RobotObject *pcRobotObject=0;
+    Robot::RobotObject *pcRobotObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     //std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject=0;
+    Robot::TrajectoryObject *pcTrajectoryObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
@@ -157,7 +153,7 @@ void CmdRobotExportKukaFull::activated(int)
     doCommand(Doc,"ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
 }
 
-bool CmdRobotExportKukaFull::isActive(void)
+bool CmdRobotExportKukaFull::isActive()
 {
     return hasActiveDocument();
 }
@@ -166,7 +162,7 @@ bool CmdRobotExportKukaFull::isActive(void)
 
 
 
-void CreateRobotCommandsExport(void)
+void CreateRobotCommandsExport()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

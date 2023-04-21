@@ -26,21 +26,14 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-if(BUILD_QT5)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
     include_directories(
-        ${Qt5XmlPatterns_INCLUDE_DIRS}
+        ${QtXmlPatterns_INCLUDE_DIRS}
     )
-else(BUILD_QT5)
-    include_directories(
-        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
-    )
-endif(BUILD_QT5)
-
-generate_from_xml(MDIViewPagePy)
+endif()
 
 # The XML files
 set(TechDrawGui_XML_SRCS
-    MDIViewPagePy.xml
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -50,13 +43,11 @@ set(TechDrawGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
-else()
-    qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
-endif()
+qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
+    DlgStringListEditor.ui
+    DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawColors.ui
@@ -69,6 +60,8 @@ set(TechDrawGui_UIC_SRCS
     TaskActiveView.ui
     TaskBalloon.ui
     TaskCosmeticLine.ui
+    TaskSelectLineAttributes.ui
+    TaskCustomizeFormat.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
     TaskDetail.ui
@@ -83,16 +76,16 @@ set(TechDrawGui_UIC_SRCS
     TaskRichAnno.ui
     TaskSectionView.ui
     TaskWeldingSymbol.ui
+    TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
+    TaskMoveView.ui
+    TaskProjection.ui
+    TaskComplexSection.ui
+    TaskDimRepair.ui
+
 )
 
-if(BUILD_QT5)
-    qt5_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
-endif()
-
-SET(MRTE_SRCS 
+SET(MRTE_SRCS
     mrichtextedit.ui
     mrichtextedit.cpp
     mrichtextedit.h
@@ -111,6 +104,11 @@ SET(TechDrawGui_SRCS
     CommandCreateDims.cpp
     CommandDecorate.cpp
     CommandAnnotate.cpp
+    CommandExtensionDims.cpp
+    CommandExtensionPack.cpp
+    CommandStack.cpp
+    DimensionValidators.cpp
+    DimensionValidators.h
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -119,6 +117,12 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
+    DlgStringListEditor.ui
+    DlgStringListEditor.cpp
+    DlgStringListEditor.h
+    DlgPageChooser.ui
+    DlgPageChooser.cpp
+    DlgPageChooser.h
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawGeneralImp.cpp
     DlgPrefsTechDrawGeneralImp.h
@@ -140,9 +144,6 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawHLR.ui
     DlgPrefsTechDrawHLRImp.cpp
     DlgPrefsTechDrawHLRImp.h
-    TaskLinkDim.ui
-    TaskLinkDim.cpp
-    TaskLinkDim.h
     DlgTemplateField.ui
     DlgTemplateField.cpp
     DlgTemplateField.h
@@ -176,10 +177,22 @@ SET(TechDrawGui_SRCS
     TaskLineDecor.ui
     TaskLineDecor.cpp
     TaskLineDecor.h
+    TaskLinkDim.ui
+    TaskLinkDim.cpp
+    TaskLinkDim.h
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
+    TaskSurfaceFinishSymbols.ui
+    TaskSurfaceFinishSymbols.cpp
+    TaskSurfaceFinishSymbols.h
+    TaskSelectLineAttributes.ui
+    TaskSelectLineAttributes.cpp
+    TaskSelectLineAttributes.h
+    TaskCustomizeFormat.ui
+    TaskCustomizeFormat.cpp
+    TaskCustomizeFormat.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -197,17 +210,34 @@ SET(TechDrawGui_SRCS
     TaskDetail.h
     PreferencesGui.cpp
     PreferencesGui.h
-    TaskCosmeticLine.ui
     TaskCosmeticLine.cpp
     TaskCosmeticLine.h
+    TaskCosmeticLine.ui
+    TaskMoveView.ui
+    TaskProjection.cpp
+    TaskProjection.h
+    TaskProjection.ui
+    TaskComplexSection.cpp
+    TaskComplexSection.h
+    TaskComplexSection.ui
+    TaskDimRepair.cpp
+    TaskDimRepair.h
+    TaskDimRepair.ui
+    Widgets/CompassDialWidget.cpp
+    Widgets/CompassDialWidget.h
+    Widgets/CompassWidget.cpp
+    Widgets/CompassWidget.h
+    Widgets/VectorEditWidget.cpp
+    Widgets/VectorEditWidget.h
 )
 
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
-    MDIViewPagePyImp.cpp
     QGVPage.cpp
     QGVPage.h
+    QGSPage.cpp
+    QGSPage.h
     QGCustomText.cpp
     QGCustomText.h
     QGICaption.cpp
@@ -300,15 +330,47 @@ SET(TechDrawGuiView_SRCS
     QGIGhostHighlight.cpp
     QGIGhostHighlight.h
 )
+
+SET(TechDrawGuiNav_SRCS
+    QGVNavStyle.cpp
+    QGVNavStyle.h
+    QGVNavStyleBlender.cpp
+    QGVNavStyleBlender.h
+    QGVNavStyleCAD.cpp
+    QGVNavStyleCAD.h
+    QGVNavStyleGesture.cpp
+    QGVNavStyleGesture.h
+    QGVNavStyleInventor.cpp
+    QGVNavStyleInventor.h
+    QGVNavStyleMaya.cpp
+    QGVNavStyleMaya.h
+    QGVNavStyleOCC.cpp
+    QGVNavStyleOCC.h
+    QGVNavStyleOpenSCAD.cpp
+    QGVNavStyleOpenSCAD.h
+    QGVNavStyleRevit.cpp
+    QGVNavStyleRevit.h
+    QGVNavStyleTinkerCAD.cpp
+    QGVNavStyleTinkerCAD.h
+    QGVNavStyleTouchpad.cpp
+    QGVNavStyleTouchpad.h
+)
+
 SET(TechDrawGuiViewProvider_SRCS
     ViewProviderPage.cpp
     ViewProviderPage.h
+    ViewProviderPageExtension.cpp
+    ViewProviderPageExtension.h
     ViewProviderDrawingView.cpp
     ViewProviderDrawingView.h
+    ViewProviderDrawingViewExtension.cpp
+    ViewProviderDrawingViewExtension.h
     ViewProviderProjGroupItem.cpp
     ViewProviderProjGroupItem.h
     ViewProviderTemplate.cpp
     ViewProviderTemplate.h
+    ViewProviderTemplateExtension.cpp
+    ViewProviderTemplateExtension.h
     ViewProviderDimension.cpp
     ViewProviderDimension.h
     ViewProviderBalloon.cpp
@@ -342,13 +404,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderWeld.cpp
     ViewProviderWeld.h
     ViewProviderCosmeticExtension.cpp
-    ViewProviderCosmeticExtension.h 
+    ViewProviderCosmeticExtension.h
 )
-
-SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
-SOURCE_GROUP("Mod" FILES ${TechDrawGui_SRCS})
-SOURCE_GROUP("SVG-View" FILES ${TechDrawGuiView_SRCS})
-SOURCE_GROUP("ViewProvider" FILES ${TechDrawGuiViewProvider_SRCS})
 
 SET(TechDrawGuiTaskDlgs_SRCS
     TaskProjGroup.ui
@@ -366,11 +423,24 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
+    TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui
     TaskCosmeticLine.ui
+    TaskSelectLineAttributes.ui
+    TaskCustomizeFormat.ui
+    TaskMoveView.ui
+    TaskProjection.ui
+    TaskComplexSection.ui
+    TaskDimRepair.ui
 )
+
+SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
+SOURCE_GROUP("Mod" FILES ${TechDrawGui_SRCS})
+SOURCE_GROUP("View" FILES ${TechDrawGuiView_SRCS})
+SOURCE_GROUP("Nav" FILES ${TechDrawGuiNav_SRCS})
+SOURCE_GROUP("ViewProvider" FILES ${TechDrawGuiViewProvider_SRCS})
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
 SET(TechDrawGuiIcon_SVG
@@ -380,11 +450,23 @@ SET(TechDrawGuiIcon_SVG
 ##install OSIFONT
 SET(TechDrawGuiFonts
     Resources/fonts/osifont-lgpl3fe.ttf
+    Resources/fonts/osifont-italic.ttf
     Resources/fonts/osifont.license
+    Resources/fonts/Y14.5-2018.ttf
+    Resources/fonts/Y14.5Font.license
+    Resources/fonts/Y14.5-FreeCAD.ttf
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS}
+                                                           ${TechDrawGuiNav_SRCS}
+                                                           ${TechDrawGuiViewProvider_SRCS} ${MRTE_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(TechDrawGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
-                               ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})
+                               ${TechDrawGuiNav_SRCS} ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})

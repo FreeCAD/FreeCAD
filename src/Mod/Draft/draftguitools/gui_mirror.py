@@ -84,7 +84,6 @@ class Mirror(gui_base_original.Modifier):
 
         self.sel = Gui.Selection.getSelection()
         self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Mirror")
-        self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         # self.ghost = trackers.ghostTracker(self.sel)
@@ -93,15 +92,11 @@ class Mirror(gui_base_original.Modifier):
         _msg(translate("draft", "Pick start point of mirror line"))
         self.ui.isCopy.hide()
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Terminate the operation of the tool."""
         if self.ghost:
             self.ghost.finalize()
         super(Mirror, self).finish()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                Gui.Selection.clearSelection()
-                self.Activated()
 
     def mirror(self, p1, p2, copy=False):
         """Mirror the real shapes."""
@@ -188,7 +183,7 @@ class Mirror(gui_base_original.Modifier):
                         if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
                             self.extendedCopy = True
                         else:
-                            self.finish(cont=True)
+                            self.finish()
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.

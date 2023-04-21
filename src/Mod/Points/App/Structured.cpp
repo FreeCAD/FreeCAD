@@ -20,19 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <vector>
 #endif
-#include <vector>
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-
 
 #include "Structured.h"
+
 
 using namespace Points;
 
@@ -79,7 +74,7 @@ Structured::~Structured()
 {
 }
 
-App::DocumentObjectExecReturn *Structured::execute(void)
+App::DocumentObjectExecReturn *Structured::execute()
 {
     std::size_t size = Height.getValue() * Width.getValue();
     if (size != Points.getValue().size())

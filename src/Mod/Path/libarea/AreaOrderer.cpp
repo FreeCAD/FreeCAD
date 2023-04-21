@@ -77,14 +77,14 @@ void CInnerCurves::Insert(shared_ptr<CCurve> pcurve)
 	shared_ptr<CInnerCurves> new_item(new CInnerCurves(shared_from_this(), pcurve));
 	this->m_inner_curves.insert(new_item);
 
-    for(shared_ptr<CInnerCurves> c : outside_of_these) {
+    for(const shared_ptr<CInnerCurves>& c : outside_of_these) {
 		// move items
 		c->m_pOuter = new_item;
 		new_item->m_inner_curves.insert(c);
 		this->m_inner_curves.erase(c);
 	}
 
-    for(shared_ptr<CInnerCurves> c : crossing_these) {
+    for(const shared_ptr<CInnerCurves>& c : crossing_these) {
 		// unite these
 		new_item->Unite(c);
 		this->m_inner_curves.erase(c);

@@ -20,7 +20,6 @@
 #*   USA                                                                   *
 #***************************************************************************/
 
-from __future__ import print_function
 
 __title__  = "FreeCAD Spreadsheet Workbench - XLSX importer"
 __author__ = "Ulrich Brammer <ulrich1a@users.sourceforge.net>"
@@ -56,7 +55,6 @@ known issues:
 import zipfile
 import xml.dom.minidom
 import FreeCAD as App
-import sys
 
 try: import FreeCADGui
 except ValueError: gui = False
@@ -152,7 +150,9 @@ tokenDic = {
   'MIN'  :( 0, 'min',  0),
   'STDEVA':( 0, 'stddev',0),
   'SUM'  :( 0, 'sum',  0),
-  'PI'   :( 0, 'pi',   1)
+  'PI'   :( 0, 'pi',   1),
+  '_xlfn.CEILING.MATH':( 0, 'ceil',  0),
+  '_xlfn.FLOOR.MATH'  :( 0, 'floor', 0)
   }
 
 
@@ -320,10 +320,7 @@ def getText(nodelist):
   for node in nodelist:
     if node.nodeType == node.TEXT_NODE:
       rc.append(node.data)
-    if sys.version_info.major >= 3:
-      return ''.join(rc)
-    else:
-      return ''.join(rc).encode('utf8')
+    return ''.join(rc)
 
 
 def handleWorkSheet(theDom, actSheet, strList):
@@ -398,8 +395,8 @@ def handleWorkBook(theBook, sheetDict, Doc):
     aliasName = getText(nameRef.childNodes)
     #print("aliasName: ", aliasName)
 
-    aliasRef = getText(theAlias.childNodes)
-    if '$' in aliasRef:
+    aliasRef = getText(theAlias.childNodes) # aliasRef can be None
+    if aliasRef and '$' in aliasRef:
       refList = aliasRef.split('!$')
       adressList = refList[1].split('$')
       #print("aliasRef: ", aliasRef)

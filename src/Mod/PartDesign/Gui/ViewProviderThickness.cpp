@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "TaskThicknessParameters.h"
 #include "ViewProviderThickness.h"
 

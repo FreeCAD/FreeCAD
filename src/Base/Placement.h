@@ -23,14 +23,14 @@
 #ifndef BASE_PLACEMENT_H
 #define BASE_PLACEMENT_H
 
-#include "Vector3D.h"
 #include "Rotation.h"
-#include "Matrix.h"
+#include "Vector3D.h"
 
 
 namespace Base {
 
 class DualQuat;
+class Matrix4D;
 
 /**
  * The Placement class.
@@ -39,7 +39,7 @@ class BaseExport Placement
 {
 public:
     /// default constructor
-    Placement(void);
+    Placement();
     Placement(const Placement&);
     Placement(const Base::Matrix4D& matrix);
     Placement(const Vector3d& Pos, const Rotation &Rot);
@@ -51,20 +51,24 @@ public:
     //@}
 
     /// Destruction
-    ~Placement () {}
+    ~Placement () = default;
 
-    Matrix4D toMatrix(void) const;
+    Matrix4D toMatrix() const;
     void fromMatrix(const Matrix4D& m);
     DualQuat toDualQuaternion() const;
-    const Vector3d& getPosition(void) const {return _pos;}
-    const Rotation& getRotation(void) const {return _rot;}
+    const Vector3d& getPosition() const {return _pos;}
+    const Rotation& getRotation() const {return _rot;}
     void setPosition(const Vector3d& Pos){_pos=Pos;}
     void setRotation(const Rotation& Rot) {_rot = Rot;}
 
     bool isIdentity() const;
+    bool isIdentity(double tol) const;
     void invert();
     Placement inverse() const;
     void move(const Vector3d& MovVec);
+
+    bool isSame(const Placement&) const;
+    bool isSame(const Placement&, double tol) const;
 
     /** Operators. */
     //@{
@@ -75,7 +79,11 @@ public:
     Placement& operator = (const Placement&);
     Placement pow(double t, bool shorten = true) const;
 
+    Placement& multRight(const Base::Placement& p);
+    Placement& multLeft(const Base::Placement& p);
+
     void multVec(const Vector3d & src, Vector3d & dst) const;
+    void multVec(const Vector3f & src, Vector3f & dst) const;
     //@}
 
     static Placement slerp(const Placement & p0, const Placement & p1, double t);

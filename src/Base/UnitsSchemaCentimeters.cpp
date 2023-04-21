@@ -27,10 +27,9 @@
 #endif
 
 #include <QString>
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaCentimeters.h"
-#include <cmath>
+
 
 using namespace Base;
 

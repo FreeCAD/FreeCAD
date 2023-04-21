@@ -4,17 +4,17 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Cylinder</source>
       <translation>円柱</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Approximate a cylinder</source>
       <translation>シリンダーの概算</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Plane...</source>
       <translation>平面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="112"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Approximate a plane</source>
       <translation>平面に近似する</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Polynomial surface</source>
       <translation>多項式サーフェス</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Approximate a polynomial surface</source>
       <translation>多項式サーフェスに近似</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
       <translation>球体</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Approximate a sphere</source>
       <translation>球をおおよその球体にする</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Approximate B-spline surface...</source>
       <translation>B-スプライン曲面に近似...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="70"/>
       <source>Approximate a B-spline surface</source>
       <translation>B-スプライン曲面に近似</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="484"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Wire from mesh boundary...</source>
       <translation>ワイヤーをメッシュ境界から...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>Create wire from mesh boundaries</source>
       <translation>メッシュ境界からワイヤを作成</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="550"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="551"/>
       <source>Poisson...</source>
       <translation>ポアソン</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="558"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Poisson surface reconstruction</source>
       <translation>ポアソン曲面の再構成</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="379"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>Mesh segmentation...</source>
       <translation>メッシュのセグメント化..</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="381"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Create mesh segments</source>
       <translation>メッシュのセグメントを作成します</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>From components</source>
       <translation>コンポーネントから</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Create mesh segments from components</source>
       <translation>コンポーネントからメッシュセグメントを作成</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Manual segmentation...</source>
       <translation>手動でのセグメント化...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="413"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Create mesh segments manually</source>
       <translation>メッシュセグメントを手動で作成</translation>
     </message>
@@ -184,18 +184,18 @@
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="584"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../Command.cpp" line="585"/>
       <source>Structured point clouds</source>
       <translation>構造化された点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
-      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="586"/>
+      <location filename="../../Command.cpp" line="587"/>
       <source>Triangulation of structured point clouds</source>
       <translation>構造化された点群の三角形分割</translation>
     </message>
@@ -203,47 +203,47 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Fit plane</source>
       <translation>面に合わせる</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="221"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Fit cylinder</source>
       <translation>円筒に合わせる</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Fit sphere</source>
       <translation>球に合わせる</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="329"/>
       <source>Fit polynomial surface</source>
       <translation>多項式サーフェスに合わせる</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="595"/>
       <source>View triangulation</source>
       <translation>三角形分割の表示</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <location filename="../../FitBSplineSurface.cpp" line="150"/>
       <source>Placement</source>
       <translation>配置</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <location filename="../../FitBSplineSurface.cpp" line="222"/>
       <source>Fit B-Spline</source>
       <translation>B-スプラインに合わせる</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="101"/>
+      <location filename="../../Poisson.cpp" line="91"/>
       <source>Poisson reconstruction</source>
       <translation>ポアソンの再構築</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <location filename="../../SegmentationManual.cpp" line="257"/>
       <source>Segmentation</source>
       <translation>セグメンテーション</translation>
     </message>
@@ -294,57 +294,57 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
-      <source>Smoothing</source>
-      <translation>スムージング</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="227"/>
-      <source>Total Weight</source>
-      <translation>総重量</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="256"/>
-      <source>Length of gradient</source>
-      <translation>勾配の長さ</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="285"/>
-      <source>Bending energy</source>
-      <translation>曲げエネルギー</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="314"/>
-      <source>Curvature variation</source>
-      <translation>曲率変化</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
       <translation>ユーザー定義によるUV方向</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="359"/>
+      <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
       <translation>配置を作成</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="238"/>
+      <source>Smoothing</source>
+      <translation>スムージング</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="247"/>
+      <source>Total Weight</source>
+      <translation>総重量</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="276"/>
+      <source>Length of gradient</source>
+      <translation>勾配の長さ</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="305"/>
+      <source>Bending energy</source>
+      <translation>曲げエネルギー</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="334"/>
+      <source>Curvature variation</source>
+      <translation>曲率変化</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="207"/>
+      <location filename="../../FitBSplineSurface.cpp" line="161"/>
+      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="201"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="208"/>
+      <location filename="../../FitBSplineSurface.cpp" line="202"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>ローカル方向を取得するには単一の配置オブジェクトを選択してください</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.cpp" line="167"/>
-      <location filename="../../FitBSplineSurface.cpp" line="235"/>
-      <source>Input error</source>
-      <translation>入力エラー</translation>
     </message>
   </context>
   <context>
@@ -375,7 +375,7 @@
       <translation>ノードあたりのサンプル数</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="108"/>
+      <location filename="../../Poisson.cpp" line="98"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>
@@ -383,18 +383,18 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="90"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Please select a point cloud or mesh.</source>
       <translation>点群またはメッシュを選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
+      <location filename="../../Command.cpp" line="564"/>
       <source>Please select a single point cloud.</source>
       <translation>単一の点群を選択してください</translation>
     </message>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>View triangulation failed</source>
       <translation>ビューの三角形分割に失敗しました</translation>
     </message>
@@ -415,39 +415,39 @@
       <translation>メッシュの分割</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="27"/>
-      <source>Create compound</source>
-      <translation>コンパウンドを作成</translation>
-    </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="34"/>
+      <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
       <translation>メッシュのスムージング</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="44"/>
+      <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="53"/>
+      <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
       <translation>曲率許容差</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="70"/>
+      <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
       <translation>平面との距離</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="87"/>
+      <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
       <translation>面の最小数</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="107"/>
+      <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
       <translation>使用されていない三角形からメッシュを作成</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="107"/>
+      <source>Create compound</source>
+      <translation>コンパウンドを作成</translation>
     </message>
   </context>
   <context>
@@ -464,33 +464,33 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
-      <source>Components</source>
-      <translation>コンポーネント</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="48"/>
       <source>Region</source>
       <translation>領域</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="55"/>
-      <source>Select whole component</source>
-      <translation>コンポーネント全体を選択</translation>
+      <location filename="../../SegmentationManual.ui" line="61"/>
+      <source>All</source>
+      <translation>すべて</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="62"/>
-      <source>Pick triangle</source>
-      <translation>三角要素を選択</translation>
+      <location filename="../../SegmentationManual.ui" line="81"/>
+      <source>Components</source>
+      <translation>コンポーネント</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="82"/>
+      <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
       <translation>&lt; 面以下</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="89"/>
-      <source>All</source>
-      <translation>すべて</translation>
+      <location filename="../../SegmentationManual.ui" line="98"/>
+      <source>Pick triangle</source>
+      <translation>三角要素を選択</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="105"/>
+      <source>Select whole component</source>
+      <translation>コンポーネント全体を選択</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -506,22 +506,22 @@
       <location filename="../../SegmentationManual.ui" line="128"/>
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
+      <source>Detect</source>
+      <translation>検知</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="135"/>
+      <location filename="../../SegmentationManual.ui" line="188"/>
+      <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
       <translation>公差</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="148"/>
-      <location filename="../../SegmentationManual.ui" line="201"/>
-      <location filename="../../SegmentationManual.ui" line="254"/>
+      <location filename="../../SegmentationManual.ui" line="155"/>
+      <location filename="../../SegmentationManual.ui" line="208"/>
+      <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
       <translation>面の最小数</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="165"/>
-      <location filename="../../SegmentationManual.ui" line="218"/>
-      <location filename="../../SegmentationManual.ui" line="271"/>
-      <source>Detect</source>
-      <translation>検知</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="310"/>
+      <location filename="../../SegmentationManual.cpp" line="333"/>
       <source>Create</source>
       <translation>作成</translation>
     </message>
@@ -575,7 +575,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
       <translation>リバースエンジニアリング</translation>
     </message>

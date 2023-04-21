@@ -31,11 +31,11 @@
 
 using namespace MeshCore;
 
-void MeshSurfaceSegment::Initialize(unsigned long)
+void MeshSurfaceSegment::Initialize(FacetIndex)
 {
 }
 
-bool MeshSurfaceSegment::TestInitialFacet(unsigned long) const
+bool MeshSurfaceSegment::TestInitialFacet(FacetIndex) const
 {
     return true;
 }
@@ -44,14 +44,14 @@ void MeshSurfaceSegment::AddFacet(const MeshFacet&)
 {
 }
 
-void MeshSurfaceSegment::AddSegment(const std::vector<unsigned long>& segm)
+void MeshSurfaceSegment::AddSegment(const std::vector<FacetIndex>& segm)
 {
     if (segm.size() >= minFacets) {
         segments.push_back(segm);
     }
 }
 
-MeshSegment MeshSurfaceSegment::FindSegment(unsigned long index) const
+MeshSegment MeshSurfaceSegment::FindSegment(FacetIndex index) const
 {
     for (std::vector<MeshSegment>::const_iterator it = segments.begin(); it != segments.end(); ++it) {
         if (std::find(it->begin(), it->end(), index) != it->end())
@@ -73,7 +73,7 @@ MeshDistancePlanarSegment::~MeshDistancePlanarSegment()
     delete fitter;
 }
 
-void MeshDistancePlanarSegment::Initialize(unsigned long index)
+void MeshDistancePlanarSegment::Initialize(FacetIndex index)
 {
     fitter->Clear();
 
@@ -312,7 +312,7 @@ SphereSurfaceFit::SphereSurfaceFit()
 SphereSurfaceFit::SphereSurfaceFit(const Base::Vector3f& c, float r)
     : center(c)
     , radius(r)
-    , fitter(0)
+    , fitter(nullptr)
 {
 
 }
@@ -408,13 +408,13 @@ MeshDistanceGenericSurfaceFitSegment::~MeshDistanceGenericSurfaceFitSegment()
     delete fitter;
 }
 
-void MeshDistanceGenericSurfaceFitSegment::Initialize(unsigned long index)
+void MeshDistanceGenericSurfaceFitSegment::Initialize(FacetIndex index)
 {
     MeshGeomFacet triangle = kernel.GetFacet(index);
     fitter->Initialize(triangle);
 }
 
-bool MeshDistanceGenericSurfaceFitSegment::TestInitialFacet(unsigned long index) const
+bool MeshDistanceGenericSurfaceFitSegment::TestInitialFacet(FacetIndex index) const
 {
     MeshGeomFacet triangle = kernel.GetFacet(index);
     for (int i=0; i<3; i++) {
@@ -511,7 +511,7 @@ bool MeshCurvatureFreeformSegment::TestFacet (const MeshFacet &rclFacet) const
 
 // --------------------------------------------------------
 
-MeshSurfaceVisitor::MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<unsigned long> &indices)
+MeshSurfaceVisitor::MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices)
   : indices(indices), segm(segm)
 {
 }
@@ -520,14 +520,14 @@ MeshSurfaceVisitor::~MeshSurfaceVisitor ()
 {
 }
 
-bool MeshSurfaceVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&, 
-                                     unsigned long, unsigned long, unsigned short)
+bool MeshSurfaceVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&,
+                                     FacetIndex, unsigned long, unsigned short)
 {
     return segm.TestFacet(face);
 }
 
 bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
-                                unsigned long ulFInd, unsigned long)
+                                FacetIndex ulFInd, unsigned long)
 {
     indices.push_back(ulFInd);
     segm.AddFacet(face);
@@ -539,7 +539,7 @@ bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
 void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm)
 {
     // reset VISIT flags
-    unsigned long startFacet;
+    FacetIndex startFacet;
     MeshCore::MeshAlgorithm cAlgo(myKernel);
     cAlgo.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
 
@@ -550,7 +550,7 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
 
     // start from the first not visited facet
     cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
-    std::vector<unsigned long> resetVisited;
+    std::vector<FacetIndex> resetVisited;
 
     for (std::vector<MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
@@ -563,10 +563,10 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
         if (iCur < iEnd)
             startFacet = iCur - iBeg;
         else
-            startFacet = ULONG_MAX;
-        while (startFacet != ULONG_MAX) {
+            startFacet = FACET_INDEX_MAX;
+        while (startFacet != FACET_INDEX_MAX) {
             // collect all facets of the same geometry
-            std::vector<unsigned long> indices;
+            std::vector<FacetIndex> indices;
             (*it)->Initialize(startFacet);
             if ((*it)->TestInitialFacet(startFacet))
                 indices.push_back(startFacet);
@@ -588,7 +588,7 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
             if (iCur < iEnd)
                 startFacet = iCur - iBeg;
             else
-                startFacet = ULONG_MAX;
+                startFacet = FACET_INDEX_MAX;
         }
     }
 }

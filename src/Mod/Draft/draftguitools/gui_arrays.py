@@ -62,8 +62,8 @@ class ArrayGroup:
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_Array',
-                'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", "Create various types of arrays, including rectangular, polar, circular, path, and point")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_ArrayTools", "Array tools"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_ArrayTools", "Create various types of arrays, including rectangular, polar, circular, path, and point")}
 
     def IsActive(self):
         """Return True when this command should be available."""

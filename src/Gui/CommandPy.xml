@@ -15,82 +15,107 @@
     </Documentation>
     <Methode Name="get" Static='true'>
       <Documentation>
-          <UserDocu>Get a given command by name or None if it doesn't exist.
-get(string) -> Command
-</UserDocu>
+          <UserDocu>get(name) -> Gui.Command or None\n
+Get a given command by name or None if it doesn't exist.\n
+name : str\n    Command name.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="update" Static='true'>
       <Documentation>
-          <UserDocu>Update active status of all commands.
-update() -> None
-</UserDocu>
+          <UserDocu>update() -> None\n
+Update active status of all commands.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="listAll" Static='true'>
       <Documentation>
-          <UserDocu>Returns the name of all commands.
-listAll() -> list of strings
-</UserDocu>
+          <UserDocu>listAll() -> list of str\n
+Returns the name of all commands.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="listByShortcut" Static='true'>
       <Documentation>
-          <UserDocu>Returns a list of all commands, filtered by shortcut.
-listByShortcut(string, bool bUseRegExp=False) -> list of strings
---
-Shortcuts are converted to uppercase and spaces removed prior to comparison.
-</UserDocu>
+          <UserDocu>listByShortcut(string, useRegExp=False) -> list of str\n
+Returns a list of all commands, filtered by shortcut.
+Shortcuts are converted to uppercase and spaces removed
+prior to comparison.\n
+string :  str\n    Shortcut to be searched.
+useRegExp : bool\n    Filter using regular expression.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="run">
       <Documentation>
-          <UserDocu>Runs the given command.
-run() -> None
-</UserDocu>
+          <UserDocu>run(item=0) -> None\n
+Runs the given command.\n
+item : int\n    Item to be run.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isActive" Const="true">
       <Documentation>
-          <UserDocu>Returns True if the command is active, False otherwise.
-isActive() -> bool
-</UserDocu>
+          <UserDocu>isActive() -> bool\n
+Returns True if the command is active, False otherwise.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getShortcut">
       <Documentation>
-          <UserDocu>Returns string representing shortcut key accelerator for command.
-getShortcut() -> string
-</UserDocu>
+          <UserDocu>getShortcut() -> str\n
+Returns string representing shortcut key accelerator for command.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setShortcut">
       <Documentation>
-          <UserDocu>Sets shortcut for given command, returns bool True for success.
-setShortcut(string) -> bool
-</UserDocu>
+          <UserDocu>setShortcut(string) -> bool\n
+Sets shortcut for given command, returns True for success.\n
+string : str\n    Shortcut to be set.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="resetShortcut">
       <Documentation>
-          <UserDocu>Resets shortcut for given command back to the default, returns bool True for success.
-resetShortcut() -> bool
-</UserDocu>
+          <UserDocu>resetShortcut() -> bool\n
+Resets shortcut for given command back to the default, returns True for success.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getInfo">
       <Documentation>
-          <UserDocu>Return information about this command.
-getInfo() -> list of strings
---
-Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText.
-</UserDocu>
+          <UserDocu>getInfo() -> dict\n
+Return information about this command.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAction">
       <Documentation>
-          <UserDocu>Return the associated QAction object.
-getAction() -> list of QAction</UserDocu>
+          <UserDocu>getAction() -> list of QAction\n
+Return the associated QAction object.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="createCustomCommand" Static='true' Keyword='true'>
+      <Documentation>
+        <UserDocu>createCustomCommand(macroFile, menuText, toolTip, whatsThis, statusTip, pixmap, shortcut) -> str\n
+Create a custom command for a macro. Returns name of the created command.\n
+macroFile : str\n    Macro file.
+menuText : str\n    Menu text. Optional.
+toolTip : str\n    Tool tip text. Optional.
+whatsThis : str\n    `What's this?` text. Optional.
+statusTip : str\n    Status tip text. Optional.
+pixmap : str\n    Pixmap name. Optional.
+shortcut : str\n    Shortcut key sequence. Optional.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCustomCommand" Static='true'>
+      <Documentation>
+        <UserDocu>removeCustomCommand(name) -> bool\n
+Remove the custom command if it exists.
+Given the name of a custom command, this removes that command.
+It is not an error to remove a non-existent command, the function
+simply does nothing in that case.
+Returns True if something was removed, or False if not.\n
+name : str\n    Command name.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="findCustomCommand" Static='true'>
+      <Documentation>
+        <UserDocu>findCustomCommand(name) -> str or None\n
+Given the name of a macro, return the name of the custom command for that macro
+or None if there is no command matching that macro script name.\n
+name : str\n    Macro name.</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

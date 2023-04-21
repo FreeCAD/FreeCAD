@@ -7,12 +7,12 @@ import generateBase.generateModel_Module
 import generateBase.generateTools
 
 class TemplateModuleAppMain (template.ModelTemplate):
-	def Generate(self):
-		file = open(self.path + "/App" + self.module.Name + ".cpp",'w')
-		generateBase.generateTools.replace(self.Template,locals(),file)
-		#file.write( generateBase.generateTools.replace(self.Template,locals()))
+    def Generate(self):
+        file = open(self.path + "/App" + self.module.Name + ".cpp",'w')
+        generateBase.generateTools.replace(self.Template,locals(),file)
+        #file.write( generateBase.generateTools.replace(self.Template,locals()))
 
-	Template = """
+    Template = """
 /***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -46,7 +46,7 @@ void App@self.module.Name@Export init@self.module.Name@() {
   @self.module.Name@::Feature@i.Name@::init();
 -
 
-	return;
+    return;
 }
 
 } // extern "C"

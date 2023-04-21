@@ -56,31 +56,33 @@ class DlgDisplayPropertiesImp : public QDialog,
     Q_OBJECT
 
 public:
-    DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgDisplayPropertiesImp();
+    explicit DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgDisplayPropertiesImp() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+                  Gui::SelectionSingleton::MessageType Reason) override;
     void showDefaultButtons(bool);
-    void reject();
+    void reject() override;
 
 private Q_SLOTS:
-    void on_changeMaterial_activated(int);
-    void on_changeMode_activated(const QString&);
-    void on_changePlot_activated(const QString&);
-    void on_buttonColor_changed();
-    void on_spinTransparency_valueChanged(int);
-    void on_spinPointSize_valueChanged(int);
-    void on_buttonLineColor_changed();
-    void on_spinLineWidth_valueChanged(int);
-    void on_spinLineTransparency_valueChanged(int);
-    void on_buttonUserDefinedMaterial_clicked();
-    void on_buttonColorPlot_clicked();
+    void onChangeMaterialActivated(int);
+    void onChangeModeActivated(const QString&);
+    void onChangePlotActivated(const QString&);
+    void onButtonColorChanged();
+    void onSpinTransparencyValueChanged(int);
+    void onSpinPointSizeValueChanged(int);
+    void onButtonLineColorChanged();
+    void onButtonPointColorChanged();
+    void onSpinLineWidthValueChanged(int);
+    void onSpinLineTransparencyValueChanged(int);
+    void onButtonUserDefinedMaterialClicked();
+    void onButtonColorPlotClicked();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
+    void setupConnections();
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
     void setDisplayModes(const std::vector<ViewProvider*>&);
     void setMaterial(const std::vector<ViewProvider*>&);
@@ -88,6 +90,7 @@ private:
     void fillupMaterials();
     void setShapeColor(const std::vector<ViewProvider*>&);
     void setLineColor(const std::vector<ViewProvider*>&);
+    void setPointColor(const std::vector<ViewProvider*>&);
     void setPointSize(const std::vector<ViewProvider*>&);
     void setLineWidth(const std::vector<ViewProvider*>&);
     void setTransparency(const std::vector<ViewProvider*>&);
@@ -105,18 +108,18 @@ class TaskDisplayProperties : public Gui::TaskView::TaskDialog
 
 public:
     TaskDisplayProperties();
-    ~TaskDisplayProperties();
+    ~TaskDisplayProperties() override;
 
 public:
-    bool reject();
+    bool reject() override;
 
-    bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return true; }
-    bool isAllowedAlterView(void) const
+    bool isAllowedAlterView() const override
     { return true; }
-    bool isAllowedAlterSelection(void) const
+    bool isAllowedAlterSelection() const override
     { return true; }
-    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 private:
     DlgDisplayPropertiesImp* widget;

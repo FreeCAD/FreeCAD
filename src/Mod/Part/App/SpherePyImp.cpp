@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <gp_Sphere.hxx>
-# include <Geom_Circle.hxx>
 # include <Geom_SphericalSurface.hxx>
 # include <Standard_Failure.hxx>
 #endif
@@ -33,16 +29,15 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
-#include "Geometry.h"
-#include "CirclePy.h"
 #include "SpherePy.h"
 #include "SpherePy.cpp"
 #include "OCCError.h"
 
+
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SpherePy::representation(void) const
+std::string SpherePy::representation() const
 {
     Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
@@ -53,9 +48,9 @@ std::string SpherePy::representation(void) const
 
     std::stringstream str;
     str << "Sphere (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Center : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")"; 
+    str << "Radius : " << fRad << ", ";
+    str << "Center : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")";
     str << ")";
 
     return str.str();
@@ -63,7 +58,7 @@ std::string SpherePy::representation(void) const
 
 PyObject *SpherePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of SpherePy and the Twin object 
+    // create a new instance of SpherePy and the Twin object
     return new SpherePy(new GeomSphere);
 }
 
@@ -80,11 +75,11 @@ int SpherePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Float SpherePy::getRadius(void) const
+Py::Float SpherePy::getRadius() const
 {
     Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
-    return Py::Float(sphere->Radius()); 
+    return Py::Float(sphere->Radius());
 }
 
 void  SpherePy::setRadius(Py::Float arg)
@@ -94,21 +89,21 @@ void  SpherePy::setRadius(Py::Float arg)
     sphere->SetRadius((double)arg);
 }
 
-Py::Float SpherePy::getArea(void) const
+Py::Float SpherePy::getArea() const
 {
     Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
-    return Py::Float(sphere->Area()); 
+    return Py::Float(sphere->Area());
 }
 
-Py::Float SpherePy::getVolume(void) const
+Py::Float SpherePy::getVolume() const
 {
     Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
-    return Py::Float(sphere->Volume()); 
+    return Py::Float(sphere->Volume());
 }
 
-Py::Object SpherePy::getCenter(void) const
+Py::Object SpherePy::getCenter() const
 {
     Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast
         (getGeomSpherePtr()->handle());
@@ -138,7 +133,7 @@ void SpherePy::setCenter(Py::Object arg)
     }
 }
 
-Py::Object SpherePy::getAxis(void) const
+Py::Object SpherePy::getAxis() const
 {
     Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());
@@ -183,10 +178,10 @@ void SpherePy::setAxis(Py::Object arg)
 
 PyObject *SpherePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SpherePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

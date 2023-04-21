@@ -24,6 +24,10 @@
 #define RANGE_H
 
 #include <string>
+#include <Base/Bitmask.h>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace App {
 
@@ -32,20 +36,28 @@ struct CellAddress;
 AppExport CellAddress stringToAddress(const char *strAddress, bool silent=false);
 AppExport int decodeColumn(const std::string &colstr, bool silent=false);
 AppExport int decodeRow(const std::string &rowstr, bool silent=false);
-AppExport int validColumn(const std::string &colstr);
+AppExport bool validColumn(const std::string &colstr);
 AppExport int validRow(const std::string &rowstr);
 
 struct AppExport CellAddress {
+    // See call of ENABLE_BITMASK_OPERATORS
+    enum class Cell {
+        Absolute = 1,
+        ShowRow = 2,
+        ShowColumn = 4,
+        ShowRowColumn = ShowRow | ShowColumn,
+        ShowFull = Absolute | ShowRow | ShowColumn
+    };
 
-    CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false) 
-        : _row(row), _col(col), _absRow(absRow), _absCol(absCol) 
+    explicit CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false)
+        : _row(row), _col(col), _absRow(absRow), _absCol(absCol)
     { }
 
-    CellAddress(const char * address) {
+    explicit CellAddress(const char * address) {
         *this = stringToAddress(address);
     }
 
-    CellAddress(const std::string & address) {
+    explicit CellAddress(const std::string & address) {
         *this = stringToAddress(address.c_str());
     }
 
@@ -55,11 +67,13 @@ struct AppExport CellAddress {
 
     inline int col() const { return _col; }
 
-    void setRow(int r) { _row = r; }
+    void setRow(int r, bool clip=false) { _row = (clip && r>=MAX_ROWS) ? MAX_ROWS-1 : r; }
 
-    void setCol(int c) { _col = c; }
+    void setCol(int c, bool clip=false) { _col = (clip && c>=MAX_COLUMNS) ? MAX_COLUMNS-1 : c; }
 
     inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
+
+    inline bool operator>(const CellAddress & other) const { return asInt() > other.asInt(); }
 
     inline bool operator==(const CellAddress & other) const { return asInt() == other.asInt(); }
 
@@ -71,7 +85,7 @@ struct AppExport CellAddress {
 
     inline bool isAbsoluteCol() const { return _absCol; }
 
-    std::string toString(bool noAbsolute=false) const;
+    std::string toString(Cell = Cell::ShowFull) const;
 
     // Static members
 
@@ -103,19 +117,28 @@ protected:
 
 class AppExport Range {
 public:
-    Range(const char *range);
+    explicit Range(const char *range, bool normalize=false);
 
-    Range(int _row_begin, int _col_begin, int _row_end, int _col_end);
+    Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool normalize=false);
 
-    Range(const CellAddress & from, const CellAddress & to);
+    Range(const CellAddress & from, const CellAddress & to, bool normalize=false);
 
     bool next();
+
+    /** Make sure the range starts from top left and ends with bottom right corner **/
+    void normalize();
 
     /** Current row */
     inline int row() const { return row_curr; }
 
     /** Current column */
     inline int column() const { return col_curr; }
+
+    /** Row count */
+    inline int rowCount() const { return row_end - row_begin + 1; }
+
+    /** Column count */
+    inline int colCount() const { return col_end - col_begin + 1; }
 
     /** Position of start of range */
     inline CellAddress from() const { return CellAddress(row_begin, col_begin); }
@@ -139,6 +162,14 @@ public:
 
     CellAddress operator*() const { return CellAddress(row_curr, col_curr); }
 
+    inline bool operator<(const Range & other) const {
+        if(from() < other.from())
+            return true;
+        if(from() > other.from())
+            return false;
+        return to() < other.to();
+    }
+
     /** Number of elements in range */
     inline int size() const { return (row_end - row_begin + 1) * (col_end - col_begin + 1); }
 
@@ -149,5 +180,7 @@ private:
 };
 
 }
+
+ENABLE_BITMASK_OPERATORS(App::CellAddress::Cell)
 
 #endif // RANGE_H

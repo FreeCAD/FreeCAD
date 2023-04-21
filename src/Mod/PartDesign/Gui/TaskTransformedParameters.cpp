@@ -23,38 +23,27 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QListWidget>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
-#include <Gui/Application.h>
+#include <Base/Console.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
-
-#include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
-
-#include "ReferenceSelection.h"
-#include "TaskMultiTransformParameters.h"
-#include "Utils.h"
+#include <Mod/PartDesign/App/FeatureTransformed.h>
 
 #include "TaskTransformedParameters.h"
+#include "TaskMultiTransformParameters.h"
+#include "ReferenceSelection.h"
+
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -65,7 +54,7 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()), true, parent)
+              TransformedView->menuName, true, parent)
     , proxy(nullptr)
     , TransformedView(TransformedView)
     , parentTask(nullptr)
@@ -170,6 +159,9 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
 
 void TaskTransformedParameters::setupTransaction()
 {
+    if (!isEnabledTransaction())
+        return;
+
     auto obj = getObject();
     if (!obj)
         return;
@@ -183,6 +175,16 @@ void TaskTransformedParameters::setupTransaction()
     std::string n("Edit ");
     n += obj->Label.getValue();
     transactionID = App::GetApplication().setActiveTransaction(n.c_str());
+}
+
+void TaskTransformedParameters::setEnabledTransaction(bool on)
+{
+    enableTransaction = on;
+}
+
+bool TaskTransformedParameters::isEnabledTransaction() const
+{
+    return enableTransaction;
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
@@ -201,7 +203,8 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
 void TaskTransformedParameters::checkVisibility() {
     auto feat = getObject();
     auto body = feat->getFeatureBody();
-    if(!body) return;
+    if(!body)
+        return;
     auto inset = feat->getInListEx(true);
     inset.emplace(feat);
     for(auto o : body->Group.getValues()) {
@@ -230,7 +233,7 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, co
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }
@@ -271,7 +274,7 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
     }
 
     //add "Select reference"
-    combolinks.addLink(0,std::string(),tr("Select reference..."));
+    combolinks.addLink(nullptr,std::string(),tr("Select reference..."));
 }
 
 void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
@@ -307,7 +310,7 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
     }
 
     //add "Select reference"
-    combolinks.addLink(0,std::string(),tr("Select reference..."));
+    combolinks.addLink(nullptr,std::string(),tr("Select reference..."));
 }
 
 void TaskTransformedParameters::recomputeFeature() {
@@ -322,13 +325,15 @@ PartDesignGui::ViewProviderTransformed *TaskTransformedParameters::getTopTransfo
     } else {
         rv = TransformedView;
     }
-    assert (rv);
-
     return rv;
 }
 
 PartDesign::Transformed *TaskTransformedParameters::getTopTransformedObject() const {
-    App::DocumentObject *transform = getTopTransformedView()->getObject();
+    ViewProviderTransformed* vp = getTopTransformedView();
+    if (!vp)
+        return nullptr;
+
+    App::DocumentObject *transform = vp->getObject();
     assert (transform->isDerivedFrom(PartDesign::Transformed::getClassTypeId()));
     return static_cast<PartDesign::Transformed*>(transform);
 }
@@ -344,6 +349,9 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const {
 
 App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
     PartDesign::Feature* feature = getTopTransformedObject ();
+    if (!feature)
+        return nullptr;
+
     // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
     App::DocumentObject *base = feature->getBaseObject(true);
     if(!base) {
@@ -355,7 +363,8 @@ App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
 }
 
 App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
-    return getTopTransformedObject()->getSketchObject();
+    PartDesign::Transformed* feature = getTopTransformedObject();
+    return feature ? feature->getSketchObject() : nullptr;
 }
 
 void TaskTransformedParameters::hideObject()
@@ -410,10 +419,9 @@ void TaskTransformedParameters::exitSelectionMode()
     }
 }
 
-void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole, bool circle)
+void TaskTransformedParameters::addReferenceSelectionGate(AllowSelectionFlags allow)
 {
-    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(
-            new ReferenceSelection(getBaseObject(), edge, face, planar, false, whole, circle));
+    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), allow));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
@@ -446,7 +454,7 @@ void TaskTransformedParameters::indexesMoved()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView_)
-    : TaskDlgFeatureParameters(TransformedView_), parameter(0)
+    : TaskDlgFeatureParameters(TransformedView_), parameter(nullptr)
 {
     assert(vp);
     message = new TaskTransformedMessages(getTransformedView());
@@ -476,7 +484,7 @@ bool TaskDlgTransformedParameters::reject()
 
 
 ComboLinks::ComboLinks(QComboBox &combo)
-    : doc(0)
+    : doc(nullptr)
 {
     this->_combo = &combo;
     _combo->clear();
@@ -490,7 +498,7 @@ int ComboLinks::addLink(const App::PropertyLinkSub &lnk, QString itemText)
     this->linksInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
     newitem.Paste(lnk);
-    if (newitem.getValue() && this->doc == 0)
+    if (newitem.getValue() && !this->doc)
         this->doc = newitem.getValue()->getDocument();
     return linksInList.size()-1;
 }
@@ -503,7 +511,7 @@ int ComboLinks::addLink(App::DocumentObject *linkObj, std::string linkSubname, Q
     this->linksInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
     newitem.setValue(linkObj,std::vector<std::string>(1,linkSubname));
-    if (newitem.getValue() && this->doc == 0)
+    if (newitem.getValue() && !this->doc)
         this->doc = newitem.getValue()->getDocument();
     return linksInList.size()-1;
 }
@@ -519,7 +527,7 @@ void ComboLinks::clear()
 
 App::PropertyLinkSub &ComboLinks::getLink(int index) const
 {
-    if (index < 0 || index > (ssize_t) linksInList.size()-1)
+    if (index < 0 || index > static_cast<int>(linksInList.size())-1)
         throw Base::IndexError("ComboLinks::getLink:Index out of range");
     if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue())))
         throw Base::ValueError("Linked object is not in the document; it may have been deleted");

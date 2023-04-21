@@ -20,29 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <fstream>
+# include <iostream>
+# include <iterator>
 # include <sstream>
+
+# include <boost/regex.hpp>
 #endif
 
-
-#include <Base/Exception.h>
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <boost/regex.hpp>
-#include <iostream>
-#include <iterator>
 
 #include "FeaturePage.h"
-#include "FeatureView.h"
 #include "FeatureClip.h"
+#include "FeatureView.h"
+
 
 using namespace Drawing;
 using namespace std;
-
 
 //===========================================================================
 // FeaturePage
@@ -54,7 +52,7 @@ FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";
 
-    ADD_PROPERTY_TYPE(PageResult, (0), group, App::Prop_Output, "Resulting SVG document of that page");
+    ADD_PROPERTY_TYPE(PageResult, (nullptr), group, App::Prop_Output, "Resulting SVG document of that page");
     ADD_PROPERTY_TYPE(Template, (""), group, App::Prop_None, "Template for the page");
     ADD_PROPERTY_TYPE(EditableTexts, (""), group, App::Prop_None, "Substitution values for the editable strings in the template");
 }

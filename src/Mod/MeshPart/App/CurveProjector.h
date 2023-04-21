@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _CurveProjector_h_
 #define _CurveProjector_h_
 
 #ifdef FC_USE_GTS
-#  include <gts.h>
+# include <gts.h>
 #endif
 
-#include <gp_Pln.hxx>
 #include <TopoDS_Edge.hxx>
 
-#include <Base/Vector3D.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/MeshPart/MeshPartGlobal.h>
+
 
 namespace MeshCore
 {
@@ -57,21 +56,21 @@ public:
 
   struct FaceSplitEdge
   {
-    unsigned long ulFaceIndex;
+    MeshCore::FacetIndex ulFaceIndex;
     Base::Vector3f p1,p2;
   };
 
   template<class T>
     struct TopoDSLess {
-    bool operator()(const T& x, const T& y) const { 
+    bool operator()(const T& x, const T& y) const {
       return x.HashCode(INT_MAX-1) < y.HashCode(INT_MAX-1);
     }
   };
 
-  typedef std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> > result_type;
+  using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> >;
 
 
-  result_type &result(void) {return  mvEdgeSplitPoints;}
+  result_type &result() {return  mvEdgeSplitPoints;}
 
   void writeIntersectionPointsToFile(const char *name="export_pts.asc");
 
@@ -90,17 +89,17 @@ class MeshPartExport CurveProjectorShape: public CurveProjector
 {
 public:
   CurveProjectorShape(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  virtual ~CurveProjectorShape() {}
+  ~CurveProjectorShape() override {}
 
   void projectCurve(const TopoDS_Edge& aEdge,
                     std::vector<FaceSplitEdge> &vSplitEdges);
 
-  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex);
+  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex);
 
 
 
 protected:
-  virtual void Do();
+  void Do() override;
 };
 
 
@@ -111,7 +110,7 @@ class MeshPartExport CurveProjectorSimple: public CurveProjector
 {
 public:
   CurveProjectorSimple(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  virtual ~CurveProjectorSimple() {}
+  ~CurveProjectorSimple() override {}
 
   /// helper to discredicice a Edge...
   void GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints = 30);
@@ -121,12 +120,12 @@ public:
                     const std::vector<Base::Vector3f> &rclPoints,
                     std::vector<FaceSplitEdge> &vSplitEdges);
 
-  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex);
+  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex);
 
 
 
 protected:
-  virtual void Do();
+  void Do() override;
 };
 
 /** Project by projecting a sampled curve to the mesh
@@ -140,7 +139,7 @@ public:
   };
 
   CurveProjectorWithToolMesh(const TopoDS_Shape &aShape, const MeshKernel &pMesh,MeshKernel &rToolMesh);
-  virtual ~CurveProjectorWithToolMesh() {}
+  ~CurveProjectorWithToolMesh() override {}
 
 
   void makeToolMesh(const TopoDS_Edge& aEdge,std::vector<MeshGeomFacet> &cVAry );
@@ -149,7 +148,7 @@ public:
   MeshKernel &ToolMesh;
 
 protected:
-  virtual void Do();
+  void Do() override;
 };
 
 /**
@@ -162,7 +161,7 @@ public:
     /// Helper class
     struct SplitEdge
     {
-        unsigned long uE0, uE1; /**< start and endpoint of an edge */
+        MeshCore::PointIndex uE0, uE1; /**< start and endpoint of an edge */
         Base::Vector3f cPt; /**< Point on edge (\a uE0, \a uE1) */
     };
     struct Edge
@@ -176,7 +175,7 @@ public:
     };
 
     /// Construction
-    MeshProjection(const MeshKernel& rMesh);
+    explicit MeshProjection(const MeshKernel& rMesh);
     /// Destruction
     ~MeshProjection();
 

@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/BitmapFactory.h>
 #include <Mod/Path/App/FeaturePathShape.h>
+
 #include "ViewProviderPathShape.h"
+
 
 using namespace Gui;
 using namespace PathGui;
@@ -42,7 +39,7 @@ QIcon ViewProviderPathShape::getIcon() const
     return Gui::BitmapFactory().pixmap("Path_Shape");
 }
 
-std::vector<App::DocumentObject*> ViewProviderPathShape::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderPathShape::claimChildren() const
 {
     return std::vector<App::DocumentObject*>(
             static_cast<Path::FeatureShape*>(getObject())->Sources.getValues());

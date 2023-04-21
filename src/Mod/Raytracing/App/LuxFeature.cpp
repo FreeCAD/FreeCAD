@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <ShapeAnalysis_ShapeContents.hxx>
 # include <Standard.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "LuxFeature.h"
 #include "LuxTools.h"
-
-#include <ShapeAnalysis_ShapeContents.hxx>
 
 
 using namespace Raytracing;
@@ -48,7 +44,7 @@ PROPERTY_SOURCE(Raytracing::LuxFeature, Raytracing::RaySegment)
 
 LuxFeature::LuxFeature(void)
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
     ADD_PROPERTY(Transparency,(0));
 }

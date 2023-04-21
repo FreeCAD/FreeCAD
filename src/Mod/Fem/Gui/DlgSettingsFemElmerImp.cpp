@@ -22,21 +22,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QThread>
+# include <QMessageBox>
+#endif
 
 #include "DlgSettingsFemElmerImp.h"
 #include "ui_DlgSettingsFemElmer.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemElmerImp::DlgSettingsFemElmerImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemElmerImp)
+DlgSettingsFemElmerImp::DlgSettingsFemElmerImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemElmerImp)
 {
     ui->setupUi(this);
+
+    // determine number of CPU cores
+    processor_count = QThread::idealThreadCount();
+    ui->sb_elmer_num_cores->setMaximum(processor_count);
+
+    connect(ui->fc_grid_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemElmerImp::onfileNameChanged);
+    connect(ui->fc_elmer_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+        this, &DlgSettingsFemElmerImp::onfileNameChanged);
+    connect(ui->fc_elmer_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemElmerImp::onfileNameChangedMT);
+    connect(ui->sb_elmer_num_cores, qOverload<int>(&Gui::PrefSpinBox::valueChanged),
+            this, &DlgSettingsFemElmerImp::onCoresValueChanged);
 }
 
 DlgSettingsFemElmerImp::~DlgSettingsFemElmerImp()
@@ -51,6 +66,9 @@ void DlgSettingsFemElmerImp::saveSettings()
 
     ui->cb_grid_binary_std->onSave();
     ui->fc_grid_binary_path->onSave();
+
+    ui->sb_elmer_num_cores->onSave();
+    ui->cb_elmer_filtering->onSave();
 }
 
 void DlgSettingsFemElmerImp::loadSettings()
@@ -60,18 +78,68 @@ void DlgSettingsFemElmerImp::loadSettings()
 
     ui->cb_grid_binary_std->onRestore();
     ui->fc_grid_binary_path->onRestore();
+
+    ui->sb_elmer_num_cores->onRestore();
+    ui->cb_elmer_filtering->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemElmerImp::changeEvent(QEvent *e)
+void DlgSettingsFemElmerImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemElmerImp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this, tr("File does not exist"),
+                              tr("The specified executable \n'%1'\n does not exist!\n"
+                                 "Specify another file please.").arg(FileName));
+    }
+}
+
+void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
+{
+    ui->sb_elmer_num_cores->setMaximum(processor_count);
+
+    if (ui->sb_elmer_num_cores->value() == 1)
+        return;
+
+#if defined(FC_OS_WIN32)
+    // name ends with "_mpi.exe"
+    if (!FileName.endsWith(QLatin1String("_mpi.exe"))) {
+        QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
+            tr("Wrong Elmer setting: You use more than one CPU core.\n"
+                "Therefore an executable with the suffix '_mpi.exe' is required."));
+        ui->sb_elmer_num_cores->setValue(1);
+        ui->sb_elmer_num_cores->setMaximum(1);
+        return;
+    }
+#elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+    // name ends with "_mpi"
+    if (!FileName.endsWith(QLatin1String("_mpi"))) {
+        QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
+            tr("Wrong Elmer setting: You use more than one CPU core.\n"
+                "Therefore an executable with the suffix '_mpi' is required."));
+        ui->sb_elmer_num_cores->setValue(1);
+        ui->sb_elmer_num_cores->setMaximum(1);
+        return;
+    }
+#endif
+}
+
+void DlgSettingsFemElmerImp::onCoresValueChanged(int cores)
+{
+    if (cores > 1) {
+        // check if the right executable is loaded
+        onfileNameChangedMT(ui->fc_elmer_binary_path->fileName());
     }
 }
 

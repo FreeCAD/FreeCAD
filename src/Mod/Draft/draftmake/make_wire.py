@@ -38,64 +38,74 @@ if App.GuiUp:
 
 
 def make_wire(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):
-    """makeWire(pointslist,[closed],[placement])
-    
+    """make_wire(pointslist, [closed], [placement])
+
     Creates a Wire object from the given list of vectors.  If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.
 
     Parameters
     ----------
-    pointlist : [Base.Vector]
+    pointslist : [Base.Vector]
         List of points to create the polyline
 
     closed : bool
-        If closed is True or first and last points are identical, 
+        If closed is True or first and last points are identical,
         the created polyline will be closed.
 
     placement : Base.Placement
         If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.   
 
-    support : 
+    face : Bool
+        If face is False, the rectangle is shown as a wireframe,
+        otherwise as a face.
+
+    support :
         TODO: Describe
-    
+
     bs2wire : bool
         TODO: Describe
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
-        return
+        return None
 
     import Part
 
-    if not isinstance(pointslist, list):
-        e = pointslist.Wires[0].Edges
-        pointslist = Part.Wire(Part.__sortEdges__(e))
-        nlist = []
-        for v in pointslist.Vertexes:
-            nlist.append(v.Point)
-        if DraftGeomUtils.isReallyClosed(pointslist):
-            closed = True
-        pointslist = nlist
+    if isinstance(pointslist, (list,tuple)):
+        for pnt in pointslist:
+            if not isinstance(pnt, App.Vector):
+                App.Console.PrintError(
+                    "Items must be Base.Vector objects, not {}\n".format(
+                    type(pnt)))
+                return None
+
+    elif isinstance(pointslist, Part.Wire):
+        for edge in pointslist.Edges:
+            if not DraftGeomUtils.is_straight_line(edge):
+                App.Console.PrintError("All edges must be straight lines\n")
+                return None
+        closed = pointslist.isClosed()
+        pointslist = [v.Point for v in pointslist.OrderedVertexes]
+
+    else:
+        App.Console.PrintError("Can't make Draft Wire from {}\n".format(
+            type(pointslist)))
+        return None
+
 
     if len(pointslist) == 0:
-        print("Invalid input points: ", pointslist)
-    #print(pointslist)
-    #print(closed)
-    
+        App.Console.PrintWarning("Draft Wire created with empty point list\n")
+
     if placement:
         utils.type_check([(placement, App.Placement)], "make_wire")
         ipl = placement.inverse()
         if not bs2wire:
             pointslist = [ipl.multVec(p) for p in pointslist]
 
-    if len(pointslist) == 2: 
+    if len(pointslist) == 2:
         fname = "Line"
-    else: 
+    else:
         fname = "Wire"
 
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", fname)
@@ -103,11 +113,11 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
-    
-    if face != None:
+
+    if face is not None:
         obj.MakeFace = face
 
-    if placement: 
+    if placement:
         obj.Placement = placement
 
     if App.GuiUp:

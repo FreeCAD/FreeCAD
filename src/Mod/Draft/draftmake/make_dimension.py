@@ -195,7 +195,7 @@ def make_linear_dimension(p1, p2, dim_line=None):
         positioned from the measured segment that goes from `p1` to `p2`.
 
         If it is `None`, this point will be calculated from the intermediate
-        distance betwwen `p1` and `p2`.
+        distance between `p1` and `p2`.
 
     Returns
     -------
@@ -288,7 +288,7 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
         positioned from the measured segment in `edge_object`.
 
         If it is `None`, this point will be calculated from the intermediate
-        distance betwwen the vertices defined by `i1` and `i2`.
+        distance between the vertices defined by `i1` and `i2`.
 
     Returns
     -------
@@ -509,7 +509,7 @@ def make_radial_dimension_obj(edge_object, index=1, mode="radius",
 
 
 def make_angular_dimension(center=App.Vector(0, 0, 0),
-                           angles=[0, 90],
+                           angles=None, # If None, set to [0,90]
                            dim_line=App.Vector(10, 10, 0), normal=None):
     """Create an angular dimension from the given center and angles.
 
@@ -554,6 +554,10 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
     """
     _name = "make_angular_dimension"
     utils.print_header(_name, "Angular dimension")
+
+    # Prevent later modification of a default parameter by using a placeholder
+    if angles is None:
+        angles = [0, 90]
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:

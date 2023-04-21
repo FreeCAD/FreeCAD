@@ -12,6 +12,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <vector>
+
 # include <QCoreApplication>
 # include <QDir>
 # include <QFile>
@@ -20,28 +22,24 @@
 # include <QRegExp>
 #endif
 
-#include <vector>
-
-#include <Base/Tools.h>
+#include <App/Document.h>
 #include <App/PropertyGeo.h>
-
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
-
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-
-#include "DrawingView.h"
 #include "TaskDialog.h"
 #include "TaskOrthoViews.h"
+
 
 using namespace DrawingGui;
 using namespace std;
@@ -100,7 +98,7 @@ CmdDrawingNewPage::CmdDrawingNewPage()
 void CmdDrawingNewPage::activated(int iMsg)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QAction* a = pcAction->actions()[iMsg];
+    QAction* a = qAsConst(pcAction)->actions()[iMsg];
 
     std::string FeatName = getUniqueObjectName("Page");
 
@@ -127,7 +125,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* defaultAction = 0;
+    QAction* defaultAction = nullptr;
     int defaultId = 0;
 
     QString lastPaper;
@@ -163,7 +161,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
             lastPaper = paper;
             lastId = id;
 
-            QFile file(QString::fromLatin1(":/icons/actions/drawing-%1-%2%3.svg").arg(orientation.toLower()).arg(paper).arg(id));
+            QFile file(QString::fromLatin1(":/icons/actions/drawing-%1-%2%3.svg").arg(orientation.toLower(), paper).arg(id));
             QAction* a = pcAction->addAction(QString());
             if (file.open(QFile::ReadOnly)) {
                 QByteArray data = file.readAll();
@@ -194,7 +192,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
         pcAction->setProperty("defaultAction", QVariant(defaultId));
     }
     else if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 
@@ -224,28 +222,28 @@ void CmdDrawingNewPage::languageChange()
         if (info.isEmpty()) {
             (*it)->setText(QCoreApplication::translate(
                 "Drawing_NewPage", "%1%2 %3")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation));
+                .arg(paper,
+                     QString::number(id),
+                     orientation));
             (*it)->setToolTip(QCoreApplication::translate(
                 "Drawing_NewPage", "Insert new %1%2 %3 drawing")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation));
+                .arg(paper,
+                     QString::number(id),
+                     orientation));
         }
         else {
             (*it)->setText(QCoreApplication::translate(
                 "Drawing_NewPage", "%1%2 %3 (%4)")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation)
-                .arg(info));
+                .arg(paper,
+                     QString::number(id),
+                     orientation,
+                     info));
             (*it)->setToolTip(QCoreApplication::translate(
                 "Drawing_NewPage", "Insert new %1%2 %3 (%4) drawing")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation)
-                .arg(info));
+                .arg(paper,
+                     QString::number(id),
+                     orientation,
+                     info));
         }
     }
 }

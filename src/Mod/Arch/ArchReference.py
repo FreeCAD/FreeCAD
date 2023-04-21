@@ -28,15 +28,14 @@ import FreeCAD
 import os
 import zipfile
 import re
-import sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
-    def translate(ctxt,txt, utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -102,6 +101,8 @@ class ArchReference:
                     obj.ReferenceMode = "Transient"
                 obj.removeProperty("TransientReference")
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" TransientReference property to ReferenceMode\n")
+        if not "FuseArch" in pl:
+            obj.addProperty("App::PropertyBool","FuseArch", "Reference", QT_TRANSLATE_NOOP("App::Property","Fuse objects of same material"))
         self.Type = "Reference"
 
     def onDocumentRestored(self,obj):
@@ -158,17 +159,58 @@ class ArchReference:
                             f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
-                            import Part
-                            shape = Part.Shape()
-                            if sys.version_info.major >= 3:
-                                shapedata = shapedata.decode("utf8")
-                            shape.importBrepFromString(shapedata)
+                            shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
                             obj.Shape = shape
                             if not pl.isIdentity():
                                 obj.Placement = pl
                         else:
                             print("Part not found in file")
             self.reload = False
+
+    def cleanShape(self,shapedata,obj,materials):
+
+        "cleans the imported shape"
+
+        import Part
+        shape = Part.Shape()
+        shape.importBrepFromString(shapedata)
+        if obj.FuseArch and materials:
+            # separate lone edges
+            shapes = []
+            for edge in shape.Edges:
+                found = False
+                for solid in shape.Solids:
+                    for soledge in solid.Edges:
+                        if edge.hashCode() == soledge.hashCode():
+                            found = True
+                            break
+                    if found:
+                        break
+                if found:
+                    break
+            else:
+                shapes.append(edge)
+            print("solids:",len(shape.Solids),"mattable:",materials)
+            for key,solindexes in materials.items():
+                if key == "Undefined":
+                    # do not join objects with no defined material
+                    for solindex in [int(i) for i in solindexes.split(",")]:
+                        shapes.append(shape.Solids[solindex])
+                else:
+                    fusion = None
+                    for solindex in [int(i) for i in solindexes.split(",")]:
+                        if not fusion:
+                            fusion = shape.Solids[solindex]
+                        else:
+                            fusion = fusion.fuse(shape.Solids[solindex])
+                    if fusion:
+                        shapes.append(fusion)
+            shape = Part.makeCompound(shapes)
+            try:
+                shape = shape.removeSplitter()
+            except Exception:
+                print(obj.Label,": error removing splitter")
+        return shape
 
     def getFile(self,obj,filename=None):
 
@@ -206,6 +248,7 @@ class ArchReference:
         "returns a list of Part-based objects in a FCStd file"
 
         parts = {}
+        materials = {}
         filename = self.getFile(obj,filename)
         if not filename:
             return parts
@@ -214,10 +257,9 @@ class ArchReference:
             name = None
             label = None
             part = None
+            materials = {}
             writemode = False
             for line in docf:
-                if sys.version_info.major >= 3:
-                    line = line.decode("utf8")
                 if "<Object name=" in line:
                     n = re.findall('name=\"(.*?)\"',line)
                     if n:
@@ -236,11 +278,23 @@ class ArchReference:
                     if n:
                         part = n[0]
                         writemode = False
-                if name and label and part:
-                    parts[name] = [label,part]
+                elif "<Property name=\"MaterialsTable\" type=\"App::PropertyMap\"" in line:
+                    writemode = True
+                elif writemode and "<Item key=" in line:
+                    n = re.findall('key=\"(.*?)\"',line)
+                    v = re.findall('value=\"(.*?)\"',line)
+                    if n and v:
+                        materials[n[0]] = v[0]
+                elif writemode and "</Map>" in line:
+                    writemode = False
+                elif "</Object>" in line:
+                    if name and label and part:
+                        parts[name] = [label,part,materials]
                     name = None
                     label = None
                     part = None
+                    materials = {}
+                    writemode = False
         return parts
 
     def getColors(self,obj):
@@ -261,8 +315,6 @@ class ArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
-                if sys.version_info.major >= 3:
-                    line = line.decode("utf8")
                 if ("<ViewProvider name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
@@ -282,10 +334,7 @@ class ArchReference:
         buf = cf.read()
         cf.close()
         for i in range(1,int(len(buf)/4)):
-            if sys.version_info.major >= 3:
-                colors.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
-            else:
-                colors.append((ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0))
+            colors.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
         if colors:
             return colors
         return None
@@ -334,19 +383,6 @@ class ViewProviderArchReference:
         import Arch_rc
         return ":/icons/Arch_Reference.svg"
 
-    def setEdit(self,vobj,mode=0):
-
-        taskd = ArchReferenceTaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self,vobj,mode):
-
-        FreeCADGui.Control.closeDialog()
-        from DraftGui import todo
-        todo.delay(vobj.Proxy.recolorize,vobj)
-        return
-
     def attach(self,vobj):
 
         self.Object = vobj.Object
@@ -355,10 +391,6 @@ class ViewProviderArchReference:
         self.timer.timeout.connect(self.checkChanges)
         s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("ReferenceCheckInterval",60)
         self.timer.start(1000*s)
-
-    def doubleClicked(self,vobj):
-
-        self.setEdit(vobj)
 
     def __getstate__(self):
 
@@ -414,7 +446,7 @@ class ViewProviderArchReference:
                 if vobj.DiffuseColor and vobj.UpdateColors:
                     vobj.DiffuseColor = vobj.DiffuseColor
         elif prop == "Visibility":
-            if vobj.Visibility == True:
+            if vobj.Visibility:
                 if (not vobj.Object.Shape) or vobj.Object.Shape.isNull():
                     vobj.Object.Proxy.reload = True
                     vobj.Object.Proxy.execute(vobj.Object)
@@ -433,14 +465,50 @@ class ViewProviderArchReference:
             del self.timer
             return True
 
-    def setupContextMenu(self,vobj,menu):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/view-refresh.svg"),"Reload reference",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.onReload)
-        menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/document-open.svg"),"Open reference",menu)
-        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.onOpen)
-        menu.addAction(action2)
+        taskd = ArchReferenceTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        FreeCADGui.Control.closeDialog()
+        from DraftGui import todo
+        todo.delay(vobj.Proxy.recolorize,vobj)
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        actionOnReload = QtGui.QAction(QtGui.QIcon(":/icons/view-refresh.svg"),
+                                       translate("Arch", "Reload reference"),
+                                       menu)
+        QtCore.QObject.connect(actionOnReload,
+                               QtCore.SIGNAL("triggered()"),
+                               self.onReload)
+        menu.addAction(actionOnReload)
+
+        actionOnOpen = QtGui.QAction(QtGui.QIcon(":/icons/document-open.svg"),
+                                     translate("Arch", "Open reference"),
+                                     menu)
+        QtCore.QObject.connect(actionOnOpen,
+                               QtCore.SIGNAL("triggered()"),
+                               self.onOpen)
+        menu.addAction(actionOnOpen)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def onReload(self):
 
@@ -551,8 +619,6 @@ class ViewProviderArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
-                if sys.version_info.major >= 3:
-                    line = line.decode("utf8")
                 if ("<Object name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"SavedInventor\"" in line):
@@ -569,8 +635,6 @@ class ViewProviderArchReference:
             return None
         f = zdoc.open(ivfile)
         buf = f.read()
-        if sys.version_info.major >= 3:
-            buf = buf.decode("utf8")
         f.close()
         buf = buf.replace("lineWidth 2","lineWidth "+str(int(obj.ViewObject.LineWidth)))
         return buf

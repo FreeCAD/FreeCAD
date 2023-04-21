@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QDateTime>
-# if defined(FC_OS_LINUX)
+# if defined(FC_OS_LINUX) || defined(__MINGW32__)
 # include <sys/time.h>
 # endif
 #endif
@@ -50,19 +50,17 @@ TimeInfo::TimeInfo()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-TimeInfo::~TimeInfo()
-{
-}
+TimeInfo::~TimeInfo() = default;
 
 
 //**************************************************************************
 // separator for other implementation aspects
 
-void TimeInfo::setCurrent(void)
+void TimeInfo::setCurrent()
 {
-#if defined (FC_OS_BSD) || defined(FC_OS_LINUX)
+#if defined (FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
     struct timeval t;
-    gettimeofday(&t, NULL);
+    gettimeofday(&t, nullptr);
     timebuffer.time = t.tv_sec;
     timebuffer.millitm = t.tv_usec / 1000;
 #elif defined(FC_OS_WIN32)
@@ -72,7 +70,7 @@ void TimeInfo::setCurrent(void)
 #endif
 }
 
-void TimeInfo::setTime_t (uint64_t seconds)
+void TimeInfo::setTime_t (int64_t seconds)
 {
     timebuffer.time = seconds;
 }
@@ -95,14 +93,13 @@ float TimeInfo::diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd )
     int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
     int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
 
-    return float(ds) + float(dms) * 0.001;
+    return float(ds) + float(dms) * 0.001f;
 }
 
 TimeInfo TimeInfo::null()
 {
     TimeInfo ti;
-    ti.timebuffer.time = 0;
-    ti.timebuffer.millitm = 0;
+    ti.timebuffer = {};
     return ti;
 }
 
