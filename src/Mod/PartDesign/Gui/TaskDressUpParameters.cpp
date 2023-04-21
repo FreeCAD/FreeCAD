@@ -81,13 +81,13 @@ TaskDressUpParameters::~TaskDressUpParameters()
 
 const QString TaskDressUpParameters::btnPreviewStr()
 {
-    static const QString text{ tr("Preview") };
+    const QString text{ tr("Preview") };
     return text;
 }
 
 const QString TaskDressUpParameters::btnSelectStr()
 {
-    static const QString text{ tr("Select") };
+    const QString text{ tr("Select") };
     return text;
 }
 
