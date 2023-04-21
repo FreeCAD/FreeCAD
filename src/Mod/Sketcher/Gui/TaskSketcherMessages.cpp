@@ -105,6 +105,25 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
     ui->labelConstrainStatus->setText(msg);
     ui->labelConstrainStatusLink->setUrl(link);
     ui->labelConstrainStatusLink->setText(linkText);
+    updateToolTip(link);
+}
+
+void TaskSketcherMessages::updateToolTip(const QString& link)
+{
+    if( link == QString::fromLatin1("#conflicting"))
+        ui->labelConstrainStatusLink->setToolTip(tr("Click to select the conflicting constraints."));
+    else
+    if( link == QString::fromLatin1("#redundant"))
+        ui->labelConstrainStatusLink->setToolTip(tr("Click to select the redundant constraints."));
+    else
+    if( link == QString::fromLatin1("#dofs"))
+        ui->labelConstrainStatusLink->setToolTip(tr("The sketch has unconstrained elements giving raise to those Degrees Of Freedom. Click to select the unconstrained elements."));
+    else
+    if( link == QString::fromLatin1("#malformed"))
+        ui->labelConstrainStatusLink->setToolTip(tr("Click to select the malformed constraints."));
+    else
+    if( link == QString::fromLatin1("#partiallyredundant"))
+        ui->labelConstrainStatusLink->setToolTip(tr("Some constraints in combination are partially redundant. Click to select the partially redundant constraints."));
 }
 
 void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString &str)

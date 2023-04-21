@@ -54,6 +54,8 @@ private:
     void onLabelConstrainStatusLinkClicked(const QString &);
     void onAutoUpdateStateChanged();
     void onManualUpdateClicked(bool checked);
+
+    void updateToolTip(const QString& link);
     
 protected:
     ViewProviderSketch *sketchView;
