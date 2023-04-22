@@ -55,12 +55,14 @@ bool GeometryMatcher::compareGeometry(Part::TopoShape shape1,  Part::TopoShape s
 {
 //    Base::Console().Message("GM::compareGeometry()\n");
     if (shape1.isNull() || shape2.isNull()) {
-        Base::Console().Message("GM::compareGeometry - one or more TopoShapes are null\n");
+//        Base::Console().Message("GM::compareGeometry - one or more TopoShapes are null\n");
+        return false;
     }
     TopoDS_Shape geom1 = shape1.getShape();
     TopoDS_Shape geom2 = shape2.getShape();
     if (geom1.IsNull() || geom2.IsNull()) {
-        Base::Console().Message("GM::compareGeometry - one or more TopoDS_Shapes are null\n");
+//        Base::Console().Message("GM::compareGeometry - one or more TopoDS_Shapes are null\n");
+        return false;
     }
 
     if (geom1.ShapeType() == TopAbs_VERTEX) {
@@ -102,7 +104,8 @@ bool GeometryMatcher::compareEdges(TopoDS_Shape &shape1,  TopoDS_Shape &shape2)
     TopoDS_Edge edge1 = TopoDS::Edge(shape1);
     TopoDS_Edge edge2 = TopoDS::Edge(shape2);
    if (edge1.IsNull() || edge2.IsNull()) {
-        Base::Console().Message("GM::compareEdges - an input edge is null\n");
+//        Base::Console().Message("GM::compareEdges - an input edge is null\n");
+        return false;
     }
 
     BRepAdaptor_Curve adapt1(edge1);
@@ -144,6 +147,7 @@ bool GeometryMatcher::compareLines(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
 {
 //    Base::Console().Message("GM::compareLines()\n");
     // how does the edge that was NOT null in compareEdges become null here?
+    // should not happen, but does!
     if (edge1.IsNull() || edge2.IsNull()) {
 //        Base::Console().Message("GM::compareLine - an input edge is null\n");
         return false;
@@ -212,14 +216,21 @@ bool GeometryMatcher::compareEllipses(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
     return false;
  }
 
-// for our purposes, only circles masquerading as bsplines are of interest
+// for our purposes, only lines or circles masquerading as bsplines are of interest
 bool GeometryMatcher::compareBSplines(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
 {
+//    Base::Console().Message("GM::compareBSplines()\n");
     // how does the edge that was NOT null in compareEdges become null here?
     if (edge1.IsNull() || edge2.IsNull()) {
-//        Base::Console().Message("GM::compareBSplines - an input edge is null\n");
+        Base::Console().Message("GM::compareBSplines - an input edge is null\n");
         return false;
     }
+
+    if (GeometryUtils::isLine(edge1) && GeometryUtils::isLine(edge2)) {
+        return compareEndPoints(edge1, edge2);
+    }
+
+    // deal with bsplines as circles
     BRepAdaptor_Curve adapt1(edge1);
     BRepAdaptor_Curve adapt2(edge2);
     bool isArc1(false);
@@ -261,6 +272,7 @@ bool GeometryMatcher::compareEllipseArcs(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
 // not sure how successful this would be.  For now, we just say it doesn't match
 bool GeometryMatcher::compareDifferent(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
 {
+    Base::Console().Message("GM::compareDifferent()\n");
     BRepAdaptor_Curve adapt1(edge1);
     BRepAdaptor_Curve adapt2(edge2);
     return false;
