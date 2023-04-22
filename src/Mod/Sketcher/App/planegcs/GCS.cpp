@@ -631,15 +631,15 @@ int System::addConstraint(Constraint *constr)
 
 void System::removeConstraint(Constraint *constr)
 {
-    auto it = clist.begin();
-    for(; it != clist.end(); ++it)
+    auto it = clist.cbegin();
+    for(; it != clist.cend(); ++it)
     {
         if(it->get() == constr)
         {
             break;
         }
     }
-    if (it == clist.end())
+    if (it == clist.cend())
     {
         // TODO: someone is removing a nonexistent constraint.
         // Shouldn't we at least emit a warning?
@@ -4635,7 +4635,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
 
     int jacobianconstraintcount=0;
     int allcount=0;
-    for (auto constr=clist.begin(); constr != clist.end(); ++constr) {
+    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
         (*constr)->revertParams();
         ++allcount;
         if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
@@ -5381,7 +5381,7 @@ void System::identifyConflictingRedundantConstraints(
 
     std::vector<Constraint *> clistTmp;
     clistTmp.reserve(clist.size());
-    for (auto constr=clist.begin(); constr != clist.end(); ++constr) {
+    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
         if ((*constr)->isDriving() && skipped.count(constr->get()) == 0)
             clistTmp.push_back(constr->get());
     }
@@ -5472,7 +5472,7 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     // remove tags represented at least in one non-redundant constraint
-    for (auto constr=clist.begin(); constr != clist.end(); ++constr)
+    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr)
         if (redundant.count(constr->get()) == 0)
             redundantTagsSet.erase((*constr)->getTag());
 
