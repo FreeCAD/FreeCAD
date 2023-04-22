@@ -224,6 +224,12 @@ namespace GCS
         /*System(std::vector<Constraint *> clist_);*/
         ~System();
 
+        // System is not copyable, because it has a vector of unique_ptr.
+        // MSVC doesn't understand that, so we have to explicitely state so.
+        // Unfortunately, this also automatically makes GCS::System nonmovable.
+        System(const System&) = delete;
+        System& operator= (const System&) = delete;
+
         void clear();
         void clearByTag(int tagId);
 

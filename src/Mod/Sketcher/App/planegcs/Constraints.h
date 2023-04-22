@@ -116,7 +116,7 @@ namespace GCS
 
     public:
         Constraint();
-        virtual ~Constraint(){}
+        virtual ~Constraint() = default;
 
         inline VEC_pD params() { return pvec; }
 
