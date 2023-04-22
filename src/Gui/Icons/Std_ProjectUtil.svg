@@ -38,7 +38,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:subject>
           <rdf:Bag />
         </dc:subject>

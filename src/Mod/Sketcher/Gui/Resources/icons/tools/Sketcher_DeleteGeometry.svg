@@ -74,7 +74,7 @@
         </dc:creator>
         <dc:title>Sketcher_Element_SelectionTypeInvalid</dc:title>
         <dc:date>2020-09-26</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

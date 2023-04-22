@@ -369,7 +369,7 @@ INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Re
 
 
 # Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc
-# see https://forum.freecadweb.org/viewtopic.php?f=10&t=25833
+# see https://forum.freecad.org/viewtopic.php?f=10&t=25833
 SET(FemGuiPythonUI_SRCS
     Resources/ui/BodyHeatSource.ui
     Resources/ui/ConstraintCentrif.ui
