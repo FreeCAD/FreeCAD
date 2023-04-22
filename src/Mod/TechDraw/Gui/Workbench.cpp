@@ -44,14 +44,17 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Add Vertices");
     qApp->translate("Workbench", "TechDraw");
     // Translations for View > Toolbars
-    qApp->translate("Workbench", "TechDraw Pages");
-    qApp->translate("Workbench", "TechDraw Views");
-    qApp->translate("Workbench", "TechDraw Clips");
-    qApp->translate("Workbench", "TechDraw Dimensions");
-    qApp->translate("Workbench", "TechDraw Tool Attributes");
-    qApp->translate("Workbench", "TechDraw File Access");
-    qApp->translate("Workbench", "TechDraw Decoration");
     qApp->translate("Workbench", "TechDraw Annotation");
+    qApp->translate("Workbench", "TechDraw Attributes");
+    qApp->translate("Workbench", "TechDraw Centerlines");
+    qApp->translate("Workbench", "TechDraw Clips");
+    qApp->translate("Workbench", "TechDraw Decoration");
+    qApp->translate("Workbench", "TechDraw Dimensions");
+    qApp->translate("Workbench", "TechDraw Extend Dimensions");
+    qApp->translate("Workbench", "TechDraw File Access");
+    qApp->translate("Workbench", "TechDraw Pages");
+    qApp->translate("Workbench", "TechDraw Tool Attributes");
+    qApp->translate("Workbench", "TechDraw Views");
     qApp->translate("Workbench", "Views");
     qApp->translate("Workbench", "Extensions: Centerlines/Threading");
 #endif
