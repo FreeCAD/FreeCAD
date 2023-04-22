@@ -1373,7 +1373,7 @@ FreeCADGui.addCommand(
     _SolverCxxtools()
 )
 FreeCADGui.addCommand(
-    "FEM_SolverCalculiX",
+    "FEM_SolverCalculix",
     _SolverCalculix()
 )
 FreeCADGui.addCommand(
