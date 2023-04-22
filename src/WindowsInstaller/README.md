@@ -29,7 +29,7 @@ Now you have 2 options:
 
 * Either you got an already compiled FreeCAD, then copy all FreeCAD files to the folder</br>
    *~\FreeCAD" e.g. "C:\FreeCAD\Installer\FreeCAD*
-* Or you compiled FreeCAD on your own as described [here](https://wiki.freecadweb.org/Compile_on_Windows). Then:
+* Or you compiled FreeCAD on your own as described [here](https://wiki.freecad.org/Compile_on_Windows). Then:
     * Open the file *Settings.nsh* as described in step 3. above and set there</br>
      `!define FILES_FREECAD` to the folder you specified as `CMAKE_INSTALL_PREFIX`
     * Copy into that folder the file *Delete.bat* that is part of the installer
