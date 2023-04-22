@@ -117,7 +117,7 @@ void TaskSketcherMessages::updateToolTip(const QString& link)
         ui->labelConstrainStatusLink->setToolTip(tr("Click to select the redundant constraints."));
     else
     if( link == QString::fromLatin1("#dofs"))
-        ui->labelConstrainStatusLink->setToolTip(tr("The sketch has unconstrained elements giving raise to those Degrees Of Freedom. Click to select the unconstrained elements."));
+        ui->labelConstrainStatusLink->setToolTip(tr("The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select the unconstrained elements."));
     else
     if( link == QString::fromLatin1("#malformed"))
         ui->labelConstrainStatusLink->setToolTip(tr("Click to select the malformed constraints."));
