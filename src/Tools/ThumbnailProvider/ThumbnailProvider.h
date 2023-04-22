@@ -23,8 +23,8 @@
 
 #pragma once
 
-//class CThumbnailProvider : public IThumbnailProvider, IObjectWithSite, IInitializeWithStream
-class CThumbnailProvider : public IThumbnailProvider, IObjectWithSite, IInitializeWithFile
+// class CThumbnailProvider : public IThumbnailProvider, IObjectWithSite, IInitializeWithStream
+class CThumbnailProvider: public IThumbnailProvider, IObjectWithSite, IInitializeWithFile
 {
 private:
     LONG m_cRef;
@@ -45,7 +45,7 @@ public:
     //  IInitializeWithSteam methods
     STDMETHOD(Initialize)(IStream*, DWORD);
     //  IInitializeWithFile methods
-    STDMETHOD(Initialize)(LPCWSTR , DWORD);
+    STDMETHOD(Initialize)(LPCWSTR, DWORD);
 
     //  IThumbnailProvider methods
     STDMETHOD(GetThumbnail)(UINT, HBITMAP*, WTS_ALPHATYPE*);

@@ -2,28 +2,28 @@
 # -*- coding: utf-8 -*-
 # (c) 2004 Werner Mayer LGPL
 
-import os,sys
+import os, sys
 
-#os.chdir("E:\\Develop\\FreeCADWin\\scripts")
+# os.chdir("E:\\Develop\\FreeCADWin\\scripts")
 
 
 try:
-    file = open(sys.argv[1],encoding="utf-8")
+    file = open(sys.argv[1], encoding="utf-8")
 except TypeError:
     file = open(sys.argv[1])
 
-if(len(sys.argv) > 4):
+if len(sys.argv) > 4:
     sys.stderr.write("Wrong Parameter\n  Usage:\n  PythonToCPP Infile.py [Outfile][Variable]\n")
 
-if(len(sys.argv) > 2):
+if len(sys.argv) > 2:
     try:
-        out = open(sys.argv[2],"w",encoding="utf-8");
+        out = open(sys.argv[2], "w", encoding="utf-8")
     except TypeError:
-        out = open(sys.argv[2],"w");
+        out = open(sys.argv[2], "w")
 else:
     out = sys.stdout
 
-if(len(sys.argv) > 3):
+if len(sys.argv) > 3:
     identifier = sys.argv[3]
 else:
     identifier = os.path.basename(sys.argv[1])
@@ -38,16 +38,12 @@ for line in lines:
     # remove new line
     line2 = line.rstrip()
     # replace special chars
-    line2 = line2.replace('\\','\\\\')
-    line2 = line2.replace('\"','\\\"')
-    line2 = line2.replace("\'","\\\'")
-
+    line2 = line2.replace("\\", "\\\\")
+    line2 = line2.replace('"', '\\"')
+    line2 = line2.replace("'", "\\'")
 
     # output
-    #out.write(line)
-    out.write( '\"' + line2 + '\\n\"\n')
+    # out.write(line)
+    out.write('"' + line2 + '\\n"\n')
 
-out.write(";\n\n\n");
-
-
-
+out.write(";\n\n\n")

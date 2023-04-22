@@ -5,7 +5,13 @@
 files: |
     (?x)^(
         src/Mod/AddonManager|
+        src/Tools|
         tests/src
+    )
+exclude: |
+    (?x)^(
+        .*vcproj.*|
+        .*vcxproj.*
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
@@ -16,11 +22,11 @@ repos:
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: mixed-line-ending
-        args: [--fix=lf]
 -   repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
         -   id: black
+            args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v15.0.7
     hooks:
