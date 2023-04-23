@@ -597,4 +597,9 @@ TEST_F(ByteArrayTest, moveAssignmentOperator)
     EXPECT_EQ(originalByteArrayLocation, newByteArray.bytes.constData());
 }
 
+TEST_F(ByteArrayTest, failingTestForTesting)
+{
+    FAIL() << "This is a failing gTest unit test";
+}
+
 // NOLINTEND(readability-magic-numbers)
