@@ -36,7 +36,7 @@ from TechDrawTools import TDToolsMovers
 
 import os
 
-translate = FreeCAD.Qt.translate
+translate = App.Qt.translate
 
 class TaskShareView:
     def __init__(self):
@@ -55,7 +55,7 @@ class TaskShareView:
         self.fromPageName = ""
         self.toPageName   = ""
 
-        self.dialogOpen = False;
+        self.dialogOpen = False
 
     def accept(self):
 #        print ("Accept")
@@ -76,7 +76,7 @@ class TaskShareView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        self.dialogOpen = True;
+        self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select View to share from list."))
         dlg.setWindowTitle(translate("TechDraw_ShareView", "Select View"))
 
@@ -99,7 +99,7 @@ class TaskShareView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        self.dialogOpen = True;
+        self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select From Page."))
         dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
 
@@ -123,7 +123,7 @@ class TaskShareView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        self.dialogOpen = True;
+        self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select To Page."))
         dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
 
