@@ -124,7 +124,7 @@
        <widget class="QCheckBox" name="DisplacementXFormulaCB">
         <property name="toolTip">
          <string>Formulas are only valid
-for the Emer solver</string>
+for the Elmer solver</string>
         </property>
         <property name="text">
          <string>Formula</string>
@@ -157,7 +157,7 @@ for the Emer solver</string>
        <widget class="QCheckBox" name="DisplacementYFormulaCB">
         <property name="toolTip">
          <string>Formulas are only valid
-for the Emer solver</string>
+for the Elmer solver</string>
         </property>
         <property name="text">
          <string>Formula</string>
@@ -204,7 +204,7 @@ for the Emer solver</string>
        <widget class="QCheckBox" name="DisplacementZFormulaCB">
         <property name="toolTip">
          <string>Formulas are only valid
-for the Emer solver</string>
+for the Elmer solver</string>
         </property>
         <property name="text">
          <string>Formula</string>

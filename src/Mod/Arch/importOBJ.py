@@ -54,9 +54,6 @@ p = Draft.precision()
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
-def decode(txt):
-    return txt
-
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
     for i in range(len(aList)):
@@ -253,7 +250,7 @@ def export(exportList,filename,colors=None):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + filename + "\n")
     if materials:
         outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
@@ -277,20 +274,8 @@ def export(exportList,filename,colors=None):
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + decode(filenamemtl) + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
 
-
-#def decode(name):
-#    "decodes encoded strings"
-#    try:
-#        decodedName = (name.decode("utf8"))
-#    except UnicodeDecodeError:
-#        try:
-#            decodedName = (name.decode("latin1"))
-#        except UnicodeDecodeError:
-#            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-#            decodedName = name
-#    return decodedName
 
 def open(filename):
     "called when freecad wants to open a file"
@@ -371,7 +356,7 @@ def insert(filename,docname):
             material = line[7:]
     if activeobject:
         makeMesh(doc,activeobject,verts,facets,material,colortable)
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + decode(filename) + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
     return doc
 
 def makeMesh(doc,activeobject,verts,facets,material,colortable):

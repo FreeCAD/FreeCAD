@@ -155,14 +155,34 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
 
         // go through the selected subelements
+        bool verticesonly = true;
+
+        for(const auto & subname : SubNames) {
+            if (subname.size() > 4 && subname.substr(0,4) == "Edge") {
+                verticesonly = false;
+            }
+        }
+
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+            // It was decided to provide a special behaviour:
+            // Vertices will only be toggled to/from construction IF ONLY
+            // vertices are within the group.
+            // If there are a mixture of edges and vertices, vertices will be ignored.
+            //
+            // Why?
+            // Because it is quite common to box select geometry for toggling (specially in
+            // connection with carbon copy operations). In 99% of the cases the user does not
+            // want to toggle individual points during such operations. For the remaining 1%,
+            // in 90% of the cases the uses will select just the points only naturally.
+
+
             // only handle edges
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
                 // issue the actual commands to toggle
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
             }
-            if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+            else if (verticesonly && it->size() > 6 && it->substr(0,6) == "Vertex") {
                 int vertexId = std::atoi(it->substr(6,4000).c_str()) - 1;
 
                 int geoId;

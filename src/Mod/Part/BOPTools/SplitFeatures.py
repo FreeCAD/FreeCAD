@@ -177,9 +177,9 @@ class CommandBooleanFragments:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_BooleanFragments.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean fragments"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments","Boolean fragments"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments",
                                                     "Create a 'Boolean Fragments' object from two or more selected objects,\n"
                                                     "or from the shapes inside a compound.\n"
                                                     "This is a boolean union which is then sliced at the intersections\n"
@@ -334,9 +334,9 @@ class CommandSlice:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_Slice.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice to compound"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_Slice","Slice to compound"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_Slice",
                                                     "Slice a selected object by using other objects as cutting tools.\n"
                                                     "The resulting pieces will be stored in a compound.\n"
                                                     "A 'Compound Filter' can be used to extract the individual slices.")}
@@ -366,9 +366,9 @@ class CommandSliceApart:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_SliceApart.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice apart"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart","Slice apart"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart",
                                                     "Slice a selected object by other objects, and split it apart.\n"
                                                     "It will create a 'Compound Filter' for each slice.")}
 
@@ -514,9 +514,9 @@ class CommandXOR:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_XOR.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean XOR"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_XOR","Boolean XOR"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_XOR",
                                                     "Perform an 'exclusive OR' boolean operation with two or more selected objects,\n"
                                                     "or with the shapes inside a compound.\n"
                                                     "This means the overlapping volumes of the shapes will be removed.\n"

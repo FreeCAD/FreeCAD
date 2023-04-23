@@ -28,6 +28,7 @@
 #include <Eigen/QR>
 
 #include "SubSystem.h"
+#include "../../SketcherGlobal.h"
 
 
 #define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
@@ -100,7 +101,7 @@ namespace GCS
         DefaultTemporaryConstraint = -1
     };
 
-    class System
+    class SketcherExport System
     {
     // This is the main class. It holds all constraints and information
     // about partitioning into subsystems and solution strategies
@@ -458,6 +459,18 @@ namespace GCS
         }
 
         void invalidatedDiagnosis();
+
+        // Unit testing interface - not intended for use by production code
+    protected:
+        size_t _getNumberOfConstraints(int tagID = -1)
+        {
+            if (tagID < 0) {
+                return clist.size();
+            }
+            return std::count_if(clist.begin(), clist.end(), [tagID](Constraint* constraint) {
+                return constraint->getTag() == tagID;
+            });
+        }
     };
 
 

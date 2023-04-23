@@ -252,6 +252,12 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
         auto preselectcross = ViewProviderSketchCoinAttorney::getPreselectCross(viewProvider);
         auto preselectcurve = ViewProviderSketchCoinAttorney::getPreselectCurve(viewProvider);
 
+        auto raisePoint = [](SbVec3f & point, float height) {
+            float x, y, z;
+            point.getValue(x, y, z);
+            point.setValue(x, y, height);
+        };
+
         MultiFieldId preselectpointmfid;
 
         if ( preselectcross == 0) {
@@ -262,16 +268,22 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
             preselectpointmfid = coinMapping.getIndexLayer(preselectpoint);
             if (MultiFieldId::Invalid != preselectpointmfid &&
                 preselectpointmfid.layerId == l &&
-                preselectpointmfid.fieldIndex < PtNum)
+                preselectpointmfid.fieldIndex < PtNum) {
+
                 pcolor[preselectpointmfid.fieldIndex] = drawingParameters.PreselectColor;
+
+                raisePoint(pverts[preselectpointmfid.fieldIndex], drawingParameters.zHighlight);
+            }
         }
 
         ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(viewProvider,
-            [pcolor, PtNum, preselectpointmfid, layerId = l, &coinMapping = coinMapping, drawingParameters = this->drawingParameters](const int i) {
+            [pcolor, pverts, PtNum, preselectpointmfid, layerId = l, &coinMapping = coinMapping, drawingParameters = this->drawingParameters, raisePoint](const int i) {
                 auto pointindex = coinMapping.getIndexLayer(i);
                 if (layerId == pointindex.layerId && pointindex.fieldIndex >= 0 && pointindex.fieldIndex < PtNum) {
                     pcolor[pointindex.fieldIndex] = (preselectpointmfid == pointindex)
                         ? drawingParameters.PreselectSelectedColor : drawingParameters.SelectColor;
+
+                    raisePoint(pverts[pointindex.fieldIndex], drawingParameters.zHighlight);
                 }
             });
 

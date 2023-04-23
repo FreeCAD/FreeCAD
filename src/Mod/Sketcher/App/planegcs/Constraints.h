@@ -24,6 +24,7 @@
 #define PLANEGCS_CONSTRAINTS_H
 
 #include "Geo.h"
+#include "../../SketcherGlobal.h"
 
 //#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debugging code intended to extract information to file bug reports against Eigen, not for production code
 
@@ -96,7 +97,7 @@ namespace GCS
         HyperbolaNegativeMinorY = 17
     };
 
-    class Constraint
+    class SketcherExport Constraint
     {
 
     public:
