@@ -4,9 +4,11 @@
 
 #include "Mod/Sketcher/App/planegcs/GCS.h"
 
-class SystemTest : public GCS::System{
+class SystemTest: public GCS::System
+{
 public:
-    size_t getNumberOfConstraints(int tagID = -1) {
+    size_t getNumberOfConstraints(int tagID = -1)
+    {
         return _getNumberOfConstraints(tagID);
     }
 };
@@ -33,7 +35,7 @@ private:
     std::unique_ptr<SystemTest> _system;
 };
 
-TEST_F(GCSTest, clearConstraints) // NOLINT
+TEST_F(GCSTest, clearConstraints)// NOLINT
 {
     // Arrange
     const size_t numConstraints {100};
@@ -44,6 +46,22 @@ TEST_F(GCSTest, clearConstraints) // NOLINT
 
     // Act
     System()->clear();
+
+    // Assert
+    EXPECT_EQ(0, System()->getNumberOfConstraints());
+}
+
+TEST_F(GCSTest, clearConstraintsByTag)// NOLINT
+{
+    // Arrange
+    const size_t numConstraints {100};
+    for (size_t i = 0; i < numConstraints; ++i) {
+        System()->addConstraint(new GCS::Constraint());
+    }
+    ASSERT_EQ(numConstraints, System()->getNumberOfConstraints());
+
+    // Act
+    System()->clearByTag(1);
 
     // Assert
     EXPECT_EQ(0, System()->getNumberOfConstraints());
