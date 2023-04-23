@@ -36,7 +36,7 @@ from TechDrawTools import TDToolsMovers
 
 import os
 
-translate = FreeCAD.Qt.translate
+translate = App.Qt.translate
 
 class TaskMoveView:
     def __init__(self):
@@ -55,7 +55,7 @@ class TaskMoveView:
         self.fromPageName = ""
         self.toPageName   = ""
 
-        self.dialogOpen = False;
+        self.dialogOpen = False
 
     def accept(self):
 #        print ("Accept")
@@ -76,7 +76,7 @@ class TaskMoveView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        self.dialogOpen = True;
+        self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select View to move from list."))
         dlg.setWindowTitle(translate("TechDraw_MoveView", "Select View"))
 
@@ -99,7 +99,7 @@ class TaskMoveView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        self.dialogOpen = True;
+        self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select From Page."))
         dlg.setWindowTitle(translate("TechDraw_MoveView", "Select Page"))
 
@@ -122,7 +122,7 @@ class TaskMoveView:
         _dlgPath = App.getHomePath()
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        self.dialogOpen = True;
+        self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select To Page."))
         dlg.setWindowTitle(translate("TechDraw_MoveView", "Select Page"))
 
