@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2023 0penBrain.                                         *
-# *   Copyright (c) 2023 FreeCAD Project Association                        *
+# *   Copyright (c) 2023 The FreeCAD Project Association                    *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -22,42 +21,34 @@
 # *                                                                         *
 # ***************************************************************************
 
-name: runCPPTests
-description: "Run C++ tests, generate log and report"
+name: Run all C++ Tests
+description: "Run all C++ tests, generating logs and reports for each"
 
 inputs:
-  testCommand:
-    description: "Test command to be run"
+  reportdir:
+    description: "Report directory"
     required: true
-  testLogFile:
-    description: "Path for the command-line output of the tests"
+  builddir:
+    description: "Build directory"
     required: true
-  reportFile:
-    description: "Report file"
+  reportfilename:
+    description: "Report filename"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Run C++ unit tests
-      shell: bash
-      run: stdbuf -oL -eL ${{ inputs.testCommand }} |& tee -a ${{ inputs.testLogFile }}
-    - name: Parse test results
-      if: always()
-      shell: bash
-      run:  |
-        result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
-        if grep -qF "[  FAILED  ]" <<< $result
-        then
-          echo "<details><summary>:fire: GTest C++ unit test suite failed</summary>" >> ${{ inputs.reportFile }}
-        else
-          echo "<details><summary>:heavy_check_mark: GTest C++ unit test suite succeeded</summary>" >> ${{ inputs.reportFile }}
-        fi
-        echo "" >> ${{ inputs.reportFile }}
-        echo "Results" >> ${{ inputs.reportFile }}
-        echo "" >> ${{ inputs.reportFile }}
-        echo '```' >> ${{ inputs.reportFile }}
-        echo "$result" >> ${{ inputs.reportFile }}
-        echo '```' >> ${{ inputs.reportFile }}
-        echo "</details>">> ${{ inputs.reportFile }}
-        echo "" >> ${{ inputs.reportFile }}
+      - name: C++ core tests
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Tests_run --gtest_output=json:${{ inputs.reportdir }}core_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}core_gtest_test_log.txt
+          reportFile: ${{ inputs.reportdir }}${{ inputs.reportfilename }}
+          testName: Core
+      - name: C++ Sketcher tests
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Sketcher_tests_run --gtest_output=json:${{ inputs.reportdir }}sketcher_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}sketcher_gtest_test_log.txt
+          reportFile: ${{ inputs.reportdir }}${{ inputs.reportfilename }}
+          testName: Sketcher
