@@ -26,7 +26,6 @@ __url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
 __date__ = "2022/01/11"
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore
 import PySide.QtGui as QtGui
 
@@ -37,14 +36,16 @@ from TechDrawTools import TDToolsMovers
 
 import os
 
+translate = FreeCAD.Qt.translate
+
 class TaskShareView:
     def __init__(self):
         self._uiPath = App.getHomePath()
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Share View with another Page"))
-        self.form.lViewName.setText(QT_TRANSLATE_NOOP("TechDraw_ShareView", "View to share"))
+        self.form.setWindowTitle(translate("TechDraw_ShareView", "Share View with another Page"))
+        self.form.lViewName.setText(translate("TechDraw_ShareView", "View to share"))
 
         self.form.pbView.clicked.connect(self.pickView)
         self.form.pbFromPage.clicked.connect(self.pickFromPage)
@@ -76,8 +77,8 @@ class TaskShareView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True;
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Select View to share from list."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Select View"))
+        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select View to share from list."))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select View"))
 
         views = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawView")]
         for v in views:
@@ -99,8 +100,8 @@ class TaskShareView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True;
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Select From Page."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Select Page"))
+        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select From Page."))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
@@ -123,8 +124,8 @@ class TaskShareView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True;
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Select To Page."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_ShareView", "Select Page"))
+        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select To Page."))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
