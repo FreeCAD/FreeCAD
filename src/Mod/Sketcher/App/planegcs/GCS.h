@@ -467,7 +467,7 @@ namespace GCS
             if (tagID < 0) {
                 return clist.size();
             }
-            return std::count_if(clist.begin(), clist.end(), [tagID](Constraint* constraint) {
+            return std::count_if(clist.cbegin(), clist.cend(), [tagID](auto& constraint) {
                 return constraint->getTag() == tagID;
             });
         }
