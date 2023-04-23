@@ -641,12 +641,12 @@ class TaskPanel:
         self.form.toolControllerList.horizontalHeaderItem(4).setToolTip(
             translate("Path", "spindle RPM ")
         )
-        
+
         # ensure correct ellisis behaviour on tool controller names.
         self.form.toolControllerList.setWordWrap(False)
-        
+
         self.form.toolControllerList.resizeColumnsToContents()
-        
+
         currentPostProcessor = self.obj.PostProcessor
         postProcessors = Path.Preferences.allEnabledPostProcessors(
             ["", currentPostProcessor]

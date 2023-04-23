@@ -21,6 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+import datetime
+import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 Dumper is an extremely simple postprocessor file for the Path workbench. It is used
@@ -28,9 +31,6 @@ to dump the command list from one or more Path objects for simple inspection. Th
 doesn't do any manipulation of the path and doesn't write anything to disk.  It just
 shows the dialog so you can see it.  Useful for debugging, but not much else.
 """
-import datetime
-import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
 
 now = datetime.datetime.now()
 SHOW_EDITOR = True
