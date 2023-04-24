@@ -1081,6 +1081,11 @@ class ViewProviderPanelCut(Draft.ViewProviderDraft):
             self.onChanged(obj.ViewObject,"Margin")
         Draft.ViewProviderDraft.updateData(self,obj,prop)
 
+    def doubleClicked(self,vobj):
+
+        # See setEdit in ViewProviderDraft.
+        FreeCADGui.runCommand("Std_TransformManip")
+        return True
 
 class PanelSheet(Draft.DraftObject):
 
