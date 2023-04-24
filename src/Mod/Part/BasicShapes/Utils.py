@@ -22,7 +22,7 @@
 
 __title__ = "BasicShapes.Utils"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Utilities for shapes"
 
 

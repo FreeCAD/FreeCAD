@@ -714,7 +714,7 @@ bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Cur
                 std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                 double tol)
 {
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=31700
+    // https://forum.freecad.org/viewtopic.php?f=10&t=31700
     if (curve1->IsKind(STANDARD_TYPE(Geom_BoundedCurve)) &&
         curve2->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
 
@@ -4701,7 +4701,7 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     };
 
     // Workaround for cones to get the correct derivatives
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=66677
+    // https://forum.freecad.org/viewtopic.php?f=10&t=66677
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast(handle());
     Standard_RangeError_Raise_if (Nu + Nv < 1 || Nu < 0 || Nv < 0, " ");
     if (Nv > 1) {

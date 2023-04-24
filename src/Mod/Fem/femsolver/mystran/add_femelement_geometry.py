@@ -23,7 +23,7 @@
 
 __title__ = "Mystran add femelement geometry"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{

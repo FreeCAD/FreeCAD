@@ -9,7 +9,7 @@
 
 # workaround for unicode in gzipping filename
 # OCC7 doesn't support non-ASCII characters at the moment
-# https://forum.freecadweb.org/viewtopic.php?t=20815
+# https://forum.freecad.org/viewtopic.php?t=20815
 
 
 import FreeCAD

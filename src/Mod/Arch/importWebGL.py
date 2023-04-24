@@ -23,8 +23,8 @@
 # REFS:
 # https://github.com/mrdoob/three.js/blob/master/examples/webgl_interactive_buffergeometry.html
 # https://threejs.org/examples/#webgl_buffergeometry_lines
-# https://forum.freecadweb.org/viewtopic.php?t=51245
-# https://forum.freecadweb.org/viewtopic.php?t=29487
+# https://forum.freecad.org/viewtopic.php?t=51245
+# https://forum.freecad.org/viewtopic.php?t=29487
 # https://threejs.org/examples/#webgl_raycast_sprite
 #
 # Params for export()

@@ -239,8 +239,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
     //
     // DPI considerations:
     // With hdpi monitors, the coin font labels do not respect the size passed in pixels:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610#p467610
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40#p467471
+    // https://forum.freecad.org/viewtopic.php?f=3&t=54347&p=467610#p467610
+    // https://forum.freecad.org/viewtopic.php?f=10&t=49972&start=40#p467471
     //
     // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for a "1" in a datum label as 34px,
     // and I see kilsore and Elyas screenshots showing 41px and 61px in higher resolution monitors for the same configuration, I think

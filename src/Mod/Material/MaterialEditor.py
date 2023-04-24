@@ -22,7 +22,7 @@
 
 __title__ = "FreeCAD material editor"
 __author__ = "Yorik van Havre, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 import os
 import sys
@@ -724,7 +724,7 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
 
     # FIXME
     # Workaround for problem from here:
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&start=20#p516811
+    # https://forum.freecad.org/viewtopic.php?f=18&t=56912&start=20#p516811
     # set precision to 12
     # Better would be a similar system like used in FEM material task panel
     # if the value in the InputField has not changed the data is not changed

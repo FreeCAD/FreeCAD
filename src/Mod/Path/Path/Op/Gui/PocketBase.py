@@ -30,7 +30,7 @@ import PathGui
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base page controller and command implementation for path pocket operations."
 
 if False:

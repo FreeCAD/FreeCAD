@@ -155,7 +155,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
                 // #2463 Check for endpoints of secondarycurve on primary curve
                 // If the OCCT Intersector should detect endpoint tangency when trimming, then
                 // this is just a work-around until that bug is fixed.
-                // https://www.freecadweb.org/tracker/view.php?id=2463
+                // https://www.freecad.org/tracker/view.php?id=2463
                 // https://tracker.dev.opencascade.org/view.php?id=30217
                 if (geomlist[id]->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
 

@@ -2073,7 +2073,7 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     out << "#$vertices " << rPoints.size() << '\n';
     out << "#$faces " << rFacets.size() << '\n';
     out << "#\n";
-    out << "# Created by FreeCAD <http://www.freecadweb.org>\n";
+    out << "# Created by FreeCAD <http://www.freecad.org>\n";
 
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
@@ -2108,7 +2108,7 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
 bool MeshOutput::SaveAsymptote(std::ostream &out) const
 {
     out << "/*\n"
-           " * Created by FreeCAD <http://www.freecadweb.org>\n"
+           " * Created by FreeCAD <http://www.freecad.org>\n"
            " */\n\n";
 
     out << "import three;\n\n";
@@ -2305,7 +2305,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
         && _material->diffuseColor.size() == rPoints.size());
     out << "ply\n"
         << "format binary_little_endian 1.0\n"
-        << "comment Created by FreeCAD <http://www.freecadweb.org>\n"
+        << "comment Created by FreeCAD <http://www.freecad.org>\n"
         << "element vertex " << v_count << '\n'
         << "property float32 x\n"
         << "property float32 y\n"
@@ -2366,7 +2366,7 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
         && _material->diffuseColor.size() == rPoints.size());
     out << "ply\n"
         << "format ascii 1.0\n"
-        << "comment Created by FreeCAD <http://www.freecadweb.org>\n"
+        << "comment Created by FreeCAD <http://www.freecad.org>\n"
         << "element vertex " << v_count << '\n'
         << "property float32 x\n"
         << "property float32 y\n"
@@ -2965,7 +2965,7 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
     rstrOut << "WorldInfo {\n"
             << "  title \"Exported triangle mesh to VRML97\"\n"
             << "  info [\"Created by FreeCAD\"\n"
-            << "        \"<http://www.freecadweb.org>\"]\n"
+            << "        \"<http://www.freecad.org>\"]\n"
             << "}\n\n";
 
     // Transform

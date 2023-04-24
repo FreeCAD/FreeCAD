@@ -2,7 +2,7 @@
 ABOUT
 ============================================================================================================
 version 2.22
-Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
+Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecad.org/).
 It might work with other software that uses Qt styling.
 
 
@@ -57,7 +57,7 @@ If you would like to change the overall look/style of the theme, just find and r
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-Please, follow the link to get updated information: https://forum.freecadweb.org/viewtopic.php?f=10&t=12417
+Please, follow the link to get updated information: https://forum.freecad.org/viewtopic.php?f=10&t=12417
 
 */
 

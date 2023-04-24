@@ -25,8 +25,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-# See: https://wiki.freecadweb.org/Path_Post
-#      https://wiki.freecadweb.org/Path_Postprocessor_Customization
+# See: https://wiki.freecad.org/Path_Post
+#      https://wiki.freecad.org/Path_Postprocessor_Customization
 #      for details on post processors like this one.
 
 

@@ -47,7 +47,7 @@ True if Draft_rc.__name__ else False
 __title__ = "FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Draft_SelectPlane:

@@ -25,7 +25,7 @@ import FreeCAD
 
 __title__ = "Path Waterline Operation"
 __author__ = "russ4262 (Russell Johnson), sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Class and implementation of Waterline operation."
 __contributors__ = ""
 

@@ -32,7 +32,7 @@ import PathGui
 
 __title__ = "Path Surface Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Surface operation page controller and command implementation."
 
 translate = FreeCAD.Qt.translate

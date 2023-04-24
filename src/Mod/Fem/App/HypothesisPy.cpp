@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 // HypothesisPy.h must be included as first file to avoid compiler warning,
-// see: https://forum.freecadweb.org/viewtopic.php?p=633192#p633192
+// see: https://forum.freecad.org/viewtopic.php?p=633192#p633192
 #include "HypothesisPy.h"
 
 #ifndef _PreComp_

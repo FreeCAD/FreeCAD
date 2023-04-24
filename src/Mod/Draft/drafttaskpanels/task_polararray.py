@@ -74,8 +74,8 @@ class TaskPanelPolarArray:
 
     See Also
     --------
-    * https://forum.freecadweb.org/viewtopic.php?f=10&t=40007
-    * https://forum.freecadweb.org/viewtopic.php?t=5374#p43038
+    * https://forum.freecad.org/viewtopic.php?f=10&t=40007
+    * https://forum.freecad.org/viewtopic.php?t=5374#p43038
     """
 
     def __init__(self):

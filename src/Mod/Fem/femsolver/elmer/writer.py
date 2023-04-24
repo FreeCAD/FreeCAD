@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer writer"
 __author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -116,13 +116,13 @@ class Writer(object):
         #
         # ATM Elmer writer uses SI units only
         #
-        # see forum topic: https://forum.freecadweb.org/viewtopic.php?f=18&t=70150
+        # see forum topic: https://forum.freecad.org/viewtopic.php?f=18&t=70150
         #
         # TODO: adapt method and comment
         # should be only one system for all solver and not in each solver
-        # https://forum.freecadweb.org/viewtopic.php?t=47895
-        # https://forum.freecadweb.org/viewtopic.php?t=48451
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=48642
+        # https://forum.freecad.org/viewtopic.php?t=47895
+        # https://forum.freecad.org/viewtopic.php?t=48451
+        # https://forum.freecad.org/viewtopic.php?f=10&t=48642
         # The FreeCAD unit schema is only used to determine the schema number
         # all definition are done here ATM
         # keep in mind a unit schema might not be consistent:

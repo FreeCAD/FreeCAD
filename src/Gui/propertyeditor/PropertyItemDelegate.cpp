@@ -134,7 +134,7 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
             // All the attempts to ignore the focus-out event has been approved to not work
             // reliably because there are still cases that cannot be handled.
             // So, the best for now is to always ignore this event.
-            // See https://forum.freecadweb.org/viewtopic.php?p=579530#p579530 why this is not
+            // See https://forum.freecad.org/viewtopic.php?p=579530#p579530 why this is not
             // possible.
             return false;
         }

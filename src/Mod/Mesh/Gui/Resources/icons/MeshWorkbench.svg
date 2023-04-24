@@ -129,7 +129,7 @@
         </dc:creator>
         <dc:date>Fri Feb 26 23:17:43 2016 +0100</dc:date>
         <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/MeshWorkbench.svg</dc:identifier>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
       </cc:Work>
     </rdf:RDF>
   </metadata>

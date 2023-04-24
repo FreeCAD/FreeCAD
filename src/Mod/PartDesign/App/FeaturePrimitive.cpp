@@ -503,7 +503,7 @@ App::DocumentObjectExecReturn* Torus::execute()
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
+        // https://forum.freecad.org/viewtopic.php?f=3&t=52719
 #if 0
         BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
                                       Radius2.getValue(),

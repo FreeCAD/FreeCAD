@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importDXF
 #  \ingroup DRAFT

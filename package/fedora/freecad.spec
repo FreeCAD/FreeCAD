@@ -39,7 +39,7 @@ Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
 
 License:        LGPLv2+
-URL:            http://www.freecadweb.org/
+URL:            http://www.freecad.org/
 Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
 
 

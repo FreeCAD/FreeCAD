@@ -455,7 +455,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
     if (!wget->isDownloading()) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hGrp = hGrp->GetGroup("Preferences")->GetGroup("OnlineHelp");
-        std::string url = hGrp->GetASCII("DownloadURL", "www.freecadweb.org/wiki/");
+        std::string url = hGrp->GetASCII("DownloadURL", "www.freecad.org/wiki/");
         std::string prx = hGrp->GetASCII("ProxyText", "");
         bool bUseProxy  = hGrp->GetBool ("UseProxy", false);
         bool bAuthor    = hGrp->GetBool ("Authorize", false);

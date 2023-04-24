@@ -254,7 +254,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
     // The lower limit of the deviation has been increased to avoid
     // to freeze the GUI
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
+    // https://forum.freecad.org/viewtopic.php?f=3&t=24912&p=195613
     if (prop == &Deviation) {
         if(isUpdateForced()||Visibility.getValue())
             updateVisual();

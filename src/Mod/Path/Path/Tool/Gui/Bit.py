@@ -32,7 +32,7 @@ import os
 
 __title__ = "Tool Bit UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Task panel editor for a ToolBit"
 
 

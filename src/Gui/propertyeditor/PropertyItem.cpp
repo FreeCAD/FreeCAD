@@ -2323,7 +2323,7 @@ void PropertyRotationItem::setAxis(const Base::Vector3d& axis)
 void PropertyRotationItem::assignProperty(const App::Property* prop)
 {
     // Choose an adaptive epsilon to avoid changing the axis when they are considered to
-    // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
+    // be equal. See https://forum.freecad.org/viewtopic.php?f=10&t=24662&start=10
     double eps = std::pow(10.0, -2*(decimals()+1));
     if (prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId())) {
         const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
@@ -2619,7 +2619,7 @@ void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
 void PropertyPlacementItem::assignProperty(const App::Property* prop)
 {
     // Choose an adaptive epsilon to avoid changing the axis when they are considered to
-    // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
+    // be equal. See https://forum.freecad.org/viewtopic.php?f=10&t=24662&start=10
     double eps = std::pow(10.0, -2*(decimals()+1));
     if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();

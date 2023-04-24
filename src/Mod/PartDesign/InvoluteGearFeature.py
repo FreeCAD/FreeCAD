@@ -31,7 +31,7 @@ if FreeCAD.GuiUp:
 
 __title__="PartDesign InvoluteGearObject management"
 __author__ = "Juergen Riegel"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 
 def makeInvoluteGear(name):
@@ -93,7 +93,7 @@ class _InvoluteGear:
                     setattr(obj, name, default)
 
         # for details about the property's docstring translation,
-        # see https://tracker.freecadweb.org/view.php?id=2524
+        # see https://tracker.freecad.org/view.php?id=2524
         ensure_property("App::PropertyInteger", "NumberOfTeeth",
             doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of gear teeth"),
             default=26)

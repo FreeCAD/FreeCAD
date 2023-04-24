@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM constraint self weight document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_selfweight
 #  \ingroup FEM
@@ -67,8 +67,8 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
         obj.Gravity_y = 0.0
         obj.Gravity_z = -1.0
 
-        # https://wiki.freecadweb.org/Scripted_objects#Property_Type
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=20#p109709
-        # https://forum.freecadweb.org/viewtopic.php?t=25524
+        # https://wiki.freecad.org/Scripted_objects#Property_Type
+        # https://forum.freecad.org/viewtopic.php?f=18&t=13460&start=20#p109709
+        # https://forum.freecad.org/viewtopic.php?t=25524
         # obj.setEditorMode("References", 1)  # read only in PropertyEditor, but writeable by Python
         obj.setEditorMode("References", 2)  # do not show in Editor

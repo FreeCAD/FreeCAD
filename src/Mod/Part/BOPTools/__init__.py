@@ -21,7 +21,7 @@
 # ***************************************************************************/
 
 __title__ = "BOPTools package"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = """BOPTools Package (part of FreeCAD). Routines that power Connect, Embed, Cutout,
 BooleanFragments, Slice and XOR features of Part Workbench. Useful for other custom
 BOP-like operations"""

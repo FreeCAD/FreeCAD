@@ -21,7 +21,7 @@
 
 __title__ = "CompoundTools package"
 __author__ = "DeepSOIC, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = """CompoundTools Package (part of FreeCAD)."""
 
 ## @package CompoundTools

@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD result mechanical task panel"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_result_mechanical
 #  \ingroup FEM
@@ -281,7 +281,7 @@ class _TaskPanel:
     # stress and the other not the restore result dialog
     # could trigger stress selected for a result object
     # which has not stress
-    # see https://forum.freecadweb.org/viewtopic.php?f=18&t=39162
+    # see https://forum.freecad.org/viewtopic.php?f=18&t=39162
     # check if the results len is not 0 on any selected method
 
     def abs_displacement_selected(self, state):
@@ -518,7 +518,7 @@ class _TaskPanel:
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
 
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
+        # https://forum.freecad.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
         # https://github.com/FreeCAD/FreeCAD/pull/3020
         from ply import lex
         from ply import yacc

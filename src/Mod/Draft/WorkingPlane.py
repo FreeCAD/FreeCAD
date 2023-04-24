@@ -48,7 +48,7 @@ FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Plane:

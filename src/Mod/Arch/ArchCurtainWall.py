@@ -22,7 +22,7 @@
 
 __title__  = "FreeCAD Arch Curtain Wall"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 import math
 import FreeCAD

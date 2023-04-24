@@ -36,7 +36,7 @@ This module provides support for importing airfoil .dat files.
 
 __title__ = "FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import re
 import os

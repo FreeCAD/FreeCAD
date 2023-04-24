@@ -40,7 +40,7 @@ import importDXF
 
 __title__ = "FreeCAD OpenSCAD Workbench - Utility Functions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 translate = FreeCAD.Qt.translate
 
@@ -568,7 +568,7 @@ def meshoponobjs(opname, inobjs):
 
 
 def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
-    # https://www.freecadweb.org/tracker/view.php?id=3419
+    # https://www.freecad.org/tracker/view.php?id=3419
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     fn  = params.GetInt('fnForImport',32)
     fnStr = ",$fn=" + str(fn)
@@ -579,7 +579,7 @@ def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
         outputfilename=os.path.join(dir1,'%s.dxf' % next(tempfilenamegen))
         importDXF.export([item],outputfilename, True, True)
         filenames.append(outputfilename)
-    # https://www.freecadweb.org/tracker/view.php?id=3419
+    # https://www.freecad.org/tracker/view.php?id=3419
     dxfimports = ' '.join("import(file = \"%s\" %s);" % \
         #filename \
         (os.path.split(filename)[1], fnStr) for filename in filenames)
