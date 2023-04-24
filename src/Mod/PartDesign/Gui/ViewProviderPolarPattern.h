@@ -34,10 +34,11 @@ class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransfor
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern() {
-        featureName = std::string("PolarPattern");
         menuName = tr("PolarPattern parameters");
         sPixmap = "PartDesign_PolarPattern.svg";
     }
+
+    const std::string & featureName() const override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view

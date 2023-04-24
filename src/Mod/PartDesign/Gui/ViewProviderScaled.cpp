@@ -33,3 +33,9 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderScaled,PartDesignGui::ViewProviderTra
 TaskDlgFeatureParameters *ViewProviderScaled::getEditDialog() {
     return new TaskDlgScaledParameters (this);
 }
+
+const std::string & ViewProviderScaled::featureName() const
+{
+    static const std::string name = "Scaled";
+    return name;
+}

@@ -32,3 +32,9 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPolarPattern,PartDesignGui::ViewProvi
 TaskDlgFeatureParameters *ViewProviderPolarPattern::getEditDialog() {
     return new TaskDlgPolarPatternParameters (this);
 }
+
+const std::string & ViewProviderPolarPattern::featureName() const
+{
+    static const std::string name = "PolarPattern";
+    return name;
+}

@@ -33,3 +33,9 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderMirrored,PartDesignGui::ViewProviderT
 TaskDlgFeatureParameters *ViewProviderMirrored::getEditDialog() {
     return new TaskDlgMirroredParameters (this);
 }
+
+const std::string & ViewProviderMirrored::featureName() const
+{
+    static const std::string name = "Mirrored";
+    return name;
+}

@@ -58,6 +58,11 @@ const std::string & ViewProviderDressUp::featureName() const {
     return name;
 }
 
+std::string ViewProviderDressUp::featureIcon() const
+{
+    return std::string("PartDesign_") + featureName();
+}
+
 
 bool ViewProviderDressUp::setEdit(int ModNum) {
     if (ModNum == ViewProvider::Default ) {

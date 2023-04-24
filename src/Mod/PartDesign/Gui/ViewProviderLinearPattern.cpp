@@ -33,3 +33,9 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProv
 TaskDlgFeatureParameters *ViewProviderLinearPattern::getEditDialog() {
     return new TaskDlgLinearPatternParameters (this);
 }
+
+const std::string & ViewProviderLinearPattern::featureName() const
+{
+    static const std::string name = "LinearPattern";
+    return name;
+}
