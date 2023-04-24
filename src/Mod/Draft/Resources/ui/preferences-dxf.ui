@@ -584,11 +584,11 @@ If it is set to '0' the whole spline is treated as a straight segment.</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_5">
           <property name="toolTip">
-           <string>Drawing Views will be exported as blocks.
+           <string>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</string>
           </property>
           <property name="text">
-           <string>Export Drawing Views as blocks</string>
+           <string>Export TechDraw Views as blocks</string>
           </property>
           <property name="checked">
            <bool>true</bool>
