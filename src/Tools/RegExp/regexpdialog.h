@@ -32,7 +32,7 @@
 class QRegularExpressionValidator;
 class RegExpSyntaxHighlighter;
 class Ui_RegExpDialog;
-class RegExpDialog : public QDialog
+class RegExpDialog: public QDialog
 {
     Q_OBJECT
 public:
@@ -52,18 +52,18 @@ private:
 
 // -------------------------------------------------------------
 
-class RegExpSyntaxHighlighter : public QSyntaxHighlighter
+class RegExpSyntaxHighlighter: public QSyntaxHighlighter
 {
 public:
-    RegExpSyntaxHighlighter (QTextEdit * textEdit);
+    RegExpSyntaxHighlighter(QTextEdit* textEdit);
     ~RegExpSyntaxHighlighter();
 
-    void highlightBlock (const QString & text);
-    void highlightMatchedText( const QRegularExpression& );
+    void highlightBlock(const QString& text);
+    void highlightMatchedText(const QRegularExpression&);
     void resethighlight();
 
 private:
     QRegularExpression regexp;
 };
 
-#endif // REG_EXP_DIALOG_H
+#endif// REG_EXP_DIALOG_H

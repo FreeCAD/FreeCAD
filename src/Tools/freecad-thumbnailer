@@ -34,7 +34,7 @@ import sys
 import zipfile
 import getopt
 
-opt, par = getopt.getopt(sys.argv[1:], '-s:')
+opt, par = getopt.getopt(sys.argv[1:], "-s:")
 input_file = par[0]
 output_file = par[1]
 
