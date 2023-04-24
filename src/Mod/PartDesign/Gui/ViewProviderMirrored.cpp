@@ -34,6 +34,12 @@ TaskDlgFeatureParameters *ViewProviderMirrored::getEditDialog() {
     return new TaskDlgMirroredParameters (this);
 }
 
+void ViewProviderMirrored::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit mirrored"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
 const std::string & ViewProviderMirrored::featureName() const
 {
     static const std::string name = "Mirrored";
