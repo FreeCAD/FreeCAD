@@ -46,18 +46,18 @@
 
 #include "qsvgiohandler.h"
 
-#include <qiodevice.h>
 #include <qbytearray.h>
 #include <qdebug.h>
+#include <qiodevice.h>
 
 QT_BEGIN_NAMESPACE
 
-class QSvgPlugin : public QImageIOPlugin
+class QSvgPlugin: public QImageIOPlugin
 {
 public:
     QStringList keys() const;
-    Capabilities capabilities(QIODevice *device, const QByteArray &format) const;
-    QImageIOHandler *create(QIODevice *device, const QByteArray &format = QByteArray()) const;
+    Capabilities capabilities(QIODevice* device, const QByteArray& format) const;
+    QImageIOHandler* create(QIODevice* device, const QByteArray& format = QByteArray()) const;
 };
 
 QStringList QSvgPlugin::keys() const
@@ -65,7 +65,8 @@ QStringList QSvgPlugin::keys() const
     return QStringList() << QLatin1String("svg") << QLatin1String("svgz");
 }
 
-QImageIOPlugin::Capabilities QSvgPlugin::capabilities(QIODevice *device, const QByteArray &format) const
+QImageIOPlugin::Capabilities QSvgPlugin::capabilities(QIODevice* device,
+                                                      const QByteArray& format) const
 {
     if (format == "svg" || format == "svgz")
         return Capabilities(CanRead);
@@ -78,9 +79,9 @@ QImageIOPlugin::Capabilities QSvgPlugin::capabilities(QIODevice *device, const Q
     return cap;
 }
 
-QImageIOHandler *QSvgPlugin::create(QIODevice *device, const QByteArray &format) const
+QImageIOHandler* QSvgPlugin::create(QIODevice* device, const QByteArray& format) const
 {
-    QSvgIOHandler *hand = new QSvgIOHandler();
+    QSvgIOHandler* hand = new QSvgIOHandler();
     hand->setDevice(device);
     hand->setFormat(format);
     return hand;
@@ -91,4 +92,4 @@ Q_EXPORT_PLUGIN2(qsvg, QSvgPlugin)
 
 QT_END_NAMESPACE
 
-#endif // !QT_NO_IMAGEFORMATPLUGIN
+#endif// !QT_NO_IMAGEFORMATPLUGIN

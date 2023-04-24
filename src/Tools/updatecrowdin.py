@@ -115,6 +115,11 @@ locations = [
     ],
     ["FreeCAD", "../Gui/Language", "../Gui/Language/translation.qrc"],
     [
+        "Inspection",
+        "../Mod/Inspection/Gui/Resources/translations",
+        "../Mod/Inspection/Gui/Resources/Inspection.qrc",
+    ],
+    [
         "Mesh",
         "../Mod/Mesh/Gui/Resources/translations",
         "../Mod/Mesh/Gui/Resources/Mesh.qrc",
@@ -197,9 +202,7 @@ locations = [
     ],
 ]
 
-THRESHOLD = (
-    25  # how many % must be translated for the translation to be included in FreeCAD
-)
+THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD
 
 
 class CrowdinUpdater:
@@ -270,9 +273,7 @@ class CrowdinUpdater:
             )
             print(f"{filename} updated")
         else:
-            self._make_project_api_req(
-                "/files", data={"storageId": storage_id, "name": filename}
-            )
+            self._make_project_api_req("/files", data={"storageId": storage_id, "name": filename})
             print(f"{filename} uploaded")
 
     def status(self):
@@ -281,9 +282,7 @@ class CrowdinUpdater:
 
     def download(self, build_id):
         filename = f"{self.project_identifier}.zip"
-        response = self._make_project_api_req(
-            f"/translations/builds/{build_id}/download"
-        )
+        response = self._make_project_api_req(f"/translations/builds/{build_id}/download")
         urlretrieve(response["url"], filename)
         print("download of " + filename + " complete")
 
@@ -383,9 +382,7 @@ def updateTranslatorCpp(lncode):
 
     "updates the Translator.cpp file with the given translation entry"
 
-    cppfile = os.path.join(
-        os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp"
-    )
+    cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
     l = QtCore.QLocale(lncode)
     lnname = l.languageToString(l.language())
 
@@ -412,13 +409,7 @@ def updateTranslatorCpp(lncode):
         sys.exit()
 
     # inserting new entry just before the above line
-    line = (
-        '    d->mapLanguageTopLevelDomain[QT_TR_NOOP("'
-        + lnname
-        + '")] = "'
-        + lncode
-        + '";\n'
-    )
+    line = '    d->mapLanguageTopLevelDomain[QT_TR_NOOP("' + lnname + '")] = "' + lncode + '";\n'
     cppcode.insert(pos, line)
     print(lnname + " (" + lncode + ") added Translator.cpp")
 
@@ -480,9 +471,7 @@ def applyTranslations(languages):
     src = os.path.join(currentfolder, "freecad.zip")
     dst = os.path.join(tempfolder, "freecad.zip")
     if not os.path.exists(src):
-        print(
-            'freecad.zip file not found! Aborting. Run "download" command before this one.'
-        )
+        print('freecad.zip file not found! Aborting. Run "download" command before this one.')
         sys.exit()
     shutil.copyfile(src, dst)
     os.chdir(tempfolder)
@@ -519,9 +508,7 @@ if __name__ == "__main__":
 
     if command == "status":
         status = updater.status()
-        status = sorted(
-            status, key=lambda item: item["translationProgress"], reverse=True
-        )
+        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
         print(
             len([item for item in status if item["translationProgress"] > THRESHOLD]),
             " languages with status > " + str(THRESHOLD) + "%:",
@@ -555,9 +542,7 @@ if __name__ == "__main__":
 
     elif command == "build-status":
         for item in updater.build_status():
-            print(
-                f"  id: {item['id']} progress: {item['progress']}% status: {item['status']}"
-            )
+            print(f"  id: {item['id']} progress: {item['progress']}% status: {item['status']}")
 
     elif command == "build":
         updater.build()
@@ -603,13 +588,9 @@ if __name__ == "__main__":
     elif command in ["apply", "install"]:
         print("retrieving list of languages...")
         status = updater.status()
-        status = sorted(
-            status, key=lambda item: item["translationProgress"], reverse=True
-        )
+        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
         languages = [
-            item["languageId"]
-            for item in status
-            if item["translationProgress"] > THRESHOLD
+            item["languageId"] for item in status if item["translationProgress"] > THRESHOLD
         ]
         applyTranslations(languages)
         print("Updating Translator.cpp...")
@@ -619,13 +600,9 @@ if __name__ == "__main__":
     elif command == "updateTranslator":
         print("retrieving list of languages...")
         status = updater.status()
-        status = sorted(
-            status, key=lambda item: item["translationProgress"], reverse=True
-        )
+        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
         languages = [
-            item["languageId"]
-            for item in status
-            if item["translationProgress"] > THRESHOLD
+            item["languageId"] for item in status if item["translationProgress"] > THRESHOLD
         ]
         print("Updating Translator.cpp...")
         for ln in languages:
