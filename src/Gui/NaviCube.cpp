@@ -63,16 +63,6 @@ using namespace Gui;
 
 
 
-struct Face {
-    int type;
-    vector<Vector3f> vertexArray;
-};
-struct LabelTexture {
-    vector<Vector3f> vertexArray;
-    qreal fontSize;
-    QOpenGLTexture *texture = nullptr;
-    string label;
-};
 
 
 class NaviCubeImplementation {
@@ -90,92 +80,91 @@ public:
     void setSize(int size);
 
 private:
+    enum class PickId {
+        None,
+        Front,
+        Top,
+        Right,
+        Rear,
+        Bottom,
+        Left,
+        FrontTop,
+        FrontBottom,
+        FrontRight,
+        FrontLeft,
+        RearTop,
+        RearBottom,
+        RearRight,
+        RearLeft,
+        TopRight,
+        TopLeft,
+        BottomRight,
+        BottomLeft,
+        FrontTopRight,
+        FrontTopLeft,
+        FrontBottomRight,
+        FrontBottomLeft,
+        RearTopRight,
+        RearTopLeft,
+        RearBottomRight,
+        RearBottomLeft,
+        ArrowNorth,
+        ArrowSouth,
+        ArrowEast,
+        ArrowWest,
+        ArrowRight,
+        ArrowLeft,
+        DotBackside,
+        ViewMenu
+    };
+    enum class DirId{
+        Custom, Up, Right, Out
+    };
+    enum class ShapeId{
+        None, Main, Edge, Corner, Button
+    };
+    struct Face {
+        ShapeId type;
+        vector<Vector3f> vertexArray;
+    };
+    struct LabelTexture {
+        vector<Vector3f> vertexArray;
+        qreal fontSize;
+        QOpenGLTexture *texture = nullptr;
+        string label;
+    };
     bool mousePressed(short x, short y);
     bool mouseReleased(short x, short y);
     bool mouseMoved(short x, short y);
-    int pickFace(short x, short y);
+    PickId pickFace(short x, short y);
     bool inDragZone(short x, short y);
 
     void prepare();
     void handleResize();
     void handleMenu();
 
-    void setHilite(int);
+    void setHilite(PickId);
 
-    void addCubeFace(const Vector3f&, const Vector3f&, int, int);
-
-    void addButtonFaceTex(QtGLWidget*, int);
-    void addButtonFace(int);
+    void addCubeFace(const Vector3f&, const Vector3f&, ShapeId, PickId);
+    void addButtonFace(PickId);
 
     SbRotation setView(float, float) const;
-    SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
+    SbRotation rotateView(SbRotation, DirId, float, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
     void rotateView(const SbRotation&);
 
     QString str(const char* str);
     QMenu* createNaviCubeMenu();
-
-public:
-    enum {
-        PID_NONE,
-        PID_FRONT,
-        PID_TOP,
-        PID_RIGHT,
-        PID_REAR,
-        PID_BOTTOM,
-        PID_LEFT,
-        PID_FRONT_TOP,
-        PID_FRONT_BOTTOM,
-        PID_FRONT_RIGHT,
-        PID_FRONT_LEFT,
-        PID_REAR_TOP,
-        PID_REAR_BOTTOM,
-        PID_REAR_RIGHT,
-        PID_REAR_LEFT,
-        PID_TOP_RIGHT,
-        PID_TOP_LEFT,
-        PID_BOTTOM_RIGHT,
-        PID_BOTTOM_LEFT,
-        PID_FRONT_TOP_RIGHT,
-        PID_FRONT_TOP_LEFT,
-        PID_FRONT_BOTTOM_RIGHT,
-        PID_FRONT_BOTTOM_LEFT,
-        PID_REAR_TOP_RIGHT,
-        PID_REAR_TOP_LEFT,
-        PID_REAR_BOTTOM_RIGHT,
-        PID_REAR_BOTTOM_LEFT,
-        PID_ARROW_NORTH,
-        PID_ARROW_SOUTH,
-        PID_ARROW_EAST,
-        PID_ARROW_WEST,
-        PID_ARROW_RIGHT,
-        PID_ARROW_LEFT,
-        PID_DOT_BACKSIDE,
-        PID_VIEW_MENU
-    };
-    enum {
-        DIR_UP, DIR_RIGHT, DIR_OUT
-    };
-    enum {
-        SHAPE_NONE, SHAPE_MAIN, SHAPE_EDGE, SHAPE_CORNER, SHAPE_BUTTON
-    };
-    Gui::View3DInventorViewer* m_View3DInventorViewer;
     void drawNaviCube(bool picking);
 
+
+public:
+
     int m_CubeWidgetSize = 132;
-    SbVec2f m_RelPos = SbVec2f(1.0f,1.0f);
-    SbVec2s m_ViewSize = SbVec2s(0,0);
-    SbVec2s m_PosAreaBase = SbVec2s(0,0);
-    SbVec2s m_PosAreaSize = SbVec2s(0,0);
-    SbVec2s m_PosOffset = SbVec2s(0,0);
     QColor m_BaseColor;
     QColor m_EmphaseColor;
     QColor m_HiliteColor;
     bool m_ShowCS = true;
-    int m_HiliteId = 0;
-    bool m_MouseDown = false;
-    bool m_Dragging = false;
-    bool m_Draggable = false;
-    bool m_MightDrag = false;
+    PickId m_HiliteId = PickId::None;
     double m_BorderWidth = 1.1;
     bool m_RotateToNearest = true;
     int m_NaviStepByTurn = 8;
@@ -184,14 +173,27 @@ public:
     std::string m_TextFont;
     int m_FontWeight = 0;
     int m_FontStretch = 0;
-
-    QtGLFramebufferObject* m_PickingFramebuffer;
+    SbVec2s m_PosOffset = SbVec2s(0,0);
 
     bool m_Prepared = false;
-
-    map<int, Face> m_Faces;
-    map<int, LabelTexture> m_LabelTextures;
     static vector<string> m_commands;
+    bool m_Draggable = false;
+    SbVec2s m_ViewSize = SbVec2s(0,0);
+
+private:
+    bool m_MouseDown = false;
+    bool m_Dragging = false;
+    bool m_MightDrag = false;
+
+    SbVec2f m_RelPos = SbVec2f(1.0f,1.0f);
+    SbVec2s m_PosAreaBase = SbVec2s(0,0);
+    SbVec2s m_PosAreaSize = SbVec2s(0,0);
+
+    QtGLFramebufferObject* m_PickingFramebuffer;
+    Gui::View3DInventorViewer* m_View3DInventorViewer;
+
+    map<PickId, Face> m_Faces;
+    map<PickId, LabelTexture> m_LabelTextures;
 
     QMenu* m_Menu;
 };
@@ -311,12 +313,12 @@ void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 }
 void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
 {
-    m_LabelTextures[PID_FRONT].label  = labels[0];
-    m_LabelTextures[PID_TOP].label    = labels[1];
-    m_LabelTextures[PID_RIGHT].label  = labels[2];
-    m_LabelTextures[PID_REAR].label   = labels[3];
-    m_LabelTextures[PID_BOTTOM].label = labels[4];
-    m_LabelTextures[PID_LEFT].label   = labels[5];
+    m_LabelTextures[PickId::Front].label  = labels[0];
+    m_LabelTextures[PickId::Top].label    = labels[1];
+    m_LabelTextures[PickId::Right].label  = labels[2];
+    m_LabelTextures[PickId::Rear].label   = labels[3];
+    m_LabelTextures[PickId::Bottom].label = labels[4];
+    m_LabelTextures[PickId::Left].label   = labels[5];
     m_Prepared = false;
 }
 
@@ -365,9 +367,31 @@ auto convertWeights = [](int weight) -> QFont::Weight {
     return QFont::Thin;
 };
 
+int imageVerticalBalance(QImage p, int sizeHint) {
+    int h = p.height();
+    int startRow = (h - sizeHint) / 2;
+    bool done = false;
+    int x, bottom, top;
+    for (top = startRow; top < h; top++){
+        for (x = 0; x < p.width(); x++){
+            if (qAlpha(p.pixel(x, top))) {
+                done = true;
+                break;
+            } 
+        }
+        if (done) break;
+    }
+    for (bottom = startRow; bottom < h; bottom++) {
+        for (x = 0; x < p.width(); x++){
+            if (qAlpha(p.pixel(x, h-1-bottom))) 
+                return (bottom-top)/2; 
+        }
+    }
+    return 0;
+}
 
 void NaviCubeImplementation::createCubeFaceTextures() {
-    int texSize = 128; // Works well for the max cube size 1024
+    int texSize = 192; // Works well for the max cube size 1024
     // find font sizes
     QFont font;
     QString fontString = QString::fromStdString(m_TextFont);
@@ -382,11 +406,12 @@ void NaviCubeImplementation::createCubeFaceTextures() {
     QFontMetrics fm(font);
     qreal minFontSize = texSize;
     qreal maxFontSize = 0.;
-    vector<int> mains = {PID_FRONT, PID_TOP, PID_RIGHT, PID_REAR, PID_BOTTOM, PID_LEFT};
-    for (int pickId : mains) {
+    vector<PickId> mains = {PickId::Front, PickId::Top, PickId::Right, PickId::Rear, PickId::Bottom, PickId::Left};
+    for (PickId pickId : mains) {
         auto t = QString::fromUtf8(m_LabelTextures[pickId].label.c_str()); 
-        float textlen = fm.horizontalAdvance(t);
-        m_LabelTextures[pickId].fontSize = texSize * texSize / textlen;
+        QRect br = fm.boundingRect(t);
+        float scale = (float)texSize / max(br.width(),br.height());
+        m_LabelTextures[pickId].fontSize = texSize * scale;
         minFontSize = std::min(minFontSize, m_LabelTextures[pickId].fontSize);
         maxFontSize = std::max(maxFontSize, m_LabelTextures[pickId].fontSize);
     }
@@ -395,22 +420,25 @@ void NaviCubeImplementation::createCubeFaceTextures() {
     else {
         maxFontSize = minFontSize * std::pow(2.0, m_FontZoom);
     }
-    for (int pickId : mains) {
-        m_LabelTextures[pickId].fontSize = std::min(m_LabelTextures[pickId].fontSize, maxFontSize);
+    for (PickId pickId : mains) {
         QImage image(texSize, texSize, QImage::Format_ARGB32);
         image.fill(qRgba(255, 255, 255, 0));
-        QPainter paint;
-        paint.begin(&image);
-        paint.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-        paint.setPen(Qt::white);
         if (m_LabelTextures[pickId].fontSize > 0.5) {
-            QString text = QString::fromUtf8(m_LabelTextures[pickId].label.c_str());
             // 5% margin looks nice and prevents some artifacts
-            font.setPointSizeF(m_LabelTextures[pickId].fontSize * 0.9); 
+            font.setPointSizeF(std::min(m_LabelTextures[pickId].fontSize, maxFontSize)*0.9);
+            QPainter paint;
+            paint.begin(&image);
+            paint.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+            paint.setPen(Qt::white);
+            QString text = QString::fromUtf8(m_LabelTextures[pickId].label.c_str());
             paint.setFont(font);
             paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter, text);
+            int offset = imageVerticalBalance(image, font.pointSize());
+            image.fill(qRgba(255, 255, 255, 0));
+            paint.drawText(QRect(0, offset, texSize, texSize), Qt::AlignCenter, text);
+            paint.end();
         }
-        paint.end();
+
         if (m_LabelTextures[pickId].texture) {
             delete m_LabelTextures[pickId].texture;
         }
@@ -421,7 +449,7 @@ void NaviCubeImplementation::createCubeFaceTextures() {
     }
 }
 
-void NaviCubeImplementation::addButtonFace(int pickId)
+void NaviCubeImplementation::addButtonFace(PickId pickId)
 {
     if (m_Faces[pickId].vertexArray.size())
         m_Faces[pickId].vertexArray.clear();
@@ -433,8 +461,8 @@ void NaviCubeImplementation::addButtonFace(int pickId)
     switch (pickId) {
         default:
             break;
-        case PID_ARROW_RIGHT:
-        case PID_ARROW_LEFT: {
+        case PickId::ArrowRight:
+        case PickId::ArrowLeft: {
             pointData = {
                 66.6, -66.6,//outer curve
                 58.3, -74.0,
@@ -452,10 +480,10 @@ void NaviCubeImplementation::addButtonFace(int pickId)
             };
             break;
         }
-        case PID_ARROW_WEST:
-        case PID_ARROW_NORTH:
-        case PID_ARROW_SOUTH:
-        case PID_ARROW_EAST: {
+        case PickId::ArrowWest:
+        case PickId::ArrowNorth:
+        case PickId::ArrowSouth:
+        case PickId::ArrowEast: {
             pointData = {
                 100.,  0.,
                  80.,-18.,
@@ -463,7 +491,7 @@ void NaviCubeImplementation::addButtonFace(int pickId)
              };
             break;
         }
-        case PID_VIEW_MENU: {
+        case PickId::ViewMenu: {
             offx = 0.84;
             offy = 0.84;
             pointData = {
@@ -482,7 +510,7 @@ void NaviCubeImplementation::addButtonFace(int pickId)
             };
             break;
         }
-        case PID_DOT_BACKSIDE: {
+        case PickId::DotBackside: {
             int steps = 16;
             for (int i = 0; i < steps; i++) {
                 float angle = 2.0f * M_PI * ((float)i+0.5) / (float)steps;
@@ -498,24 +526,24 @@ void NaviCubeImplementation::addButtonFace(int pickId)
     for (int i = 0; i < count; i++) {
         float x = pointData[i*2]   * scale + offx;
         float y = pointData[i*2+1] * scale + offy;
-        if (pickId == PID_ARROW_NORTH || pickId == PID_ARROW_WEST || pickId == PID_ARROW_LEFT)
+        if (pickId == PickId::ArrowNorth || pickId == PickId::ArrowWest || pickId == PickId::ArrowLeft)
             x = 1.0 - x;
-        if (pickId == PID_ARROW_SOUTH || pickId == PID_ARROW_NORTH)
+        if (pickId == PickId::ArrowSouth || pickId == PickId::ArrowNorth)
             m_Faces[pickId].vertexArray.emplace_back(Vector3f(y, x, 0.0));
         else
             m_Faces[pickId].vertexArray.emplace_back(Vector3f(x, y, 0.0));
     }
-    m_Faces[pickId].type = SHAPE_BUTTON;
+    m_Faces[pickId].type = ShapeId::Button;
 }
 
 
-void NaviCubeImplementation::addCubeFace( const Vector3f& x, const Vector3f& z, int shapeType, int pickId) {
+void NaviCubeImplementation::addCubeFace( const Vector3f& x, const Vector3f& z, ShapeId shapeType, PickId pickId) {
     m_Faces[pickId].vertexArray.clear();
     m_Faces[pickId].type = shapeType;
 
     Vector3f y = x.cross(-z);
 
-    if (shapeType == SHAPE_CORNER) {
+    if (shapeType == ShapeId::Corner) {
         auto xC = x * m_Chamfer;
         auto yC = y * m_Chamfer;
         auto zC = (1 - 2 * m_Chamfer) * z;
@@ -527,7 +555,7 @@ void NaviCubeImplementation::addCubeFace( const Vector3f& x, const Vector3f& z, 
         m_Faces[pickId].vertexArray.emplace_back(zC + xC + yC);
         m_Faces[pickId].vertexArray.emplace_back(zC - xC + yC);
     }
-    else if (shapeType == SHAPE_EDGE) {
+    else if (shapeType == ShapeId::Edge) {
         auto x4 = x * (1 - m_Chamfer * 4);
         auto yE = y * m_Chamfer;
         auto zE = z * (1 - m_Chamfer);
@@ -537,7 +565,7 @@ void NaviCubeImplementation::addCubeFace( const Vector3f& x, const Vector3f& z, 
         m_Faces[pickId].vertexArray.emplace_back(zE + x4 + yE);
         m_Faces[pickId].vertexArray.emplace_back(zE - x4 + yE);
     }
-    else if (shapeType == SHAPE_MAIN) {
+    else if (shapeType == ShapeId::Main) {
         auto x2 = x * (1 - m_Chamfer * 2);
         auto y2 = y * (1 - m_Chamfer * 2);
         auto x4 = x * (1 - m_Chamfer * 4);
@@ -577,46 +605,46 @@ void NaviCubeImplementation::prepare() {
     Vector3f z(0, 0, 1);
 
     // create the main faces
-    addCubeFace( x, z, SHAPE_MAIN, PID_TOP);
-    addCubeFace( x,-y, SHAPE_MAIN, PID_FRONT);
-    addCubeFace(-y,-x, SHAPE_MAIN, PID_LEFT);
-    addCubeFace(-x, y, SHAPE_MAIN, PID_REAR);
-    addCubeFace( y, x, SHAPE_MAIN, PID_RIGHT);
-    addCubeFace( x,-z, SHAPE_MAIN, PID_BOTTOM);
+    addCubeFace( x, z, ShapeId::Main, PickId::Top);
+    addCubeFace( x,-y, ShapeId::Main, PickId::Front);
+    addCubeFace(-y,-x, ShapeId::Main, PickId::Left);
+    addCubeFace(-x, y, ShapeId::Main, PickId::Rear);
+    addCubeFace( y, x, ShapeId::Main, PickId::Right);
+    addCubeFace( x,-z, ShapeId::Main, PickId::Bottom);
 
     // add edge faces
-    addCubeFace(x+y, x-y+z, SHAPE_CORNER, PID_FRONT_TOP_RIGHT);
-    addCubeFace(x-y,-x-y+z, SHAPE_CORNER, PID_FRONT_TOP_LEFT);
-    addCubeFace(x+y, x-y-z, SHAPE_CORNER, PID_FRONT_BOTTOM_RIGHT);
-    addCubeFace(x-y,-x-y-z, SHAPE_CORNER, PID_FRONT_BOTTOM_LEFT);
-    addCubeFace(x-y, x+y+z, SHAPE_CORNER, PID_REAR_TOP_RIGHT);
-    addCubeFace(x+y,-x+y+z, SHAPE_CORNER, PID_REAR_TOP_LEFT);
-    addCubeFace(x-y, x+y-z, SHAPE_CORNER, PID_REAR_BOTTOM_RIGHT);
-    addCubeFace(x+y,-x+y-z, SHAPE_CORNER, PID_REAR_BOTTOM_LEFT);
+    addCubeFace(x+y, x-y+z, ShapeId::Corner, PickId::FrontTopRight);
+    addCubeFace(x-y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft);
+    addCubeFace(x+y, x-y-z, ShapeId::Corner, PickId::FrontBottomRight);
+    addCubeFace(x-y,-x-y-z, ShapeId::Corner, PickId::FrontBottomLeft);
+    addCubeFace(x-y, x+y+z, ShapeId::Corner, PickId::RearTopRight);
+    addCubeFace(x+y,-x+y+z, ShapeId::Corner, PickId::RearTopLeft);
+    addCubeFace(x-y, x+y-z, ShapeId::Corner, PickId::RearBottomRight);
+    addCubeFace(x+y,-x+y-z, ShapeId::Corner, PickId::RearBottomLeft);
 
     // add corner faces
-    addCubeFace(x, z-y, SHAPE_EDGE, PID_FRONT_TOP);
-    addCubeFace(x,-z-y, SHAPE_EDGE, PID_FRONT_BOTTOM);
-    addCubeFace(x, y-z, SHAPE_EDGE, PID_REAR_BOTTOM);
-    addCubeFace(x, y+z, SHAPE_EDGE, PID_REAR_TOP);
-    addCubeFace(z, x+y, SHAPE_EDGE, PID_REAR_RIGHT);
-    addCubeFace(z, x-y, SHAPE_EDGE, PID_FRONT_RIGHT);
-    addCubeFace(z,-x-y, SHAPE_EDGE, PID_FRONT_LEFT);
-    addCubeFace(z, y-x, SHAPE_EDGE, PID_REAR_LEFT);
-    addCubeFace(y, z-x, SHAPE_EDGE, PID_TOP_LEFT);
-    addCubeFace(y, x+z, SHAPE_EDGE, PID_TOP_RIGHT);
-    addCubeFace(y, x-z, SHAPE_EDGE, PID_BOTTOM_RIGHT);
-    addCubeFace(y,-z-x, SHAPE_EDGE, PID_BOTTOM_LEFT);
+    addCubeFace(x, z-y, ShapeId::Edge, PickId::FrontTop);
+    addCubeFace(x,-z-y, ShapeId::Edge, PickId::FrontBottom);
+    addCubeFace(x, y-z, ShapeId::Edge, PickId::RearBottom);
+    addCubeFace(x, y+z, ShapeId::Edge, PickId::RearTop);
+    addCubeFace(z, x+y, ShapeId::Edge, PickId::RearRight);
+    addCubeFace(z, x-y, ShapeId::Edge, PickId::FrontRight);
+    addCubeFace(z,-x-y, ShapeId::Edge, PickId::FrontLeft);
+    addCubeFace(z, y-x, ShapeId::Edge, PickId::RearLeft);
+    addCubeFace(y, z-x, ShapeId::Edge, PickId::TopLeft);
+    addCubeFace(y, x+z, ShapeId::Edge, PickId::TopRight);
+    addCubeFace(y, x-z, ShapeId::Edge, PickId::BottomRight);
+    addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft);
 
     // create the flat buttons
-    addButtonFace(PID_ARROW_NORTH);
-    addButtonFace(PID_ARROW_SOUTH);
-    addButtonFace(PID_ARROW_EAST);
-    addButtonFace(PID_ARROW_WEST);
-    addButtonFace(PID_ARROW_LEFT);
-    addButtonFace(PID_ARROW_RIGHT);
-    addButtonFace(PID_DOT_BACKSIDE);
-    addButtonFace(PID_VIEW_MENU);
+    addButtonFace(PickId::ArrowNorth);
+    addButtonFace(PickId::ArrowSouth);
+    addButtonFace(PickId::ArrowEast);
+    addButtonFace(PickId::ArrowWest);
+    addButtonFace(PickId::ArrowLeft);
+    addButtonFace(PickId::ArrowRight);
+    addButtonFace(PickId::DotBackside);
+    addButtonFace(PickId::ViewMenu);
 
 
     if (m_PickingFramebuffer)
@@ -747,7 +775,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         glLineWidth(m_BorderWidth*2.f);
         glPointSize(m_BorderWidth*2.f);
         float a = -1.1f;
-        float b = -1.0f;
+        float b = -1.05f;
         float c =  0.5f;
 
         float pointData[] = {
@@ -775,11 +803,11 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (const auto& pair : m_Faces) {
         auto f = pair.second;
-        if (f.type == SHAPE_BUTTON)
+        if (f.type == ShapeId::Button)
             continue;
         auto pickId = pair.first;
         if (pickMode) {
-            glColor3ub(pickId, 0, 0);
+            glColor3ub(static_cast<GLubyte>(pickId), 0, 0);
         }
         else {
             QColor& c = m_HiliteId == pickId ? m_HiliteColor : m_BaseColor;
@@ -796,7 +824,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         // QColor& cb = m_EmphaseColor;
         for (const auto& pair : m_Faces) {
             auto f = pair.second;
-            if (f.type == SHAPE_BUTTON)
+            if (f.type == ShapeId::Button)
                 continue;
             glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF());
             glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
@@ -813,7 +841,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
         for (const auto& pair : m_LabelTextures) {
             auto f = pair.second;
-            int pickId = pair.first;
+            PickId pickId = pair.first;
             glVertexPointer(3, GL_FLOAT, 0, m_LabelTextures[pickId].vertexArray.data());
             glBindTexture(GL_TEXTURE_2D, f.texture->textureId());
             glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -832,11 +860,11 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
 
     for (const auto& pair : m_Faces) {
         auto f = pair.second;
-        if (f.type != SHAPE_BUTTON)
+        if (f.type != ShapeId::Button)
             continue;
-        auto pickId = pair.first;
+        PickId pickId = pair.first;
         if (pickMode) {
-            glColor3ub(pickId, 0, 0);
+            glColor3ub(static_cast<GLubyte>(pickId), 0, 0);
         }
         else {
             QColor& c = m_HiliteId == pickId ? m_HiliteColor : m_BaseColor;
@@ -860,7 +888,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
     glPopAttrib();
 }
 
-int NaviCubeImplementation::pickFace(short x, short y) {
+NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y) {
     GLubyte pixels[4] = {0};
     if (m_PickingFramebuffer && std::abs(x) <= m_CubeWidgetSize / 2 &&
         std::abs(y) <= m_CubeWidgetSize / 2) {
@@ -879,15 +907,15 @@ int NaviCubeImplementation::pickFace(short x, short y) {
                      GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
         m_PickingFramebuffer->release();
     }
-    return pixels[3] == 255 ? pixels[0] : 0;
+    return pixels[3] == 255 ? static_cast<PickId>(pixels[0]) : PickId::None;
 }
 
 bool NaviCubeImplementation::mousePressed(short x, short y) {
     m_MouseDown = true;
     m_MightDrag = inDragZone(x, y);
-    int pick = pickFace(x, y);
+    PickId pick = pickFace(x, y);
     setHilite(pick);
-    return pick != 0;
+    return pick != PickId::None;
 }
 
 SbRotation NaviCubeImplementation::setView(float rotZ, float rotX) const {
@@ -897,7 +925,7 @@ SbRotation NaviCubeImplementation::setView(float rotZ, float rotX) const {
     return rx * rz;
 }
 
-SbRotation NaviCubeImplementation::rotateView(SbRotation viewRot, int axis, float rotAngle, SbVec3f customAxis) const {
+SbRotation NaviCubeImplementation::rotateView(SbRotation viewRot, DirId axis, float rotAngle, SbVec3f customAxis) const {
     SbVec3f up;
     viewRot.multVec(SbVec3f(0, 1, 0), up);
 
@@ -911,19 +939,19 @@ SbRotation NaviCubeImplementation::rotateView(SbRotation viewRot, int axis, floa
     switch (axis) {
     default:
         return viewRot;
-    case DIR_UP:
+    case DirId::Up:
         direction = up;
         break;
-    case DIR_OUT:
+    case DirId::Out:
         direction = out;
         break;
-    case DIR_RIGHT:
+    case DirId::Right:
         direction = right;
         break;
-    }
-
-    if (customAxis != SbVec3f(0, 0, 0))
+    case DirId::Custom:
         direction = customAxis;
+        break;
+    }
 
     SbRotation rot(direction, -rotAngle * M_PI / 180.0);
     SbRotation newViewRot = viewRot * rot;
@@ -939,7 +967,7 @@ void NaviCubeImplementation::handleMenu() {
 }
 
 bool NaviCubeImplementation::mouseReleased(short x, short y) {
-    setHilite(0);
+    setHilite(PickId::None);
     m_MouseDown = false;
 
     // get the current view
@@ -952,7 +980,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
     } else {
         float rot = 45;
         float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
-        int pick = pickFace(x, y);
+        PickId pick = pickFace(x, y);
         long step = Base::clamp(long(m_NaviStepByTurn), 4L, 36L);
         float rotStepAngle = 360.0f / step;
         bool applyRotation = true;
@@ -963,232 +991,232 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
         default:
             return false;
             break;
-        case PID_FRONT:
+        case PickId::Front:
             viewRot = setView(0, 90);
-            // we don't want to dumb rotate to the same view since depending on from where the user clicked on FRONT
+            // we don't want to dumb rotate to the same view since depending on from where the user clicked on Front
             // we have one of four suitable end positions.
             // we use here the same rotation logic used by other programs using OCC like "CAD Assistant"
             // when current matrix's 0,0 entry is larger than its |1,0| entry, we already have the final result
             // otherwise rotate around y
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_REAR:
+        case PickId::Rear:
             viewRot = setView(180, 90);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_LEFT:
+        case PickId::Left:
             viewRot = setView(270, 90);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_RIGHT:
+        case PickId::Right:
             viewRot = setView(90, 90);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_TOP:
+        case PickId::Top:
             viewRot = setView(0, 0);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_BOTTOM:
+        case PickId::Bottom:
             viewRot = setView(0, 180);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_FRONT_TOP:
-            // set to FRONT then rotate
+        case PickId::FrontTop:
+            // set to Front then rotate
             viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, 1, 45);
+            viewRot = rotateView(viewRot, DirId::Right, 45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_FRONT_BOTTOM:
-            // set to FRONT then rotate
+        case PickId::FrontBottom:
+            // set to Front then rotate
             viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, 1, -45);
+            viewRot = rotateView(viewRot, DirId::Right, -45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_REAR_BOTTOM:
-            // set to REAR then rotate
+        case PickId::RearBottom:
+            // set to Rear then rotate
             viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, 1, -45);
+            viewRot = rotateView(viewRot, DirId::Right, -45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_REAR_TOP:
-            // set to REAR then rotate
+        case PickId::RearTop:
+            // set to Rear then rotate
             viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, 1, 45);
+            viewRot = rotateView(viewRot, DirId::Right, 45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_FRONT_LEFT:
-            // set to FRONT then rotate
+        case PickId::FrontLeft:
+            // set to Front then rotate
             viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, 0, 45);
+            viewRot = rotateView(viewRot, DirId::Up, 45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_FRONT_RIGHT:
-            // set to FRONT then rotate
+        case PickId::FrontRight:
+            // set to Front then rotate
             viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, 0, -45);
+            viewRot = rotateView(viewRot, DirId::Up, -45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_REAR_RIGHT:
-            // set to REAR then rotate
+        case PickId::RearRight:
+            // set to Rear then rotate
             viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, 0, 45);
+            viewRot = rotateView(viewRot, DirId::Up, 45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_REAR_LEFT:
-            // set to REAR then rotate
+        case PickId::RearLeft:
+            // set to Rear then rotate
             viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, 0, -45);
+            viewRot = rotateView(viewRot, DirId::Up, -45);
             if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                viewRot = rotateView(viewRot, 2, 180);
+                viewRot = rotateView(viewRot, DirId::Out, 180);
             else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                viewRot = rotateView(viewRot, 2, -90);
+                viewRot = rotateView(viewRot, DirId::Out, -90);
             else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                viewRot = rotateView(viewRot, 2, 90);
+                viewRot = rotateView(viewRot, DirId::Out, 90);
             break;
-        case PID_TOP_LEFT:
-            // set to LEFT then rotate
+        case PickId::TopLeft:
+            // set to Left then rotate
             viewRot = setView(270, 90);
-            viewRot = rotateView(viewRot, 1, 45);
+            viewRot = rotateView(viewRot, DirId::Right, 45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_TOP_RIGHT:
-            // set to RIGHT then rotate
+        case PickId::TopRight:
+            // set to Right then rotate
             viewRot = setView(90, 90);
-            viewRot = rotateView(viewRot, 1, 45);
+            viewRot = rotateView(viewRot, DirId::Right, 45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_BOTTOM_RIGHT:
-            // set to RIGHT then rotate
+        case PickId::BottomRight:
+            // set to Right then rotate
             viewRot = setView(90, 90);
-            viewRot = rotateView(viewRot, 1, -45);
+            viewRot = rotateView(viewRot, DirId::Right, -45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
                 else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
             }
             break;
-        case PID_BOTTOM_LEFT:
-            // set to LEFT then rotate
+        case PickId::BottomLeft:
+            // set to Left then rotate
             viewRot = setView(270, 90);
-            viewRot = rotateView(viewRot, 1, -45);
+            viewRot = rotateView(viewRot, DirId::Right, -45);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, 2, 180);
+                    viewRot = rotateView(viewRot, DirId::Out, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, -90);
+                    viewRot = rotateView(viewRot, DirId::Out, -90);
                 else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, 2, 90);
+                    viewRot = rotateView(viewRot, DirId::Out, 90);
             }
             break;
-        case PID_FRONT_BOTTOM_LEFT:
+        case PickId::FrontBottomLeft:
             viewRot = setView(rot - 90, 90 + tilt);
             // we have 3 possible end states:
             // - z-axis is not rotated larger than 120 deg from (0, 1, 0) -> we are already there
@@ -1196,96 +1224,96 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // - x-axis is not rotated larger than 120 deg from (0, 1, 0)
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, 1, 1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, 1, 1));
             }
             break;
-        case PID_FRONT_BOTTOM_RIGHT:
+        case PickId::FrontBottomRight:
             viewRot = setView(90 + rot - 90, 90 + tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, 1, 1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, 1, 1));
             }
             break;
-        case PID_REAR_BOTTOM_RIGHT:
+        case PickId::RearBottomRight:
             viewRot = setView(180 + rot - 90, 90 + tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, -1, 1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, -1, 1));
             }
             break;
-        case PID_REAR_BOTTOM_LEFT:
+        case PickId::RearBottomLeft:
             viewRot = setView(270 + rot - 90, 90 + tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, -1, 1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, 1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, -1, 1));
             }
             break;
-        case PID_FRONT_TOP_RIGHT:
+        case PickId::FrontTopRight:
             viewRot = setView(rot, 90 - tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, 1, -1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, 1, -1));
             }
             break;
-        case PID_FRONT_TOP_LEFT:
+        case PickId::FrontTopLeft:
             viewRot = setView(rot - 90, 90 - tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, 1, -1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, 1, -1));
             }
             break;
-        case PID_REAR_TOP_LEFT:
+        case PickId::RearTopLeft:
             viewRot = setView(rot - 180, 90 - tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, -1, -1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, -1, -1));
             }
             break;
-        case PID_REAR_TOP_RIGHT:
+        case PickId::RearTopRight:
             viewRot = setView(rot - 270, 90 - tilt);
             if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, -1, -1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, -1));
+                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, -1, -1));
             }
             break;
-        case PID_ARROW_LEFT:
-            viewRot = rotateView(viewRot, DIR_OUT, rotStepAngle);
+        case PickId::ArrowLeft:
+            viewRot = rotateView(viewRot, DirId::Out, rotStepAngle);
             break;
-        case PID_ARROW_RIGHT:
-            viewRot = rotateView(viewRot, DIR_OUT, -rotStepAngle);
+        case PickId::ArrowRight:
+            viewRot = rotateView(viewRot, DirId::Out, -rotStepAngle);
             break;
-        case PID_ARROW_WEST:
-            viewRot = rotateView(viewRot, DIR_UP, -rotStepAngle);
+        case PickId::ArrowWest:
+            viewRot = rotateView(viewRot, DirId::Up, -rotStepAngle);
             break;
-        case PID_ARROW_EAST:
-            viewRot = rotateView(viewRot, DIR_UP, rotStepAngle);
+        case PickId::ArrowEast:
+            viewRot = rotateView(viewRot, DirId::Up, rotStepAngle);
             break;
-        case PID_ARROW_NORTH:
-            viewRot = rotateView(viewRot, DIR_RIGHT, -rotStepAngle);
+        case PickId::ArrowNorth:
+            viewRot = rotateView(viewRot, DirId::Right, -rotStepAngle);
             break;
-        case PID_ARROW_SOUTH:
-            viewRot = rotateView(viewRot, DIR_RIGHT, rotStepAngle);
+        case PickId::ArrowSouth:
+            viewRot = rotateView(viewRot, DirId::Right, rotStepAngle);
             break;
-        case PID_DOT_BACKSIDE:
-            viewRot = rotateView(viewRot, DIR_UP, 180);
+        case PickId::DotBackside:
+            viewRot = rotateView(viewRot, DirId::Up, 180);
             break;
-        case PID_VIEW_MENU:
+        case PickId::ViewMenu:
             handleMenu();
             applyRotation = false;
             break;
@@ -1297,7 +1325,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
     return true;
 }
 
-void NaviCubeImplementation::setHilite(int hilite) {
+void NaviCubeImplementation::setHilite(PickId hilite) {
     if (hilite != m_HiliteId) {
         m_HiliteId = hilite;
         m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
@@ -1316,7 +1344,7 @@ bool NaviCubeImplementation::mouseMoved(short x, short y) {
     if (m_MouseDown && m_Draggable) {
         if (m_MightDrag && !m_Dragging) {
             m_Dragging = true;
-            setHilite(0);
+            setHilite(PickId::None);
         }
         if (m_Dragging && (std::abs(x) || std::abs(y))) {
             float newX = m_RelPos[0] + (float)(x) / m_PosAreaSize[0];
