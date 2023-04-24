@@ -115,6 +115,11 @@ locations = [
     ],
     ["FreeCAD", "../Gui/Language", "../Gui/Language/translation.qrc"],
     [
+        "Inspection",
+        "../Mod/Inspection/Gui/Resources/translations",
+        "../Mod/Inspection/Gui/Resources/Inspection.qrc",
+    ],
+    [
         "Mesh",
         "../Mod/Mesh/Gui/Resources/translations",
         "../Mod/Mesh/Gui/Resources/Mesh.qrc",
