@@ -1194,17 +1194,9 @@ void View3DInventorViewer::setNaviCubeCorner(int c)
         naviCube->setCorner(static_cast<NaviCube::Corner>(c));
 }
 
-NaviCube* View3DInventorViewer::getNavigationCube() const
+NaviCube* View3DInventorViewer::getNaviCube() const
 {
     return naviCube;
-}
-
-void View3DInventorViewer::updateNavigationCube()
-{
-    if (naviCube) {
-        delete naviCube;
-        naviCube = new NaviCube(this);
-    }
 }
 
 void View3DInventorViewer::setAxisCross(bool on)

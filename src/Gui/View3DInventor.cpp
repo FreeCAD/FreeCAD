@@ -145,7 +145,6 @@ View3DInventor::~View3DInventor()
     }
 
     viewSettings.reset();
-    naviSettings.reset();
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
