@@ -304,9 +304,9 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
     tempID._postfix = name.postfixBytes();
 
     Data::IndexedName indexed;
-    if (tempID._postfix.size() == 0) {
-        // Restrict this optimization to only cases with no postfix because it is causing some
-        // problems during recomputes. TODO: This needs to be investigated further
+    if (tempID._postfix.size() != 0) {
+        // Only check for IndexedName if there is postfix, because of the way
+        // we restore the StringID. See StringHasher::saveStream/restoreStreamNew()
         indexed = Data::IndexedName(name.dataBytes());
     }
     if (indexed) {
@@ -404,6 +404,10 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
         // Use the fromString function to parse the new StringID's data field for a possible index
         StringID::IndexID res = StringID::fromString(newStringID._data);
         if (res.id > 0) {// If the data had an index
+            if (res.index != 0) {
+                indexed.setIndex(res.index);
+                newStringID._data.resize(newStringID._data.lastIndexOf(':')+1);
+            }
             int offset = newStringID.isPostfixEncoded() ? 1 : 0;
             // Search for the SID with that index
             for (int i = offset; i < newStringID._sids.size(); ++i) {
@@ -579,10 +583,7 @@ void StringHasher::saveStream(std::ostream& stream) const
         // guarantees to be a single line without space. So it is safe to
         // store in raw stream.
         if (d.isPostfixed()) {
-            if (d.isPrefixIDIndex()) {
-                stream << ' ' << prefixID.index;
-            }
-            else if (!d.isIndexed() && !d.isPrefixID()) {
+            if (!d.isPrefixIDIndex() && !d.isIndexed() && !d.isPrefixID()) {
                 stream << ' ' << d._data.constData();
             }
 
@@ -714,13 +715,9 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
                 if (d._sids.size() <= offset) {
                     FC_THROWM(Base::RuntimeError, "Missing string prefix id");
                 }
-                int index = 0;
-                if (d.isPrefixIDIndex()) {
-                    if (!(stream >> index)) {
-                        FC_THROWM(Base::RuntimeError, "Missing string prefix index");
-                    }
-                }
-                d._data = d._sids[offset]._sid->toString(index).c_str();
+                d._data = d._sids[offset]._sid->toString(0).c_str();
+                if (d.isPrefixIDIndex())
+                    d._data += ":";
             }
             else {
                 stream >> content;
