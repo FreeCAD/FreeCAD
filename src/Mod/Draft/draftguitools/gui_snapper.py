@@ -1653,7 +1653,7 @@ class Snapper:
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
 
-        if self.grid and (not self.forceGridOff):
+        if tool and self.grid and (not self.forceGridOff):
             self.grid.set(tool)
 
 
