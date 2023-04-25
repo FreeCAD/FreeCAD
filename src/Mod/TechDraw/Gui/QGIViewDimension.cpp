@@ -2566,7 +2566,7 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
     else if (dir.IsEqual(-isoZ, FLT_EPSILON)) {
         return -isoX;
     }
-    
+
     //tarfu
     Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
                             getViewObject()->getNameInDocument());

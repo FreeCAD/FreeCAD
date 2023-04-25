@@ -377,14 +377,14 @@ int imageVerticalBalance(QImage p, int sizeHint) {
             if (qAlpha(p.pixel(x, top))) {
                 done = true;
                 break;
-            } 
+            }
         }
         if (done) break;
     }
     for (bottom = startRow; bottom < h; bottom++) {
         for (x = 0; x < p.width(); x++){
-            if (qAlpha(p.pixel(x, h-1-bottom))) 
-                return (bottom-top)/2; 
+            if (qAlpha(p.pixel(x, h-1-bottom)))
+                return (bottom-top)/2;
         }
     }
     return 0;
@@ -408,7 +408,7 @@ void NaviCubeImplementation::createCubeFaceTextures() {
     qreal maxFontSize = 0.;
     vector<PickId> mains = {PickId::Front, PickId::Top, PickId::Right, PickId::Rear, PickId::Bottom, PickId::Left};
     for (PickId pickId : mains) {
-        auto t = QString::fromUtf8(m_LabelTextures[pickId].label.c_str()); 
+        auto t = QString::fromUtf8(m_LabelTextures[pickId].label.c_str());
         QRect br = fm.boundingRect(t);
         float scale = (float)texSize / max(br.width(),br.height());
         m_LabelTextures[pickId].fontSize = texSize * scale;

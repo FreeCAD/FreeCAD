@@ -19,10 +19,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Utilites for generating C++ code for parameters management using Python Cog
+"""Utilities for generating C++ code for parameter management using Python Cog
 """
 import cog
-import inspect, re
+import inspect
+import re
 from os import path
 
 
