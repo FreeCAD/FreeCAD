@@ -690,7 +690,7 @@ def export( exportList, filename, colors = None, camera = None ):
         # Pull all obj data before we dig down the links
         label = obj.Label
 
-        color = '#cccccc';
+        color = '#cccccc'
         opacity = 1.0
         if FreeCADGui:
             color = Draft.getrgb(obj.ViewObject.ShapeColor, testbw = False)
