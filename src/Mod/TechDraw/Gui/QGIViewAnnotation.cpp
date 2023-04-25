@@ -133,7 +133,21 @@ void QGIViewAnnotation::drawAnnotation()
         return;
     }
 
-    const std::vector<std::string>& annoText = viewAnno->Text.getValues();
+    const std::vector<std::string>& annoRawText = viewAnno->Text.getValues();
+    std::vector<std::string> annoText;
+    // v0.19- stored text as escapedUnicode
+    // v0.20+ stores text as utf8
+    for (auto& line : annoRawText) {
+        if (line.find("\\x") == std::string::npos) {
+            // not escaped
+            annoText.push_back(line);
+        } else {
+            // is escaped
+            std::string newLine = Base::Tools::escapedUnicodeToUtf8(line);
+            annoText.push_back(newLine);
+        }
+    }
+
     int fontSize = calculateFontPixelSize(viewAnno->TextSize.getValue());
 
     //build HTML/CSS formatting around Text lines
