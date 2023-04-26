@@ -47,7 +47,7 @@ runs:
       shell: bash
       run:  |
         result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
-        if [ $(echo $result | grep -F "[  FAILED  ]") ]
+        if grep -qF "[  FAILED  ]" <<< $result
         then
           echo "<details><summary>:fire: GTest C++ unit test suite failed</summary>" >> ${{ inputs.reportFile }}
         else
