@@ -275,16 +275,17 @@ void TaskHelixParameters::updateStatus()
 {
     auto pcHelix = static_cast<PartDesign::Helix*>(vp->getObject());
     auto status = std::string(pcHelix->getStatusString());
+    QString translatedStatus;
     if (status.compare("Valid") == 0 || status.compare("Touched") == 0) {
-        if (pcHelix->safePitch() > pcHelix->Pitch.getValue())
-            status = "Warning: helix might be self intersecting";
-        else
-            status = "";
+        if (pcHelix->safePitch() > pcHelix->Pitch.getValue()) {
+            translatedStatus = tr("Warning: helix might be self intersecting");
+        }
     }
     // if the helix touches itself along a single helical edge we get this error
-    else if (status.compare("NCollection_IndexedDataMap::FindFromKey") == 0)
-        status = "Error: helix touches itself";
-    ui->labelMessage->setText(QString::fromUtf8(status.c_str()));
+    else if (status.compare("NCollection_IndexedDataMap::FindFromKey") == 0) {
+        translatedStatus = tr("Error: helix touches itself");
+    }
+    ui->labelMessage->setText(translatedStatus);
 }
 
 void TaskHelixParameters::updateUI()
