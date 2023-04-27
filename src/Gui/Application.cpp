@@ -66,6 +66,7 @@
 #include "CommandPy.h"
 #include "Control.h"
 #include "DlgSettingsCacheDirectory.h"
+#include "DlgCheckableMessageBox.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
 #include "EditorView.h"
@@ -2188,14 +2189,15 @@ void Application::runApplication()
                 auto message =
                     QObject::tr("This system is running OpenGL %1.%2. "
                                 "FreeCAD requires OpenGL 2.0 or above. "
-                                "Please upgrade your graphics driver and/or card as required."
-                                ).arg(major).arg(minor)
+                                "Please upgrade your graphics driver and/or card as required.")
+                        .arg(major)
+                        .arg(minor)
                     + QStringLiteral("\n");
                 Base::Console().Warning(message.toStdString().c_str());
-                QMessageBox::critical(nullptr,
-                                      Gui::GUISingleApplication::applicationName()
-                                          + QStringLiteral(" - ")
-                                          + QObject::tr("Invalid OpenGL Version"), message);
+                Dialog::DlgCheckableMessageBox::showMessage(
+                    Gui::GUISingleApplication::applicationName() + QStringLiteral(" - ")
+                        + QObject::tr("Invalid OpenGL Version"),
+                    message);
             }
 #endif
             const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
