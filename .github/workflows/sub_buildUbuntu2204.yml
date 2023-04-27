@@ -206,7 +206,7 @@ jobs:
         with:
           reportdir: ${{ env.reportdir }}
           builddir: ${{ env.builddir }}
-          reportfilename: ${{ env.reportfilename }}
+          reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
       - name: CMake Install
         uses: ./.github/workflows/actions/linux/install
         with:
