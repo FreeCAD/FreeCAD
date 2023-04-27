@@ -145,7 +145,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please make a body active before inserting a datum entity."));
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QApplication::translate("Exception", e.what()));
     } catch (Standard_Failure &e) {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.GetMessageString()));
     }
@@ -406,7 +406,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     } catch (Base::Exception &e) {
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(),
-                QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
+                QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
     }
 }
