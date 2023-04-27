@@ -31,7 +31,6 @@ This is the complete python API reference of the FreeCAD application
    DraftWorkingPlane.rst
    Arch.rst
    Drawing.rst
-   RayTracing.rst
 
 * :ref:`genindex`
 * :ref:`modindex`
