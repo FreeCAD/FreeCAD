@@ -638,10 +638,10 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             msg = translate("PathOp", "Multiple operations are labeled as")
             msg += " {}\n".format(opLabel)
             FreeCAD.Console.PrintWarning(msg)
-        (base, subList) = ops[0].Base[0]
-        FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection(base, subList)
-        self.addBase()
+        for base, subList in ops[0].Base:
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(base, subList)
+            self.addBase()
 
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
