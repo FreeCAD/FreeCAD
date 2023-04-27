@@ -155,11 +155,6 @@ locations = [
         "../Mod/Points/Gui/Resources/Points.qrc",
     ],
     [
-        "Raytracing",
-        "../Mod/Raytracing/Gui/Resources/translations",
-        "../Mod/Raytracing/Gui/Resources/Raytracing.qrc",
-    ],
-    [
         "ReverseEngineering",
         "../Mod/ReverseEngineering/Gui/Resources/translations",
         "../Mod/ReverseEngineering/Gui/Resources/ReverseEngineering.qrc",
