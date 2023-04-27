@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <QDomDocument>
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if 0 && QT_VERSION < QT_VERSION_CHECK(6,0,0)
 # include "QDomNodeModel.h"
 # include <QXmlQuery>
 # include <QXmlResultItems>
@@ -43,7 +43,7 @@ XMLQuery::XMLQuery(QDomDocument& dom)
 
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if 0 && QT_VERSION < QT_VERSION_CHECK(6,0,0)
 bool XMLQuery::processItems(const QString& queryStr, const std::function<bool(QDomElement&)>& process)
 {
     QXmlQuery query(QXmlQuery::XQuery10);
