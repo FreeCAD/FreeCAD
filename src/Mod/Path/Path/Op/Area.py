@@ -265,7 +265,10 @@ class ObjectOp(PathOp.ObjectOp):
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
-        self.endVector = end_vector
+
+        # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
+        if pp.Size > 0:
+            self.endVector = end_vector
 
         simobj = None
         if getsim:
