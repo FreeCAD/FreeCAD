@@ -8,6 +8,7 @@
 #include "SystemSolver.h"
 
 namespace MbD {
+	class Part;
 	class SystemSolver;
 	class System : public Item
 	{
@@ -22,12 +23,9 @@ namespace MbD {
 		std::vector<std::shared_ptr<Joint>> jointsMotions;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
+		void addPart(std::shared_ptr<Part> part);
 	private:
-		System() {
-			parts = std::vector<std::shared_ptr<Part>>();
-			jointsMotions = std::vector<std::shared_ptr<Joint>>();
-			systemSolver = std::make_shared<SystemSolver>(*this);
-		}
+		System();
 		//System() = default; // Private constructor
 		System(const System&) = delete;
 		System& operator=(const System&) = delete; // Deleted copy assignment

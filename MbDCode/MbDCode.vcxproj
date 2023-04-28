@@ -131,8 +131,13 @@
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="CartesianFrame.cpp" />
     <ClCompile Include="Constraint.cpp" />
+    <ClCompile Include="DiagonalMatrix.cpp" />
+    <ClCompile Include="EndFramec.cpp" />
+    <ClCompile Include="EndFrameqc.cpp" />
+    <ClCompile Include="EndFrameqct.cpp" />
     <ClCompile Include="EulerConstraint.cpp" />
     <ClCompile Include="FullColumn.cpp" />
+    <ClCompile Include="FullMatrix.cpp" />
     <ClCompile Include="FullRow.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Joint.cpp" />
@@ -141,27 +146,37 @@
     <ClCompile Include="NewtonRaphson.cpp" />
     <ClCompile Include="Part.cpp" />
     <ClCompile Include="PartFrame.cpp" />
+    <ClCompile Include="RowTypeMatrix.cpp" />
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemSolver.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbsConstraint.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="CartesianFrame.h" />
     <ClInclude Include="Constraint.h" />
+    <ClInclude Include="DiagonalMatrix.h" />
+    <ClInclude Include="EndFramec.h" />
+    <ClInclude Include="EndFrameqc.h" />
+    <ClInclude Include="EndFrameqct.h" />
     <ClInclude Include="EulerConstraint.h" />
     <ClInclude Include="FullColumn.h" />
+    <ClInclude Include="FullMatrix.h" />
     <ClInclude Include="FullRow.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Joint.h" />
     <ClInclude Include="MarkerFrame.h" />
+    <ClInclude Include="MbDCode.h" />
     <ClInclude Include="NewtonRaphson.h" />
     <ClInclude Include="Part.h" />
     <ClInclude Include="PartFrame.h" />
+    <ClInclude Include="RowTypeMatrix.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="SystemSolver.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #pragma once
 #include "Array.h"
+
 namespace MbD {
     template <typename T>
     class Vector : public Array<T>

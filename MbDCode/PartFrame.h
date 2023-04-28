@@ -15,25 +15,22 @@ namespace MbD {
 
 	class PartFrame : public CartesianFrame
 	{
+		//ToDo: part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
 	public:
 		PartFrame();
-		void setqX(FullColumn<double>* x) {
-			qX = x;
-		}
-		FullColumn<double>* getqX() {
-			return qX;
-		}
-		void setPart(std::shared_ptr<Part> x) {
-			part = x;
-		}
-		std::shared_ptr<Part> getPart() {
-			return part.lock();
-		}
-		//part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
+
+		void setqX(FullColumn<double>* x);
+		FullColumn<double>* getqX();
+		void setqE(FullColumn<double>* x);
+		FullColumn<double>* getqE();
+		void setPart(std::shared_ptr<Part> x);
+		std::shared_ptr<Part> getPart();
+		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
+
 		std::weak_ptr<Part> part;
 		int iqX, iqE;	//Position index of frame variables qX and qE in system list of variables
-		FullColumn<double>* qX;
-		FullColumn<double>* qE;
+		FullColumn<double>* qX = new FullColumn<double>(3);
+		FullColumn<double>* qE = new FullColumn<double>(4);
 		std::shared_ptr<EulerConstraint> aGeu;
 		std::vector<std::shared_ptr<AbsConstraint>> aGabs;
 		std::vector<std::shared_ptr<MarkerFrame>> markerFrames;
