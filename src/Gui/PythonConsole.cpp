@@ -36,6 +36,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <Base/PythonTools.h>
 #include <App/Color.h>
 
 #include "PythonConsole.h"
@@ -471,8 +472,8 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stdin  = PySys_GetObject("stdin");
     PySys_SetObject("stdin", d->_stdinPy);
 
-    const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
-    const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
+    const char* version  = Base::PyTools::asUTF8FromUnicode(PySys_GetObject("version"));
+    const char* platform = Base::PyTools::asUTF8FromUnicode(PySys_GetObject("platform"));
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromLatin1(version), QString::fromLatin1(platform));

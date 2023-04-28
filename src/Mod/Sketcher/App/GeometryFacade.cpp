@@ -27,6 +27,7 @@
 
 #include "GeometryFacade.h"
 #include "GeometryFacadePy.h"
+#include <Base/Exception.h>
 
 
 using namespace Sketcher;

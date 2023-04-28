@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/BoundBoxPy.h>
+#include <Base/PythonTools.h>
 
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
@@ -422,7 +423,7 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
             if(value)
                 item = PySequence_GetItem(value, i);
             if (PyUnicode_Check(item)) {
-                values[i] = PyUnicode_AsUTF8(item);
+                values[i] = Base::PyTools::asUTF8FromUnicode(item);
             }
             else {
                 std::string error = std::string("type must be str");

@@ -26,6 +26,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "ExternalGeometryFacade.h"
 #include "ExternalGeometryFacadePy.h"

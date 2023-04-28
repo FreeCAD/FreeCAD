@@ -33,6 +33,7 @@
 
 #include <functional>
 #include <Base/Interpreter.h>
+#include <Base/PythonTools.h>
 
 #include "UiLoader.h"
 #include "PythonWrapper.h"
@@ -142,7 +143,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    form_class = frame['Ui_%s'%form_class]\n"
         << "    base_class = eval('QtWidgets.%s'%widget_class)\n";
 
-    PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
+    PyObject* result = Base::PyTools::runString(cmd.toLatin1(), d.ptr());
     if (result) {
         Py_DECREF(result);
         if (d.hasKey("form_class") && d.hasKey("base_class")) {
@@ -182,7 +183,7 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
         << "\n";
 
 
-    PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
+    PyObject* result = Base::PyTools::runString(cmd.toLatin1(), d.ptr());
     if (result) {
         Py_DECREF(result);
         if (d.hasKey("widget")) {

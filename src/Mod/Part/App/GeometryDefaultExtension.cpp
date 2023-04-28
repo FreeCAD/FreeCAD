@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Exception.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 

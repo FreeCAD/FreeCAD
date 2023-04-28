@@ -29,6 +29,7 @@
 
 #include <CXX/Objects.hxx>
 
+#include "Exception.h"
 #include "UnitsApi.h"
 #include "Quantity.h"
 #include "QuantityPy.h"

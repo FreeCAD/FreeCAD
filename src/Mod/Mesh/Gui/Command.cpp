@@ -43,6 +43,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/PythonTools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -120,7 +121,7 @@ void CmdMeshUnion::activated(int)
         Py::Dict d(PyDict_Copy(dict), true);
 
         const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
-        PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
+        PyObject* result = Base::PyTools::runString(cmd, d.ptr());
         Py_XDECREF(result);
 
         bool found = false;
@@ -191,7 +192,7 @@ void CmdMeshDifference::activated(int)
         Py::Dict d(PyDict_Copy(dict), true);
 
         const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
-        PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
+        PyObject* result = Base::PyTools::runString(cmd, d.ptr());
         Py_XDECREF(result);
 
         bool found = false;
@@ -262,7 +263,7 @@ void CmdMeshIntersection::activated(int)
         Py::Dict d(PyDict_Copy(dict), true);
 
         const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
-        PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
+        PyObject* result = Base::PyTools::runString(cmd, d.ptr());
         Py_XDECREF(result);
 
         bool found = false;

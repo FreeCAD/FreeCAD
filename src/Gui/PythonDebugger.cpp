@@ -28,6 +28,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PythonTools.h>
 
 #include "PythonDebugger.h"
 #include "BitmapFactory.h"
@@ -583,7 +584,7 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
         PyErr_SetInterrupt();
     QCoreApplication::processEvents();
     PyCodeObject* code = PyFrame_GetCode(frame);
-    QString file = QString::fromUtf8(PyUnicode_AsUTF8(code->co_filename));
+    QString file = QString::fromUtf8(Base::PyTools::asUTF8FromUnicode(code->co_filename));
     Py_DECREF(code);
     switch (what) {
     case PyTrace_CALL:

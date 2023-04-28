@@ -34,6 +34,7 @@
 #endif
 #include "Blending/BlendCurve.h"
 #include "Blending/BlendCurvePy.h"
+#include <Base/Exception.h>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
 

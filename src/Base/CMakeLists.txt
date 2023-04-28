@@ -243,6 +243,7 @@ SET(FreeCADBase_CPP_SRCS
     ProgressIndicatorPy.cpp
     PyExport.cpp
     PyObjectBase.cpp
+    PythonTools.cpp
     PythonTypeExt.cpp
     QtTools.cpp
     Reader.cpp
@@ -309,6 +310,7 @@ SET(FreeCADBase_HPP_SRCS
     ProgressIndicatorPy.h
     PyExport.h
     PyObjectBase.h
+    PythonTools.h
     PythonTypeExt.h
     QtTools.h
     Reader.h

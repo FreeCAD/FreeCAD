@@ -79,6 +79,7 @@
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
+#include <Base/PythonTools.h>
 #include <Base/VectorPy.h>
 
 #include "BSplineSurfacePy.h"
@@ -1964,7 +1965,7 @@ private:
 
         //FIXME: Test this!
         if (PyBytes_Check(intext)) {
-            PyObject *p = Base::PyAsUnicodeObject(PyBytes_AsString(intext));
+            PyObject *p = Base::PyTools::asUnicodeObject(PyBytes_AsString(intext));
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }

@@ -41,6 +41,7 @@
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/PythonTools.h>
 #include <CXX/Objects.hxx>
 
 #include "Application.h"
@@ -1296,18 +1297,9 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
     Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
 
-    PyObject *module, *dict;
 
     Base::PyGILStateLocker locker;
-    module = PyImport_AddModule("__main__");
-    if (!module)
-        return nullptr;
-
-    dict = PyModule_GetDict(module);
-    if (!dict)
-        return nullptr;
-
-    return PyRun_String(sCmd, Py_file_input, dict, dict);
+    return Base::PyTools::runString(sCmd);
 }
 
 PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
@@ -1322,18 +1314,8 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
     Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
 
-    PyObject *module, *dict;
-
     Base::PyGILStateLocker locker;
-    module = PyImport_AddModule("__main__");
-    if (!module)
-        return nullptr;
-
-    dict = PyModule_GetDict(module);
-    if (!dict)
-        return nullptr;
-
-    return PyRun_String(sCmd, Py_file_input, dict, dict);
+    return Base::PyTools::runString(sCmd);
 }
 
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args)

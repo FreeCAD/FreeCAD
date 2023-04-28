@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <Base/PythonTools.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
@@ -60,7 +61,7 @@ PyObject* DrawViewDimensionPy::getText(PyObject* args)
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     std::string  textString = dvd->getFormattedDimensionValue();
 //TODO: check multiversion code!
-    PyObject* pyText = Base::PyAsUnicodeObject(textString);
+    PyObject* pyText = Base::PyTools::asUnicodeObject(textString);
     return pyText;
 }
 

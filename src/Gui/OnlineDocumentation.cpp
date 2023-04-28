@@ -31,6 +31,7 @@
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
+#include <Base/PythonTools.h>
 
 #include "OnlineDocumentation.h"
 #include "MainWindow.h"
@@ -158,11 +159,11 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>'''\n"
             "htmldocument=pydoc.html.page(title,contents)\n";
 
-        PyObject* result = PyRun_String(cmd.constData(), Py_file_input, dict, dict);
+        PyObject* result = Base::PyTools::runString(cmd.constData(), dict);
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "htmldocument");
-            const char* contents = PyUnicode_AsUTF8(result);
+            const char* contents = Base::PyTools::asUTF8FromUnicode(result);
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(contents);
@@ -189,11 +190,11 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "object, name = pydoc.resolve(\"";
         cmd += name.toUtf8();
         cmd += "\")\npage = pydoc.html.page(pydoc.describe(object), pydoc.html.document(object, name))\n";
-        PyObject* result = PyRun_String(cmd.constData(), Py_file_input, dict, dict);
+        PyObject* result = Base::PyTools::runString(cmd.constData(), dict);
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "page");
-            const char* page = PyUnicode_AsUTF8(result);
+            const char* page = Base::PyTools::asUTF8FromUnicode(result);
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(page);

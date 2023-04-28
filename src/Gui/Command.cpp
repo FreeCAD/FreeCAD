@@ -43,6 +43,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
+#include <Base/PythonTools.h>
 #include <Base/Tools.h>
 
 #include "Command.h"
@@ -686,11 +687,11 @@ void Command::printPyCaller() {
         return;
     int line = PyFrame_GetLineNumber(frame);
 #if PY_VERSION_HEX < 0x030b0000
-    const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+    const char *file = Base::PyTools::asUTF8FromUnicode(frame->f_code->co_filename);
     printCaller(file?file:"<no file>",line);
 #else
     PyCodeObject* code = PyFrame_GetCode(frame);
-    const char* file = PyUnicode_AsUTF8(code->co_filename);
+    const char* file = Base::PyTools::asUTF8FromUnicode(code->co_filename);
     printCaller(file?file:"<no file>",line);
     Py_DECREF(code);
 #endif
@@ -1285,7 +1286,7 @@ const char* PythonCommand::getResource(const char* sName) const
         throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
                               "command object returns a dictionary which holds not only strings");
     }
-    return PyUnicode_AsUTF8(pcTemp);
+    return Base::PyTools::asUTF8FromUnicode(pcTemp);
 }
 
 void PythonCommand::activated(int iMsg)
@@ -1350,7 +1351,7 @@ const char* PythonCommand::getHelpUrl() const
         return "";
     if (! PyUnicode_Check(pcTemp) )
         throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
-    return PyUnicode_AsUTF8(pcTemp);
+    return Base::PyTools::asUTF8FromUnicode(pcTemp);
 }
 
 Action * PythonCommand::createAction()
@@ -1692,7 +1693,7 @@ const char* PythonGroupCommand::getResource(const char* sName) const
         throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
                                "group command object returns a dictionary which holds not only strings");
     }
-    return PyUnicode_AsUTF8(pcTemp);
+    return Base::PyTools::asUTF8FromUnicode(pcTemp);
 }
 
 const char* PythonGroupCommand::getWhatsThis() const

@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/PythonTools.h>
 
 #include "WidgetFactory.h"
 #include "PrefWidgets.h"
@@ -613,8 +614,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 
     QVariant v;
     if (PyUnicode_Check(psValue)) {
-        v = QString::fromUtf8(PyUnicode_AsUTF8(psValue));
-
+        v = QString::fromUtf8(Base::PyTools::asUTF8FromUnicode(psValue));
     }
     else if (PyLong_Check(psValue)) {
         unsigned int val = PyLong_AsLong(psValue);
@@ -630,7 +630,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
             PyObject* item = PyList_GetItem(psValue, i);
             if (!PyUnicode_Check(item))
                 continue;
-            const char* pItem = PyUnicode_AsUTF8(item);
+            const char* pItem = Base::PyTools::asUTF8FromUnicode(item);
             str.append(QString::fromUtf8(pItem));
         }
 

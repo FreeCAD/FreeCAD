@@ -48,6 +48,41 @@ PyObject* Base::PyExc_FC_ExpressionError = nullptr;
 PyObject* Base::PyExc_FC_ParserError = nullptr;
 PyObject* Base::PyExc_FC_CADKernelError = nullptr;
 
+// ----------------------------------------------------------------------------
+
+namespace Base {
+
+BaseExport void PyTypeCheck(PyObject** ptr, PyTypeObject* type, const char* msg)
+{
+    if (*ptr == Py_None) {
+        *ptr = nullptr;
+        return;
+    }
+    if (!PyObject_TypeCheck(*ptr, type)) {
+        if (!msg) {
+            std::stringstream str;
+            str << "Type must be " << type->tp_name << " or None, not " << (*ptr)->ob_type->tp_name;
+            throw Base::TypeError(str.str());
+        }
+        throw Base::TypeError(msg);
+    }
+}
+
+BaseExport void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* msg)
+{
+    if (*ptr == Py_None) {
+        *ptr = nullptr;
+        return;
+    }
+    if (!method(*ptr)) {
+        throw Base::TypeError(msg);
+    }
+}
+
+}
+
+// ----------------------------------------------------------------------------
+
 typedef struct {
     PyObject_HEAD
     PyObject* baseobject;

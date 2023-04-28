@@ -49,7 +49,6 @@
 #include <bitset>
 #include <cstring>
 
-#include "Exception.h"
 #ifndef PYCXX_PYTHON_2TO3
 #define PYCXX_PYTHON_2TO3
 #endif
@@ -125,6 +124,13 @@ inline PyObject* getTypeAsObject(PyTypeObject* type) {
 inline bool asBoolean(PyObject *obj) {
     return PyObject_IsTrue(obj) != 0;
 }
+
+/** Helper functions to check if a python object is of a specific type or None,
+ *  otherwise raise an exception.
+ *  If the object is None, the pointer is set to nullptr.
+ */
+BaseExport void PyTypeCheck(PyObject** ptr, PyTypeObject* type, const char* msg=nullptr);
+BaseExport void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* msg);
 
 }
 
@@ -500,56 +506,6 @@ BaseExport extern PyObject* PyExc_FC_CADKernelError;
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
 #define PY_CATCH _PY_CATCH(return(nullptr))
-
-/** Python helper class
- *  This class encapsulate the Decoding of UTF8 to a python object.
- *  Including exception handling.
- */
-inline PyObject * PyAsUnicodeObject(const char *str)
-{
-    // Returns a new reference, don't increment it!
-    Py_ssize_t len = Py_SAFE_DOWNCAST(strlen(str), size_t, Py_ssize_t);
-    PyObject *p = PyUnicode_DecodeUTF8(str, len, nullptr);
-    if (!p)
-        throw Base::UnicodeError("UTF8 conversion failure at PyAsUnicodeString()");
-    return p;
-}
-
-inline PyObject * PyAsUnicodeObject(const std::string &str)
-{
-    return PyAsUnicodeObject(str.c_str());
-}
-
-/** Helper functions to check if a python object is of a specific type or None,
- *  otherwise raise an exception.
- *  If the object is None, the pointer is set to nullptr.
- */
-inline void PyTypeCheck(PyObject** ptr, PyTypeObject* type, const char* msg=nullptr)
-{
-    if (*ptr == Py_None) {
-        *ptr = nullptr;
-        return;
-    }
-    if (!PyObject_TypeCheck(*ptr, type)) {
-        if (!msg) {
-            std::stringstream str;
-            str << "Type must be " << type->tp_name << " or None, not " << (*ptr)->ob_type->tp_name;
-            throw Base::TypeError(str.str());
-        }
-        throw Base::TypeError(msg);
-    }
-}
-
-inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* msg)
-{
-    if (*ptr == Py_None) {
-        *ptr = nullptr;
-        return;
-    }
-    if (!method(*ptr))
-        throw Base::TypeError(msg);
-}
-
 
 } // namespace Base
 

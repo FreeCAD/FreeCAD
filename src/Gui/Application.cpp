@@ -51,6 +51,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/PythonTools.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 
@@ -1656,7 +1657,7 @@ QStringList Application::workbenches() const
     // insert all items
     while (PyDict_Next(_pcWorkbenchDictionary, &pos, &key, &value)) {
         /* do something interesting with the values... */
-        const char* wbName = PyUnicode_AsUTF8(key);
+        const char* wbName = Base::PyTools::asUTF8FromUnicode(key);
         // add only allowed workbenches
         bool ok = true;
         if (!extra.isEmpty()&&ok) {
