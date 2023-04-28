@@ -244,36 +244,46 @@ def getcolor(color):
     (r, g, b, a)
         RGBA float tuple, where each value is between 0.0 and 1.0.
     """
+    if color == "none":
+        FreeCAD.Console.PrintMessage("Color defined as 'none', defaulting to black\n")
+        return (0.0, 0.0, 0.0, 0.0)
     if color[0] == "#":
-        # Color string '#12ab9f'
-        if len(color) == 7:
+        if len(color) == 7 or len(color) == 9: # Color string '#RRGGBB' or '#RRGGBBAA'
             r = float(int(color[1:3], 16) / 255.0)
             g = float(int(color[3:5], 16) / 255.0)
-            b = float(int(color[5:], 16) / 255.0)
-        # Color string '#1af'
-        elif len(color) == 4:
+            b = float(int(color[5:7], 16) / 255.0)
+            a = 1.0
+            if len(color) == 9:
+                a = float(int(color[7:9], 16) / 255.0)
+                FreeCAD.Console.PrintMessage(f"Non standard color format #RRGGBBAA : {color}\n")
+            return (r, g, b, 1-a)
+        if len(color) == 4: # Color string '#RGB'
             # Expand the hex digits
             r = float(int(color[1], 16) * 17 / 255.0)
             g = float(int(color[2], 16) * 17 / 255.0)
             b = float(int(color[3], 16) * 17 / 255.0)
-        return (r, g, b, 0.0)
-    # Color string 'rgb(0.12,0.23,0.3,0.0)'
-    elif color.lower().startswith('rgb('):
-        cvalues = color[3:].lstrip('(').rstrip(')').replace('%', '').split(',')
-        if '%' in color:
-            r, g, b = [int(float(cv)) / 100.0 for cv in cvalues]
-        else:
-            r, g, b = [int(float(cv)) / 255.0 for cv in cvalues]
-        return (r, g, b, 0.0)
-    # Color string 'MediumAquamarine'
-    else:
-        v = svgcolorslower.get(color.lower())
-        if v:
-            r, g, b = [float(vf) / 255.0 for vf in v]
             return (r, g, b, 0.0)
-        # for k, v in svgcolors.items():
-        #    if k.lower() == color.lower():
-        #        pass
+    if color.lower().startswith('rgb(') or color.lower().startswith('rgba('): # Color string 'rgb[a](0.12,0.23,0.3,0.0)'
+        cvalues = color.lstrip('rgba(').rstrip(')').replace('%', '').split(',')
+        if len(cvalues) == 3:
+            a = 1.0
+            if '%' in color:
+                r, g, b = [int(float(cv)) / 100.0 for cv in cvalues]
+            else:
+                r, g, b = [int(float(cv)) / 255.0 for cv in cvalues]
+        if len(cvalues) == 4:
+            if '%' in color:
+                r, g, b, a = [int(float(cv)) / 100.0 for cv in cvalues]
+            else:
+                r, g, b, a = [int(float(cv)) / 255.0 for cv in cvalues]
+        return (r, g, b, 1-a)
+    # Trying named color like 'MediumAquamarine'
+    v = svgcolorslower.get(color.lower())
+    if v:
+        r, g, b = [float(vf) / 255.0 for vf in v]
+        return (r, g, b, 0.0)
+    FreeCAD.Console.PrintWarning(f"Unknown color format : {color} : defaulting to black\n")
+    return (0.0, 0.0, 0.0, 0.0)
 
 
 def transformCopyShape(shape, m):
