@@ -612,17 +612,17 @@ void NaviCubeImplementation::prepare() {
     addCubeFace( y, x, ShapeId::Main, PickId::Right);
     addCubeFace( x,-z, ShapeId::Main, PickId::Bottom);
 
-    // add edge faces
-    addCubeFace(x+y, x-y+z, ShapeId::Corner, PickId::FrontTopRight);
-    addCubeFace(x-y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft);
+    // create corner faces
+    addCubeFace(-x-y, x-y+z, ShapeId::Corner, PickId::FrontTopRight);
+    addCubeFace(-x+y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft);
     addCubeFace(x+y, x-y-z, ShapeId::Corner, PickId::FrontBottomRight);
     addCubeFace(x-y,-x-y-z, ShapeId::Corner, PickId::FrontBottomLeft);
     addCubeFace(x-y, x+y+z, ShapeId::Corner, PickId::RearTopRight);
     addCubeFace(x+y,-x+y+z, ShapeId::Corner, PickId::RearTopLeft);
-    addCubeFace(x-y, x+y-z, ShapeId::Corner, PickId::RearBottomRight);
-    addCubeFace(x+y,-x+y-z, ShapeId::Corner, PickId::RearBottomLeft);
+    addCubeFace(-x+y, x+y-z, ShapeId::Corner, PickId::RearBottomRight);
+    addCubeFace(-x-y,-x+y-z, ShapeId::Corner, PickId::RearBottomLeft);
 
-    // add corner faces
+    // create edge faces
     addCubeFace(x, z-y, ShapeId::Edge, PickId::FrontTop);
     addCubeFace(x,-z-y, ShapeId::Edge, PickId::FrontBottom);
     addCubeFace(x, y-z, ShapeId::Edge, PickId::RearBottom);
@@ -645,7 +645,6 @@ void NaviCubeImplementation::prepare() {
     addButtonFace(PickId::ArrowRight);
     addButtonFace(PickId::DotBackside);
     addButtonFace(PickId::ViewMenu);
-
 
     if (m_PickingFramebuffer)
         delete m_PickingFramebuffer;
@@ -702,33 +701,46 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
 
     // Store GL state.
     glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
 
-    glDepthMask(GL_TRUE);
-    glDepthRange(0.1f, 0.9f);
-    glClearDepth(1.0f);
+    // configure
     glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthRange(0.f, 1.f);
+    glClearDepth(1.f);
+    glClear(GL_DEPTH_BUFFER_BIT);
     glDepthFunc(GL_LEQUAL);
 
     glDisable(GL_LIGHTING);
 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glShadeModel(GL_SMOOTH);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+    if (pickMode) {
+        glDisable(GL_BLEND);
+        glShadeModel(GL_FLAT);
+        glDisable(GL_DITHER);
+        glDisable(GL_POLYGON_SMOOTH);
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    else {
+        glEnable(GL_POLYGON_OFFSET_FILL);
+        glPolygonOffset(1.0f, 1.0f);
+        glEnable(GL_BLEND);
+        glShadeModel(GL_SMOOTH);
+    }
+
+    // mimic 3d view projection
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
     const float NEARVAL = 0.1f;
     const float FARVAL = 10.1f;
     if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
@@ -738,34 +750,13 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         const float dim = NEARVAL * float(tan(M_PI / 8.0)) * 1.1;
         glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
     }
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-
     SbMatrix mx;
     mx = cam->orientation.getValue();
     mx = mx.inverse();
     mx[3][2] = -5.1;
-
     glLoadMatrixf((float*)mx);
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    if (pickMode) {
-        glDisable(GL_BLEND);
-        glShadeModel(GL_FLAT);
-        glDisable(GL_DITHER);
-        glDisable(GL_POLYGON_SMOOTH);
-    }
-    else {
-        glEnable(GL_BLEND);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    }
-
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     QColor& cb = m_EmphaseColor;
@@ -785,7 +776,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
             a, c, a, // Y2
             a, a, b, // Z1
             a, a, c, // Z2
-            a, a, a  //0
+            a, a, a  // 0
         };
         glVertexPointer(3, GL_FLOAT, 0, pointData);
         glColor3f(1, 0, 0);
@@ -800,7 +791,6 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
     }
 
     // cube faces
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (const auto& pair : m_Faces) {
         auto f = pair.second;
         if (f.type == ShapeId::Button)
@@ -818,21 +808,18 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
     }
     if (!pickMode) {
         // cube borders
-        glDepthRange(0.09f, 0.9f); // make sure borders and labels are on top
         glLineWidth(m_BorderWidth);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        // QColor& cb = m_EmphaseColor;
         for (const auto& pair : m_Faces) {
             auto f = pair.second;
             if (f.type == ShapeId::Button)
                 continue;
             glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF());
             glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
-            glDrawArrays(GL_POLYGON, 0, f.vertexArray.size());
+            glDrawArrays(GL_LINES, 0, f.vertexArray.size());
         }
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // Label textures
+        glDisable(GL_POLYGON_OFFSET_FILL); // make sure labels are on top
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         float texCoords[] = {0.f,0.f,1.f,0.f,1.f,1.f,0.f,1.f};
@@ -848,8 +835,9 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         }
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glDisable(GL_TEXTURE_2D);
-
+        glEnable(GL_POLYGON_OFFSET_FILL);
     }
+
     // Draw the flat buttons
     glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
@@ -873,18 +861,15 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
         glDrawArrays(GL_TRIANGLE_FAN, 0, f.vertexArray.size());
         if (!pickMode) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF());
-            glDrawArrays(GL_POLYGON, 0, f.vertexArray.size());
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glDrawArrays(GL_LINE_LOOP, 0, f.vertexArray.size());
         }
     }
 
     // Restore original state.
     glPopMatrix();
-    glDepthRange(depthrange[0], depthrange[1]);
     glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
+    glPopMatrix();
     glPopAttrib();
 }
 
@@ -895,10 +880,6 @@ NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y
         m_PickingFramebuffer->bind();
 
         glViewport(0, 0, m_CubeWidgetSize * 2, m_CubeWidgetSize * 2);
-        glLoadIdentity();
-
-        glClearColor(0, 0, 0, 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         drawNaviCube(true);
 
