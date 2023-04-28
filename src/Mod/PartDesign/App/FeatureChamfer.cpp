@@ -200,11 +200,11 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
         mkChamfer.Build();
         if (!mkChamfer.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create chamfer");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer"));
 
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
@@ -215,12 +215,12 @@ App::DocumentObjectExecReturn *Chamfer::execute()
             aSfs->Perform();
             shape = aSfs->Shape();
             if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
             }
         }
         int solidCount = countSolids(shape);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Chamfer: Result has multiple solids. This is not supported at this time.");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Chamfer: Result has multiple solids. This is not supported at this time."));
         }
         shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
@@ -286,7 +286,7 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
 {
     // Size is common to all chamfer types.
     if (size <= 0) {
-        return new App::DocumentObjectExecReturn("Size must be greater than zero");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Size must be greater than zero"));
     }
 
     switch (chamferType) {
@@ -295,12 +295,12 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
             break;
         case 1: // Two distances
             if (size2 <= 0) {
-                return new App::DocumentObjectExecReturn("Size2 must be greater than zero");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Size2 must be greater than zero"));
             }
             break;
         case 2: // Distance and angle
             if (angle <= 0 || angle >= 180.0) {
-                return new App::DocumentObjectExecReturn("Angle must be greater than 0 and less than 180");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle must be greater than 0 and less than 180"));
             }
             break;
     }

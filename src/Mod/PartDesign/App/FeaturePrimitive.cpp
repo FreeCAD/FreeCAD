@@ -87,7 +87,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
              if(getAddSubType() == FeatureAddSub::Additive)
                  Shape.setValue(getSolid(primitiveShape));
              else
-                 return new App::DocumentObjectExecReturn("Cannot subtract primitive feature without base feature");
+                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot subtract primitive feature without base feature"));
 
              return  App::DocumentObject::StdReturn;
         }
@@ -96,16 +96,16 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
             BRepAlgoAPI_Fuse mkFuse(base, primitiveShape);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Adding the primitive failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Adding the primitive failed"));
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Additive: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Additive: Result has multiple solids. This is not supported at this time."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -116,16 +116,16 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
             BRepAlgoAPI_Cut mkCut(base, primitiveShape);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the primitive failed"));
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Subtractive: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtractive: Result has multiple solids. This is not supported at this time."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -196,11 +196,11 @@ App::DocumentObjectExecReturn* Box::execute()
     double H = Height.getValue();
 
     if (L < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Length of box too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Length of box too small"));
     if (W < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Width of box too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Width of box too small"));
     if (H < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Height of box too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Height of box too small"));
 
     try {
         // Build a box using the dimension attributes
@@ -246,11 +246,11 @@ App::DocumentObjectExecReturn* Cylinder::execute()
 {
     // Build a cylinder
     if (Radius.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of cylinder too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of cylinder too small"));
     if (Height.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Height of cylinder too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Height of cylinder too small"));
     if (Angle.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Rotation angle of cylinder too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Rotation angle of cylinder too small"));
     try {
         BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
                                         Height.getValue(),
@@ -303,7 +303,7 @@ App::DocumentObjectExecReturn* Sphere::execute()
 {
    // Build a sphere
     if (Radius.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of sphere too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of sphere too small"));
     try {
         BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
                                         Base::toRadians<double>(Angle1.getValue()),
@@ -352,13 +352,13 @@ Cone::Cone()
 App::DocumentObjectExecReturn* Cone::execute()
 {
     if (Radius1.getValue() < 0.0)
-        return new App::DocumentObjectExecReturn("Radius of cone cannot be negative");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of cone cannot be negative"));
     if (Radius2.getValue() < 0.0)
-        return new App::DocumentObjectExecReturn("Radius of cone cannot be negative");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of cone cannot be negative"));
     if (Radius1.getValue() == Radius2.getValue())
-        return new App::DocumentObjectExecReturn("The radii for cones must not be equal");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "The radii for cones must not be equal"));
     if (Height.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Height of cone too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Height of cone too small"));
     try {
         // Build a cone
         BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
@@ -415,9 +415,9 @@ App::DocumentObjectExecReturn* Ellipsoid::execute()
 {
     // Build a sphere
     if (Radius1.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of ellipsoid too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of ellipsoid too small"));
     if (Radius2.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of ellipsoid too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of ellipsoid too small"));
 
     try {
         gp_Pnt pnt(0.0,0.0,0.0);
@@ -499,9 +499,9 @@ Torus::Torus()
 App::DocumentObjectExecReturn* Torus::execute()
 {
     if (Radius1.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of torus too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of torus too small"));
     if (Radius2.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of torus too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of torus too small"));
     try {
         // https://forum.freecad.org/viewtopic.php?f=3&t=52719
 #if 0
@@ -564,11 +564,11 @@ App::DocumentObjectExecReturn* Prism::execute()
 {
     // Build a prism
     if (Polygon.getValue() < 3)
-        return new App::DocumentObjectExecReturn("Polygon of prism is invalid, must have 3 or more sides");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Polygon of prism is invalid, must have 3 or more sides"));
     if (Circumradius.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Circumradius of the polygon, of the prism, is too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Circumradius of the polygon, of the prism, is too small"));
     if (Height.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Height of prism is too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Height of prism is too small"));
     try {
         long nodes = Polygon.getValue();
 
@@ -649,19 +649,19 @@ App::DocumentObjectExecReturn* Wedge::execute()
     double dx2 = x2max-x2min;
 
     if (dx < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("delta x of wedge too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "delta x of wedge too small"));
 
     if (dy < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("delta y of wedge too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "delta y of wedge too small"));
 
     if (dz < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("delta z of wedge too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "delta z of wedge too small"));
 
     if (dz2 < 0)
-        return new App::DocumentObjectExecReturn("delta z2 of wedge is negative");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "delta z2 of wedge is negative"));
 
     if (dx2 < 0)
-        return new App::DocumentObjectExecReturn("delta x2 of wedge is negative");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "delta x2 of wedge is negative"));
 
     try {
         gp_Pnt pnt(0.0,0.0,0.0);

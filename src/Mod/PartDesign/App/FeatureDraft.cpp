@@ -312,15 +312,15 @@ App::DocumentObjectExecReturn *Draft::execute()
 
         mkDraft.Build();
         if (!mkDraft.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create draft");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create draft"));
 
         TopoDS_Shape shape = mkDraft.Shape();
         if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
         int solidCount = countSolids(shape);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Fuse: Result has multiple solids. This is not supported at this time.");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fuse: Result has multiple solids. This is not supported at this time."));
         }
 
         this->Shape.setValue(getSolid(shape));
