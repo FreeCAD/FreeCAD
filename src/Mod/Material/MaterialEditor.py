@@ -57,6 +57,7 @@ class MaterialEditor:
         self.cards = {}
         self.icons = {}
         self.initialIndex = -1
+        self.edited = False
         self.card_path = card_path
         filePath = os.path.dirname(__file__) + os.sep
         self.iconPath = (filePath + "Resources" + os.sep + "icons" + os.sep)
@@ -104,7 +105,7 @@ class MaterialEditor:
         # currently closes the dialog
 
         standardButtons.rejected.connect(self.reject)
-        standardButtons.accepted.connect(self.accept)
+        standardButtons.button(QtGui.QDialogButtonBox.Ok).clicked.connect(self.verify)
         buttonOpen.clicked.connect(self.openfile)
         buttonSave.clicked.connect(self.savefile)
         buttonURL.clicked.connect(self.openProductURL)
@@ -117,6 +118,7 @@ class MaterialEditor:
         treeView.setModel(model)
         treeView.setUniformRowHeights(True)
         treeView.setItemDelegate(MaterialsDelegate())
+        model.itemChanged.connect(self.modelChange)
 
         # init model
         self.implementModel()
@@ -181,6 +183,7 @@ class MaterialEditor:
             # top.sortChildren(0)
 
         # treeView.expandAll()
+        self.edited = False
 
     def updateMatParamsInTree(self, data):
 
@@ -220,10 +223,20 @@ class MaterialEditor:
             it = QtGui.QStandardItem(i)
             userGroup.appendRow([item, it])
             self.customprops.append(k)
+        self.edited = False
 
     def chooseMaterial(self, index):
         if index < 0:
             return
+        
+        if self.verifyMaterial():
+            """
+                Save any unchanged data
+            """
+            self.edited = False
+        else:
+            return
+        
         self.card_path = self.widget.ComboMaterial.itemData(index)
         FreeCAD.Console.PrintMessage(
             "choose_material in material editor:\n"
@@ -238,6 +251,22 @@ class MaterialEditor:
             self.widget.ComboMaterial.setCurrentIndex(index)  # set after tree params
         else:
             FreeCAD.Console.PrintError("Material card not found: {}\n".format(self.card_path))
+
+    def verifyMaterial(self):
+        if self.edited:
+            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
+                                                translate("Material","The document has been modified."),
+                                                translate("Material","Do you want to save your changes?"),
+                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
+                                                QtGui.QMessageBox.Save)
+
+            print("accept(reply={0})".format(reply))
+            if reply == QtGui.QMessageBox.Cancel:
+                return False
+            if reply == QtGui.QMessageBox.Save:
+                self.savefile()
+
+        return True
 
     def updateCardsInCombo(self):
 
@@ -279,6 +308,33 @@ class MaterialEditor:
         url = it.text()
         if url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
+
+    def modelChange(self, item):
+        """
+            Called when an item in the tree is modfied. This will set edited to True, but this
+            will be reset in the event of mass updates, such as loading a card
+        """
+        self.edited = True
+
+    def verify(self, button):
+        """
+            Verify that the user wants to save any changed data before exiting
+        """
+
+        if self.edited:
+            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
+                                                translate("Material","The document has been modified."),
+                                                translate("Material","Do you want to save your changes?"),
+                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
+                                                QtGui.QMessageBox.Save)
+
+            print("accept(reply={0})".format(reply))
+            if reply == QtGui.QMessageBox.Cancel:
+                return
+            if reply == QtGui.QMessageBox.Save:
+                self.savefile()
+        
+        self.accept()
 
     def accept(self):
         ""
@@ -340,6 +396,7 @@ class MaterialEditor:
                 it = QtGui.QStandardItem(value)
                 top.appendRow([item, it])
                 self.customprops.append(key)
+                self.edited = True
 
     def deleteCustomProperty(self, key=None):
 
@@ -375,6 +432,8 @@ class MaterialEditor:
                     it = top.child(row, 1)
                     it.setText("")
                     buttonDeleteProperty.setProperty("text", "Delete value")
+
+                self.edited = True
 
         buttonDeleteProperty.setEnabled(False)
 
@@ -505,7 +564,16 @@ class MaterialEditor:
         return color.name()
 
     def openfile(self):
+        if self.verifyMaterial():
+            """
+                Save any unchanged data
+            """
+            self.edited = False
+        else:
+            return
+
         "Opens a FCMat file"
+        print("open file")
         if self.category == "Solid":
             directory = self.directory + os.sep + "StandardMaterial"
         else:
@@ -603,6 +671,7 @@ class MaterialEditor:
             if d:
                 from importFCMat import write
                 write(filename, d)
+                self.edited = False
                 self.updateCardsInCombo()
 
     def show(self):
