@@ -1775,7 +1775,6 @@ MDIView *Document::createView(const Base::Type& typeId)
         view3D->setWindowModified(this->isModified());
         view3D->setWindowIcon(QApplication::windowIcon());
         view3D->resize(400, 300);
-        view3D->getViewer()->redraw();
 
         if (!cameraSettings.empty()) {
             const char *ppReturn = nullptr;
@@ -1783,6 +1782,7 @@ MDIView *Document::createView(const Base::Type& typeId)
         }
 
         getMainWindow()->addWindow(view3D);
+        view3D->getViewer()->redraw();
         return view3D;
     }
     return nullptr;
