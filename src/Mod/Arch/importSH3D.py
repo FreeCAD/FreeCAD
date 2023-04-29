@@ -21,9 +21,19 @@
 
 __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
-import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math
+import math
+import os
+import tempfile
+import xml.sax
+import zipfile
+
+import FreeCAD
+import Arch
+import Draft
+import Mesh
+import Part
 
 ## @package importSH3D
 #  \ingroup ARCH
@@ -41,7 +51,7 @@ def open(filename):
     "called when freecad wants to open a file"
     docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
@@ -56,19 +66,6 @@ def insert(filename,docname):
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
-
-
-def decode(name):
-    "decodes encoded strings"
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-            decodedName = name
-    return decodedName
 
 
 def read(filename):

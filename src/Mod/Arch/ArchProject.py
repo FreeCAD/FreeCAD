@@ -25,7 +25,9 @@ objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 
-import FreeCAD,ArchIFC,ArchIFCView
+import FreeCAD
+import ArchIFC
+import ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -44,7 +46,7 @@ else:
 
 __title__  = "FreeCAD Project"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 def makeProject(sites=None, name="Project"):
     """Create an Arch project.
@@ -87,7 +89,7 @@ class _CommandProject:
     IfcType, if any.
 
     Find documentation on the end user usage of Arch Project here:
-    https://wiki.freecadweb.org/Arch_Project
+    https://wiki.freecad.org/Arch_Project
     """
 
     def GetResources(self):

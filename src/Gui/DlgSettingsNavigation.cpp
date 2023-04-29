@@ -36,7 +36,7 @@
 #include "DlgSettingsNavigation.h"
 #include "ui_DlgSettingsNavigation.h"
 #include "MainWindow.h"
-#include "NaviCube.h"
+#include "View3DSettings.h"
 #include "NavigationStyle.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -57,7 +57,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q0(0), q1(0), q2(0), q3(1)
 {
     ui->setupUi(this);
-    ui->naviCubeButtonColor->setAllowTransparency(true);
+    ui->naviCubeBaseColor->setAllowTransparency(true);
     retranslate();
 }
 
@@ -93,8 +93,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->naviCubeCorner->onSave();
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
-    ui->naviCubeFontSize->onSave();
-    ui->naviCubeButtonColor->onSave();
+    ui->naviCubeBaseColor->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -113,21 +112,6 @@ void DlgSettingsNavigation::saveSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
     hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
-
-    recreateNaviCubes();
-}
-
-void DlgSettingsNavigation::recreateNaviCubes()
-{
-    // we changed the cube's layout, therefore we must re-initialize it
-    // by deleting and the subsequently recreating
-    auto views = getMainWindow()->windows();
-    for (auto view : views) {
-        if (auto view3d = qobject_cast<View3DInventor*>(view)) {
-            auto viewer = view3d->getViewer();
-            viewer->updateNavigationCube();
-        }
-    }
 }
 
 void DlgSettingsNavigation::loadSettings()
@@ -142,8 +126,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeCorner->onRestore();
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
-    ui->naviCubeFontSize->onRestore();
-    ui->naviCubeButtonColor->onRestore();
+    ui->naviCubeBaseColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -190,7 +173,7 @@ void DlgSettingsNavigation::loadSettings()
     // fill up font styles
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
-    std::string defaultSansserifFont = NaviCube::getDefaultSansserifFont().toStdString();
+    std::string defaultSansserifFont = NaviCubeSettings::getDefaultSansserifFont().toStdString();
 
     // we purposely allow all available fonts on the system
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -206,15 +189,6 @@ void DlgSettingsNavigation::loadSettings()
         indexFamilyNames = 0;
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames);
 
-    // if the FontSize parameter does not yet exist, set the default value
-    // the default is defined in NaviCubeImplementation::getDefaultFontSize()
-    // but not accessible if there is no cube yet drawn
-    if (hGrp->GetInt("FontSize", 0) == 0) {
-        // the "4" is the hardcoded m_OverSample from getDefaultFontSize()
-        ui->naviCubeFontSize->setValue(int(0.18 * 4 * ui->prefCubeSize->value()));
-        // we purposely don't write to the parameters because the writing would
-        // also be done when the user cancels the preferences dialog
-    }
 }
 
 void DlgSettingsNavigation::onMouseButtonClicked()

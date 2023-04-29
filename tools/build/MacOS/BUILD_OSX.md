@@ -294,6 +294,6 @@ mv freecadd freecad;
 
 [lnk1]: <http://brew.sh>
 [lnk2]: <https://github.com/FreeCAD/homebrew-freecad>
-[lnk3]: <https://forum.freecadweb.org/viewtopic.php?f=4&t=51981#p446796>
+[lnk3]: <https://forum.freecad.org/viewtopic.php?f=4&t=51981#p446796>
 [lnk4]: <https://gist.github.com/ipatch/6116824ab1f2a99b526cb07e43317b91#gistcomment-3577066>
 [lnk5]: <https://github.com/Homebrew/homebrew-core/pull/67615>

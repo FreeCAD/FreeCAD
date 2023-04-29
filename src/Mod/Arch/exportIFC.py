@@ -51,7 +51,7 @@ if FreeCAD.GuiUp:
 
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 # Save the Python open function because it will be redefined
 if open.__module__ in ['__builtin__', 'io']:
@@ -201,7 +201,7 @@ def export(exportList, filename, colors=None, preferences=None):
     except ModuleNotFoundError:
         _err("IfcOpenShell was not found on this system. "
              "IFC support is disabled.\n"
-             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
     if filename.lower().endswith("json"):
@@ -372,7 +372,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # if ifctype == "IfcArray":
         # FIXME: the first array element is not placed correct if the array is not on coordinate origin
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085&p=431476#p431476
+        # https://forum.freecad.org/viewtopic.php?f=39&t=50085&p=431476#p431476
         # workaround: do not use the assembly in ifc but a normal compound instead
         if False:
             clonedeltas = []
@@ -1899,7 +1899,7 @@ def getProfile(ifcfile,p):
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
             profile = ifcbin.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
-    elif (checkRectangle(p.Edges)):
+    elif checkRectangle(p.Edges):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
@@ -2135,7 +2135,7 @@ def getRepresentation(
                 if obj.isDerivedFrom("Part::Feature"):
                     #if hasattr(obj,"Base") and hasattr(obj,"Additions")and hasattr(obj,"Subtractions"):
                     if False: # above is buggy. No way to duplicate shapes that way?
-                        if obj.Base and (not obj.Additions) and not(obj.Subtractions):
+                        if obj.Base and not obj.Additions and not obj.Subtractions:
                             if obj.Base.isDerivedFrom("Part::Feature"):
                                 if obj.Base.Shape:
                                     if obj.Base.Shape.Solids:
@@ -2162,12 +2162,15 @@ def getRepresentation(
                             sh = obj.Shape.copy()
                             sh.Placement = obj.getGlobalPlacement()
                             sh.scale(preferences['SCALE_FACTOR']) # to meters
+                            # clean shape and moves placement away from the outer element level
+                            # https://forum.freecad.org/viewtopic.php?p=675760#p675760
+                            brep_data = sh.removeSplitter().exportBrepToString()
                             try:
-                                p = geom.serialise(sh.exportBrepToString())
+                                p = geom.serialise(brep_data)
                             except TypeError:
                                 # IfcOpenShell v0.6.0
                                 # Serialization.cpp:IfcUtil::IfcBaseClass* IfcGeom::serialise(const std::string& schema_name, const TopoDS_Shape& shape, bool advanced)
-                                p = geom.serialise(preferences['SCHEMA'],sh.exportBrepToString())
+                                p = geom.serialise(preferences['SCHEMA'], brep_data)
                             if p:
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
@@ -2176,6 +2179,13 @@ def getRepresentation(
                                 shapetype = "advancedbrep"
                                 shapes = None
                                 serialized = True
+                            else:
+                                if preferences['DEBUG']:
+                                    print(
+                                        "Warning! IfcOS serializer did not return a ifc-geometry for object {}. "
+                                        "The shape will be exported with triangulation."
+                                        .format(obj.Label)
+                                    )
 
                     if not serialized:
 
@@ -2400,7 +2410,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
     # in some cases object have wrong ifctypes, thus set it
-    # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085
+    # https://forum.freecad.org/viewtopic.php?f=39&t=50085
     if ifctype not in ArchIFCSchema.IfcProducts.keys():
         # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
         ifctype = "IfcBuildingElementProxy"

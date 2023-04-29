@@ -63,7 +63,7 @@ True if DraftGui.__name__ else False
 __title__ = "FreeCAD Draft Workbench GUI Tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 if not hasattr(FreeCADGui, "Snapper"):
     FreeCADGui.Snapper = gui_snapper.Snapper()

@@ -25,6 +25,7 @@
 import argparse
 import datetime
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 import FreeCAD
 from FreeCAD import Units
 import shlex
@@ -398,7 +399,7 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
             outstring.append(command)

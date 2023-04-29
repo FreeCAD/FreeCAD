@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## \defgroup ARCH Arch
 #  \ingroup PYTHONWORKBENCHES
@@ -35,8 +35,8 @@ __url__    = "https://www.freecadweb.org"
 
 import FreeCAD
 if FreeCAD.GuiUp:
-	import FreeCADGui
-	FreeCADGui.updateLocale()
+    import FreeCADGui
+    FreeCADGui.updateLocale()
 
 from ArchWall import *
 from ArchFloor import *

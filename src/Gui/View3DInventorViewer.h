@@ -417,8 +417,7 @@ public:
     void setEnabledNaviCube(bool b);
     bool isEnabledNaviCube() const;
     void setNaviCubeCorner(int);
-    NaviCube* getNavigationCube() const;
-    void updateNavigationCube();
+    NaviCube* getNaviCube() const;
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
     void setRenderCache(int);

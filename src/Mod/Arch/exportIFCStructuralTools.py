@@ -22,7 +22,7 @@
 
 __title__ =  "FreeCAD structural IFC export tools"
 __author__ = "Yorik van Havre"
-__url__ =    "https://www.freecadweb.org"
+__url__ =    "https://www.freecad.org"
 
 ALLOW_LINEAR_OBJECTS = True # allow non-solid objects (wires, etc) to become analytic objects?
 
@@ -214,9 +214,9 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         # creates geometry
         verts = [None for _ in range(len(edges))]
         for i, edge in enumerate(edges):
-           verts[i] = tuple(edge.Vertexes[0].Point.multiply(scaling))
-           cartPnt = ifcfile.createIfcCartesianPoint(verts[i])
-           vertPnt = ifcfile.createIfcVertexPoint(cartPnt)
+            verts[i] = tuple(edge.Vertexes[0].Point.multiply(scaling))
+            cartPnt = ifcfile.createIfcCartesianPoint(verts[i])
+            vertPnt = ifcfile.createIfcVertexPoint(cartPnt)
         orientedEdges = [None for _ in range(len(edges))]
         for i, vert in enumerate(verts):
             v2Index = (i + 1) if i < len(verts) - 1 else 0

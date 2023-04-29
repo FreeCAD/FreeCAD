@@ -1131,7 +1131,7 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     // Some applications copy text into the clipboard with the formats
     // 'text/plain' and 'text/uri-list'. In case the url is not an existing
     // file we can handle it as normal text, then. See forum thread:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34618
+    // https://forum.freecad.org/viewtopic.php?f=3&t=34618
     if (source->hasText() && !existingFile) {
         runSourceFromMimeData(source->text());
     }

@@ -50,6 +50,7 @@
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/SmSwitchboard.h>
+#include <Gui/SoDatumLabel.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
@@ -58,13 +59,13 @@
 #include <Mod/Sketcher/App/GeoList.h>
 
 #include "EditModeConstraintCoinManager.h"
-#include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
 #include "Utils.h"
 
 
+using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -1186,7 +1187,7 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
         relPos = norm * 0.5f + dir * multiplier;
         freePos = origPos + relPos * scaled_step;
 
-        // Prevent crash : https://forum.freecadweb.org/viewtopic.php?f=8&t=65305
+        // Prevent crash : https://forum.freecad.org/viewtopic.php?f=8&t=65305
         if (!rp) {
             return relPos * step;
         }
@@ -1742,6 +1743,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
                         SbVec3f absPos;
                         SbVec3f trans;
+                        float scaleFactor;
 
                         auto translation = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild( static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
@@ -1749,17 +1751,22 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
                         trans = translation->translation.getValue();
 
+                        scaleFactor = translation->getScaleFactor();
+
                         if (tail != sep->getChild(static_cast<int>(ConstraintNodePosition::FirstIconIndex))) {
+                            Base::Console().Log("SecondIcon\n");
 
                             auto translation2 = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild( static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
 
                             absPos += translation2->abPos.getValue();
 
                             trans += translation2->translation.getValue();
+
+                            scaleFactor = translation2->getScaleFactor();
                         }
 
-                        // TODO: Is this calculation actually sound? Why the absolute position is not scaled and the translation is? Review.
-                        SbVec3f constrPos = absPos + trans*ViewProviderSketchCoinAttorney::getScaleFactor(viewProvider);
+                        // Only the translation is scaled because this is how SoZoomTranslation works
+                        SbVec3f constrPos = absPos + scaleFactor*trans;
 
                         SbVec2f iconCoords = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, SbVec2f(constrPos[0],constrPos[1]));
 
@@ -1784,16 +1791,20 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
                             if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
-                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
+                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k) {
                                     constrIndices.insert(*k);
+                                }
                             }
                         }
                     }
                     else {
                         // It's a constraint icon, not a combined one
                         QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
-                        while (!constrIdStrings.empty())
-                            constrIndices.insert(constrIdStrings.takeAt(0).toInt());
+                        while (!constrIdStrings.empty()) {
+                            auto constraintid = constrIdStrings.takeAt(0).toInt();
+                            constrIndices.insert(constraintid);
+
+                        }
                     }
                 }
             }

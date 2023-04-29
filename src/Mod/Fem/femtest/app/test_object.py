@@ -23,7 +23,7 @@
 
 __title__ = "Objects FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import sys
 import unittest
@@ -82,7 +82,7 @@ class TestObjectCreate(unittest.TestCase):
             count_defmake = testtools.get_defmake_count(False)
         # TODO if the children are added to the analysis, they show up twice on Tree
         # thus they are not added to the analysis group ATM
-        # https://forum.freecadweb.org/viewtopic.php?t=25283
+        # https://forum.freecad.org/viewtopic.php?t=25283
         # thus they should not be counted
         # solver children: equations --> 9
         # gmsh mesh children: group, region, boundary layer --> 3
@@ -642,7 +642,7 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         # try to add all possible True types from inheritance chain see
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+        # https://forum.freecad.org/viewtopic.php?f=10&t=32625
         doc = self.document
 
         from femtools.femutils import is_derived_from

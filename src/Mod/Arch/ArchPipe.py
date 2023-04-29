@@ -20,9 +20,11 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, ArchComponent
+import FreeCAD
+import ArchComponent
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc
+    import FreeCADGui
+    import Arch_rc
     from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -42,7 +44,7 @@ else:
 
 __title__  = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
@@ -214,7 +216,9 @@ class _ArchPipe(ArchComponent.Component):
 
     def execute(self,obj):
 
-        import Part,DraftGeomUtils,math
+        import math
+        import Part
+        import DraftGeomUtils
         pl = obj.Placement
         w = self.getWire(obj)
         if not w:
@@ -372,7 +376,10 @@ class _ArchPipeConnector(ArchComponent.Component):
         tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
         ptol = 0.001 # tolerance for coincident points
 
-        import math,Part,DraftGeomUtils,ArchCommands
+        import math
+        import Part
+        import DraftGeomUtils
+        import ArchCommands
         if len(obj.Pipes) < 2:
             return
         if len(obj.Pipes) > 3:

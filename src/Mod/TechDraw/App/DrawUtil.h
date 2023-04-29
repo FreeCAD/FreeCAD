@@ -56,7 +56,7 @@
 #define VECTORTOLERANCE (Precision::Confusion())
 
 #define SVG_NS_URI "http://www.w3.org/2000/svg"
-#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+#define FREECAD_SVG_NS_URI "http://www.freecad.org/wiki/index.php?title=Svg_Namespace"
 
 //some shapes are being passed in where edges that should be connected are in fact
 //separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
@@ -128,8 +128,8 @@ public:
     static bool vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2);
     static bool vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2);
 
-    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn);
-    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Wire> vecIn);
+    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn, bool invert = true);
+    static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Wire> vecIn, bool invert = true);
     static std::vector<TopoDS_Edge> shapeToVector(TopoDS_Shape shapeIn);
 
     static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);

@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix constraint initialtemperature"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 from FreeCAD import Units
 

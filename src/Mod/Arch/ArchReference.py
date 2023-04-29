@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Arch External Reference"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 import FreeCAD
@@ -35,7 +35,7 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
-    def translate(ctxt,txt, utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -159,7 +159,6 @@ class ArchReference:
                             f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
-                            shapedata = shapedata.decode("utf8")
                             shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
                             obj.Shape = shape
                             if not pl.isIdentity():
@@ -261,7 +260,6 @@ class ArchReference:
             materials = {}
             writemode = False
             for line in docf:
-                line = line.decode("utf8")
                 if "<Object name=" in line:
                     n = re.findall('name=\"(.*?)\"',line)
                     if n:
@@ -317,7 +315,6 @@ class ArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
-                line = line.decode("utf8")
                 if ("<ViewProvider name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
@@ -622,7 +619,6 @@ class ViewProviderArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
-                line = line.decode("utf8")
                 if ("<Object name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"SavedInventor\"" in line):
@@ -639,7 +635,6 @@ class ViewProviderArchReference:
             return None
         f = zdoc.open(ivfile)
         buf = f.read()
-        buf = buf.decode("utf8")
         f.close()
         buf = buf.replace("lineWidth 2","lineWidth "+str(int(obj.ViewObject.LineWidth)))
         return buf

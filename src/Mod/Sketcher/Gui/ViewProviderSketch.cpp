@@ -535,7 +535,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                viewProviderParameters.buttonPress = pressed;
 
                 // More control over Sketcher edit mode Esc key behavior
-                // https://forum.freecadweb.org/viewtopic.php?f=3&t=42207
+                // https://forum.freecad.org/viewtopic.php?f=3&t=42207
                 return viewProviderParameters.handleEscapeButton;
             }
             return false;

@@ -506,7 +506,7 @@ class MatrixTestCase(unittest.TestCase):
         self.assertEqual(type(res), FreeCAD.Matrix)
 
     def testMatrixPlacementMatrix(self):
-        # Example taken from https://forum.freecadweb.org/viewtopic.php?f=3&t=61000
+        # Example taken from https://forum.freecad.org/viewtopic.php?f=3&t=61000
         mat = FreeCAD.Matrix(-0.470847778020266,
                              0.8150598976807029,
                              0.3376088628746235,

@@ -34,6 +34,7 @@ from FreeCAD import Units
 
 import Path
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 
 def create_comment(values, comment_string):
     """Create a comment from a string using the correct comment symbol."""
@@ -354,7 +355,7 @@ def parse_a_path(values, pathobj):
                     f"Tool Controller Vertical Rapid Values are unset{nl}"
                 )
 
-    for c in pathobj.Path.Commands:
+    for c in PathUtils.getPathWithPlacement(pathobj).Commands:
 
         # List of elements in the command, code, and params.
         outstring = []

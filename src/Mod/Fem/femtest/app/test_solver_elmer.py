@@ -23,7 +23,7 @@
 
 __title__ = "Solver elmer FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import unittest
 from os.path import join
@@ -59,7 +59,7 @@ class TestSolverElmer(unittest.TestCase):
         # set Units
         # since in Elmer writer the FreeCAD pref is used, here we need to set the FreeCAD pref
         # the use of FreeCAD.Units.setScheme would not take affect because the pref is not changed
-        # see https://forum.freecadweb.org/viewtopic.php?t=48451
+        # see https://forum.freecad.org/viewtopic.php?t=48451
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
         self.saved_unit_schema = param.GetInt("UserSchema")
 

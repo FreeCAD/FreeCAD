@@ -28,7 +28,7 @@ parameter.
 
 This array was developed in order to build a `twisted bridge` object.
 
-See https://forum.freecadweb.org/viewtopic.php?f=23&t=49617
+See https://forum.freecad.org/viewtopic.php?f=23&t=49617
 
 A `twisted bridge` would consist of three parts:
  1. The ribcage composed of a twisted array generated from a frame

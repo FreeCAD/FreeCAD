@@ -66,16 +66,16 @@ void SoZoomTranslation::initClass()
     SO_ENABLE(SoGetMatrixAction, SoViewVolumeElement);
 }
 
-float SoZoomTranslation::getScaleFactor(SoAction* action) const
+float SoZoomTranslation::calculateScaleFactor(SoAction* action) const
 {
     // Dividing by 5 seems to work well
     SbViewVolume vv = SoViewVolumeElement::get(action->getState());
     float aspectRatio = SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
-    return scale;
+    scaleFactor = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
+    return scaleFactor;
 }
 
-SoZoomTranslation::SoZoomTranslation()
+SoZoomTranslation::SoZoomTranslation(): scaleFactor(0)
 {
     SO_NODE_CONSTRUCTOR(SoZoomTranslation);
     SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
@@ -96,7 +96,7 @@ void SoZoomTranslation::doAction(SoAction * action)
         SbVec3f absVtr = this->abPos.getValue();
         SbVec3f relVtr = this->translation.getValue();
 
-        float sf = this->getScaleFactor(action);
+        float sf = this->calculateScaleFactor(action);
         // For Sketcher Keep Z value the same
         relVtr[0] = (relVtr[0] != 0) ? sf * relVtr[0] : 0;
         relVtr[1] = (relVtr[1] != 0) ? sf * relVtr[1] : 0;
@@ -116,7 +116,7 @@ void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
         SbVec3f absVtr = this->abPos.getValue();
         SbVec3f relVtr = this->translation.getValue();
 
-        float sf = this->getScaleFactor(action);
+        float sf = this->calculateScaleFactor(action);
         // For Sketcher Keep Z value the same
         relVtr[0] = (relVtr[0] != 0) ? sf  * relVtr[0] : 0;
         relVtr[1] = (relVtr[1] != 0) ? sf  * relVtr[1] : 0;

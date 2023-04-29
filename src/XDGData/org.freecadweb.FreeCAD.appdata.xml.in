@@ -39,22 +39,22 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://wiki.freecadweb.org/images/7/72/Freecad016_screenshot1.jpg</image>
+      <image>https://wiki.freecad.org/images/7/72/Freecad016_screenshot1.jpg</image>
     </screenshot>
     <screenshot>
-      <image>https://wiki.freecadweb.org/images/f/f7/FreeCAD_highlight_3_0.19.jpg</image>
+      <image>https://wiki.freecad.org/images/f/f7/FreeCAD_highlight_3_0.19.jpg</image>
     </screenshot>
     <screenshot>
-      <image>https://wiki.freecadweb.org/images/c/c3/Arch_tutorial_43.jpg</image>
+      <image>https://wiki.freecad.org/images/c/c3/Arch_tutorial_43.jpg</image>
     </screenshot>
     <screenshot>
-      <image>https://wiki.freecadweb.org/images/f/f4/Freecad-document-01.jpg</image>
+      <image>https://wiki.freecad.org/images/f/f4/Freecad-document-01.jpg</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://www.freecadweb.org</url>
-  <url type="bugtracker">https://www.freecadweb.org/tracker</url>
-  <url type="help">https://forum.freecadweb.org</url>
-  <url type="donation">https://www.freecadweb.org/wiki/Donate</url>
+  <url type="homepage">https://www.freecad.org</url>
+  <url type="bugtracker">https://www.freecad.org/tracker</url>
+  <url type="help">https://forum.freecad.org</url>
+  <url type="donation">https://www.freecad.org/wiki/Donate</url>
   <update_contact>yorik_AT_uncreated.net</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>

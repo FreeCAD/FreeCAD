@@ -1460,8 +1460,7 @@ Please run the command to repair folds first</source>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Гэтая налада паказвае, ці ўжываецца сціск ZIP
-пры запісу файла ў фармаце AMF</translation>
+      <translation>Налада паказвае, ці ўжываецца сціск ZIP пры запісу файла ў фармаце AMF</translation>
     </message>
   </context>
   <context>
@@ -1518,7 +1517,7 @@ If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
       <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні бок.
-Калі не птушка, гэта залежыць ад налады "Уключыць колер асвятлення".
+Калі не птушка, залежыць ад налады "Уключыць колер асвятлення".
 (падзел пераваг Праецыраванне - &gt; Трохмернае прадстаўленне).
 Будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
     </message>
@@ -1551,7 +1550,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation>Калі гэтая налад усталяваная, ужываецца зацяненне па Фонгу, інакш ужываецца плоскае зацяненне.
+      <translation>Калі птушка, ужываецца зацяненне па Фонгу, інакш ужываецца плоскае зацяненне.
 Зацяненне вызначае знешні выгляд паверхняў.
 
 Пры плоскім зацяненні вектары нармалі паверхні не будуць вызначаныя для кожнай вяршыні, што прыводзіць да нерэальнага вонкавага выгляду крывалінейных паверхняў, а ўжыванне зацянення па Фонгу прыводзіць да больш плаўнага вонкавага выгляду.
@@ -1565,7 +1564,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Гэта найменшы вугал паміж дзвюма гранямі, пры якім вылічаюцца вектары нармалі для стварэння плоскага зацянення.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Калі вугал паміж вектарамі нармалі дзвюх суседніх граняў менш чым вугал згіну, грані будуць гладка заштрыхаваныя вакол іх агульнага рабра.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Найменшы вугал паміж дзвюма гранямі, пры якім вылічаюцца вектары нармалі для стварэння плоскага зацянення.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Калі вугал паміж вектарамі нармалі дзвюх суседніх граняў менш чым вугал згіну, грані будуць гладка заштрыхаваныя вакол іх агульнага рабра.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
@@ -1583,7 +1582,7 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Вугал згіну - гэта парогавы вугал паміж дзвюма гранямі.
+      <translation>Вугал згіну - парогавы вугал паміж дзвюма гранямі.
 
  Калі вугал грані ≥ вугла згіну, ужываецца зацяненне грані
  Калі вугал грані &lt; вугла згіну, ужываецца плаўнае зацяненне</translation>
@@ -1642,7 +1641,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Аўтаматычна</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>

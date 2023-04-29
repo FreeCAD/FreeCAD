@@ -19,9 +19,11 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils
+import FreeCAD
+import DraftGeomUtils
 if FreeCAD.GuiUp:
-    import FreeCADGui, Draft
+    import FreeCADGui
+    import Draft
     from PySide import QtCore, QtGui
     from draftutils.translate import translate
     from pivy import coin
@@ -36,7 +38,7 @@ else:
 
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchAxisSystem
 #  \ingroup ARCH
@@ -340,7 +342,7 @@ class AxisSystemTaskPanel:
 
         if self.obj:
             for o in FreeCADGui.Selection.getSelection():
-                if (not(o in self.obj.Axes)) and (o != self.obj):
+                if not(o in self.obj.Axes) and (o != self.obj):
                     g = self.obj.Axes
                     g.append(o)
                     self.obj.Axes = g

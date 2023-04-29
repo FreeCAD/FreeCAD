@@ -50,7 +50,7 @@ else:
 
 __title__= "FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 #Reads preset profiles and categorizes them

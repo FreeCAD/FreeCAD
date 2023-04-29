@@ -19,7 +19,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -42,7 +45,7 @@ else:
 
 __title__  = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
@@ -162,7 +165,9 @@ class _Frame(ArchComponent.Component):
                 for w in obj.Profile.Shape.Wires:
                     if not w.isClosed():
                         return
-            import DraftGeomUtils, Part, math
+            import math
+            import DraftGeomUtils
+            import Part
             baseprofile = obj.Profile.Shape.copy()
             if hasattr(obj,"ProfilePlacement"):
                 if not obj.ProfilePlacement.isNull():

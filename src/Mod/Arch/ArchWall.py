@@ -39,7 +39,7 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt, utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -55,7 +55,7 @@ else:
 
 __title__  = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
@@ -275,7 +275,7 @@ class _CommandWall:
     to create a base.
 
     Find documentation on the end user usage of Arch Wall here:
-    https://wiki.freecadweb.org/Arch_Wall
+    https://wiki.freecad.org/Arch_Wall
     """
 
     def GetResources(self):
@@ -638,7 +638,7 @@ class _CommandMergeWalls:
     Join two or more walls by using the ArchWall.joinWalls() function.
 
     Find documentation on the end user usage of Arch Wall here:
-    https://wiki.freecadweb.org/Arch_MergeWalls
+    https://wiki.freecad.org/Arch_MergeWalls
     """
 
     def GetResources(self):
@@ -721,7 +721,7 @@ class _Wall(ArchComponent.Component):
         """Give the wall its wall specific properties, such as its alignment.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
 
         parameters
         ----------
@@ -802,7 +802,8 @@ class _Wall(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         base = None
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
@@ -1098,7 +1099,8 @@ class _Wall(ArchComponent.Component):
             placement needed to move the face back from the (0,0,0) origin.
         """
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         # If ArchComponent.Component.getExtrusionData() can successfully get
         # extrusion data, just use that.
@@ -1293,7 +1295,7 @@ class _Wall(ArchComponent.Component):
                         # from sketch for consistency. Discussion on checking
                         # normal of sketch.Placement vs
                         # sketch.getGlobalPlacement() -
-                        # https://forum.freecadweb.org/viewtopic.php?f=22&t=39341&p=334275#p334275
+                        # https://forum.freecad.org/viewtopic.php?f=22&t=39341&p=334275#p334275
                         # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
@@ -1309,7 +1311,7 @@ class _Wall(ArchComponent.Component):
                         # Reverse rather than Forward.
 
                         # See FC discussion -
-                        # https://forum.freecadweb.org/viewtopic.php?f=23&t=48275&p=413745#p413745
+                        # https://forum.freecad.org/viewtopic.php?f=23&t=48275&p=413745#p413745
 
                         #self.basewires = []
                         #for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
@@ -1509,14 +1511,14 @@ class _Wall(ArchComponent.Component):
                                     # individual face (rather than fusing
                                     # together) for exportIFC.py to work
                                     # properly
-                                    # "ArchWall - Based on Sketch Issues" - https://forum.freecadweb.org/viewtopic.php?f=39&t=31235
+                                    # "ArchWall - Based on Sketch Issues" - https://forum.freecad.org/viewtopic.php?f=39&t=31235
 
                                     # "Bug #2408: [PartDesign] .fuse is splitting edges it should not"
-                                    # - https://forum.freecadweb.org/viewtopic.php?f=10&t=20349&p=346237#p346237
-                                    # - bugtracker - https://freecadweb.org/tracker/view.php?id=2408
+                                    # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&p=346237#p346237
+                                    # - bugtracker - https://freecad.org/tracker/view.php?id=2408
 
                                     # Try Part.Shell before removeSplitter
-                                    # - https://forum.freecadweb.org/viewtopic.php?f=10&t=20349&start=10
+                                    # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&start=10
                                     # - 1st finding : if a rectangle + 1 line, can't removesSplitter properly...
                                     # - 2nd finding : if 2 faces do not touch, can't form a shell; then, subsequently for remaining faces even though touch each faces, can't form a shell
 
@@ -1744,12 +1746,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def flipDirection(self):
 
-       if hasattr(self,"Object") and self.Object:
-           obj = self.Object
-           if obj.Align == "Left":
+        if hasattr(self,"Object") and self.Object:
+            obj = self.Object
+            if obj.Align == "Left":
                 obj.Align = "Right"
                 FreeCAD.ActiveDocument.recompute()
-           elif obj.Align == "Right":
+            elif obj.Align == "Right":
                 obj.Align = "Left"
                 FreeCAD.ActiveDocument.recompute()
 

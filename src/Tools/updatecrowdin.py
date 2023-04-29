@@ -1,25 +1,27 @@
 #!/usr/bin/env python3
+
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2021 Benjamin Nauck <benjamin@nauck.se>                 *
 # *   Copyright (c) 2021 Mattias Pierre <github@mattiaspierre.com>          *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Library General Public License (LGPL)   *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -82,44 +84,130 @@ from urllib.request import urlopen
 from urllib.request import urlretrieve
 from PySide2 import QtCore
 
-TsFile = namedtuple('TsFile', ['filename', 'src_path'])
+TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
-LEGACY_NAMING_MAP = {'Draft.ts': 'draft.ts'}
+LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 
 # locations list contains Module name, relative path to translation folder and relative path to qrc file
 
-locations = [["AddonManager","../Mod/AddonManager/Resources/translations","../Mod/AddonManager/Resources/AddonManager.qrc"],
-             ["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
-             #["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
-             ["draft","../Mod/Draft/Resources/translations","../Mod/Draft/Resources/Draft.qrc"],
-             ["Drawing","../Mod/Drawing/Gui/Resources/translations","../Mod/Drawing/Gui/Resources/Drawing.qrc"],
-             ["Fem","../Mod/Fem/Gui/Resources/translations","../Mod/Fem/Gui/Resources/Fem.qrc"],
-             ["FreeCAD","../Gui/Language","../Gui/Language/translation.qrc"],
-             ["Image","../Mod/Image/Gui/Resources/translations","../Mod/Image/Gui/Resources/Image.qrc"],
-             ["Mesh","../Mod/Mesh/Gui/Resources/translations","../Mod/Mesh/Gui/Resources/Mesh.qrc"],
-             ["MeshPart","../Mod/MeshPart/Gui/Resources/translations","../Mod/MeshPart/Gui/Resources/MeshPart.qrc"],
-             ["OpenSCAD","../Mod/OpenSCAD/Resources/translations","../Mod/OpenSCAD/Resources/OpenSCAD.qrc"],
-             ["Part","../Mod/Part/Gui/Resources/translations","../Mod/Part/Gui/Resources/Part.qrc"],
-             ["PartDesign","../Mod/PartDesign/Gui/Resources/translations","../Mod/PartDesign/Gui/Resources/PartDesign.qrc"],
-             ["Points","../Mod/Points/Gui/Resources/translations","../Mod/Points/Gui/Resources/Points.qrc"],
-             ["Raytracing","../Mod/Raytracing/Gui/Resources/translations","../Mod/Raytracing/Gui/Resources/Raytracing.qrc"],
-             ["ReverseEngineering","../Mod/ReverseEngineering/Gui/Resources/translations","../Mod/ReverseEngineering/Gui/Resources/ReverseEngineering.qrc"],
-             ["Robot","../Mod/Robot/Gui/Resources/translations","../Mod/Robot/Gui/Resources/Robot.qrc"],
-             ["Sketcher","../Mod/Sketcher/Gui/Resources/translations","../Mod/Sketcher/Gui/Resources/Sketcher.qrc"],
-             ["StartPage","../Mod/Start/Gui/Resources/translations","../Mod/Start/Gui/Resources/Start.qrc"],
-             ["Test","../Mod/Test/Gui/Resources/translations","../Mod/Test/Gui/Resources/Test.qrc"],
-             ["Web","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"],
-             ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"],
-             ["Path","../Mod/Path/Gui/Resources/translations","../Mod/Path/Gui/Resources/Path.qrc"],
-             ["Tux","../Mod/Tux/Resources/translations","../Mod/Tux/Resources/Tux.qrc"],
-             ["TechDraw","../Mod/TechDraw/Gui/Resources/translations","../Mod/TechDraw/Gui/Resources/TechDraw.qrc"],
-             ]
+locations = [
+    [
+        "AddonManager",
+        "../Mod/AddonManager/Resources/translations",
+        "../Mod/AddonManager/Resources/AddonManager.qrc",
+    ],
+    ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
+    ["Arch", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    [
+        "draft",
+        "../Mod/Draft/Resources/translations",
+        "../Mod/Draft/Resources/Draft.qrc",
+    ],
+    [
+        "Drawing",
+        "../Mod/Drawing/Gui/Resources/translations",
+        "../Mod/Drawing/Gui/Resources/Drawing.qrc",
+    ],
+    [
+        "Fem",
+        "../Mod/Fem/Gui/Resources/translations",
+        "../Mod/Fem/Gui/Resources/Fem.qrc",
+    ],
+    ["FreeCAD", "../Gui/Language", "../Gui/Language/translation.qrc"],
+    [
+        "Inspection",
+        "../Mod/Inspection/Gui/Resources/translations",
+        "../Mod/Inspection/Gui/Resources/Inspection.qrc",
+    ],
+    [
+        "Mesh",
+        "../Mod/Mesh/Gui/Resources/translations",
+        "../Mod/Mesh/Gui/Resources/Mesh.qrc",
+    ],
+    [
+        "MeshPart",
+        "../Mod/MeshPart/Gui/Resources/translations",
+        "../Mod/MeshPart/Gui/Resources/MeshPart.qrc",
+    ],
+    [
+        "OpenSCAD",
+        "../Mod/OpenSCAD/Resources/translations",
+        "../Mod/OpenSCAD/Resources/OpenSCAD.qrc",
+    ],
+    [
+        "Part",
+        "../Mod/Part/Gui/Resources/translations",
+        "../Mod/Part/Gui/Resources/Part.qrc",
+    ],
+    [
+        "PartDesign",
+        "../Mod/PartDesign/Gui/Resources/translations",
+        "../Mod/PartDesign/Gui/Resources/PartDesign.qrc",
+    ],
+    [
+        "Path",
+        "../Mod/Path/Gui/Resources/translations",
+        "../Mod/Path/Gui/Resources/Path.qrc",
+    ],
+    [
+        "Points",
+        "../Mod/Points/Gui/Resources/translations",
+        "../Mod/Points/Gui/Resources/Points.qrc",
+    ],
+    [
+        "Raytracing",
+        "../Mod/Raytracing/Gui/Resources/translations",
+        "../Mod/Raytracing/Gui/Resources/Raytracing.qrc",
+    ],
+    [
+        "ReverseEngineering",
+        "../Mod/ReverseEngineering/Gui/Resources/translations",
+        "../Mod/ReverseEngineering/Gui/Resources/ReverseEngineering.qrc",
+    ],
+    [
+        "Robot",
+        "../Mod/Robot/Gui/Resources/translations",
+        "../Mod/Robot/Gui/Resources/Robot.qrc",
+    ],
+    [
+        "Sketcher",
+        "../Mod/Sketcher/Gui/Resources/translations",
+        "../Mod/Sketcher/Gui/Resources/Sketcher.qrc",
+    ],
+    [
+        "Spreadsheet",
+        "../Mod/Spreadsheet/Gui/Resources/translations",
+        "../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc",
+    ],
+    [
+        "StartPage",
+        "../Mod/Start/Gui/Resources/translations",
+        "../Mod/Start/Gui/Resources/Start.qrc",
+    ],
+    [
+        "Test",
+        "../Mod/Test/Gui/Resources/translations",
+        "../Mod/Test/Gui/Resources/Test.qrc",
+    ],
+    [
+        "TechDraw",
+        "../Mod/TechDraw/Gui/Resources/translations",
+        "../Mod/TechDraw/Gui/Resources/TechDraw.qrc",
+    ],
+    ["Tux", "../Mod/Tux/Resources/translations", "../Mod/Tux/Resources/Tux.qrc"],
+    [
+        "Web",
+        "../Mod/Web/Gui/Resources/translations",
+        "../Mod/Web/Gui/Resources/Web.qrc",
+    ],
+]
 
-THRESHOLD = 25 # how many % must be translated for the translation to be included in FreeCAD
+THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD
+
 
 class CrowdinUpdater:
 
-    BASE_URL = 'https://api.crowdin.com/api/v2'
+    BASE_URL = "https://api.crowdin.com/api/v2"
 
     def __init__(self, token, project_identifier, multithread=True):
         self.token = token
@@ -128,76 +216,82 @@ class CrowdinUpdater:
 
     @lru_cache()
     def _get_project_id(self):
-        url = f'{self.BASE_URL}/projects/'
+        url = f"{self.BASE_URL}/projects/"
         response = self._make_api_req(url)
 
-        for project in [p['data'] for p in response]:
-            if project['identifier'] == project_identifier:
-                return project['id']
+        for project in [p["data"] for p in response]:
+            if project["identifier"] == project_identifier:
+                return project["id"]
 
-        raise Exception('No project identifier found!')
+        raise Exception("No project identifier found!")
 
     def _make_project_api_req(self, project_path, *args, **kwargs):
-        url = f'{self.BASE_URL}/projects/{self._get_project_id()}{project_path}'
+        url = f"{self.BASE_URL}/projects/{self._get_project_id()}{project_path}"
         return self._make_api_req(url=url, *args, **kwargs)
 
-    def _make_api_req(self, url, extra_headers={}, method='GET', data=None):
-        headers = {'Authorization': 'Bearer ' + load_token(), **extra_headers}
+    def _make_api_req(self, url, extra_headers={}, method="GET", data=None):
+        headers = {"Authorization": "Bearer " + load_token(), **extra_headers}
 
         if type(data) is dict:
-            headers['Content-Type'] = 'application/json'
-            data = json.dumps(data).encode('utf-8')
+            headers["Content-Type"] = "application/json"
+            data = json.dumps(data).encode("utf-8")
 
         request = Request(url, headers=headers, method=method, data=data)
-        return json.loads(urlopen(request).read())['data']
+        return json.loads(urlopen(request).read())["data"]
 
     def _get_files_info(self):
-        files = self._make_project_api_req('/files?limit=250')
-        return {f['data']['path'].strip('/'): str(f['data']['id']) for f in files}
+        files = self._make_project_api_req("/files?limit=250")
+        return {f["data"]["path"].strip("/"): str(f["data"]["id"]) for f in files}
 
     def _add_storage(self, filename, fp):
-        response = self._make_api_req(f'{self.BASE_URL}/storages', data=fp, method='POST', extra_headers={
-            'Crowdin-API-FileName': filename,
-            'Content-Type': 'application/octet-stream'
-        })
-        return response['id']
+        response = self._make_api_req(
+            f"{self.BASE_URL}/storages",
+            data=fp,
+            method="POST",
+            extra_headers={
+                "Crowdin-API-FileName": filename,
+                "Content-Type": "application/octet-stream",
+            },
+        )
+        return response["id"]
 
     def _update_file(self, project_id, ts_file, files_info):
         filename = quote_plus(ts_file.filename)
 
-        with open(ts_file.src_path, 'rb') as fp:
+        with open(ts_file.src_path, "rb") as fp:
             storage_id = self._add_storage(filename, fp)
 
         if filename in files_info:
             file_id = files_info[filename]
-            self._make_project_api_req(f'/files/{file_id}', method='PUT', data={
-                'storageId': storage_id,
-                'updateOption': 'keep_translations_and_approvals'
-            })
-            print(f'{filename} updated')
+            self._make_project_api_req(
+                f"/files/{file_id}",
+                method="PUT",
+                data={
+                    "storageId": storage_id,
+                    "updateOption": "keep_translations_and_approvals",
+                },
+            )
+            print(f"{filename} updated")
         else:
-            self._make_project_api_req('/files', data={
-                'storageId': storage_id,
-                'name': filename
-            })
-            print(f'{filename} uploaded')
+            self._make_project_api_req("/files", data={"storageId": storage_id, "name": filename})
+            print(f"{filename} uploaded")
 
     def status(self):
-        response = self._make_project_api_req('/languages/progress?limit=100')
-        return [item['data'] for item in response]
+        response = self._make_project_api_req("/languages/progress?limit=100")
+        return [item["data"] for item in response]
 
     def download(self, build_id):
-        filename = f'{self.project_identifier}.zip'
-        response = self._make_project_api_req(f'/translations/builds/{build_id}/download')
-        urlretrieve(response['url'], filename)
-        print('download of '+filename+' complete')
+        filename = f"{self.project_identifier}.zip"
+        response = self._make_project_api_req(f"/translations/builds/{build_id}/download")
+        urlretrieve(response["url"], filename)
+        print("download of " + filename + " complete")
 
     def build(self):
-        self._make_project_api_req('/translations/builds', data={}, method='POST')
+        self._make_project_api_req("/translations/builds", data={}, method="POST")
 
     def build_status(self):
-        response = self._make_project_api_req('/translations/builds')
-        return [item['data'] for item in response]
+        response = self._make_project_api_req("/translations/builds")
+        return [item["data"] for item in response]
 
     def update(self, ts_files):
         files_info = self._get_files_info()
@@ -206,7 +300,9 @@ class CrowdinUpdater:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for ts_file in ts_files:
                 if self.multithread:
-                    future = executor.submit(self._update_file, self.project_identifier, ts_file, files_info)
+                    future = executor.submit(
+                        self._update_file, self.project_identifier, ts_file, files_info
+                    )
                     futures.append(future)
                 else:
                     self._update_file(self.project_identifier, ts_file, files_info)
@@ -215,25 +311,27 @@ class CrowdinUpdater:
         for future in futures:
             future.result()
 
+
 def load_token():
     # load API token stored in ~/.crowdin-freecad-token
-    config_file = os.path.expanduser('~')+os.sep+".crowdin-freecad-token"
+    config_file = os.path.expanduser("~") + os.sep + ".crowdin-freecad-token"
     if os.path.exists(config_file):
         with open(config_file) as file:
             return file.read().strip()
     return None
 
-def updateqrc(qrcpath,lncode):
+
+def updateqrc(qrcpath, lncode):
 
     "updates a qrc file with the given translation entry"
 
-    #print("opening " + qrcpath + "...")
+    # print("opening " + qrcpath + "...")
 
     # getting qrc file contents
     if not os.path.exists(qrcpath):
         print("ERROR: Resource file " + qrcpath + " doesn't exist")
         sys.exit()
-    f = open(qrcpath,"r")
+    f = open(qrcpath, "r")
     resources = []
     for l in f.readlines():
         resources.append(l)
@@ -243,7 +341,7 @@ def updateqrc(qrcpath,lncode):
     name = "_" + lncode + ".qm"
     for r in resources:
         if name in r:
-            #print("language already exists in qrc file")
+            # print("language already exists in qrc file")
             return
 
     # find the latest qm line
@@ -255,7 +353,7 @@ def updateqrc(qrcpath,lncode):
         print("No existing .qm file in this resource. Appending to the end position")
         for i in range(len(resources)):
             if "</qresource>" in resources[i]:
-                pos = i-1
+                pos = i - 1
     if pos is None:
         print("ERROR: couldn't add qm files to this resource: " + qrcpath)
         sys.exit()
@@ -263,33 +361,33 @@ def updateqrc(qrcpath,lncode):
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub("_.*\.qm","_"+lncode+".qm",line)
+        line = re.sub("_.*\.qm", "_" + lncode + ".qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
-        line = "        <file>translations/"+modname+"_"+lncode+".qm</file>\n"
-        #print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
-        #sys.exit()
-    #print("inserting line: ",line)
-    resources.insert(pos+1,line)
+        line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"
+        # print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
+        # sys.exit()
+    # print("inserting line: ",line)
+    resources.insert(pos + 1, line)
 
     # writing the file
-    f = open(qrcpath,"w")
+    f = open(qrcpath, "w")
     for r in resources:
         f.write(r)
     f.close()
-    print("successfully updated ",qrcpath)
+    print("successfully updated ", qrcpath)
 
 
 def updateTranslatorCpp(lncode):
 
     "updates the Translator.cpp file with the given translation entry"
 
-    cppfile = os.path.join(os.path.dirname(__file__),"..","Gui","Language","Translator.cpp")
+    cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
     l = QtCore.QLocale(lncode)
     lnname = l.languageToString(l.language())
 
     # read file contents
-    f = open(cppfile,"r")
+    f = open(cppfile, "r")
     cppcode = []
     for l in f.readlines():
         cppcode.append(l)
@@ -297,11 +395,11 @@ def updateTranslatorCpp(lncode):
 
     # checking for existing entry
     lastentry = 0
-    for i,l in enumerate(cppcode):
+    for i, l in enumerate(cppcode):
         if l.startswith("    d->mapLanguageTopLevelDomain[QT_TR_NOOP("):
             lastentry = i
-            if "\""+lncode+"\"" in l:
-                #print(lnname+" ("+lncode+") already exists in Translator.cpp")
+            if '"' + lncode + '"' in l:
+                # print(lnname+" ("+lncode+") already exists in Translator.cpp")
                 return
 
     # find the position to insert
@@ -311,25 +409,27 @@ def updateTranslatorCpp(lncode):
         sys.exit()
 
     # inserting new entry just before the above line
-    line = "    d->mapLanguageTopLevelDomain[QT_TR_NOOP(\""+lnname+"\")] = \""+lncode+"\";\n"
-    cppcode.insert(pos,line)
-    print(lnname+" ("+lncode+") added Translator.cpp")
+    line = '    d->mapLanguageTopLevelDomain[QT_TR_NOOP("' + lnname + '")] = "' + lncode + '";\n'
+    cppcode.insert(pos, line)
+    print(lnname + " (" + lncode + ") added Translator.cpp")
 
     # writing the file
-    f = open(cppfile,"w")
+    f = open(cppfile, "w")
     for r in cppcode:
         f.write(r)
     f.close()
 
 
-def doFile(tsfilepath,targetpath,lncode,qrcpath):
+def doFile(tsfilepath, targetpath, lncode, qrcpath):
 
     "updates a single ts file, and creates a corresponding qm file"
 
     basename = os.path.basename(tsfilepath)[:-3]
     # filename fixes
     if basename + ".ts" in LEGACY_NAMING_MAP.values():
-        basename = list(LEGACY_NAMING_MAP.keys())[list(LEGACY_NAMING_MAP.values()).index(basename+".ts")][:-3]
+        basename = list(LEGACY_NAMING_MAP.keys())[
+            list(LEGACY_NAMING_MAP.values()).index(basename + ".ts")
+        ][:-3]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
     shutil.copyfile(tsfilepath, newpath)
@@ -338,11 +438,12 @@ def doFile(tsfilepath,targetpath,lncode,qrcpath):
     if not os.path.exists(newqm):
         print("ERROR: impossible to create " + newqm + ", aborting")
         sys.exit()
-    updateqrc(qrcpath,lncode)
+    updateqrc(qrcpath, lncode)
+
 
 def doLanguage(lncode):
 
-    " treats a single language"
+    "treats a single language"
 
     if lncode == "en":
         # never treat "english" translation... For now :)
@@ -354,11 +455,12 @@ def doLanguage(lncode):
         suffix = "\033[0m"
     print("Updating files for " + prefix + lncode + suffix + "...", end="")
     for target in locations:
-        basefilepath = os.path.join(tempfolder,lncode,target[0]+".ts")
+        basefilepath = os.path.join(tempfolder, lncode, target[0] + ".ts")
         targetpath = os.path.abspath(target[1])
         qrcpath = os.path.abspath(target[2])
-        doFile(basefilepath,targetpath,lncode,qrcpath)
+        doFile(basefilepath, targetpath, lncode, qrcpath)
     print(" done")
+
 
 def applyTranslations(languages):
 
@@ -366,22 +468,23 @@ def applyTranslations(languages):
     currentfolder = os.getcwd()
     tempfolder = tempfile.mkdtemp()
     print("creating temp folder " + tempfolder)
-    src = os.path.join(currentfolder,"freecad.zip")
-    dst = os.path.join(tempfolder,"freecad.zip")
+    src = os.path.join(currentfolder, "freecad.zip")
+    dst = os.path.join(tempfolder, "freecad.zip")
     if not os.path.exists(src):
-        print("freecad.zip file not found! Aborting. Run \"download\" command before this one.")
+        print('freecad.zip file not found! Aborting. Run "download" command before this one.')
         sys.exit()
     shutil.copyfile(src, dst)
     os.chdir(tempfolder)
-    zfile=zipfile.ZipFile("freecad.zip")
+    zfile = zipfile.ZipFile("freecad.zip")
     print("extracting freecad.zip...")
     zfile.extractall()
     os.chdir(currentfolder)
     for ln in languages:
-        if not os.path.exists(os.path.join(tempfolder,ln)):
+        if not os.path.exists(os.path.join(tempfolder, ln)):
             print("ERROR: language path for " + ln + " not found!")
         else:
             doLanguage(ln)
+
 
 if __name__ == "__main__":
     command = None
@@ -390,23 +493,26 @@ if __name__ == "__main__":
     if args:
         command = args[0]
 
-    token = os.environ.get('CROWDIN_TOKEN', load_token())
+    token = os.environ.get("CROWDIN_TOKEN", load_token())
     if command and not token:
-        print('Token not found')
+        print("Token not found")
         sys.exit()
 
-    project_identifier = os.environ.get('CROWDIN_PROJECT_ID')
+    project_identifier = os.environ.get("CROWDIN_PROJECT_ID")
     if not project_identifier:
         project_identifier = "freecad"
-        #print('CROWDIN_PROJECT_ID env var must be set')
-        #sys.exit()
+        # print('CROWDIN_PROJECT_ID env var must be set')
+        # sys.exit()
 
     updater = CrowdinUpdater(token, project_identifier)
 
     if command == "status":
         status = updater.status()
-        status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
-        print(len([item for item in status if item['translationProgress'] > THRESHOLD])," languages with status > "+str(THRESHOLD)+"%:")
+        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
+        print(
+            len([item for item in status if item["translationProgress"] > THRESHOLD]),
+            " languages with status > " + str(THRESHOLD) + "%:",
+        )
         print("    ")
         sep = False
         prefix = ""
@@ -415,15 +521,24 @@ if __name__ == "__main__":
             prefix = "\033[;32m"
             suffix = "\033[0m"
         for item in status:
-            if item['translationProgress'] > 0:
-                if (item['translationProgress'] < THRESHOLD) and (not sep):
+            if item["translationProgress"] > 0:
+                if (item["translationProgress"] < THRESHOLD) and (not sep):
                     print("    ")
                     print("Other languages:")
                     print("    ")
                     sep = True
-                print(prefix+item['languageId']+suffix+" "+str(item['translationProgress'])+"% ("+str(item['approvalProgress'])+"% approved)")
-                #print(f"  translation progress: {item['translationProgress']}%")
-                #print(f"  approval progress:    {item['approvalProgress']}%")
+                print(
+                    prefix
+                    + item["languageId"]
+                    + suffix
+                    + " "
+                    + str(item["translationProgress"])
+                    + "% ("
+                    + str(item["approvalProgress"])
+                    + "% approved)"
+                )
+                # print(f"  translation progress: {item['translationProgress']}%")
+                # print(f"  approval progress:    {item['approvalProgress']}%")
 
     elif command == "build-status":
         for item in updater.build_status():
@@ -438,33 +553,45 @@ if __name__ == "__main__":
         else:
             stat = updater.build_status()
             if not stat:
-                print('no builds found')
+                print("no builds found")
             elif len(stat) == 1:
-                updater.download(stat[0]['id'])
+                updater.download(stat[0]["id"])
             else:
-                print('available builds:')
+                print("available builds:")
                 for item in stat:
-                    print(f"  id: {item['id']} progress: {item['progress']}% status: {item['status']}")
-                print('please specify a build id')
+                    print(
+                        f"  id: {item['id']} progress: {item['progress']}% status: {item['status']}"
+                    )
+                print("please specify a build id")
 
-    elif command in ["update","upload"]:
+    elif command in ["update", "upload"]:
         # Find all ts files. However, this contains the lang-specific files too. Let's drop those
-        all_ts_files = glob.glob('../**/*.ts', recursive=True)
+        all_ts_files = glob.glob("../**/*.ts", recursive=True)
         # Remove the file extensions
         ts_files_wo_ext = [splitext(f)[0] for f in all_ts_files]
         # Filter out any file that has another file as a substring. E.g. Draft is a substring of Draft_en
-        main_ts_files = list(filter(lambda f: not [a for a in ts_files_wo_ext if a in f and f != a], ts_files_wo_ext))
+        main_ts_files = list(
+            filter(
+                lambda f: not [a for a in ts_files_wo_ext if a in f and f != a],
+                ts_files_wo_ext,
+            )
+        )
         # Create tuples to map Crowdin name with local path name
-        names_and_path = [(f'{basename(f)}.ts', f'{f}.ts') for f in main_ts_files]
+        names_and_path = [(f"{basename(f)}.ts", f"{f}.ts") for f in main_ts_files]
         # Accommodate for legacy naming
-        ts_files = [TsFile(LEGACY_NAMING_MAP[a] if a in LEGACY_NAMING_MAP else a, b) for (a, b) in names_and_path]
+        ts_files = [
+            TsFile(LEGACY_NAMING_MAP[a] if a in LEGACY_NAMING_MAP else a, b)
+            for (a, b) in names_and_path
+        ]
         updater.update(ts_files)
 
-    elif command in ["apply","install"]:
+    elif command in ["apply", "install"]:
         print("retrieving list of languages...")
         status = updater.status()
-        status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
-        languages = [item['languageId'] for item in status if item['translationProgress'] > THRESHOLD]
+        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
+        languages = [
+            item["languageId"] for item in status if item["translationProgress"] > THRESHOLD
+        ]
         applyTranslations(languages)
         print("Updating Translator.cpp...")
         for ln in languages:
@@ -473,14 +600,17 @@ if __name__ == "__main__":
     elif command == "updateTranslator":
         print("retrieving list of languages...")
         status = updater.status()
-        status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
-        languages = [item['languageId'] for item in status if item['translationProgress'] > THRESHOLD]
+        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
+        languages = [
+            item["languageId"] for item in status if item["translationProgress"] > THRESHOLD
+        ]
         print("Updating Translator.cpp...")
         for ln in languages:
             updateTranslatorCpp(ln)
 
     elif command == "gather":
         import updatets
+
         updatets.main()
 
     else:

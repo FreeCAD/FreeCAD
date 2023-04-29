@@ -22,8 +22,8 @@
 
 
 #define INITGUID
-#include "Common.h"
 #include "ClassFactory.h"
+#include "Common.h"
 
 STDAPI CThumbnailProvider_CreateInstance(REFIID riid, void** ppvObject);
 
@@ -41,11 +41,9 @@ CClassFactory::~CClassFactory()
 }
 
 
-STDMETHODIMP CClassFactory::QueryInterface(REFIID riid,
-                                           void** ppvObject)
+STDMETHODIMP CClassFactory::QueryInterface(REFIID riid, void** ppvObject)
 {
-    static const QITAB qit[] = 
-    {
+    static const QITAB qit[] = {
         QITABENT(CClassFactory, IClassFactory),
         {0},
     };
@@ -69,9 +67,7 @@ STDMETHODIMP_(ULONG) CClassFactory::Release()
 }
 
 
-STDMETHODIMP CClassFactory::CreateInstance(IUnknown* punkOuter,
-                                           REFIID riid,
-                                           void** ppvObject)
+STDMETHODIMP CClassFactory::CreateInstance(IUnknown* punkOuter, REFIID riid, void** ppvObject)
 {
     if (NULL != punkOuter)
         return CLASS_E_NOAGGREGATION;
@@ -86,9 +82,7 @@ STDMETHODIMP CClassFactory::LockServer(BOOL fLock)
 }
 
 
-STDAPI DllGetClassObject(REFCLSID rclsid,
-                         REFIID riid,
-                         void **ppv)
+STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void** ppv)
 {
     if (NULL == ppv)
         return E_INVALIDARG;
@@ -96,7 +90,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid,
     if (!IsEqualCLSID(CLSID_SampleThumbnailProvider, rclsid))
         return CLASS_E_CLASSNOTAVAILABLE;
 
-    CClassFactory *pcf;
+    CClassFactory* pcf;
     HRESULT hr;
 
     pcf = new CClassFactory();

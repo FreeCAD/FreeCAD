@@ -346,7 +346,7 @@ void TaskCenterLine::updateOrientation()
 {
     // When the orientation was changed, it can be that the centerline becomes invalid
     // this can lead to a crash, see e.g.
-    // https://forum.freecadweb.org/viewtopic.php?f=35&t=44255&start=20#p503220
+    // https://forum.freecad.org/viewtopic.php?f=35&t=44255&start=20#p503220
     // The centerline creation can fail if m_type is edge and both selected edges are vertical or horizontal.
     // To test the validity before an existing centerline is changed, we create a new one with the desired parameters.
     int orientation = m_cl->m_mode;

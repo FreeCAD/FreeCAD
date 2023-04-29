@@ -27,7 +27,7 @@ import Part
 
 __title__ = "Feed Rate Helper Utility"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Helper for adding Feed Rate to Path Commands"
 
 """

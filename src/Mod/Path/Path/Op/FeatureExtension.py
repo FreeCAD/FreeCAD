@@ -34,7 +34,7 @@ PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtil
 
 __title__ = "Path Features Extensions"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of face extensions features."
 
 

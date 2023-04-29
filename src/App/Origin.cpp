@@ -44,9 +44,6 @@ using namespace App;
 
 PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 
-const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
-const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
-
 Origin::Origin() : extension(this) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (nullptr), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
@@ -137,14 +134,15 @@ void Origin::setupObject () {
     const static struct {
         const Base::Type type;
         const char *role;
+	const QString label;
         Base::Rotation rot;
     } setupData [] = {
-        {App::Line::getClassTypeId(), "X_Axis", Base::Rotation () },
-        {App::Line::getClassTypeId(), "Y_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
-        {App::Line::getClassTypeId(), "Z_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*4/3 ) },
-        {App::Plane::getClassTypeId (), "XY_Plane", Base::Rotation () },
-        {App::Plane::getClassTypeId (), "XZ_Plane", Base::Rotation ( 1.0, 0.0, 0.0, 1.0 ), },
-        {App::Plane::getClassTypeId (), "YZ_Plane", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
+        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1,1), M_PI*2/3)},
+        {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
+        {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0 )},
+        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)}
     };
 
     App::Document *doc = getDocument ();
@@ -155,6 +153,9 @@ void Origin::setupObject () {
         App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
 
         assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
+
+	QByteArray byteArray = data.label.toUtf8();
+        featureObj->Label.setValue(byteArray.constData());
 
         App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
         feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );

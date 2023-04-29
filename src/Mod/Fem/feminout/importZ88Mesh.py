@@ -23,7 +23,7 @@
 
 __title__ = "Mesh import and export for Z88 mesh file format"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importZ88Mesh
 #  \ingroup FEM

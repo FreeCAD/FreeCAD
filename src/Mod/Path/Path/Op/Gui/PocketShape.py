@@ -35,7 +35,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
 
 if False:

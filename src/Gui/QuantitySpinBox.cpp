@@ -163,7 +163,7 @@ public:
         double value = min;
         bool ok = false;
 
-        QChar space = QLatin1Char(' '), period = QLatin1Char ('.'), plus = QLatin1Char('+'), minus = QLatin1Char('-'), division = QLatin1Char('/'), multiply = QLatin1Char('*'), exp = QLatin1Char('^'), par = QLatin1Char('(');
+        QChar plus = QLatin1Char('+'), minus = QLatin1Char('-');
 
         if (locale.negativeSign() != minus)
             copy.replace(locale.negativeSign(), minus);
@@ -171,34 +171,42 @@ public:
             copy.replace(locale.positiveSign(), plus);
 
         //Prep for expression parser
-        unsigned int length = copy.length(), shift;
-        bool noUnit = false;
-        for (unsigned int pos=0; pos < length; pos++) {
-            QChar num = copy[pos];
-            if (num == division || num == multiply || num == exp || num == par){
-                break; // Stop if anything odd happens
-            }
-            else if (num.isNumber()) {
-                noUnit = true;
-            }
-            else if (num != space && num != period && num != plus && num != minus) {
-                noUnit = false;
+        //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
+        QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
+        QRegularExpressionMatchIterator expressionChunk = chunkRe.globalMatch(copy);
+        unsigned int lengthOffset = 0;
+        while (expressionChunk.hasNext()) {
+            QRegularExpressionMatch matchChunk = expressionChunk.next();
+            QString origionalChunk = matchChunk.captured(0);
+            QString copyChunk = origionalChunk;
+            std::reverse(copyChunk.begin(), copyChunk.end());
+
+            //Reused regex patterns
+            static const std::string regexUnits = "sAV|VC|lim|nim|im|hpm|[mf]?bl|°|ged|dar|nog|″|′|rroT[uµm]?|K[uµm]?|A[mkM]?|F[pnuµm]?|C|S[uµmkM]?|zH[kMGT]?|H[nuµm]?|mhO[kM]?|J[mk]?|Ve[kM]?|V[mk]?|hWk|sW|lack?|N[mkM]?|g[uµmk]?|lm?|(?<=\\b|[^a-zA-Z])m[nuµmcdk]?|uoht|ni|\"|'|dy|dc|bW|T|t|zo|ts|twc|Wk?|aP[kMG]?|is[pk]|h|G|M|tfc|tfqs|tf|s";
+            static const std::string regexUnitlessFunctions = "soca|nisa|2nata|nata|hsoc|hnis|hnat|soc|nat|nis|pxe|gol|01gol";
+            static const std::string regexConstants = "e|ip|lomm|lom";
+            static const std::string regexNumber = "\\d+\\s*\\.?\\s*\\d*|\\.\\s*\\d+";
+
+            //Find units and replace 1/2mm -> 1/2*(1mm), 1^2mm -> 1^2*(1mm)
+            copyChunk.replace(QRegularExpression(QString::fromStdString("("+regexUnits+")(\\)|(?:\\*|(?:\\)(?:(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))|(?R))*\\(|(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))))+[\\/\\^](?!("+regexUnits+")))")), QString::fromUtf8(")\\11(*\\2"));
+
+            //Add default units to string if none are present
+            QRegularExpression unitsRe(QString::fromStdString("(?<=\\b|[^a-zA-Z])("+regexUnits+")(?=\\b|[^a-zA-Z])|°|″|′|\"|'|\\p{L}\\.\\p{L}|\\[\\p{L}"));
+
+            QRegularExpressionMatch match = unitsRe.match(copyChunk);
+            std::reverse(copyChunk.begin(), copyChunk.end());
+            if (!match.hasMatch() && !copyChunk.isEmpty()){ //If no units are found, use default units
+                copyChunk.append(QString::fromUtf8("*(1")+unitStr+QString::fromUtf8(")")); // Add units to the end of chunk *(1unit)
             }
 
-            if (noUnit
-                && (num == plus ||                       // 1+  -> 1mm+
-                    num == minus ||                      // 1-  -> 1mm-
-                    (pos == length - 1 && (pos += 1)))) {// 1EOL-> 1mmEOL
-                copy.insert(pos, unitStr);
-                pos += shift = unitStr.length();
-                length += shift;
-                noUnit = false;
-            }
+            copy.replace(matchChunk.capturedStart() + lengthOffset,
+                    matchChunk.capturedEnd() - matchChunk.capturedStart(), copyChunk);
+            lengthOffset += copyChunk.length() - origionalChunk.length();
         }
 
         ok = parseString(copy, res, value, path);
 
-        // If result has not unit: add default unit
+        // If result does not have unit: add default unit
         if (res.getUnit().isEmpty()){
             res.setUnit(unit);
         }
@@ -265,7 +273,7 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 #ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
 #else
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
     lineEdit()->setTextMargins(0, 2, 0, 0);
 #endif
 }

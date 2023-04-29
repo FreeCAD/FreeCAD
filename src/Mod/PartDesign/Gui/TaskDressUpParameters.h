@@ -100,8 +100,8 @@ protected:
     selectionModes selectionMode;
     int transactionID;
 
-    static const QString btnPreviewStr;
-    static const QString btnSelectStr;
+    static const QString btnPreviewStr();
+    static const QString btnSelectStr();
 };
 
 /// simulation dialog for the TaskView

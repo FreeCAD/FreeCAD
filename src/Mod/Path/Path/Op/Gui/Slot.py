@@ -31,7 +31,7 @@ from PySide import QtCore
 
 __title__ = "Path Slot Operation UI"
 __author__ = "russ4262 (Russell Johnson)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Slot operation page controller and command implementation."
 __contributors__ = ""
 

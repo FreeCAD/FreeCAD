@@ -29,6 +29,7 @@ from FreeCAD import Units
 import Path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
+import PathScripts.PathUtils as PathUtils
 import argparse
 import datetime
 import shlex
@@ -481,7 +482,7 @@ def parse(pathobj):
         if OUTPUT_COMMENTS:
             out += linenumber() + "(Path: " + pathobj.Label + ")\n"
 
-        for c in pathobj.Path.Commands:
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
 
@@ -602,7 +603,7 @@ def drill_translate(outstring, cmd, params):
     global UNITS
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
-    
+
 
     strFormat = "." + str(PRECISION) + "f"
     strG0_Initial_Z=("G0 Z" + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
@@ -728,10 +729,10 @@ def drill_translate(outstring, cmd, params):
                             + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat)
                             + strF_Feedrate
                         )
-                        
-                        if DRILL_RETRACT_MODE == "G98" : 
+
+                        if DRILL_RETRACT_MODE == "G98" :
                             trBuff += (linenumber() + strG0_Initial_Z)
-                        else: 
+                        else:
                             trBuff += (linenumber() + strG0_RETRACT_Z)
                         break
 

@@ -20,7 +20,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor
+import FreeCAD
+import ArchCommands
+import ArchFloor
+import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
@@ -36,7 +39,7 @@ else:
 
 __title__  = "FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchBuilding
 #  \ingroup ARCH

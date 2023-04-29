@@ -157,7 +157,7 @@ protected Q_SLOTS:
     void onPreSelectTimer();
     void onSelectTimer();
     void onShowHidden();
-    void onHideInTree();
+    void onToggleVisibilityInTree();
     void onSearchObjects();
 
 private Q_SLOTS:
@@ -205,7 +205,7 @@ private:
     QAction* markRecomputeAction;
     QAction* recomputeObjectAction;
     QAction* showHiddenAction;
-    QAction* hideInTreeAction;
+    QAction* toggleVisibilityInTreeAction;
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;

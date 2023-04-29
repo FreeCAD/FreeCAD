@@ -495,9 +495,9 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
 
     // The centerline is drawn using the midpoints of the two lines that connect l1p1-l2p1 and l1p2-l2p2.
     // However, we don't know which point should be l1p1 to get a geometrically correct result, see
-    // https://wiki.freecadweb.org/File:TD-CenterLineFlip.png for an illustration of the problem.
+    // https://wiki.freecad.org/File:TD-CenterLineFlip.png for an illustration of the problem.
     // Thus we test this by a circulation test, see this post for a brief explanation:
-    // https://forum.freecadweb.org/viewtopic.php?p=505733#p505615
+    // https://forum.freecad.org/viewtopic.php?p=505733#p505615
     if (DrawUtil::circulation(l1p1, l1p2, l2p1) != DrawUtil::circulation(l1p2, l2p2, l2p1)) {
         Base::Vector3d temp; // reverse line 1
         temp = l1p1;

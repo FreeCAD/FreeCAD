@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QCoreApplication>
 # include <Inventor/fields/SoMFString.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -79,6 +80,11 @@ void SoFCColorLegend::initClass()
 void SoFCColorLegend::finish()
 {
     atexit_cleanup();
+}
+
+const char* SoFCColorLegend::getColorBarName() const
+{
+    return QT_TRANSLATE_NOOP("QObject", "Color Legend");
 }
 
 namespace {

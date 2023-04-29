@@ -64,7 +64,7 @@ Pocket::Pocket()
     TaperAngle2.setConstraints(&floatAngle);
 
     // Remove the constraints and keep the type to allow to accept negative values
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    // https://forum.freecad.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
 }
 

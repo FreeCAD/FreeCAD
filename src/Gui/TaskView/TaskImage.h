@@ -21,11 +21,13 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_TASKIMAGESCALE_H
-#define GUI_TASKIMAGESCALE_H
+#ifndef GUI_TASKIMAGE_H
+#define GUI_TASKIMAGE_H
 
+#include <Inventor/SbVec3f.h>
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/QuantitySpinBox.h>
 #include <App/DocumentObserver.h>
 #include <App/ImagePlane.h>
 #include <memory>
@@ -33,9 +35,10 @@
 
 class SbVec3f;
 class SoEventCallback;
-class SoCoordinate3;
 class SoSeparator;
-class SoLineSet;
+class SoDatumLabel;
+class SoNodeSensor;
+class SoTransform;
 
 namespace Gui {
 
@@ -46,65 +49,112 @@ class InteractiveScale : public QObject
     Q_OBJECT
 
 public:
-    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp);
+    explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc);
     ~InteractiveScale();
-    void activate(bool allowOutside);
+
+    bool eventFilter(QObject* object, QEvent* event);
+    void activate();
     void deactivate();
     bool isActive() const {
         return active;
     }
-    double getDistance() const;
+    double getScaleFactor() const;
     double getDistance(const SbVec3f&) const;
-    void clearPoints();
+    void setPlacement(Base::Placement plc);
 
 private:
-    static void getMouseClick(void * ud, SoEventCallback * ecb);
+    static void soEventFilter(void * ud, SoEventCallback * ecb);
     static void getMousePosition(void * ud, SoEventCallback * ecb);
-    void findPointOnPlane(SoEventCallback * ecb);
     void findPointOnImagePlane(SoEventCallback * ecb);
-    void findPointOnFocalPlane(SoEventCallback * ecb);
     void collectPoint(const SbVec3f&);
+    void positionWidget();
+    void showDistanceField();
+    void setDistance(const SbVec3f&);
+
+    /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
+    SbVec3f getCoordsOnImagePlane(const SbVec3f& point);
 
 Q_SIGNALS:
-    void selectedPoints(size_t);
+    void scaleRequired();
+    void scaleCanceled();
+    void enableApplyBtn();
 
 private:
     bool active;
-    bool allowOutsideImage;
-    SoCoordinate3* coords;
+    Base::Placement placement;
     SoSeparator* root;
+    SoDatumLabel* measureLabel;
+    SoTransform* transform;
     QPointer<Gui::View3DInventorViewer> viewer;
     ViewProvider* viewProv;
     std::vector<SbVec3f> points;
+    SbVec3f midPoint;
+    QuantitySpinBox* distanceBox;
+    SoNodeSensor* cameraSensor;
 };
 
-class Ui_TaskImageScale;
-class TaskImageScale : public QWidget
+class Ui_TaskImage;
+class TaskImage : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TaskImageScale(Image::ImagePlane* obj, QWidget* parent = nullptr);
-    ~TaskImageScale() override;
+    explicit TaskImage(Image::ImagePlane* obj, QWidget* parent = nullptr);
+    ~TaskImage() override;
+
+    void open();
+    void accept();
+    void reject();
 
 private:
-    void changeWidth();
-    void changeHeight();
+    void initialiseTransparency();
+    void connectSignals();
+
     void onInteractiveScale();
     View3DInventorViewer* getViewer() const;
-    void selectedPoints(size_t num);
     void scaleImage(double);
     void startScale();
     void acceptScale();
     void rejectScale();
+    void enableApplyBtn();
+
+    void restore(const Base::Placement&);
+    void onPreview();
+    void updateIcon();
+    void updatePlacement();
 
 private:
-    std::unique_ptr<Ui_TaskImageScale> ui;
+    void changeTransparency(int val);
+    void changeWidth(double val);
+    void changeHeight(double val);
+
+private:
+    std::unique_ptr<Ui_TaskImage> ui;
     QPointer<InteractiveScale> scale;
     App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
 };
 
+class TaskImageDialog : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    explicit TaskImageDialog(Image::ImagePlane* obj);
+
+public:
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+
+private:
+    TaskImage* widget;
+};
+
 }
 
-#endif // GUI_TASKIMAGESCALE_H
+#endif // GUI_TASKIMAGE_H

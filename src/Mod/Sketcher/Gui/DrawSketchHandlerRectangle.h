@@ -511,27 +511,40 @@ public:
                     firstCurve + 4, firstCurve + 6, // equal  3
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
-                // now add construction geometry - two points used to take suggested constraints
-                Gui::Command::doCommand(Gui::Command::Doc,
-                    "geoList = []\n"
-                    "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
-                    "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
-                    "%s.addGeometry(geoList, True)\n" // geometry as construction
-                    "conList = []\n"
-                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                    "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                    "%s.addConstraint(conList)\n"
-                    "del geoList, conList\n",
-                    StartPos.x, StartPos.y, // point at StartPos
-                    EndPos.x, EndPos.y,     // point at EndPos
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
-                    firstCurve + 8, firstCurve + 1, // point on object constraint
-                    firstCurve + 8, firstCurve + 7, // point on object constraint
-                    firstCurve + 9, firstCurve + 3, // point on object constraint
-                    firstCurve + 9, firstCurve + 5, // point on object constraint
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                // not all users want these extra points, some power users find them unnecessary
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                auto showExtraPoints = hGrp->GetBool("RoundRectangleSuggConstraints", true);
+                if (showExtraPoints) {
+                    // now add construction geometry - two points used to take suggested constraints
+                    Gui::Command::doCommand(
+                        Gui::Command::Doc,
+                        "geoList = []\n"
+                        "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
+                        "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
+                        "%s.addGeometry(geoList, True)\n"// geometry as construction
+                        "conList = []\n"
+                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
+                        "%s.addConstraint(conList)\n"
+                        "del geoList, conList\n",
+                        StartPos.x,
+                        StartPos.y,// point at StartPos
+                        EndPos.x,
+                        EndPos.y,// point at EndPos
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),// the sketch
+                        firstCurve + 8,
+                        firstCurve + 1,// point on object constraint
+                        firstCurve + 8,
+                        firstCurve + 7,// point on object constraint
+                        firstCurve + 9,
+                        firstCurve + 3,// point on object constraint
+                        firstCurve + 9,
+                        firstCurve + 5,// point on object constraint
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str());// the sketch
+                }
 
                 Gui::Command::commitCommand();
 

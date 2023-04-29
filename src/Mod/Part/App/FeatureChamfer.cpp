@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         //shapefix re #4285
-        //https://www.forum.freecadweb.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
+        //https://www.forum.freecad.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
         TopoShape* ts = new TopoShape(shape);
         double minTol = 2.0 * Precision::Confusion();
         double maxTol = 4.0 * Precision::Confusion();

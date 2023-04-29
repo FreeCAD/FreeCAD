@@ -70,7 +70,7 @@
 #include "DrawViewDetail.h"
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
-
+#include "DrawProjectSplit.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -84,7 +84,7 @@ struct EdgePoints {
 
 GeometryObject::GeometryObject(const string& parent, TechDraw::DrawView* parentObj)
     : m_parentName(parent), m_parent(parentObj), m_isoCount(0), m_isPersp(false), m_focus(100.0),
-      m_usePolygonHLR(false)
+      m_usePolygonHLR(false), m_scrubCount(0)
 
 {}
 
@@ -531,13 +531,27 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
                                          bool hlrVisible)
 {
-    //    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
+//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
-        return;// There is no OpenCascade Geometry to be calculated
+        return;    // There is no OpenCascade Geometry to be calculated
+    }
+
+    // remove overlapping edges
+    TopoDS_Shape cleanShape;
+    if (m_scrubCount > 0) {
+        std::vector<TopoDS_Edge> edgeVector = DU::shapeToVector(edgeCompound);
+        for (int iPass = 0; iPass < m_scrubCount; iPass++)  {
+            edgeVector = DrawProjectSplit::removeOverlapEdges(edgeVector);
+        }
+        bool invertResult = false;
+        cleanShape = DU::vectorToCompound(edgeVector, invertResult);
+
+    } else {
+        cleanShape = edgeCompound;
     }
 
     BaseGeomPtr base;
-    TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
+    TopExp_Explorer edges(cleanShape, TopAbs_EDGE);
     int i = 1;
     for (; edges.More(); edges.Next(), i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());

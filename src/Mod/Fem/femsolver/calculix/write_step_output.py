@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix write inpfile step output"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def write_step_output(f, ccxwriter):
@@ -57,9 +57,9 @@ def write_step_output(f, ccxwriter):
             f.write("S, E\n")
 
         # dat file
-        # reaction forces: freecadweb.org/tracker/view.php?id=2934
+        # reaction forces: freecad.org/tracker/view.php?id=2934
         # some hint can be found in this topic:
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=20664&start=10#p520642
+        # https://forum.freecad.org/viewtopic.php?f=18&t=20664&start=10#p520642
         if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("** outputs --> dat file\n")
         if ccxwriter.member.cons_fixed:
@@ -86,7 +86,7 @@ def write_step_output(f, ccxwriter):
 
         # there is no need to write all integration point results
         # as long as there is no reader for them
-        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=29060
+        # see https://forum.freecad.org/viewtopic.php?f=18&t=29060
         # f.write("*NODE PRINT , NSET=" + ccxwriter.ccx_nall + "\n")
         # f.write("U \n")
         # f.write("*EL PRINT , ELSET=" + ccxwriter.ccx_eall + "\n")

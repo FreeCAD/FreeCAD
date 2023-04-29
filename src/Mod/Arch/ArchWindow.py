@@ -21,7 +21,11 @@
 
 import os
 
-import FreeCAD, Draft, ArchComponent, DraftVecUtils, ArchCommands
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import Draft
+import DraftVecUtils
 import ArchWindowPresets
 from FreeCAD import Units
 from FreeCAD import Vector
@@ -52,7 +56,7 @@ else:
 
 __title__  = "FreeCAD Window"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
@@ -524,17 +528,18 @@ class _CommandWindow:
                     path = self.librarypresets[i-len(WindowPresets)][1]
                     if path.lower().endswith(".fcstd"):
                         try:
-                            import zipfile,tempfile
+                            import tempfile
+                            import zipfile
                         except Exception:
                             pass
                         else:
-                            zfile=zipfile.ZipFile(path)
-                            files=zfile.namelist()
+                            zfile = zipfile.ZipFile(path)
+                            files = zfile.namelist()
                             # check for meta-file if it's really a FreeCAD document
                             if files[0] == "Document.xml":
                                 image="thumbnails/Thumbnail.png"
                                 if image in files:
-                                    image=zfile.read(image)
+                                    image = zfile.read(image)
                                     thumbfile = tempfile.mkstemp(suffix='.png')[1]
                                     thumb = open(thumbfile,"wb")
                                     thumb.write(image)
@@ -667,7 +672,9 @@ class _Window(ArchComponent.Component):
 
     def buildShapes(self,obj):
 
-        import Part,DraftGeomUtils,math
+        import Part
+        import DraftGeomUtils
+        import math
         self.sshapes = []
         self.vshapes = []
         shapes = []
@@ -877,7 +884,9 @@ class _Window(ArchComponent.Component):
                 self.boxes = clonedProxy.boxes
             return
 
-        import Part,DraftGeomUtils,math
+        import Part
+        import DraftGeomUtils
+        import math
         pl = obj.Placement
         base = None
         self.sshapes = []
@@ -937,7 +946,7 @@ class _Window(ArchComponent.Component):
         try:
             import ArchSketchObject  # Why needed ? Should have try: addSketchArchFeatures() before !  Need 'per method' ?
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
-            # see https://forum.freecadweb.org/viewtopic.php?f=23&t=50802
+            # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
         except:
             pass
@@ -945,7 +954,7 @@ class _Window(ArchComponent.Component):
     def appLinkExecute(self, obj, linkObj, index, linkElement):
         '''
             Default Link Execute method() -
-            See https://forum.freecadweb.org/viewtopic.php?f=22&t=42184&start=10#p361124
+            See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
             @realthunder added support to Links to run Linked Scripted Object's methods()
         '''
 

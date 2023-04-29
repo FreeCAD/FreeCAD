@@ -27,7 +27,7 @@ import importlib
 
 __title__ = "Path Icon ViewProvider"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "ViewProvider who's main and only task is to assign an icon."
 
 translate = FreeCAD.Qt.translate

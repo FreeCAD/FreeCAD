@@ -32,8 +32,6 @@
 #ifndef _PreComp_
 # include <iostream>
 # include <fstream>
-# include <string>
-# include <sstream>
 # include <cstdio>
 # include <cstdlib>
 # include <stdexcept>
@@ -144,8 +142,8 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
     int bytesNeeded = fontfile.tellg();
     fontfile.clear();
     fontfile.seekg (0, fontfile.beg);
-    char* buffer = new char[bytesNeeded];
-    fontfile.read(buffer, bytesNeeded);
+    std::unique_ptr <char[]> buffer (new char[bytesNeeded]);
+    fontfile.read(buffer.get(), bytesNeeded);
     if (!fontfile) {
         //get indignant
         ErrorMsg << "Can not read font file: " << FontSpec;
@@ -153,7 +151,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
     }
     fontfile.close();
 
-    const FT_Byte* ftBuffer = reinterpret_cast<FT_Byte*>(buffer);
+    const FT_Byte* ftBuffer = reinterpret_cast<FT_Byte*>(buffer.get());
     error = FT_New_Memory_Face(FTLib, ftBuffer, bytesNeeded, FaceIndex, &FTFace);
     if (error) {
         ErrorMsg << "FT_New_Face failed: " << error;

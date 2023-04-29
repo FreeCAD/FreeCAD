@@ -522,7 +522,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
     double pixelRatio = getDevicePixelRatio();
 
     // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
-    // as FreeCAD Wiki suggests - see https://wiki.freecadweb.org/HiDPI_support#Custom_cursor_size
+    // as FreeCAD Wiki suggests - see https://wiki.freecad.org/HiDPI_support#Custom_cursor_size
     double cursorSize = 32.0 * pixelRatio;
 
     QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));

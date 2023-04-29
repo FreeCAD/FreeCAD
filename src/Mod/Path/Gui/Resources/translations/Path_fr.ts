@@ -186,7 +186,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation>Feuille de paramétrage</translation>
+      <translation>Table de paramétrage</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="82"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
       <source>Tool Rapid Speeds</source>
-      <translation>Vitesses rapides des outils</translation>
+      <translation>Vitesses d'avance rapide</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="118"/>
@@ -301,32 +301,32 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation>Flux Horiz</translation>
+      <translation>Vitesse d'avance horizontale</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation>Flux Vert</translation>
+      <translation>Vitesse d'avance verticale</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation>Rapide horizontale</translation>
+      <translation>Avance rapide horizontale</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation>Rapide verticale</translation>
+      <translation>Avance rapide verticale</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation>Broche</translation>
+      <translation>Vitesse de broche</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation>En avant</translation>
+      <translation>sens horaire</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -3868,7 +3868,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Spindle</source>
-      <translation>Broche</translation>
+      <translation>Vitesse de broche</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1237"/>

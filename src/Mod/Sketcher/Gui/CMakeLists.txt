@@ -87,8 +87,6 @@ SET(SketcherGui_SRCS
     PreCompiled.h
     SoZoomTranslation.cpp
     SoZoomTranslation.h
-    SoDatumLabel.cpp
-    SoDatumLabel.h
     PropertyConstraintListItem.h
     PropertyConstraintListItem.cpp
     TaskSketcherConstraints.ui

@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -30,10 +30,12 @@ __url__    = "https://www.freecadweb.org"
 #  This module provides tools to build base profiles
 #  for Arch Structure elements
 
-
-import FreeCAD, Draft, os
-from FreeCAD import Vector
 import csv
+import os
+
+import FreeCAD
+import Draft
+from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
     import FreeCADGui

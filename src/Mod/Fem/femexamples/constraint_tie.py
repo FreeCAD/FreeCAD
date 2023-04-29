@@ -57,7 +57,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=42783
+https://forum.freecad.org/viewtopic.php?f=18&t=42783
 
 constraint tie, bond two surfaces together (solid mesh only)
 

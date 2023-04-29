@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import datetime
 
 TOOLTIP = """
 This is an example postprocessor file for the Path workbench. It is used
@@ -30,10 +31,7 @@ Read the Path Workbench documentation to know how to convert Path objects
 to GCode.
 """
 
-import datetime
-
 now = datetime.datetime.now()
-
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ["__builtin__", "io"]:

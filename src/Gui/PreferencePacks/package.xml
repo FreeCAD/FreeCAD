@@ -3,7 +3,7 @@
   <name>Built-In Preference Packs</name>
   <description>Preference Packs included with the FreeCAD distribution</description>
   <version>1.0.0</version>
-  <maintainer email="email@freecadweb.org">No Maintainer</maintainer>
+  <maintainer email="email@freecad.org">No Maintainer</maintainer>
   <license file="../../LICENSE">LGPL2</license>
   <url type="repository">https://github.com/FreeCAD/FreeCAD</url>
 

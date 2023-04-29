@@ -19,8 +19,12 @@
 #*                                                                         *
 #***************************************************************************
 
+import math
 
-import FreeCAD, Part, Draft, math, ArchCommands
+import FreeCAD
+import ArchCommands
+import Draft
+import Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui, re
@@ -41,7 +45,7 @@ else:
 
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH

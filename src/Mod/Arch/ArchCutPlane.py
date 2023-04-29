@@ -20,7 +20,9 @@
 #*                                                                           *
 #*****************************************************************************
 
-import FreeCAD, Draft, ArchCommands
+import FreeCAD
+import Draft
+import ArchCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -33,7 +35,7 @@ else:
 
 __title__="FreeCAD CutPlane"
 __author__ = "Jonathan Wiedemann"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 ## @package ArchCutPlane
 #  \ingroup ARCH

@@ -1378,12 +1378,12 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="97"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Emelkedés</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="102"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Konvencionális</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="110"/>
@@ -1712,7 +1712,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Több fázisú</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
@@ -2003,7 +2003,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="65"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Illesztés</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
@@ -2018,7 +2018,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Lejtés</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
@@ -2745,7 +2745,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="82"/>
       <source>LeadIn</source>
-      <translation type="unfinished">LeadIn</translation>
+      <translation>Bevezetés</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="97"/>
@@ -2765,7 +2765,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="162"/>
       <source>LeadOut</source>
-      <translation type="unfinished">LeadOut</translation>
+      <translation>Kiterjeszteni</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="177"/>
@@ -2973,12 +2973,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
       <source>custom</source>
-      <translation type="unfinished">custom</translation>
+      <translation>egyéni</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
       <source>fixed</source>
-      <translation type="unfinished">fixed</translation>
+      <translation>rögzített</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>

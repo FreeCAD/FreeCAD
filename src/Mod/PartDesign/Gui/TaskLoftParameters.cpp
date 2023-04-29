@@ -129,7 +129,7 @@ TaskLoftParameters::~TaskLoftParameters()
 void TaskLoftParameters::updateUI()
 {
     // we must assure the changed loft is kept visible on section changes,
-    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=63252
+    // see https://forum.freecad.org/viewtopic.php?f=3&t=63252
     PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
     vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
 }

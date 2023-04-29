@@ -298,7 +298,7 @@ App::DocumentObjectExecReturn *Draft::execute()
                 if (!mkDraft.AddDone()) {
                     // Note: the function ProblematicShape returns the face on which the error occurred
                     // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       therefore unusable. See http://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
                     //       The only solution is to discard mkDraft and start over without the current face
                     // mkDraft.Remove(face);
                     Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());

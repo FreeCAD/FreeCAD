@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver object Z88"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package SolverZ88
 #  \ingroup FEM

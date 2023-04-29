@@ -19,7 +19,10 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Part, math
+import math
+
+import FreeCAD
+import Part
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -35,7 +38,7 @@ else:
 
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchGrid
 #  \ingroup ARCH

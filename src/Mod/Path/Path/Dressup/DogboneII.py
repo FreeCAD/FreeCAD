@@ -25,6 +25,7 @@ import FreeCAD
 import Path
 import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
+import PathScripts.PathUtils as PathUtils
 import math
 
 if False:
@@ -294,7 +295,7 @@ class Proxy(object):
         dressingUpDogbone = hasattr(obj.Base, "BoneBlacklist")
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
             for i, instr in enumerate(
-                PathLanguage.Maneuver.FromPath(obj.Base.Path).instr
+                PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
             ):
                 # Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():

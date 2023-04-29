@@ -167,7 +167,7 @@ void ConstraintWeightedLinearCombination::rescale(double coef)
 double ConstraintWeightedLinearCombination::error()
 {
     // Explanation of the math here:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
 
     double sum = 0;
     double wsum = 0;
@@ -184,7 +184,7 @@ double ConstraintWeightedLinearCombination::error()
 double ConstraintWeightedLinearCombination::grad(double* param)
 {
     // Equations are from here:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
 
     double deriv = 0.;
 
@@ -349,7 +349,7 @@ double ConstraintSlopeAtBSplineKnot::error()
 
     // This is actually wsum^2 * the respective slopes
     // See Eq (19) from:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
     double slopex = wsum * xslopesum - wslopesum * xsum;
     double slopey = wsum * yslopesum - wslopesum * ysum;
 
@@ -367,7 +367,7 @@ double ConstraintSlopeAtBSplineKnot::error()
 double ConstraintSlopeAtBSplineKnot::grad(double* param)
 {
     // Equations are from here:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
     double result = 0.0;
     double linex = *linep2x() - *linep1x();
     double liney = *linep2y() - *linep1y();
@@ -1630,7 +1630,7 @@ void ConstraintEllipseTangentLine::rescale(double coef)
 void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* param)
 {
     // DeepSOIC equation
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7520&start=140
+    // http://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
 
     if (pvecChangedFlag)
         ReconstructGeomPointers();
@@ -2248,7 +2248,7 @@ double ConstraintPointOnHyperbola::error()
     double b = *rmin();
 
     // Full sage worksheet at:
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=8038&p=110447#p110447
+    // http://forum.freecad.org/viewtopic.php?f=10&t=8038&p=110447#p110447
     //
     // Err = |PF2| - |PF1| - 2*a
     // sage code:

@@ -24,7 +24,15 @@
 containers for Arch objects, and also define a terrain surface.
 """
 
-import FreeCAD,Draft,ArchCommands,ArchComponent,math,re,datetime,ArchIFC
+import datetime
+import math
+import re
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchIFC
+import Draft
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -49,7 +57,7 @@ else:
 
 __title__= "FreeCAD Site"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):
@@ -581,7 +589,7 @@ class _Site(ArchIFC.IfcProduct):
         Terrain.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
         """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
@@ -758,7 +766,8 @@ class _Site(ArchIFC.IfcProduct):
                 obj.SubtractionVolume = 0
             return
 
-        import TechDraw, Part
+        import TechDraw
+        import Part
         area = 0
         perim = 0
         addvol = 0
@@ -838,7 +847,7 @@ class _ViewProviderSite:
         These include solar diagram and compass data, dealing the orientation
         of the site, and its orientation to the sun.
 
-        You can learn more about properties here: https://wiki.freecadweb.org/property
+        You can learn more about properties here: https://wiki.freecad.org/property
         """
 
         pl = vobj.PropertiesList
@@ -1057,7 +1066,7 @@ class _ViewProviderSite:
         """Updates the 'terrain' switches."""
 
         if not hasattr(self, "terrain_switches"):
-              return
+            return
 
         idx = 0 if self.Object.Terrain is None else 1
         for switch in self.terrain_switches:

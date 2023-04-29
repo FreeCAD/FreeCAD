@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Fenics tools"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package Fenics
 #  \ingroup FEM

@@ -28,7 +28,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Setup Sheet Editor"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
 

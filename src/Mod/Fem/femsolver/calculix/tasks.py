@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver CalculiX tasks"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{

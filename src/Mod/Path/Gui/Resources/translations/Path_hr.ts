@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>Stvori područje svojstava od odabranog objekta</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>Odaberite radnu ravninu za Područje Svojstava</translation>
     </message>
   </context>
   <context>
@@ -1420,7 +1420,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="149"/>
       <source>Grid</source>
-      <translation>Rešetka</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="154"/>

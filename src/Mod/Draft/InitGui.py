@@ -27,7 +27,7 @@ import FreeCADGui
 
 __title__ = "FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class DraftWorkbench(FreeCADGui.Workbench):

@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?t=56590
+https://forum.freecad.org/viewtopic.php?t=56590
 
 """
 

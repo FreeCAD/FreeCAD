@@ -49,6 +49,7 @@
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "SketchMirrorDialog.h"
@@ -584,7 +585,10 @@ void CmdSketcherMapSketch::activated(int iMsg)
         int iSugg = 0; //index of the auto-suggested mode in the list of valid modes
         int iCurr = 0; //index of current mode in the list of valid modes
         for (size_t i = 0; i < validModes.size(); ++i) {
-            items.push_back(QString::fromLatin1(AttachEngine::getModeName(validModes[i]).c_str()));
+            // Get the 2-element vector of caption, tooltip -- this class cannot use the tooltip,
+            // so it is just ignored.
+            auto uiStrings = AttacherGui::getUIStrings(AttachEnginePlane::getClassTypeId(), validModes[i]);
+            items.push_back(uiStrings[0]);
             if (validModes[i] == curMapMode) {
                 iCurr = items.size() - 1;
                 items.back().append(bCurIncompatible?
@@ -927,7 +931,7 @@ bool CmdSketcherMergeSketches::isActive()
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:
 // https://github.com/Spritkopf/freecad-macros/blob/master/clip-sketch/clip_sketch.FCMacro
-// https://forum.freecadweb.org/viewtopic.php?p=231481#p231085
+// https://forum.freecad.org/viewtopic.php?p=231481#p231085
 DEF_STD_CMD_A(CmdSketcherViewSection)
 
 CmdSketcherViewSection::CmdSketcherViewSection()
@@ -1327,7 +1331,7 @@ private:
     CmdSketcherSnap& operator= (const CmdSketcherSnap&) = delete;
     CmdSketcherSnap& operator= (CmdSketcherSnap&&) = delete;
 
-    bool snapEnabled;
+    bool snapEnabled = true;
 };
 
 CmdSketcherSnap::CmdSketcherSnap()

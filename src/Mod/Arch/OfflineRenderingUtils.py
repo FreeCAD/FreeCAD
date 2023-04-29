@@ -216,7 +216,7 @@ def getGuiData(filename):
             for key,properties in guidata.items():
                 # open each diffusecolor files and retrieve values
                 # first 4 bytes are the array length, then each group of 4 bytes is abgr
-                # https://forum.freecadweb.org/viewtopic.php?t=29382
+                # https://forum.freecad.org/viewtopic.php?t=29382
                 if isinstance(properties,dict):
                     for propname in properties.keys():
                         if properties[propname]["type"] == "App::PropertyColorList":
@@ -285,7 +285,7 @@ def getColors(filename,nodiffuse=False):
         if ("DiffuseColor" in v) and (not nodiffuse):
             if len(v["DiffuseColor"]["value"]) == 1:
                 # only one color in DiffuseColor: used for the whole object
-                 colors[k] = v["DiffuseColor"]["value"][0]
+                colors[k] = v["DiffuseColor"]["value"][0]
             else:
                 colors[k] = v["DiffuseColor"]["value"]
         elif "ShapeColor" in v:
@@ -616,7 +616,7 @@ def getUnsigned(color):
     # ensure everything is int otherwise bit ops below don't work
     color = (int(color[0]),int(color[1]),int(color[2]))
 
-    # https://forum.freecadweb.org/viewtopic.php?t=19074
+    # https://forum.freecad.org/viewtopic.php?t=19074
     return str(color[0] << 24 | color[1] << 16 | color[2] << 8)
 
 
@@ -632,7 +632,7 @@ def buildGuiDocumentFromColors(document,colors,camera=None):
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
     guidoc += "<!--\n"
-    guidoc += " FreeCAD Document, see http://www.freecadweb.org for more information...\n"
+    guidoc += " FreeCAD Document, see http://www.freecad.org for more information...\n"
     guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 
@@ -711,7 +711,7 @@ def buildGuiDocumentFromGuiData(document,guidata):
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
     guidoc += "<!--\n"
-    guidoc += " FreeCAD Document, see http://www.freecadweb.org for more information...\n"
+    guidoc += " FreeCAD Document, see http://www.freecad.org for more information...\n"
     guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 

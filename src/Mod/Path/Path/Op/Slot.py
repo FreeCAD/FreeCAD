@@ -23,7 +23,7 @@
 
 __title__ = "Path Slot Operation"
 __author__ = "russ4262 (Russell Johnson)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Class and implementation of Slot operation."
 __contributors__ = ""
 
@@ -1167,7 +1167,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         def circumCircleFrom3Points(P1, P2, P3):
             # Source code for this function copied from (with modifications):
-            # https://wiki.freecadweb.org/Macro_Draft_Circle_3_Points_3D
+            # https://wiki.freecad.org/Macro_Draft_Circle_3_Points_3D
             vP2P1 = P2 - P1
             vP3P2 = P3 - P2
             vP1P3 = P1 - P3
