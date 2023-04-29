@@ -3559,7 +3559,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1809"/>
       <source>No faces in selection.</source>
-      <translation type="unfinished">No faces in selection.</translation>
+      <translation>Med izbranim ni nobene ploskve.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2045"/>
@@ -4123,12 +4123,12 @@ Vsaka enota predstavlja pribl. 0,1 mm</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="115"/>
       <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation type="unfinished">If checked, system will attempt to automatically correct dimension references when the model changes.</translation>
+      <translation>Če je označeno, bo sistem skušal samodejno popraviti sklice kót, ko se model spremeni.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="121"/>
       <source>Auto Correct Dimension Refs</source>
-      <translation type="unfinished">Auto Correct Dimension Refs</translation>
+      <translation>Samopopravljanje sklicev kót</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="310"/>
@@ -4196,12 +4196,12 @@ uporabi pri črtkanju ploskve z vzorcem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="530"/>
       <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</source>
-      <translation type="unfinished">If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</translation>
+      <translation>Če je označeno, bo FreeCAD upošteval novi algoritem za iskanje ploskev. Če ni označeno, bo FreeCAD uporabil izvirni iskalnik ploskev.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="533"/>
       <source>Use New Face Finder</source>
-      <translation type="unfinished">Use New Face Finder</translation>
+      <translation>Uporabi novi iskalnik ploskev</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="567"/>
@@ -4771,7 +4771,7 @@ uporabi pri črtkanju ploskve z vzorcem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="570"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
-      <translation type="unfinished">Controls the size of spacing between dimension line and dimension text for ISO dimensions.</translation>
+      <translation>Upravlja velikost odmika besedila od kotirne črte pri ISO kotiranju.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -6089,12 +6089,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="124"/>
       <source>Circular runout</source>
-      <translation type="unfinished">Circular runout</translation>
+      <translation>Krožno opletanje</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="134"/>
       <source>Total runout</source>
-      <translation type="unfinished">Total runout</translation>
+      <translation>Skupno opletanje</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="144"/>
@@ -6104,7 +6104,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="154"/>
       <source>Concentricity</source>
-      <translation type="unfinished">Concentricity</translation>
+      <translation>Sosrediščnost</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="164"/>
@@ -6114,17 +6114,17 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Modifiers</source>
-      <translation type="unfinished">Modifiers</translation>
+      <translation>Spremenilniki</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="190"/>
       <source>derived geometry element</source>
-      <translation type="unfinished">derived geometry element</translation>
+      <translation>izpeljana geometrijska prvina</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="205"/>
       <source>Minimax (Tschebyschew)</source>
-      <translation type="unfinished">Minimax (Tschebyschew)</translation>
+      <translation>Najmanši največji (Čebišov)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="220"/>

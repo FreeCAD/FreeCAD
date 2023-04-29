@@ -280,7 +280,7 @@ Utzi hutsik dokumentuko objektu guztiak erabili daitezen.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Hau aktibatuta badago, lerro gehigarriak kontuan hartutako objektu bakoitzeko beteko dira. Ez badago, totalak soilik.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -290,7 +290,7 @@ Utzi hutsik dokumentuko objektu guztiak erabili daitezen.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Hau gaituta badago, dokumentua birkalkulatzen den bakoitzean programazioa eta hari lotutako kalkulu-orria eguneratu egingo dira.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -2945,7 +2945,7 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Panel-aukerak</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3083,7 +3083,7 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>'Schedule' propietatea gehitu da</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
@@ -3093,7 +3093,7 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Ezabatu kalkulu-orria</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -5384,7 +5384,7 @@ Eraikinaren sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The Arch Schedule that uses this spreadsheet</translation>
+      <translation>Kalkulu-orri hau erabiltzen duen arkitektura-programazioa</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>

@@ -280,7 +280,7 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Ha ez bekapcsolt, a program további sorokat tölt ki minden egyes figyelembe vett tárggyal. Ha nem, csak az összegek szerepelnek.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -290,7 +290,7 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Ha engedélyezett, a dokumentum újraszámításakor az ütemterv és a kapcsolódó táblázatkezelő frissül.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -2947,7 +2947,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Panel beállítások</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3080,12 +3080,12 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>az 'Eredmény' tulajdonságot eltávolítottuk, és hozzáadtuk az 'Automatikus frissítés' tulajdonságot</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>hozzáadva az 'Ütemterv' tulajdonság</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
@@ -3095,7 +3095,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Számolótábla eltávolítása</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -5381,12 +5381,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>Ha engedélyezett, a dokumentum újraszámításakor az ütemterv és a kapcsolódó táblázatkezelő frissül</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The Arch Schedule that uses this spreadsheet</translation>
+      <translation>Az Építész ütemterv, amely ezt a táblázatot használja</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>

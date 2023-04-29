@@ -1381,7 +1381,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../package_details.py" line="63"/>
       <source>Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</source>
-      <translation type="unfinished">Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</translation>
+      <translation>Avviso Addon Manager: impossibile importare QtWebEngineWidgets -- i dati README verranno visualizzati come solo testo</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="187"/>

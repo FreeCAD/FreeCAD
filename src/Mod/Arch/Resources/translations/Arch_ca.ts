@@ -280,7 +280,7 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Si aquesta opció està activada, s’ompliran línies addicionals amb cada objecte que s'ha tingut en compte. Si no, només els totals.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -290,7 +290,7 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Si això està activat, guió i full de càlcul associat s'actualitzen quan el document es recalcula.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -1747,7 +1747,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     <message>
       <location filename="../../ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Seleccioneu com a mínim un eix</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="301"/>
@@ -1758,12 +1758,12 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     <message>
       <location filename="../../ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>Primer punt de la biga</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Punt d'origen de la columna</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="341"/>
@@ -1840,7 +1840,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     <message>
       <location filename="../../ArchStructure.py" line="775"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
+      <translation>Error: la forma base no s'ha pogut extrudir al llarg de l'objecte guia</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="801"/>

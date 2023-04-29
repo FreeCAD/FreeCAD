@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Intersection</source>
-      <translation>交集</translation>
+      <translation>交錯</translation>
     </message>
   </context>
   <context>
@@ -1380,7 +1380,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Cl&amp;ose</source>
-      <translation>&amp;關閉</translation>
+      <translation>關閉(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="828"/>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Approximate a cylinder</source>
-      <translation>Апроксимирај цилиндар</translation>
+      <translation>Апроксимирај ваљак</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Approximate a sphere</source>
-      <translation>Апроксимирај сферу</translation>
+      <translation>Апроксимирај лопту</translation>
     </message>
   </context>
   <context>
@@ -210,12 +210,12 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Fit cylinder</source>
-      <translation>Уклопи цилиндар</translation>
+      <translation>Уклопи ваљак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Fit sphere</source>
-      <translation>Уклопи сферу</translation>
+      <translation>Уклопи лопту</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
@@ -526,12 +526,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>

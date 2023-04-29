@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Določi dolžino daljice ali razdaljo med daljico in ogliščem oz. med dvema krogoma</translation>
     </message>
   </context>
   <context>
@@ -592,8 +592,8 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Ustvari omejitev lomnega zakona med dvema končnima točkama žarkov
+in robom, ki predstavlja mejo.</translation>
     </message>
   </context>
   <context>
@@ -889,12 +889,12 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="902"/>
       <source>Create periodic B-spline</source>
-      <translation>Ustvari periodični B-zlepek</translation>
+      <translation>Ustvari sklenjeni B-zlepek</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="903"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>Ustvari periodični B-zlepek skozi nadzorne točke v očrtu.</translation>
+      <translation>Ustvari sklenjeni B-zlepek skozi nadzorne točke v očrtu.</translation>
     </message>
   </context>
   <context>
@@ -1678,7 +1678,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../CommandConstraints.cpp" line="2323"/>
       <location filename="../../CommandConstraints.cpp" line="2548"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>Dodaj krog omejilu razdalje medkrogoma</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2358"/>
@@ -2113,7 +2113,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Dodaj vozliščno točko</translation>
     </message>
   </context>
   <context>
@@ -2616,7 +2616,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>Niso izbrani 3 predmeti</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2663,7 +2663,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Izberite na očrtu natanko eno črto ali točko in eno črto ali dve točki ali pa dva kroga.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2856,7 +2856,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Izberite bodisi eno točko in več krivulj, bodisi eno krivuljo in več točk.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3169,22 +3169,22 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="446"/>
       <source>Unsupported visual layer operation</source>
-      <translation type="unfinished">Unsupported visual layer operation</translation>
+      <translation>Nepodprto vidno dejanje plasti</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="447"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Trenutno ni podprto premikanje zunanjih geometrij v drugo videzno plast. Zunanje gometrije bodo opuščene</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="233"/>
       <source>Set knot multiplicity</source>
-      <translation type="unfinished">Set knot multiplicity</translation>
+      <translation>Nastavi večkranost vozla</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="234"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation type="unfinished">Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</translation>
+      <translation>Določi v zadnji podani točki večkratnost vozla med 1 in %1: Vedite, da se lahko v določenih okoliščinah večkratnost prezre. Za več podrobnosti si preberite dokumentacijo</translation>
     </message>
   </context>
   <context>
@@ -5319,13 +5319,13 @@ Izvede se s pregledom geometrij in omejil očrta.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1103"/>
       <source>Periodic B-spline by control points</source>
-      <translation>Periodični B-zlepek z nadzornimi točkami</translation>
+      <translation>Sklenjeni B-zlepek z nadzornimi točkami</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1104"/>
       <location filename="../../CommandCreateGeo.cpp" line="1105"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>Ustvari periodični B-zlepek z nadzornimi točkami</translation>
+      <translation>Ustvari sklenjeni B-zlepek z nadzornimi točkami</translation>
     </message>
   </context>
   <context>
@@ -5736,7 +5736,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2992"/>
       <source>and %1 more</source>
-      <translation type="unfinished">and %1 more</translation>
+      <translation>in še %1</translation>
     </message>
   </context>
   <context>
@@ -5744,7 +5744,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>P&amp;rofiles</source>
-      <translation type="unfinished">P&amp;rofiles</translation>
+      <translation>P&amp;reseki</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
@@ -5855,22 +5855,22 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Pomožne mrežne črte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Glavne mrežne črte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Glavne mrežne črte vsakih:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>Vsaka n-ta črta bo glavna črta. Če želite onemogočiti glavne črte, nastavite na 1.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5952,18 +5952,18 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>Očrt vsebuje narobe oblikovana omejila!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>Očrt vsebuje deloma čezmerna omejila!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
+      <translation>Parabole so bile preseljene. Preseljenih datotek ne bo mogoče odpreti v prejšnjih FreeCADih!
 </translation>
     </message>
     <message>
@@ -5983,12 +5983,12 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>Interpoliraj B-zlepek</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Ustvari B-zlepek z interpolacijo, tj. skozi vozle očrta.</translation>
     </message>
   </context>
   <context>
@@ -5996,12 +5996,12 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>Interpoliraj sklenjeni B-zlepek</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Ustvari sklenjeni B-zlepek z interpolacijo, t.j. skozi vozle očrta.</translation>
     </message>
   </context>
   <context>
@@ -6009,13 +6009,13 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-zlepek z vozli</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Ustvari B-zlepek z vozli</translation>
     </message>
   </context>
   <context>
@@ -6023,13 +6023,13 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>Sklenjeni B-zlepek z vozli</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Ustvari sklenjeni B-zlepek skozi vozle</translation>
     </message>
   </context>
   <context>
@@ -6037,17 +6037,17 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Pripenjanje na predmete</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Nove točke se bodo pripenjale na trenutno predizbrane predmete, prav tako pa na razpolovišče daljic in lokov.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Pripenjanje na mrežo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6059,12 +6059,12 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Pripenjanje na kót</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>Kotni korak pri orodjih ki uporabljajo "Pripenjanje na kót" (npr. črte). Za omogočenje "Pripenjanja na kót" držite CTRL. Kót začne od vzhodne osi (vodoravno desno)</translation>
     </message>
   </context>
   <context>
@@ -6072,12 +6072,12 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Preklopi pripenjanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>Preklopi vse pripenjanje. V meniju lahko posamično preklopite "Pripenjanje na mrežo", Pripenjanje na predmete" in druge nastavitve pripenjanja</translation>
     </message>
   </context>
 </TS>
