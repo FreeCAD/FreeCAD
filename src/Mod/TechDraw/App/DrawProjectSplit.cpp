@@ -86,15 +86,15 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
                                        scale);
     gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(Base::Vector3d(0.0, 0.0, 0.0), direction, false);
     TechDraw::GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
-    const std::vector<TechDraw::BaseGeomPtr>& goEdges = go->getVisibleFaceEdges(false, false);
-    for (auto& e: goEdges){
-        edgesIn.push_back(e->getOCCEdge());
+    const std::vector<TechDraw::edgeWrapPtr>& goEdges = go->getVisibleFaceEdges(false, false);
+    for (auto& edge: goEdges){
+        edgesIn.push_back(edge->edge);
     }
 
     std::vector<TopoDS_Edge> nonZero;
-    for (auto& e: edgesIn) {                            //drop any zero edges (shouldn't be any by now!!!)
-        if (!DrawUtil::isZeroEdge(e, 2.0 * EWTOLERANCE)) {
-            nonZero.push_back(e);
+    for (auto& edge: edgesIn) {                            //drop any zero edges (shouldn't be any by now!!!)
+        if (!DrawUtil::isZeroEdge(edge, 2.0 * EWTOLERANCE)) {
+            nonZero.push_back(edge);
         } else {
             Base::Console().Message("DPS::getEdgesForWalker found ZeroEdge!\n");
         }
@@ -122,11 +122,11 @@ TechDraw::GeometryObjectPtr DrawProjectSplit::buildGeometryObject(TopoDS_Shape s
 //! get the projected edges with all their new intersections.
 std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* geometryObject)
 {
-    const std::vector<TechDraw::BaseGeomPtr>& goEdges = geometryObject->getVisibleFaceEdges(true, true);
-    std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
+    const std::vector<TechDraw::edgeWrapPtr>& goEdges = geometryObject->getVisibleFaceEdges(true, true);
+    std::vector<TechDraw::edgeWrapPtr>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        origEdges.push_back((*itEdge)->getOCCEdge());
+        origEdges.push_back((*itEdge)->edge);
     }
 
     std::vector<TopoDS_Edge> faceEdges;
@@ -483,7 +483,7 @@ std::string edgeSortItem::dump()
 
 //clean an unstructured group of edges so they can be connected into sensible closed faces.
 // Warning: uses loose tolerances to create connections between edges
-std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw::BaseGeomPtr>& origEdges,
+std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw::edgeWrapPtr>& origEdges,
                                                       std::vector<TopoDS_Edge> &closedEdges)
 {
 //    Base::Console().Message("DPS::scrubEdges() - BaseGeom in: %d\n", origEdges.size());
@@ -493,8 +493,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw
     bool copyGeometry = true;
     bool copyMesh = false;
     for (const auto& tdEdge: origEdges) {
-        if (!DrawUtil::isZeroEdge(tdEdge->getOCCEdge(), 2.0 * EWTOLERANCE)) {
-            BRepBuilderAPI_Copy copier(tdEdge->getOCCEdge(), copyGeometry, copyMesh);
+        if (!DrawUtil::isZeroEdge(tdEdge->edge, 2.0 * EWTOLERANCE)) {
+            BRepBuilderAPI_Copy copier(tdEdge->edge, copyGeometry, copyMesh);
             copyEdges.push_back(TopoDS::Edge(copier.Shape()));
         }
     }

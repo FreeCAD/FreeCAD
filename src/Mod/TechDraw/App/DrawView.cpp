@@ -404,40 +404,33 @@ bool DrawView::checkFit() const
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
 //    Base::Console().Message("DV::checkFit(page) - %s\n", getNameInDocument());
-    bool result = true;
-    double fudge = 1.1;
-
-    double width = 0.0;
-    double height = 0.0;
     QRectF viewBox = getRect();         //rect is scaled
     if (!viewBox.isValid()) {
-        result = true;
-    } else {
-        width = viewBox.width();        //scaled rect w x h
-        height = viewBox.height();
-        width *= fudge;
-        height *= fudge;
-        if ( (width > p->getPageWidth()) ||
-             (height > p->getPageHeight()) ) {
-            result = false;
-        }
+        return true;
     }
-    return result;
+    double fudge = 1.1;
+    double width = viewBox.width();        //scaled rect w x h
+    double height = viewBox.height();
+    if (width * fudge > p->getPageWidth() ||
+        height * fudge > p->getPageHeight()) {
+        return false;
+    }
+    return true;
 }
 
 void DrawView::setPosition(double x, double y, bool force)
 {
 //    Base::Console().Message("DV::setPosition(%.3f, %.3f) - \n", x,y, getNameInDocument());
-    if ( (!isLocked()) ||
-         (force) ) {
-        double currX = X.getValue();
-        double currY = X.getValue();
-        if (!DrawUtil::fpCompare(currX, x, 0.001)) {    // 0.001mm tolerance
-            X.setValue(x);
-        }
-        if (!DrawUtil::fpCompare(currY, y, 0.001)) {
-            Y.setValue(y);
-        }
+    if (isLocked() && !force) {
+        return;
+    }
+    double currX = X.getValue();
+    double currY = X.getValue();
+    if (!DrawUtil::fpCompare(currX, x, 0.001)) {    // 0.001mm tolerance
+        X.setValue(x);
+    }
+    if (!DrawUtil::fpCompare(currY, y, 0.001)) {
+        Y.setValue(y);
     }
 }
 

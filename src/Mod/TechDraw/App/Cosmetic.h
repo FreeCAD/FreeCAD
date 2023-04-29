@@ -28,6 +28,7 @@
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
+#include "GeometryObject.h"
 
 
 class TopoDS_Edge;
@@ -76,7 +77,7 @@ public:
 
     void initialize();
     TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
-    TechDraw::BaseGeomPtr scaledGeometry(double scale);
+    TechDraw::edgeWrapPtr scaledGeometry(double scale);
 
     std::string toString() const override;
     void dump(const char* title);

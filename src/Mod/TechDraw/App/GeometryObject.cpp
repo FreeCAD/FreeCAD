@@ -90,28 +90,28 @@ GeometryObject::GeometryObject(const string& parent, TechDraw::DrawView* parentO
 
 GeometryObject::~GeometryObject() { clear(); }
 
-const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth,
+const std::vector<edgeWrapPtr> GeometryObject::getVisibleFaceEdges(const bool smooth,
                                                             const bool seam) const
 {
-    BaseGeomPtrVector result;
+    std::vector<edgeWrapPtr> result;
     bool smoothOK = smooth;
     bool seamOK = seam;
 
-    for (auto& e : edgeGeom) {
-        if (e->getHlrVisible()) {
-            switch (e->getClassOfEdge()) {
+    for (auto& edge : edgeGeom) {
+        if (edge->hlrVisible) {
+            switch (edge->category) {
                 case ecHARD:
                 case ecOUTLINE:
-                    result.push_back(e);
+                    result.push_back(edge);
                     break;
                 case ecSMOOTH:
                     if (smoothOK) {
-                        result.push_back(e);
+                        result.push_back(edge);
                     }
                     break;
                 case ecSEAM:
                     if (seamOK) {
-                        result.push_back(e);
+                        result.push_back(edge);
                     }
                     break;
                 default:;
@@ -253,10 +253,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
 void GeometryObject::makeTDGeometry()
 {
 //    Base::Console().Message("GO::makeTDGeometry()\n");
-    extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
-                        true);
-    extractGeometry(TechDraw::ecOUTLINE,
-                        true);
+    addGeomFromCompound(visHard, TechDraw::ecHARD, true);  //always show the hard&outline visible lines
+    addGeomFromCompound(visOutline, TechDraw::ecOUTLINE, true);
 
     const DrawViewPart* dvp = static_cast<const DrawViewPart*>(m_parent);
     if (!dvp) {
@@ -264,26 +262,25 @@ void GeometryObject::makeTDGeometry()
     }
 
     if (dvp->SmoothVisible.getValue()) {
-        extractGeometry(TechDraw::ecSMOOTH, true);
+        addGeomFromCompound(visSmooth, TechDraw::ecSMOOTH, true);
     }
     if (dvp->SeamVisible.getValue()) {
-        extractGeometry(TechDraw::ecSEAM, true);
+        addGeomFromCompound(visSeam, TechDraw::ecSEAM, true);
     }
-    if ((dvp->IsoVisible.getValue()) && (dvp->IsoCount.getValue() > 0)) {
-        extractGeometry(TechDraw::ecUVISO, true);
+    if (dvp->IsoVisible.getValue() && dvp->IsoCount.getValue() > 0) {
     }
     if (dvp->HardHidden.getValue()) {
-        extractGeometry(TechDraw::ecHARD, false);
-        extractGeometry(TechDraw::ecOUTLINE, false);
+        addGeomFromCompound(hidHard, TechDraw::ecHARD, false);
+        addGeomFromCompound(hidOutline, TechDraw::ecOUTLINE, false);
     }
     if (dvp->SmoothHidden.getValue()) {
-        extractGeometry(TechDraw::ecSMOOTH, false);
+        addGeomFromCompound(hidSmooth, TechDraw::ecSMOOTH, false);
     }
     if (dvp->SeamHidden.getValue()) {
-        extractGeometry(TechDraw::ecSEAM, false);
+        addGeomFromCompound(hidSeam, TechDraw::ecSEAM, false);
     }
     if (dvp->IsoHidden.getValue() && (dvp->IsoCount.getValue() > 0)) {
-        extractGeometry(TechDraw::ecUVISO, false);
+        addGeomFromCompound(hidIso, TechDraw::ecUVISO, false);
     }
 }
 
@@ -470,66 +467,8 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2&
     return hardEdges;
 }
 
-//!add edges meeting filter criteria for category, visibility
-void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
-{
-    //    Base::Console().Message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
-    TopoDS_Shape filtEdges;
-    if (hlrVisible) {
-        switch (category) {
-            case ecHARD:
-                filtEdges = visHard;
-                break;
-            case ecOUTLINE:
-                filtEdges = visOutline;
-                break;
-            case ecSMOOTH:
-                filtEdges = visSmooth;
-                break;
-            case ecSEAM:
-                filtEdges = visSeam;
-                break;
-            case ecUVISO:
-                filtEdges = visIso;
-                break;
-            default:
-                Base::Console().Warning(
-                    "GeometryObject::ExtractGeometry - unsupported hlrVisible edgeClass: %d\n",
-                    static_cast<int>(category));
-                return;
-        }
-    }
-    else {
-        switch (category) {
-            case ecHARD:
-                filtEdges = hidHard;
-                break;
-            case ecOUTLINE:
-                filtEdges = hidOutline;
-                break;
-            case ecSMOOTH:
-                filtEdges = hidSmooth;
-                break;
-            case ecSEAM:
-                filtEdges = hidSeam;
-                break;
-            case ecUVISO:
-                filtEdges = hidIso;
-                break;
-            default:
-                Base::Console().Warning(
-                    "GeometryObject::ExtractGeometry - unsupported hidden edgeClass: %d\n",
-                    static_cast<int>(category));
-                return;
-        }
-    }
-
-    addGeomFromCompound(filtEdges, category, hlrVisible);
-}
-
 //! update edgeGeom and vertexGeom from Compound of edges
-void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
-                                         bool hlrVisible)
+void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool hlrVisible)
 {
 //    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
@@ -565,78 +504,86 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             continue;
         }
 
-        base = BaseGeom::baseFactory(edge);
-        if (!base) {
-            continue;
-            //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
-        }
+        // base->source(0);//object geometry
+        // base->sourceIndex(i - 1);
+        // base->setClassOfEdge(category);
+        // base->setHlrVisible(hlrVisible);
 
-        base->source(0);//object geometry
-        base->sourceIndex(i - 1);
-        base->setClassOfEdge(category);
-        base->setHlrVisible(hlrVisible);
-        edgeGeom.push_back(base);
+        GeomAbs_CurveType curveType = BRepAdaptor_Curve(edge).GetType();
+
+        edgeGeom.push_back(
+            std::make_shared<edgeWrap>(edgeWrap {
+                edge,
+                category,
+                hlrVisible,
+                curveType
+            })
+        );
 
         //add vertices of new edge if not already in list
         if (hlrVisible) {
-            BaseGeomPtr lastAdded = edgeGeom.back();
-            bool v1Add = true, v2Add = true;
-            bool c1Add = true;
-            TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
-            TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
-            TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
-            TechDraw::VertexPtr c1;
-            if (circle) {
-                c1 = std::make_shared<TechDraw::Vertex>(circle->center);
-                c1->isCenter(true);
-                c1->setHlrVisible(true);
-            }
-
-            std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
-            for (; itVertex != vertexGeom.end(); itVertex++) {
-                if ((*itVertex)->isEqual(*v1, Precision::Confusion())) {
-                    v1Add = false;
-                }
-                if ((*itVertex)->isEqual(*v2, Precision::Confusion())) {
-                    v2Add = false;
-                }
-                if (circle) {
-                    if ((*itVertex)->isEqual(*c1, Precision::Confusion())) {
-                        c1Add = false;
-                    }
-                }
-            }
-            if (v1Add) {
-                vertexGeom.push_back(v1);
-                v1->setHlrVisible( true);
-            }
-            else {
-                //    delete v1;
-            }
-            if (v2Add) {
-                vertexGeom.push_back(v2);
-                v2->setHlrVisible( true);
-            }
-            else {
-                //    delete v2;
-            }
-
-            if (circle) {
-                if (c1Add) {
-                    vertexGeom.push_back(c1);
-                    c1->setHlrVisible( true);
-                }
-                else {
-                    //    delete c1;
-                }
-            }
+            addVertices(edge);
         }
     }//end TopExp
 }
 
+//! add vertices to vertexGeom if not already exist
+void GeometryObject::addVertices(TopoDS_Edge edge) {
+    bool v1Add = true, v2Add = true;
+    bool c1Add = true;
+    TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(TechDraw::BaseGeom::getStartPoint(edge));
+    TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(TechDraw::BaseGeom::getEndPoint(edge));
+    TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(edge);
+    TechDraw::VertexPtr c1;
+    if (circle) {
+        c1 = std::make_shared<TechDraw::Vertex>(circle->center);
+        c1->isCenter(true);
+        c1->setHlrVisible(true);
+    }
+
+    std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
+    for (; itVertex != vertexGeom.end(); itVertex++) {
+        if ((*itVertex)->isEqual(*v1, Precision::Confusion())) {
+            v1Add = false;
+        }
+        if ((*itVertex)->isEqual(*v2, Precision::Confusion())) {
+            v2Add = false;
+        }
+        if (circle) {
+            if ((*itVertex)->isEqual(*c1, Precision::Confusion())) {
+                c1Add = false;
+            }
+        }
+    }
+    if (v1Add) {
+        vertexGeom.push_back(v1);
+        v1->setHlrVisible( true);
+    }
+    else {
+        //    delete v1;
+    }
+    if (v2Add) {
+        vertexGeom.push_back(v2);
+        v2->setHlrVisible( true);
+    }
+    else {
+        //    delete v2;
+    }
+
+    if (circle) {
+        if (c1Add) {
+            vertexGeom.push_back(c1);
+            c1->setHlrVisible( true);
+        }
+        else {
+            //    delete c1;
+        }
+    }
+}
+
 void GeometryObject::addVertex(TechDraw::VertexPtr v) { vertexGeom.push_back(v); }
 
-void GeometryObject::addEdge(TechDraw::BaseGeomPtr bg) { edgeGeom.push_back(bg); }
+void GeometryObject::addEdge(TechDraw::edgeWrapPtr bg) { edgeGeom.push_back(bg); }
 
 //********** Cosmetic Vertex ***************************************************
 
@@ -693,12 +640,12 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
     //    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
-    TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
-    e->setCosmetic(true);
-    e->setCosmeticTag(ce->getTagAsString());
-    e->setHlrVisible(true);
+    TechDraw::edgeWrapPtr edge = ce->scaledGeometry(scale);
+    // e->setCosmetic(true);
+    edge->cosmeticTag = ce->getTagAsString();
+    edge->hlrVisible = true;
     int idx = edgeGeom.size();
-    edgeGeom.push_back(e);
+    edgeGeom.push_back(edge);
     return idx;
 }
 
@@ -710,13 +657,13 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end)
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(occEdge);
-    e->setCosmetic(true);
+    TechDraw::edgeWrapPtr edge = std::make_shared<edgeWrap>(edgeWrap{occEdge});
+    // e->setCosmetic(true);
     //    e->cosmeticLink = link;
-    e->setCosmeticTag("tbi");
-    e->setHlrVisible(true);
+    edge->cosmeticTag = "tbi";
+    edge->hlrVisible = true;
     int idx = edgeGeom.size();
-    edgeGeom.push_back(e);
+    edgeGeom.push_back(edge);
     return idx;
 }
 
@@ -726,36 +673,36 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, st
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(occEdge);
-    base->setCosmetic(true);
-    base->setCosmeticTag(tagString);
-    base->source(1);//1-CosmeticEdge, 2-CenterLine
-    base->setHlrVisible(true);
+    TechDraw::edgeWrapPtr edge = std::make_shared<edgeWrap>(edgeWrap {occEdge});
+    // base->setCosmetic(true);
+    edge->cosmeticTag = tagString;
+    // base->source(1);//1-CosmeticEdge, 2-CenterLine
+    edge->hlrVisible = true;
     int idx = edgeGeom.size();
-    edgeGeom.push_back(base);
+    edgeGeom.push_back(edge);
     return idx;
 }
 
-int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagString)
+int GeometryObject::addCosmeticEdge(TechDraw::edgeWrapPtr edge, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
-    base->setCosmetic(true);
-    base->setHlrVisible(true);
-    base->source(1);//1-CosmeticEdge, 2-CenterLine
-    base->setCosmeticTag(tagString);
-    base->sourceIndex(-1);
+    //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", edge, tagString.c_str());
+    //edge->setCosmetic(true);
+    edge->hlrVisible = true;
+    // edge->source(1);//1-CosmeticEdge, 2-CenterLine
+    edge->cosmeticTag = tagString;
+    // edge->sourceIndex(-1);
     int idx = edgeGeom.size();
-    edgeGeom.push_back(base);
+    edgeGeom.push_back(edge);
     return idx;
 }
 
-int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base, std::string tag)
+int GeometryObject::addCenterLine(TechDraw::edgeWrapPtr base, std::string tag)
 //                                    int s, int si)
 {
     //    Base::Console().Message("GO::addCenterLine()\n");
-    base->setCosmetic(true);
-    base->setCosmeticTag(tag);
-    base->source(2);
+    // base->setCosmetic(true);
+    base->cosmeticTag = tag;
+    // base->source(2);
     //    base->sourceIndex(si);     //index into source;
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
@@ -826,8 +773,8 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     Bnd_Box testBox;
     testBox.SetGap(0.0);
     if (!edgeGeom.empty()) {
-        for (BaseGeomPtrVector::const_iterator it(edgeGeom.begin()); it != edgeGeom.end(); ++it) {
-            BRepBndLib::AddOptimal((*it)->getOCCEdge(), testBox);
+        for (std::vector<edgeWrapPtr>::const_iterator it(edgeGeom.begin()); it != edgeGeom.end(); ++it) {
+            BRepBndLib::AddOptimal((*it)->edge, testBox);
         }
     }
 

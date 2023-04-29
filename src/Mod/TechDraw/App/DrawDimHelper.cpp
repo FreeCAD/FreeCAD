@@ -180,16 +180,16 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
     gp_Ax3 projAx3;// OXYZ
     gp_Pln projPlane(projAx3);
 
-    BaseGeomPtrVector edgeGeomList;
+    std::vector<edgeWrapPtr> edgeGeomList;
     if (!edgeNames.empty() && !edgeNames.front().empty()) {
         //we have edge names and the first one isn't null
         for (auto& n : edgeNames) {
             std::string geomType = DrawUtil::getGeomTypeFromName(n);
             if (geomType == "Edge") {
                 int i = DrawUtil::getIndexFromName(n);
-                BaseGeomPtr bg = dvp->getGeomByIndex(i);
-                if (bg) {
-                    edgeGeomList.push_back(bg);
+                edgeWrapPtr edge = dvp->getGeomByIndex(i);
+                if (edge) {
+                    edgeGeomList.push_back(edge);
                 }
             }
         }
@@ -206,9 +206,9 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
     edgeBbx.SetGap(1.0);//make the box a bit bigger
 
     std::vector<TopoDS_Edge> inEdges;
-    for (auto& bg : edgeGeomList) {
-        inEdges.push_back(bg->getOCCEdge());
-        BRepBndLib::Add(bg->getOCCEdge(), edgeBbx);
+    for (auto& edge : edgeGeomList) {
+        inEdges.push_back(edge->edge);
+        BRepBndLib::Add(edge->edge, edgeBbx);
     }
 
     double minX, minY, minZ, maxX, maxY, maxZ;
@@ -312,7 +312,7 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
     go->isPerspective(false);
     go->usePolygonHLR(false);
     go->projectShape(comp, dvp->getProjectionCS());
-    auto edges = go->getEdgeGeometry();
+    std::vector<edgeWrapPtr> edges = go->getEdgeGeometry();
 
     if (edges.empty()) {
         return result;
@@ -322,9 +322,9 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
     shapeBbx.SetGap(1.0);//make the box a bit bigger
 
     std::vector<TopoDS_Edge> inEdges;
-    for (auto& bg : edges) {
-        inEdges.push_back(bg->getOCCEdge());
-        BRepBndLib::Add(bg->getOCCEdge(), shapeBbx);
+    for (auto& edge : edges) {
+        inEdges.push_back(edge->edge);
+        BRepBndLib::Add(TopoDS_Shape(edge->edge), shapeBbx);
     }
 
     //from here on this is the same as 2d method

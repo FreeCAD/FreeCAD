@@ -181,6 +181,13 @@ BaseGeom::BaseGeom() :
     tag = boost::uuids::nil_uuid();
 }
 
+BaseGeom::BaseGeom(edgeWrapPtr edge) {
+    classOfEdge = edge->category;
+    hlrVisible = edge->hlrVisible;
+    occEdge = edge->edge;
+    cosmeticTag = edge->cosmeticTag;
+}
+
 BaseGeomPtr BaseGeom::copy()
 {
     BaseGeomPtr result;
@@ -271,46 +278,42 @@ void BaseGeom::Restore(Base::XMLReader &reader)
     cosmeticTag = reader.getAttribute("value");
 }
 
-std::vector<Base::Vector3d> BaseGeom::findEndPoints()
+std::vector<Base::Vector3d> BaseGeom::findEndPoints(TopoDS_Edge edge)
 {
     std::vector<Base::Vector3d> result;
 
-    if (!occEdge.IsNull()) {
-        gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        result.emplace_back(p.X(), p.Y(), p.Z());
-        p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        result.emplace_back(p.X(), p.Y(), p.Z());
-    } else {
+    if (edge.IsNull()) {  // Can this happen???
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
     }
+    gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(edge));
+    result.emplace_back(p.X(), p.Y(), p.Z());
+    p = BRep_Tool::Pnt(TopExp::LastVertex(edge));
+    result.emplace_back(p.X(), p.Y(), p.Z());
     return result;
 }
 
 
-Base::Vector3d BaseGeom::getStartPoint()
+Base::Vector3d BaseGeom::getStartPoint(TopoDS_Edge edge)
 {
-    std::vector<Base::Vector3d> verts = findEndPoints();
-    if (!verts.empty()) {
-        return verts[0];
-    } else {
+    std::vector<Base::Vector3d> verts = findEndPoints(edge);
+    if (verts.empty()) {
         //TODO: this should throw something
         Base::Console().Message("Geometry::getStartPoint - start point not found!\n");
-        Base::Vector3d badResult(0.0, 0.0, 0.0);
-        return badResult;
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
+    return verts[0];
 }
 
 
-Base::Vector3d BaseGeom::getEndPoint()
+Base::Vector3d BaseGeom::getEndPoint(TopoDS_Edge edge)
 {
-    std::vector<Base::Vector3d> verts = findEndPoints();
+    std::vector<Base::Vector3d> verts = findEndPoints(edge);
 
     if (verts.size() != 2) {
         //TODO: this should throw something
         Base::Console().Message("Geometry::getEndPoint - end point not found!\n");
-        Base::Vector3d badResult(0.0, 0.0, 0.0);
-        return badResult;
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
     return verts[1];
 }
@@ -472,7 +475,7 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
         //if first to last is > 1 radian? are circles parameterize by rotation angle?
         //if start and end points are close?
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              result = std::make_shared<Circle>(edge);
+              result = std::make_shared<Circle>(edge); // Check
         } else {
               result = std::make_shared<AOC>(edge);
         }

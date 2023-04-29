@@ -118,232 +118,288 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart* obj)
     setViewFeature(static_cast<TechDraw::DrawView*>(obj));
 }
 
-QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
+QPainterPath QGIViewPart::drawPainterPath(TopoDS_Edge& baseGeom) const
 {
     double rot = getViewObject()->Rotation.getValue();
     return geomToPainterPath(baseGeom, rot);
 }
 
 
-QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
-{
-    Q_UNUSED(rot);
-    QPainterPath path;
+// QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
+// {
+//     Q_UNUSED(rot);
+//     QPainterPath path;
 
-    if (!baseGeom)
+//     if (!baseGeom)
+//         return path;
+
+//     switch (baseGeom->getGeomType()) {
+//         case TechDraw::GENERIC: {
+//             TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(baseGeom);
+//             if (baseGeom->getReversed()) {
+//                 if (!geom->points.empty()) {
+//                     Base::Vector3d rStart = geom->points.back();
+//                     path.moveTo(Rez::guiX(rStart.x), Rez::guiX(rStart.y));
+//                 }
+//                 std::vector<Base::Vector3d>::const_reverse_iterator it = geom->points.rbegin();
+//                 for (++it; it != geom->points.rend(); ++it) {
+//                     path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
+//                 }
+//             }
+//             else {
+//                 path.moveTo(Rez::guiX(geom->points[0].x), Rez::guiX(geom->points[0].y));
+//                 std::vector<Base::Vector3d>::const_iterator it = geom->points.begin();
+//                 for (++it; it != geom->points.end(); ++it) {
+//                     path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
+//                 }
+//             }
+//         } break;
+//         default: {
+//             Base::Console().Error("Error - geomToPainterPath - UNKNOWN geomType: %d\n",
+//                                   static_cast<int>(baseGeom->getGeomType()));
+//         } break;
+//     }//sb end of switch
+
+//     //old rotate path logic. now done on App side.
+//     //    if (rot != 0.0) {
+//     //        QTransform t;
+//     //        t.rotate(-rot);
+//     //        path = t.map(path);
+//     //    }
+
+//     return path;
+// }
+
+QPainterPath QGIViewPart::geomToPainterPath(const TopoDS_Edge& edge) {
+    BRepAdaptor_Curve curve(edge);
+    if (curve.GetType() == GeomAbs_Circle) {
+        return geomToPainterPath(curve.Circle());
+    }
+    else if (curve.GetType() == GeomAbs_Ellipse) {
+        return geomToPainterPath(curve.Ellipse());
+    }
+    else if (curve.GetType() == GeomAbs_BezierCurve) {
+        return geomToPainterPath(curve.Bezier());
+    }
+    else if (curve.GetType() == GeomAbs_BSplineCurve) {
+        // skipping https://github.com/FreeCAD/FreeCAD/blob/25c86bfc9bca085736f78f3bf4c21aecdddd6bc7/src/Mod/TechDraw/App/Geometry.cpp#L501-L522
+        std::vector<Handle(Geom_BezierCurve)> bezierCurves = convertToBezier(curve.BSpline());
+        return geomToPainterPath(bezierCurves);
+    }
+}
+
+QPainterPath QGIViewPArt::geomToPainterPath(const gp_Circ& circle) {
+    radius = circ.Radius();
+    // Circle
+    if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
+        const gp_Pnt& center = circ.Location();
+
+
+        double x = center.x - radius;
+        double y = center.y - radius;
+
+        QPainterPath path();
+        path.addEllipse(Rez::guiX(x),
+                        Rez::guiX(y),
+                        Rez::guiX(radius * 2),
+                        Rez::guiX(radius * 2));// topleft@(x, y) radx, rady
         return path;
+    }
+    // Arc of Circle
+    else {
+        BRepAdaptor_Curve c(e);
 
-    switch (baseGeom->getGeomType()) {
-        case CIRCLE: {
-            TechDraw::CirclePtr geom = std::static_pointer_cast<TechDraw::Circle>(baseGeom);
+        double first = c.FirstParameter();
+        double last = c.LastParameter();
+        gp_Pnt startPnt = c.Value(f);
+        gp_Pnt ePt = c.Value(l);           //if start == end, it isn't an arc!
 
-            double x = geom->center.x - geom->radius;
-            double y = geom->center.y - geom->radius;
+        cw = (a < 0) ? true: false;
+        largeArc = (fabs(last - first) > M_PI) ? true : false;
+        gp_Pnt endPnt(ePt.X(), ePt.Y(), s.Z());
 
-            path.addEllipse(Rez::guiX(x), Rez::guiX(y), Rez::guiX(geom->radius * 2),
-                            Rez::guiX(geom->radius * 2));//topleft@(x, y) radx, rady
-        } break;
-        case ARCOFCIRCLE: {
-            TechDraw::AOCPtr geom = std::static_pointer_cast<TechDraw::AOC>(baseGeom);
-            if (baseGeom->getReversed()) {
-                path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
-                pathArc(path, Rez::guiX(geom->radius), Rez::guiX(geom->radius), 0., geom->largeArc,
-                        !geom->cw, Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y),
-                        Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
-            }
-            else {
-                path.moveTo(Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y));
-                pathArc(path, Rez::guiX(geom->radius), Rez::guiX(geom->radius), 0., geom->largeArc,
-                        geom->cw, Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y),
-                        Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y));
-            }
-        } break;
-        case TechDraw::ELLIPSE: {
-            TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE>(baseGeom);
+        if (edge.Orientation() == TopAbs_REVERSED) {
+            gp_Pnt temp(startPnt);
+            startPnt = endPnt;
+            endPnt = temp;
+        }
 
-            // Calculate start and end points as ellipse with theta = 0 and pi
-            double startX = geom->center.x + geom->major * cos(geom->angle),
-                   startY = geom->center.y + geom->major * sin(geom->angle),
-                   endX = geom->center.x - geom->major * cos(geom->angle),
-                   endY = geom->center.y - geom->major * sin(geom->angle);
+        path.moveTo(Rez::guiX(geom->startPnt.X()), Rez::guiX(geom->startPnt.Y()));
+        pathArc(path,
+                Rez::guiX(geom->radius),
+                Rez::guiX(geom->radius),
+                0.,
+                geom->largeArc,
+                !geom->cw,
+                Rez::guiX(geom->startPnt.X()),
+                Rez::guiX(geom->startPnt.Y()),
+                Rez::guiX(geom->endPnt.X()),
+                Rez::guiX(geom->endPnt.Y()));
+        }
+}
 
-            pathArc(path, Rez::guiX(geom->major), Rez::guiX(geom->minor), geom->angle, false, false,
-                    Rez::guiX(endX), Rez::guiX(endY), Rez::guiX(startX), Rez::guiX(startY));
+// Ellipse or arc of ellipse
+QPainterPath QGIViewPart::geomToPainterPath(const gp_Elips& ellipse) {
+    QPainterPath path();
 
-            pathArc(path, Rez::guiX(geom->major), Rez::guiX(geom->minor), geom->angle, false, false,
-                    Rez::guiX(startX), Rez::guiX(startY), Rez::guiX(endX), Rez::guiX(endY));
-        } break;
-        case TechDraw::ARCOFELLIPSE: {
-            TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE>(baseGeom);
-            if (baseGeom->getReversed()) {
-                path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
-                pathArc(path, Rez::guiX(geom->major), Rez::guiX(geom->minor), geom->angle,
-                        geom->largeArc, !geom->cw, Rez::guiX(geom->startPnt.x),
-                        Rez::guiX(geom->startPnt.y), Rez::guiX(geom->endPnt.x),
-                        Rez::guiX(geom->endPnt.y));
-            }
-            else {
-                path.moveTo(Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y));
-                pathArc(path, Rez::guiX(geom->major), Rez::guiX(geom->minor), geom->angle,
-                        geom->largeArc, geom->cw, Rez::guiX(geom->endPnt.x),
-                        Rez::guiX(geom->endPnt.y), Rez::guiX(geom->startPnt.x),
-                        Rez::guiX(geom->startPnt.y));
-            }
-        } break;
-        case TechDraw::BEZIER: {
-            TechDraw::BezierSegmentPtr geom =
-                std::static_pointer_cast<TechDraw::BezierSegment>(baseGeom);
-            if (baseGeom->getReversed()) {
-                if (!geom->pnts.empty()) {
-                    Base::Vector3d rStart = geom->pnts.back();
-                    path.moveTo(Rez::guiX(rStart.x), Rez::guiX(rStart.y));
-                }
-                if (geom->poles == 2) {
-                    // Degree 1 bezier = straight line...
-                    path.lineTo(Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
-                }
-                else if (geom->poles == 3) {
-                    path.quadTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
-                                Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
-                }
-                else if (geom->poles == 4) {
-                    path.cubicTo(Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y),
-                                 Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
-                                 Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
-                }
-                else {//can only handle lines, quads, cubes
-                    Base::Console().Error("Bad pole count (%d) for BezierSegment\n", geom->poles);
-                    auto itBez = geom->pnts.begin() + 1;
-                    for (; itBez != geom->pnts.end(); itBez++) {
-                        path.lineTo(Rez::guiX((*itBez).x),
-                                    Rez::guiX((*itBez).y));//show something for debugging
-                    }
-                }
-            }
-            else {
-                // Move painter to the beginning
-                path.moveTo(Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
+    gp_Dir xaxis = ellipse.XAxis().Direction();
+    double angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
+    double major = ellipse.MajorRadius;
+    double minor = ellipse.MinorRadius;
+    // Ellipse
+    if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
+        // Calculate start and end points as ellipse with theta = 0 and pi
+        double startX = center.x + major * cos(angle),
+                startY = center.y + major * sin(angle),
+                endX = center.x - major * cos(angle),
+                endY = center.y - major * sin(angle);
 
-                if (geom->poles == 2) {
-                    // Degree 1 bezier = straight line...
-                    path.lineTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y));
-                }
-                else if (geom->poles == 3) {
-                    path.quadTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
-                                Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y));
-                }
-                else if (geom->poles == 4) {
-                    path.cubicTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
-                                 Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y),
-                                 Rez::guiX(geom->pnts[3].x), Rez::guiX(geom->pnts[3].y));
-                }
-                else {//can only handle lines, quads, cubes
-                    Base::Console().Error("Bad pole count (%d) for BezierSegment\n", geom->poles);
-                    auto itBez = geom->pnts.begin() + 1;
-                    for (; itBez != geom->pnts.end(); itBez++) {
-                        path.lineTo(Rez::guiX((*itBez).x),
-                                    Rez::guiX((*itBez).y));//show something for debugging
-                    }
-                }
-            }
-        } break;
-        case TechDraw::BSPLINE: {
-            TechDraw::BSplinePtr geom = std::static_pointer_cast<TechDraw::BSpline>(baseGeom);
-            if (baseGeom->getReversed()) {
-                // Move painter to the end of our last segment
-                std::vector<TechDraw::BezierSegment>::const_reverse_iterator it =
-                    geom->segments.rbegin();
-                Base::Vector3d rStart = it->pnts.back();
-                path.moveTo(Rez::guiX(rStart.x), Rez::guiX(rStart.y));
+        pathArc(path,
+                Rez::guiX(geom->major),
+                Rez::guiX(geom->minor),
+                geom->angle,
+                false,
+                false,
+                Rez::guiX(endX),
+                Rez::guiX(endY),
+                Rez::guiX(startX),
+                Rez::guiX(startY));
 
-                for (; it != geom->segments.rend(); ++it) {
-                    // At this point, the painter is either at the beginning
-                    // of the first segment, or end of the last
-                    if (it->poles == 2) {
-                        // Degree 1 bezier = straight line...
-                        path.lineTo(Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
-                    }
-                    else if (it->poles == 3) {
-                        path.quadTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y),
-                                    Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
-                    }
-                    else if (it->poles == 4) {
-                        path.cubicTo(Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y),
-                                     Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y),
-                                     Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
-                    }
-                    else {//can only handle lines, quads, cubes
-                        Base::Console().Error(
-                            "Bad pole count (%d) for BezierSegment of B-spline geometry\n",
-                            it->poles);
-                        path.lineTo(it->pnts[1].x, it->pnts[1].y);//show something for debugging
-                    }
-                }
-            }
-            else {
-                // Move painter to the beginning of our first segment
-                std::vector<TechDraw::BezierSegment>::const_iterator it = geom->segments.begin();
-                path.moveTo(Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
+        pathArc(path,
+                Rez::guiX(geom->major),
+                Rez::guiX(geom->minor),
+                geom->angle,
+                false,
+                false,
+                Rez::guiX(startX),
+                Rez::guiX(startY),
+                Rez::guiX(endX),
+                Rez::guiX(endY));
+        return path;
+    }
+    // Arc of ellipse
+    else {
+        geomType = ARCOFELLIPSE;
 
-                for (; it != geom->segments.end(); ++it) {
-                    // At this point, the painter is either at the beginning
-                    // of the first segment, or end of the last
-                    if (it->poles == 2) {
-                        // Degree 1 bezier = straight line...
-                        path.lineTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y));
-                    }
-                    else if (it->poles == 3) {
-                        path.quadTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y),
-                                    Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y));
-                    }
-                    else if (it->poles == 4) {
-                        path.cubicTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y),
-                                     Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y),
-                                     Rez::guiX(it->pnts[3].x), Rez::guiX(it->pnts[3].y));
-                    }
-                    else {
-                        Base::Console().Error(
-                            "Bad pole count (%d) for BezierSegment of B-spline geometry\n",
-                            it->poles);
-                        path.lineTo(it->pnts[1].x, it->pnts[1].y);//show something for debugging
-                    }
-                }
-            }
-        } break;
-        case TechDraw::GENERIC: {
-            TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(baseGeom);
-            if (baseGeom->getReversed()) {
-                if (!geom->points.empty()) {
-                    Base::Vector3d rStart = geom->points.back();
-                    path.moveTo(Rez::guiX(rStart.x), Rez::guiX(rStart.y));
-                }
-                std::vector<Base::Vector3d>::const_reverse_iterator it = geom->points.rbegin();
-                for (++it; it != geom->points.rend(); ++it) {
-                    path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
-                }
-            }
-            else {
-                path.moveTo(Rez::guiX(geom->points[0].x), Rez::guiX(geom->points[0].y));
-                std::vector<Base::Vector3d>::const_iterator it = geom->points.begin();
-                for (++it; it != geom->points.end(); ++it) {
-                    path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
-                }
-            }
-        } break;
-        default: {
-            Base::Console().Error("Error - geomToPainterPath - UNKNOWN geomType: %d\n",
-                                  static_cast<int>(baseGeom->getGeomType()));
-        } break;
-    }//sb end of switch
+        BRepAdaptor_Curve c(e);
+        double first = c.FirstParameter();
+        double last = c.LastParameter();
+        gp_Pnt startPnt = c.Value(first);
+        gp_Pnt endPnt = c.Value(last);
 
-    //old rotate path logic. now done on App side.
-    //    if (rot != 0.0) {
-    //        QTransform t;
-    //        t.rotate(-rot);
-    //        path = t.map(path);
-    //    }
+        cw = (a < 0) ? true: false;
+        largeArc = (l-f > M_PI) ? true : false;
 
+        if (edge.Orientation() == TopAbs_REVERSED) {
+            temp = startPnt;
+            startPnt = endPnt;
+            endPnt = startPnt;
+        }
+
+        path.moveTo(Rez::guiX(geom->endPnt.X()), Rez::guiX(endPnt.Y()));
+        pathArc(path,
+                Rez::guiX(major),
+                Rez::guiX(minor),
+                angle,
+                largeArc,
+                !cw,
+                Rez::guiX(startPnt.X()),
+                Rez::guiX(startPnt.Y()),
+                Rez::guiX(endPnt.X()),
+                Rez::guiX(endPnt.Y()));
+    }
+}
+
+QPainterPath QGIViewPart::geomToPainterPath(Handle(Geom_BezierCurve)& bezier) {
+    QPainterPath path();
+    return geomToPainterPath(bezier, path);
+}
+
+QPainterPath QGIViewPart::geomToPainterPath(std::vector<Handle(Geom_BezierCurve)> beziers) {
+    QPainterPath path();
+    for (auto& bezier : beziers) {
+        geomToPainterPath(bezier, path);
+    }
     return path;
+}
+
+// Bezier
+QPainterPath QGIViewPart::geomToPainterPath(Handle(Geom_BezierCurve)& bezier, QPainterPath path) {
+    poles = bezier->NbPoles();
+
+    if (bezier.NbPoles() == 0) {
+        return;  // Can this happen???? Ported from previous logic
+    }
+    std::vector<gp_Pnt> pnts;
+    for (int i = 1; i <= bezier.NbPoles(); ++i) {
+        pnts.emplace_back(bezier->Pole(i));
+    }
+
+    if (edge.Orientation() == TopAbs_REVERSED) {
+        std::reverse(pnts.begin(), pnts.end()):
+    }
+
+    // Move painter to the beginning
+    path.moveTo(Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
+
+    if (geom->poles == 2) {
+        // Degree 1 bezier = straight line...
+        path.lineTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y));
+    }
+    else if (geom->poles == 3) {
+        path.quadTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
+                    Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y));
+    }
+    else if (geom->poles == 4) {
+        path.cubicTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
+                        Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y),
+                        Rez::guiX(geom->pnts[3].x), Rez::guiX(geom->pnts[3].y));
+    }
+    else {
+        //can only handle lines, quads, cubes
+        Base::Console().Error("Bad pole count (%d) for BezierSegment\n", geom->poles);
+        auto itBez = geom->pnts.begin() + 1;
+        for (; itBez != geom->pnts.end(); itBez++) {
+            path.lineTo(Rez::guiX((*itBez).x),
+                        Rez::guiX((*itBez).y));//show something for debugging
+        }
+    }
+}
+
+std::vector<Handle(Geom_BezierCurve)> QGIViewPArt::convertToBezier(const TopoDS_Edge& edge) {
+    geomType = BSPLINE;
+    BRepAdaptor_Curve c(e);
+    Handle(Geom_BSplineCurve) spline;
+
+    Standard_Integer maxDegree = 3, maxSegment = 200;
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+    // approximate the curve using a tolerance
+    //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
+    Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
+    if (approx.IsDone() && approx.HasResult()) {
+        spline = approx.Curve();
+    }
+    else if (approx.HasResult()) { //result, but not within tolerance
+        spline = approx.Curve();
+    }
+    else {
+        f = c.FirstParameter();
+        l = c.LastParameter();
+        s = c.Value(f);
+        ePt = c.Value(l);
+        TColgp_Array1OfPnt controlPoints(0, 1);
+        controlPoints.SetValue(0, s);
+        controlPoints.SetValue(1, ePt);
+        spline = GeomAPI_PointsToBSpline(controlPoints, 1).Curve();
+    }
+
+    std::vector<Handle(Geom_BezierCurve)> beziercurves;
+    GeomConvert_BSplineCurveToBezierCurve crt(spline);
+    for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
+        beziercurves.push_back(crt.Arc(i));
+    }
+
+    return beziercurves;
 }
 
 void QGIViewPart::updateView(bool update)
@@ -373,6 +429,22 @@ void QGIViewPart::draw()
     drawAllSectionLines();//same for section lines
 }
 
+float QGIViewPart::getLineWidth() {
+    return vp->LineWidth.getValue() * lineScaleFactor;
+}
+
+float QGIViewPart::getLineWidthHid() {
+    return vp->HiddenWidth.getValue() * lineScaleFactor;
+}
+
+float QGIViewPart::getLineWidthIso() {
+    return vp->IsoWidth.getValue() * lineScaleFactor;
+}
+
+bool QGIViewPart::getShowAll() {
+    return vp->ShowAllEdges.getValue();
+}
+
 void QGIViewPart::drawViewPart()
 {
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
@@ -389,11 +461,7 @@ void QGIViewPart::drawViewPart()
     if (!vp)
         return;
 
-    float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;     //thick
-    float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;//thin
-    float lineWidthIso = vp->IsoWidth.getValue() * lineScaleFactor;   //graphic
     //    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;  //extra
-    bool showAll = vp->ShowAllEdges.getValue();
 
     prepareGeometryChange();
     removePrimitives();//clean the slate
@@ -483,87 +551,8 @@ void QGIViewPart::drawViewPart()
     }
 
     // Draw Edges
-    QColor edgeColor = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
-    const TechDraw::BaseGeomPtrVector& geoms = viewPart->getEdgeGeometry();
-    TechDraw::BaseGeomPtrVector::const_iterator itGeom = geoms.begin();
-    QGIEdge* item;
-    for (int i = 0; itGeom != geoms.end(); itGeom++, i++) {
-        bool showEdge = false;
-        if ((*itGeom)->getHlrVisible()) {
-            if (((*itGeom)->getClassOfEdge()  == ecHARD) || ((*itGeom)->getClassOfEdge()  == ecOUTLINE)
-                || (((*itGeom)->getClassOfEdge()  == ecSMOOTH) && viewPart->SmoothVisible.getValue())
-                || (((*itGeom)->getClassOfEdge()  == ecSEAM) && viewPart->SeamVisible.getValue())
-                || (((*itGeom)->getClassOfEdge()  == ecUVISO) && viewPart->IsoVisible.getValue())) {
-                showEdge = true;
-            }
-        }
-        else {
-            if ((((*itGeom)->getClassOfEdge()  == ecHARD) && (viewPart->HardHidden.getValue()))
-                || (((*itGeom)->getClassOfEdge()  == ecOUTLINE) && (viewPart->HardHidden.getValue()))
-                || (((*itGeom)->getClassOfEdge()  == ecSMOOTH) && (viewPart->SmoothHidden.getValue()))
-                || (((*itGeom)->getClassOfEdge()  == ecSEAM) && (viewPart->SeamHidden.getValue()))
-                || (((*itGeom)->getClassOfEdge()  == ecUVISO) && (viewPart->IsoHidden.getValue()))) {
-                showEdge = true;
-            }
-        }
-        bool showItem = true;
-        if (showEdge) {//based on hard/seam/hidden/etc
-            item = new QGIEdge(i);
-            item->setWidth(lineWidth);
-            item->setNormalColor(edgeColor);
-            item->setStyle(Qt::SolidLine);
-            if ((*itGeom)->getCosmetic()) {
-                int source = (*itGeom)->source();
-                if (source == COSMETICEDGE) {
-                    std::string cTag = (*itGeom)->getCosmeticTag();
-                    showItem = formatGeomFromCosmetic(cTag, item);
-                }
-                else if (source == CENTERLINE) {
-                    std::string cTag = (*itGeom)->getCosmeticTag();
-                    showItem = formatGeomFromCenterLine(cTag, item);
-                }
-                else {
-                    Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",
-                                            i, source);
-                }
-            }
-            else {
-                TechDraw::GeomFormat* gf = viewPart->getGeomFormatBySelection(i);
-                if (gf) {
-                    App::Color  color = Preferences::getAccessibleColor(gf->m_format.m_color);
-                    item->setNormalColor(color.asValue<QColor>());
-                    item->setWidth(gf->m_format.m_weight * lineScaleFactor);
-                    item->setStyle(gf->m_format.m_style);
-                    showItem = gf->m_format.m_visible;
-                }
-            }
-
-            addToGroup(item);      //item is at scene(0, 0), not group(0, 0)
-            item->setPos(0.0, 0.0);//now at group(0, 0)
-            item->setPath(drawPainterPath(*itGeom));
-            item->setZValue(ZVALUE::EDGE);
-            if (!(*itGeom)->getHlrVisible()) {
-                item->setWidth(lineWidthHid);
-                item->setHiddenEdge(true);
-                item->setZValue(ZVALUE::HIDEDGE);
-            }
-            if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
-                item->setWidth(lineWidthIso);
-            }
-            item->setPrettyNormal();
-            if (!showAll) {     //view level "show" status
-                if (!showItem) {//individual edge "show" status
-                    item->hide();
-                }
-            }
-            //debug a path
-            //            QPainterPath edgePath=drawPainterPath(*itGeom);
-            //            std::stringstream edgeId;
-            //            edgeId << "QGIVP.edgePath" << i;
-            //            dumpPath(edgeId.str().c_str(), edgePath);
-        }
-    }
-
+    std::vector<edgeWrap> edges = viewpart->getEdgeGeometry();
+    drawEdge(edges);
 
     // Draw Vertexs:
     double vertexScaleFactor = Preferences::getPreferenceGroup("General")->GetFloat("VertexScale", 3.0);
@@ -623,6 +612,80 @@ void QGIViewPart::drawViewPart()
     for (auto& r : drefs) {
         drawHighlight(r, true);
     }
+}
+
+void QGIViewPart::drawEdge(std::vector<edgeWrap> edges) {
+    TechDraw::BaseGeomPtrVector::const_iterator itEdge = geoms.begin();
+    for (int i = 0; itEdge != edges.end(); itEdge++, i++) {
+        if (itEdge.category == ecSMOOTH && !viewPart->SmoothVisible.getValue()) return;
+        if (itEdge.category == ecSEAM && !viewPart->SeamVisible.getValue()) return;
+        if (itEdge.category == ecUVISO && !viewPart->IsoVisible.getValue()) return;
+        if (itEdge.category == ecHARD && !vviewPart->HardHidden.getValue()) return;
+        if (itEdge.category == ecOUTLINE && !vviewPart->HardHidden.getValue()) return;
+        if (itEdge.category == ecSMOOTH && !viewPart->SmoothHidden.getValue()) return;
+        if (itEdge.category == ecSEAM && !viewPart->SeamHidden.getValue()) return;
+        if (itEdge.category == ecUVISO && !viewPart->IsoHidden.getValue()) return;
+        // Will always draw visible HardEdges and visible HardOutlines
+
+        drawEdge(i, itEdge.edge);
+    }
+}
+
+void QGIViewPArt::drawEdge(int index, TopoDS_EdgePtr edge) {
+    item = new QGIEdge(index);
+    item->setWidth(getLineWidth());
+    QColor edgeColor = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
+    item->setNormalColor(edgeColor);
+    item->setStyle(Qt::SolidLine);
+    // if ((*itGeom)->getCosmetic()) {
+    //     int source = (*itGeom)->source();
+    //     if (source == COSMETICEDGE) {
+    //         std::string cTag = (*itGeom)->getCosmeticTag();
+    //         showItem = formatGeomFromCosmetic(cTag, item);
+    //     }
+    //     else if (source == CENTERLINE) {
+    //         std::string cTag = (*itGeom)->getCosmeticTag();
+    //         showItem = formatGeomFromCenterLine(cTag, item);
+    //     }
+    //     else {
+    //         Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",
+    //                                 i, source);
+    //     }
+    // }
+    // else {
+        TechDraw::GeomFormat* gf = viewPart->getGeomFormatBySelection(i);
+        if (gf) {
+            App::Color  color = Preferences::getAccessibleColor(gf->m_format.m_color);
+            item->setNormalColor(color.asValue<QColor>());
+            item->setWidth(gf->m_format.m_weight * lineScaleFactor);
+            item->setStyle(gf->m_format.m_style);
+            showItem = gf->m_format.m_visible;
+        }
+    // }
+
+    addToGroup(item);      //item is at scene(0, 0), not group(0, 0)
+    item->setPos(0.0, 0.0);//now at group(0, 0)
+    item->setPath(drawPainterPath(*edge));
+    item->setZValue(ZVALUE::EDGE);
+    if (!(*itGeom)->getHlrVisible()) {
+        item->setWidth(getLineWidthHid());
+        item->setHiddenEdge(true);
+        item->setZValue(ZVALUE::HIDEDGE);
+    }
+    if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
+        item->setWidth(getLineWidthIso());
+    }
+    item->setPrettyNormal();
+    if (!getShowAll()) {     //view level "show" status
+        if (!showItem) {//individual edge "show" status
+            item->hide();
+        }
+    }
+    //debug a path
+    //            QPainterPath edgePath=drawPainterPath(*itGeom);
+    //            std::stringstream edgeId;
+    //            edgeId << "QGIVP.edgePath" << i;
+    //            dumpPath(edgeId.str().c_str(), edgePath);
 }
 
 bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)

@@ -29,6 +29,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "Geometry.h"
+#include "GeometryObject.h"
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
@@ -68,7 +69,7 @@ public:
 
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
-    virtual std::string     addCenterLine(TechDraw::BaseGeomPtr bg);
+    virtual std::string     addCenterLine(TechDraw::edgeWrapPtr bg);
     virtual CenterLine*     getCenterLineBySelection(std::string name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
     virtual CenterLine*     getCenterLine(std::string tag) const;

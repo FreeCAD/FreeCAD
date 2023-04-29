@@ -596,11 +596,11 @@ private:
             writer.exportShape(shape);
         }
         //add the cosmetic edges also
-        std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
+        std::vector<edgeWrapPtr> edges = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
-        for (auto& g : geoms) {
-            if (g->getHlrVisible() && g->getCosmetic()) {
-                cosmeticEdges.push_back(g->getOCCEdge());
+        for (auto& edge : edges) {
+            if (edge->hlrVisible && false /*g->getCosmetic()*/) {
+                cosmeticEdges.push_back(edge->edge);
             }
         }
         if (!cosmeticEdges.empty()) {

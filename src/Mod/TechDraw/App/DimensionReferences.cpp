@@ -56,8 +56,8 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
             return vgeom->getOCCVertex();
         }
         if (gType == "Edge") {
-            auto egeom = dvp->getEdge(getSubName());
-            return egeom->getOCCEdge();
+            edgeWrapPtr edge = dvp->getEdge(getSubName());
+            return edge->edge;
         }
         if (gType == "Face") {
             auto fgeom = dvp->getFace(getSubName());

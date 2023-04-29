@@ -31,6 +31,7 @@
 #include <Base/Writer.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <GeomAbs_CurveType.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -91,16 +92,32 @@ using BSplinePtr = std::shared_ptr<BSpline>;
 class Generic;
 using GenericPtr = std::shared_ptr<Generic>;
 
+using TopoDS_EdgePtr = std::shared_ptr<TopoDS_Edge>;
+
+struct edgeWrap {
+    TopoDS_Edge edge;
+    TechDraw::edgeClass category;
+    bool hlrVisible;  // vas diz?
+    GeomAbs_CurveType curveType;
+    std::string cosmeticTag;
+};
+
+using edgeWrapPtr = std::shared_ptr<edgeWrap>;
+
 class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
 {
     public:
         BaseGeom();
         //BaseGeom(BaseGeomPtr bg);   //do we need a copy constructor too?
+        BaseGeom(edgeWrapPtr edge);
         virtual ~BaseGeom() = default;
 
         virtual void Save(Base::Writer& w) const;
         virtual void Restore(Base::XMLReader& r);
 
+        static std::vector<Base::Vector3d> findEndPoints(TopoDS_Edge edge);
+        static Base::Vector3d getStartPoint(TopoDS_Edge edge);
+        static Base::Vector3d getEndPoint(TopoDS_Edge edge);
         std::vector<Base::Vector3d> findEndPoints();
         Base::Vector3d getStartPoint();
         Base::Vector3d getEndPoint();

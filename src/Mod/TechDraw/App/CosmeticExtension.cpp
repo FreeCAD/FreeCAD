@@ -196,12 +196,12 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
         return nullptr;
     }
     int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (!base || base->getCosmeticTag().empty()) {
+    TechDraw::edgeWrapPtr base = dvp->getGeomByIndex(idx);
+    if (!base || base->cosmeticTag.empty()) {
         return nullptr;
     }
 
-    return getCosmeticEdge(base->getCosmeticTag());
+    return getCosmeticEdge(base->cosmeticTag);
 }
 
 //overload for index only
@@ -260,7 +260,7 @@ std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
 }
 
 
-std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
+std::string CosmeticExtension::addCenterLine(TechDraw::edgeWrapPtr bg)
 {
 //    Base::Console().Message("CEx::addCenterLine(bg: %X)\n", bg);
     std::vector<CenterLine*> cLines = CenterLines.getValues();
@@ -296,11 +296,11 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
         return nullptr;
     }
     int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (!base || base->getCosmeticTag().empty()) {
+    TechDraw::edgeWrapPtr base = dvp->getGeomByIndex(idx);
+    if (!base || base->cosmeticTag.empty()) {
         return nullptr;
     }
-    return getCenterLine(base->getCosmeticTag());
+    return getCenterLine(base->cosmeticTag);
 }
 
 //overload for index only

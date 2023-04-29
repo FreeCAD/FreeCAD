@@ -113,7 +113,7 @@ public:
 
 
     //routines for revised face finding approach
-    static std::vector<TopoDS_Edge> scrubEdges(const std::vector<BaseGeomPtr> &origEdges,
+    static std::vector<TopoDS_Edge> scrubEdges(const std::vector<edgeWrapPtr> &origEdges,
                                                std::vector<TopoDS_Edge>& closedEdges);
     static std::vector<TopoDS_Edge> scrubEdges(std::vector<TopoDS_Edge>& origEdges,
                                                std::vector<TopoDS_Edge>& closedEdges);

@@ -62,35 +62,25 @@ std::string DrawViewPartPy::representation() const
 
 PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    DrawViewPart* dvp = getDrawViewPartPtr();
-    Py::List pEdgeList;
-    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
-    for (auto& g: geoms) {
-        if (g->getHlrVisible()) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
-            pEdgeList.append(Py::asObject(pEdge));
-        }
-    }
-
-    return Py::new_reference_to(pEdgeList);
+    return getEdges(true);
 }
 
 PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 {
+    return getEdges(false);
+}
+
+PyObject* DrawViewPartPy::getEdges(bool visible) {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pEdgeList;
-    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
-    for (auto& g: geoms) {
-        if (!g->getHlrVisible()) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
+    std::vector<edgeWrapPtr> edges = dvp->getEdgeGeometry();
+    for (auto& edge : edges) {
+        if (g->hlrVisible == visible){
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(edge->edge));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -652,13 +642,13 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
+    TechDraw::edgeWrapPtr geom = dvp->getGeomByIndex(edgeIndex);
     if (!geom) {
         PyErr_SetString(PyExc_ValueError, "Wrong edge index");
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->edge,
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 
@@ -706,13 +696,13 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
-    if (!geom) {
+    TechDraw::edgeWrapPtr edge = dvp->getGeomByIndex(edgeIndex);
+    if (!edge) {
         PyErr_SetString(PyExc_ValueError, "Wrong edge index");
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->edge,
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 

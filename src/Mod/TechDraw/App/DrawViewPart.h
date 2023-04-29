@@ -39,6 +39,7 @@
 
 #include "CosmeticExtension.h"
 #include "DrawView.h"
+#include "GeometryObject.h"
 
 
 class gp_Pnt;
@@ -124,19 +125,18 @@ public:
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
     const std::vector<TechDraw::VertexPtr> getVertexGeometry() const;
-    const BaseGeomPtrVector getEdgeGeometry() const;
-    const BaseGeomPtrVector getVisibleFaceEdges() const;
+    const std::vector<edgeWrapPtr> getEdgeGeometry() const;
+    const std::vector<edgeWrapPtr> getVisibleFaceEdges() const;
     const std::vector<TechDraw::FacePtr> getFaceGeometry() const;
 
     bool hasGeometry() const;
     TechDraw::GeometryObjectPtr getGeometryObject() const { return geometryObject; }
 
     TechDraw::VertexPtr getVertex(std::string vertexName) const;
-    TechDraw::BaseGeomPtr getEdge(std::string edgeName) const;
+    TechDraw::edgeWrapPtr getEdge(std::string edgeName) const;
     TechDraw::FacePtr getFace(std::string faceName) const;
 
-    TechDraw::BaseGeomPtr
-    getGeomByIndex(int idx) const;//get existing geom for edge idx in projection
+    TechDraw::edgeWrapPtr getGeomByIndex(int idx) const;//get existing geom for edge idx in projection
     TechDraw::VertexPtr
     getProjVertexByIndex(int idx) const;//get existing geom for vertex idx in projection
 

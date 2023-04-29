@@ -176,7 +176,7 @@ protected:
     virtual pointPair getPointsEdgeVert(ReferenceVector references);
 
     virtual arcPoints getArcParameters(ReferenceVector references);
-    virtual arcPoints arcPointsFromBaseGeom(BaseGeomPtr base);
+    virtual arcPoints arcPointsFromBaseGeom(edgeWrapPtr base);
     virtual arcPoints arcPointsFromEdge(TopoDS_Edge occEdge);
 
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);

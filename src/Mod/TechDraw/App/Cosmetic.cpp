@@ -179,17 +179,17 @@ TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vecto
     return BRepBuilderAPI_MakeEdge(gp1, gp2);
 }
 
-TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)
+TechDraw::edgeWrapPtr CosmeticEdge::scaledGeometry(double scale)
 {
     TopoDS_Edge e = m_geometry->getOCCEdge();
     TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
-    TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
-    newGeom->setHlrVisible( true);
-    newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
-    newGeom->setCosmeticTag(getTagAsString());
+    TechDraw::edgeWrapPtr newGeom = std::make_shared<edgeWrap>(edgeWrap {});
+    newGeom->category = ecHARD;
+    newGeom->hlrVisible = true;
+    // newGeom->setCosmetic(true);
+    // newGeom->source(COSMETICEDGE);
+    newGeom->cosmeticTag = getTagAsString();
     return newGeom;
 }
 

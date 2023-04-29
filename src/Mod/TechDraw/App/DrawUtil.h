@@ -47,6 +47,8 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "GeometryObject.h"
+
 
 #ifndef M_2PI
 #define M_2PI ((M_PI)*2.0)
@@ -264,6 +266,9 @@ public:
     static void dumpCS(const char* text, const gp_Ax2& CS);
     static void dumpCS3(const char* text, const gp_Ax3& CS);
     static void dumpEdges(const char* text, const TopoDS_Shape& s);
+    static TopoDS_Edge asTopoShape(TopoDS_Edge edge, double scale);
+    static bool isArcOfCircle(edgeWrapPtr edge);
+    static bool isArcOfEllipse(edgeWrapPtr edge);
 };
 
 }//end namespace TechDraw

@@ -67,6 +67,7 @@
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "Geometry.h"
+#include "GeometryObject.h"
 #include "GeometryMatcher.h"
 #include "Preferences.h"
 
@@ -621,19 +622,20 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
         && !references.at(0).getSubName().empty()) {
         //TODO: Notify if not straight line Edge?
         //this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
-        if (!geom) {
+        TechDraw::edgeWrapPtr edge = getViewPart()->getGeomByIndex(iSubelement);
+        if (!edge) {  // Does this work???
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (1)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (false /* edge->getGeomType() != TechDraw::GeomType::GENERIC */) {  // IMPORTANT?????
             std::stringstream ssMessage;
-            ssMessage << getNameInDocument() << " 2d reference is a " << geom->geomTypeName();
+            ssMessage << getNameInDocument() << " 2d reference is a "; // << edge.geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
         }
-        TechDraw::GenericPtr generic = std::static_pointer_cast<TechDraw::Generic>(geom);
-        return {generic->points[0], generic->points[1]};
+        // ??????
+        // TechDraw::GenericPtr generic = std::static_pointer_cast<TechDraw::Generic>(edge);
+        return pointPair(Base::Vector3d(1.0, 1.0, 1.0), Base::Vector3d(1.0, 1.0, 1.0)); // {generic->points[0], generic->points[1]};
     }
 
     //this is a 3d object
@@ -662,14 +664,14 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
         && !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
-        TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
+        TechDraw::edgeWrapPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
+        TechDraw::edgeWrapPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
         if (!geom0 || !geom1) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (2)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        return closestPoints(geom0->getOCCEdge(), geom1->getOCCEdge());
+        return closestPoints(geom0->edge, geom1->edge);
     }
 
     //this is a 3d object
@@ -733,7 +735,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
         && !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr edge;
+        TechDraw::edgeWrapPtr edge;
         TechDraw::VertexPtr vertex;
         if (DrawUtil::getGeomTypeFromName(references.at(0).getSubName()) == "Edge") {
             edge = getViewPart()->getGeomByIndex(iSubelement0);
@@ -746,7 +748,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
         if (!vertex || !edge) {
             throw Base::RuntimeError("Missing geometry for dimension (4)");
         }
-        return closestPoints(edge->getOCCEdge(), vertex->getOCCVertex());
+        return closestPoints(edge->edge, vertex->getOCCVertex());
     }
 
     //this is a 3d object
@@ -771,7 +773,7 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
         && !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
+        TechDraw::edgeWrapPtr geom = getViewPart()->getGeomByIndex(iSubelement);
         if (!geom) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
@@ -792,37 +794,34 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
     return pts;
 }
 
-arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
+arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::edgeWrapPtr base)
 {
-    TechDraw::CirclePtr circle;
     arcPoints pts;
     pts.center = Base::Vector3d(0.0, 0.0, 0.0);
     pts.radius = 0.0;
-    if ((base && base->getGeomType() == TechDraw::GeomType::CIRCLE)
-        || (base && base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
-        circle = std::static_pointer_cast<TechDraw::Circle>(base);
-        pts.center = Base::Vector3d(circle->center.x, circle->center.y, 0.0);
-        pts.radius = circle->radius;
-        if (base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
-            TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circle);
+    if (base && base->curveType == GeomAbs_Circle) {
+        TechDraw::Circle circle(base->edge);
+        pts.center = Base::Vector3d(circle.center.x, circle.center.y, 0.0);
+        pts.radius = circle.radius;
+        if (DrawUtil::isArcOfCircle(base)) {
+            TechDraw::AOC aoc(base->edge);
             pts.isArc = true;
-            pts.onCurve.first(Base::Vector3d(aoc->midPnt.x, aoc->midPnt.y, 0.0));
-            pts.midArc = Base::Vector3d(aoc->midPnt.x, aoc->midPnt.y, 0.0);
-            pts.arcEnds.first(Base::Vector3d(aoc->startPnt.x, aoc->startPnt.y, 0.0));
-            pts.arcEnds.second(Base::Vector3d(aoc->endPnt.x, aoc->endPnt.y, 0.0));
-            pts.arcCW = aoc->cw;
+            pts.onCurve.first(Base::Vector3d(aoc.midPnt.x, aoc.midPnt.y, 0.0));
+            pts.midArc = Base::Vector3d(aoc.midPnt.x, aoc.midPnt.y, 0.0);
+            pts.arcEnds.first(Base::Vector3d(aoc.startPnt.x, aoc.startPnt.y, 0.0));
+            pts.arcEnds.second(Base::Vector3d(aoc.endPnt.x, aoc.endPnt.y, 0.0));
+            pts.arcCW = aoc.cw;
         }
         else {
             pts.isArc = false;
             pts.onCurve.first(pts.center
-                              + Base::Vector3d(1, 0, 0) * circle->radius);//arbitrary point on edge
+                              + Base::Vector3d(1, 0, 0) * circle.radius);//arbitrary point on edge
             pts.onCurve.second(
-                pts.center + Base::Vector3d(-1, 0, 0) * circle->radius);//arbitrary point on edge
+                pts.center + Base::Vector3d(-1, 0, 0) * circle.radius);//arbitrary point on edge
         }
     }
-    else if ((base && base->getGeomType() == TechDraw::GeomType::ELLIPSE)
-             || (base && base->getGeomType() == TechDraw::GeomType::ARCOFELLIPSE)) {
-        TechDraw::EllipsePtr ellipse = std::static_pointer_cast<TechDraw::Ellipse>(base);
+    else if (base && base->curveType == GeomAbs_Ellipse) {
+        TechDraw::EllipsePtr ellipse = std::static_pointer_cast<TechDraw::Ellipse>(std::make_shared<TechDraw::BaseGeom>(TechDraw::BaseGeom(base)));
         if (ellipse->closed()) {
             double r1 = ellipse->minor;
             double r2 = ellipse->major;
@@ -835,59 +834,57 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
                                + Base::Vector3d(-1, 0, 0) * rAvg);//arbitrary point on edge
         }
         else {
-            TechDraw::AOEPtr aoe = std::static_pointer_cast<TechDraw::AOE>(base);
-            double r1 = aoe->minor;
-            double r2 = aoe->major;
+            TechDraw::AOE aoe(base->edge);
+            double r1 = aoe.minor;
+            double r2 = aoe.major;
             double rAvg = (r1 + r2) / 2.0;
             pts.isArc = true;
-            pts.center = Base::Vector3d(aoe->center.x, aoe->center.y, 0.0);
+            pts.center = Base::Vector3d(aoe.center.x, aoe.center.y, 0.0);
             pts.radius = rAvg;
-            pts.arcEnds.first(Base::Vector3d(aoe->startPnt.x, aoe->startPnt.y, 0.0));
-            pts.arcEnds.second(Base::Vector3d(aoe->endPnt.x, aoe->endPnt.y, 0.0));
-            pts.midArc = Base::Vector3d(aoe->midPnt.x, aoe->midPnt.y, 0.0);
-            pts.arcCW = aoe->cw;
-            pts.onCurve.first(Base::Vector3d(aoe->midPnt.x, aoe->midPnt.y, 0.0));//for radius
+            pts.arcEnds.first(Base::Vector3d(aoe.startPnt.x, aoe.startPnt.y, 0.0));
+            pts.arcEnds.second(Base::Vector3d(aoe.endPnt.x, aoe.endPnt.y, 0.0));
+            pts.midArc = Base::Vector3d(aoe.midPnt.x, aoe.midPnt.y, 0.0);
+            pts.arcCW = aoe.cw;
+            pts.onCurve.first(Base::Vector3d(aoe.midPnt.x, aoe.midPnt.y, 0.0));//for radius
             //            pts.onCurve.first(pts.center + Base::Vector3d(1, 0,0) * rAvg);   //for diameter
             pts.onCurve.second(pts.center
                                + Base::Vector3d(-1, 0, 0) * rAvg);//arbitrary point on edge
         }
     }
-    else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
-        TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
-        if (spline->isCircle()) {
-            bool arc;
-            double rad;
-            Base::Vector3d center;
-            //bool circ =
-            GeometryUtils::getCircleParms(spline->getOCCEdge(), rad, center, arc);
-            pts.center = Base::Vector3d(center.x, center.y, 0.0);
-            pts.radius = rad;
-            pts.arcEnds.first(Base::Vector3d(spline->startPnt.x, spline->startPnt.y, 0.0));
-            pts.arcEnds.second(Base::Vector3d(spline->endPnt.x, spline->endPnt.y, 0.0));
-            pts.midArc = Base::Vector3d(spline->midPnt.x, spline->midPnt.y, 0.0);
-            pts.isArc = arc;
-            pts.arcCW = spline->cw;
-            if (arc) {
-                pts.onCurve.first(Base::Vector3d(spline->midPnt.x, spline->midPnt.y, 0.0));
-            }
-            else {
-                pts.onCurve.first(pts.center
-                                  + Base::Vector3d(1, 0, 0) * rad);//arbitrary point on edge
-                pts.onCurve.second(pts.center
-                                   + Base::Vector3d(-1, 0, 0) * rad);//arbitrary point on edge
-            }
-        }
-        else {
+    else if (base && base->curveType == GeomAbs_BSplineCurve) {
+        TechDraw::BSpline spline(base->edge);
+        if (!spline.isCircle()) {
             //fubar - can't have non-circular spline as target of Diameter dimension, but this is already
             //checked, so something has gone badly wrong.
             Base::Console().Error("%s: can not make a Circle from this BSpline edge\n",
                                   getNameInDocument());
             throw Base::RuntimeError("Bad BSpline geometry for arc dimension");
         }
+        bool arc;
+        double rad;
+        Base::Vector3d center;
+        //bool circ =
+        GeometryUtils::getCircleParms(spline.getOCCEdge(), rad, center, arc);
+        pts.center = Base::Vector3d(center.x, center.y, 0.0);
+        pts.radius = rad;
+        pts.arcEnds.first(Base::Vector3d(spline.startPnt.x, spline.startPnt.y, 0.0));
+        pts.arcEnds.second(Base::Vector3d(spline.endPnt.x, spline.endPnt.y, 0.0));
+        pts.midArc = Base::Vector3d(spline.midPnt.x, spline.midPnt.y, 0.0);
+        pts.isArc = arc;
+        pts.arcCW = spline.cw;
+        if (arc) {
+            pts.onCurve.first(Base::Vector3d(spline.midPnt.x, spline.midPnt.y, 0.0));
+        }
+        else {
+            pts.onCurve.first(pts.center
+                                + Base::Vector3d(1, 0, 0) * rad);//arbitrary point on edge
+            pts.onCurve.second(pts.center
+                                + Base::Vector3d(-1, 0, 0) * rad);//arbitrary point on edge
+        }
     }
     else {
         std::stringstream ssMessage;
-        ssMessage << getNameInDocument() << " 2d reference is a " << base->geomTypeName();
+        ssMessage << getNameInDocument() << " 2d reference is a "; // << base->geomTypeName();
         throw Base::RuntimeError(ssMessage.str());
     }
     return pts;
@@ -1000,27 +997,29 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
         && !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
-        TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
+        edgeWrapPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
+        edgeWrapPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
         if (!geom0 || !geom1) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (5)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom0->getGeomType() != TechDraw::GeomType::GENERIC) {
+
+
+        if (true /* geom0.getGeomType() != TechDraw::GeomType::GENERIC */) {
             std::stringstream ssMessage;
-            ssMessage << getNameInDocument() << " first 2d reference is a "
-                      << geom0->geomTypeName();
+            ssMessage << getNameInDocument() << " first 2d reference is a "; 
+            // << geom0.geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom1->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (true /* geom1.getGeomType() != TechDraw::GeomType::GENERIC */) {
             std::stringstream ssMessage;
-            ssMessage << getNameInDocument() << " second 2d reference is a "
-                      << geom0->geomTypeName();
+            ssMessage << getNameInDocument() << " second 2d reference is a ";
+            // << geom0.geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
         }
-        TechDraw::GenericPtr generic0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
-        TechDraw::GenericPtr generic1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        TechDraw::GenericPtr generic0 = std::static_pointer_cast<TechDraw::Generic>(std::make_shared<TechDraw::BaseGeom>(TechDraw::BaseGeom(geom0)));
+        TechDraw::GenericPtr generic1 = std::static_pointer_cast<TechDraw::Generic>(gstd::make_shared<TechDraw::BaseGeom>(TechDraw::BaseGeom(geom1)));
         Base::Vector3d apex = generic0->apparentInter(generic1);
         Base::Vector3d farPoint0, farPoint1;
         //pick the end of generic0 farthest from the apex
@@ -1334,7 +1333,7 @@ bool DrawViewDimension::checkReferences2D() const
 
         int idx = DrawUtil::getIndexFromName(s);
         if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
-            TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(idx);
+            TechDraw::edgeWrapPtr geom = getViewPart()->getGeomByIndex(idx);
             if (!geom) {
                 return false;
             }
@@ -1492,10 +1491,10 @@ std::string DrawViewDimension::recoverChangedEdge2d(int iReference)
 //    Base::Console().Message("DVD::recoverChangedEdge2d(ref: %d)\n", iReference);
     double scale = getViewPart()->getScale();
     Part::TopoShape savedGeometryItem = SavedGeometry.getValues().at(iReference);
-    std::vector<TechDraw::BaseGeomPtr> gEdges = getViewPart()->getEdgeGeometry();
+    std::vector<edgeWrapPtr> edges = getViewPart()->getEdgeGeometry();
     int iEdge = 0;
-    for (auto& edge : gEdges) {
-        Part::TopoShape temp = edge->asTopoShape(scale);
+    for (auto& edge : edges) {
+        Part::TopoShape temp = DrawUtil::asTopoShape(edge->edge, scale);
         if (savedGeometryItem.getTypeId() != temp.getTypeId()) {
             // if the typeIds don't match, we can not compare the geometry
 //            Base::Console().Message("DVD::recoverChangedEdge2d - types do not match\n");
@@ -1744,26 +1743,25 @@ double DrawViewDimension::dist2Segs(Base::Vector3d s1, Base::Vector3d e1, Base::
 
 bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle)
 {
-    bool result = false;
     const std::vector<std::string>& subElements = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
-    if (base && base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
-        TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(base);
-        if (aoc->intersectsArc(s, pointOnCircle)) {
-            result = true;
-        }
+    TechDraw::edgeWrapPtr base = getViewPart()->getGeomByIndex(idx);
+    if (!base && false /* base.getGeomType() == TechDraw::GeomType::ARCOFCIRCLE */) {
+        // TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(base);
+        // if (aoc->intersectsArc(s, pointOnCircle)) {
+        //     return true;
+        // }
     }
-    else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
-        TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
-        if (spline->isCircle()) {
-            if (spline->intersectsArc(s, pointOnCircle)) {
-                result = true;
-            }
-        }
+    else if (!base && false /* base.getGeomType() == TechDraw::GeomType::BSPLINE */) {
+        // TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
+        // if (spline->isCircle()) {
+        //     if (spline->intersectsArc(s, pointOnCircle)) {
+        //         return true;
+        //     }
+        // }
     }
 
-    return result;
+    return false;
 }
 
 void DrawViewDimension::saveArrowPositions(const Base::Vector2d positions[])

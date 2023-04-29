@@ -1728,3 +1728,27 @@ void DrawUtil::dumpCS3(const char* text, const gp_Ax3& CS)
                             DrawUtil::formatVector(baseX).c_str(),
                             DrawUtil::formatVector(baseY).c_str());
 }
+
+TopoDS_Edge DrawUtil::asTopoShape(TopoDS_Edge edge, double scale) {
+    TopoDS_Shape unscaledShape = TechDraw::scaleShape(edge, 1.0 / scale);
+    TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
+    return unscaledEdge;
+}
+
+bool DrawUtil::isArcOfCircle(edgeWrapPtr edge) {
+    BRepAdaptor_Curve adapt(edge->edge);
+    double f = adapt.FirstParameter();
+    double l = adapt.LastParameter();
+    gp_Pnt s = adapt.Value(f);
+    gp_Pnt e = adapt.Value(l);
+    return edge->curveType != GeomAbs_Circle && fabs(l - f) > 1.0 && s.SquareDistance(e) < 0.001;
+}
+
+bool DrawUtil::isArcOfEllipse(edgeWrapPtr edge) {
+    BRepAdaptor_Curve adapt(edge->edge);
+    double f = adapt.FirstParameter();
+    double l = adapt.LastParameter();
+    gp_Pnt s = adapt.Value(f);
+    gp_Pnt e = adapt.Value(l);
+    return edge->curveType != GeomAbs_Ellipse && fabs(l - f) > 1.0 && s.SquareDistance(e) < 0.001;
+}

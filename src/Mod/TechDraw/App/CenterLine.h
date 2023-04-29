@@ -30,6 +30,7 @@
 
 #include "Cosmetic.h"
 #include "Geometry.h"
+#include "GeometryObject.h"
 
 
 namespace TechDraw {
@@ -56,7 +57,7 @@ public:
     CenterLine();
     CenterLine(CenterLine* cl);
     //set m_faces after using next 3 ctors
-    CenterLine(TechDraw::BaseGeomPtr bg,
+    CenterLine(TechDraw::edgeWrapPtr bg,
                int m = CLMODE::VERTICAL,
                double h = 0.0,
                double v = 0.0,
@@ -70,7 +71,7 @@ public:
                double x = 0.0);
     ~CenterLine() override;
 
-    TechDraw::BaseGeomPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
+    TechDraw::edgeWrapPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
@@ -87,7 +88,7 @@ public:
                                          std::vector<std::string> subs,
                                          int mode = 0,
                                          bool flip = false);
-    TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
+    TechDraw::edgeWrapPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
 
     static std::tuple<Base::Vector3d, Base::Vector3d> rotatePointsAroundMid(
                                           Base::Vector3d p1,
@@ -146,7 +147,7 @@ public:
     LineFormat m_format;
     bool m_flip2Line;
 
-    TechDraw::BaseGeomPtr m_geometry;
+    TechDraw::edgeWrapPtr m_geometry;
 
     //Uniqueness
     boost::uuids::uuid getTag() const;

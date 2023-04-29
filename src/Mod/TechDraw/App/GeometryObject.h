@@ -95,6 +95,7 @@ gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin, const Base::Vecto
 gp_Ax2 TechDrawExport legacyViewAxis1(const Base::Vector3d origin, const Base::Vector3d& direction,
                                       const bool flip = true);
 
+
 class TechDrawExport GeometryObject
 {
 public:
@@ -108,12 +109,12 @@ public:
     Base::BoundBox3d calcBoundingBox() const;
 
     const std::vector<VertexPtr>& getVertexGeometry() const { return vertexGeom; }
-    const BaseGeomPtrVector& getEdgeGeometry() const { return edgeGeom; }
-    const BaseGeomPtrVector getVisibleFaceEdges(bool smooth, bool seam) const;
+    const std::vector<edgeWrapPtr>& getEdgeGeometry() const { return edgeGeom; }
+    const std::vector<edgeWrapPtr> getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<FacePtr>& getFaceGeometry() const { return faceGeom; }
 
     void setVertexGeometry(std::vector<VertexPtr> newVerts) { vertexGeom = newVerts; }
-    void setEdgeGeometry(BaseGeomPtrVector newGeoms) { edgeGeom = newGeoms; }
+    void setEdgeGeometry(std::vector<edgeWrapPtr> newGeoms) { return; }
 
     void projectShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
@@ -152,7 +153,8 @@ public:
     TopoDS_Shape getHidIso() { return hidIso; }
 
     void addVertex(TechDraw::VertexPtr v);
-    void addEdge(TechDraw::BaseGeomPtr bg);
+    void addVertices(TopoDS_Edge);
+    void addEdge(TechDraw::edgeWrapPtr bg);
 
 
     int addCosmeticVertex(CosmeticVertex* cv);
@@ -162,9 +164,9 @@ public:
     int addCosmeticEdge(CosmeticEdge* ce);
     int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, std::string tagString);
-    int addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagString);
+    int addCosmeticEdge(TechDraw::edgeWrapPtr base, std::string tagString);
 
-    int addCenterLine(TechDraw::BaseGeomPtr bg, std::string tag);
+    int addCenterLine(TechDraw::edgeWrapPtr bg, std::string tag);
 
 protected:
     //HLR output
@@ -190,7 +192,17 @@ protected:
     bool isWithinArc(double theta, double first, double last, bool cw) const;
 
     // Geometry
-    BaseGeomPtrVector edgeGeom;
+    // std::vector<TopoDS_EdgePtr> visHardEdges;
+    // std::vector<TopoDS_EdgePtr> visOutlineEdges;
+    // std::vector<TopoDS_EdgePtr> visSmoothEdges;
+    // std::vector<TopoDS_EdgePtr> visSeamEdges;
+    // std::vector<TopoDS_EdgePtr> visISOEdges;
+    // std::vector<TopoDS_EdgePtr> hidHardEdges;
+    // std::vector<TopoDS_EdgePtr> hidOutlineEdges;
+    // std::vector<TopoDS_EdgePtr> hidSmoothEdges;
+    // std::vector<TopoDS_EdgePtr> hidSeamEdges;
+    // std::vector<TopoDS_EdgePtr> hidIsoEdges;
+    std::vector<edgeWrapPtr> edgeGeom;
     std::vector<VertexPtr> vertexGeom;
     std::vector<FacePtr> faceGeom;
 

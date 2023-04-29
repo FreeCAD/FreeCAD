@@ -1194,7 +1194,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
         if (GeoType1 == "Edge" && GeoType2 == "Vertex") {
             double scale = objFeat->getScale();
             int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
+            TechDraw::BaseGeomPtr geom1 = TechDraw::BaseGeom(objFeat->getGeomByIndex(GeoId1));
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
             Base::Vector3d lineStart = lineGen->points.at(0);
@@ -2039,8 +2039,8 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
     if ((GeoType0 == "Edge") && (GeoType1 == "Edge")) {
         int GeoId0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
         int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-        TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
-        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
+        TechDraw::BaseGeomPtr geom0 = TechDraw::BaseGeom(objFeat->getGeomByIndex(GeoId0));
+        TechDraw::BaseGeomPtr geom1 = TechDraw::BaseGeom(objFeat->getGeomByIndex(GeoId1));
         if (geom0->getGeomType() != TechDraw::GENERIC || geom1->getGeomType() != TechDraw::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Thread Hole Side"),
                                  QObject::tr("Please select two straight lines"));
