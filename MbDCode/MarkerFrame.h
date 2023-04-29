@@ -17,16 +17,16 @@ namespace MbD {
     public:
         MarkerFrame();
         void setPartFrame(PartFrame* partFrm);
-        void setrpmp(FullColumn<double>* x);
-        void setaApm(FullMatrix<double>* x);
+        void setrpmp(FullColDptr x);
+        void setaApm(FullMatDptr x);
         void addEndFrame(std::shared_ptr<EndFrameqc> x);
 
         PartFrame* partFrame;
-        FullColumn<double>* rpmp = new FullColumn<double>(3);
-        FullMatrix<double>* aApm = new FullMatrix<double>(3, 3);
-        FullColumn<double>* rOmO = new FullColumn<double>(3);
-        FullMatrix<double>* aAOm = new FullMatrix<double>(3, 3);
-        FullMatrix<double>* prOmOpE = new FullMatrix<double>(3, 4);
+        FullColDptr rpmp = std::make_shared<FullColumn<double>>(3);
+        FullMatDptr aApm = std::make_shared<FullMatrix<double>>(3, 3);
+        FullColDptr rOmO = std::make_shared<FullColumn<double>>(3);
+        FullMatDptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
+        FullMatDptr prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
         FullColumn<FullMatrix<double>>* pAOmpE = new FullColumn<FullMatrix<double>>(4);
         std::vector<std::shared_ptr<EndFrameqc>> endFrames;
 

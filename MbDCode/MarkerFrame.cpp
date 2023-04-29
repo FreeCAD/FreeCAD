@@ -16,12 +16,12 @@ void MarkerFrame::setPartFrame(PartFrame* partFrm)
 	partFrame = partFrm;
 }
 
-void MarkerFrame::setrpmp(FullColumn<double>* x)
+void MarkerFrame::setrpmp(FullColDptr x)
 {
 	rpmp->copy(x);
 }
 
-void MarkerFrame::setaApm(FullMatrix<double>* x)
+void MarkerFrame::setaApm(FullMatDptr x)
 {
 	aApm->copy(x);
 }

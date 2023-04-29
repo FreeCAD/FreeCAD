@@ -16,7 +16,7 @@ namespace MbD {
 
         MarkerFrame* markerFrame;
         FullColumn<double>* rOeO = new FullColumn<double>(3);
-        FullMatrix<double>* aAOe = new FullMatrix<double>(3, 3);
+        FullMatDptr aAOe = std::make_shared<FullMatrix<double>>(3, 3);
     };
 }
 

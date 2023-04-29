@@ -7,11 +7,11 @@ namespace MbD {
 	public:
 		RowTypeMatrix() {}
 		RowTypeMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void copy(RowTypeMatrix<T>* x);
+		void copy(std::shared_ptr<RowTypeMatrix<T>> x);
 	};
 
 	template<typename T>
-	inline void RowTypeMatrix<T>::copy(RowTypeMatrix<T>* x)
+	inline void RowTypeMatrix<T>::copy(std::shared_ptr<RowTypeMatrix<T>> x)
 	{
 		for (int i = 0; i < x->size(); i++) {
 			this->at(i)->copy(x->at(i));

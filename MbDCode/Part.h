@@ -15,10 +15,10 @@ namespace MbD {
 		//ToDo: ipX ipE m aJ partFrame pX pXdot pE pEdot mX mE mEdot pTpE ppTpEpE ppTpEpEdot 
 	public:
 		Part();
-		void setqX(FullColumn<double>* x);
-		FullColumn<double>* getqX();
-		void setqE(FullColumn<double>* x);
-		FullColumn<double>* getqE();
+		void setqX(FullColDptr x);
+		FullColDptr getqX();
+		void setqE(FullColDptr x);
+		FullColDptr getqE();
 		void setSystem(System& sys);
 		std::shared_ptr<PartFrame> partFrame;
 	};

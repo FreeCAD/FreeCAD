@@ -4,7 +4,7 @@
 
 namespace MbD {
     template <typename T>
-    class FullMatrix : public RowTypeMatrix<FullRow<T>*>
+    class FullMatrix : public RowTypeMatrix<std::shared_ptr<FullRow<T>>>
     {
     public:
         FullMatrix() {
@@ -15,3 +15,4 @@ namespace MbD {
     };
 }
 
+typedef std::shared_ptr<MbD::FullMatrix<double>> FullMatDptr;

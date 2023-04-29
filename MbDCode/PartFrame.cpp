@@ -11,16 +11,16 @@ PartFrame::PartFrame()
 	aGabs = std::vector<std::shared_ptr<AbsConstraint>>();
 	markerFrames = std::vector<std::shared_ptr<MarkerFrame>>();
 }
-void PartFrame::setqX(FullColumn<double>* x) {
+void PartFrame::setqX(FullColDptr x) {
 	qX->copy(x);
 }
-FullColumn<double>* PartFrame::getqX() {
+FullColDptr PartFrame::getqX() {
 	return qX;
 }
-void PartFrame::setqE(FullColumn<double>* x) {
+void PartFrame::setqE(FullColDptr x) {
 	qE->copy(x);
 }
-FullColumn<double>* PartFrame::getqE() {
+FullColDptr PartFrame::getqE() {
 	return qE;
 }
 void PartFrame::setPart(std::shared_ptr<Part> x) {

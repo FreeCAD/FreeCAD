@@ -12,3 +12,4 @@ namespace MbD {
     };
 }
 
+typedef std::shared_ptr<MbD::FullColumn<double>> FullColDptr;

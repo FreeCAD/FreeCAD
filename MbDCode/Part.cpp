@@ -8,19 +8,19 @@ Part::Part() {
 	partFrame = std::make_shared<PartFrame>();
 }
 
-void Part::setqX(FullColumn<double>* x) {
+void Part::setqX(FullColDptr x) {
 	partFrame.get()->setqX(x);
 }
 
-FullColumn<double>* Part::getqX() {
+FullColDptr Part::getqX() {
 	return partFrame.get()->getqX();
 }
 
-void Part::setqE(FullColumn<double>* x) {
+void Part::setqE(FullColDptr x) {
 	partFrame.get()->setqE(x);
 }
 
-FullColumn<double>* Part::getqE() {
+FullColDptr Part::getqE() {
 	return partFrame.get()->getqE();
 }
 
