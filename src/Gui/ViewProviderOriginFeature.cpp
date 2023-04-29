@@ -35,6 +35,7 @@
 
 #include <App/Document.h>
 #include <App/OriginFeature.h>
+#include <App/Origin.h>
 
 #include "ViewProviderOriginFeature.h"
 #include "SoFCSelection.h"
@@ -98,7 +99,24 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
 
     // Setup font size
     auto font = new SoFont ();
-    font->size.setValue ( defaultSz/10.);
+    float fontRatio = 10.0f;
+    if ( pcObject->getTypeId() == App::Line::getClassTypeId() ) {
+        // keep font size on axes equal to font size on planes
+        fontRatio *= ViewProviderOrigin::axesScaling;
+        const char* axisName = pcObject->getNameInDocument();
+        auto axisRoles = App::Origin::AxisRoles;
+        if ( strncmp(axisName, axisRoles[0], strlen(axisRoles[0]) ) == 0 ) {
+            // X-axis: red
+            ShapeColor.setValue ( 0xFF0000FF );
+        } else if ( strncmp(axisName, axisRoles[1], strlen(axisRoles[1]) ) == 0 ) {
+            // Y-axis: green
+            ShapeColor.setValue ( 0x00FF00FF );
+        } else if ( strncmp(axisName, axisRoles[2], strlen(axisRoles[2]) ) == 0 ) {
+            // Z-axis: blue
+            ShapeColor.setValue ( 0x0000FFFF );
+        }
+    }
+    font->size.setValue ( defaultSz / fontRatio );
     sep->addChild ( font );
 
     // Create the selection node
