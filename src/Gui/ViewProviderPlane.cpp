@@ -96,6 +96,11 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     faceSeparator->addChild(shapeHints);
 
+    // disable picking
+    auto pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    faceSeparator->addChild(pickStyle);
+
     auto faceSet = new SoFaceSet();
     auto vertexProperty = new SoVertexProperty();
     vertexProperty->vertex.setValues(0, 4, verts);
