@@ -40,6 +40,7 @@ void loadStartResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Start);
+    Q_INIT_RESOURCE(Start_translation);
     Gui::Translator::instance()->refresh();
 }
 
