@@ -91,7 +91,7 @@ void DemoMode::reset()
         view->getViewer()->stopAnimating();
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    hGrp->Notify("UseAutoRotation");
+    hGrp->Notify("UseNavigationAnimations");
 }
 
 void DemoMode::accept()
@@ -150,7 +150,7 @@ Gui::View3DInventor* DemoMode::activeView() const
 
 float DemoMode::getSpeed(int v) const
 {
-    float speed = (static_cast<float>(v)) / 50.0f; // let 2.0 be the maximum speed
+    float speed = (static_cast<float>(v)) / 10.0f; // let 10.0 be the maximum speed
     return speed;
 }
 
@@ -273,8 +273,9 @@ void DemoMode::startAnimation(Gui::View3DInventor* view)
 {
     if (!view->getViewer()->isAnimationEnabled())
         view->getViewer()->setAnimationEnabled(true);
-    view->getViewer()->startAnimating(getDirection(view),
-        getSpeed(ui->speedSlider->value()));
+
+    view->getViewer()->startSpinningAnimation(getDirection(view),
+                                              getSpeed(ui->speedSlider->value()));
 }
 
 void DemoMode::onTimerCheckToggled(bool on)
