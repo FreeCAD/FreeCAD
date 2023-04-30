@@ -38,6 +38,7 @@ void loadReverseEngineeringResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(ReverseEngineering);
+    Q_INIT_RESOURCE(ReverseEngineering_translation);
     Gui::Translator::instance()->refresh();
 }
 
