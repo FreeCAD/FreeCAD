@@ -72,6 +72,7 @@ void loadPartDesignResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(PartDesign);
+    Q_INIT_RESOURCE(PartDesign_translation);
     Gui::Translator::instance()->refresh();
 }
 
