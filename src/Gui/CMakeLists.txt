@@ -351,9 +351,14 @@ SET(Gui_UIC_SRCS
     VectorListEditor.ui
 )
 
-SET(Gui_RES_SRCS
+set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Language)
+qt_create_resource_file_prefix(${FreeCAD_TR_QRC} ${QM_SRCS})
+set(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
+    ${FreeCAD_TR_QRC}
     QSint/actionpanel/schemes.qrc
 )
 
