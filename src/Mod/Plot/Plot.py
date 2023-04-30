@@ -37,7 +37,7 @@ try:
 
     from matplotlib.figure import Figure
 except ImportError:
-    FreeCAD.Console.PrintWarning('matplotlib not found, so Plot module can not be loaded\n')
+    FreeCAD.Console.PrintWarning("The 'matplotlib' Python package was not found. Plot module can not be loaded\n")
     raise ImportError("matplotlib not installed")
 
 
