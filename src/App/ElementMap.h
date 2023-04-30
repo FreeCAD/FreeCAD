@@ -44,13 +44,20 @@ namespace Data
 class ElementMap;
 typedef std::shared_ptr<ElementMap> ElementMapPtr;
 
-
+/* This class provides for ComplexGeoData's ability to provide proper naming.
+ * Specifically, ComplexGeoData uses this class for it's `_id` property.
+ * Most of the operations work with the `indexedNames` and `mappedNamed` maps.
+ * `indexedNames` maps a string to both a name queue and children.
+ *   each of those children store an IndexedName, offset details, postfix, ids, and
+ *   possibly a recursive elementmap
+ * `mappedNames` maps a MappedName to a specific IndexedName.
+ */
 class ElementMap: public std::enable_shared_from_this<ElementMap>
 {
 public:
     ElementMap();
 
-    /** Ensures that this->_id is properly assigned. Then marks as "used" all the StringID
+    /** Ensures that naming is properly assigned. It then marks as "used" all the StringID
      * that are used to make up this particular map and are stored in the hasher passed
      * as a parameter. Finally do this recursively for all childEelementMaps as well.
      * 
@@ -89,13 +96,20 @@ public:
      *
      * An element can have multiple mapped names. However, a name can only be
      * mapped to one element
+     *
+     * Note: the original proc passed `ComplexGeoData& master` for getting the `Tag`,
+     *   now it just passes `long masterTag`.
      */
     MappedName setElementName(const IndexedName& element, const MappedName& name,
-                              ElementMapPtr& elementMap, ComplexGeoData& master,
+                              ElementMapPtr& elementMap, long masterTag,
                               const ElementIDRefs* sid = nullptr, bool overwrite = false);
 
+    /* Generates a new MappedName from the current details.
+     * Note: the original encodeElementName passed `ComplexGeoData& master` for getting the `Tag`,
+     *   now it just passes `long masterTag`.
+     */
     void encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
-                           ElementIDRefs* sids, ComplexGeoData& master, const char* postfix = 0,
+                           ElementIDRefs* sids, long masterTag, const char* postfix = 0,
                            long tag = 0, bool forceTag = false) const;
 
     /** Convenience method to hash the main element name
@@ -109,9 +123,11 @@ public:
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName& name) const;
 
+    /* Note: the original proc passed `ComplexGeoData& master` for getting the `Tag`,
+     *   now it just passes `long masterTag`.*/
     virtual MappedName renameDuplicateElement(int index, const IndexedName& element,
                                               const IndexedName& element2, const MappedName& name,
-                                              ElementIDRefs& sids, ComplexGeoData& master);
+                                              ElementIDRefs& sids, long masterTag);
 
     bool erase(const MappedName& name);
 
@@ -141,7 +157,10 @@ public:
     MappedNameRef& mappedRef(const IndexedName& idx);
 
     bool hasChildElementMap() const;
-    void hashChildMaps(ComplexGeoData& master);
+
+    /* Note: the original hashChildMaps passed `ComplexGeoData& master` for getting the `Tag`,
+     *   now it just passes `long masterTag`.*/
+    void hashChildMaps(long masterTag);
 
     void collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
                           std::vector<const ElementMap*>& childMaps,
@@ -161,7 +180,9 @@ public:
         // prefix() has been moved to PostfixStringReferences.h
     };
 
-    void addChildElements(ElementMapPtr& elementMap, ComplexGeoData& master,
+    /* Note: the original addChildElements passed `ComplexGeoData& master` for getting the `Tag`,
+     *   now it just passes `long masterTag`.*/
+    void addChildElements(ElementMapPtr& elementMap, long masterTag,
                           const std::vector<MappedChildElements>& children);
 
     std::vector<MappedChildElements> getChildElements() const;

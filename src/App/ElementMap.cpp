@@ -475,7 +475,7 @@ void ElementMap::addPostfix(const QByteArray& postfix, std::map<QByteArray, int>
 }
 
 MappedName ElementMap::setElementName(const IndexedName& element, const MappedName& name,
-                                      ElementMapPtr& elementMap, ComplexGeoData& master,
+                                      ElementMapPtr& elementMap, long masterTag,
                                       const ElementIDRefs* sid, bool overwrite)
 {
     if (!element)
@@ -517,7 +517,7 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
         }
         if (sid != &_sid)
             _sid = *sid;
-        n = renameDuplicateElement(i, element, existing, name, _sid, master);
+        n = renameDuplicateElement(i, element, existing, name, _sid, masterTag);
         if (!n)
             return name;
         sid = &_sid;
@@ -526,7 +526,7 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
 
 // try to hash element name while preserving the source tag
 void ElementMap::encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
-                                   ElementIDRefs* sids, ComplexGeoData& master, const char* postfix,
+                                   ElementIDRefs* sids, long masterTag, const char* postfix,
                                    long tag, bool forceTag) const
 {
     if (postfix && postfix[0]) {
@@ -536,13 +536,13 @@ void ElementMap::encodeElementName(char element_type, MappedName& name, std::ost
     }
     long inputTag = 0;
     if (!forceTag && !ss.tellp()) {
-        if (!tag || tag == master.Tag)
+        if (!tag || tag == masterTag)
             return;
         name.findTagInElementName(&inputTag, nullptr, nullptr, nullptr, true);
         if (inputTag == tag)
             return;
     }
-    else if (!tag || (!forceTag && tag == master.Tag)) {
+    else if (!tag || (!forceTag && tag == masterTag)) {
         int pos = name.findTagInElementName(&inputTag, nullptr, nullptr, nullptr, true);
         if (inputTag) {
             tag = inputTag;
@@ -641,12 +641,12 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
 
 MappedName ElementMap::renameDuplicateElement(int index, const IndexedName& element,
                                               const IndexedName& element2, const MappedName& name,
-                                              ElementIDRefs& sids, ComplexGeoData& master)
+                                              ElementIDRefs& sids, long masterTag)
 {
     std::ostringstream ss;
     ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << index;
     MappedName renamed(name);
-    encodeElementName(element.getType()[0], renamed, ss, &sids, master);
+    encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         FC_WARN("duplicate element mapping '" << name << " -> " << renamed << ' ' << element << '/'
                                               << element2);
@@ -862,7 +862,7 @@ bool ElementMap::hasChildElementMap() const
     return !childElements.empty();
 }
 
-void ElementMap::hashChildMaps(ComplexGeoData& master)
+void ElementMap::hashChildMaps(long masterTag)
 {
     if (childElements.empty() || !this->hasher)
         return;
@@ -881,7 +881,7 @@ void ElementMap::hashChildMaps(ComplexGeoData& master)
                 ss << MAPPED_CHILD_ELEMENTS_PREFIX << postfix;
                 MappedName tmp;
                 encodeElementName(
-                    child.indexedName[0], tmp, ss, nullptr, master, nullptr, child.tag, true);
+                    child.indexedName[0], tmp, ss, nullptr, masterTag, nullptr, child.tag, true);
                 this->childElements.remove(child.postfix);
                 child.postfix = tmp.toBytes();
                 this->childElements[child.postfix].childMap = &child;
@@ -916,7 +916,7 @@ void ElementMap::collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
     res.first->second = (int)childMaps.size();
 }
 
-void ElementMap::addChildElements(ElementMapPtr& elementMap, ComplexGeoData& master,
+void ElementMap::addChildElements(ElementMapPtr& elementMap, long masterTag,
                                   const std::vector<MappedChildElements>& children)
 {
     std::ostringstream ss;
@@ -1022,7 +1022,7 @@ void ElementMap::addChildElements(ElementMapPtr& elementMap, ComplexGeoData& mas
                               tmp,
                               ss,
                               nullptr,
-                              master,
+                              masterTag,
                               child.postfix.constData(),
                               child.tag,
                               true);
@@ -1046,7 +1046,7 @@ void ElementMap::addChildElements(ElementMapPtr& elementMap, ComplexGeoData& mas
                 ElementIDRefs sids;
                 MappedName name = child.elementMap->find(childIdx, &sids);
                 if (!name) {
-                    if (!child.tag || child.tag == master.Tag) {
+                    if (!child.tag || child.tag == masterTag) {
                         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                             FC_WARN("unmapped element");
                         continue;
@@ -1055,8 +1055,8 @@ void ElementMap::addChildElements(ElementMapPtr& elementMap, ComplexGeoData& mas
                 }
                 ss.str("");
                 encodeElementName(
-                    idx[0], name, ss, &sids, master, child.postfix.constData(), child.tag);
-                setElementName(idx, name, elementMap, master, &sids);
+                    idx[0], name, ss, &sids, masterTag, child.postfix.constData(), child.tag);
+                setElementName(idx, name, elementMap, masterTag, &sids);
             }
             continue;
         }
@@ -1076,7 +1076,7 @@ void ElementMap::addChildElements(ElementMapPtr& elementMap, ComplexGeoData& mas
                               tmp,
                               ss,
                               nullptr,
-                              master,
+                              masterTag,
                               child.postfix.constData(),
                               child.tag,
                               true);
