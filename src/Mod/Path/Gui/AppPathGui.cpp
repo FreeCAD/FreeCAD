@@ -43,6 +43,7 @@ void loadPathResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Path);
+    Q_INIT_RESOURCE(Path_translation);
     Gui::Translator::instance()->refresh();
 }
 
