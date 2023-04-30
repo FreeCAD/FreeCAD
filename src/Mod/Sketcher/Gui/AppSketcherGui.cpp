@@ -53,6 +53,7 @@ void loadSketcherResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Sketcher);
+    Q_INIT_RESOURCE(Sketcher_translation);
     Gui::Translator::instance()->refresh();
 }
 
