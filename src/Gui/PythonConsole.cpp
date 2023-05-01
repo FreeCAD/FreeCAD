@@ -469,7 +469,13 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stderrPy = new PythonStderr(this);
     d->_stdinPy  = new PythonStdin (this);
     d->_stdin  = PySys_GetObject("stdin");
-    PySys_SetObject("stdin", d->_stdinPy);
+
+    // Don't override stdin when running FreeCAD as Python module
+    auto& cfg = App::Application::Config();
+    auto overrideStdIn = cfg.find("DontOverrideStdIn");
+    if (overrideStdIn == cfg.end()) {
+        PySys_SetObject("stdin", d->_stdinPy);
+    }
 
     const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
     const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
