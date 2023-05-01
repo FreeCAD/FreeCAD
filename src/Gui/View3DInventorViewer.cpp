@@ -287,6 +287,42 @@ public:
  *
  * \section overview Overview
  * \todo Overview and complements for the 3D Viewer
+ *
+ * \section trouble Troubleshooting
+ * When it's needed to capture OpenGL function calls then the utility apitrace
+ * can be very useful: https://github.com/apitrace/apitrace/blob/master/docs/USAGE.markdown
+ *
+ * To better locate the problematic code it's possible to add custom log messages.
+ * For the prerequisites check:
+ * https://github.com/apitrace/apitrace/blob/master/docs/USAGE.markdown#
+ * emitting-annotations-to-the-trace
+ * \code
+ * #include <GL/glext.h>
+ * #include <Inventor/C/glue/gl.h>
+ *
+ * void GLRender(SoGLRenderAction* glra)
+ * {
+ *     int context = glra->getCacheContext();
+ *     const cc_glglue * glue = cc_glglue_instance(context);
+ *
+ *     PFNGLPUSHDEBUGGROUPPROC glPushDebugGroup = (PFNGLPUSHDEBUGGROUPPROC)
+ *     cc_glglue_getprocaddress(glue, "glPushDebugGroup");
+ *     PFNGLDEBUGMESSAGEINSERTARBPROC glDebugMessageInsert = (PFNGLDEBUGMESSAGEINSERTARBPROC)
+ *     cc_glglue_getprocaddress(glue, "glDebugMessageInsert");
+ *     PFNGLPOPDEBUGGROUPPROC glPopDebugGroup = (PFNGLPOPDEBUGGROUPPROC)
+ *     cc_glglue_getprocaddress(glue, "glPopDebugGroup");
+ *
+ *     glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, __FUNCTION__);
+ * ...
+ *     glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_OTHER,
+ *                          0, GL_DEBUG_SEVERITY_MEDIUM, -1, "begin_blabla");
+ * ...
+ *     glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_OTHER,
+ *                          0, GL_DEBUG_SEVERITY_MEDIUM, -1, "end_blabla");
+ * ...
+ *     glPopDebugGroup();
+ * }
+ * \endcode
  */
 
 
