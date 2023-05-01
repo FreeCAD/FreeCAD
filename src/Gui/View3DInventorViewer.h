@@ -467,6 +467,7 @@ private:
     void initialize();
     void drawAxisCross();
     static void drawArrow();
+    void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext() override;
     void createStandardCursors(double);

@@ -2102,6 +2102,7 @@ void View3DInventorViewer::renderScene()
     SoGLWidgetElement::set(state, qobject_cast<QtGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(state, glra);
     SoGLVBOActivatedElement::set(state, this->vboEnabled);
+    drawSingleBackground(col);
     glra->apply(this->backgroundroot);
 
     navigation->updateAnimation();
@@ -3308,6 +3309,39 @@ void View3DInventorViewer::drawArrow()
     glVertex3f(1.0f - 1.0f / 3.0f, -0.5f / 4.0f, 0.0f);
     glVertex3f(1.0f - 1.0f / 3.0f, 0.0f, -0.5f / 4.0f);
     glEnd();
+}
+
+void View3DInventorViewer::drawSingleBackground(const QColor& col)
+{
+    // Note: After changing the NaviCube code the content of an image plane may appear black.
+    // A workaround is this function.
+    // See also: https://github.com/FreeCAD/FreeCAD/pull/9356#issuecomment-1529521654
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glPushAttrib(GL_ENABLE_BIT);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glBegin(GL_TRIANGLE_STRIP);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(-1, 1);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(-1, -1);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(1, 1);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(1, -1);
+    glEnd();
+    glPopAttrib();
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 // ************************************************************************
