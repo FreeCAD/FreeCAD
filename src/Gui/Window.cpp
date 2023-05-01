@@ -44,13 +44,13 @@ using namespace Gui;
 
 WindowParameter::WindowParameter(const char *name)
 {
-  // not allowed to use a Window without a name, see the constructor of a DockWindow or a other QT Widget
-  assert(name);
-  //printf("Instanceate:%s\n",name);
+    // not allowed to use a Window without a name, see the constructor
+    // of a DockWindow or a other QT Widget
+    assert(name);
 
-  // if string is empty do not create group
-  if ( strcmp(name, "") != 0 )
-    _handle = getDefaultParameter()->GetGroup( name );
+    // if string is empty do not create group
+    if ( strcmp(name, "") != 0 )
+      _handle = getDefaultParameter()->GetGroup( name );
 }
 
 WindowParameter::~WindowParameter()
@@ -87,13 +87,13 @@ bool WindowParameter::setGroupName(const char* name)
 
 void WindowParameter::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
-  Q_UNUSED(rCaller);
-  Q_UNUSED(sReason);
+    Q_UNUSED(rCaller);
+    Q_UNUSED(sReason);
 }
 
 ParameterGrp::handle  WindowParameter::getWindowParameter()
 {
-  return _handle;
+    return _handle;
 }
 
 /**
@@ -102,5 +102,5 @@ ParameterGrp::handle  WindowParameter::getWindowParameter()
  */
 ParameterGrp::handle  WindowParameter::getDefaultParameter()
 {
-  return App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
+    return App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
 }
