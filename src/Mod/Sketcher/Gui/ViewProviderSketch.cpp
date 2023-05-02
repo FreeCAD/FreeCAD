@@ -418,9 +418,7 @@ void ViewProviderSketch::purgeHandler()
     Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
     Gui::View3DInventorViewer *viewer;
     viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+    viewer->setSelectionEnabled(false);
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -3183,8 +3181,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     viewer->setCameraOrientation(rot);
 
     viewer->setEditing(true);
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+    viewer->setSelectionEnabled(false);
 
     viewer->addGraphicsItem(rubberband.get());
     rubberband->setViewer(viewer);
@@ -3204,8 +3201,7 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+    viewer->setSelectionEnabled(true);
 }
 
 void ViewProviderSketch::camSensCB(void *data, SoSensor *)

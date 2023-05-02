@@ -49,7 +49,6 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
@@ -201,8 +200,7 @@ public:
     {
         Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
-        SoNode* root = view->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+        view->setSelectionEnabled(true);
 
         std::vector<SbVec2f> picked = view->getGLPolygon();
         SoCamera* cam = view->getSoRenderManager()->getCamera();
@@ -267,8 +265,7 @@ FaceColors::~FaceColors()
         d->view->stopSelection();
         d->view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
             Private::selectionCallback, this);
-        SoNode* root = d->view->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+        d->view->setSelectionEnabled(true);
     }
     Gui::Selection().rmvSelectionGate();
     d->connectDelDoc.disconnect();
@@ -325,8 +322,7 @@ void FaceColors::onBoxSelectionToggled(bool checked)
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), Private::selectionCallback, this);
             // avoid that the selection node handles the event otherwise the callback function won't be
             // called immediately
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+            viewer->setSelectionEnabled(false);
             d->view = viewer;
         }
     }

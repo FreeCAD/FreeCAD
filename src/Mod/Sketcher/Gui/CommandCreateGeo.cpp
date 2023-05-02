@@ -37,7 +37,6 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SelectionFilter.h>
-#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/DatumFeature.h>
