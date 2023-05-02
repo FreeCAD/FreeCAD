@@ -1424,13 +1424,15 @@ void MainWindow::loadWindowSettings()
     Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
 
 
-// make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
-    QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
-#endif
-
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
+
+    // make menus and tooltips usable in fullscreen under Windows, see issue #7563
+#if defined(Q_OS_WIN)
+    if (QWindow* win = this->windowHandle()) {
+        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
+    }
+#endif
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();
