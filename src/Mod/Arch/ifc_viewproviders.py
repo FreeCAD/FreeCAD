@@ -46,3 +46,8 @@ class ifc_vp_document(ifc_vp_object):
     def attach(self, vobj):
         FreeCAD.Console.PrintWarning("Warning: Object "+vobj.Object.Label+" depends on the NativeIFC addon which is not installed, and will not display correctly in the 3D view\n")
         return
+
+class ifc_vp_group:
+    """NativeIFC class placeholder"""
+    def __init__(self):
+        pass
