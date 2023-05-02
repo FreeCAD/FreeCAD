@@ -131,6 +131,7 @@
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="CartesianFrame.cpp" />
     <ClCompile Include="Constraint.cpp" />
+    <ClCompile Include="CylindricalJoint.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="EndFramec.cpp" />
     <ClCompile Include="EndFrameqc.cpp" />
@@ -146,17 +147,25 @@
     <ClCompile Include="NewtonRaphson.cpp" />
     <ClCompile Include="Part.cpp" />
     <ClCompile Include="PartFrame.cpp" />
+    <ClCompile Include="PrescribedMotion.cpp" />
+    <ClCompile Include="RevoluteJoint.cpp" />
     <ClCompile Include="RowTypeMatrix.cpp" />
     <ClCompile Include="Solver.cpp" />
+    <ClCompile Include="SparseColumn.cpp" />
+    <ClCompile Include="SparseMatrix.cpp" />
+    <ClCompile Include="SparseRow.cpp" />
+    <ClCompile Include="SparseVector.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemSolver.cpp" />
     <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="ZRotation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbsConstraint.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="CartesianFrame.h" />
     <ClInclude Include="Constraint.h" />
+    <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="EndFramec.h" />
     <ClInclude Include="EndFrameqc.h" />
@@ -172,11 +181,18 @@
     <ClInclude Include="NewtonRaphson.h" />
     <ClInclude Include="Part.h" />
     <ClInclude Include="PartFrame.h" />
+    <ClInclude Include="PrescribedMotion.h" />
+    <ClInclude Include="RevoluteJoint.h" />
     <ClInclude Include="RowTypeMatrix.h" />
     <ClInclude Include="Solver.h" />
+    <ClInclude Include="SparseColumn.h" />
+    <ClInclude Include="SparseMatrix.h" />
+    <ClInclude Include="SparseRow.h" />
+    <ClInclude Include="SparseVector.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="SystemSolver.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="ZRotation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

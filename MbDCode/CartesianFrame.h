@@ -2,8 +2,7 @@
 #include "Item.h"
 
 namespace MbD {
-	class CartesianFrame :
-		public Item
+	class CartesianFrame : public Item
 	{
 	};
 }

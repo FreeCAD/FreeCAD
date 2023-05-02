@@ -9,7 +9,9 @@
 
 namespace MbD {
 	class Part;
+	class Joint;
 	class SystemSolver;
+
 	class System : public Item
 	{
 		//ToDo: Needed members admSystem namedItems mbdTime parts jointsMotions forcesTorques sensors variables hasChanged mbdSystemSolver

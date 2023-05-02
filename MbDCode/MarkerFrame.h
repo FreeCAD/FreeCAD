@@ -5,11 +5,11 @@
 #include "PartFrame.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
-#include "EndFrameqc.h"
+#include "EndFramec.h"
 
 namespace MbD {
     class PartFrame;
-    class EndFrameqc;
+    class EndFramec;
 
     class MarkerFrame : public CartesianFrame
     {
@@ -19,7 +19,7 @@ namespace MbD {
         void setPartFrame(PartFrame* partFrm);
         void setrpmp(FullColDptr x);
         void setaApm(FullMatDptr x);
-        void addEndFrame(std::shared_ptr<EndFrameqc> x);
+        void addEndFrame(std::shared_ptr<EndFramec> x);
 
         PartFrame* partFrame;
         FullColDptr rpmp = std::make_shared<FullColumn<double>>(3);
@@ -28,7 +28,7 @@ namespace MbD {
         FullMatDptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
         FullMatDptr prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
         FullColumn<FullMatrix<double>>* pAOmpE = new FullColumn<FullMatrix<double>>(4);
-        std::vector<std::shared_ptr<EndFrameqc>> endFrames;
+        std::vector<std::shared_ptr<EndFramec>> endFrames;
 
     };
 }

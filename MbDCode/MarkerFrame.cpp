@@ -1,4 +1,6 @@
 #include "MarkerFrame.h"
+#include "EndFramec.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
@@ -25,7 +27,7 @@ void MarkerFrame::setaApm(FullMatDptr x)
 {
 	aApm->copy(x);
 }
-void MarkerFrame::addEndFrame(std::shared_ptr<EndFrameqc> endFrm)
+void MarkerFrame::addEndFrame(std::shared_ptr<EndFramec> endFrm)
 {
 	endFrm->setMarkerFrame(this);
 	endFrames.push_back(endFrm);

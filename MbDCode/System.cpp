@@ -10,4 +10,6 @@ MbD::System::System() {
 	parts = std::vector<std::shared_ptr<Part>>();
 	jointsMotions = std::vector<std::shared_ptr<Joint>>();
 	systemSolver = std::make_shared<SystemSolver>(*this);
+	//std::vector<std::shared_ptr<Part>> parts;
+	//std::vector<std::shared_ptr<Joint>> jointsMotions;
 }

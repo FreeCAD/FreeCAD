@@ -12,4 +12,3 @@ namespace MbD {
     };
 }
 
-typedef std::initializer_list<double> ListD;
