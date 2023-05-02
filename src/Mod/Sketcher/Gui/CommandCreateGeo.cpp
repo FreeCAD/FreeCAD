@@ -1568,7 +1568,7 @@ CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Carbon copy");
-    sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
+    sToolTipText    = QT_TR_NOOP("Copy the geometry of another sketch");
     sWhatsThis      = "Sketcher_CarbonCopy";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CarbonCopy";
