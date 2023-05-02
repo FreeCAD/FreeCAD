@@ -1350,8 +1350,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain lock");
-    sToolTipText    = QT_TR_NOOP("Lock constraint: "
-                                 "create both a horizontal "
+    sToolTipText    = QT_TR_NOOP("Create both a horizontal "
                                  "and a vertical distance constraint\n"
                                  "on the selected vertex");
     sWhatsThis      = "Sketcher_ConstrainLock";
@@ -1578,8 +1577,7 @@ CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain block");
-    sToolTipText    = QT_TR_NOOP("Block constraint: "
-                                 "block the selected edge from moving");
+    sToolTipText    = QT_TR_NOOP("Block the selected edge from moving");
     sWhatsThis      = "Sketcher_ConstrainBlock";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Block";
