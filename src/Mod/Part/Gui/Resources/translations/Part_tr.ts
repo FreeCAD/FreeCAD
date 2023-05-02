@@ -2763,7 +2763,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="14"/>
       <source>Extrude</source>
-      <translation>İhraç etmek</translation>
+      <translation>Katıla</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="26"/>

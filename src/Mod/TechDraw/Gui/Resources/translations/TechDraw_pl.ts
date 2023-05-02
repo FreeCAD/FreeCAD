@@ -3220,7 +3220,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1533"/>
       <source>No Part View in Selection</source>
-      <translation>Brak widoku części w zaznaczeniu</translation>
+      <translation>Brak widoku części w wyborze</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1546"/>
@@ -3559,7 +3559,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1809"/>
       <source>No faces in selection.</source>
-      <translation type="unfinished">No faces in selection.</translation>
+      <translation>W wyborze brak ścian.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2045"/>
@@ -4124,12 +4124,12 @@ Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="115"/>
       <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation type="unfinished">If checked, system will attempt to automatically correct dimension references when the model changes.</translation>
+      <translation>Jeśli opcja jest zaznaczona, system będzie próbował automatycznie korygować odniesienia wymiarów, gdy model ulegnie zmianie.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="121"/>
       <source>Auto Correct Dimension Refs</source>
-      <translation type="unfinished">Auto Correct Dimension Refs</translation>
+      <translation>Automatyczna korekcja odniesień wymiarów</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="310"/>
@@ -4197,22 +4197,27 @@ przy kreskowanie ściany jest ze wzorem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="530"/>
       <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</source>
-      <translation type="unfinished">If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</translation>
+      <translation>Jeśli opcja jest zaznaczona, FreeCAD użyje nowego algorytmu wyszukiwania ścian.  Jeśli nie jest zaznaczone, FreeCAD będzie używał oryginalnego algorytmu znajdowania ścian.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="533"/>
       <source>Use New Face Finder</source>
-      <translation type="unfinished">Use New Face Finder</translation>
+      <translation>Użyj nowego algorytmu wyszukiwania ścian</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="567"/>
       <source>Overlap Edges Scrub Passes</source>
-      <translation type="unfinished">Overlap Edges Scrub Passes</translation>
+      <translation>Przejścia narzędzia do usuwania nakładających się na siebie krawędzi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liczba powtórzeń, które FreeCAD powinien wykonać próbując usunąć nakładające się krawędzie zwrócone przez algorytm "Usuwania ukrytych linii". 
+Wartość:
+0 oznacza brak usuwania, 
+1 oznacza pojedyncze przejście, 
+2 oznacza, że należy wykonać drugie przejście. 
+Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa czas potrzebny do wykonania rysunku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="607"/>
@@ -4762,27 +4767,27 @@ przy kreskowanie ściany jest ze wzorem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Określa wielkość odstępu pomiędzy punktem wymiaru a początkiem linii przedłużenia dla wymiarów ISO. Wartość "długość linii" * jest odstępem. Normalnie nie stosuje się odstępu. Jeśli używany jest odstęp, zalecana jest wartość 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="546"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kontroluje wielkość odstępu pomiędzy punktem wymiaru a początkiem linii przedłużenia dla wymiarów ASME. Wartość "długość linii" * jest odstępem. Normalnie nie stosuje się odstępu. Jeśli używany jest odstęp, zalecana jest wartość 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="570"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
-      <translation type="unfinished">Controls the size of spacing between dimension line and dimension text for ISO dimensions.</translation>
+      <translation>Określa wielkość odstępu między linią wymiarową a tekstem wymiaru dla wymiarów ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
       <source>Line Spacing - ISO</source>
-      <translation type="unfinished">Line Spacing - ISO</translation>
+      <translation>Odstęp linii — ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="580"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Określa wielkość odstępu pomiędzy linią wymiarową a tekstem wymiarowym. Wartość "grubość linii" * jest odstępem między wierszami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
@@ -8455,12 +8460,12 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="43"/>
       <source>snug fit</source>
-      <translation type="unfinished">snug fit</translation>
+      <translation>pasowanie suwliwe</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="44"/>
       <source>press fit</source>
-      <translation type="unfinished">press fit</translation>
+      <translation>pasowanie skurczowe</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="59"/>

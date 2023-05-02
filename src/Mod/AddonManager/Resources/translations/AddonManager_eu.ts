@@ -1485,17 +1485,17 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Gehigarri hau FreeCAD berrabiarazten den hurrengoan gaituko da.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Gehigarri hau FreeCAD berrabiarazten den hurrengoan desgaituko da.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
+      <translation>QtWebEngine Python loturak ez daude instalatuta -- ordezko README bistaratzea erabiliko da.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="682"/>
@@ -2230,7 +2230,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>Ezin da makroak zehaztutako {} fitxategia aurkitu ({} kokalekuan espero zen)</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="355"/>
@@ -2251,7 +2251,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../Addon.py" line="778"/>
       <location filename="../../Addon.py" line="794"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Errorea gertatu da {} inportatzen saiatzean</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>

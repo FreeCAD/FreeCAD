@@ -787,12 +787,12 @@
     <message>
       <location filename="../../Command.cpp" line="2274"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation type="unfinished">Create a cylinder function, defined by its center, axis and radius</translation>
+      <translation>Erstellt eine Zylinderfunktion, die durch Mittelpunkt, Achse und Radius definiert wird</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2280"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation type="unfinished">Create a box function, defined by its center, length, width and height</translation>
+      <translation>Erstellt eine Quaderfunktion, die durch Mittelpunkt, Länge, Breite und Höhe definiert wird</translation>
     </message>
   </context>
   <context>
@@ -3315,7 +3315,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
-      <translation type="unfinished">formula</translation>
+      <translation>Formel</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
@@ -3393,7 +3393,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>
       <source>Current density:</source>
-      <translation>Aktuelle Dichte:</translation>
+      <translation>Stromdichte:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="66"/>
@@ -4393,7 +4393,7 @@ for the Emer solver</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
@@ -4798,14 +4798,14 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="109"/>
       <source>Stiffness for Elmer</source>
-      <translation type="unfinished">Stiffness for Elmer</translation>
+      <translation>Steifigkeit für Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation type="unfinished">What stiffness should be
-used for the Elmer solver</translation>
+      <translation>Welche Steifigkeit sollte
+für den Löser Elmer verwendet werden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="81"/>
@@ -5496,7 +5496,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="63"/>
       <source>Creates an analysis container with default solver</source>
-      <translation type="unfinished">Creates an analysis container with default solver</translation>
+      <translation>Erstellt einen Analysecontainer mit Standard-Löser</translation>
     </message>
   </context>
   <context>
@@ -5727,8 +5727,8 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for
- elasticity (stress)</translation>
+      <translation>Erstellt eine FEM-Gleichung für
+ Elastizität (Spannung)</translation>
     </message>
   </context>
   <context>
@@ -5810,12 +5810,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Werkstoff für Fluide</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="653"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Erstellt einen FEM-Werkstoff für Fluide (Gase und Flüssigkeiten)</translation>
     </message>
   </context>
   <context>
@@ -5836,12 +5836,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="737"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Bewehrter Werkstoff (Beton)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="741"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Erstellt einen Werkstoff für bewehrte Verbundwerkstoffe wie z.B. Beton</translation>
     </message>
   </context>
   <context>
@@ -5849,12 +5849,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="754"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Werkstoff für Festkörper</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="759"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Erstellt einen FEM-Werkstoff für Festkörper</translation>
     </message>
   </context>
   <context>
@@ -6301,12 +6301,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="233"/>
       <source>Constraint current density</source>
-      <translation>Randbedingung Aktuelle Dichte</translation>
+      <translation>Randbedingung Stromdichte</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="237"/>
       <source>Creates a FEM constraint current density</source>
-      <translation>Erstellt eine FEM-Randbedingung Aktuelle Dichte</translation>
+      <translation>Erstellt eine FEM-Randbedingung Stromdichte</translation>
     </message>
   </context>
   <context>
@@ -6443,14 +6443,14 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="454"/>
       <source>Deformation equation</source>
-      <translation type="unfinished">Deformation equation</translation>
+      <translation>Verformungsgleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for
  deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for
- deformation (nonlinear elasticity)</translation>
+      <translation>Erstellt eine FEM-Gleichung für
+ Verformung (nichtlineare Elastizität)</translation>
     </message>
   </context>
   <context>
@@ -6544,12 +6544,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Mechanical equations</source>
-      <translation type="unfinished">Mechanical equations</translation>
+      <translation>Mechanische Gleichungen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mechanical equations for the Elmer solver</source>
-      <translation type="unfinished">Mechanical equations for the Elmer solver</translation>
+      <translation>Mechanische Gleichungen für den Gleichungslöser Elmer</translation>
     </message>
   </context>
 </TS>

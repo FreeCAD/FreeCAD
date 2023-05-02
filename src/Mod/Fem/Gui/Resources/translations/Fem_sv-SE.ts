@@ -4415,7 +4415,7 @@ for the Emer solver</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>

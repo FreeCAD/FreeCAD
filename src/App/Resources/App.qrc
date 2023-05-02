@@ -32,5 +32,6 @@
         <file>App_ro.qm</file>
         <file>App_gl.qm</file>
         <file>App_ko.qm</file>
+        <file>App_id.qm</file>
     </qresource>
 </RCC>

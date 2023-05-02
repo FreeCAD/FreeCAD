@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Gestor de capas</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -62,12 +62,12 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation type="unfinished">Toggle on/off</translation>
+      <translation>Encender/apagar</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Aislar</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -3060,7 +3060,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="848"/>
       <source>Label type</source>
-      <translation type="unfinished">Label type</translation>
+      <translation>Tipo de rótulo</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="864"/>
@@ -5539,7 +5539,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="277"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>Activado</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="278"/>
@@ -5564,7 +5564,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Color de cara</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5579,7 +5579,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Nueva capa</translation>
     </message>
   </context>
   <context>
@@ -8087,12 +8087,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Administrar capas...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
-      <translation type="unfinished">Set/modify the different layers of this document</translation>
+      <translation>Establecer/modificar las diferentes capas de este documento</translation>
     </message>
   </context>
 </TS>

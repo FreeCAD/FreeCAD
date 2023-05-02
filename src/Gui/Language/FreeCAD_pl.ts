@@ -216,7 +216,7 @@
       <location filename="../TaskView/TaskImage.cpp" line="258"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="65"/>
       <source>Edit image</source>
-      <translation type="unfinished">Edit image</translation>
+      <translation>Edytuj obraz</translation>
     </message>
   </context>
   <context>
@@ -1240,7 +1240,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     <message>
       <location filename="../DlgKeyboard.ui" line="107"/>
       <source>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</source>
-      <translation type="unfinished">To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</translation>
+      <translation>Aby zmienić bieżący skrót, wprowadź nowy skrót w polu poniżej i naciśnij "Przypisz".</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
@@ -2000,12 +2000,12 @@ gdzie zawsze będzie wpisywana kropka.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="20"/>
       <source>Language and number format</source>
-      <translation type="unfinished">Language and number format</translation>
+      <translation>Język i format liczb</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="41"/>
       <source>Language:</source>
-      <translation type="unfinished">Language:</translation>
+      <translation>Język:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="55"/>
@@ -2015,7 +2015,7 @@ gdzie zawsze będzie wpisywana kropka.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="62"/>
       <source>Unit system that should be used for all parts of the application</source>
-      <translation type="unfinished">Unit system that should be used for all parts of the application</translation>
+      <translation>System jednostek, który ma być używany we wszystkich częściach aplikacji</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="71"/>
@@ -2040,7 +2040,7 @@ gdzie zawsze będzie wpisywana kropka.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="180"/>
       <source>Substitute decimal separator</source>
-      <translation type="unfinished">Substitute decimal separator</translation>
+      <translation>Zastąp separator dziesiętny</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="196"/>
@@ -2085,14 +2085,14 @@ w zależności od wielkości ekranu lub swoich upodobań</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="264"/>
       <source>Size of recent file list:</source>
-      <translation type="unfinished">Size of recent file list:</translation>
+      <translation>Rozmiar listy ostatnio używanych plików:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="287"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window (when no document is opened) will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Tło okna głównego (gdy nie jest otwarty żaden dokument) będzie składało się z kafelków specjalnego obrazu.
+Szczegółowe informacje na temat obrazu można znaleźć w FreeCAD Wiki.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="317"/>
@@ -2854,7 +2854,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Wymagany restart</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="494"/>
@@ -3030,12 +3030,12 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="106"/>
       <source>Failed to extract project</source>
-      <translation type="unfinished">Failed to extract project</translation>
+      <translation>Nie udało się rozpakować projektu</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="123"/>
       <source>Failed to create project</source>
-      <translation type="unfinished">Failed to create project</translation>
+      <translation>Nie udało się utworzyć projektu</translation>
     </message>
   </context>
   <context>
@@ -4997,8 +4997,8 @@ długość wiersza w konsoli Python</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Obszar do wskazywania / wyboru elementów w oknie widoku 3D.
+Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych obiektów.
       </translation>
     </message>
     <message>
@@ -5089,24 +5089,24 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="232"/>
       <source>Linear gradient</source>
-      <translation type="unfinished">Linear gradient</translation>
+      <translation>Gradient liniowy</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="251"/>
       <source>Radial gradient</source>
-      <translation type="unfinished">Radial gradient</translation>
+      <translation>Gradient radialny</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="329"/>
       <location filename="../DlgSettingsViewColor.cpp" line="148"/>
       <source>Top:</source>
-      <translation type="unfinished">Top:</translation>
+      <translation>U góry:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="356"/>
       <location filename="../DlgSettingsViewColor.cpp" line="149"/>
       <source>Middle:</source>
-      <translation type="unfinished">Middle:</translation>
+      <translation>Pośrodku:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="315"/>
@@ -5132,7 +5132,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../DlgSettingsViewColor.ui" line="399"/>
       <location filename="../DlgSettingsViewColor.cpp" line="150"/>
       <source>Bottom:</source>
-      <translation type="unfinished">Bottom:</translation>
+      <translation>U dołu:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="433"/>
@@ -5162,17 +5162,17 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="156"/>
       <source>Central:</source>
-      <translation type="unfinished">Central:</translation>
+      <translation>Centralny:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="157"/>
       <source>Midway:</source>
-      <translation type="unfinished">Midway:</translation>
+      <translation>W połowie:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="158"/>
       <source>End:</source>
-      <translation type="unfinished">End:</translation>
+      <translation>Na końcu:</translation>
     </message>
   </context>
   <context>
@@ -6213,7 +6213,7 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
       <location filename="../ReportView.cpp" line="604"/>
       <location filename="../ReportView.cpp" line="628"/>
       <source>Critical messages</source>
-      <translation type="unfinished">Critical messages</translation>
+      <translation>Wiadomości krytyczne</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="609"/>
@@ -8008,22 +8008,22 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="2774"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Pokaż elementy ukryte w widoku drzewa</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2775"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
+      <translation>Pokaż elementy, które są oznaczone jako "ukryte" w widoku drzewa</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2777"/>
       <source>Toggle visibility in tree view</source>
-      <translation type="unfinished">Toggle visibility in tree view</translation>
+      <translation>Przełącz widoczność w widoku drzewa</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2778"/>
       <source>Toggles the visibility of selected items in the tree view</source>
-      <translation type="unfinished">Toggles the visibility of selected items in the tree view</translation>
+      <translation>Przełącza widoczność wybranych elementów w widoku drzewa</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2780"/>
@@ -8661,7 +8661,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../CommandView.cpp" line="1853"/>
       <source>Save image</source>
-      <translation type="unfinished">Save image</translation>
+      <translation>Zapisz obrazek</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2004"/>
@@ -8778,18 +8778,18 @@ Do you want to continue?</source>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="989"/>
       <source>Notifier</source>
-      <translation type="unfinished">Notifier</translation>
+      <translation>Notifier</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="990"/>
       <source>Message</source>
-      <translation type="unfinished">Message</translation>
+      <translation>Wiadomość</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="931"/>
       <source>Notifier: </source>
-      <translation type="unfinished">Notifier: </translation>
+      <translation>Zgłaszający: </translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="933"/>
@@ -8804,7 +8804,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="1003"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
+      <translation>Zbyt wiele otwartych powiadomień. Powiadomienia są pomijane!</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1051"/>
@@ -9353,7 +9353,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="146"/>
       <source>Change image...</source>
-      <translation type="unfinished">Change image...</translation>
+      <translation>Zmień obraz ...</translation>
     </message>
   </context>
   <context>
@@ -11737,7 +11737,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1812"/>
       <source>Save image...</source>
-      <translation type="unfinished">Save image...</translation>
+      <translation>Zapisz obraz ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1813"/>
@@ -12040,7 +12040,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="531"/>
       <source>Clipboard</source>
-      <translation type="unfinished">Clipboard</translation>
+      <translation>Schowek</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="532"/>
@@ -12157,7 +12157,7 @@ Czy nadal chcesz kontynuować?</translation>
       <location filename="../DlgSettingsNotificationArea.ui" line="14"/>
       <location filename="../DlgSettingsNotificationArea.cpp" line="57"/>
       <source>Notification Area</source>
-      <translation type="unfinished">Notification Area</translation>
+      <translation>Obszar powiadomień</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="20"/>
@@ -12167,32 +12167,32 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="26"/>
       <source>The Notification area will appear in the status bar</source>
-      <translation type="unfinished">The Notification area will appear in the status bar</translation>
+      <translation>Obszar powiadomień pojawi się na pasku statusu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Włącz obszar powiadomień</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="45"/>
       <source>Non-intrusive notifications will appear next to the notification area in the status bar</source>
-      <translation type="unfinished">Non-intrusive notifications will appear next to the notification area in the status bar</translation>
+      <translation>Nieinwazyjne powiadomienia pojawią się obok obszaru powiadomień na pasku statusu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="48"/>
       <source>Enable non-intrusive notifications</source>
-      <translation type="unfinished">Enable non-intrusive notifications</translation>
+      <translation>Włącz powiadomienia</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="67"/>
       <source>Additional data Sources</source>
-      <translation type="unfinished">Additional data Sources</translation>
+      <translation>Dodatkowe źródła danych</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="73"/>
       <source>Errors will appear in the notification area</source>
-      <translation type="unfinished">Errors will appear in the notification area</translation>
+      <translation>Błędy pojawią się w obszarze powiadomień</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="76"/>
@@ -12202,7 +12202,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="92"/>
       <source>Warnings will appear in the notification area</source>
-      <translation type="unfinished">Warnings will appear in the notification area</translation>
+      <translation>Ostrzeżenia pojawią się w obszarze powiadomień</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="95"/>
@@ -12212,22 +12212,22 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="114"/>
       <source>Non-Intrusive Notifications</source>
-      <translation type="unfinished">Non-Intrusive Notifications</translation>
+      <translation>Nieinwazyjne powiadomienia</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="120"/>
       <source>Minimum Duration:</source>
-      <translation type="unfinished">Minimum Duration:</translation>
+      <translation>Najkrótszy czas trwania:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="130"/>
       <source>Maximum Duration:</source>
-      <translation type="unfinished">Maximum Duration:</translation>
+      <translation>Najdłuższy czas trwania:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="137"/>
       <source>Duration during which the notification will be shown (unless mouse buttons are clicked)</source>
-      <translation type="unfinished">Duration during which the notification will be shown (unless mouse buttons are clicked)</translation>
+      <translation>Czas wyświetlania powiadomienia (o ile przyciski myszy nie zostaną użyte)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="140"/>
@@ -12238,77 +12238,77 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="162"/>
       <source>Minimum duration during which the notification will be shown (unless notification clicked)</source>
-      <translation type="unfinished">Minimum duration during which the notification will be shown (unless notification clicked)</translation>
+      <translation>Najkrótszy czas wyświetlania powiadomienia (o ile powiadomienie nie zostanie kliknięte)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="181"/>
       <source>Maximum Number of Notifications:</source>
-      <translation type="unfinished">Maximum Number of Notifications:</translation>
+      <translation>Maksymalna liczba powiadomień:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="188"/>
       <source>Maximum number of notifications that will be simultaneously present on the screen</source>
-      <translation type="unfinished">Maximum number of notifications that will be simultaneously present on the screen</translation>
+      <translation>Maksymalna liczba powiadomień, które będą obecne jednocześnie na ekranie</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="204"/>
       <source>Notification width:</source>
-      <translation type="unfinished">Notification width:</translation>
+      <translation>Szerokość obszaru na powiadomienia:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="211"/>
       <source>Width of the notification in pixels</source>
-      <translation type="unfinished">Width of the notification in pixels</translation>
+      <translation>Szerokość powiadomienia w pikselach</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="233"/>
       <source>Any open non-intrusive notifications will disappear when another window is activated</source>
-      <translation type="unfinished">Any open non-intrusive notifications will disappear when another window is activated</translation>
+      <translation>Wszelkie otwarte nieinwazyjne powiadomienia znikną po aktywacji innego okna</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
-      <translation type="unfinished">Hide when other window is activated</translation>
+      <translation>Ukryj po aktywacji innego okna</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="252"/>
       <source>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</source>
-      <translation type="unfinished">Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</translation>
+      <translation>Zapobiegaj pojawianiu się nieinwazyjnych powiadomień, gdy okno FreeCAD nie jest aktywne</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation type="unfinished">Do not show when inactive</translation>
+      <translation>Nie pokazuj, gdy nieaktywne</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
       <source>Message List</source>
-      <translation type="unfinished">Message List</translation>
+      <translation>Lista wiadomości</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="280"/>
       <source>Limit the number of messages that will be kept in the list. If 0 there is no limit.</source>
-      <translation type="unfinished">Limit the number of messages that will be kept in the list. If 0 there is no limit.</translation>
+      <translation>Ograniczenie liczby wiadomości, które będą przechowywane na liście. Jeśli 0 to nie ma limitu.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="299"/>
       <source>Maximum Messages (0 = no limit):</source>
-      <translation type="unfinished">Maximum Messages (0 = no limit):</translation>
+      <translation>Maksymalna ilość wiadomości (0 = brak limitu):</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="306"/>
       <source>Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</source>
-      <translation type="unfinished">Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</translation>
+      <translation>Usuwa powiadomienia użytkownika z listy wiadomości po upływie maksymalnego czasu trwania.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="309"/>
       <source>Auto-remove User Notifications</source>
-      <translation type="unfinished">Auto-remove User Notifications</translation>
+      <translation>Automatyczne usuwanie powiadomień użytkownika</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.cpp" line="58"/>
       <source>Activation of the Notification Area only takes effect after an application restart.</source>
-      <translation type="unfinished">Activation of the Notification Area only takes effect after an application restart.</translation>
+      <translation>Aktywacja obszaru powiadomień wchodzi w życie dopiero po ponownym uruchomieniu aplikacji.</translation>
     </message>
   </context>
   <context>
@@ -12322,13 +12322,13 @@ Czy nadal chcesz kontynuować?</translation>
       <location filename="../DlgSettingsWorkbenches.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Można zmieniać kolejność środowisk pracy metodą "przeciągnij i upuść". Dodatkowe środowiska pracy można zainstalować poprzez menedżera dodatków.&lt;/p&gt;&lt;p&gt;
+Obecnie w Twoim systemie znajdują się następujące środowiska pracy:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="63"/>
       <source>Start up workbench:</source>
-      <translation type="unfinished">Start up workbench:</translation>
+      <translation>Uruchamianie środowiska pracy:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
@@ -12376,7 +12376,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Płaszczyzny</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
@@ -12409,12 +12409,12 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image plane settings</source>
-      <translation type="unfinished">Image plane settings</translation>
+      <translation>Ustawienia płaszczyzny obrazu</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Płaszczyzny</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
@@ -12444,27 +12444,27 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
       <source>X distance:</source>
-      <translation type="unfinished">X distance:</translation>
+      <translation>Odległość X:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="123"/>
       <source>Y distance:</source>
-      <translation type="unfinished">Y distance:</translation>
+      <translation>Odległość Y:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="143"/>
       <source>Rotation :</source>
-      <translation type="unfinished">Rotation :</translation>
+      <translation>Obrót :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
       <source>Transparency :</source>
-      <translation type="unfinished">Transparency :</translation>
+      <translation>Przezroczystość :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="191"/>
       <source>Image size</source>
-      <translation type="unfinished">Image size</translation>
+      <translation>Rozmiar obrazu</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="197"/>
@@ -12479,12 +12479,12 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="237"/>
       <source>Keep aspect ratio</source>
-      <translation type="unfinished">Keep aspect ratio</translation>
+      <translation>Zachowaj proporcje</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
-      <translation type="unfinished">Interactively scale the image by setting a length between two points of the image.</translation>
+      <translation>Interaktywnie skaluj obraz, ustawiając odległość pomiędzy dwoma punktami obrazu.</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="250"/>
@@ -12494,7 +12494,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="257"/>
       <source>Calibration</source>
-      <translation type="unfinished">Calibration</translation>
+      <translation>Kalibracja</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
@@ -12512,7 +12512,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../SoFCColorGradient.h" line="77"/>
       <source>Color Gradient</source>
-      <translation type="unfinished">Color Gradient</translation>
+      <translation>Gradient kolorów</translation>
     </message>
   </context>
   <context>
@@ -12520,27 +12520,27 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="85"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation type="unfinished">If unchecked, %1 will not appear in the available workbenches.</translation>
+      <translation>Jeśli opcja jest odznaczona, %1 nie pojawi się na liście dostępnych środowisk pracy.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="90"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</translation>
+      <translation>Jest to bieżący moduł startowy i musi być automatycznie załadowany. Aby zmienić ustawienia, patrz: Preferencje → Ogólne → Uruchamianie.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="113"/>
       <source>Shortcut to activate this workbench.</source>
-      <translation type="unfinished">Shortcut to activate this workbench.</translation>
+      <translation>Skrót do aktywacji tego środowiska pracy.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="127"/>
       <source>Auto-load</source>
-      <translation type="unfinished">Auto-load</translation>
+      <translation>Wczytaj automatycznie</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="128"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">If checked, %1 will be loaded automatically when FreeCAD starts up</translation>
+      <translation>Jeśli opcja jest zaznaczona, %1 zostanie załadowany automatycznie po uruchomieniu programu FreeCAD</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="134"/>
@@ -12560,7 +12560,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="145"/>
       <source>To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</source>
-      <translation type="unfinished">To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby oszczędzać zasoby, FreeCAD nie ładuje środowisk pracy, dopóki nie zostaną użyte. Ich załadowanie może zapewnić dostęp do dodatkowych preferencji związanych z ich funkcjonalnością.&lt;/p&gt;&lt;p&gt;Następujące środowiska pracy są dostępne w twojej instalacji, ale nie są jeszcze załadowane:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -12586,7 +12586,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../SoFCColorLegend.h" line="72"/>
       <source>Color Legend</source>
-      <translation type="unfinished">Color Legend</translation>
+      <translation>Legenda kolorów</translation>
     </message>
   </context>
   <context>
@@ -12599,12 +12599,12 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="563"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Usuń powiadomienia użytkownika</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="570"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Usuń wszystkie</translation>
     </message>
   </context>
   <context>
@@ -12612,12 +12612,12 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="839"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Usuń powiadomienia użytkownika</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="849"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Usuń wszystkie</translation>
     </message>
   </context>
   <context>
@@ -12625,17 +12625,17 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../ImageView.cpp" line="75"/>
       <source>Failed to load image file</source>
-      <translation type="unfinished">Failed to load image file</translation>
+      <translation>Nie udało się załadować pliku obrazu</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="76"/>
       <source>Cannot load file %1: %2</source>
-      <translation type="unfinished">Cannot load file %1: %2</translation>
+      <translation>Nie można załadować pliku %1: %2</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="182"/>
       <source>Fit to window</source>
-      <translation type="unfinished">Fit to window</translation>
+      <translation>Dopasuj do okna</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="187"/>
@@ -12653,13 +12653,13 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../CommandView.cpp" line="1983"/>
       <source>Load image...</source>
-      <translation type="unfinished">Load image...</translation>
+      <translation>Załaduj obraz ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1984"/>
       <location filename="../CommandView.cpp" line="1986"/>
       <source>Loads an image</source>
-      <translation type="unfinished">Loads an image</translation>
+      <translation>Ładuje obraz</translation>
     </message>
   </context>
   <context>
@@ -12667,32 +12667,32 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../NaviCube.cpp" line="898"/>
       <source>FRONT</source>
-      <translation type="unfinished">FRONT</translation>
+      <translation>PRZÓD</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="900"/>
       <source>REAR</source>
-      <translation type="unfinished">REAR</translation>
+      <translation>TYŁ</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="902"/>
       <source>TOP</source>
-      <translation type="unfinished">TOP</translation>
+      <translation>GÓRA</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="904"/>
       <source>BOTTOM</source>
-      <translation type="unfinished">BOTTOM</translation>
+      <translation>SPÓD</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="906"/>
       <source>RIGHT</source>
-      <translation type="unfinished">RIGHT</translation>
+      <translation>PRAWA</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="908"/>
       <source>LEFT</source>
-      <translation type="unfinished">LEFT</translation>
+      <translation>LEWA</translation>
     </message>
   </context>
   <context>
@@ -12700,7 +12700,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="428"/>
       <source>Enter desired distance between the points</source>
-      <translation type="unfinished">Enter desired distance between the points</translation>
+      <translation>Wprowadź pożądaną odległość między punktami</translation>
     </message>
   </context>
 </TS>

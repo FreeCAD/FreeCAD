@@ -1912,12 +1912,12 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Utwórz obiekt punktów z siatki</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Tworzenie obiektu punktów wybieralnych z zaznaczonego obiektu geometrycznego</translation>
     </message>
   </context>
   <context>
@@ -2303,7 +2303,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Punkty z geometrii</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -5319,7 +5319,7 @@ Pojedyncze kontrole BOP:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="587"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Zaznaczony obiekt</translation>
     </message>
   </context>
   <context>
@@ -5681,7 +5681,8 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
       <source>Part/Part Design</source>
-      <translation>Część /           Projekt Części</translation>
+      <translation>Część /           
+Projekt Części</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="232"/>
@@ -6135,12 +6136,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Odległość w przestrzeni parametrycznej</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Wprowadź odległość:</translation>
     </message>
   </context>
   <context>
@@ -6595,7 +6596,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Typ kształtu</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6630,7 +6631,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Bryła zespolona</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6670,7 +6671,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Środek łuku</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6685,7 +6686,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Jest zamknięty</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6695,12 +6696,12 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Środek ciężkości</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Umiejscowienie</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>

@@ -7,8 +7,8 @@
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>Ukládá poslední uživatelskou volbu, zda použít nastavení „Kopírovat při změně“ na všechny odkazy
+které odkazují na stejný konfigurovatelný objekt</translation>
     </message>
   </context>
   <context>

@@ -1912,12 +1912,12 @@ na svoje X, Y in Z komponente.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Iz geometrije naredi točkovni predmet</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Iz izbrane geometrije ustvari izberljiv točkovni predmet</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2304,7 @@ pogleda kamere.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Točke iz geometrije</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -5322,7 +5322,7 @@ Posamezne OLV preverbe:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="587"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Preverjen predmet</translation>
     </message>
   </context>
   <context>
@@ -6140,12 +6140,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Razdalja v določilovnem prostoru</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Vnesite razdaljo:</translation>
     </message>
   </context>
   <context>
@@ -6599,7 +6599,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Vrsta oblike</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6634,7 +6634,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Telesja</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6674,7 +6674,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Središče krivulje</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6689,7 +6689,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Je zaprto</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6699,12 +6699,12 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Obče težišče</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Obča postavitev</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>

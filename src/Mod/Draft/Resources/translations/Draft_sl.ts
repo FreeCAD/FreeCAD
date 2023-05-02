@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Upravljalnik plasti</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -62,12 +62,12 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation type="unfinished">Toggle on/off</translation>
+      <translation>Vklopi/Izklopi</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Osami</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -3067,7 +3067,7 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
     <message>
       <location filename="../../DraftGui.py" line="848"/>
       <source>Label type</source>
-      <translation type="unfinished">Label type</translation>
+      <translation>Vrsta oznak</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="864"/>
@@ -3209,16 +3209,16 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion.
-Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.</translation>
+      <translation>Napaka med pretvarjanjem DWGja.
+Poskusite prestaviti datoteko DWG v mapo, katere pot ne vsebuje presledkov in neangleških znakov
+ali poskusite shraniti v starejšo različico DWGja.</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="311"/>
       <source>No suitable DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG</source>
-      <translation type="unfinished">No suitable DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG</translation>
+      <translation>Ni bilo mogoče najti nobenega ustreznega DWG pretvornika. Ročno ga določite preko menija Uredi -&gt;
+Prednastavitve -&gt; Uvoz/Izvoz -&gt; DWG</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="230"/>
@@ -4664,12 +4664,12 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="465"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>Začetni zamik prevelik glede na dolžino poti. Upoštevan bo zamik nič.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="471"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>Končni zamik prevelik glede na dolžino poti minus začetn zamik. Upoštevan bo zamik nič.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="533"/>
@@ -5546,7 +5546,7 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="277"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>Prižgano</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="278"/>
@@ -5571,7 +5571,7 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Barve ploskev</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5581,12 +5581,12 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="284"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>Barva tiskanja črt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Nova plast</translation>
     </message>
   </context>
   <context>
@@ -7292,12 +7292,12 @@ Za boljše rezultate pri "Izvirnem" in "Dotikalnem" načinu boste najverjetneje 
     <message>
       <location filename="../../draftobjects/patharray.py" line="268"/>
       <source>Length from the start of the path to the first copy.</source>
-      <translation type="unfinished">Length from the start of the path to the first copy.</translation>
+      <translation>Razdalja od začetka poti do prvega dvojnika.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="276"/>
       <source>Length from the end of the path to the last copy.</source>
-      <translation type="unfinished">Length from the end of the path to the last copy.</translation>
+      <translation>Razdalja od konca poti do zadnjega dvojnika.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="286"/>
@@ -8086,12 +8086,12 @@ preko kotnice</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Upravljanje plasti ...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
-      <translation type="unfinished">Set/modify the different layers of this document</translation>
+      <translation>Nastavi/spremeni različne plasti tega dokumenta</translation>
     </message>
   </context>
 </TS>

@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Fixe une longueur d'une ligne ou la distance entre une ligne et un sommet ou entre deux cercles</translation>
     </message>
   </context>
   <context>
@@ -592,8 +592,7 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Crée une contrainte de réfraction (loi de Snell) entre deux extrémités de lignes et une arête en tant qu'interface.</translation>
     </message>
   </context>
   <context>
@@ -1675,7 +1674,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2323"/>
       <location filename="../../CommandConstraints.cpp" line="2548"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>Ajouter une contrainte de distance entre les cercles</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2358"/>
@@ -2110,7 +2109,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Ajouter un point de nœud</translation>
     </message>
   </context>
   <context>
@@ -2613,7 +2612,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>Le nombre d'objets sélectionnés n'est pas 3</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2660,7 +2659,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Sélectionner exactement une ligne ou un point et une ligne ou deux points ou deux cercles de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2853,7 +2852,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Sélectionner soit un point et plusieurs courbes, soit une courbe et plusieurs points.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3166,22 +3165,22 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="446"/>
       <source>Unsupported visual layer operation</source>
-      <translation type="unfinished">Unsupported visual layer operation</translation>
+      <translation>L'opération du calque visuel n'est pas prise en charge</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="447"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Il n'est pas possible pour l'instant de déplacer une géométrie externe vers une autre couche visuelle. La géométrie externe sera omise</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="233"/>
       <source>Set knot multiplicity</source>
-      <translation type="unfinished">Set knot multiplicity</translation>
+      <translation>Définir la multiplicité du nœud</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="234"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation type="unfinished">Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</translation>
+      <translation>Définit la multiplicité du nœud au dernier point fourni, entre 1 et %1 : remarquez que la multiplicité peut être ignorée dans certaines circonstances. Veuillez vous référer à la documentation pour plus de détails.</translation>
     </message>
   </context>
   <context>
@@ -5846,22 +5845,22 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Lignes mineures de la grille</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Lignes majeures de la grille</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Ligne principale de la grille tous les :</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>Toutes les N lignes, il y aura une ligne principale. La valeur 1 permet de désactiver les lignes principales.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5943,18 +5942,18 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>L'esquisse a des contraintes malformées !</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>L'esquisse a des contraintes partiellement redondantes !</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
+      <translation>Les paraboles ont été migrées. Les fichiers migrés ne pourront pas être ouverts par les versions précédentes de FreeCAD !!
 </translation>
     </message>
     <message>
@@ -5974,12 +5973,12 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>Interpoler une B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Créer une B-spline par interpolation, c'est-à-dire par l'intermédiaire de nœuds dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -5987,12 +5986,12 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>Interpoler une B-spline périodique</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Créer une B-spline périodique par interpolation, c'est-à-dire par l'intermédiaire de nœuds dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -6000,13 +5999,13 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-spline par des noeuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Créer une B-spline par des noeuds</translation>
     </message>
   </context>
   <context>
@@ -6014,13 +6013,13 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>B-spline périodique par des noeuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Créer une B-spline périodique par des noeuds</translation>
     </message>
   </context>
   <context>
@@ -6028,17 +6027,17 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Aimanter aux objets</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Les nouveaux points s'aimanteront à l'objet présélectionné. Ils s'aimanteront également au milieu des lignes et des arcs.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Aligner sur la grille</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6050,12 +6049,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Aimanter à l'angle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>Pas angulaire pour les outils qui utilisent la fonction "Aimanter à l'angle" (ligne par exemple). Maintenez la touche CTRL enfoncée pour activer la fonction "Aimanter à l'angle". L'angle commence à partir de l'axe Est (horizontal droit).</translation>
     </message>
   </context>
   <context>
@@ -6063,12 +6062,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Activer/désactiver l'aimantation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>Activer/désactiver toutes les fonctionnalités d'aimantation. Dans le menu, vous pouvez activer individuellement les fonctions "Aimanter à la grille", "Aimanter aux objets" et d'autres paramètres d'aimantation.</translation>
     </message>
   </context>
 </TS>

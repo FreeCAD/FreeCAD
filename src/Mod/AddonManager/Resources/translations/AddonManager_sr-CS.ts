@@ -1485,12 +1485,12 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Ovaj Dodatak će biti omogućen sledeći put kada ponovo pokreneš FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Ovaj Dodatak će biti onemogućen sledeći put kada ponovo pokreneš FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
@@ -2230,7 +2230,7 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>Nije moguće locirati datoteku navedenu makro-om {} (trebala je biti u {})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="355"/>
@@ -2251,7 +2251,7 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
       <location filename="../../Addon.py" line="778"/>
       <location filename="../../Addon.py" line="794"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Greška pri pokušaju uvoza {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>

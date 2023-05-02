@@ -1483,17 +1483,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Это дополнение будет включено при перезапуске FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Это дополнение будет отключено при перезапуске FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
+      <translation>Привязки QtWebEngine Python не установлены — используется резервный экран README.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="682"/>
@@ -2228,7 +2228,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>Не удалось найти макро-указанный файл {} (ожидалось в {})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="355"/>
@@ -2249,7 +2249,7 @@ installed addons will be checked for available updates
       <location filename="../../Addon.py" line="778"/>
       <location filename="../../Addon.py" line="794"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Произошла ошибка при попытке импортировать {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>

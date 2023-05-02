@@ -2631,7 +2631,7 @@
       <location filename="../../Command.cpp" line="1435"/>
       <location filename="../../Command.cpp" line="1478"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
@@ -3682,7 +3682,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <source>Object dependencies</source>
-      <translation>物件相依</translation>
+      <translation>物體相依</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="145"/>
@@ -3804,7 +3804,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="173"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>未設定方向</translation>
     </message>
   </context>
   <context>
@@ -3836,7 +3836,7 @@ it has a tile weld that would become broken.</translation>
       <location filename="../../TaskComplexSection.cpp" line="487"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
-      <translation type="unfinished"> updates pending</translation>
+      <translation> 更新待處理</translation>
     </message>
   </context>
   <context>
@@ -3844,7 +3844,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>未設定方向</translation>
     </message>
   </context>
   <context>
@@ -5437,7 +5437,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1210"/>
       <source>Selected:</source>
-      <translation>已選：</translation>
+      <translation>已選取:</translation>
     </message>
   </context>
   <context>
@@ -8336,7 +8336,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="106"/>
       <source>Object</source>
-      <translation>物件</translation>
+      <translation>物體</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="119"/>

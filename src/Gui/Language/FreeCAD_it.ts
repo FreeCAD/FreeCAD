@@ -216,7 +216,7 @@
       <location filename="../TaskView/TaskImage.cpp" line="258"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="65"/>
       <source>Edit image</source>
-      <translation type="unfinished">Edit image</translation>
+      <translation>Modifica immagine</translation>
     </message>
   </context>
   <context>
@@ -1998,12 +1998,12 @@ punto verrà sempre stampato.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="20"/>
       <source>Language and number format</source>
-      <translation type="unfinished">Language and number format</translation>
+      <translation>Lingua e formato numerico</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="41"/>
       <source>Language:</source>
-      <translation type="unfinished">Language:</translation>
+      <translation>Lingua:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="55"/>
@@ -2853,7 +2853,7 @@ Specificare un'altra cartella.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Riavvio richiesto</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="494"/>
@@ -3029,12 +3029,12 @@ Specificare un'altra cartella.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="106"/>
       <source>Failed to extract project</source>
-      <translation type="unfinished">Failed to extract project</translation>
+      <translation>Impossibile estrarre il progetto</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="123"/>
       <source>Failed to create project</source>
-      <translation type="unfinished">Failed to create project</translation>
+      <translation>Impossibile creare il progetto</translation>
     </message>
   </context>
   <context>
@@ -3776,7 +3776,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="106"/>
       <source>Color gradient is used with its full color range</source>
-      <translation>Il gradiente di colore è usato con la sua gamma di colori completa</translation>
+      <translation>La sfumatura di colore è usata con la sua gamma di colori completa</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="109"/>
@@ -3791,7 +3791,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="122"/>
       <source>Color gradient starts from the zero value</source>
-      <translation>Il gradiente del colore inizia dal valore zero</translation>
+      <translation>La sfumatura del colore inizia dal valore zero</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="125"/>
@@ -5089,12 +5089,12 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="232"/>
       <source>Linear gradient</source>
-      <translation type="unfinished">Linear gradient</translation>
+      <translation>Gradiente lineare</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="251"/>
       <source>Radial gradient</source>
-      <translation type="unfinished">Radial gradient</translation>
+      <translation>Sfumatura radiale</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="329"/>
@@ -6211,7 +6211,7 @@ originariamente selezionati prima di aprire questa finestra</translation>
       <location filename="../ReportView.cpp" line="604"/>
       <location filename="../ReportView.cpp" line="628"/>
       <source>Critical messages</source>
-      <translation type="unfinished">Critical messages</translation>
+      <translation>Messaggi critici</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="609"/>
@@ -8011,12 +8011,12 @@ Vuoi specificare un'altra cartella?</translation>
     <message>
       <location filename="../Tree.cpp" line="2774"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Mostra gli elementi nascosti nella vista ad albero</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2775"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
+      <translation>Mostra gli elementi contrassegnati come 'nascosti' nella vista ad albero</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2777"/>
@@ -8665,7 +8665,7 @@ Vuoi continuare?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1853"/>
       <source>Save image</source>
-      <translation type="unfinished">Save image</translation>
+      <translation>Salva immagine</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2004"/>
@@ -8788,7 +8788,7 @@ Vuoi continuare?</translation>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="990"/>
       <source>Message</source>
-      <translation type="unfinished">Message</translation>
+      <translation>Messaggio</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="931"/>
@@ -9357,7 +9357,7 @@ la copia corrente andranno perse.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="146"/>
       <source>Change image...</source>
-      <translation type="unfinished">Change image...</translation>
+      <translation>Cambia immagine...</translation>
     </message>
   </context>
   <context>
@@ -11741,7 +11741,7 @@ la copia corrente andranno perse.
     <message>
       <location filename="../CommandView.cpp" line="1812"/>
       <source>Save image...</source>
-      <translation type="unfinished">Save image...</translation>
+      <translation>Salva immagine...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1813"/>
@@ -12161,7 +12161,7 @@ Si desidera ancora procedere?</translation>
       <location filename="../DlgSettingsNotificationArea.ui" line="14"/>
       <location filename="../DlgSettingsNotificationArea.cpp" line="57"/>
       <source>Notification Area</source>
-      <translation type="unfinished">Notification Area</translation>
+      <translation>Area di Notifica</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="20"/>
@@ -12171,17 +12171,17 @@ Si desidera ancora procedere?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="26"/>
       <source>The Notification area will appear in the status bar</source>
-      <translation type="unfinished">The Notification area will appear in the status bar</translation>
+      <translation>L'area di Notifica apparirà nella barra di stato</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Abilita area di Notifica</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="45"/>
       <source>Non-intrusive notifications will appear next to the notification area in the status bar</source>
-      <translation type="unfinished">Non-intrusive notifications will appear next to the notification area in the status bar</translation>
+      <translation>Le notifiche non intrusive appariranno accanto all'area di notifica nella barra di stato</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="48"/>
@@ -12282,7 +12282,7 @@ Si desidera ancora procedere?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation type="unfinished">Do not show when inactive</translation>
+      <translation>Non mostrare quando inattivo</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
@@ -12458,17 +12458,17 @@ dopo l'avvio di FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="143"/>
       <source>Rotation :</source>
-      <translation type="unfinished">Rotation :</translation>
+      <translation>Rotazione :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
       <source>Transparency :</source>
-      <translation type="unfinished">Transparency :</translation>
+      <translation>Trasparenza :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="191"/>
       <source>Image size</source>
-      <translation type="unfinished">Image size</translation>
+      <translation>Dimensione immagine</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="197"/>
@@ -12498,7 +12498,7 @@ dopo l'avvio di FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="257"/>
       <source>Calibration</source>
-      <translation type="unfinished">Calibration</translation>
+      <translation>Calibrazione</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
@@ -12516,7 +12516,7 @@ dopo l'avvio di FreeCAD</translation>
     <message>
       <location filename="../SoFCColorGradient.h" line="77"/>
       <source>Color Gradient</source>
-      <translation type="unfinished">Color Gradient</translation>
+      <translation>Sfumatura Colore</translation>
     </message>
   </context>
   <context>

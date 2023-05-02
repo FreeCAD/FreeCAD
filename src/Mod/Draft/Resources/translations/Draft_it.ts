@@ -62,7 +62,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation type="unfinished">Toggle on/off</translation>
+      <translation>Attiva/Disattiva</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -5565,7 +5565,7 @@ dal menu Strumenti -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Colore faccia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -7100,7 +7100,7 @@ imposta 'Vero' se il risultato è una fusione o 'Falso' se è un composto</trans
       <location filename="../../draftobjects/array.py" line="335"/>
       <location filename="../../draftobjects/pointarray.py" line="100"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Mostra i singoli elementi della serie (solo per le serie di link)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="68"/>

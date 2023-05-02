@@ -123,7 +123,7 @@ False=engranaje interno</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>La distancia por la cual el perfil de referencia se desplaza hacia afuera, normalizado por el módulo.</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1078,7 @@ False=engranaje interno</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Coeficiente de desplazamiento del perfil</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1615,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>¡Bisel vacío creado!
 </translation>
     </message>
   </context>
@@ -1716,7 +1716,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>¡Calado vacío creado!
 </translation>
     </message>
   </context>
@@ -1921,7 +1921,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>¡Redondeo vacío creado!
 </translation>
     </message>
   </context>
@@ -3144,7 +3144,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>¡Espesor vacío creado!
 </translation>
     </message>
   </context>
@@ -4549,8 +4549,8 @@ Sólo disponible para agujeros sin rosca</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Para avellanados esta es la profundidad de
+la parte superior del tornillo debajo de la superficie</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>
