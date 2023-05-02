@@ -522,7 +522,9 @@ Cell * PropertySheet::cellAt(CellAddress address)
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        assert(i != data.end());
+        //assert(i != data.end());
+        if (i == data.end())
+            return nullptr;
 
         return i->second;
     }
@@ -542,7 +544,9 @@ const Cell * PropertySheet::cellAt(CellAddress address) const
     // address actually inside a merged cell
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
-        assert(i != data.end());
+        //assert(i != data.end());
+        if (i == data.end())
+            return nullptr;
 
         return i->second;
     }
@@ -1067,13 +1071,18 @@ void PropertySheet::splitCell(CellAddress address)
 
     CellAddress anchor = i->second;
     AtomicPropertyChange signaller(*this);
-    cellAt(anchor)->getSpans(rows, cols);
+    Cell* cell = cellAt(anchor);
+    if (!cell)
+        return;
 
-    for (int r = anchor.row(); r <= anchor.row() + rows; ++r)
+    cell->getSpans(rows, cols);
+
+    for (int r = anchor.row(); r <= anchor.row() + rows; ++r) {
         for (int c = anchor.col(); c <= anchor.col() + cols; ++c) {
             setDirty(CellAddress(r, c));
             mergedCells.erase(CellAddress(r, c));
         }
+    }
 
     setSpans(anchor, -1, -1);
     signaller.tryInvoke();
@@ -1086,10 +1095,14 @@ void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
     if (i != mergedCells.end()) {
         CellAddress anchor = i->second;
 
-        if (anchor == address)
-            cellAt(anchor)->getSpans(rows, cols);
-        else
+        if (anchor == address) {
+            const Cell* cell = cellAt(anchor);
+            if (cell)
+                cell->getSpans(rows, cols);
+        }
+        else {
             rows = cols = 1;
+        }
     }
     else {
         rows = cols = 1;
