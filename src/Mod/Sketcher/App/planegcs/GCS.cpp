@@ -5371,11 +5371,21 @@ void System::identifyConflictingRedundantConstraints(
             }
         }
         if (maxPopularity > 0) {
-            skipped.insert(mostPopular);
-            for (SET_I::const_iterator it = conflictingMap[mostPopular].begin();
-                 it != conflictingMap[mostPopular].end();
-                 ++it)
-                satisfiedGroups.insert(*it);
+            // adding for skipping not only the mostPopular, but also any other constraint in the
+            // conflicting map associated with the same tag (namely any other solver
+            // constraint associated with the same sketcher constraint that is also conflicting)
+            auto maxPopularityTag = mostPopular->getTag();
+
+            for(const auto & c : conflictingMap) {
+                if(c.first->getTag() == maxPopularityTag) {
+                    skipped.insert(c.first);
+                    for (SET_I::const_iterator it = conflictingMap[c.first].begin();
+                        it != conflictingMap[c.first].end();
+                        ++it) {
+                        satisfiedGroups.insert(*it);
+                    }
+                }
+            }
         }
     }
 
