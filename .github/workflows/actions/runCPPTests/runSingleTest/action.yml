@@ -32,32 +32,41 @@ inputs:
   testLogFile:
     description: "Path for the command-line output of the tests"
     required: true
-  reportFile:
-    description: "Report file"
+  testName:
+    description: "A descriptive name for the test suite"
     required: true
+outputs:
+  reportText:
+    description: "Report text"
+    value: ${{ steps.report.outputs.reportText }}
 
 runs:
   using: "composite"
   steps:
-    - name: Run C++ unit tests
+    - name: Run C++ tests
       shell: bash
       run: stdbuf -oL -eL ${{ inputs.testCommand }} |& tee -a ${{ inputs.testLogFile }}
     - name: Parse test results
       if: always()
+      id: report
       shell: bash
       run:  |
         result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
         if grep -qF "[  FAILED  ]" <<< $result
         then
-          echo "<details><summary>:fire: GTest C++ unit test suite failed</summary>" >> ${{ inputs.reportFile }}
+          reportText="<details><summary>:fire: GTest C++ test suite '${{ inputs.testName }}' failed</summary>\n"
         else
-          echo "<details><summary>:heavy_check_mark: GTest C++ unit test suite succeeded</summary>" >> ${{ inputs.reportFile }}
+          reportText="<details><summary>:heavy_check_mark: GTest C++ test suite '${{ inputs.testName }}' succeeded</summary>\n"
         fi
-        echo "" >> ${{ inputs.reportFile }}
-        echo "Results" >> ${{ inputs.reportFile }}
-        echo "" >> ${{ inputs.reportFile }}
-        echo '```' >> ${{ inputs.reportFile }}
-        echo "$result" >> ${{ inputs.reportFile }}
-        echo '```' >> ${{ inputs.reportFile }}
-        echo "</details>">> ${{ inputs.reportFile }}
-        echo "" >> ${{ inputs.reportFile }}
+        reportText+="\n"
+        reportText+="Results\n"
+        reportText+="\n"
+        reportText+='```\n'
+        reportText+="$result\n"
+        reportText+='```\n'
+        reportText+="</details>\n"
+        reportText+="\n"
+        echo "reportText<<EOD" >> $GITHUB_OUTPUT
+        echo -e "$reportText" >> $GITHUB_OUTPUT
+        echo "EOD" >> $GITHUB_OUTPUT
+        echo -e "$reportText"
