@@ -1769,6 +1769,7 @@ CDxfRead::CDxfRead(const char* filepath)
     m_version = RUnknown;
     m_CodePage = NULL;
     m_encoding = NULL;
+    stringToUTF8 = &CDxfRead::UTF8ToUTF8;
 }
 
 CDxfRead::~CDxfRead()
@@ -3366,10 +3367,12 @@ bool CDxfRead::ResolveEncoding()
     }
     return m_encoding != NULL;
 }
+
 const char* CDxfRead::UTF8ToUTF8(const char* encoded) const
 {
     return encoded;
 }
+
 const char* CDxfRead::GeneralToUTF8(const char* encoded) const
 {
     Base::PyGILStateLocker lock;
@@ -3390,6 +3393,7 @@ const char* CDxfRead::GeneralToUTF8(const char* encoded) const
     Py_DECREF(decoded);
     return result;
 }
+
 void CDxfRead::DoRead(const bool ignore_errors /* = false */)
 {
     m_ignore_errors = ignore_errors;

@@ -3095,7 +3095,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Ukloni tabelu</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>

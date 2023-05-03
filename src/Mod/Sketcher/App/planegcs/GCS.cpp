@@ -839,6 +839,14 @@ int System::addConstraintC2CDistance(Circle &c1, Circle &c2, double *dist, int t
     return addConstraint(constr);
 }
 
+int System::addConstraintC2LDistance(Circle &c, Line &l, double *dist, int tagId, bool driving)
+{
+    Constraint *constr = new ConstraintC2LDistance(c, l, dist);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 // derived constraints
 
 int System::addConstraintP2PCoincident(Point &p1, Point &p2, int tagId, bool driving)
@@ -5363,11 +5371,21 @@ void System::identifyConflictingRedundantConstraints(
             }
         }
         if (maxPopularity > 0) {
-            skipped.insert(mostPopular);
-            for (SET_I::const_iterator it = conflictingMap[mostPopular].begin();
-                 it != conflictingMap[mostPopular].end();
-                 ++it)
-                satisfiedGroups.insert(*it);
+            // adding for skipping not only the mostPopular, but also any other constraint in the
+            // conflicting map associated with the same tag (namely any other solver
+            // constraint associated with the same sketcher constraint that is also conflicting)
+            auto maxPopularityTag = mostPopular->getTag();
+
+            for(const auto & c : conflictingMap) {
+                if(c.first->getTag() == maxPopularityTag) {
+                    skipped.insert(c.first);
+                    for (SET_I::const_iterator it = conflictingMap[c.first].begin();
+                        it != conflictingMap[c.first].end();
+                        ++it) {
+                        satisfiedGroups.insert(*it);
+                    }
+                }
+            }
         }
     }
 

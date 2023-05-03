@@ -92,17 +92,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
-      <translation type="unfinished">Pressure angle of gear teeth</translation>
+      <translation>გადაცემის კბილანების წნევის კუთხე</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
       <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
-      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+      <translation>True=2 მრუდი თითოეული 3 საკონტროლო წერტილით False=1 მრუდი with 4 საკონტროლო წერტილით.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
       <source>True=external Gear False=internal Gear</source>
-      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+      <translation>True=გარე კბილანა False=შიდა კბილანა</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -122,7 +122,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>დაშორება, რომლითაც მიმართული პროფილი გარეთ გაიწევა. ნორმალიზდება მოდულის მიერ.</translation>
     </message>
   </context>
   <context>
@@ -1077,7 +1077,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>პროფილის წანაცვლების კოეფიციენტი</translation>
     </message>
   </context>
   <context>
@@ -1614,7 +1614,7 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>შექმნილია ცარიელი კუთხის ნაზოლი !
 </translation>
     </message>
   </context>
@@ -1715,7 +1715,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>შექმნილია ცარიელი მონახაზი !
 </translation>
     </message>
   </context>
@@ -1920,7 +1920,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>შექმნილია ცარიელი მომრგვალებული ნაზოლი !
 </translation>
     </message>
   </context>
@@ -3144,7 +3144,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>შექმნილია ცარიელი სისქე !
 </translation>
     </message>
   </context>
@@ -4550,8 +4550,8 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>კონუსური საღრუვებისთვის ეს სიღრმეა
+ხრახნის თავიდან ზედაპირის ქვეშ</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

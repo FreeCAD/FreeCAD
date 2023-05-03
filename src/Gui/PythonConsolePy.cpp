@@ -296,6 +296,7 @@ void PythonStdin::init_type()
     behaviors().doc("Redirection of stdin to FreeCAD to open an input dialog");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
+    behaviors().supportGetattr();
     add_varargs_method("readline",&PythonStdin::readline,"readline()");
 }
 
@@ -314,6 +315,14 @@ Py::Object PythonStdin::repr()
     std::ostringstream s_out;
     s_out << "PythonStdin";
     return Py::String(s_out.str());
+}
+
+Py::Object PythonStdin::getattr(const char *name)
+{
+    if (strcmp(name, "closed") == 0) {
+        return Py::Boolean(false);
+    }
+    return getattr_methods(name);
 }
 
 Py::Object PythonStdin::readline(const Py::Tuple& /*args*/)

@@ -98,12 +98,12 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
       <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
-      <translation type="unfinished">True=2 curves with each 3 control points False=1 curve with 4 control points.</translation>
+      <translation>Drži=2 krivulji, vsaka s 3 nadzornimi točkami, Ne drži=1 krivulja s 4 nadzornimi točkami.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
       <source>True=external Gear False=internal Gear</source>
-      <translation type="unfinished">True=external Gear False=internal Gear</translation>
+      <translation>Drži=zunanju zobnik, Ne drži=notranj zobnik</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -118,7 +118,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="123"/>
       <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
-      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+      <translation>Polmer zaokrožitve v korenu zoba, uenoten z modulom.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
@@ -1612,7 +1612,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Ustvarjeno brez priseka!
 </translation>
     </message>
   </context>
@@ -1713,7 +1713,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Ustvarjeno brez nagiba!
 </translation>
     </message>
   </context>
@@ -1918,7 +1918,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Ustvarjeno brez zaokrožitve!
 </translation>
     </message>
   </context>
@@ -3142,7 +3142,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Ustvarjeno brez debeline!
 </translation>
     </message>
   </context>
@@ -4548,8 +4548,8 @@ Na voljo le pri luknjah breh navoja</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Pri kotnem grezenju je to poglobitev
+vrha glave vijaka pod površje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

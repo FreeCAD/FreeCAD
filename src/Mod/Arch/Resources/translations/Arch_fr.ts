@@ -278,7 +278,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Si cette option est activée, des lignes supplémentaires seront remplies pour chaque objet considéré. Dans le cas contraire, seuls les totaux seront affichés.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -288,7 +288,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Si cette option est activée, la nomenclature et la feuille de calcul associée sont mis à jour chaque fois que le document est recalculé.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -333,7 +333,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="193"/>
       <source>Add selection</source>
-      <translation>Ajoutez la sélection</translation>
+      <translation>Ajouter la sélection</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="200"/>
@@ -869,7 +869,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
       <source>Open in external browser</source>
-      <translation>Ouvrir dans un navigateur externe</translation>
+      <translation>Si sélectionné, le bouton "Ouvrir le serveur BIM dans un navigateur" ouvrira l'interface du serveur BIM dans un navigateur externe au lieu de l'atelier Web de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="731"/>
@@ -2915,7 +2915,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Options du panneau</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3048,12 +3048,12 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>suppression de la propriété "Result" et ajout de la propriété "AutoUpdate"</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>ajout de la propriété "Schedule"</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
@@ -3063,7 +3063,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Supprimer la feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -5349,12 +5349,12 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>Si mis à vrai, la nomenclature et la feuille de calcul associée sont mis à jour chaque fois que le document est recalculé</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The Arch Schedule that uses this spreadsheet</translation>
+      <translation>La nomenclature Arch qui utilise cette feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>

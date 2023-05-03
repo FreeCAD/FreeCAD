@@ -630,7 +630,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
       <source>Proxy</source>
-      <translation type="unfinished">Proxy</translation>
+      <translation>Opțiuni Proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="210"/>
@@ -1655,7 +1655,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
       <source>Addon</source>
-      <translation type="unfinished">Addon</translation>
+      <translation>Addon</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="455"/>
@@ -2066,7 +2066,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="815"/>
       <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
+      <translation>Stare:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="818"/>

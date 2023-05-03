@@ -2943,7 +2943,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="300"/>
       <source>&amp;Comment:</source>
-      <translation>&amp;コメント:</translation>
+      <translation>コメント(&amp;C):</translation>
     </message>
     <message>
       <source/>

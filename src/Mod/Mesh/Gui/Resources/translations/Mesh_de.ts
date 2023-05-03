@@ -2429,7 +2429,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Bool'sche Operationen</translation>
+      <translation>Boolesche Verknüpfungen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

@@ -123,7 +123,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>La distancia por la cual el perfil de referencia se desplaza hacia afuera, normalizado por el módulo.</translation>
     </message>
   </context>
   <context>

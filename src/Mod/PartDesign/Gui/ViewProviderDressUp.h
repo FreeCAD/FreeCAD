@@ -55,6 +55,7 @@ public:
      * Should be reimplemented in the successor.
      */
     virtual const std::string & featureName() const;
+    std::string featureIcon() const;
     QString menuName;
 
 protected:

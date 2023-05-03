@@ -2468,7 +2468,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentacja siatki</translation>
+      <translation>Siatka — segmentacja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

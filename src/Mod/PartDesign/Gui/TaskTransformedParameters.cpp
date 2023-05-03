@@ -53,7 +53,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskTransformedParameters */
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
+    : TaskBox(Gui::BitmapFactory().pixmap(TransformedView->featureIcon().c_str()),
               TransformedView->menuName, true, parent)
     , proxy(nullptr)
     , TransformedView(TransformedView)

@@ -3069,7 +3069,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Kalkulationstabelle entfernen</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -5978,7 +5978,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="166"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>Werkzeuge zur Beschriftung von Entwürfen</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="169"/>
@@ -5988,7 +5988,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="172"/>
       <source>Draft snap</source>
-      <translation type="unfinished">Draft snap</translation>
+      <translation>Entwurfs-Einrastung</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="177"/>

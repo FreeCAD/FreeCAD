@@ -486,7 +486,7 @@ Uporabno pri izogibanju krožne odvisnosti, vendar je potrebna previdnost!</tran
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Nastavi nastavitveno preglednico</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
@@ -989,12 +989,12 @@ Privzeto: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Nastavi nastavitveno preglednico</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Razveljavi nastavitveno preglednico</translation>
     </message>
   </context>
   <context>

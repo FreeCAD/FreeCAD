@@ -185,7 +185,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
       <source>Comment</source>
-      <translation>評論</translation>
+      <translation>註釋</translation>
     </message>
   </context>
   <context>
@@ -2112,7 +2112,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2262,7 +2262,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>前視圖</translation>
+      <translation>正視圖</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="498"/>
@@ -6071,7 +6071,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="124"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
@@ -6435,7 +6435,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
-      <translation>管</translation>
+      <translation>貫穿</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>

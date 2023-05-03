@@ -23,7 +23,6 @@
 			<depend>path</depend>
 			<depend>Plot</depend>
 			<depend>POINTS</depend>
-			<depend>RayTRAcing</depend>
 			<depend>ROBOTWB</depend>
 			<depend>Sketcher workbench</depend>
 			<depend>Spreadsheet</depend>

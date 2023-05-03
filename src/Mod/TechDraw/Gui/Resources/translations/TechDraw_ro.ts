@@ -1716,7 +1716,7 @@
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Section View</source>
-      <translation type="unfinished">Section View</translation>
+      <translation>Vizualizare secțiune</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
@@ -5651,7 +5651,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="92"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Verticală</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="108"/>
@@ -5661,7 +5661,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="111"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Orizontal</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="124"/>
