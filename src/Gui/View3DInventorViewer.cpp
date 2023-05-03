@@ -2035,6 +2035,7 @@ void View3DInventorViewer::renderFramebuffer()
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_LIGHTING);
     glViewport(0, 0, size[0], size[1]);
     glMatrixMode(GL_PROJECTION);
@@ -2068,8 +2069,7 @@ void View3DInventorViewer::renderFramebuffer()
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
+    glPopAttrib();
 }
 
 void View3DInventorViewer::renderGLImage()
@@ -2077,6 +2077,7 @@ void View3DInventorViewer::renderGLImage()
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_LIGHTING);
     glViewport(0, 0, size[0], size[1]);
     glMatrixMode(GL_PROJECTION);
@@ -2100,8 +2101,7 @@ void View3DInventorViewer::renderGLImage()
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
+    glPopAttrib();
 }
 
 // #define ENABLE_GL_DEPTH_RANGE
