@@ -211,7 +211,7 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(co
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplinePoleWeightVisible)
         Client.overlayParameters.bSplinePoleWeightVisible = hGrpsk->GetBool(parametername.c_str(), true);
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::ArcCircleHelperVisible)
-        Client.overlayParameters.arcCircleHelperVisible = hGrpsk->GetBool(parametername.c_str(), true);
+        Client.overlayParameters.arcCircleHelperVisible = hGrpsk->GetBool(parametername.c_str(), false);
 
     Client.overlayParameters.visibleInformationChanged = true;
 }
