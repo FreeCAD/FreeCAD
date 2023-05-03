@@ -121,7 +121,9 @@ def export(objectslist, filename):
     str
         The same `filename` input.
     """
-    import importDXF, os, tempfile
+    import importDXF
+    import os
+    import tempfile
     outdir = tempfile.mkdtemp()
     _basename = os.path.splitext(os.path.basename(filename))[0]
     dxf = outdir + os.sep + _basename + ".dxf"
