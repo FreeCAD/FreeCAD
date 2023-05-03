@@ -31,6 +31,8 @@ from PySide import QtCore, QtGui, QtSvg
 import FreeCAD
 import FreeCADGui
 # import Material_rc
+from materialtools.cardutils import get_material_preferred_directory
+
 
 # is this still needed after the move to card utils???
 unicode = str
@@ -52,7 +54,9 @@ class MaterialEditor:
         self.customprops = []
         self.internalprops = []
         self.groups = []
-        self.directory = FreeCAD.getResourceDir() + "Mod/Material"
+        self.directory = get_material_preferred_directory()
+        if self.directory is None:
+            self.directory = FreeCAD.getResourceDir() + "Mod/Material"
         self.materials = {}
         self.cards = {}
         self.icons = {}
@@ -574,12 +578,15 @@ class MaterialEditor:
 
         "Opens a FCMat file"
         print("open file")
+        print("category '{0}'".format(self.category))
         if self.category == "Solid":
             directory = self.directory + os.sep + "StandardMaterial"
         else:
             directory = self.directory + os.sep + "FluidMaterial"
-        if self.card_path is None:
+        print("directory '{0}'".format(directory))
+        if self.card_path is None or len(self.card_path) == 0:
             self.card_path = directory
+        print("self.card_path 0 '{0}'".format(self.card_path))
         filetuple = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             "Open FreeCAD Material file",
@@ -588,6 +595,7 @@ class MaterialEditor:
         )
         if os.path.isfile(filetuple[0]):
             card_path_new = filetuple[0]
+            print("card_path_new '{0}'".format(card_path_new))
         else:
             FreeCAD.Console.PrintError("Error: Invalid path to the material file\n")
             return
@@ -597,8 +605,12 @@ class MaterialEditor:
         # D:/FreeCAD-build/data/Mod\Material\FluidMaterial\Air.FCMat
         # To keep it simple, we take a path from the ComboMaterial and change only the
         # material card filename
-        if self.initialIndex > -1:
-            path = self.widget.ComboMaterial.itemData(self.initialIndex)
+        #
+        # Using the initialIndex variable won't work before a card os selected for the
+        # first time, so use index 1. Index 0 is a blank entry
+        if self.widget.ComboMaterial.count() > 1:
+            path = self.widget.ComboMaterial.itemData(1)
+            print("path '{0}'".format(path))
             # at first check if we have a uniform usage
             # (if a character is not present, rsplit delivers the initial string)
             testBackslash = path.rsplit('\\', 1)[0]
@@ -607,6 +619,7 @@ class MaterialEditor:
                 path = testBackslash.rsplit('/', 1)[0] + '/'
             elif testSlash == path:
                 path = testSlash.rsplit('\\', 1)[0] + '\\'
+                print("path  1 '{0}'".format(path))
             # since we don't know if we have to deal with slash or backslash, take the
             # longest result as path
             else:
@@ -616,6 +629,7 @@ class MaterialEditor:
                     path = pathBackslash + '\\'
                 else:
                     path = pathSlash + '/'
+                print("path 2 '{0}'".format(path))
             # we know that card_path_new has uniformly either / or \ but not yet what
             testBackslash = card_path_new.rsplit('\\', 1)[0]
             if testBackslash == card_path_new:
@@ -623,6 +637,7 @@ class MaterialEditor:
             else:
                 self.card_path = path + card_path_new.rsplit('\\', 1)[1]
         index = self.widget.ComboMaterial.findData(self.card_path)
+        print("self.card_path '{0}'".format(self.card_path))
 
         # check if card_path is in known path, means it is in combo box already
         # if not print message, and give some feedbach that the card parameter are loaded

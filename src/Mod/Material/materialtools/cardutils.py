@@ -62,6 +62,46 @@ this has been done already by eivind see
 https://forum.freecad.org/viewtopic.php?f=38&t=16714
 '''
 
+def get_material_preferred_directory(category=None):
+    """
+        Return the preferred material directory. In priority order they are:
+        1. user specified
+        2. user modules folder
+        3. system folder
+    """
+    mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
+    use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
+    use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
+    use_mat_from_custom_dir = mat_prefs.GetBool("UseMaterialsFromCustomDir", True)
+
+    preferred = None
+
+    if use_built_in_materials:
+        if category == 'Fluid':
+            preferred = join(
+                FreeCAD.getResourceDir(), "Mod", "Material", "FluidMaterial"
+            )
+
+        elif category == 'Solid':
+            preferred = join(
+                FreeCAD.getResourceDir(), "Mod", "Material", "StandardMaterial"
+            )
+
+        else:
+            preferred = join(
+                FreeCAD.getResourceDir(), "Mod", "Material"
+            )
+
+    if use_mat_from_config_dir:
+        preferred = join(
+            FreeCAD.ConfigGet("UserAppData"), "Material"
+        )
+
+    if use_mat_from_custom_dir:
+        preferred = mat_prefs.GetString("CustomMaterialsDir", "")
+
+    return preferred
+
 
 # ***** get resources for cards ******************************************************************
 def get_material_resources(category='Solid'):
