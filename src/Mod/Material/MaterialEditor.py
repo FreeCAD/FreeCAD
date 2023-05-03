@@ -31,7 +31,7 @@ from PySide import QtCore, QtGui, QtSvg
 import FreeCAD
 import FreeCADGui
 # import Material_rc
-from materialtools.cardutils import get_material_preferred_directory
+from materialtools.cardutils import get_material_preferred_directory, get_material_preferred_save_directory
 
 
 # is this still needed after the move to card utils???
@@ -55,6 +55,7 @@ class MaterialEditor:
         self.internalprops = []
         self.groups = []
         self.directory = get_material_preferred_directory()
+        self.save_directory = get_material_preferred_save_directory()
         if self.directory is None:
             self.directory = FreeCAD.getResourceDir() + "Mod/Material"
         self.materials = {}
@@ -662,6 +663,8 @@ class MaterialEditor:
     def savefile(self):
         "Saves a FCMat file."
 
+        print("self.save_directory 0 {0}".format(self.save_directory))
+        print("self.directory 0 {0}".format(self.directory))
         model = self.widget.treeView.model()
         item = model.findItems(translate("Material", "Name"),
                                QtCore.Qt.MatchRecursive, 0)[0]
@@ -673,13 +676,15 @@ class MaterialEditor:
         filetuple = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Save FreeCAD Material file",
-            self.directory + "/" + name + ".FCMat",
+            self.save_directory + "/" + name + ".FCMat",
             "*.FCMat"
         )
         # a tuple of two empty strings returns True, so use the filename directly
         filename = filetuple[0]
         if filename:
-            self.directory = os.path.dirname(filename)
+            self.save_directory = os.path.dirname(filename)
+            self.directory = self.save_directory
+            self.card_path = filename
             # should not be resource dir but user result dir instead
             d = self.getDict()
             # self.outputDict(d)
@@ -688,6 +693,8 @@ class MaterialEditor:
                 write(filename, d)
                 self.edited = False
                 self.updateCardsInCombo()
+        print("self.save_directory 1 {0}".format(self.save_directory))
+        print("self.directory 1 {0}".format(self.directory))
 
     def show(self):
         return self.widget.show()

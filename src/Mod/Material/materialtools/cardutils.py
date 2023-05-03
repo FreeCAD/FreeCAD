@@ -93,14 +93,55 @@ def get_material_preferred_directory(category=None):
             )
 
     if use_mat_from_config_dir:
-        preferred = join(
+        user = join(
             FreeCAD.ConfigGet("UserAppData"), "Material"
         )
+        if os.path.isdir(user):
+            preferred = user
 
     if use_mat_from_custom_dir:
-        preferred = mat_prefs.GetString("CustomMaterialsDir", "")
+        custom = mat_prefs.GetString("CustomMaterialsDir", "")
+        if len(custom.strip()) > 0:
+            preferred = custom
 
     return preferred
+
+def get_material_preferred_save_directory():
+    """
+        Return the preferred directory for saving materials. In priority order they are:
+        1. user specified
+        2. user modules folder
+    """
+    mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
+    use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
+    use_mat_from_custom_dir = mat_prefs.GetBool("UseMaterialsFromCustomDir", True)
+
+    if use_mat_from_custom_dir:
+        custom = mat_prefs.GetString("CustomMaterialsDir", "")
+        if len(custom.strip()) > 0:
+            # Create the directory if it doesn't exist
+            try:
+                if not os.path.isdir(custom):
+                    os.makedirs(custom)
+                return custom
+            except Exception as ex:
+                print(ex)
+                pass
+
+    if use_mat_from_config_dir:
+        user = join(
+            FreeCAD.ConfigGet("UserAppData"), "Material"
+        )
+        try:
+            if not os.path.isdir(user):
+                os.makedirs(user)
+            return user
+        except Exception as ex:
+            print(ex)
+            pass
+
+
+    return None
 
 
 # ***** get resources for cards ******************************************************************
