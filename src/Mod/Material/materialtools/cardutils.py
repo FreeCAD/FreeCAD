@@ -145,7 +145,7 @@ def get_material_resources(category='Solid'):
 
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
     use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
-    use_mat_from_modules = mat_prefs.GetBool("UseMaterialsFromModules", True)
+    use_mat_from_modules = mat_prefs.GetBool("UseMaterialsFromWorkbenches", True)
     use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
     use_mat_from_custom_dir = mat_prefs.GetBool("UseMaterialsFromCustomDir", True)
 

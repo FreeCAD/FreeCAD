@@ -45,18 +45,18 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_mods">
+         <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_workbenches">
           <property name="toolTip">
-           <string>Use materials added by addon modules.</string>
+           <string>Use materials added by external workbenches.</string>
           </property>
           <property name="text">
-           <string>Use materials from addon modules</string>
+           <string>Use materials from external workbenches</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UseMaterialsFromModules</cstring>
+           <cstring>UseMaterialsFromWorkbenches</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Material/Resources</cstring>
