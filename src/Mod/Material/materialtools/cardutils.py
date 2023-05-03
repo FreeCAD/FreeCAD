@@ -33,12 +33,6 @@ unicode = str
 
 
 # TODO:
-# move material GUI preferences from FEM to an own preference tab in Material
-# move preference GUI code to material module
-# https://forum.freecad.org/viewtopic.php?f=10&t=35515
-
-
-# TODO:
 # implement method check_material_keys from FEM material task panel for material editor
 # may be move out of the FEM material task panel to here
 # make the method more generic to be compatible with all known params
@@ -149,10 +143,9 @@ def get_material_resources(category='Solid'):
 
     resources = {}  # { resource_path: icon_path, ... }
 
-    # TODO: move GUI preferences from FEM to a new side tab Material
-    # https://forum.freecad.org/viewtopic.php?f=10&t=35515
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
     use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
+    use_mat_from_modules = mat_prefs.GetBool("UseMaterialsFromModules", True)
     use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
     use_mat_from_custom_dir = mat_prefs.GetBool("UseMaterialsFromCustomDir", True)
 
@@ -168,11 +161,24 @@ def get_material_resources(category='Solid'):
             )
         resources[builtin_mat_dir] = ":/icons/freecad.svg"
 
+    if use_mat_from_modules:
+        print("Use material from modules")
+        module_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules")
+        module_groups = module_prefs.GetGroups()
+        for group in module_groups:
+            print("Module! '{0}'".format(group))
+            module = module_prefs.GetGroup(group)
+            module_mat_dir = module.GetString("ModuleDir", "")
+            module_icon_dir = module.GetString("ModuleIcon", "")
+            if len(module_mat_dir) > 0:
+                resources[module_mat_dir] = module_icon_dir
+
     if use_mat_from_config_dir:
         config_mat_dir = join(
             FreeCAD.ConfigGet("UserAppData"), "Material"
         )
-        resources[config_mat_dir] = ":/icons/preferences-general.svg"
+        if os.path.exists(config_mat_dir):
+            resources[config_mat_dir] = ":/icons/preferences-general.svg"
 
     if use_mat_from_custom_dir:
         custom_mat_dir = mat_prefs.GetString("CustomMaterialsDir", "")

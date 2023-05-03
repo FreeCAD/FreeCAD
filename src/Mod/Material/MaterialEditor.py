@@ -25,6 +25,7 @@ __author__ = "Yorik van Havre, Bernd Hahnebach"
 __url__ = "http://www.freecad.org"
 
 import os
+from pathlib import PurePath
 import sys
 from PySide import QtCore, QtGui, QtSvg
 
@@ -682,13 +683,19 @@ class MaterialEditor:
         # a tuple of two empty strings returns True, so use the filename directly
         filename = filetuple[0]
         if filename:
+            # Update the directories to the current save value
             self.save_directory = os.path.dirname(filename)
             self.directory = self.save_directory
             self.card_path = filename
-            # should not be resource dir but user result dir instead
+
             d = self.getDict()
             # self.outputDict(d)
             if d:
+                # Set the card name to match the filename
+                path = PurePath(filename)
+                d["CardName"] = path.stem
+                print("CardName '{0}'".format(path.stem))
+
                 from importFCMat import write
                 write(filename, d)
                 self.edited = False
