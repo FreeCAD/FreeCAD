@@ -43,7 +43,7 @@ except AttributeError:
     _encoding = None
 
 
-def translate(context, text):
+def translate(context, text, comment=None):
     r"""Translate the text using the Qt translate function.
 
     It wraps around `QtGui.QApplication.translate`,
@@ -79,7 +79,7 @@ def translate(context, text):
     >>> QtCore.QCoreApplication.translate(context, text, None)
     >>> QtGui.QApplication.translate(context, text, None)
     """
-    return Qtranslate(context, text, None)
+    return Qtranslate(context, text, comment)
 
 
 # Original code no longer used. It is listed here for reference
