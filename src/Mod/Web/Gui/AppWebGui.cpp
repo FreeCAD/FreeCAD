@@ -23,8 +23,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <string>
+# include <QAbstractNativeEventFilter>
+# include <QApplication>
 # include <QIcon>
 # include <QUrl>
+#endif
+
+#ifdef Q_OS_WIN32
+#include <Windows.h>
 #endif
 
 #include <Base/Console.h>
@@ -151,6 +157,32 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
+class NativeEventFilter : public QAbstractNativeEventFilter
+{
+public:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override
+#else
+    bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override
+#endif
+    {
+        Q_UNUSED(eventType)
+        Q_UNUSED(result)
+
+        // Fixes bug #9364: WM_INPUTLANGCHANGEREQUEST seems to freeze FreeCAD
+#ifdef Q_OS_WIN32
+        MSG* msg = (MSG*)(message);
+        if (msg->message == WM_INPUTLANGCHANGEREQUEST) {
+            Base::Console().Log("Ignore WM_INPUTLANGCHANGEREQUEST\n");
+            return true;
+        }
+#else
+        Q_UNUSED(message)
+#endif
+        return false;
+    }
+};
+
 } // namespace WebGui
 
 
@@ -169,6 +201,10 @@ PyMOD_INIT_FUNC(WebGui)
     CreateWebCommands();
     WebGui::BrowserView::init();
     WebGui::Workbench::init();
+
+#ifdef Q_OS_WIN32
+    qApp->installNativeEventFilter(new WebGui::NativeEventFilter);
+#endif
 
      // add resources and reloads the translators
     loadWebResource();
