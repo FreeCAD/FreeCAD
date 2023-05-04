@@ -266,7 +266,6 @@ class MaterialEditor:
                                                 QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
                                                 QtGui.QMessageBox.Save)
 
-            print("accept(reply={0})".format(reply))
             if reply == QtGui.QMessageBox.Cancel:
                 return False
             if reply == QtGui.QMessageBox.Save:
@@ -334,7 +333,6 @@ class MaterialEditor:
                                                 QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
                                                 QtGui.QMessageBox.Save)
 
-            print("accept(reply={0})".format(reply))
             if reply == QtGui.QMessageBox.Cancel:
                 return
             if reply == QtGui.QMessageBox.Save:
@@ -579,16 +577,12 @@ class MaterialEditor:
             return
 
         "Opens a FCMat file"
-        print("open file")
-        print("category '{0}'".format(self.category))
         if self.category == "Solid":
             directory = self.directory + os.sep + "StandardMaterial"
         else:
             directory = self.directory + os.sep + "FluidMaterial"
-        print("directory '{0}'".format(directory))
         if self.card_path is None or len(self.card_path) == 0:
             self.card_path = directory
-        print("self.card_path 0 '{0}'".format(self.card_path))
         filetuple = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             "Open FreeCAD Material file",
@@ -597,7 +591,6 @@ class MaterialEditor:
         )
         if os.path.isfile(filetuple[0]):
             card_path_new = filetuple[0]
-            print("card_path_new '{0}'".format(card_path_new))
         else:
             FreeCAD.Console.PrintError("Error: Invalid path to the material file\n")
             return
@@ -612,7 +605,6 @@ class MaterialEditor:
         # first time, so use index 1. Index 0 is a blank entry
         if self.widget.ComboMaterial.count() > 1:
             path = self.widget.ComboMaterial.itemData(1)
-            print("path '{0}'".format(path))
             # at first check if we have a uniform usage
             # (if a character is not present, rsplit delivers the initial string)
             testBackslash = path.rsplit('\\', 1)[0]
@@ -621,7 +613,6 @@ class MaterialEditor:
                 path = testBackslash.rsplit('/', 1)[0] + '/'
             elif testSlash == path:
                 path = testSlash.rsplit('\\', 1)[0] + '\\'
-                print("path  1 '{0}'".format(path))
             # since we don't know if we have to deal with slash or backslash, take the
             # longest result as path
             else:
@@ -631,7 +622,6 @@ class MaterialEditor:
                     path = pathBackslash + '\\'
                 else:
                     path = pathSlash + '/'
-                print("path 2 '{0}'".format(path))
             # we know that card_path_new has uniformly either / or \ but not yet what
             testBackslash = card_path_new.rsplit('\\', 1)[0]
             if testBackslash == card_path_new:
@@ -639,7 +629,6 @@ class MaterialEditor:
             else:
                 self.card_path = path + card_path_new.rsplit('\\', 1)[1]
         index = self.widget.ComboMaterial.findData(self.card_path)
-        print("self.card_path '{0}'".format(self.card_path))
 
         # check if card_path is in known path, means it is in combo box already
         # if not print message, and give some feedbach that the card parameter are loaded
@@ -664,8 +653,6 @@ class MaterialEditor:
     def savefile(self):
         "Saves a FCMat file."
 
-        print("self.save_directory 0 {0}".format(self.save_directory))
-        print("self.directory 0 {0}".format(self.directory))
         model = self.widget.treeView.model()
         item = model.findItems(translate("Material", "Name"),
                                QtCore.Qt.MatchRecursive, 0)[0]
@@ -694,14 +681,11 @@ class MaterialEditor:
                 # Set the card name to match the filename
                 path = PurePath(filename)
                 d["CardName"] = path.stem
-                print("CardName '{0}'".format(path.stem))
 
                 from importFCMat import write
                 write(filename, d)
                 self.edited = False
                 self.updateCardsInCombo()
-        print("self.save_directory 1 {0}".format(self.save_directory))
-        print("self.directory 1 {0}".format(self.directory))
 
     def show(self):
         return self.widget.show()

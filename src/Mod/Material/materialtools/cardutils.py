@@ -135,7 +135,7 @@ def get_material_preferred_save_directory():
             pass
 
 
-    return None
+    return ""
 
 
 # ***** get resources for cards ******************************************************************
@@ -162,11 +162,9 @@ def get_material_resources(category='Solid'):
         resources[builtin_mat_dir] = ":/icons/freecad.svg"
 
     if use_mat_from_modules:
-        print("Use material from modules")
         module_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules")
         module_groups = module_prefs.GetGroups()
         for group in module_groups:
-            print("Module! '{0}'".format(group))
             module = module_prefs.GetGroup(group)
             module_mat_dir = module.GetString("ModuleDir", "")
             module_icon_dir = module.GetString("ModuleIcon", "")
@@ -334,7 +332,7 @@ def get_material_template(withSpaces=False):
 
 def create_mat_tools_header():
     headers = join(get_source_path(), 'src/Mod/Material/StandardMaterial/Tools/headers')
-    print(headers)
+    # print(headers)
     if not os.path.isfile(headers):
         FreeCAD.Console.PrintError(
             'file not found: {}'.format(headers)
@@ -518,7 +516,7 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
             continue
         else:
             card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
-            print(card_path)
+            # print(card_path)
             if write_group_section is True:
                 write(card_path, card_data, True)
             else:
