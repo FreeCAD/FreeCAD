@@ -53,6 +53,7 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "TechDraw Extend Dimensions");
     qApp->translate("Workbench", "TechDraw File Access");
     qApp->translate("Workbench", "TechDraw Pages");
+    qApp->translate("Workbench", "TechDraw Stacking");
     qApp->translate("Workbench", "TechDraw Tool Attributes");
     qApp->translate("Workbench", "TechDraw Views");
     qApp->translate("Workbench", "Views");
