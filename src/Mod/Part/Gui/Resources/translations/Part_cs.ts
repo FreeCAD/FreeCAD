@@ -1195,7 +1195,7 @@
     <message>
       <location filename="../../Command.cpp" line="2137"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>Nastavte barvu každé jednotlivé plochy vybraného objektu.</translation>
     </message>
   </context>
   <context>
@@ -1231,7 +1231,7 @@
     <message>
       <location filename="../../Command.cpp" line="2266"/>
       <source>Clear all dimensions from the screen.</source>
-      <translation type="unfinished">Clear all dimensions from the screen.</translation>
+      <translation>Vymažte všechny rozměry z obrazovky.</translation>
     </message>
   </context>
   <context>
@@ -1251,9 +1251,9 @@
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
-      <translation type="unfinished">Measure the linear distance between two points;
-if edges or faces are picked, it will measure
-between two vertices of them.</translation>
+      <translation>Změřte lineární vzdálenost mezi dvěma body;
+pokud jsou vybrány hrany nebo plochy, změří se
+mezi jejich dvěma vrcholy.</translation>
     </message>
   </context>
   <context>
@@ -1272,8 +1272,8 @@ between two vertices of them.</translation>
       <location filename="../../Command.cpp" line="2236"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
-      <translation type="unfinished">Recalculate the dimensions
-if the measured points have moved.</translation>
+      <translation>Přepočítejte rozměry
+jestli se měřené body posunuly.</translation>
     </message>
   </context>
   <context>
@@ -1292,8 +1292,8 @@ if the measured points have moved.</translation>
       <location filename="../../Command.cpp" line="2332"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation type="unfinished">Toggle on and off all direct dimensions,
-including angular.</translation>
+      <translation>Zapnout a vypnout všechny přímé dimenze,
+včetně úhlových.</translation>
     </message>
   </context>
   <context>
@@ -1312,8 +1312,8 @@ including angular.</translation>
       <location filename="../../Command.cpp" line="2295"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation type="unfinished">Toggle on and off all currently visible dimensions,
-direct, orthogonal, and angular.</translation>
+      <translation>Zapnout a vypnout všechny aktuálně viditelné rozměry,
+přímé, ortogonální a úhlové.</translation>
     </message>
   </context>
   <context>
@@ -1333,9 +1333,9 @@ direct, orthogonal, and angular.</translation>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation type="unfinished">Toggle on and off all orthogonal dimensions,
-meaning that a direct dimension will be decomposed
-into its X, Y, and Z components.</translation>
+      <translation>Zapnout a vypnout všechny ortogonální rozměry,
+což znamená, že bude rozložena přímá dimenze
+na jeho složky X, Y a Z.</translation>
     </message>
   </context>
   <context>

@@ -428,12 +428,12 @@
     <message>
       <location filename="../../Command.cpp" line="2083"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Zmožnosti presejanja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2084"/>
       <source>Functions for use in postprocessing filter...</source>
-      <translation type="unfinished">Functions for use in postprocessing filter...</translation>
+      <translation>Zmožnosti, ki jih je mogoče uporabiti v poobdelovalnem situ ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2261"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../Command.cpp" line="2342"/>
       <source>Creates a post processing pipeline from a result object</source>
-      <translation type="unfinished">Creates a post processing pipeline from a result object</translation>
+      <translation>Ustvari iz dobljenega predmeta poobdelovalni cevovod</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2417"/>
@@ -3728,7 +3728,7 @@ Opomba: pri 2D je mogoče nastavili le x,
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="346"/>
       <source>Edit post processing object</source>
-      <translation type="unfinished">Edit post processing object</translation>
+      <translation>Uredi poobdelovalni predmet</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
@@ -5474,12 +5474,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Zmožnosti presejanja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>&amp;Filter functions</source>
-      <translation type="unfinished">&amp;Filter functions</translation>
+      <translation>&amp;Zmožnosti presejanja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
@@ -5492,20 +5492,20 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Command.cpp" line="1520"/>
       <source>Error: A filter can only be applied to a single object.</source>
-      <translation type="unfinished">Error: A filter can only be applied to a single object.</translation>
+      <translation>Napaka: Sito lahko uporabite le na enem predmetu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <location filename="../../Command.cpp" line="1539"/>
       <location filename="../../Command.cpp" line="1567"/>
       <source>The filter could not be set up.</source>
-      <translation type="unfinished">The filter could not be set up.</translation>
+      <translation>Sita ni bilo mogoče nastaviti.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1538"/>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Error: no post processing object selected.</source>
-      <translation type="unfinished">Error: no post processing object selected.</translation>
+      <translation>Napaka: izbran ni noben poobdelovalni predmet.</translation>
     </message>
   </context>
   <context>

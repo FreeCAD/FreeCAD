@@ -216,7 +216,7 @@
       <location filename="../TaskView/TaskImage.cpp" line="258"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="65"/>
       <source>Edit image</source>
-      <translation type="unfinished">Edit image</translation>
+      <translation>Editatu irudia</translation>
     </message>
   </context>
   <context>
@@ -1239,7 +1239,7 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     <message>
       <location filename="../DlgKeyboard.ui" line="107"/>
       <source>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</source>
-      <translation type="unfinished">To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</translation>
+      <translation>Uneko lasterbidea aldatzeko, sartu lasterbide berria beheko eremua eta sakatu 'Esleitu'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
@@ -1997,12 +1997,12 @@ horietan beti puntu bat inprimatuko baita.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="20"/>
       <source>Language and number format</source>
-      <translation type="unfinished">Language and number format</translation>
+      <translation>Hizkuntza eta zenbaki-formatua</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="41"/>
       <source>Language:</source>
-      <translation type="unfinished">Language:</translation>
+      <translation>Hizkuntza:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="55"/>
@@ -2012,7 +2012,7 @@ horietan beti puntu bat inprimatuko baita.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="62"/>
       <source>Unit system that should be used for all parts of the application</source>
-      <translation type="unfinished">Unit system that should be used for all parts of the application</translation>
+      <translation>Aplikazioko pieza guztietarako erabiliko den unitate-sistema</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="71"/>
@@ -2037,7 +2037,7 @@ horietan beti puntu bat inprimatuko baita.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="180"/>
       <source>Substitute decimal separator</source>
-      <translation type="unfinished">Substitute decimal separator</translation>
+      <translation>Ordeztu dezimalen bereizlea</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="196"/>
@@ -2082,14 +2082,14 @@ Zure pantaila-tamainaren edo gustu pertsonalen arabera doitu daiteke.</translati
     <message>
       <location filename="../DlgGeneral.ui" line="264"/>
       <source>Size of recent file list:</source>
-      <translation type="unfinished">Size of recent file list:</translation>
+      <translation>Azken fitxategien zerrendaren luzera:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="287"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window (when no document is opened) will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Leiho nagusiaren atzeko planoa (dokumenturik irekita ez dagoenean) irudi berezi baten lauzak izango dira.
+Ikusi FreeCADen wikia irudiari buruzko xehetasunak ezagutzeko.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="317"/>
@@ -2851,7 +2851,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Berrabiarazi egin behar da</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="494"/>
@@ -3027,12 +3027,12 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="106"/>
       <source>Failed to extract project</source>
-      <translation type="unfinished">Failed to extract project</translation>
+      <translation>Huts egin du proiektua erauzteak</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="123"/>
       <source>Failed to create project</source>
-      <translation type="unfinished">Failed to create project</translation>
+      <translation>Huts egin du proiektua sortzeak</translation>
     </message>
   </context>
   <context>
@@ -5000,8 +5000,8 @@ espazioa baino gehiago behar dutenean</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>3D bistako elementuak aukeratzeko area.
+Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hautatzea oztopatu dezake.
       </translation>
     </message>
     <message>
@@ -5092,24 +5092,24 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="232"/>
       <source>Linear gradient</source>
-      <translation type="unfinished">Linear gradient</translation>
+      <translation>Gradiente lineala</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="251"/>
       <source>Radial gradient</source>
-      <translation type="unfinished">Radial gradient</translation>
+      <translation>Gradiente erradiala</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="329"/>
       <location filename="../DlgSettingsViewColor.cpp" line="148"/>
       <source>Top:</source>
-      <translation type="unfinished">Top:</translation>
+      <translation>Goikoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="356"/>
       <location filename="../DlgSettingsViewColor.cpp" line="149"/>
       <source>Middle:</source>
-      <translation type="unfinished">Middle:</translation>
+      <translation>Erdikoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="315"/>
@@ -5135,7 +5135,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../DlgSettingsViewColor.ui" line="399"/>
       <location filename="../DlgSettingsViewColor.cpp" line="150"/>
       <source>Bottom:</source>
-      <translation type="unfinished">Bottom:</translation>
+      <translation>Behekoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="433"/>
@@ -5165,17 +5165,17 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="156"/>
       <source>Central:</source>
-      <translation type="unfinished">Central:</translation>
+      <translation>Zentrala:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="157"/>
       <source>Midway:</source>
-      <translation type="unfinished">Midway:</translation>
+      <translation>Erdibidekoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="158"/>
       <source>End:</source>
-      <translation type="unfinished">End:</translation>
+      <translation>Amaierakoa:</translation>
     </message>
   </context>
   <context>
@@ -6217,7 +6217,7 @@ hautatutako objektuekin</translation>
       <location filename="../ReportView.cpp" line="604"/>
       <location filename="../ReportView.cpp" line="628"/>
       <source>Critical messages</source>
-      <translation type="unfinished">Critical messages</translation>
+      <translation>Mezu kritikoak</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="609"/>
@@ -8018,22 +8018,22 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <message>
       <location filename="../Tree.cpp" line="2774"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Erakutsi Zuhaitz-bistako elementuak</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2775"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
+      <translation>Erakutsi zuhaitz-bistan "ezkutuan" markatuta dauden elementuak</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2777"/>
       <source>Toggle visibility in tree view</source>
-      <translation type="unfinished">Toggle visibility in tree view</translation>
+      <translation>Aldatu ikuspena zuhaitz-bistan</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2778"/>
       <source>Toggles the visibility of selected items in the tree view</source>
-      <translation type="unfinished">Toggles the visibility of selected items in the tree view</translation>
+      <translation>Aukeratutako elementuen ikuspena zuhaitz-bistan aldatzen du</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2780"/>
@@ -8672,7 +8672,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1853"/>
       <source>Save image</source>
-      <translation type="unfinished">Save image</translation>
+      <translation>Gorde irudia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2004"/>
@@ -8789,18 +8789,18 @@ Jarraitu nahi duzu?</translation>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="989"/>
       <source>Notifier</source>
-      <translation type="unfinished">Notifier</translation>
+      <translation>Jakinarazlea</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="990"/>
       <source>Message</source>
-      <translation type="unfinished">Message</translation>
+      <translation>Mezua</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="931"/>
       <source>Notifier: </source>
-      <translation type="unfinished">Notifier: </translation>
+      <translation>Jakinarazlea: </translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="933"/>
@@ -8815,7 +8815,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="1003"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
+      <translation>Jakinarazpen ez intrusibo gehiegi dago irekita. Jakinarazpenei ez ikusiarena egiten ari zaie.</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1051"/>
@@ -9362,7 +9362,7 @@ egindako aldaketak galdu egingo direla.</translation>
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="146"/>
       <source>Change image...</source>
-      <translation type="unfinished">Change image...</translation>
+      <translation>Aldatu irudia...</translation>
     </message>
   </context>
   <context>
@@ -11746,7 +11746,7 @@ egindako aldaketak galdu egingo direla.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1812"/>
       <source>Save image...</source>
-      <translation type="unfinished">Save image...</translation>
+      <translation>Gorde irudia...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1813"/>
@@ -12049,7 +12049,7 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../Workbench.cpp" line="531"/>
       <source>Clipboard</source>
-      <translation type="unfinished">Clipboard</translation>
+      <translation>Arbela</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="532"/>
@@ -12166,7 +12166,7 @@ Jarraitu nahi al duzu?</translation>
       <location filename="../DlgSettingsNotificationArea.ui" line="14"/>
       <location filename="../DlgSettingsNotificationArea.cpp" line="57"/>
       <source>Notification Area</source>
-      <translation type="unfinished">Notification Area</translation>
+      <translation>Jakinarazpen-area</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="20"/>
@@ -12176,32 +12176,32 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="26"/>
       <source>The Notification area will appear in the status bar</source>
-      <translation type="unfinished">The Notification area will appear in the status bar</translation>
+      <translation>Jakinarazpen-area egoera-barran agertuko da</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Gaitu jakinarazpen-area</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="45"/>
       <source>Non-intrusive notifications will appear next to the notification area in the status bar</source>
-      <translation type="unfinished">Non-intrusive notifications will appear next to the notification area in the status bar</translation>
+      <translation>Jakinarazpen ez intrusiboak egoera-barrako jakinarazpen-arearen alboan agertuko dira</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="48"/>
       <source>Enable non-intrusive notifications</source>
-      <translation type="unfinished">Enable non-intrusive notifications</translation>
+      <translation>Gaitu jakinarazpen ez intrusiboak</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="67"/>
       <source>Additional data Sources</source>
-      <translation type="unfinished">Additional data Sources</translation>
+      <translation>Datu-iturburu gehigarriak</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="73"/>
       <source>Errors will appear in the notification area</source>
-      <translation type="unfinished">Errors will appear in the notification area</translation>
+      <translation>Erroreak jakinarazpen-arean agertuko dira</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="76"/>
@@ -12211,7 +12211,7 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="92"/>
       <source>Warnings will appear in the notification area</source>
-      <translation type="unfinished">Warnings will appear in the notification area</translation>
+      <translation>Abvisuak jakinarazpen-arean agertuko dira</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="95"/>
@@ -12221,22 +12221,22 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="114"/>
       <source>Non-Intrusive Notifications</source>
-      <translation type="unfinished">Non-Intrusive Notifications</translation>
+      <translation>Jakinarazpen ez intrusiboak</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="120"/>
       <source>Minimum Duration:</source>
-      <translation type="unfinished">Minimum Duration:</translation>
+      <translation>Iraupen minimoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="130"/>
       <source>Maximum Duration:</source>
-      <translation type="unfinished">Maximum Duration:</translation>
+      <translation>Iraupen maximoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="137"/>
       <source>Duration during which the notification will be shown (unless mouse buttons are clicked)</source>
-      <translation type="unfinished">Duration during which the notification will be shown (unless mouse buttons are clicked)</translation>
+      <translation>Jakinarazpenak zenbat denbora erakutsiko diren (saguaren botoietan klik egiten bada salbu)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="140"/>
@@ -12247,37 +12247,37 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="162"/>
       <source>Minimum duration during which the notification will be shown (unless notification clicked)</source>
-      <translation type="unfinished">Minimum duration during which the notification will be shown (unless notification clicked)</translation>
+      <translation>Jakinarazpena gutxienez zenbat denbora erakutsiko den (jakinarazpenean klik egiten bada salbu)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="181"/>
       <source>Maximum Number of Notifications:</source>
-      <translation type="unfinished">Maximum Number of Notifications:</translation>
+      <translation>Jakinarazpen kopuru maximoa:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="188"/>
       <source>Maximum number of notifications that will be simultaneously present on the screen</source>
-      <translation type="unfinished">Maximum number of notifications that will be simultaneously present on the screen</translation>
+      <translation>Pantailan aldi berean agertuko den jakinarazpen kopuru maximoa</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="204"/>
       <source>Notification width:</source>
-      <translation type="unfinished">Notification width:</translation>
+      <translation>Jakinarazpenaren zabalera:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="211"/>
       <source>Width of the notification in pixels</source>
-      <translation type="unfinished">Width of the notification in pixels</translation>
+      <translation>Jakinarazpenaren zabalera pixeletan</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="233"/>
       <source>Any open non-intrusive notifications will disappear when another window is activated</source>
-      <translation type="unfinished">Any open non-intrusive notifications will disappear when another window is activated</translation>
+      <translation>Irekita dauden jakinarazpen ez intrusiboak desagertu egingo dira beste leiho bat aktibatzen denean</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
-      <translation type="unfinished">Hide when other window is activated</translation>
+      <translation>Ezkutatu beste leihoa aktibatzen denean</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="252"/>
@@ -12287,12 +12287,12 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation type="unfinished">Do not show when inactive</translation>
+      <translation>Inaktibo dagoenean ez erakutsi</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
       <source>Message List</source>
-      <translation type="unfinished">Message List</translation>
+      <translation>Mezuen zerrenda</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="280"/>
@@ -12302,7 +12302,7 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="299"/>
       <source>Maximum Messages (0 = no limit):</source>
-      <translation type="unfinished">Maximum Messages (0 = no limit):</translation>
+      <translation>Mezu maximoak (0 = ez du mugarik):</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="306"/>
@@ -12312,12 +12312,12 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="309"/>
       <source>Auto-remove User Notifications</source>
-      <translation type="unfinished">Auto-remove User Notifications</translation>
+      <translation>Automatikoki kendu erabiltzaile-jakinarazpenak</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.cpp" line="58"/>
       <source>Activation of the Notification Area only takes effect after an application restart.</source>
-      <translation type="unfinished">Activation of the Notification Area only takes effect after an application restart.</translation>
+      <translation>Jakinarazpen-area aplikazioa berrabiarazi ondoren soilik aktibatuko da.</translation>
     </message>
   </context>
   <context>
@@ -12331,13 +12331,13 @@ Jarraitu nahi al duzu?</translation>
       <location filename="../DlgSettingsWorkbenches.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lan-mahaiak arrastatu eta jaregin daitezke haiek ordenatzeko. Lan-mahai gehiago instalatzeko, erabili gehigarrien kudeatzailea.&lt;/p&gt;&lt;p&gt;
+Une honetan, zure sistemak honako lan-mahaiak ditu:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="63"/>
       <source>Start up workbench:</source>
-      <translation type="unfinished">Start up workbench:</translation>
+      <translation>Lan-mahaia abiarazi:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
@@ -12385,7 +12385,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Planoak</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
@@ -12418,12 +12418,12 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image plane settings</source>
-      <translation type="unfinished">Image plane settings</translation>
+      <translation>Irudi-planoaren ezarpenak</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Planoak</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
@@ -12453,27 +12453,27 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
       <source>X distance:</source>
-      <translation type="unfinished">X distance:</translation>
+      <translation>X distantzia:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="123"/>
       <source>Y distance:</source>
-      <translation type="unfinished">Y distance:</translation>
+      <translation>Y distantzia:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="143"/>
       <source>Rotation :</source>
-      <translation type="unfinished">Rotation :</translation>
+      <translation>Rotazioa:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
       <source>Transparency :</source>
-      <translation type="unfinished">Transparency :</translation>
+      <translation>Gardentasuna:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="191"/>
       <source>Image size</source>
-      <translation type="unfinished">Image size</translation>
+      <translation>Irudiaren tamaina</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="197"/>
@@ -12488,12 +12488,12 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="237"/>
       <source>Keep aspect ratio</source>
-      <translation type="unfinished">Keep aspect ratio</translation>
+      <translation>Itxura-erlazioa mantendu</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
-      <translation type="unfinished">Interactively scale the image by setting a length between two points of the image.</translation>
+      <translation>Eskalatu irudia modu interaktiboan, irudiaren bi punturen arteko luzera ezarriz.</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="250"/>
@@ -12503,7 +12503,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="257"/>
       <source>Calibration</source>
-      <translation type="unfinished">Calibration</translation>
+      <translation>Kalibrazioa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
@@ -12521,7 +12521,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../SoFCColorGradient.h" line="77"/>
       <source>Color Gradient</source>
-      <translation type="unfinished">Color Gradient</translation>
+      <translation>Kolore-gradientea</translation>
     </message>
   </context>
   <context>
@@ -12529,27 +12529,27 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="85"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation type="unfinished">If unchecked, %1 will not appear in the available workbenches.</translation>
+      <translation>Ez badago markatuta, %1 ez da agertuko lan-mahai erabilgarrien artean.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="90"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</translation>
+      <translation>Uneko abioko modulua da hau, eta gaitu egin behar da. Ikusi 'Hobespenak - Orokorra - Automatikoki kargatu' hura aldatzeko.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="113"/>
       <source>Shortcut to activate this workbench.</source>
-      <translation type="unfinished">Shortcut to activate this workbench.</translation>
+      <translation>Lan-mahai hau aktibatzeko lasterbidea.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="127"/>
       <source>Auto-load</source>
-      <translation type="unfinished">Auto-load</translation>
+      <translation>Karga-automatikoa</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="128"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">If checked, %1 will be loaded automatically when FreeCAD starts up</translation>
+      <translation>Markatua badago, %1 FreeCAD abiarazten denean automatikoki kargatuko da</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="134"/>
@@ -12569,7 +12569,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="145"/>
       <source>To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</source>
-      <translation type="unfinished">To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</translation>
+      <translation>Baliabideak aurrezteko, FreeCADek ez ditu laneko mahaiak kargatzen haiek erabili nahi diren arte. Kargatzen direnean, haien funtzionaltasunari lotutako hobespen gehigarriak agertuko dira.</translation>
     </message>
   </context>
   <context>
@@ -12595,7 +12595,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../SoFCColorLegend.h" line="72"/>
       <source>Color Legend</source>
-      <translation type="unfinished">Color Legend</translation>
+      <translation>Kolore-legenda</translation>
     </message>
   </context>
   <context>
@@ -12608,12 +12608,12 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="563"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Ezabatu erabiltzailearen jakinarazpenak</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="570"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Ezabatu dena</translation>
     </message>
   </context>
   <context>
@@ -12621,12 +12621,12 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="839"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Ezabatu erabiltzailearen jakinarazpenak</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="849"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Ezabatu dena</translation>
     </message>
   </context>
   <context>
@@ -12634,17 +12634,17 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../ImageView.cpp" line="75"/>
       <source>Failed to load image file</source>
-      <translation type="unfinished">Failed to load image file</translation>
+      <translation>Irudiaren fitxategiaren kargak huts egin du</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="76"/>
       <source>Cannot load file %1: %2</source>
-      <translation type="unfinished">Cannot load file %1: %2</translation>
+      <translation>%1: %2 fitxategia ezin da kargatu</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="182"/>
       <source>Fit to window</source>
-      <translation type="unfinished">Fit to window</translation>
+      <translation>Doitu leihoari</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="187"/>
@@ -12662,13 +12662,13 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../CommandView.cpp" line="1983"/>
       <source>Load image...</source>
-      <translation type="unfinished">Load image...</translation>
+      <translation>Irudia kargatu...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1984"/>
       <location filename="../CommandView.cpp" line="1986"/>
       <source>Loads an image</source>
-      <translation type="unfinished">Loads an image</translation>
+      <translation>Irudi bat kargatzen du</translation>
     </message>
   </context>
   <context>
@@ -12676,32 +12676,32 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../NaviCube.cpp" line="898"/>
       <source>FRONT</source>
-      <translation type="unfinished">FRONT</translation>
+      <translation>AURRETIK</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="900"/>
       <source>REAR</source>
-      <translation type="unfinished">REAR</translation>
+      <translation>ATZETIK</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="902"/>
       <source>TOP</source>
-      <translation type="unfinished">TOP</translation>
+      <translation>GOITIK</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="904"/>
       <source>BOTTOM</source>
-      <translation type="unfinished">BOTTOM</translation>
+      <translation>BEHETIK</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="906"/>
       <source>RIGHT</source>
-      <translation type="unfinished">RIGHT</translation>
+      <translation>ESKUBITIK</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="908"/>
       <source>LEFT</source>
-      <translation type="unfinished">LEFT</translation>
+      <translation>EZKERRETIK</translation>
     </message>
   </context>
   <context>
@@ -12709,7 +12709,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="428"/>
       <source>Enter desired distance between the points</source>
-      <translation type="unfinished">Enter desired distance between the points</translation>
+      <translation>Sartu puntuen arteko distantzia</translation>
     </message>
   </context>
 </TS>

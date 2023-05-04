@@ -1483,12 +1483,12 @@ los complementos instalados serán revisados por actualizaciones disponibles
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Este complemento se habilitará la próxima vez que reinicie FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Este complemento se desactivará la próxima vez que reinicie FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
@@ -2228,7 +2228,7 @@ los complementos instalados serán revisados por actualizaciones disponibles
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>No se pudo encontrar el archivo especificado macro {} (se esperaba en {})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="355"/>
@@ -2249,7 +2249,7 @@ los complementos instalados serán revisados por actualizaciones disponibles
       <location filename="../../Addon.py" line="778"/>
       <location filename="../../Addon.py" line="794"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Se ha producido un error al intentar importar {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>

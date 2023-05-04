@@ -49,7 +49,7 @@
       <location filename="../../AttacherTexts.cpp" line="322"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>Konus</translation>
+      <translation>Kupa</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="323"/>
@@ -79,7 +79,7 @@
       <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="329"/>
@@ -91,7 +91,7 @@
       <location filename="../../AttacherTexts.cpp" line="330"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="331"/>
@@ -1571,7 +1571,7 @@ t. j. X, Y i Z komponente direktnih kota.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Create a cone solid</source>
-      <translation>Napravi konično puno telo</translation>
+      <translation>Napravi kupasto puno telo</translation>
     </message>
   </context>
   <context>
@@ -1622,12 +1622,12 @@ t. j. X, Y i Z komponente direktnih kota.</translation>
       <location filename="../../CommandParametric.cpp" line="76"/>
       <location filename="../../CommandParametric.cpp" line="81"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="66"/>
       <source>Create a Cylinder</source>
-      <translation>Napravi cilindar</translation>
+      <translation>Napravi valjak</translation>
     </message>
   </context>
   <context>
@@ -1910,12 +1910,12 @@ t. j. X, Y i Z komponente direktnih kota.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Napravi tačkasti objekat na osnovu geometrije</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Napravi objekat tačaka (koje se mogu birati) od izabranog geometrijskog objekta</translation>
     </message>
   </context>
   <context>
@@ -2109,12 +2109,12 @@ projekcije.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create Cylinder...</source>
-      <translation>Napravi Cilindar...</translation>
+      <translation>Napravi valjak...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Create a Cylinder</source>
-      <translation>Napravi cilindar</translation>
+      <translation>Napravi valjak</translation>
     </message>
   </context>
   <context>
@@ -2129,7 +2129,7 @@ projekcije.</translation>
       <location filename="../../CommandParametric.cpp" line="160"/>
       <location filename="../../CommandParametric.cpp" line="165"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="150"/>
@@ -2297,12 +2297,12 @@ projekcije.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Part Cylinder</source>
-      <translation>Napravi cilindar</translation>
+      <translation>Napravi valjak</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Tačke na osnovu geometrije</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2805,7 +2805,7 @@ veličina sačuvane STEP datoteke.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="58"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Obrnuti smer</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -3553,7 +3553,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="51"/>
       <location filename="../../DlgPrimitives.cpp" line="439"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
@@ -3565,7 +3565,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="69"/>
       <location filename="../../DlgPrimitives.cpp" line="626"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
@@ -4039,7 +4039,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgRevolution.ui" line="250"/>
       <location filename="../../DlgRevolution.cpp" line="463"/>
       <source>Select reference</source>
-      <translation>Izaberi referencu</translation>
+      <translation>Izaberi sopstvenu</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
@@ -5317,7 +5317,7 @@ Pojedinačne provere bulovih operacija:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="587"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Proveren objekat</translation>
     </message>
   </context>
   <context>
@@ -6134,12 +6134,12 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Rastojanje u parametarskom prostoru</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Unesi rastojanje:</translation>
     </message>
   </context>
   <context>
@@ -6594,7 +6594,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Vrsta oblika</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6629,7 +6629,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Kombinovano puno telo</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6669,7 +6669,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Centar krive</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6684,7 +6684,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Zatvoren</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6694,12 +6694,12 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Opšti centar mase</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Opšti položaj</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>

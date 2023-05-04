@@ -62,7 +62,6 @@ locations = [
     ["../Mod/Part/Gui/Resources", "Part.qrc"],
     ["../Mod/PartDesign/Gui/Resources", "PartDesign.qrc"],
     ["../Mod/Points/Gui/Resources", "Points.qrc"],
-    ["../Mod/Raytracing/Gui/Resources", "Raytracing.qrc"],
     ["../Mod/ReverseEngineering/Gui/Resources", "ReverseEngineering.qrc"],
     ["../Mod/Robot/Gui/Resources", "Robot.qrc"],
     ["../Mod/Sketcher/Gui/Resources", "Sketcher.qrc"],

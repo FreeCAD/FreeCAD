@@ -123,7 +123,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Rastojanje za koje je referentni profil pomeren prema spolja, normalizovan modulom.</translation>
     </message>
   </context>
   <context>
@@ -773,17 +773,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cylinder</source>
-      <translation>Dodaj cilindar</translation>
+      <translation>Dodaj valjak</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Sphere</source>
-      <translation>Dodaj sferu</translation>
+      <translation>Dodaj loptu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Cone</source>
-      <translation>Dodaj konus</translation>
+      <translation>Dodaj kupu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
@@ -827,17 +827,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Cylinder</source>
-      <translation>Oduzmi cilindar</translation>
+      <translation>Oduzmi valjak</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
-      <translation>Oduzmi sferu</translation>
+      <translation>Oduzmi loptu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
-      <translation>Oduzmi konus</translation>
+      <translation>Oduzmi kupu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="371"/>
@@ -1078,7 +1078,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Koeficijent pomeranja profila</translation>
     </message>
   </context>
   <context>
@@ -1505,12 +1505,12 @@ nula, onda je jednak poluprečniku 2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
-      <translation>Poluprečnici konusa su jednaki</translation>
+      <translation>Poluprečnici kupe su jednaki</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
-      <translation>Poluprečnici konusa ne smeju biti jednaki!</translation>
+      <translation>Poluprečnici kupe ne smeju biti jednaki!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
@@ -1615,7 +1615,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Napravljen je prazan tipski oblik Obaranje ivica !
 </translation>
     </message>
   </context>
@@ -1716,7 +1716,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Napravljen je prazan tipski oblik Zakošenje !
 </translation>
     </message>
   </context>
@@ -1774,7 +1774,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="364"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Izaberi sopstvenu...</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
@@ -1921,7 +1921,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Napravljen je prazan tipski oblik Zaobljenje !
 </translation>
     </message>
   </context>
@@ -1969,13 +1969,13 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
       <location filename="../../TaskHelixParameters.cpp" line="215"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>Horizontalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
       <location filename="../../TaskHelixParameters.cpp" line="214"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>Vertikalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
@@ -1987,7 +1987,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Izaberi sopstvenu...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2047,7 +2047,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="265"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Obrnuti smer</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="272"/>
@@ -2158,7 +2158,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrni smer</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2475,7 +2475,7 @@ iz modela kao referentnu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Izaberi sopstvenu...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2544,12 +2544,12 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="256"/>
       <source>Symmetric to plane</source>
-      <translation type="unfinished">Symmetric to plane</translation>
+      <translation>Simetrično u odnosu na ravan</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="263"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Obrnuti smer</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
@@ -2872,7 +2872,7 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrni smer</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
@@ -2946,18 +2946,18 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>Horizontalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>Vertikalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Izaberi sopstvenu...</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
@@ -2967,12 +2967,12 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation type="unfinished">Symmetric to plane</translation>
+      <translation>Simetrično u odnosu na ravan</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Obrnuti smer</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
@@ -3145,7 +3145,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Napravljen je prazan tipski oblik Debljina !
 </translation>
     </message>
   </context>
@@ -3167,12 +3167,12 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="251"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>Vertikalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="252"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>Horizontalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="254"/>
@@ -3199,7 +3199,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
       <location filename="../../TaskTransformedParameters.cpp" line="313"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Izaberi sopstvenu...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
@@ -3330,17 +3330,17 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Dodaj napravljeni cilindar na osnovu njegovog radijusa, visine i ugla</translation>
+      <translation>Dodaj napravljeni valjak na osnovu njegovog radijusa, visine i ugla</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Dodaj napravljenu sferu na osnovu njenog radijusa i različitih uglova</translation>
+      <translation>Dodaj napravljenu loptu na osnovu njenog radijusa i različitih uglova</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
-      <translation>Dodaj napravljeni konus</translation>
+      <translation>Dodaj napravljenu kupu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
@@ -3373,17 +3373,17 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Oduzmi napravljeni cilindar na osnovu njegovog radijusa, visine i ugla</translation>
+      <translation>Oduzmi napravljeni valjak na osnovu njegovog radijusa, visine i ugla</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Oduzmi napravljenu sferu na osnovu njenog radijusa i različitih uglova</translation>
+      <translation>Oduzmi napravljenu loptu na osnovu njenog radijusa i različitih uglova</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Oduzmi napravljeni konus</translation>
+      <translation>Oduzmi napravljenu kupu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
@@ -3809,13 +3809,13 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>Vertikalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>Horizontalna osa skice</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
@@ -4551,8 +4551,8 @@ Dostupno samo za rupe bez navoja</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Za konusno upušten otvor ovo je 
+dubina kosine upuštanja</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>
@@ -4615,7 +4615,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Obrnuti smer</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="629"/>

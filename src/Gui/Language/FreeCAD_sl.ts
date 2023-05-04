@@ -216,7 +216,7 @@
       <location filename="../TaskView/TaskImage.cpp" line="258"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="65"/>
       <source>Edit image</source>
-      <translation type="unfinished">Edit image</translation>
+      <translation>Uredi sliko</translation>
     </message>
   </context>
   <context>
@@ -1240,7 +1240,7 @@ Neglede na to ima lastnost v skriptih še vedno polni naziv, kot npr. "obj.Ime_S
     <message>
       <location filename="../DlgKeyboard.ui" line="107"/>
       <source>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</source>
-      <translation type="unfinished">To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</translation>
+      <translation>Če želite spremeniti trenutno bližnjico, vnesite novo v sponje polje in pritisnite "Dodeli".</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
@@ -2001,12 +2001,12 @@ makrov, kjer bo pika/vejica vedno natisnjena.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="20"/>
       <source>Language and number format</source>
-      <translation type="unfinished">Language and number format</translation>
+      <translation>Jezik in oblika zapisa števil</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="41"/>
       <source>Language:</source>
-      <translation type="unfinished">Language:</translation>
+      <translation>Jezik:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="55"/>
@@ -2016,7 +2016,7 @@ makrov, kjer bo pika/vejica vedno natisnjena.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="62"/>
       <source>Unit system that should be used for all parts of the application</source>
-      <translation type="unfinished">Unit system that should be used for all parts of the application</translation>
+      <translation>Merski sistem, ki naj se uporablja v celotnem programu</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="71"/>
@@ -2041,7 +2041,7 @@ makrov, kjer bo pika/vejica vedno natisnjena.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="180"/>
       <source>Substitute decimal separator</source>
-      <translation type="unfinished">Substitute decimal separator</translation>
+      <translation>Zamenjaj decimalni ločilnik</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="196"/>
@@ -2086,14 +2086,14 @@ Prilagodite jo lahko glede na velikost zaslona ali po lastnem okusu</translation
     <message>
       <location filename="../DlgGeneral.ui" line="264"/>
       <source>Size of recent file list:</source>
-      <translation type="unfinished">Size of recent file list:</translation>
+      <translation>Velikost seznama nedavnih datotek:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="287"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window (when no document is opened) will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Ozadje glavnega okna bo, (ko ni odprt noben dokument) tlakovano s posebno sliko.
+Za podrobnosti o sliki si oglejte FreeCAD Wiki.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="317"/>
@@ -2855,7 +2855,7 @@ Navedite drugo mapo.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Potreben pozagon</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="494"/>
@@ -3031,12 +3031,12 @@ Navedite drugo mapo.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="106"/>
       <source>Failed to extract project</source>
-      <translation type="unfinished">Failed to extract project</translation>
+      <translation>Projekta ni mogoče izvleči</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="123"/>
       <source>Failed to create project</source>
-      <translation type="unfinished">Failed to create project</translation>
+      <translation>Projekta ni mogoče ustvariti</translation>
     </message>
   </context>
   <context>
@@ -5001,8 +5001,8 @@ ukazni mizi, se prelomijo</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Površina pri izbiranju v trirazsežnem pogledu.
+Pri večjih vrednostih je izbiranje lažje, vendar pa je lahko zaradi tega izbiranje drobnih reči nemogoče.
       </translation>
     </message>
     <message>
@@ -5093,24 +5093,24 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="232"/>
       <source>Linear gradient</source>
-      <translation type="unfinished">Linear gradient</translation>
+      <translation>Premi preliv</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="251"/>
       <source>Radial gradient</source>
-      <translation type="unfinished">Radial gradient</translation>
+      <translation>Krožni preliv</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="329"/>
       <location filename="../DlgSettingsViewColor.cpp" line="148"/>
       <source>Top:</source>
-      <translation type="unfinished">Top:</translation>
+      <translation>Zgoraj:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="356"/>
       <location filename="../DlgSettingsViewColor.cpp" line="149"/>
       <source>Middle:</source>
-      <translation type="unfinished">Middle:</translation>
+      <translation>Sredina:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="315"/>
@@ -5136,7 +5136,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../DlgSettingsViewColor.ui" line="399"/>
       <location filename="../DlgSettingsViewColor.cpp" line="150"/>
       <source>Bottom:</source>
-      <translation type="unfinished">Bottom:</translation>
+      <translation>Spodaj:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="433"/>
@@ -5166,17 +5166,17 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="156"/>
       <source>Central:</source>
-      <translation type="unfinished">Central:</translation>
+      <translation>Središčno:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="157"/>
       <source>Midway:</source>
-      <translation type="unfinished">Midway:</translation>
+      <translation>Na polovici:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="158"/>
       <source>End:</source>
-      <translation type="unfinished">End:</translation>
+      <translation>Konec:</translation>
     </message>
   </context>
   <context>
@@ -6215,7 +6215,7 @@ izbrani pred odprtjem tega pogovrnega okna</translation>
       <location filename="../ReportView.cpp" line="604"/>
       <location filename="../ReportView.cpp" line="628"/>
       <source>Critical messages</source>
-      <translation type="unfinished">Critical messages</translation>
+      <translation>Ključna sporočila</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="609"/>
@@ -8016,22 +8016,22 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../Tree.cpp" line="2774"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Prikaži predmete, skrite v drevesnem pogledu</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2775"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
+      <translation>Prikaži predmete, ki so v drevesnem pogledu označeni kot "skriti"</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2777"/>
       <source>Toggle visibility in tree view</source>
-      <translation type="unfinished">Toggle visibility in tree view</translation>
+      <translation>Preklopi vidnost v drevesnem pogledu</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2778"/>
       <source>Toggles the visibility of selected items in the tree view</source>
-      <translation type="unfinished">Toggles the visibility of selected items in the tree view</translation>
+      <translation>Preklopi vidnost izbranih predmetov v drevesnem pogledu</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2780"/>
@@ -8670,7 +8670,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1853"/>
       <source>Save image</source>
-      <translation type="unfinished">Save image</translation>
+      <translation>Shrani sliko</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2004"/>
@@ -8787,18 +8787,18 @@ Ali želite nadaljevati?</translation>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="989"/>
       <source>Notifier</source>
-      <translation type="unfinished">Notifier</translation>
+      <translation>Obvestilnik</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="990"/>
       <source>Message</source>
-      <translation type="unfinished">Message</translation>
+      <translation>Sporočilo</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="931"/>
       <source>Notifier: </source>
-      <translation type="unfinished">Notifier: </translation>
+      <translation>Obvestilnik: </translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="933"/>
@@ -8813,7 +8813,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="1003"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
+      <translation>Preveč odprtih nevsivljivih obvestil. Obvestila so prezrta!</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1051"/>
@@ -9362,7 +9362,7 @@ bodo izgubljene.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="146"/>
       <source>Change image...</source>
-      <translation type="unfinished">Change image...</translation>
+      <translation>Zamenjaj sliko ...</translation>
     </message>
   </context>
   <context>
@@ -11746,7 +11746,7 @@ bodo izgubljene.
     <message>
       <location filename="../CommandView.cpp" line="1812"/>
       <source>Save image...</source>
-      <translation type="unfinished">Save image...</translation>
+      <translation>Shrani sliko ...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1813"/>
@@ -12049,7 +12049,7 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <location filename="../Workbench.cpp" line="531"/>
       <source>Clipboard</source>
-      <translation type="unfinished">Clipboard</translation>
+      <translation>Odložišče</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="532"/>
@@ -12166,7 +12166,7 @@ Ali želite vseeno nadaljevati?</translation>
       <location filename="../DlgSettingsNotificationArea.ui" line="14"/>
       <location filename="../DlgSettingsNotificationArea.cpp" line="57"/>
       <source>Notification Area</source>
-      <translation type="unfinished">Notification Area</translation>
+      <translation>Obvestišče</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="20"/>
@@ -12176,32 +12176,32 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="26"/>
       <source>The Notification area will appear in the status bar</source>
-      <translation type="unfinished">The Notification area will appear in the status bar</translation>
+      <translation>Obvestišče se bo pojavilo v vrstici stanja</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Omogoči obvestišče</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="45"/>
       <source>Non-intrusive notifications will appear next to the notification area in the status bar</source>
-      <translation type="unfinished">Non-intrusive notifications will appear next to the notification area in the status bar</translation>
+      <translation>Nevsiljiva ovestila bodo prikazana polega obvestišča v vrstici stanja</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="48"/>
       <source>Enable non-intrusive notifications</source>
-      <translation type="unfinished">Enable non-intrusive notifications</translation>
+      <translation>Omogoči nevsiljiva obvestila</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="67"/>
       <source>Additional data Sources</source>
-      <translation type="unfinished">Additional data Sources</translation>
+      <translation>Dodatni viri podatkov</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="73"/>
       <source>Errors will appear in the notification area</source>
-      <translation type="unfinished">Errors will appear in the notification area</translation>
+      <translation>Napake bodo prikazane v obvestišču</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="76"/>
@@ -12211,7 +12211,7 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="92"/>
       <source>Warnings will appear in the notification area</source>
-      <translation type="unfinished">Warnings will appear in the notification area</translation>
+      <translation>Opozorila bodo prikazana v obvestišči</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="95"/>
@@ -12221,22 +12221,22 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="114"/>
       <source>Non-Intrusive Notifications</source>
-      <translation type="unfinished">Non-Intrusive Notifications</translation>
+      <translation>Nevsiljiva obvestila</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="120"/>
       <source>Minimum Duration:</source>
-      <translation type="unfinished">Minimum Duration:</translation>
+      <translation>Najkrajše trajanje:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="130"/>
       <source>Maximum Duration:</source>
-      <translation type="unfinished">Maximum Duration:</translation>
+      <translation>Najdaljše trajanje:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="137"/>
       <source>Duration during which the notification will be shown (unless mouse buttons are clicked)</source>
-      <translation type="unfinished">Duration during which the notification will be shown (unless mouse buttons are clicked)</translation>
+      <translation>Trajanje prikazovanja obvestila (razen pri kliku z miškinimi gumbi)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="140"/>
@@ -12247,77 +12247,77 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="162"/>
       <source>Minimum duration during which the notification will be shown (unless notification clicked)</source>
-      <translation type="unfinished">Minimum duration during which the notification will be shown (unless notification clicked)</translation>
+      <translation>Najkrajše trajanje prikazovanja obvestila (razen, če kliknete na obvestilo)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="181"/>
       <source>Maximum Number of Notifications:</source>
-      <translation type="unfinished">Maximum Number of Notifications:</translation>
+      <translation>Največje število obvestil:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="188"/>
       <source>Maximum number of notifications that will be simultaneously present on the screen</source>
-      <translation type="unfinished">Maximum number of notifications that will be simultaneously present on the screen</translation>
+      <translation>Največje število istočasno prikazanih obvestil</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="204"/>
       <source>Notification width:</source>
-      <translation type="unfinished">Notification width:</translation>
+      <translation>Širina obvestil:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="211"/>
       <source>Width of the notification in pixels</source>
-      <translation type="unfinished">Width of the notification in pixels</translation>
+      <translation>Širina obvestila v slikovnih točkah</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="233"/>
       <source>Any open non-intrusive notifications will disappear when another window is activated</source>
-      <translation type="unfinished">Any open non-intrusive notifications will disappear when another window is activated</translation>
+      <translation>Vsa nevsiljiva obvestila se bodo ob izbiri drugega okna zaprla</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
-      <translation type="unfinished">Hide when other window is activated</translation>
+      <translation>Skrij, ko se omogoči drugo okno</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="252"/>
       <source>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</source>
-      <translation type="unfinished">Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</translation>
+      <translation>Prepreči pojavljanje nevsiljivih opozoril, ko FreeCAD-ovo okno ni dejavno</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation type="unfinished">Do not show when inactive</translation>
+      <translation>Ne prikaži ob nedejavnosti</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
       <source>Message List</source>
-      <translation type="unfinished">Message List</translation>
+      <translation>Seznam sporočil</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="280"/>
       <source>Limit the number of messages that will be kept in the list. If 0 there is no limit.</source>
-      <translation type="unfinished">Limit the number of messages that will be kept in the list. If 0 there is no limit.</translation>
+      <translation>Omeji število v seznamu shranjenih sporočil. Nič pomeni brez omejitve.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="299"/>
       <source>Maximum Messages (0 = no limit):</source>
-      <translation type="unfinished">Maximum Messages (0 = no limit):</translation>
+      <translation>Največ sporočil (0=brez omejitve):</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="306"/>
       <source>Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</source>
-      <translation type="unfinished">Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</translation>
+      <translation>Odstrani s seznama sporočil uporabniška obvestila, ko preteče najdaljše trajanje nevsiljivih sporočil.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="309"/>
       <source>Auto-remove User Notifications</source>
-      <translation type="unfinished">Auto-remove User Notifications</translation>
+      <translation>Samoodstranitev uporabniških obvestil</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.cpp" line="58"/>
       <source>Activation of the Notification Area only takes effect after an application restart.</source>
-      <translation type="unfinished">Activation of the Notification Area only takes effect after an application restart.</translation>
+      <translation>Omogočenje obvestišča stopi v veljavo šele po pozagonu programa.</translation>
     </message>
   </context>
   <context>
@@ -12331,13 +12331,13 @@ Ali želite vseeno nadaljevati?</translation>
       <location filename="../DlgSettingsWorkbenches.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delovna okolja lahko prerazporeditev s povleci-spusti. Dodatna delovna okolje je mogoče namestiti preko upravljalnika dodatkov.&lt;/p&gt;&lt;p&gt;
+Trenutno ima vaš sistem naslednja delovna okolja:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="63"/>
       <source>Start up workbench:</source>
-      <translation type="unfinished">Start up workbench:</translation>
+      <translation>Začetno delovno okolje:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
@@ -12385,7 +12385,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Ravnine</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
@@ -12418,12 +12418,12 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image plane settings</source>
-      <translation type="unfinished">Image plane settings</translation>
+      <translation>Nastavitve ravnine slike</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Ravnine</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
@@ -12453,27 +12453,27 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
       <source>X distance:</source>
-      <translation type="unfinished">X distance:</translation>
+      <translation>Razdalja x:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="123"/>
       <source>Y distance:</source>
-      <translation type="unfinished">Y distance:</translation>
+      <translation>Razdalja y:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="143"/>
       <source>Rotation :</source>
-      <translation type="unfinished">Rotation :</translation>
+      <translation>Zasuk :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
       <source>Transparency :</source>
-      <translation type="unfinished">Transparency :</translation>
+      <translation>Prozornost :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="191"/>
       <source>Image size</source>
-      <translation type="unfinished">Image size</translation>
+      <translation>Velikost slike</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="197"/>
@@ -12488,12 +12488,12 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="237"/>
       <source>Keep aspect ratio</source>
-      <translation type="unfinished">Keep aspect ratio</translation>
+      <translation>Ohrani razmerje stranic</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
-      <translation type="unfinished">Interactively scale the image by setting a length between two points of the image.</translation>
+      <translation>Sodejno prevelikostenje slike z določitvijo razdalje med dvema točkama slike.</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="250"/>
@@ -12503,7 +12503,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="257"/>
       <source>Calibration</source>
-      <translation type="unfinished">Calibration</translation>
+      <translation>Umerjanje</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
@@ -12521,7 +12521,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../SoFCColorGradient.h" line="77"/>
       <source>Color Gradient</source>
-      <translation type="unfinished">Color Gradient</translation>
+      <translation>Barvni preliv</translation>
     </message>
   </context>
   <context>
@@ -12529,27 +12529,27 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="85"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation type="unfinished">If unchecked, %1 will not appear in the available workbenches.</translation>
+      <translation>Če je odznačeno, %1 ne bo prikazan v razpoložljivih delovnih okoljih.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="90"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</translation>
+      <translation>Takšen je trenutni začetni modul, ki mora biti omogočen. Če želite to spremeniti, pojdite ne Prednastavitve/Splošno/Samodejno nalaganje.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="113"/>
       <source>Shortcut to activate this workbench.</source>
-      <translation type="unfinished">Shortcut to activate this workbench.</translation>
+      <translation>Bližnjica za omogočanje tega delovnega okolja.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="127"/>
       <source>Auto-load</source>
-      <translation type="unfinished">Auto-load</translation>
+      <translation>Samodejno nalaganje</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="128"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">If checked, %1 will be loaded automatically when FreeCAD starts up</translation>
+      <translation>Če je označeno, bo %1 samodejno naložen ob zagonu FreeCADa</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="134"/>
@@ -12569,7 +12569,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="145"/>
       <source>To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</source>
-      <translation type="unfinished">To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</translation>
+      <translation>Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.</translation>
     </message>
   </context>
   <context>
@@ -12595,7 +12595,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../SoFCColorLegend.h" line="72"/>
       <source>Color Legend</source>
-      <translation type="unfinished">Color Legend</translation>
+      <translation>Legenda barv</translation>
     </message>
   </context>
   <context>
@@ -12608,12 +12608,12 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="563"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Izbriši uporabniška obvestila</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="570"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Izbriši vse</translation>
     </message>
   </context>
   <context>
@@ -12621,12 +12621,12 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="839"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Izbriši uporabniška obvestila</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="849"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Izbriši vse</translation>
     </message>
   </context>
   <context>
@@ -12634,7 +12634,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../ImageView.cpp" line="75"/>
       <source>Failed to load image file</source>
-      <translation type="unfinished">Failed to load image file</translation>
+      <translation>Ni bilo mogoče naložiti slikovne datoteke</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="76"/>

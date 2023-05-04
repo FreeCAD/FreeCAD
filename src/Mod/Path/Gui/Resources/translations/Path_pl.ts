@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected paths</source>
-      <translation>Tworzy kombinacje z wybranych ścieżek</translation>
+      <translation>Tworzy złożenie z wybranych ścieżek</translation>
     </message>
   </context>
   <context>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
-      <translation>Od Kształtu</translation>
+      <translation>Z Kształtu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz szablon do użycia.&lt;/p&gt;&lt;p&gt;Jeśli nie ma dostępnych żadnych szablonów, można je utworzyć z menu podręcznego w istniejącym zadaniu. Nazwij plik job_*.json i umieść go w katalogu makco lub path (zobacz preferencje), aby był możliwy do wybrania z tej listy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz szablon do użycia.&lt;/p&gt;&lt;p&gt;Jeśli nie ma dostępnych żadnych szablonów, można je utworzyć z menu podręcznego w istniejącym zadaniu. Nazwij plik job_*.json i umieść go w katalogu macro lub path (zobacz preferencje), aby był możliwy do wybrania z tej listy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>

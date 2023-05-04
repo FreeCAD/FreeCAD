@@ -237,7 +237,7 @@ Poate fi „Numărare” pentru a număra obiectele sau nume de proprietate, cum
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>O unitate opțională pentru a exprima valoarea rezultată. Ex: m^3 (puteți scrie și m³ sau m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -250,10 +250,10 @@ Poate fi „Numărare” pentru a număra obiectele sau nume de proprietate, cum
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>O listă opțională de nume de obiecte separate prin punct și virgulă (;).
+(nume interne, nu etichete), care trebuie luate în considerare de această operațiune.
+Dacă lista conține grupuri, copiii vor fi adăugați.
+Lăsați necompletat pentru a utiliza toate obiectele din document</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
@@ -263,12 +263,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;O listă opțională separată cu punct și virgulă (;) de filtre proprietate:valoare. Predată! la un nume de proprietate pentru a inversa efectul filerului (excludeți obiectele care se potrivesc cu filtrul). Obiectele a căror proprietate conține valoarea vor fi potrivite. Exemple de filtre valide (totul nu face distincție între majuscule și minuscule):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Nume:Perete&lt;/span&gt; - Se vor lua în considerare numai obiectele cu „perete”; în numele lor (nume intern)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Se vor lua în considerare numai obiectele care NU au „perete”; în numele lor (nume intern)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Descriere:Win&lt;/span&gt; - Se vor lua în considerare numai obiectele cu „win”; în descrierea lor&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Se vor lua în considerare numai obiectele care NU au „win”; în eticheta lor&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Se vor lua în considerare numai obiectele a căror tip Ifc este „Perete”&lt;/p&gt;&lt;p&gt; &lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Se vor lua în considerare numai obiectele a căror etichetă NU este „Perete”&lt;/p&gt;&lt;p&gt;Dacă lăsați acest câmp gol, nu se filtrează se aplică&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>În cazul în care acest lucru este activat, o foaie de calcul asociată care conține rezultatele va fi întreținut împreună cu acest obiect program</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="114"/>
@@ -278,7 +278,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Dacă acest lucru este activat, liniile suplimentare vor fi completate cu fiecare obiect luat în considerare. Dacă nu, numai totalurile.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -288,7 +288,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>În cazul în care acest lucru este activat, programul și foaia de calcul asociată sunt actualizate ori de câte ori documentul este recalculat.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -348,7 +348,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="215"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Acest lucru exportă rezultatele într-un fișier CSV sau Markdown. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Notă pentru exportul CSV:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;În Libreoffice, puteți păstra acest fișier CSV legat făcând clic dreapta bara de file Foi de calcul -&amp;gt; Foaie nouă -&amp;gt; Din fișier -&amp;gt; Link (Notă: începând cu LibreOffice v6.x, calea corectă acum este: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="218"/>
@@ -715,7 +715,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>În cazul în care acest lucru este verificat, atunci când un obiect Arch are un material, obiectul va lua culoarea materialului. Aceasta poate fi suprascrisă pentru fiecare obiect.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="226"/>
@@ -826,8 +826,8 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/preferences-arch.ui" line="585"/>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
-      <translation type="unfinished">This is the SVG stroke-dasharray property to apply
-to projections of hidden objects.</translation>
+      <translation>Aceasta este proprietatea SVG stroke - dasharray care trebuie aplicată
+la proiecții de obiecte ascunse.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
@@ -838,8 +838,8 @@ to projections of hidden objects.</translation>
       <location filename="../ui/preferences-arch.ui" line="645"/>
       <source>Scaling factor for patterns used by object that have
 a Footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by object that have
-a Footprint display mode</translation>
+      <translation>Factorul de scalare pentru modelele utilizate de obiectul care au
+un mod de afișare footprint</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="673"/>
@@ -854,7 +854,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org) to connect to.</translation>
+      <translation>URL-ul unei instanțe de server bim (www.bimserver.org) la care să te conectezi.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
@@ -866,9 +866,9 @@ a Footprint display mode</translation>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BimServer in browser"
-button will open the Bim Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>Dacă aceasta este selectată, „Deschide BimServer în browser”
+butonul va deschide interfața Bim Server într-un browser extern
+în loc de bancul de lucru web FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
@@ -1118,8 +1118,8 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation type="unfinished">Shows verbose debug messages during import and export
-of IFC files in the Report view panel</translation>
+      <translation>Arată mesajele de depanare verbose în timpul importului şi exportului
+de fişiere IFC în panoul de afișare raport</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>
@@ -1130,8 +1130,8 @@ of IFC files in the Report view panel</translation>
       <location filename="../ui/preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation type="unfinished">Clones are used when objects have shared geometry
-One object is the base object, the others are clones.</translation>
+      <translation>Clonurile sunt folosite atunci când obiectele au fost partajate geometria
+Un obiect este obiectul de bază, celelalte sunt clonate.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
@@ -1149,14 +1149,14 @@ for example, 3 if you have a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
 if you start getting crashes when you set multiple cores.</source>
-      <translation type="unfinished">EXPERIMENTAL
-The number of cores to use in multicore mode.
-Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
+      <translation>EXPERIMENTAL
+Numărul de nuclee de utilizat în modul multicore.
+Păstrați 0 pentru a dezactiva modul multicore.
+Valoarea maximă ar trebui să fie numărul dvs. de nuclee minus 1,
+de exemplu, 3 dacă aveți un procesor cu 4 nuclee.
 
-Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</translation>
+Setați-l la 1 pentru a utiliza modul multicore în modul single-core; asta e mai sigur
+dacă începeți să primiți blocări atunci când setați mai multe nuclee.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
@@ -1230,15 +1230,15 @@ if you start getting crashes when you set multiple cores.</translation>
       <location filename="../ui/preferences-ifc.ui" line="265"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of the specified element will be imported.
-Keep the element IfcProduct to import all building elements.</translation>
+      <translation>Vor fi importate doar subtipuri ale elementului specificat.
+Păstrați elementul IfcProdus pentru a importa toate elementele de construcție.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="284"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
-      <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
-will already have their openings subtracted</translation>
+      <translation>Deschiderile vor fi importate ca substraturi, în caz contrar formele de perete
+vor avea deja deschiderile lor scăzute</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="288"/>
@@ -1249,8 +1249,8 @@ will already have their openings subtracted</translation>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation type="unfinished">The importer will try to detect extrusions.
-Note that this might slow things down.</translation>
+      <translation>Importatorul va încerca să detecteze extrudările.
+Rețineți că acest lucru ar putea încetini lucrurile.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="305"/>
@@ -1270,7 +1270,7 @@ Note that this might slow things down.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+      <translation>Numele obiectului vor fi prefixate cu numărul ID-ului IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
@@ -1281,33 +1281,33 @@ Note that this might slow things down.</translation>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
-they will be treated as one.</translation>
+      <translation>Dacă mai multe materiale cu același nume și aceeași culoare sunt găsite în fișierul IFC,
+vor fi tratate ca unul.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="354"/>
       <source>Merge materials with same name and same color</source>
-      <translation type="unfinished">Merge materials with same name and same color</translation>
+      <translation>Îmbinați materiale cu același nume și aceeași culoare</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
-      <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
+      <translation>Fiecare obiect va avea proprietățile IFC stocate într-un obiect foii de calcul</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="370"/>
       <source>Import IFC properties in spreadsheet</source>
-      <translation type="unfinished">Import IFC properties in spreadsheet</translation>
+      <translation>Importați proprietățile IFC în foaia de calcul</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
+      <translation>Fișierele IFC pot conține geometrie necurată sau nesolidă. Dacă această opțiune este bifată, toată geometria este importată, indiferent de valabilitatea acestora.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
-      <translation type="unfinished">Allow invalid shapes</translation>
+      <translation>Permite forme invalide</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
@@ -1317,14 +1317,14 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="408"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
-      <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
+      <translation>Lista separată prin virgulă a entităților IFC care urmează să fie excluse de la import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="429"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation type="unfinished">Fit view during import on the imported objects.
-This will slow down the import, but one can watch the import.</translation>
+      <translation>Afișează vizualizarea în timpul importului pe obiectele importate.
+Acest lucru va încetini importul, dar se poate urmări importul.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="433"/>
@@ -1335,8 +1335,8 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>Creează un model complet parametru la import folosind
+Proprietățile obiectului FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="450"/>
@@ -1349,15 +1349,15 @@ FreeCAD object properties</translation>
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</source>
-      <translation type="unfinished">If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
-objects that are usually found in an IFC file are not imported, and all objects
-are placed in a 'Group' instead.
-'Buildings' and 'Storeys' are still imported if there is more than one.</translation>
+      <translation>În cazul în care această opțiune este bifată, implicit 'Proiect', 'Site', 'Building', și 'Storeys'
+obiectele care sunt de obicei găsite într-un fișier IFC nu sunt importate, și toate obiectele
+sunt plasate în schimb într-un 'Grup'.
+'Clădiri' și 'Magazine' sunt încă importate dacă există mai mult de unul.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="469"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
-      <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
+      <translation>Înlocuiți „Proiect”, „Site”, „Clădire” și „Etaj” cu „Grup”</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
@@ -1378,7 +1378,7 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-dae.ui" line="41"/>
       <source>All dimensions in the file will be scaled with this factor</source>
-      <translation type="unfinished">All dimensions in the file will be scaled with this factor</translation>
+      <translation>Toate dimensiunile din fișier vor fi scalate cu acest factor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="67"/>
@@ -1389,8 +1389,8 @@ are placed in a 'Group' instead.
       <location filename="../ui/preferences-dae.ui" line="74"/>
       <source>Meshing program that should be used.
 If using Netgen, make sure that it is available.</source>
-      <translation type="unfinished">Meshing program that should be used.
-If using Netgen, make sure that it is available.</translation>
+      <translation>Program de redirecționare care ar trebui utilizat.
+Dacă utilizați rețeaua, asigurați-vă că este disponibilă.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="85"/>
@@ -1420,7 +1420,7 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
+      <translation>Valoarea teselării de utilizat cu programul Builtin și Mefisto.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
@@ -1437,9 +1437,9 @@ If using Netgen, make sure that it is available.</translation>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation type="unfinished">Grading value to use for meshing using Netgen.
-This value describes how fast the mesh size decreases.
-The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</translation>
+      <translation>Valoarea de clasificare de utilizat pentru rețea folosind Netgen.
+Această valoare descrie cât de repede scade dimensiunea ochiului.
+Gradientul mărimii rețelei locale h(x) este limitat de |Δh(x)| ≤ 1/valoare.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
@@ -1449,7 +1449,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="194"/>
       <source>Maximum number of segments per edge</source>
-      <translation type="unfinished">Maximum number of segments per edge</translation>
+      <translation>Număr maxim de segmente pe muchie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="217"/>
@@ -1459,12 +1459,12 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="224"/>
       <source>Number of segments per radius</source>
-      <translation type="unfinished">Number of segments per radius</translation>
+      <translation>Numărul de segmente pe rază</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="247"/>
       <source>Allow a second order mesh</source>
-      <translation type="unfinished">Allow a second order mesh</translation>
+      <translation>Permiteți o plasă de comandă a doua</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
@@ -1484,7 +1484,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
       <source>Allow quadrilateral faces</source>
-      <translation type="unfinished">Allow quadrilateral faces</translation>
+      <translation>Permite fețe patrulatere</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="293"/>
@@ -1494,7 +1494,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC export</source>
-      <translation type="unfinished">IFC export</translation>
+      <translation>export IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
@@ -1505,7 +1505,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation type="unfinished">Show this dialog when exporting</translation>
+      <translation>Afișați acest dialog la export</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -1514,37 +1514,37 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
 - Standard + structural: both types of models.</source>
-      <translation type="unfinished">The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</translation>
+      <translation>Tipul de obiecte pe care doriți să le exportați:
+- Model standard: obiecte solide.
+- Analiză structurală: model wireframe pentru calcule structurale.
+- Standard + structural: ambele tipuri de modele.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Tipul de export</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Model standard</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Analiză structurală</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Standard + structural</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
-      <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions.
-Use this to force all objects to be exported as BREP geometry.</translation>
+      <translation>Unii utilizatori IFC nu le plac obiectele exportate ca extruzii.
+Utilizați aceasta pentru a forța toate obiectele să fie exportate ca geometrie BREP.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="115"/>
@@ -1566,9 +1566,9 @@ Use this to force all objects to be exported as BREP geometry.</translation>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
-are decomposed into flat facets.
-If this is checked, an additional calculation is done to join coplanar facets.</translation>
+      <translation>Forme curbe care nu pot fi reprezentate ca curbe în IFC
+sunt descompuse în fațete plate.
+Dacă aceasta este bifată, se face un calcul suplimentar pentru a uni fațetele coplanare.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="149"/>
@@ -1580,14 +1580,14 @@ If this is checked, an additional calculation is done to join coplanar facets.</
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation type="unfinished">When exporting objects without unique ID (UID), the generated UID
-will be stored inside the FreeCAD object for reuse next time that object
-is exported. This leads to smaller differences between file versions.</translation>
+      <translation>Când exportați obiecte fără ID unic (UID), UID-ul generat
+va fi stocat în interiorul obiectului FreeCAD pentru a fi reutilizat data viitoare acel obiect
+este exportat. Acest lucru duce la diferențe mai mici între versiunile de fișiere.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
-      <translation type="unfinished">Store IFC unique ID in FreeCAD objects</translation>
+      <translation>Stocați ID-ul unic IFC în obiectele FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="183"/>
@@ -1595,10 +1595,10 @@ is exported. This leads to smaller differences between file versions.</translati
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</source>
-      <translation type="unfinished">IFCOpenShell is a library that allows to import IFC files.
-Its serializer functionality allows to give it an OCC shape and it will
-produce adequate IFC geometry: NURBS, faceted, or anything else.
-Note: The serializer is still an experimental feature!</translation>
+      <translation>IFCOpenShell este o bibliotecă care permite importarea fișierelor IFC.
+Funcționalitatea sa de serializare permite să-i dea o formă OCC și o va face
+produce geometrie IFC adecvată: NURBS, fațetate sau orice altceva.
+Notă: serializatorul este încă o caracteristică experimentală!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="189"/>
@@ -1608,7 +1608,7 @@ Note: The serializer is still an experimental feature!</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="202"/>
       <source>2D objects will be exported as IfcAnnotation</source>
-      <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
+      <translation>Obiectele 2D vor fi exportate ca IfcAnnotation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
@@ -1619,8 +1619,8 @@ Note: The serializer is still an experimental feature!</translation>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation type="unfinished">All FreeCAD object properties will be stored inside the exported objects,
-allowing to recreate a full parametric model on reimport.</translation>
+      <translation>Toate proprietățile obiectului FreeCAD vor fi stocate în interiorul obiectelor exportate,
+permițând recrearea unui model complet parametric la reimportare.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
@@ -1631,8 +1631,8 @@ allowing to recreate a full parametric model on reimport.</translation>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
-      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable.</translation>
+      <translation>Atunci când este posibil, entități similare vor fi utilizate o singură dată în fișier, dacă este posibil.
+Acest lucru poate reduce mult dimensiunea fișierului, dar o va face mai puțin ușor de citit.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="242"/>
@@ -1645,10 +1645,10 @@ This can reduce the file size a lot, but will make it less easily readable.</tra
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
 If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</source>
-      <translation type="unfinished">When possible, IFC objects that are extruded rectangles will be
-exported as IfcRectangleProfileDef.
-However, some other applications might have problems importing that entity.
-If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
+      <translation>Când este posibil, obiectele IFC care sunt extrudate dreptunghiurile vor fi
+exportate ca IfcRectangleProfileDef.
+Cu toate acestea, alte aplicații ar putea avea probleme la importul entității respective.
+În acest caz, puteți dezactiva acest lucru și toate profilurile vor fi exportate ca IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="264"/>
@@ -1661,10 +1661,10 @@ If this is your case, you can disable this and then all profiles will be exporte
 like IfcWallStandardCase or IfcBeamStandardCase.
 If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions
-like IfcWallStandardCase or IfcBeamStandardCase.
-If this option is turned on, FreeCAD will automatically export such objects
-as standard cases when the necessary conditions are met.</translation>
+      <translation>Unele tipuri de IFC precum IfcWall sau IfcBeam au versiuni standard speciale
+precum IfcWallStandardCase sau IfcBeamStandardCase.
+Dacă această opţiune este activată, FreeCAD va exporta automat astfel de obiecte
+ca cazuri standard atunci când sunt îndeplinite condiţiile necesare.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
@@ -1675,39 +1675,39 @@ as standard cases when the necessary conditions are met.</translation>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice is to have at least one in the file.</translation>
+      <translation>Dacă nici un site nu este găsit în documentul FreeCAD, va fi adăugat unul implicit.
+Un site nu este obligatoriu, dar o practică obișnuită este de a avea cel puțin unul în fișier.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>Adăugați site-ul implicit dacă nu este găsit unul în document</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="313"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
-      <translation type="unfinished">If no building is found in the FreeCAD document, a default one will be added.
-Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
-However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</translation>
+      <translation>Dacă nu este găsită nici o clădire în documentul FreeCAD, se va adăuga una implicită.
+Avertisment: Standardul IFC cere cel puțin o clădire în fiecare fișier. Prin dezactivarea acestei opțiuni, veți produce un fișier IFC nestandardizat.
+Cu toate acestea, la FreeCAD, credem că a avea o clădire nu ar trebui să fie obligatorie, și această opțiune are șansa de a ne demonstra punctul de vedere.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+      <translation>Adăugați o clădire implicită dacă una nu este găsită în document (niciun standard)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="334"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
-      <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
-A building storey is not mandatory but a common practice to have at least one in the file.</translation>
+      <translation>Dacă în documentul FreeCAD nu se găseşte nici un etaj de clădire, se va adăuga unul implicit.
+O clădire nu este obligatorie, ci o practică comună de a avea cel puțin una în fișier.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Add default building storey if one is not found in the document</source>
-      <translation type="unfinished">Add default building storey if one is not found in the document</translation>
+      <translation>Adăugați un etaj de clădire implicit dacă nu este găsit unul în document</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="353"/>
@@ -1718,27 +1718,27 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation type="unfinished">The units you want your IFC file to be exported to.
+      <translation>Unitățile în care doriți să fie exportat fișierul dvs. IFC.
 
-Note that IFC files are ALWAYS written in metric units; imperial units
-are only a conversion factor applied on top of them.
-However, some BIM applications will use this factor to choose which
-unit to work with when opening the file.</translation>
+Rețineți că fișierele IFC sunt ÎNTOTDEAUNA scrise în unități metrice; unități imperiale
+sunt doar un factor de conversie aplicat peste ele.
+Cu toate acestea, unele aplicații BIM vor folosi acest factor pentru a alege care
+unitate cu care să lucreze la deschiderea fișierului.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation type="unfinished">IFC file units</translation>
+      <translation>Unități fișier IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>Metric</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Imperial</translation>
     </message>
   </context>
   <context>
@@ -1758,59 +1758,59 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="128"/>
       <location filename="../../ArchStructure.py" line="434"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Coloana</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Creează structuri din selecţie</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Vă rugăm să selectaţi mai întâi obiectul de bază şi apoi marginile pentru a utiliza ca căi de extrudare</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="245"/>
       <source>Create Structural System</source>
-      <translation type="unfinished">Create Structural System</translation>
+      <translation>Creare sistem structural</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Vă rugăm să selectaţi cel puţin un obiect axis</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="301"/>
       <location filename="../../ArchStructure.py" line="345"/>
       <source>Create Structure</source>
-      <translation type="unfinished">Create Structure</translation>
+      <translation>Crează structură</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>Primul punct al grinzii</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Punctul de bază al coloanei</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="341"/>
       <location filename="../../ArchWall.py" line="385"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Următorul punct</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="428"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>Opțiuni structură</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>Mod desenare</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
@@ -1825,7 +1825,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchWindow.py" line="408"/>
       <location filename="../../ArchPanel.py" line="212"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Presetare</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
@@ -1854,139 +1854,138 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Comutare L/H</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Comutare L/W</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="493"/>
       <location filename="../../ArchPanel.py" line="247"/>
       <location filename="../../ArchWall.py" line="534"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>Continuare</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="775"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
+      <translation>Eroare: Forma de bază nu a putut fi extrasă de-a lungul obiectului acestei unelte</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="801"/>
       <location filename="../../ArchWall.py" line="960"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation>Această plasă este un solid nevalid</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="865"/>
       <location filename="../../ArchPanel.py" line="524"/>
       <source>Facemaker returned an error</source>
-      <translation type="unfinished">Facemaker returned an error</translation>
+      <translation>Facemaker a returnat o eroare</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1180"/>
       <source>Node Tools</source>
-      <translation type="unfinished">Node Tools</translation>
+      <translation>Unelte de modul</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1185"/>
       <source>Reset nodes</source>
-      <translation type="unfinished">Reset nodes</translation>
+      <translation>Réinitializare Noduri</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1192"/>
       <source>Edit nodes</source>
-      <translation type="unfinished">Edit nodes</translation>
+      <translation>Modul de editare</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1198"/>
       <source>Extend nodes</source>
-      <translation type="unfinished">Extend nodes</translation>
+      <translation>Extinde nodurile</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1199"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
-      <translation type="unfinished">Extends the nodes of this element to reach the nodes of another element</translation>
+      <translation>Extinde nodurile acestui element pentru a ajunge la nodurile altui element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1205"/>
       <source>Connect nodes</source>
-      <translation type="unfinished">Connect nodes</translation>
+      <translation>Conectare Noduri</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1206"/>
       <source>Connects nodes of this element with the nodes of another element</source>
-      <translation type="unfinished">Connects nodes of this element with the nodes of another element</translation>
+      <translation>Conectează nodurile acestui element cu nodurile altui element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1212"/>
       <source>Toggle all nodes</source>
-      <translation type="unfinished">Toggle all nodes</translation>
+      <translation>Comută toate nodurile</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1213"/>
       <source>Toggles all structural nodes of the document on/off</source>
-      <translation type="unfinished">Toggles all structural nodes of the document on/off</translation>
+      <translation>Activează/dezactivează toate nodurile structurale ale documentului pornit/oprit</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1218"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Instrumente de extracție</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1223"/>
       <location filename="../../ArchStructure.py" line="1357"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Selectează uneala...</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1224"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Selectați obiectul sau marginile pentru a fi folosite ca unealtă (cale de extrudare)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1247"/>
       <location filename="../../ArchStructure.py" line="1279"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Alege alt obiect Structura:</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1252"/>
       <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Obiectul ales nu este o Structură</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Obiectul ales nu are noduri structurale</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1258"/>
       <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Unul dintre aceste obiecte are mai mult de 2 noduri</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1265"/>
       <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Nu s-a putut găsi un punct potrivit de intersecție</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1268"/>
       <source>Intersection found.
 </source>
-      <translation type="unfinished">Intersection found.
-</translation>
+      <translation>S-a găsit intersecția.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1300"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>S-a găsit intersecția.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
@@ -1997,47 +1996,47 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="1441"/>
       <location filename="../../ArchPanel.py" line="756"/>
       <source>Couldn't compute a shape</source>
-      <translation type="unfinished">Couldn't compute a shape</translation>
+      <translation>Nu s-a putut calcula o formă</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
       <source>You must select a base shape object and optionally a mesh object</source>
-      <translation type="unfinished">You must select a base shape object and optionally a mesh object</translation>
+      <translation>Trebuie să selectați un obiect cu formă de bază și, opțional, un obiect plasă</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="205"/>
       <source>Create Equipment</source>
-      <translation type="unfinished">Create Equipment</translation>
+      <translation>Creați echipament</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="240"/>
       <source>You must select exactly one base object</source>
-      <translation type="unfinished">You must select exactly one base object</translation>
+      <translation>Trebuie să selectați exact un obiect de bază</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="244"/>
       <source>The selected object must be a mesh</source>
-      <translation type="unfinished">The selected object must be a mesh</translation>
+      <translation>Obiectul selectat trebuie să fie o plasă</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="248"/>
       <source>This mesh has more than 1000 facets.</source>
-      <translation type="unfinished">This mesh has more than 1000 facets.</translation>
+      <translation>Această plasă are mai mult de 1000 de fațete.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="249"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation>Această operație poate dura mult timp. Continua?</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="256"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>Plasa are peste 500 de fațete. Acest lucru va dura câteva minute...</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="257"/>
       <source>Create 3 views</source>
-      <translation type="unfinished">Create 3 views</translation>
+      <translation>Creați 3 vizualizări</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
@@ -2047,7 +2046,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="302"/>
       <source>Create BuildingPart</source>
-      <translation type="unfinished">Create BuildingPart</translation>
+      <translation>Creați o parte de clădire</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
@@ -2062,12 +2061,12 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
       <source>Set working plane</source>
-      <translation type="unfinished">Set working plane</translation>
+      <translation>Setați planul de lucru</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="923"/>
       <source>Write camera position</source>
-      <translation type="unfinished">Write camera position</translation>
+      <translation>Scrieți poziția camerei</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
@@ -2078,12 +2077,12 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchBuildingPart.py" line="937"/>
       <location filename="../../ArchMaterial.py" line="221"/>
       <source>Reorder children alphabetically</source>
-      <translation type="unfinished">Reorder children alphabetically</translation>
+      <translation>Reordonați valorile în ordine alfabetică</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="944"/>
       <source>Clone level up</source>
-      <translation type="unfinished">Clone level up</translation>
+      <translation>Clonează un nivel mai sus</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
@@ -2095,17 +2094,17 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Crează profilul</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="148"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Setarile profilului</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="194"/>
       <source>Create Profile</source>
-      <translation type="unfinished">Create Profile</translation>
+      <translation>Crează profil</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
@@ -2121,51 +2120,51 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Vă rugăm fie selectați numai obiecte de construcție, fie nimic!
 
-Site is not allowed to accept any other object besides Building.
+Site-ul nu are voie să accepte niciun alt obiect în afară de Clădire.
 
-Other objects will be removed from the selection.
+Alte obiecte vor fi eliminate din selecție.
 
-Note: You can change that in the preferences.</translation>
+Notă: Puteți modifica acest lucru în preferințe.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="545"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Nu există niciun obiect valid în selecție.
 
-Site creation aborted.</translation>
+Crearea site-ului a fost anulată.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="552"/>
       <source>Create Site</source>
-      <translation type="unfinished">Create Site</translation>
+      <translation>Creați site</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="222"/>
       <location filename="../../ArchRoof.py" line="232"/>
       <source>Create Roof</source>
-      <translation type="unfinished">Create Roof</translation>
+      <translation>Crează acoperiș</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="241"/>
       <location filename="../../ArchRoof.py" line="824"/>
       <source>Unable to create a roof</source>
-      <translation type="unfinished">Unable to create a roof</translation>
+      <translation>Nu pot crea acoperișul</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="243"/>
       <location filename="../../ArchComponent.py" line="1659"/>
       <location filename="../../ArchSpace.py" line="254"/>
       <source>Please select a base object</source>
-      <translation type="unfinished">Please select a base object</translation>
+      <translation>Selectați un obiect de bază</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1010"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Acoperiș</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1011"/>
@@ -2180,17 +2179,17 @@ Site creation aborted.</translation>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Parametri pentru profilurile acoperişului:
+* Unghiu: pantă în grade faţă de orizontală.
+* Rulează: distanţa orizontală dintre perete şi podea.
+* Grosime: grosimea acoperișului.
+* Suprasolicitate: distanța orizontală dintre ureche și perete.
+* Înălțime: înălțimea punții deasupra bazei (calculată automat).
+* IdRel: Id profilului relativ utilizat pentru calcule automate.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Dacă unghiul = 0 și rulează = 0, atunci profilul este identic cu profilul relativ.
+Dacă unghiul = 0, atunci unghiul este calculat astfel încât înălțimea să fie identică cu profilul relativ.
+Dacă rulează = 0, atunci rularea este calculată astfel încât înălțimea să fie identică cu profilul relativ.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
@@ -2200,37 +2199,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
       <source>Angle (deg)</source>
-      <translation type="unfinished">Angle (deg)</translation>
+      <translation>Unghiul (grade)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1014"/>
       <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <translation>Distanță (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
-      <translation type="unfinished">IdRel</translation>
+      <translation>IdRel</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1016"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>Grosime (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1017"/>
       <source>Overhang (mm)</source>
-      <translation type="unfinished">Overhang (mm)</translation>
+      <translation>Suprafață (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1018"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Înălţime (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="505"/>
       <source>Door</source>
-      <translation type="unfinished">Door</translation>
+      <translation>Ușă</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
@@ -2240,22 +2239,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
       <source>Cut Plane</source>
-      <translation type="unfinished">Cut Plane</translation>
+      <translation>Plan de tăiere</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="188"/>
       <source>Cut Plane options</source>
-      <translation type="unfinished">Cut Plane options</translation>
+      <translation>Opțiuni ale planului de tăiere</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="189"/>
       <source>Which side to cut</source>
-      <translation type="unfinished">Which side to cut</translation>
+      <translation>Care parte se taie</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="190"/>
       <source>Behind</source>
-      <translation type="unfinished">Behind</translation>
+      <translation>În spate</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
@@ -2265,17 +2264,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="498"/>
       <source>Reload reference</source>
-      <translation type="unfinished">Reload reference</translation>
+      <translation>Selectați o referință</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="506"/>
       <source>Open reference</source>
-      <translation type="unfinished">Open reference</translation>
+      <translation>Referință deschisă</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="758"/>
       <source>Create external reference</source>
-      <translation type="unfinished">Create external reference</translation>
+      <translation>Creează o referință externă</translation>
     </message>
     <message>
       <location filename="../../importSH3D.py" line="79"/>
@@ -2283,47 +2282,47 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importDAE.py" line="126"/>
       <location filename="../../import3DS.py" line="82"/>
       <source>Error: Couldn't determine character encoding</source>
-      <translation type="unfinished">Error: Couldn't determine character encoding</translation>
+      <translation>Eroare: nu s-a putut determina codarea caracterelor</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="51"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Cadru</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="92"/>
       <source>Create Frame</source>
-      <translation type="unfinished">Create Frame</translation>
+      <translation>Crează cadru</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="229"/>
       <source>Crossing point not found in profile.</source>
-      <translation type="unfinished">Crossing point not found in profile.</translation>
+      <translation>Punctul de trecere nu a fost găsit în profil.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="67"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Forme de elevație</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="68"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Alegeți ce câmp oferă cote de forme:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="109"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>Nicio formă găsită în acest fișier</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="134"/>
       <source>Shapefile module not found</source>
-      <translation type="unfinished">Shapefile module not found</translation>
+      <translation>Modulul hapefile nu a fost găsit</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="135"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>Biblioteca python nu a fost găsită în sistemul dvs. Doriți să o descărcați acum de pe &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github. om/GeospatialPython/pyshp&lt;/a&gt;? Acesta va fi plasat în folderul tău macro.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="141"/>
@@ -2672,12 +2671,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="157"/>
       <source>Create multi-material</source>
-      <translation type="unfinished">Create multi-material</translation>
+      <translation>Creează multi-material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="214"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Îmbinare dubluri</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="869"/>
@@ -2688,7 +2687,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>Stratul nou</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
@@ -2698,53 +2697,53 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>depinde de obiect</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="46"/>
       <location filename="../../importGBXML.py" line="50"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>Acest exportator poate exporta în prezent doar un obiect de site</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="92"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
-      <translation type="unfinished">Error: Space '%s' has no Zone. Aborting.</translation>
+      <translation>Eroare: Spaţiul '%s' nu are nicio zonă. Abandonare.</translation>
     </message>
     <message>
       <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
-      <translation type="unfinished">pycollada not found, collada support is disabled.</translation>
+      <translation>pycollada nu a fost găsit, suportul collada este dezactivat.</translation>
     </message>
     <message>
       <location filename="../../importDAE.py" line="328"/>
       <source>file %s successfully created.</source>
-      <translation type="unfinished">file %s successfully created.</translation>
+      <translation>fişierul %s a fost creat cu succes.</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="77"/>
       <source>Create Grid</source>
-      <translation type="unfinished">Create Grid</translation>
+      <translation>Crează Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="147"/>
       <source>Auto height is larger than height</source>
-      <translation type="unfinished">Auto height is larger than height</translation>
+      <translation>Înălţimea generată automat este mai mare decât înălţimea</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="156"/>
       <source>Total row size is larger than height</source>
-      <translation type="unfinished">Total row size is larger than height</translation>
+      <translation>Dimensiunea total a rândului este mai mare decât înălţimea</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="178"/>
       <source>Auto width is larger than width</source>
-      <translation type="unfinished">Auto width is larger than width</translation>
+      <translation>Lăţimea generată automat este mai mare decât lăţimea</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="187"/>
       <source>Total column size is larger than width</source>
-      <translation type="unfinished">Total column size is larger than width</translation>
+      <translation>Dimensiune totală a coloanei este mai mare decât lăţimea</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="423"/>
@@ -2754,12 +2753,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Lățime totală</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="425"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Înălţime totală</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
@@ -2774,42 +2773,42 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
       <source>Add col</source>
-      <translation type="unfinished">Add col</translation>
+      <translation>Adaugă coloană</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="429"/>
       <source>Del col</source>
-      <translation type="unfinished">Del col</translation>
+      <translation>Ștergel coloană</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="430"/>
       <source>Create span</source>
-      <translation type="unfinished">Create span</translation>
+      <translation>Creați interval</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="431"/>
       <source>Remove span</source>
-      <translation type="unfinished">Remove span</translation>
+      <translation>Eliminați intervalul</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Rânduri</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Coloane</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1004"/>
       <source>Precast elements</source>
-      <translation type="unfinished">Precast elements</translation>
+      <translation>Elemente prefabricate</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Slab type</source>
-      <translation type="unfinished">Slab type</translation>
+      <translation>Tip plăci</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
@@ -2819,112 +2818,112 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Dent length</source>
-      <translation type="unfinished">Dent length</translation>
+      <translation>Lungimea dentului</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent width</source>
-      <translation type="unfinished">Dent width</translation>
+      <translation>Lățimea dentului</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent height</source>
-      <translation type="unfinished">Dent height</translation>
+      <translation>Înălțimea dentului</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Slab base</source>
-      <translation type="unfinished">Slab base</translation>
+      <translation>Baza plăcii</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Number of holes</source>
-      <translation type="unfinished">Number of holes</translation>
+      <translation>Numărul de găuri</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1012"/>
       <source>Major diameter of holes</source>
-      <translation type="unfinished">Major diameter of holes</translation>
+      <translation>Diametru mare al orificiilor</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Minor diameter of holes</source>
-      <translation type="unfinished">Minor diameter of holes</translation>
+      <translation>Diametru mic al orificiilor</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Spacing between holes</source>
-      <translation type="unfinished">Spacing between holes</translation>
+      <translation>Distanța dintre găuri</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Number of grooves</source>
-      <translation type="unfinished">Number of grooves</translation>
+      <translation>Numărul de caneluri</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1016"/>
       <source>Depth of grooves</source>
-      <translation type="unfinished">Depth of grooves</translation>
+      <translation>Adâncimea canelurilor</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Height of grooves</source>
-      <translation type="unfinished">Height of grooves</translation>
+      <translation>Înălțimea canelurilor</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Spacing between grooves</source>
-      <translation type="unfinished">Spacing between grooves</translation>
+      <translation>Distanța dintre caneluri</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1019"/>
       <source>Number of risers</source>
-      <translation type="unfinished">Number of risers</translation>
+      <translation>Numărul de ridicări</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1020"/>
       <source>Length of down floor</source>
-      <translation type="unfinished">Length of down floor</translation>
+      <translation>Lungimea podelei de jos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1021"/>
       <source>Height of risers</source>
-      <translation type="unfinished">Height of risers</translation>
+      <translation>Înălțimea ridicătorilor</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Depth of treads</source>
-      <translation type="unfinished">Depth of treads</translation>
+      <translation>Adâncimea treptelor de rulare</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1407"/>
       <source>Precast options</source>
-      <translation type="unfinished">Precast options</translation>
+      <translation>Opțiuni prefabricate</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Dents list</source>
-      <translation type="unfinished">Dents list</translation>
+      <translation>Lista de dent</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <translation>Adauga dent</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
+      <translation>Eliminare dent</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1414"/>
       <source>Slant</source>
-      <translation type="unfinished">Slant</translation>
+      <translation>Inclinație</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Nivel</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -2934,18 +2933,18 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="107"/>
       <source>View of</source>
-      <translation type="unfinished">View of</translation>
+      <translation>Vedere a</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="156"/>
       <location filename="../../ArchPanel.py" line="185"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Creează panou</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Opțiunile panoului</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -2955,17 +2954,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="332"/>
       <source>Create Panel Cut</source>
-      <translation type="unfinished">Create Panel Cut</translation>
+      <translation>Creați tăierea panoului</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="358"/>
       <source>Create Panel Sheet</source>
-      <translation type="unfinished">Create Panel Sheet</translation>
+      <translation>Creați o foaie de panou</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="728"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>Eroare la calculul formei</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1380"/>
@@ -2975,146 +2974,146 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="1384"/>
       <source>Edit views positions</source>
-      <translation type="unfinished">Edit views positions</translation>
+      <translation>Editează pozițiile vizualizărilor</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1474"/>
       <source>This object has no face</source>
-      <translation type="unfinished">This object has no face</translation>
+      <translation>Acest obiect nu are nicio față</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="83"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Perete de cortină</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="117"/>
       <location filename="../../ArchCurtainWall.py" line="144"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Creează perete de cortină</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="123"/>
       <location filename="../../ArchPipe.py" line="130"/>
       <source>Create Pipe</source>
-      <translation type="unfinished">Create Pipe</translation>
+      <translation>Creează ţeavă</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="160"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>Rugăm selectați exact 2 sau 3 obiecte Țeavă</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="165"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Vă rugăm să selectați doar obiectele Țeavă</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="169"/>
       <source>Create Connector</source>
-      <translation type="unfinished">Create Connector</translation>
+      <translation>Creare conector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="225"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Imposibil de construit calea de bază</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="241"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Imposibil de construit profilul</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="273"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Imposibil de construit ţeava</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="292"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Obiectul de bază nu este o parte</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="295"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Prea multe fire în forma de bază</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="298"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Firul de bază este închis</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="312"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Profilul nu este un 2D Part</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="315"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Profilul nu este închis</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="386"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Doar primele 3 fir vor fi conectate</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="406"/>
       <location filename="../../ArchPipe.py" line="453"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>Vertex comun nu a fost găsit</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="425"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Conductele sunt deja aliniate</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="465"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Cel puţin 2 țevi trebuiesc aliniate</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>a șters proprietatea 'Rezultat' și a adăugat proprietatea 'Actualizare automată'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>a adăugat proprietatea 'Programează'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
       <source>Unable to retrieve value from object</source>
-      <translation type="unfinished">Unable to retrieve value from object</translation>
+      <translation>Imposibil de preluat valoarea obiectului</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Elimină foaia de calcul</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
       <source>Attach spreadsheet</source>
-      <translation type="unfinished">Attach spreadsheet</translation>
+      <translation>Atașează foaie de calcul</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="588"/>
       <source>Import CSV File</source>
-      <translation type="unfinished">Import CSV File</translation>
+      <translation>Importă fișierul CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="621"/>
       <location filename="../../ArchCommands.py" line="1105"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>Exportă fișierul CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="642"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Imposibil de recunoscut acest tip de fișier</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
@@ -3141,7 +3140,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Programare</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
@@ -3152,37 +3151,37 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Poti pune orice in afara de urmatoarele obiecte: site, cladiri si podea - intr-un obiect de podea.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+Obiectul etajului nu are permisiunea de a accepta Site, Clădiri sau obiecte etaj.
 
-Site, Building, and Floor objects will be removed from the selection.
+Site, Clădiri și obiecte etaj vor fi eliminate din selecție.
 
-You can change that in the preferences.</translation>
+Puteți schimba asta în preferințe.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="158"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Nu există nici un obiect valid în selecţie.
 
-Floor creation aborted.</translation>
+Crearea etajelor a fost întreruptă.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="165"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Crează etaj</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="99"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Creează axă</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="807"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Distanţe (mm) şi unghiuri (grade) între axe</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
@@ -3208,27 +3207,27 @@ Floor creation aborted.</translation>
       <location filename="../../importOBJ.py" line="90"/>
       <location filename="../../importOBJ.py" line="101"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>S-a găsit o formă care conține curbe, triangulare</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="374"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>Importat cu succes</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="928"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>Eroare la calcularea formei acestui obiect</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="949"/>
       <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
+      <translation>nu are solid</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="956"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>are o formă invalidă</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="128"/>
@@ -3239,43 +3238,43 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="679"/>
       <location filename="../../ArchComponent.py" line="958"/>
       <source>has a null shape</source>
-      <translation type="unfinished">has a null shape</translation>
+      <translation>are o formă nulă</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="943"/>
       <location filename="../../ArchComponent.py" line="1510"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Comutare subcomponente</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
-      <translation type="unfinished">Closing Sketch edit</translation>
+      <translation>Închide editarea schiței</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1944"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Componentă</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1947"/>
       <source>Components of this object</source>
-      <translation type="unfinished">Components of this object</translation>
+      <translation>Componentele acestui obiect</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1948"/>
       <source>Base component</source>
-      <translation type="unfinished">Base component</translation>
+      <translation>Componentă de bază</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1949"/>
       <source>Additions</source>
-      <translation type="unfinished">Additions</translation>
+      <translation>Adăugări</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1950"/>
       <source>Subtractions</source>
-      <translation type="unfinished">Subtractions</translation>
+      <translation>Scăderi</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
@@ -3285,7 +3284,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
       <source>Fixtures</source>
-      <translation type="unfinished">Fixtures</translation>
+      <translation>Reparații</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
@@ -3300,7 +3299,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Edit IFC properties</source>
-      <translation type="unfinished">Edit IFC properties</translation>
+      <translation>Editează proprietăți IFC</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1958"/>
@@ -3576,7 +3575,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1738"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Întoarce direcția</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="411"/>
@@ -6094,7 +6093,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Acoperiș</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
@@ -6146,7 +6145,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Cadru</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6419,7 +6418,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Perete de cortină</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
@@ -6467,7 +6466,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Programare</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
@@ -6480,7 +6479,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Nivel</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
@@ -6710,7 +6709,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1580"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Componentă</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1584"/>
@@ -6749,7 +6748,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1681"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Comutare subcomponente</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1684"/>

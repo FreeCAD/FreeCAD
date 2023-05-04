@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Finkatu lerro baten luzera edo lerro baten eta erpin baten arteko edo bi zirkuluren arteko distantzia</translation>
     </message>
   </context>
   <context>
@@ -593,8 +593,8 @@ hautatutako erpinean</translation>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Sortu Snell-en errefrakzio-legearen murrizketa bat, izpien bi amaiera-punturen
+artean eta ertz bat interfaze modura erabilita.</translation>
     </message>
   </context>
   <context>
@@ -1680,7 +1680,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <location filename="../../CommandConstraints.cpp" line="2323"/>
       <location filename="../../CommandConstraints.cpp" line="2548"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>Gehitu zirkulutik zirkulurako distantzia-murrizketa</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2358"/>
@@ -2115,7 +2115,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Gehitu adabegi-puntua</translation>
     </message>
   </context>
   <context>
@@ -2618,7 +2618,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>Hautatutako objektuen kopurua ez da 3</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2665,7 +2665,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Hautatu krokiseko lerro bat edo puntu bat eta lerro bat edo bi puntu edo bi zirkulu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2858,7 +2858,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Hautatu puntu bat edo kurba anitz, edo kurba bat eta puntu anitz.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3171,22 +3171,22 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="446"/>
       <source>Unsupported visual layer operation</source>
-      <translation type="unfinished">Unsupported visual layer operation</translation>
+      <translation>Ikusizko geruzan onartzen ez den eragiketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="447"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Momentuz ez da onartzen kanpoko geometria bat ikusizko beste geruza batera eramatea. Kanpoko geometriari ez ikusiarena egingo zaio</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="233"/>
       <source>Set knot multiplicity</source>
-      <translation type="unfinished">Set knot multiplicity</translation>
+      <translation>Ezarri adabegi-aniztasuna</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="234"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation type="unfinished">Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</translation>
+      <translation>Ezarri adabegi-aniztasuna emandako azken puntuan, 1 eta %1 artean: Kontuan izan aniztasunari ez ikusiarena egin ahal zaiola zenbait egoeratan. Begiratu dokumentazioa xehetasun gehiagorako</translation>
     </message>
   </context>
   <context>
@@ -5856,22 +5856,22 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Bigarren mailako sareta-lerroak</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Sareta-lerro nagusiak</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Sareta-lerro nagusien maiztasuna:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>N lerrotik bat lerro nagusia izango da. Ezarri 1 lerro nagusiak desgaitzeko.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5953,19 +5953,18 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>Krokisak gaizki eratutako murrizketak ditu!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>Krokisak partzialki erredundanteak diren murrizketak ditu!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
-</translation>
+      <translation>Parabolak migratu dira. Migratutako fitxategiak ezin dira ireki FreeCADen aurreko bertsioetan.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1675"/>
@@ -5984,12 +5983,12 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>Interpolatu B-spline kurba</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Sortu B-spline bat interpolazioa erabiliz, alegia, krokiseko adabegiak erabiliz.</translation>
     </message>
   </context>
   <context>
@@ -5997,12 +5996,12 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>Interpolatu B-spline periodikoa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Sortu B-spline periodiko bat interpolazioa erabiliz, alegia, krokiseko adabegiak erabiliz.</translation>
     </message>
   </context>
   <context>
@@ -6010,13 +6009,13 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-spline kurba adabegietatik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Sortu B-spline bat adabegietatik abiatuz</translation>
     </message>
   </context>
   <context>
@@ -6024,13 +6023,13 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>B-spline periodikoa adabegietatik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Sortu B-spline periodiko bat adabegietatik abiatuz</translation>
     </message>
   </context>
   <context>
@@ -6038,17 +6037,17 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Atxiki objektuei</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Puntu berriak aurretik hautatutako objektuari atxikiko zaizkio. Lerroen eta arkuen erdiguneari ere atxikiko zaizkie.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Atxiki saretari</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6060,7 +6059,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Atxiki angeluari</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
@@ -6073,7 +6072,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Txandakatu atxikitzea</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>

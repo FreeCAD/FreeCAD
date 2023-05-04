@@ -145,6 +145,7 @@ public:
     ~PythonStdin() override;
 
     Py::Object repr() override;
+    Py::Object getattr(const char *name) override;
     Py::Object readline(const Py::Tuple&);
 };
 

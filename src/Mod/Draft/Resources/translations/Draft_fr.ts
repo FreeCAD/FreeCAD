@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Gestionnaire de calques</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -62,12 +62,12 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation type="unfinished">Toggle on/off</translation>
+      <translation>Activer/désactiver</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Isoler</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -3061,7 +3061,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="848"/>
       <source>Label type</source>
-      <translation type="unfinished">Label type</translation>
+      <translation>Type d'étiquette</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="864"/>
@@ -3203,16 +3203,15 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion.
-Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.</translation>
+      <translation>Erreur lors de la conversion en DWG.
+Essayez de déplacer le fichier DWG vers un chemin de répertoire sans espaces ni caractères non-anglophones, ou essayez de sauvegarder vers une version inférieure de DWG.</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="311"/>
       <source>No suitable DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG</source>
-      <translation type="unfinished">No suitable DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG</translation>
+      <translation>Aucun convertisseur DWG approprié n'a été trouvé.
+Veuillez en définir un manuellement dans le menu Edition -&gt; Préférences -&gt; Import/Export -&gt; DWG</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="230"/>
@@ -4655,12 +4654,12 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="465"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>Décalage de début trop grand pour la longueur du chemin. Utilisation de zéro à la place.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="471"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>Décalage de fin trop grand pour la longueur du chemin moins le décalage de démarrage. En utilisant zéro à la place.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="533"/>
@@ -5536,7 +5535,7 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="277"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>Activé</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="278"/>
@@ -5561,7 +5560,7 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Couleur de la face</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5571,12 +5570,12 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="284"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>Couleur d'impression de la ligne</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Nouveau calque</translation>
     </message>
   </context>
   <context>
@@ -5853,12 +5852,12 @@ Cependant, une seule esquisse avec des traces déconnectées sera convertie en p
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="152"/>
       <source>Snap Endpoint</source>
-      <translation>Aimanter à la terminaison</translation>
+      <translation>Aimanter aux extrémités</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="153"/>
       <source>Snaps to the endpoints of edges.</source>
-      <translation>Aimante aux terminaisons des arêtes.</translation>
+      <translation>Aimante aux extrémités des arêtes.</translation>
     </message>
   </context>
   <context>
@@ -5897,7 +5896,7 @@ Cependant, une seule esquisse avec des traces déconnectées sera convertie en p
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="195"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges.</source>
-      <translation>Aimante à une ligne imaginaire qui s'étend au-delà des terminaisons des arêtes rectilignes.</translation>
+      <translation>Aimante à une ligne imaginaire qui s'étend au-delà des extrémités des arêtes rectilignes.</translation>
     </message>
   </context>
   <context>
@@ -7281,12 +7280,12 @@ Pour obtenir de meilleurs résultats avec "Original" ou "Tangent", vous devrez p
     <message>
       <location filename="../../draftobjects/patharray.py" line="268"/>
       <source>Length from the start of the path to the first copy.</source>
-      <translation type="unfinished">Length from the start of the path to the first copy.</translation>
+      <translation>Longueur depuis le démarrage du chemin jusqu'à la première copie.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="276"/>
       <source>Length from the end of the path to the last copy.</source>
-      <translation type="unfinished">Length from the end of the path to the last copy.</translation>
+      <translation>Longueur depuis le démarrage du chemin jusqu'à la première copie.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="286"/>
@@ -8079,12 +8078,12 @@ au-delà de la ligne de la dimension</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Gérer les calques...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
-      <translation type="unfinished">Set/modify the different layers of this document</translation>
+      <translation>Définir/modifier les différentes couches de votre projet BIM</translation>
     </message>
   </context>
 </TS>

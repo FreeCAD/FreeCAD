@@ -122,7 +122,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Erreferentziako profila kanporantz eramaten den distantzia, moduluaren arabera normalizatuta.</translation>
     </message>
   </context>
   <context>
@@ -1077,7 +1077,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Profilaren desplazamendu-koefizientea</translation>
     </message>
   </context>
   <context>
@@ -1614,7 +1614,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Hutsik dagoen biribilketa sortua!
 </translation>
     </message>
   </context>
@@ -1715,7 +1715,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Hutsik dagoen zirriborroa sortua!
 </translation>
     </message>
   </context>
@@ -1920,7 +1920,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Hutsik dagoen alaka sortua!
 </translation>
     </message>
   </context>
@@ -3144,7 +3144,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Hutsik dagoen lodiera sortua!
 </translation>
     </message>
   </context>
@@ -4548,8 +4548,8 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Abeilanatzeetarako, hau da torlojuaren
+gainaldearen sakonera azaleraren azpitik</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

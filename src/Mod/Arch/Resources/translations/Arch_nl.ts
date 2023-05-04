@@ -2941,7 +2941,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Paneel opties</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3089,7 +3089,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Rekenblad verwijderen</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>

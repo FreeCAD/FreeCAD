@@ -1236,12 +1236,12 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <source>U parameter:</source>
-      <translation>繞指定軸角度：</translation>
+      <translation>繞指定軸角度:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="694"/>
       <source>V parameters:</source>
-      <translation>與指定軸之夾角：</translation>
+      <translation>與指定軸之夾角:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
@@ -1269,7 +1269,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1111"/>
       <source>V parameter:</source>
-      <translation>與指定軸之夾角：</translation>
+      <translation>與指定軸之夾角:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
@@ -1284,7 +1284,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
       <source>U Parameter:</source>
-      <translation>繞指定軸角度：</translation>
+      <translation>繞指定軸角度:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
@@ -1296,7 +1296,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius:</source>
-      <translation>外接圓</translation>
+      <translation>外接圓:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
@@ -1326,12 +1326,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>俯仰：</translation>
+      <translation>俯仰:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system:</source>
-      <translation>座標系統：</translation>
+      <translation>座標系統:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
@@ -1346,24 +1346,24 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
       <source>Growth:</source>
-      <translation>成長：</translation>
+      <translation>增長:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations:</source>
-      <translation>迴旋數量：</translation>
+      <translation>迴旋數量:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1947"/>
       <source>Angle 1:</source>
-      <translation>角度 1：</translation>
+      <translation>角度 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1842"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1964"/>
       <source>Angle 2:</source>
-      <translation>角度 2：</translation>
+      <translation>角度 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
@@ -1373,12 +1373,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
       <source>Major radius:</source>
-      <translation>主半徑：</translation>
+      <translation>主半徑:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius:</source>
-      <translation>次要半徑：</translation>
+      <translation>次要半徑:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
@@ -1404,12 +1404,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
-      <translation>起始點</translation>
+      <translation>起點</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
       <source>End point</source>
-      <translation>最末點</translation>
+      <translation>終點</translation>
     </message>
   </context>
   <context>
@@ -2013,7 +2013,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch:</source>
-      <translation>俯仰：</translation>
+      <translation>俯仰:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
@@ -2053,7 +2053,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="289"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="51"/>
@@ -2174,7 +2174,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
@@ -2207,12 +2207,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
       <source>Object</source>
-      <translation>物件</translation>
+      <translation>物體</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
@@ -2232,7 +2232,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
@@ -2280,7 +2280,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
@@ -2323,7 +2323,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="71"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
@@ -2574,7 +2574,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
   </context>
   <context>
@@ -2602,7 +2602,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
       <source>Frenet</source>
-      <translation>Frenet</translation>
+      <translation>弗倫內公式(Frenet)</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
@@ -2612,7 +2612,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>次法線</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -2622,12 +2622,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
       <source>Object</source>
-      <translation>物件</translation>
+      <translation>物體</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
@@ -2680,13 +2680,13 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
       <location filename="../../TaskPipeParameters.ui" line="93"/>
       <source>Object</source>
-      <translation>物件</translation>
+      <translation>物體</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
@@ -2886,7 +2886,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
@@ -2971,7 +2971,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
@@ -3014,7 +3014,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
@@ -3032,7 +3032,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
-      <translation>物件</translation>
+      <translation>物體</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
@@ -4361,7 +4361,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
@@ -4393,7 +4393,7 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4699,7 +4699,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>切換 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

@@ -2729,7 +2729,7 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         import Import
         Import.readDXF(filename)
-        Draft.convertDraftTexts() # convert annotations to Draft texts
+        Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
 
@@ -2771,7 +2771,7 @@ def insert(filename, docname):
     else:
         import Import
         Import.readDXF(filename)
-        Draft.convertDraftTexts() # convert annotations to Draft texts
+        Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
 def getShapes(filename):

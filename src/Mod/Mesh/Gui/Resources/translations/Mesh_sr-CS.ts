@@ -1288,7 +1288,7 @@ Pokreni prvo komandu za popravku nabora</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="60"/>
@@ -1298,7 +1298,7 @@ Pokreni prvo komandu za popravku nabora</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
@@ -1938,7 +1938,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1959,7 +1959,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -2013,12 +2013,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="337"/>

@@ -443,12 +443,12 @@
     <message>
       <location filename="../../Command.cpp" line="2267"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2273"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2279"/>
@@ -1341,7 +1341,7 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Podrazumevani algoritam za rešavanje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
@@ -4236,7 +4236,7 @@ Za moguće promenljive, pogledaj okvir za opis ispod.</translation>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="149"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrni smer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
@@ -4304,7 +4304,7 @@ Za moguće promenljive, pogledaj okvir za opis ispod.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="189"/>
       <source>Reversed direction</source>
-      <translation>Obrnuti pravac</translation>
+      <translation>Obrnuti smer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="196"/>
@@ -4557,7 +4557,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrni smer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="306"/>
@@ -4652,7 +4652,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="131"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrni smer</translation>
     </message>
   </context>
   <context>
@@ -4785,7 +4785,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="87"/>
       <source>Reverse Direction</source>
-      <translation>Obrni pravac</translation>
+      <translation>Obrni smer</translation>
     </message>
   </context>
   <context>

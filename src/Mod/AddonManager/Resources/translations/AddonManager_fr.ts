@@ -840,7 +840,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation>Fichier de la macro principal</translation>
+      <translation>Fichier de la macro principale</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
@@ -1485,17 +1485,17 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Cette extension sera activée la prochaine fois que vous redémarrerez FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Cette extension sera désactivée la prochaine fois que vous redémarrerez FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
+      <translation>Les bindings Python de QtWebEngine ne sont pas installés -- utilisation de l'affichage README de remplacement.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="682"/>
@@ -2230,7 +2230,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>Impossible de localiser le fichier {} spécifié par la macro (attendu à {})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="355"/>
@@ -2251,7 +2251,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../Addon.py" line="778"/>
       <location filename="../../Addon.py" line="794"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Une erreur s'est produite lors de l'importation de {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>

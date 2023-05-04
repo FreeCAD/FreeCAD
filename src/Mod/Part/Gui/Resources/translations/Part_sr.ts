@@ -79,7 +79,7 @@
       <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="329"/>
@@ -91,7 +91,7 @@
       <location filename="../../AttacherTexts.cpp" line="330"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="331"/>
@@ -1571,7 +1571,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Create a cone solid</source>
-      <translation>Направи конично пуно тело</translation>
+      <translation>Направи купасто пуно тело</translation>
     </message>
   </context>
   <context>
@@ -1622,12 +1622,12 @@ into its X, Y, and Z components.</source>
       <location filename="../../CommandParametric.cpp" line="76"/>
       <location filename="../../CommandParametric.cpp" line="81"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="66"/>
       <source>Create a Cylinder</source>
-      <translation>Направи Цилиндар</translation>
+      <translation>Направи ваљак</translation>
     </message>
   </context>
   <context>
@@ -1910,12 +1910,12 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Направи тачкасти објекат на основу геометрије</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Направи објекат тачака (које се могу бирати) од изабраног геометријског објекта</translation>
     </message>
   </context>
   <context>
@@ -2109,12 +2109,12 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create Cylinder...</source>
-      <translation>Направи Цилиндар...</translation>
+      <translation>Направи ваљак...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Create a Cylinder</source>
-      <translation>Направи Цилиндар</translation>
+      <translation>Направи ваљак</translation>
     </message>
   </context>
   <context>
@@ -2129,7 +2129,7 @@ of projection.</source>
       <location filename="../../CommandParametric.cpp" line="160"/>
       <location filename="../../CommandParametric.cpp" line="165"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="150"/>
@@ -2297,12 +2297,12 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Part Cylinder</source>
-      <translation>Направи Цилиндар</translation>
+      <translation>Направи ваљак</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Тачке на основу геометрије</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2805,7 +2805,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="58"/>
       <source>Reversed</source>
-      <translation>Обрнуто</translation>
+      <translation>Обрнути смер</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -3553,7 +3553,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="51"/>
       <location filename="../../DlgPrimitives.cpp" line="439"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
@@ -3565,7 +3565,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="69"/>
       <location filename="../../DlgPrimitives.cpp" line="626"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
@@ -4039,7 +4039,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgRevolution.ui" line="250"/>
       <location filename="../../DlgRevolution.cpp" line="463"/>
       <source>Select reference</source>
-      <translation>Изабери референцу</translation>
+      <translation>Изабери сопствену</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
@@ -5316,7 +5316,7 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="587"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Проверен објекат</translation>
     </message>
   </context>
   <context>
@@ -6133,12 +6133,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Растојање у параметарском простору</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Унеси растојање:</translation>
     </message>
   </context>
   <context>
@@ -6593,7 +6593,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Врста облика</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6628,7 +6628,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Комбиновано пуно тело</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6668,7 +6668,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Центар криве</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6683,7 +6683,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Затворен</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6693,12 +6693,12 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Општи центар масе</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Општи положај</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>

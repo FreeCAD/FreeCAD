@@ -127,11 +127,6 @@ directories = [
         "tsdir": "Gui/Resources/translations",
     },
     {
-        "tsname": "Raytracing",
-        "workingdir": "./src/Mod/Raytracing/",
-        "tsdir": "Gui/Resources/translations",
-    },
-    {
         "tsname": "ReverseEngineering",
         "workingdir": "./src/Mod/ReverseEngineering/",
         "tsdir": "Gui/Resources/translations",

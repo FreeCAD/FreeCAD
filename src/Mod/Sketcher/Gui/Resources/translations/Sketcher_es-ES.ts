@@ -2114,7 +2114,7 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Añadir punto de nudo</translation>
     </message>
   </context>
   <context>
@@ -5979,12 +5979,12 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>Interpolar B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Crear una B-spline por interpolación, es decir, a través de nudos en el boceto.</translation>
     </message>
   </context>
   <context>
@@ -6005,7 +6005,7 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-spline por nudos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
@@ -6033,7 +6033,7 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Adherir a objetos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -6043,7 +6043,7 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Adherir a la cuadrícula</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6055,7 +6055,7 @@ Los puntos deben estar más cerca de una quinta parte del tamaño de la cuadríc
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Adherir ángulo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
@@ -6068,7 +6068,7 @@ Los puntos deben estar más cerca de una quinta parte del tamaño de la cuadríc
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Alternar Adherir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>

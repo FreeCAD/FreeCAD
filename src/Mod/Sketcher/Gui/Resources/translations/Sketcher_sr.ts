@@ -171,7 +171,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="438"/>
       <source>Create arc</source>
-      <translation type="unfinished">Create arc</translation>
+      <translation>Направи лук</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="439"/>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Котирај дужину линије, растојање између линије и темена или између два круга</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2843"/>
       <source>Constrain horizontal distance</source>
-      <translation type="unfinished">Constrain horizontal distance</translation>
+      <translation>Ограничење хоризонталног растојања</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2844"/>
@@ -593,8 +593,8 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Направи ограничење рефракције (Снеллов закон) између две крајње тачке зрака
+и неке ивице која представља границу.</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2114,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Додај чвор</translation>
     </message>
   </context>
   <context>
@@ -2617,7 +2617,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>Број изабраних објеката није 3</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2664,7 +2664,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Изабери тачно једну линију, једну тачку и једну линију, две тачке или два круга на скици.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2857,7 +2857,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Изабери или једну тачку и неколико кривих, или једну криву и неколико тачака.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3707,7 +3707,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Обрни смер</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="81"/>
@@ -5857,22 +5857,22 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Споредне линије координатне мреже</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Главне линије координатне мреже</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Главне линије координатне мреже на сваких:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>На сваких Н линија биће главна линија. Постави на 1 да би онемогућио главне линије.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5954,12 +5954,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>Скица има деформисана ограничења!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>Скица има делимично сувишна ограничења!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
@@ -5985,12 +5985,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>Интерполирај Б-сплајн криву</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Направи Б-сплајн криву интерполацијом, т.ј. помоћу чворова на скици.</translation>
     </message>
   </context>
   <context>
@@ -5998,12 +5998,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>Интерполирај периодичну Б-сплајн криву</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Направи периодичну Б-сплајн криву интерполацијом, т.ј. помоћу чворова на скици.</translation>
     </message>
   </context>
   <context>
@@ -6011,13 +6011,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>Б-сплајн крива помоћу чворова</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Направи Б-сплајн криву помоћу чворова</translation>
     </message>
   </context>
   <context>
@@ -6025,13 +6025,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>Периодична Б-сплајн крива помоћу чворова</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Направи периодичну Б-сплајн криву помоћу чворова</translation>
     </message>
   </context>
   <context>
@@ -6039,17 +6039,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Ухвати објекат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Нове тачке ће се ухватити за тренутно изабрани објекат. Такође ће се ухватити за средину линија и лукова.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Ухвати координатну мрежу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6061,12 +6061,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Ухвати угао</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>Угаони корак за алатке које користе 'Ухвати под углом' (на пример линија). Држи CTRL да би омогућио 'Ухвати под углом'. Угао почиње од хоризонталне осе усмерене надесно</translation>
     </message>
   </context>
   <context>
@@ -6074,12 +6074,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Укључи/Искључи хватање</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>Укључи/Искључи све функције хватања. У менију можеш појединачно да пребацујеш 'Ухвати координатну мрежу', 'Ухвати објекте' и остала подешавања хватања</translation>
     </message>
   </context>
 </TS>

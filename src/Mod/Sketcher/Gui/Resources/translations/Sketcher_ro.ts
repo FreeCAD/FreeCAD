@@ -1849,7 +1849,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>Creați o nouă schiță</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
@@ -3254,12 +3254,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="109"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Verticală</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="110"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Orizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="111"/>
@@ -4047,7 +4047,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="624"/>
       <source>Reference constraint</source>
-      <translation type="unfinished">Reference constraint</translation>
+      <translation>Constrângere de referință</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="631"/>
@@ -5873,7 +5873,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
       <location filename="../../SketcherSettingsGrid.ui" line="313"/>
       <source>Line pattern</source>
-      <translation type="unfinished">Line pattern</translation>
+      <translation>Model linie</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="185"/>

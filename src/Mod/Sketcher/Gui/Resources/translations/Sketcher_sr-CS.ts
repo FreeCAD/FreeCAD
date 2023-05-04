@@ -171,7 +171,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="438"/>
       <source>Create arc</source>
-      <translation type="unfinished">Create arc</translation>
+      <translation>Napravi luk</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="439"/>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Kotiraj dužinu linije, rastojanje između linije i temena ili između dva kruga</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2843"/>
       <source>Constrain horizontal distance</source>
-      <translation type="unfinished">Constrain horizontal distance</translation>
+      <translation>Ograničenje horizontalnog rastojanja</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2844"/>
@@ -593,8 +593,8 @@ na izabranu tačku</translation>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Napravi ograničenje refrakcije (Snellov zakon) između dve krajnje tačke zraka
+i neke ivice koja predstavlja granicu.</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2114,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Dodaj čvor</translation>
     </message>
   </context>
   <context>
@@ -2617,7 +2617,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>Broj izabranih objekata nije 3</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2664,7 +2664,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Izaberi tačno jednu liniju, jednu tačku i jednu liniju, dve tačke ili dva kruga na skici.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2857,7 +2857,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Izaberi ili jednu tačku i nekoliko krivih, ili jednu krivu i nekoliko tačaka.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3707,7 +3707,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrni smer</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="81"/>
@@ -5857,22 +5857,22 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Sporedne linije koordinatne mreže</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Glavne linije koordinatne mreže</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Glavne linije koordinatne mreže na svakih:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>Na svakih N linija biće glavna linija. Postavi na 1 da bi onemogućio glavne linije.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5954,12 +5954,12 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>Skica ima deformisana ograničenja!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>Skica ima delimično suvišna ograničenja!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
@@ -5985,12 +5985,12 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>Interpoliraj B-splajn krivu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Napravi B-splajn interpolacijom, t.j. pomoću čvorova na skici.</translation>
     </message>
   </context>
   <context>
@@ -5998,12 +5998,12 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>Interpoliraj periodičnu B-splajn krivu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Napravi periodičnu B-splajn krivu interpolacijom, t.j. pomoću čvorova na skici.</translation>
     </message>
   </context>
   <context>
@@ -6011,13 +6011,13 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-splajn kriva pomoću čvorova</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Napravi B-splajn krivu pomoću čvorova</translation>
     </message>
   </context>
   <context>
@@ -6025,13 +6025,13 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>Periodična B-splajn kriva pomoću čvorova</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Napravi periodičnu B-splajn krivu pomoću čvorova</translation>
     </message>
   </context>
   <context>
@@ -6039,17 +6039,17 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Uhvati objekat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Nove tačke će se uhvatiti za trenutno izabrani objekat. Takođe će se uhvatiti za sredinu linija i lukova.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Uhvati koordinatnu mrežu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6061,12 +6061,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Uhvati ugao</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>Ugaoni korak za alatke koje koriste 'Uhvati pod uglom' (na primer linija). Drži CTRL da bi omogućio 'Uhvati pod uglom'. Ugao počinje od horizontalne ose usmerene nadesno</translation>
     </message>
   </context>
   <context>
@@ -6074,12 +6074,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Uključi/Isključi hvatanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>Uključi/Isključi sve funkcije hvatanja. U meniju možeš pojedinačno da prebacuješ 'Uhvati koordinatnu mrežu', 'Uhvati objekte' i ostala podešavanja hvatanja</translation>
     </message>
   </context>
 </TS>

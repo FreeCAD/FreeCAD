@@ -123,7 +123,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Расстояние, на которое эталонный профиль сдвинут наружу, нормализуется модулем.</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1078,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Коэффициент сдвига профиля</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1615,7 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Пустая фаска создана!
 </translation>
     </message>
   </context>
@@ -1716,7 +1716,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Создан пустой черновик!
 </translation>
     </message>
   </context>
@@ -1921,7 +1921,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Пустое скругление создано!
 </translation>
     </message>
   </context>
@@ -3143,7 +3143,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Создана пустая толщина!
 </translation>
     </message>
   </context>
@@ -4546,8 +4546,8 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Для зенкеров это глубина
+верхняя часть винта ниже поверхности</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

@@ -2132,7 +2132,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../change_branch.py" line="266"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Krajevno ime</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="272"/>
@@ -2144,13 +2144,13 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../change_branch.py" line="278"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Krajevno posodobljeno</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="284"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Daljinsko posodobljeno</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="129"/>

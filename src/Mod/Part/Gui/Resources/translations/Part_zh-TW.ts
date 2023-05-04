@@ -109,7 +109,7 @@
       <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
-      <translation>物件</translation>
+      <translation>物體</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="335"/>
@@ -214,7 +214,7 @@
       <location filename="../../AttacherTexts.cpp" line="292"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>交集</translation>
+      <translation>交錯</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="293"/>
@@ -392,7 +392,7 @@
       <location filename="../../AttacherTexts.cpp" line="235"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>次法線</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
@@ -435,7 +435,7 @@
       <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>交集</translation>
+      <translation>交錯</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
@@ -1109,7 +1109,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
       <source>Profile</source>
-      <translation>外觀</translation>
+      <translation>輪廓特徵</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -1286,7 +1286,7 @@ if the measured points have moved.</translation>
     <message>
       <location filename="../../Command.cpp" line="2331"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>切換 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2332"/>
@@ -1458,7 +1458,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="378"/>
       <source>Intersection</source>
-      <translation>交集</translation>
+      <translation>交錯</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="379"/>
@@ -2177,7 +2177,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1918"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1919"/>
@@ -2557,7 +2557,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="49"/>
       <source>Intersection</source>
-      <translation>交集</translation>
+      <translation>交錯</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
@@ -3358,7 +3358,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="161"/>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>單一文件</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="166"/>
@@ -3724,12 +3724,12 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="852"/>
       <location filename="../../DlgPrimitives.ui" line="1064"/>
       <source>U parameter:</source>
-      <translation>繞指定軸角度：</translation>
+      <translation>繞指定軸角度:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="872"/>
       <source>V parameters:</source>
-      <translation>與指定軸之夾角：</translation>
+      <translation>與指定軸之夾角:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
@@ -3740,12 +3740,12 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="1084"/>
       <location filename="../../DlgPrimitives.ui" line="1273"/>
       <source>V parameter:</source>
-      <translation>與指定軸之夾角：</translation>
+      <translation>與指定軸之夾角:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1253"/>
       <source>U Parameter:</source>
-      <translation>繞指定軸角度：</translation>
+      <translation>繞指定軸角度:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
@@ -3757,7 +3757,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
       <location filename="../../DlgPrimitives.ui" line="2441"/>
       <source>Circumradius:</source>
-      <translation>外接圓</translation>
+      <translation>外接圓:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
@@ -3787,12 +3787,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
       <source>Pitch:</source>
-      <translation>俯仰：</translation>
+      <translation>俯仰:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
       <source>Coordinate system:</source>
-      <translation>座標系統：</translation>
+      <translation>座標系統:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
@@ -3807,24 +3807,24 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
       <source>Growth:</source>
-      <translation>成長：</translation>
+      <translation>增長:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
       <source>Number of rotations:</source>
-      <translation>迴旋數量：</translation>
+      <translation>迴旋數量:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1990"/>
       <location filename="../../DlgPrimitives.ui" line="2112"/>
       <source>Angle 1:</source>
-      <translation>角度 1：</translation>
+      <translation>角度 1:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2007"/>
       <location filename="../../DlgPrimitives.ui" line="2129"/>
       <source>Angle 2:</source>
-      <translation>角度 2：</translation>
+      <translation>角度 2:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2044"/>
@@ -3834,12 +3834,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2072"/>
       <source>Major radius:</source>
-      <translation>主半徑：</translation>
+      <translation>主半徑:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2092"/>
       <source>Minor radius:</source>
-      <translation>次要半徑：</translation>
+      <translation>次要半徑:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
@@ -3862,12 +3862,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2251"/>
       <source>Start point</source>
-      <translation>起始點</translation>
+      <translation>起點</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2258"/>
       <source>End point</source>
-      <translation>最末點</translation>
+      <translation>終點</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1732"/>
@@ -3923,7 +3923,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
       <source>Show all</source>
-      <translation type="unfinished">Show all</translation>
+      <translation>顯示全部</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
@@ -4754,7 +4754,7 @@ only created cuts will be visible</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="425"/>
       <location filename="../../TaskShapeBuilder.cpp" line="488"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
@@ -4867,7 +4867,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="343"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="343"/>
@@ -5424,7 +5424,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
       <source>Pipe</source>
-      <translation>管</translation>
+      <translation>貫穿</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
@@ -5439,7 +5439,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
       <source>Arc</source>
-      <translation>弧</translation>
+      <translation>圓弧</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="73"/>
@@ -5450,7 +5450,7 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>交集</translation>
+      <translation>交錯</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
@@ -5470,7 +5470,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
       <source>Update view</source>
-      <translation>更新視圖</translation>
+      <translation>更新檢視</translation>
     </message>
   </context>
   <context>
@@ -5557,7 +5557,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
       <source>Frenet</source>
-      <translation>Frenet</translation>
+      <translation>弗倫內公式(Frenet)</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="488"/>
@@ -5699,7 +5699,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="980"/>
       <location filename="../../Command.cpp" line="2072"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>

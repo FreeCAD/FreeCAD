@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Vonal hosszának rögzítése vagy adott távolság tartása két kör között</translation>
     </message>
   </context>
   <context>
@@ -592,8 +592,7 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Hozzon létre egy fénytörés törvény (Snellius-törvény) kényszerítést sugarak két végpontja között és egy élt mint határfelületet.</translation>
     </message>
   </context>
   <context>
@@ -1678,7 +1677,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2323"/>
       <location filename="../../CommandConstraints.cpp" line="2548"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>Kör hozzáadása a kör távolsági kényszerítéséhez</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2358"/>
@@ -2113,7 +2112,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Csomópont hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -2616,7 +2615,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>A kijelölt tárgyak száma nem 3</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2663,7 +2662,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Válasszon ki pontosan egy vonalat vagy egy pontot és egy vonalat vagy két pontot vagy két kört a vázlatból.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2856,7 +2855,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Válasszon ki egy pontot és több görbét, vagy egy görbét és több pontot.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3169,22 +3168,22 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="446"/>
       <source>Unsupported visual layer operation</source>
-      <translation type="unfinished">Unsupported visual layer operation</translation>
+      <translation>Nem támogatott vizuális réteg művelet</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="447"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Jelenleg nem támogatott a külső geometria áthelyezése egy másik vizuális rétegre. A külső geometria kimarad</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="233"/>
       <source>Set knot multiplicity</source>
-      <translation type="unfinished">Set knot multiplicity</translation>
+      <translation>Csomó szorzatának beállítása</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="234"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation type="unfinished">Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</translation>
+      <translation>Állítsa be a csomó szorzatát az utolsó megadott ponton, 1 és %1 között:Vegye figyelembe, hogy a szorzatot bizonyos körülmények között figyelmen kívül lehet hagyni.A részleteket lásd a dokumentációban</translation>
     </message>
   </context>
   <context>
@@ -3245,7 +3244,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="107"/>
       <source>Coincident</source>
-      <translation type="unfinished">Coincident</translation>
+      <translation>Egybeeső</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="108"/>
@@ -5852,22 +5851,22 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Kisebb rácsvonalak</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Fő rácsvonalak</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Minden nagyobb rácsvonal:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>Minden N vonalon lesz egy fővonal. A nagyobb vonalak letiltásához állítsa 1-re.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5949,18 +5948,18 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>A vázlat hibásan formázott kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
+      <translation>A parabolákat áttelepítették. Az áttelepített fájlok nem nyílnak meg a FreeCAD korábbi verzióiban!!
 </translation>
     </message>
     <message>
@@ -5980,12 +5979,12 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>B-görbe interpoláció</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Hozzon létre egy B-görbét interpolációval, azaz a vázlatban lévő csomókon keresztül.</translation>
     </message>
   </context>
   <context>
@@ -5993,12 +5992,12 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>Interpolálja a periodikus B-görbét</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>Hozzon létre egy periodikus B-görbét interpolációval, azaz a vázlatban lévő csomókon keresztül.</translation>
     </message>
   </context>
   <context>
@@ -6006,13 +6005,13 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-görbe csomópontokkal</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Létrehoz egy B-görbét csomópontokkal</translation>
     </message>
   </context>
   <context>
@@ -6020,13 +6019,13 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>Időszakos B-görbe csomópontokkal</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Létrehoz egy időszakos B-görbét csomópontokkal</translation>
     </message>
   </context>
   <context>
@@ -6034,17 +6033,17 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Tárgyhoz illeszt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Az új pontok az aktuálisan előzetesen kiválasztott tárgyhoz illeszkednek. A vonalak és ívek közepére is illeszt.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>Rácshoz illeszt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6056,12 +6055,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Szög illesztés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>Szög lépés a 'Szög illesztés' funkciót használó eszközökhöz (például vonal). Tartsa lenyomva a CTRL billentyűt a 'Szög illesztés' engedélyezéséhez. A szög a keleti tengelytől indul (vízszintesen jobbra)</translation>
     </message>
   </context>
   <context>
@@ -6069,12 +6068,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Illesztés kapcsoló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>Az összes illesztési funkció bekapcsolása. A menüben külön-külön kapcsolhatja a 'Rácshoz illeszt', a 'Tárgyhoz illeszt' és a további beállításokat</translation>
     </message>
   </context>
 </TS>

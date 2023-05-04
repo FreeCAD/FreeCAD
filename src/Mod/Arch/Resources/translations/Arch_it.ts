@@ -2650,7 +2650,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchStairs.py" line="441"/>
       <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">changed the type of properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>cambiato il tipo di proprietà 'RailingLeft' e 'RailingRight'</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="123"/>
@@ -2933,7 +2933,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Opzioni pannello</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3025,7 +3025,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPipe.py" line="295"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Troppe polilinee nella forma base</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="298"/>
@@ -3081,7 +3081,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Rimuovi foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
