@@ -1098,12 +1098,12 @@ class _SolverCalculix(CommandManager):
         super(_SolverCalculix, self).__init__()
         self.pixmap = "FEM_SolverStandard"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculix",
+            "FEM_SolverCalculiX",
             "Solver CalculiX (new framework)"
         )
         self.accel = "S, C"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculix",
+            "FEM_SolverCalculiX",
             "Creates a FEM solver CalculiX new framework (less result error handling)"
         )
         self.is_active = "with_analysis"
@@ -1373,7 +1373,7 @@ FreeCADGui.addCommand(
     _SolverCxxtools()
 )
 FreeCADGui.addCommand(
-    "FEM_SolverCalculix",
+    "FEM_SolverCalculiX",
     _SolverCalculix()
 )
 FreeCADGui.addCommand(
