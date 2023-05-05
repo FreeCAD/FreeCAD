@@ -112,7 +112,7 @@ class ObjectJob:
             "App::PropertyFile",
             "PostProcessorOutputFile",
             "Output",
-            QT_TRANSLATE_NOOP("App::Property", "The NC output file for this project"),
+            QT_TRANSLATE_NOOP("App::Property", "The G-code output file for this project"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -196,7 +196,7 @@ class ObjectJob:
             "SplitOutput",
             "Output",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Split output into multiple gcode files"
+                "App::Property", "Split output into multiple G-code files"
             ),
         )
         obj.addProperty(
@@ -530,7 +530,7 @@ class ObjectJob:
                 "SplitOutput",
                 "Output",
                 QT_TRANSLATE_NOOP(
-                    "App::Property", "Split output into multiple gcode files"
+                    "App::Property", "Split output into multiple G-code files"
                 ),
             )
             obj.SplitOutput = False
@@ -540,7 +540,7 @@ class ObjectJob:
                 "App::PropertyEnumeration",
                 "JobType",
                 "Base",
-                QT_TRANSLATE_NOOP("App::Property", "Select the Type of Job"),
+                QT_TRANSLATE_NOOP("App::Property", "Select the type of Job"),
             )
             obj.setEditorMode("JobType", 2)  # Hide
 
