@@ -126,6 +126,8 @@ private:
     struct Face {
         ShapeId type;
         vector<Vector3f> vertexArray;
+        // The rotation is the standard orientation for the faces of the cube
+        // For the flat buttons it is the direction of the rotation
         SbRotation rotation;
     };
     struct LabelTexture {
@@ -147,7 +149,7 @@ private:
     void setHilite(PickId);
 
     void addCubeFace(const Vector3f&, const Vector3f&, ShapeId, PickId, float rotZ = 0.0);
-    void addButtonFace(PickId);
+    void addButtonFace(PickId, const SbVec3f& direction = SbVec3f(0, 0, 0));
 
     SbRotation setView(float, float) const;
     SbRotation rotateView(SbRotation, DirId, float, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
@@ -459,7 +461,7 @@ void NaviCubeImplementation::createCubeFaceTextures() {
     }
 }
 
-void NaviCubeImplementation::addButtonFace(PickId pickId)
+void NaviCubeImplementation::addButtonFace(PickId pickId, const SbVec3f& direction)
 {
     if (m_Faces[pickId].vertexArray.size())
         m_Faces[pickId].vertexArray.clear();
@@ -544,6 +546,7 @@ void NaviCubeImplementation::addButtonFace(PickId pickId)
             m_Faces[pickId].vertexArray.emplace_back(Vector3f(x, y, 0.0));
     }
     m_Faces[pickId].type = ShapeId::Button;
+    m_Faces[pickId].rotation = SbRotation(direction, 1).inverse();
 }
 
 void NaviCubeImplementation::addCubeFace(const Vector3f& x, const Vector3f& z, ShapeId shapeType, PickId pickId, float rotZ) {
@@ -666,13 +669,13 @@ void NaviCubeImplementation::prepare() {
     addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft, M_PI);
 
     // create the flat buttons
-    addButtonFace(PickId::ArrowNorth);
-    addButtonFace(PickId::ArrowSouth);
-    addButtonFace(PickId::ArrowEast);
-    addButtonFace(PickId::ArrowWest);
-    addButtonFace(PickId::ArrowLeft);
-    addButtonFace(PickId::ArrowRight);
-    addButtonFace(PickId::DotBackside);
+    addButtonFace(PickId::ArrowNorth, SbVec3f(1, 0, 0));
+    addButtonFace(PickId::ArrowSouth, SbVec3f(-1, 0, 0));
+    addButtonFace(PickId::ArrowEast, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
+    addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));
+    addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
+    addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
     addButtonFace(PickId::ViewMenu);
 
     if (m_PickingFramebuffer)
