@@ -2828,7 +2828,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     if (!d->_RecomputeLog.empty()) {
         d->pendingRemove.clear();
         if (!testStatus(Status::IgnoreErrorOnRecompute))
-            Base::Console().Error("Recompute failed! Please check report view.\n");
+            Base::Console().Error("Recompute failed!\n");
     }
     else {
         for(auto &o : d->pendingRemove) {
