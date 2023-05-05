@@ -518,9 +518,9 @@ class Draft_SelectPlane:
         vdir = '('
         vdir += str(_vdir.x)[:4] + ','
         vdir += str(_vdir.y)[:4] + ','
-        vdir += str(_vdir.z)[:4]
-        vdir += ')'
-        vdir = " " + translate("draft", "Dir") + ": " + vdir
+        vdir += str(_vdir.z)[:4] + ')' + ' '
+        vdir += translate("draft", "Dir", "Dir here means Direction, not Directory. Also shorten the translation because of available space in GUI")
+        vdir = ': ' + vdir
         if type(arg).__name__ == 'str':
             self.wpButton.setText(arg + suffix)
             if o != 0:
