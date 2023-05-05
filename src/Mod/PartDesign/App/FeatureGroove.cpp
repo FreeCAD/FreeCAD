@@ -75,11 +75,11 @@ App::DocumentObjectExecReturn *Groove::execute()
     // Validate parameters
     double angle = Angle.getValue();
     if (angle > 360.0)
-        return new App::DocumentObjectExecReturn("Angle of groove too large");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of groove too large"));
 
     angle = Base::toRadians<double>(angle);
     if (angle < Precision::Angular())
-        return new App::DocumentObjectExecReturn("Angle of groove too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of groove too small"));
 
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
@@ -98,7 +98,7 @@ App::DocumentObjectExecReturn *Groove::execute()
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+        std::string text(QT_TRANSLATE_NOOP("Exception", "The requested feature cannot be created. The reason may be that:\n"
                                     "  - the active Body does not contain a base shape, so there is no\n"
                                     "  material to be removed;\n"
                                     "  - the selected sketch does not belong to the active Body."));
@@ -115,7 +115,7 @@ App::DocumentObjectExecReturn *Groove::execute()
 
     try {
         if (sketchshape.IsNull())
-            return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed"));
 
         // Rotate the face by half the angle to get Groove symmetric to sketch plane
         if (Midplane.getValue()) {
@@ -137,7 +137,7 @@ App::DocumentObjectExecReturn *Groove::execute()
         xp.Init(sketchshape, TopAbs_FACE);
         for (;xp.More(); xp.Next()) {
             if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
-                return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch"));
         }
 
         // revolve the face to a solid
@@ -153,32 +153,32 @@ App::DocumentObjectExecReturn *Groove::execute()
             BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::CADKernelError("Cut out of base feature failed");
+                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Cut out of base feature failed"));
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
 
             int solidCount = countSolids(solRes);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Groove: Result has multiple solids. This is not supported at this time."));
             }
 
         }
         else
-            return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
 
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
 
         if (std::string(e.GetMessageString()) == "TopoDS::Face")
-            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
-                "Intersecting sketch entities in a sketch are not allowed.");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not create face from sketch.\n"
+                "Intersecting sketch entities in a sketch are not allowed."));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }

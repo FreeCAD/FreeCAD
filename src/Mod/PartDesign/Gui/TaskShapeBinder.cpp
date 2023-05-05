@@ -410,7 +410,7 @@ bool TaskDlgShapeBinder::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 

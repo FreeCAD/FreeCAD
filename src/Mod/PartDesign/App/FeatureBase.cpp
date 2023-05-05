@@ -59,14 +59,14 @@ short int FeatureBase::mustExecute() const {
 App::DocumentObjectExecReturn* FeatureBase::execute() {
 
     if(!BaseFeature.getValue())
-        return new App::DocumentObjectExecReturn("BaseFeature link is not set");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "BaseFeature link is not set"));
 
     if(!BaseFeature.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("BaseFeature must be a Part::Feature");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "BaseFeature must be a Part::Feature"));
 
     auto shape = static_cast<Part::Feature*>(BaseFeature.getValue())->Shape.getValue();
     if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("BaseFeature has an empty shape");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape"));
 
     Shape.setValue(shape);
 
