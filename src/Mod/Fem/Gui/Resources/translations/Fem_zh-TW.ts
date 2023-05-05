@@ -291,7 +291,7 @@
     <message>
       <location filename="../../Command.cpp" line="1116"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1117"/>
@@ -356,7 +356,7 @@
     <message>
       <location filename="../../Command.cpp" line="2210"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2211"/>
@@ -513,7 +513,7 @@
       <location filename="../../Command.cpp" line="1916"/>
       <location filename="../../Command.cpp" line="1925"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1917"/>
@@ -2159,7 +2159,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="651"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="615"/>
@@ -2245,7 +2245,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="329"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="345"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="329"/>
@@ -4111,7 +4111,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="311"/>
       <source>Object dependencies</source>
-      <translation>物件相依</translation>
+      <translation>物體相依</translation>
     </message>
   </context>
   <context>

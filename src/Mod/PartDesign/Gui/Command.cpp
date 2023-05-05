@@ -439,7 +439,7 @@ void CmdPartDesignClone::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
             (Part::Feature::getClassTypeId());
     if (objs.size() == 1) {
-        // As suggested in https://forum.freecadweb.org/viewtopic.php?f=3&t=25265&p=198547#p207336
+        // As suggested in https://forum.freecad.org/viewtopic.php?f=3&t=25265&p=198547#p207336
         // put the clone into its own new body.
         // This also fixes bug #3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
@@ -857,7 +857,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         // was quite confusing (and thus the user may have done the wrong thing since
         // they may have assumed the that the sketch was meant) and
         // Second, there is no need that the body must be inside a Part container.
-        // For more details see: https://forum.freecadweb.org/viewtopic.php?f=19&t=32164
+        // For more details see: https://forum.freecad.org/viewtopic.php?f=19&t=32164
         // The function has been modified not to expect the body to be in the Part
         // and it now directly invokes the 'makeCopy' dialog.
         auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);

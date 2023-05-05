@@ -2023,7 +2023,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         if (radius == .0f) {
             // guess a radius
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=31594&start=50#p266658
+            // https://forum.freecad.org/viewtopic.php?f=3&t=31594&start=50#p266658
             //
             // We do not know the actual tangency points until we intersect the offset curves, but
             // we do not have offset curves before with decide on a radius.
@@ -6012,7 +6012,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     }
 
     // * DOCUMENTING OCC ISSUE OCC < 6.9.0
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=9364&start=330#p162528
+    // https://forum.freecad.org/viewtopic.php?f=10&t=9364&start=330#p162528
     //
     // A segmentation fault is generated:
     //Program received signal SIGSEGV, Segmentation fault.
@@ -6169,7 +6169,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
     if (!delGeoId.empty()) {
         // NOTE: There have been a couple of instances when knot insertion has
-        // led to a segmentation fault: see https://forum.freecadweb.org/viewtopic.php?f=19&t=64962&sid=10272db50a635c633260517b14ecad37.
+        // led to a segmentation fault: see https://forum.freecad.org/viewtopic.php?f=19&t=64962&sid=10272db50a635c633260517b14ecad37.
         // If a segfault happens again and a `Geometry.touch()` here fixes it,
         // it is possible that `delGeometriesExclusiveList` is causing an update
         // in constraint GUI features during an intermediate step.
@@ -7019,7 +7019,7 @@ void SketchObject::rebuildExternalGeometry()
                     // ellipse construction algorithm.
                     //
                     // Doing that solves:
-                    // https://forum.freecadweb.org/viewtopic.php?f=3&t=55284#p477522
+                    // https://forum.freecad.org/viewtopic.php?f=3&t=55284#p477522
 
                     // GENERAL ELLIPSE CONSTRUCTION ALGORITHM
                     //

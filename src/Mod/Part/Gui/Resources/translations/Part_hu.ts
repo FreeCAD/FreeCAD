@@ -1912,12 +1912,12 @@ X, Y és Z komponenseire.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Pont-tárgy létrehozása geometriából</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Választható pont-tárgy létrehozása kijelölt geometriai tárgyból</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2304,7 @@ irányát.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Pontok a geometriából</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2931,7 +2931,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     <message>
       <location filename="../../DlgExtrusion.cpp" line="452"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>A '%1' dokumentum nem létezik.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="499"/>
@@ -4078,7 +4078,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="264"/>
       <source>Select a shape for revolution, first.</source>
-      <translation type="unfinished">Select a shape for revolution, first.</translation>
+      <translation>Először válasszon ki egy alakzatot a forgatáshoz.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="280"/>
@@ -4157,7 +4157,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="71"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+      <translation>Ha túl kicsi eltérést állít be, akkor a hálózófaktorálás tovább tart, és így lefagy vagy lelassul a grafikus felület.</translation>
     </message>
   </context>
   <context>
@@ -5317,7 +5317,7 @@ Egyedi BOP ellenőrzések:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="587"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Ellenőrzött tárgy</translation>
     </message>
   </context>
   <context>
@@ -6133,12 +6133,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Távolság a paramétertérben</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Távolság megadása:</translation>
     </message>
   </context>
   <context>
@@ -6591,7 +6591,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Alakzat típus</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6626,7 +6626,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Kompozit szilárd anyag</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6666,7 +6666,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Görbe közepe</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6681,7 +6681,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Lezárt</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6691,12 +6691,12 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Globális tömegközéppont</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Globális elhelyezés</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>

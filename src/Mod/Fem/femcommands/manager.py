@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM command base class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package manager
 #  \ingroup FEM

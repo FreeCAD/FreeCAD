@@ -28,7 +28,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "A container for all default values and job specific configuration values."
 
 _RegisteredOps: dict = {}
@@ -358,8 +358,8 @@ class SetupSheet:
         # I prefer the question: "why do I get this error when I create ..." over "my cnc machine just
         # rammed it's tool head into the table ..." or even "I saved my file and now it's corrupt..."
         #
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=24839
-        # https://forum.freecadweb.org/viewtopic.php?f=10&t=24845
+        # https://forum.freecad.org/viewtopic.php?f=10&t=24839
+        # https://forum.freecad.org/viewtopic.php?f=10&t=24845
         return self.obj.Name
 
     def encodeAttributeString(self, attr):

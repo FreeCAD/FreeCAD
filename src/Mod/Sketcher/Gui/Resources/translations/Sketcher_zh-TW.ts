@@ -1206,7 +1206,7 @@ then call this command, then choose the desired sketch.</source>
     <message>
       <location filename="../../Command.cpp" line="868"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="869"/>
@@ -1231,7 +1231,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="763"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
@@ -1554,7 +1554,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="724"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="725"/>
@@ -2431,7 +2431,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherTools.cpp" line="2151"/>
       <location filename="../../CommandSketcherTools.cpp" line="2197"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="142"/>
@@ -4597,7 +4597,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1454"/>
       <location filename="../../TaskSketcherElements.cpp" line="1455"/>
       <source>Arc</source>
-      <translation>弧</translation>
+      <translation>圓弧</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1358"/>

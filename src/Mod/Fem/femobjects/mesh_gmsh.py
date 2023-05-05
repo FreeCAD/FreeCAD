@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh gmsh document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package mesh_gmsh
 #  \ingroup FEM
@@ -265,8 +265,8 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             # but
             # on curved faces the constraint nodes will no longer found
             # thus standard will be False
-            # https://forum.freecadweb.org/viewtopic.php?t=41738
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=45260&start=20#p389494
+            # https://forum.freecad.org/viewtopic.php?t=41738
+            # https://forum.freecad.org/viewtopic.php?f=18&t=45260&start=20#p389494
 
         if not hasattr(obj, "MeshSizeFromCurvature"):
             obj.addProperty(

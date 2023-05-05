@@ -49,21 +49,25 @@ public:
     void createContextMenu(const std::vector<std::string>& cmd);
     bool processSoEvent(const SoEvent* ev);
     void setCorner(Corner);
+    void setOffset(int x, int y);
+    bool isDraggable();
+    void setDraggable(bool draggable);
     void setSize(int size);
+    void setChamfer(float size);
     void setNaviRotateToNearest(bool toNearest);
     void setNaviStepByTurn(int steps);
     void setFont(std::string font);
-    void setFontSize(int size);
-    void setTextColor(QColor TextColor);
-    void setFrontColor(QColor FrontColor);
+    void setFontWeight(int weight);
+    void setFontStretch(int stretch);
+    void setFontZoom(float zoom);
+    void setBaseColor(QColor TextColor);
+    void setEmphaseColor(QColor ButtonColor);
     void setHiliteColor(QColor HiliteColor);
-    void setButtonColor(QColor ButtonColor);
     void setBorderWidth(double BorderWidth);
-    void setBorderColor(QColor BorderColor);
-    static QString getDefaultSansserifFont();
-    int getDefaultFontSize();
+    void setShowCS(bool showCS);
+    // Label order: front, top, right, rear, bottom, left
+    void setNaviCubeLabels(const std::vector<std::string>& labels);
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);
-    static void setNaviCubeLabels(const std::vector<std::string>& labels);
 
 private:
     NaviCubeImplementation* m_NaviCubeImplementation;

@@ -2753,18 +2753,28 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPo
     return -1;
 }
 
-// circle-circle offset distance constraint
+// circle-(circle or line) distance constraint
 int Sketch::addDistanceConstraint(int geoId1, int geoId2, double * value, bool driving)
 {
-    if ((Geoms[geoId1].type == Circle)  && (Geoms[geoId2].type == Circle)) {
-        GCS::Circle &c1 = Circles[Geoms[geoId1].index];
-        GCS::Circle &c2 = Circles[Geoms[geoId2].index];
-        int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2CDistance(c1, c2, value, tag, driving);
-        return ConstraintsCounter;
+    if (Geoms[geoId1].type == Circle) {
+        if (Geoms[geoId2].type == Circle) {
+            GCS::Circle &c1 = Circles[Geoms[geoId1].index];
+            GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintC2CDistance(c1, c2, value, tag, driving);
+            return ConstraintsCounter;
+        } else if (Geoms[geoId2].type == Line) {
+            GCS::Circle &c = Circles[Geoms[geoId1].index];
+            GCS::Line &l = Lines[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintC2LDistance(c, l, value, tag, driving);
+            return ConstraintsCounter;
+        }
     }
     return -1;
 }
+
+
 
 int Sketch::addRadiusConstraint(int geoId, double * value, bool driving)
 {
@@ -3954,7 +3964,7 @@ int Sketch::internalSolve(std::string & solvername, int level)
 
                 if (soltype > 0) {
                     Base::Console().Log("If you see this message please report a way of reproducing this result at\n");
-                    Base::Console().Log("http://www.freecadweb.org/tracker/main_page.php\n");
+                    Base::Console().Log("http://www.freecad.org/tracker/main_page.php\n");
                 }
 
                 break;

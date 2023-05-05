@@ -1,10 +1,10 @@
-<a href="https://freecadweb.org"><img src="https://www.freecadweb.org/svg/icon-freecad.svg" height="100px" width="100px"></a>
+<a href="https://freecad.org"><img src="https://www.freecad.org/svg/icon-freecad.svg" height="100px" width="100px"></a>
 
 ### Your own 3D parametric modeler
 
-[Website](https://www.freecadweb.org) • 
-[Documentation](https://wiki.freecadweb.org) •
-[Forum](https://forum.freecadweb.org/) •
+[Website](https://www.freecad.org) • 
+[Documentation](https://wiki.freecad.org) •
+[Forum](https://forum.freecad.org/) •
 [Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
 [Git repository](https://github.com/FreeCAD/FreeCAD)
 
@@ -50,7 +50,7 @@ software center application.
 
 For development releases check the [weekly-builds page](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds).
 
-Other options are described at the [wiki Download page](https://wiki.freecadweb.org/Download).
+Other options are described at the [wiki Download page](https://wiki.freecad.org/Download).
 
 Build Status
 ------------
@@ -78,11 +78,11 @@ you will usually have to compile them yourself.
 
 The pages below contain up-to-date build instructions:
 
-- [Linux](https://wiki.freecadweb.org/Compile_on_Linux)
-- [Windows](https://wiki.freecadweb.org/Compile_on_Windows)
-- [macOS](https://wiki.freecadweb.org/Compile_on_MacOS)
-- [Cygwin](https://wiki.freecadweb.org/Compile_on_Cygwin)
-- [MinGW](https://wiki.freecadweb.org/Compile_on_MinGW)
+- [Linux](https://wiki.freecad.org/Compile_on_Linux)
+- [Windows](https://wiki.freecad.org/Compile_on_Windows)
+- [macOS](https://wiki.freecad.org/Compile_on_MacOS)
+- [Cygwin](https://wiki.freecad.org/Compile_on_Cygwin)
+- [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
 
 
 Reporting Issues
@@ -100,7 +100,7 @@ For more detail see:
 - [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
 - [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
 - [Contributing](https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md)
-- [Help Forum](https://forum.freecadweb.org/viewforum.php?f=3)
+- [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 
 
 Usage & Getting help
@@ -110,14 +110,14 @@ The FreeCAD wiki contains documentation on
 general FreeCAD usage, Python scripting, and development. These 
 pages might help you get started:
 
-- [Getting started](https://wiki.freecadweb.org/Getting_started)
-- [Features list](https://wiki.freecadweb.org/Feature_list)
-- [Frequent questions](https://wiki.freecadweb.org/FAQ/en)
-- [Workbenches](https://wiki.freecadweb.org/Workbenches)
-- [Scripting](https://wiki.freecadweb.org/Power_users_hub)
-- [Development](https://wiki.freecadweb.org/Developer_hub)
+- [Getting started](https://wiki.freecad.org/Getting_started)
+- [Features list](https://wiki.freecad.org/Feature_list)
+- [Frequent questions](https://wiki.freecad.org/FAQ/en)
+- [Workbenches](https://wiki.freecad.org/Workbenches)
+- [Scripting](https://wiki.freecad.org/Power_users_hub)
+- [Development](https://wiki.freecad.org/Developer_hub)
 
-The [FreeCAD forum](https://forum.freecadweb.org) is also a great place
+The [FreeCAD forum](https://forum.freecad.org) is also a great place
 to find help and solve specific problems you might encounter when
 learning to use FreeCAD.
 

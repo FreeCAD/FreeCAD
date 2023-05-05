@@ -167,7 +167,7 @@ void ConstraintWeightedLinearCombination::rescale(double coef)
 double ConstraintWeightedLinearCombination::error()
 {
     // Explanation of the math here:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
 
     double sum = 0;
     double wsum = 0;
@@ -184,7 +184,7 @@ double ConstraintWeightedLinearCombination::error()
 double ConstraintWeightedLinearCombination::grad(double* param)
 {
     // Equations are from here:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
 
     double deriv = 0.;
 
@@ -349,7 +349,7 @@ double ConstraintSlopeAtBSplineKnot::error()
 
     // This is actually wsum^2 * the respective slopes
     // See Eq (19) from:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
     double slopex = wsum * xslopesum - wslopesum * xsum;
     double slopey = wsum * yslopesum - wslopesum * ysum;
 
@@ -367,7 +367,7 @@ double ConstraintSlopeAtBSplineKnot::error()
 double ConstraintSlopeAtBSplineKnot::grad(double* param)
 {
     // Equations are from here:
-    // https://forum.freecadweb.org/viewtopic.php?f=9&t=71130&start=120#p635538
+    // https://forum.freecad.org/viewtopic.php?f=9&t=71130&start=120#p635538
     double result = 0.0;
     double linex = *linep2x() - *linep1x();
     double liney = *linep2y() - *linep1y();
@@ -840,7 +840,7 @@ double ConstraintP2LDistance::error()
     double dist = *distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
-    double d = sqrt(dx * dx + dy * dy);
+    double d = sqrt(dx * dx + dy * dy); // line length
     double area =
         std::abs(-x0 * dy + y0 * dx + x1 * y2
                  - x2 * y1);// = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
@@ -1630,7 +1630,7 @@ void ConstraintEllipseTangentLine::rescale(double coef)
 void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* param)
 {
     // DeepSOIC equation
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7520&start=140
+    // http://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
 
     if (pvecChangedFlag)
         ReconstructGeomPointers();
@@ -2248,7 +2248,7 @@ double ConstraintPointOnHyperbola::error()
     double b = *rmin();
 
     // Full sage worksheet at:
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=8038&p=110447#p110447
+    // http://forum.freecad.org/viewtopic.php?f=10&t=8038&p=110447#p110447
     //
     // Err = |PF2| - |PF1| - 2*a
     // sage code:
@@ -2837,6 +2837,94 @@ double ConstraintC2CDistance::error()
 }
 
 double ConstraintC2CDistance::grad(double *param)
+{
+    if (findParamInPvec(param) == -1)
+        return 0.0;
+
+    double deriv;
+    errorgrad(nullptr, &deriv, param);
+
+    return deriv * scale;
+}
+
+// --------------------------------------------------------
+// ConstraintC2LDistance
+ConstraintC2LDistance::ConstraintC2LDistance(Circle &c, Line &l, double *d)
+{
+    this->d = d;
+    pvec.push_back(d);
+
+    this->circle = c;
+    this->circle.PushOwnParams(pvec);
+
+    this->line = l;
+    this->line.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+ConstraintType ConstraintC2LDistance::getTypeId()
+{
+    return C2LDistance;
+}
+
+void ConstraintC2LDistance::rescale(double coef)
+{
+    scale = coef;
+}
+
+void ConstraintC2LDistance::ReconstructGeomPointers()
+{
+    int i = 0;
+    i++;// skip the first parameter as there is the inline function distance for it
+    circle.ReconstructOnNewPvec(pvec, i);
+    line.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+void ConstraintC2LDistance::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+
+    DeriVector2 ct (circle.center, param);
+    DeriVector2 p1 (line.p1, param);
+    DeriVector2 p2 (line.p2, param);
+    DeriVector2 v_line = p2.subtr(p1);
+    DeriVector2 v_p1ct = ct.subtr(p1);
+
+    //center to line distance (=h) and its derivative (=dh)
+    double darea = 0.0;
+    double area = v_line.crossProdNorm(v_p1ct, darea); //parallelogram oriented area
+
+    double dlength;
+    double length = v_line.length(dlength);
+
+    double h = std::abs(area) / length;
+    double dh = (std::copysign(darea, area) - h * dlength) / length;
+    //
+
+    if (err) {
+        *err = *distance() + *circle.rad - h;
+    }
+    else if (grad) {
+        if ( param == distance() || param == circle.rad) {
+            *grad = 1.0;
+        } else {
+            *grad = dh;
+        }
+    }
+}
+
+double ConstraintC2LDistance::error()
+{
+    double err;
+    errorgrad(&err,nullptr,nullptr);
+    return scale * err;
+}
+
+double ConstraintC2LDistance::grad(double *param)
 {
     if (findParamInPvec(param) == -1)
         return 0.0;

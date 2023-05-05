@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD FEM constraint flow velocity document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_flowvelocity
 #  \ingroup FEM

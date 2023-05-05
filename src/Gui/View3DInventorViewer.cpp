@@ -287,6 +287,42 @@ public:
  *
  * \section overview Overview
  * \todo Overview and complements for the 3D Viewer
+ *
+ * \section trouble Troubleshooting
+ * When it's needed to capture OpenGL function calls then the utility apitrace
+ * can be very useful: https://github.com/apitrace/apitrace/blob/master/docs/USAGE.markdown
+ *
+ * To better locate the problematic code it's possible to add custom log messages.
+ * For the prerequisites check:
+ * https://github.com/apitrace/apitrace/blob/master/docs/USAGE.markdown#
+ * emitting-annotations-to-the-trace
+ * \code
+ * #include <GL/glext.h>
+ * #include <Inventor/C/glue/gl.h>
+ *
+ * void GLRender(SoGLRenderAction* glra)
+ * {
+ *     int context = glra->getCacheContext();
+ *     const cc_glglue * glue = cc_glglue_instance(context);
+ *
+ *     PFNGLPUSHDEBUGGROUPPROC glPushDebugGroup = (PFNGLPUSHDEBUGGROUPPROC)
+ *     cc_glglue_getprocaddress(glue, "glPushDebugGroup");
+ *     PFNGLDEBUGMESSAGEINSERTARBPROC glDebugMessageInsert = (PFNGLDEBUGMESSAGEINSERTARBPROC)
+ *     cc_glglue_getprocaddress(glue, "glDebugMessageInsert");
+ *     PFNGLPOPDEBUGGROUPPROC glPopDebugGroup = (PFNGLPOPDEBUGGROUPPROC)
+ *     cc_glglue_getprocaddress(glue, "glPopDebugGroup");
+ *
+ *     glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, __FUNCTION__);
+ * ...
+ *     glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_OTHER,
+ *                          0, GL_DEBUG_SEVERITY_MEDIUM, -1, "begin_blabla");
+ * ...
+ *     glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_OTHER,
+ *                          0, GL_DEBUG_SEVERITY_MEDIUM, -1, "end_blabla");
+ * ...
+ *     glPopDebugGroup();
+ * }
+ * \endcode
  */
 
 
@@ -447,9 +483,9 @@ void View3DInventorViewer::init()
     // Important note:
     // When creating a new GL render action we have to copy over the cache context id
     // because otherwise we may get strange rendering behaviour. For more details see
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&start=120#p74398 and for
+    // http://forum.freecad.org/viewtopic.php?f=10&t=7486&start=120#p74398 and for
     // the fix and some details what happens behind the scene have a look at this
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&p=74777#p74736
+    // http://forum.freecad.org/viewtopic.php?f=10&t=7486&p=74777#p74736
     uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
@@ -505,7 +541,7 @@ View3DInventorViewer::~View3DInventorViewer()
     // It can happen that a document has several MDI views and when the about to be
     // closed 3D view is in edit mode the corresponding view provider must be restored
     // because otherwise it might be left in a broken state
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=39720
+    // See https://forum.freecad.org/viewtopic.php?f=3&t=39720
     if (restoreEditingRoot) {
         resetEditingRoot(false);
     }
@@ -1145,7 +1181,7 @@ void View3DInventorViewer::setRenderCache(int mode)
         // transparency type.
         //
         // For more details see:
-        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
+        // https://forum.freecad.org/viewtopic.php?f=18&t=43305&start=10#p412537
         coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
 
         int setting = ViewParams::instance()->getRenderCache();
@@ -1194,17 +1230,9 @@ void View3DInventorViewer::setNaviCubeCorner(int c)
         naviCube->setCorner(static_cast<NaviCube::Corner>(c));
 }
 
-NaviCube* View3DInventorViewer::getNavigationCube() const
+NaviCube* View3DInventorViewer::getNaviCube() const
 {
     return naviCube;
-}
-
-void View3DInventorViewer::updateNavigationCube()
-{
-    if (naviCube) {
-        delete naviCube;
-        naviCube = new NaviCube(this);
-    }
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -2007,6 +2035,7 @@ void View3DInventorViewer::renderFramebuffer()
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_LIGHTING);
     glViewport(0, 0, size[0], size[1]);
     glMatrixMode(GL_PROJECTION);
@@ -2040,8 +2069,7 @@ void View3DInventorViewer::renderFramebuffer()
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
+    glPopAttrib();
 }
 
 void View3DInventorViewer::renderGLImage()
@@ -2049,6 +2077,7 @@ void View3DInventorViewer::renderGLImage()
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_LIGHTING);
     glViewport(0, 0, size[0], size[1]);
     glMatrixMode(GL_PROJECTION);
@@ -2072,13 +2101,12 @@ void View3DInventorViewer::renderGLImage()
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
+    glPopAttrib();
 }
 
 // #define ENABLE_GL_DEPTH_RANGE
 // The calls of glDepthRange inside renderScene() causes problems with transparent objects
-// so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
+// so that's why it is disabled now: http://forum.freecad.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
@@ -2110,6 +2138,7 @@ void View3DInventorViewer::renderScene()
     SoGLWidgetElement::set(state, qobject_cast<QtGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(state, glra);
     SoGLVBOActivatedElement::set(state, this->vboEnabled);
+    drawSingleBackground(col);
     glra->apply(this->backgroundroot);
 
     navigation->updateAnimation();
@@ -3316,6 +3345,39 @@ void View3DInventorViewer::drawArrow()
     glVertex3f(1.0f - 1.0f / 3.0f, -0.5f / 4.0f, 0.0f);
     glVertex3f(1.0f - 1.0f / 3.0f, 0.0f, -0.5f / 4.0f);
     glEnd();
+}
+
+void View3DInventorViewer::drawSingleBackground(const QColor& col)
+{
+    // Note: After changing the NaviCube code the content of an image plane may appear black.
+    // A workaround is this function.
+    // See also: https://github.com/FreeCAD/FreeCAD/pull/9356#issuecomment-1529521654
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glPushAttrib(GL_ENABLE_BIT);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glBegin(GL_TRIANGLE_STRIP);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(-1, 1);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(-1, -1);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(1, 1);
+    glColor3f(col.redF(), col.greenF(), col.blueF());
+    glVertex2f(1, -1);
+    glEnd();
+    glPopAttrib();
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 // ************************************************************************

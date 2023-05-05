@@ -696,7 +696,7 @@
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="280"/>
       <source>Edit Mirror</source>
-      <translation type="unfinished">Edit Mirror</translation>
+      <translation>Editare oglindă</translation>
     </message>
   </context>
   <context>
@@ -1296,7 +1296,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Rezultate</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
@@ -1362,7 +1362,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="14"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Zgură</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
@@ -3520,7 +3520,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>Dimensiunea maximă a elementului (0,0 = Auto):</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="66"/>
@@ -3531,7 +3531,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>Dimensiunea minimă a elementului (0,0 = Auto):</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="138"/>
@@ -3541,7 +3541,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="156"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Zgură</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="181"/>
@@ -5464,7 +5464,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Rezultate</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
@@ -5548,7 +5548,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="179"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Perectivitate de vid constantă</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="183"/>
@@ -5784,7 +5784,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="488"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Ecuația forței electrice</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="492"/>

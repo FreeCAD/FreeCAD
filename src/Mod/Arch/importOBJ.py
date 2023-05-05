@@ -162,7 +162,7 @@ def export(exportList,filename,colors=None):
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-    outfile.write("# http://www.freecadweb.org\n")
+    outfile.write("# http://www.freecad.org\n")
     offsetv = 1
     offsetvn = 1
     objectslist = Draft.get_group_contents(exportList, walls=True,
@@ -254,7 +254,7 @@ def export(exportList,filename,colors=None):
     if materials:
         outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-        outfile.write("# https://www.freecadweb.org\n")
+        outfile.write("# https://www.freecad.org\n")
         kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr ","Dissolve":"d "}
         done = [] # store names to avoid duplicates
         for mat in materials:

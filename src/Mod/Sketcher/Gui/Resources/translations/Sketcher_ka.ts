@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2153"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>დააყენეთ ხაზის სიგრძე ან მანძილი ხაზსა და წვეროს ან ორ წრეწირს შორის</translation>
     </message>
   </context>
   <context>
@@ -593,8 +593,7 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="7070"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>სხივების ორ ბოლო წერტილსა და წიბოს, როგორც საკონტაქტო ზედაპირს შორის გარდატეხის კანონის (სნელის კანონი) შეზღუდვის შექმნა.</translation>
     </message>
   </context>
   <context>
@@ -1679,7 +1678,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2323"/>
       <location filename="../../CommandConstraints.cpp" line="2548"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>წრეწირიდან წრეწირამდე მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2358"/>
@@ -2114,7 +2113,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>კვანძის წერტილის დამატება</translation>
     </message>
   </context>
   <context>
@@ -2617,7 +2616,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7114"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>მონიშნული ობიექტების რიცხვი არ უდრის სამს</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2643,12 +2642,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2023"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>დამთხვევის შეზღუდვისთვის ესკიზიდან აირჩიეთ ორი წვერო ან მეტი წვერო, ან, კონცენტრული შეზღუდვისთვის, ორი ან მეტი წრეწირი, ოვალები, რკალები ან ოვალის რკალები.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2099"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation type="unfinished">Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>დამთხვევის შეზღუდვისთვის ესკიზიდან აირჩიეთ ორი წვერო, ან, კონცენტრული შეზღუდვისთვის, ორი წრეწირი, ოვალები, რკალები ან ოვალის რკალები.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2198"/>
@@ -2664,7 +2663,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2380"/>
       <location filename="../../CommandConstraints.cpp" line="2567"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>ესკიზიდან აირჩიეთ მხოლოდ ერთი ხაზი ან ერთი წერტილი და ერთი ხაზი ან ორი წერტილი ან ორი წრეწირი.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2475"/>
@@ -2857,7 +2856,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>აირჩიეთ ან ერთი წერტილი და რამდენიმე მრუდი ან ერთ მრუდი და რამდენიმე წერტილი.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3570"/>
@@ -3170,22 +3169,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="446"/>
       <source>Unsupported visual layer operation</source>
-      <translation type="unfinished">Unsupported visual layer operation</translation>
+      <translation>მხარდაუჭერელი ვიზუალური ფენის ოპერაცია</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="447"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>გარე გეომეტრიის სხვა ვიზუალურ ფენაზე გადატანა ამჟამად მხარდაჭერილი არაა. გარე გეომეტრია გამოტოვებული იქნება</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="233"/>
       <source>Set knot multiplicity</source>
-      <translation type="unfinished">Set knot multiplicity</translation>
+      <translation>კვანძის გაყოფადობის დაყენება</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="234"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation type="unfinished">Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</translation>
+      <translation>კვანძის გაყოფადობა ბოლო მითითებულ წერტილთან, 1-სა და %1-ს შორის:დაიმახსოვრეთ, რომ გაყოფადობა ზოგიერთ გარემოებაში შეიძლება იგნორირებული იყოს. დეტალებისთვის იხილეთ დოკუმენტაცია</translation>
     </message>
   </context>
   <context>
@@ -4131,8 +4130,8 @@ Requires to re-enter edit mode to take effect.</source>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
-      <translation type="unfinished">Base length units will not be displayed in constraints or cursor coordinates.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</translation>
+      <translation>საზომი ერთეულები შეზღუდვებში და კურსორის კოორდნატებში ნაჩვენები არ ქნება.
+გააჩნია ყველა საზომი ერთეულის მხარდაჭერა, გარდა "US საბაჟო" და "სამშენებლო აშშ/ევრო"-ის.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
@@ -5854,22 +5853,22 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>დამხმარე ბადის ხაზები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>ძირითადი ბადის ხაზები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>ძირითადი ბადის ხაზი ყოველ:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>ყოველი N ხაზში იქნება მთავარი ხაზი. დააყენეთ 1, რომ გამორთოთ ძირითადი ხაზები.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5951,18 +5950,18 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../../App/SketchObject.cpp" line="302"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>ესკიზი არასწორ შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="306"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>ესკიზი ნაწილობრივ დამატებით შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8326"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
+      <translation>პარაბოლები მიგრირებულია. მიგრირებული ფაილები FreeCAD-ის წინა ვერსიებში არ გაიხსნება!!
 </translation>
     </message>
     <message>
@@ -5982,12 +5981,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
+      <translation>B-სპლაინის ინტერპოლაცია</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>B-სპლაინების შექმნა ინტერპოლაციით, ანუ, ესკიზში არსებული კვანძებით.</translation>
     </message>
   </context>
   <context>
@@ -5995,12 +5994,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="962"/>
       <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
+      <translation>პერიოდული B-სპლაინის ინტერპოლაცია</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
+      <translation>პერიოდული B-სპლაინების შექმნა ინტერპოლაციით, ანუ, ესკიზში არსებული კვანძებით.</translation>
     </message>
   </context>
   <context>
@@ -6008,13 +6007,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-სპლაინი კვანძებით</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1109"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>B-სპლაინის კვანძებით შექმნა</translation>
     </message>
   </context>
   <context>
@@ -6022,13 +6021,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>პერიოდული B-სპლაინი კვანძებით</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1112"/>
       <location filename="../../CommandCreateGeo.cpp" line="1113"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>კვანძებით პერიოდული B-სპლაინის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -6036,17 +6035,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>ობიექტებზე მიბმა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>ახალი წერტლები ამჟამად წინასწარ არჩეულ ობიექტს მიემაგრება. ის ასევე მიემაგრება ხაზის შუა ადგილებს და რკალებს.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>ბადეზე მიმაგრება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -6058,12 +6057,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>მიბმის კუთხე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>კუთხური ბიჯი ხელსაწყოებისთვის, როლებიც 'კუთხით მიმაგრებას' იყენებენ (მაგალითად, ხაზი). 'კუთხურად მიმაგრებისთვის' CTRL ღილაკი გეჭიროთ. კუთხე აღმოსავლეთი ღერძიდან (ჰორიზონტალური მარჯვენა) იწყება</translation>
     </message>
   </context>
   <context>
@@ -6071,12 +6070,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>მიბმის გადართვა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>მიბმის ყველა ფუნქციონალის გადართვა. 'ბადეზე მიბმა', 'ობიექტებზე მიბმა და სხვა მიბმის პარამეტრები მენიუში შეგიძლიათ სათითაოდ გადართოთ</translation>
     </message>
   </context>
 </TS>

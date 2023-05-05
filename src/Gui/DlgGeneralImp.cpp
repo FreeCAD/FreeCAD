@@ -291,6 +291,12 @@ void DlgGeneralImp::loadSettings()
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
 
+        if (it->second == "sr-CS") {
+            // Qt does not treat sr-CS (Serbian, Latin) as a Latin-script variant by default: this
+            // forces it to do so.
+            it->second = "sr_Latn";
+        }
+
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {

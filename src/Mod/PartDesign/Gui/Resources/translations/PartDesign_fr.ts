@@ -124,7 +124,7 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>La distance à partir de laquelle le profil de référence est déplacé vers l'extérieur, normalisé par le module.</translation>
     </message>
   </context>
   <context>
@@ -1079,7 +1079,7 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Coefficient de décalage du profil</translation>
     </message>
   </context>
   <context>
@@ -1614,8 +1614,7 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
-</translation>
+      <translation>Création d'un chanfrein vide !</translation>
     </message>
   </context>
   <context>
@@ -1714,8 +1713,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
-</translation>
+      <translation>Création d'une dépouille vide !</translation>
     </message>
   </context>
   <context>
@@ -1918,7 +1916,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Création d'un congé vide !
 </translation>
     </message>
   </context>
@@ -3141,8 +3139,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
-</translation>
+      <translation>Création d'une coque vide !</translation>
     </message>
   </context>
   <context>
@@ -4538,8 +4535,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Pour les fraisages, il s'agit de la profondeur de la partie supérieure de la vis sous la surface.</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

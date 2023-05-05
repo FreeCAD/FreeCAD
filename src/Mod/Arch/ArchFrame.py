@@ -45,7 +45,7 @@ else:
 
 __title__  = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):

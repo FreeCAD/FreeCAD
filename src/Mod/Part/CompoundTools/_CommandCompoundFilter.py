@@ -21,7 +21,7 @@
 
 __title__ = "CompoundTools._CommandCompoundFilter"
 __author__ = "DeepSOIC, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Compound Filter: remove some children from a compound (features)."
 
 
@@ -34,7 +34,7 @@ if FreeCAD.GuiUp:
 
 # translation-related code
 #(see forum thread "A new Part tool is being born... JoinFeatures!"
-#http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
+#http://forum.freecad.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except Exception:

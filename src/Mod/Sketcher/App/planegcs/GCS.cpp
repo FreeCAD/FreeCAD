@@ -60,7 +60,7 @@
 
 // NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve
 // this: this is needed to fix this SparseQR crash
-// http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146, until Eigen library fixes
+// http://forum.freecad.org/viewtopic.php?f=10&t=11341&p=92146#p92146, until Eigen library fixes
 // its own problem with the assertion (definitely not solved in 3.2.0 branch) NOTE2: solved in
 // eigen3.3
 
@@ -74,9 +74,9 @@
 #endif
 
 #if EIGEN_VERSION > 30290 // This regulates that only starting in Eigen 3.3, the problem with
-                          // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
+                          // http://forum.freecad.org/viewtopic.php?f=3&t=4651&start=40
                           // was solved in Eigen:
-                          // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                          // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
                           // https://forum.kde.org/viewtopic.php?f=74&t=129439
 #define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
@@ -841,6 +841,14 @@ int System::addConstraintTangentAtBSplineKnot(BSpline &b, Line &l, unsigned int 
 int System::addConstraintC2CDistance(Circle &c1, Circle &c2, double *dist, int tagId, bool driving)
 {
     Constraint *constr = new ConstraintC2CDistance(c1, c2, dist);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintC2LDistance(Circle &c, Line &l, double *dist, int tagId, bool driving)
+{
+    Constraint *constr = new ConstraintC2LDistance(c, l, dist);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -2170,7 +2178,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
             h_sd  = alpha*g;
 
             // get the gauss-newton step
-            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=50#p106220
+            // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
             // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
             switch (dogLegGaussStep){
                 case FullPivLU:
@@ -4505,7 +4513,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
             alpha = std::min(alpha, subsysA->maxStep(plistAB,xdir));
 
             // From the book "Numerical Optimization - Jorge Nocedal, Stephen J. Wright".
-            // See https://forum.freecadweb.org/viewtopic.php?f=10&t=35469.
+            // See https://forum.freecad.org/viewtopic.php?f=10&t=35469.
             // Eq. 18.32
             // double mu = lambda.lpNorm<Eigen::Infinity>() + 0.01;
             // Eq. 18.33
@@ -5365,11 +5373,21 @@ void System::identifyConflictingRedundantConstraints(
             }
         }
         if (maxPopularity > 0) {
-            skipped.insert(mostPopular);
-            for (SET_I::const_iterator it = conflictingMap[mostPopular].begin();
-                 it != conflictingMap[mostPopular].end();
-                 ++it)
-                satisfiedGroups.insert(*it);
+            // adding for skipping not only the mostPopular, but also any other constraint in the
+            // conflicting map associated with the same tag (namely any other solver
+            // constraint associated with the same sketcher constraint that is also conflicting)
+            auto maxPopularityTag = mostPopular->getTag();
+
+            for(const auto & c : conflictingMap) {
+                if(c.first->getTag() == maxPopularityTag) {
+                    skipped.insert(c.first);
+                    for (SET_I::const_iterator it = conflictingMap[c.first].begin();
+                        it != conflictingMap[c.first].end();
+                        ++it) {
+                        satisfiedGroups.insert(*it);
+                    }
+                }
+            }
         }
     }
 

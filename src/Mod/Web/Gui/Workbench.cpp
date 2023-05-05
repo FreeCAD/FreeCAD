@@ -230,17 +230,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //        << "Drawing_ExportPage"
 //    ;
 //
-//    // Raytracing ****************************************************************************************************
-//
-//    Gui::MenuItem* raytracing = new Gui::MenuItem(menuBar);
-//
-//    raytracing->setCommand("&Raytracing");
-//    *raytracing
-//        << "Raytracing_WriteView"
-//        << "Raytracing_WriteCamera"
-//        << "Raytracing_WritePart";
-//    ;
-//
 //    // Drafting ****************************************************************************************************
 //#   ifdef WEB_USE_DRAFTING
 //    if (mgr.getCommandByName("Draft_Line")) {

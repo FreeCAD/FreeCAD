@@ -43,7 +43,7 @@
       <location filename="../../compact_view.py" line="88"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
-      <translation>版本</translation>
+      <translation>發行版本</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="91"/>
@@ -225,7 +225,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
       <source>Version</source>
-      <translation>版本</translation>
+      <translation>發行版本</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
@@ -438,7 +438,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="137"/>
       <location filename="../../expanded_view.ui" line="114"/>
       <source>Version</source>
-      <translation>版本</translation>
+      <translation>發行版本</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="140"/>
@@ -857,7 +857,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
       <source>Preference Pack Name</source>
-      <translation>偏好設定包名稱</translation>
+      <translation>偏好設定套件名稱</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
@@ -922,7 +922,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
       <source>Version</source>
-      <translation>版本</translation>
+      <translation>發行版本</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="285"/>

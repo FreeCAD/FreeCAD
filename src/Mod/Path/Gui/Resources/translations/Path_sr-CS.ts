@@ -569,7 +569,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create Cylinder</source>
-      <translation>Napravi Cilindar</translation>
+      <translation>Napravi valjak</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -2420,7 +2420,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="370"/>
       <source>Create Cylinder</source>
-      <translation>Napravi Cilindar</translation>
+      <translation>Napravi valjak</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="375"/>
@@ -3604,7 +3604,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="446"/>
       <source>Create Cylinder</source>
-      <translation>Napravi Cilindar</translation>
+      <translation>Napravi valjak</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="451"/>

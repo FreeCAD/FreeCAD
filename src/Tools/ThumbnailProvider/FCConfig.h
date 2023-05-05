@@ -31,66 +31,65 @@
 #define FC_CONFIG_H
 
 
-
 //**************************************************************************
 // switching the operating systems
 
 // First check for *WIN64* since the *WIN32* are also set on 64-bit platforms
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
-#	ifndef FC_OS_WIN32
-#	define FC_OS_WIN32
-#	endif
-#	ifndef FC_OS_WIN64
-#	define FC_OS_WIN64
-#	endif
+#ifndef FC_OS_WIN32
+#define FC_OS_WIN32
+#endif
+#ifndef FC_OS_WIN64
+#define FC_OS_WIN64
+#endif
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#	ifndef FC_OS_WIN32
-#	define FC_OS_WIN32
-#	endif
-#	if defined(__MINGW32__)
-#	if HAVE_CONFIG_H
-#	include <config.h>
-#	endif // HAVE_CONFIG_H
-#	endif
+#ifndef FC_OS_WIN32
+#define FC_OS_WIN32
+#endif
+#if defined(__MINGW32__)
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif// HAVE_CONFIG_H
+#endif
 #elif defined(__MWERKS__) && defined(__INTEL__)
-#	ifndef FC_OS_WIN32
-#	define FC_OS_WIN32
-#	endif
+#ifndef FC_OS_WIN32
+#define FC_OS_WIN32
+#endif
 #elif defined(__APPLE__)
-#	ifndef FC_OS_MACOSX
-#	define FC_OS_MACOSX
-#	endif
+#ifndef FC_OS_MACOSX
+#define FC_OS_MACOSX
+#endif
 #elif defined(linux) || defined(__linux) || defined(__linux__) || defined(__GLIBC__)
-#	ifndef FC_OS_LINUX
-#	define FC_OS_LINUX
-#	endif
+#ifndef FC_OS_LINUX
+#define FC_OS_LINUX
+#endif
 #elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-#	ifndef FC_OS_BSD
-#	define FC_OS_BSD
-#	endif
+#ifndef FC_OS_BSD
+#define FC_OS_BSD
+#endif
 #elif defined(__CYGWIN__)
-#	ifndef FC_OS_CYGWIN
-#	define FC_OS_CYGWIN
+#ifndef FC_OS_CYGWIN
+#define FC_OS_CYGWIN
 // Avoid conflicts with Inventor
-#	define HAVE_INT8_T
-#	define HAVE_UINT8_T
-#	define HAVE_INT16_T
-#	define HAVE_UINT16_T
-#	define HAVE_INT32_T
-#	define HAVE_UINT32_T
-#	define HAVE_INT64_T
-#	define HAVE_UINT64_T
-#	define HAVE_INTPTR_T
-#	define HAVE_UINTPTR_T
+#define HAVE_INT8_T
+#define HAVE_UINT8_T
+#define HAVE_INT16_T
+#define HAVE_UINT16_T
+#define HAVE_INT32_T
+#define HAVE_UINT32_T
+#define HAVE_INT64_T
+#define HAVE_UINT64_T
+#define HAVE_INTPTR_T
+#define HAVE_UINTPTR_T
 #endif
 #else
-#	error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
+#error "FreeCAD is not ported to this OS yet. For help see www.freecad.org"
 #endif
 
 #ifdef FC_OS_WIN32
-#	define PATHSEP '\\'
+#define PATHSEP '\\'
 #else
-#	define PATHSEP '/'
+#define PATHSEP '/'
 #endif
 
 //**************************************************************************
@@ -98,46 +97,46 @@
 
 #if defined(__MINGW32__)
 // nothing specific here
-#elif defined (FC_OS_WIN64) || defined (FC_OS_WIN32)
+#elif defined(FC_OS_WIN64) || defined(FC_OS_WIN32)
 
 #ifndef HAVE_INT8_T
 #define HAVE_INT8_T
-typedef signed char         int8_t;
+typedef signed char int8_t;
 #endif
 
 #ifndef HAVE_UINT8_T
 #define HAVE_UINT8_T
-typedef unsigned char       uint8_t;
+typedef unsigned char uint8_t;
 #endif
 
 #ifndef HAVE_INT16_T
 #define HAVE_INT16_T
-typedef short               int16_t;
+typedef short int16_t;
 #endif
 
 #ifndef HAVE_UINT16_T
 #define HAVE_UINT16_T
-typedef unsigned short      uint16_t;
+typedef unsigned short uint16_t;
 #endif
 
 #ifndef HAVE_INT32_T
 #define HAVE_INT32_T
-typedef int                 int32_t;
+typedef int int32_t;
 #endif
 
 #ifndef HAVE_UINT32_T
 #define HAVE_UINT32_T
-typedef unsigned int        uint32_t;
+typedef unsigned int uint32_t;
 #endif
 
 #ifndef HAVE_INT64_T
 #define HAVE_INT64_T
-typedef __int64             int64_t;
+typedef __int64 int64_t;
 #endif
 
 #ifndef HAVE_UINT64_T
 #define HAVE_UINT64_T
-typedef unsigned __int64    uint64_t;
+typedef unsigned __int64 uint64_t;
 #endif
 
 #endif
@@ -146,29 +145,29 @@ typedef unsigned __int64    uint64_t;
 //**************************************************************************
 // Windows import export DLL defines
 #ifndef BaseExport
-#	define BaseExport
+#define BaseExport
 #endif
 #ifndef GuiExport
-#	define GuiExport
+#define GuiExport
 #endif
 #ifndef AppExport
-#	define AppExport
+#define AppExport
 #endif
 #ifndef DataExport
-#	define DataExport
+#define DataExport
 #endif
 
 
 //**************************************************************************
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#   pragma warning( disable : 4251 )
-#   pragma warning( disable : 4996 )  // suppress deprecated warning for e.g. open()
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4996)// suppress deprecated warning for e.g. open()
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
-#   pragma warning( disable : 4244 )
-#   pragma warning( disable : 4267 )
+#pragma warning(disable : 4244)
+#pragma warning(disable : 4267)
 #endif
 #endif
 
 
-#endif //FC_CONFIG_H
+#endif// FC_CONFIG_H

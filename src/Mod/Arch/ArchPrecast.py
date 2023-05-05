@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Precast concrete module"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 """This module contains tools to build basic precast concrete elements:
 Beams, pillars, slabs and panels"""

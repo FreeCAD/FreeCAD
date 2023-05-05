@@ -25,7 +25,7 @@
 
 __title__ = "Result import for Calculix frd file format"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importCcxFrdResults
 #  \ingroup FEM
@@ -136,14 +136,14 @@ def importFrd(
                     # information 1:
                     # only compact result if not Flow 1D results
                     # compact result object, workaround for bug 2873
-                    # https://www.freecadweb.org/tracker/view.php?id=2873
+                    # https://www.freecad.org/tracker/view.php?id=2873
                     # information 2:
                     # if the result data has multiple result sets there will be multiple result objs
                     # they all will use one mesh obj
                     # on the first res obj fill: the mesh obj will be compacted, thus
                     # it does not need to be compacted on further result sets
                     # but NodeNumbers need to be compacted for every result set (res object fill)
-                    # example frd file: https://forum.freecadweb.org/viewtopic.php?t=32649#p274291
+                    # example frd file: https://forum.freecad.org/viewtopic.php?t=32649#p274291
                     if res_mesh_is_compacted is False:
                         # first result set, compact FemMesh and NodeNumbers
                         res_obj = resulttools.compact_result(res_obj)
@@ -746,7 +746,7 @@ def read_frd_result(
             # append mode_results to results and reset mode_result
             results.append(mode_results)
             mode_results = {}
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649&start=10#p274686
+            # https://forum.freecad.org/viewtopic.php?f=18&t=32649&start=10#p274686
             mode_results["number"] = float("NaN")
             mode_results["time"] = float("NaN")
             end_of_section_found = False

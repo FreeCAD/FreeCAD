@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object _NonLinear"
 __author__ = "Markus Hovorka, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -81,7 +81,7 @@ class Proxy(linear.Proxy):
         # for small numbers we must set an expression because we don't have a UI,
         # the user has to view and edit the tolerance via the property editor and
         # this does not yet allow to view and edit small numbers in scientific notation
-        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
+        # forum thread: https://forum.freecad.org/viewtopic.php?p=613897#p613897
         obj.setExpression("NonlinearTolerance", "1e-7")
         obj.setExpression("NonlinearNewtonAfterTolerance", "1e-3")
         obj.RelaxationFactor = (1.0, 0.0001, 2.0, 0.1)

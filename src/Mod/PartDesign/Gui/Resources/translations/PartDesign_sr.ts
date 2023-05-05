@@ -123,7 +123,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Растојање за које је референтни профил померен према споља, нормализован модулом.</translation>
     </message>
   </context>
   <context>
@@ -773,17 +773,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cylinder</source>
-      <translation>Додај цилиндар</translation>
+      <translation>Додај ваљак</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Sphere</source>
-      <translation>Додај сферу</translation>
+      <translation>Додај лопту</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Cone</source>
-      <translation>Додај конус</translation>
+      <translation>Додај купу</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
@@ -827,17 +827,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Cylinder</source>
-      <translation>Одузми цилиндар</translation>
+      <translation>Одузми ваљак</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
-      <translation>Одузми сферу</translation>
+      <translation>Одузми лопту</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
-      <translation>Одузми конус</translation>
+      <translation>Одузми купу</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="371"/>
@@ -1078,7 +1078,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Коефицијент померања профила</translation>
     </message>
   </context>
   <context>
@@ -1505,12 +1505,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
-      <translation>Полупречници конуса су једнаки</translation>
+      <translation>Полупречници купе су једнаки</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
-      <translation>Полупречници конуса не смеју бити једнаки!</translation>
+      <translation>Полупречници купе не смеју бити једнаки!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
@@ -1615,7 +1615,7 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Направљен је празан типски облик Обарање ивица !
 </translation>
     </message>
   </context>
@@ -1716,7 +1716,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Направљен је празан типски облик Закошење !
 </translation>
     </message>
   </context>
@@ -1774,7 +1774,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="364"/>
       <source>Select reference...</source>
-      <translation>Одабери референцу...</translation>
+      <translation>Изабери сопствену...</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
@@ -1921,7 +1921,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Направљен је празан типски облик Заобљење !
 </translation>
     </message>
   </context>
@@ -1969,7 +1969,7 @@ click again to end selection</source>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
       <location filename="../../TaskHelixParameters.cpp" line="215"/>
       <source>Horizontal sketch axis</source>
-      <translation>Хоризонтална оcа cкице</translation>
+      <translation>Хоризонтална оса скице</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
@@ -1987,7 +1987,7 @@ click again to end selection</source>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Одабери референцу...</translation>
+      <translation>Изабери сопствену...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2032,7 +2032,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="203"/>
       <source>Cone angle:</source>
-      <translation>Угао конуса:</translation>
+      <translation>Угао купе:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
@@ -2047,7 +2047,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="265"/>
       <source>Reversed</source>
-      <translation>Обрнуто</translation>
+      <translation>Обрнути смер</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="272"/>
@@ -2158,7 +2158,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Обрни смер</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2475,7 +2475,7 @@ from the model as reference</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation>Одабери референцу...</translation>
+      <translation>Изабери сопствену...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2544,12 +2544,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="256"/>
       <source>Symmetric to plane</source>
-      <translation>Симетрично наспрам равни</translation>
+      <translation>Симетрично у односу на раван</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="263"/>
       <source>Reversed</source>
-      <translation>Обрнуто</translation>
+      <translation>Обрнути смер</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
@@ -2872,7 +2872,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Обрни смер</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
@@ -2946,7 +2946,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
       <source>Horizontal sketch axis</source>
-      <translation>Хоризонтална оcа cкице</translation>
+      <translation>Хоризонтална оса скице</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
@@ -2957,7 +2957,7 @@ measured along the specified direction</source>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
-      <translation>Одабери референцу...</translation>
+      <translation>Изабери сопствену...</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
@@ -2967,12 +2967,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation>Симетрично наспрам равни</translation>
+      <translation>Симетрично у односу на раван</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
       <source>Reversed</source>
-      <translation>Обрнуто</translation>
+      <translation>Обрнути смер</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
@@ -3145,7 +3145,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Направљен је празан типски облик Дебљина !
 </translation>
     </message>
   </context>
@@ -3172,7 +3172,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="252"/>
       <source>Horizontal sketch axis</source>
-      <translation>Хоризонтална оcа cкице</translation>
+      <translation>Хоризонтална оса скице</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="254"/>
@@ -3199,7 +3199,7 @@ click again to end selection</source>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
       <location filename="../../TaskTransformedParameters.cpp" line="313"/>
       <source>Select reference...</source>
-      <translation>Одабери референцу...</translation>
+      <translation>Изабери сопствену...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
@@ -3330,17 +3330,17 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Додај направљени цилиндар на основу његовог радијуса, висине и угла</translation>
+      <translation>Додај направљени ваљак на основу његовог радијуса, висине и угла</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Додај направљену сферу на основу њеног радијуса и различитих углова</translation>
+      <translation>Додај направљену лопту на основу њеног радијуса и различитих углова</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
-      <translation>Додај направљени конус</translation>
+      <translation>Додај направљену купу</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
@@ -3373,17 +3373,17 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Одузми направљени цилиндар на основу његовог радијуса, висине и угла</translation>
+      <translation>Одузми направљени ваљак на основу његовог радијуса, висине и угла</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Одузми направљену сферу на основу њеног радијуса и различитих углова</translation>
+      <translation>Одузми направљену лопту на основу њеног радијуса и различитих углова</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Одузми направљени конус</translation>
+      <translation>Одузми направљену купу</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
@@ -3815,7 +3815,7 @@ This may lead to unexpected results.</source>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
-      <translation>Хоризонтална оcа cкице</translation>
+      <translation>Хоризонтална оса скице</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
@@ -4551,8 +4551,8 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>За конусно упуштен отвор ово је 
+дубина косине упуштања</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>
@@ -4615,7 +4615,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation>Обрнуто</translation>
+      <translation>Обрнути смер</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="629"/>

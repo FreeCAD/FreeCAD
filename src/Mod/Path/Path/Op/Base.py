@@ -37,7 +37,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
 if False:

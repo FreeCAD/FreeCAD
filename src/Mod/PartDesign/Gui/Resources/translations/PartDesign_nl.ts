@@ -1714,7 +1714,7 @@ klik nogmaals om de selectie te beëindigen</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Leeg concept gemaakt!
 </translation>
     </message>
   </context>

@@ -91,6 +91,12 @@ DeriVector2 DeriVector2::divD(double val, double dval) const
         x / val, y / val, dx / val - x * dval / (val * val), dy / val - y * dval / (val * val));
 }
 
+double DeriVector2::crossProdNorm(const DeriVector2 &v2, double &dprd) const
+{
+    dprd = dx*v2.y + x*v2.dy - dy*v2.x - y*v2.dx;
+    return x*v2.y - y*v2.x;
+}
+
 DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const
 {
     assert(false /*Value() is not implemented*/);
@@ -628,7 +634,7 @@ DeriVector2 BSpline::CalculateNormal(const Point &p, const double* derivparam) c
     // sensus but a normal vector, where the vector should point to the left when one walks along
     // the curve from start to end.
     //
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=26312#p209486
+    // https://forum.freecad.org/viewtopic.php?f=10&t=26312#p209486
 
     if (mult[0] > degree && mult[mult.size()-1] > degree) {
     // if endpoints through end poles

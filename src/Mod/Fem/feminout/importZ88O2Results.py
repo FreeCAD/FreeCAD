@@ -23,7 +23,7 @@
 
 __title__ = "Result import for Z88 displacements format"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importZ88O2Results
 #  \ingroup FEM

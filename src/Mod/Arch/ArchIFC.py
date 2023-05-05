@@ -237,7 +237,7 @@ class IfcRoot:
         Do so using the .addIfcAttributeValueExpressions() method.
 
         Learn more about expressions here:
-        https://wiki.freecadweb.org/Expressions
+        https://wiki.freecad.org/Expressions
 
         Do not add the attribute if the object has a property with the
         attribute's name. Also do not add the attribute if its name is
@@ -315,7 +315,7 @@ class IfcRoot:
         - LongName
 
         Learn more about expressions here:
-        https://wiki.freecadweb.org/Expressions
+        https://wiki.freecad.org/Expressions
 
         Parameters
         ----------

@@ -30,7 +30,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Custom operation page controller and command implementation."
 
 

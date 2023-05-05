@@ -178,7 +178,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
             items.push_back(QObject::tr("Don't attach"));
             int iSugg = 0;//index of the auto-suggested mode in the list of valid modes
             for (size_t i = 0  ;  i < validModes.size()  ;  ++i){
-                items.push_back(QString::fromLatin1(AttachEngine::getModeName(validModes[i]).c_str()));
+                auto uiStrings = AttacherGui::getUIStrings(AttachEnginePlane::getClassTypeId(), validModes[i]);
+                items.push_back(uiStrings[0]);
                 if (validModes[i] == mapmode)
                     iSugg = items.size()-1;
             }
@@ -931,7 +932,7 @@ bool CmdSketcherMergeSketches::isActive()
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:
 // https://github.com/Spritkopf/freecad-macros/blob/master/clip-sketch/clip_sketch.FCMacro
-// https://forum.freecadweb.org/viewtopic.php?p=231481#p231085
+// https://forum.freecad.org/viewtopic.php?p=231481#p231085
 DEF_STD_CMD_A(CmdSketcherViewSection)
 
 CmdSketcherViewSection::CmdSketcherViewSection()

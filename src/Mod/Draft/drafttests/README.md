@@ -39,7 +39,7 @@ program -t TestDraftGui
 ```
 
 For more information see the thread:
-[New unit tests for Draft Workbench](https://forum.freecadweb.org/viewtopic.php?f=23&t=40405)
+[New unit tests for Draft Workbench](https://forum.freecad.org/viewtopic.php?f=23&t=40405)
 
 # To do
 

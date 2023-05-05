@@ -94,12 +94,15 @@ namespace GCS
         double length(double& dlength)
             const;// returns length and writes length deriv into the dlength argument.
 
-
         // unlike other vectors in FreeCAD, this normalization creates a new vector instead of
         // modifying existing one.
         DeriVector2 getNormalized() const;// returns zero vector if the original is zero.
         double scalarProd(const DeriVector2& v2, double* dprd = nullptr)
             const;// calculates scalar product of two vectors and returns the result. The derivative
+                  // of the result is written into argument dprd.
+        double crossProdNorm(const DeriVector2& v2, double& dprd)
+            const;// calculates the norm of the cross product of the two vectors.
+                  // DeriVector2 are considered as 3d vectors with null z. The derivative
                   // of the result is written into argument dprd.
         DeriVector2 sum(const DeriVector2& v2) const
         {// adds two vectors and returns result
@@ -132,7 +135,6 @@ namespace GCS
             return DeriVector2(
                 x * m1 + v2.x * m2, y * m1 + v2.y * m2, dx * m1 + v2.dx * m2, dy * m1 + v2.dy * m2);
         }
-
     };
 
     ///////////////////////////////////////

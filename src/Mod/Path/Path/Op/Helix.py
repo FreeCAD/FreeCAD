@@ -34,7 +34,7 @@ import Path.Op.CircularHoleBase as PathCircularHoleBase
 
 __title__ = "Path Helix Drill Operation"
 __author__ = "Lorenz Hüdepohl"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of Helix Drill operation"
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2016"

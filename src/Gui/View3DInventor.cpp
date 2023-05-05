@@ -121,9 +121,9 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // create the inventor widget and set the defaults
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
-    // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
+    // http://forum.freecad.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
     // describes a minor error but trying to fix it leads to a major issue
-    // http://forum.freecadweb.org/viewtopic.php?f=3&t=6085&sid=3f4bcab8007b96aaf31928b564190fd7
+    // http://forum.freecad.org/viewtopic.php?f=3&t=6085&sid=3f4bcab8007b96aaf31928b564190fd7
     // so the change is commented out
     // By default, the wheel events are processed by the 3d view AND the mdi area.
     //_viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
@@ -145,7 +145,6 @@ View3DInventor::~View3DInventor()
     }
 
     viewSettings.reset();
-    naviSettings.reset();
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes

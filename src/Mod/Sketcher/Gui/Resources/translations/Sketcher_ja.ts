@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1900"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
+      <translation>点間の一致拘束、または円、円弧、楕円の間の同心拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -1148,12 +1148,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1200"/>
       <source>Join curves</source>
-      <translation type="unfinished">Join curves</translation>
+      <translation>曲線を結合</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1201"/>
       <source>Join two curves at selected end points</source>
-      <translation type="unfinished">Join two curves at selected end points</translation>
+      <translation>選択した端点で2曲線を結合</translation>
     </message>
   </context>
   <context>
@@ -2021,7 +2021,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1287"/>
       <source>Join Curves</source>
-      <translation type="unfinished">Join Curves</translation>
+      <translation>曲線を結合</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="818"/>
@@ -2109,7 +2109,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>ノット点を追加</translation>
     </message>
   </context>
   <context>
@@ -2638,12 +2638,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2023"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>スケッチから一致拘束のための複数の頂点、または同心拘束のための複数の円、楕円、円弧、楕円弧を選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2099"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation type="unfinished">Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>スケッチから一致拘束のための2頂点、または同心拘束のための2つの円、楕円、円弧、楕円弧を選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2198"/>
@@ -3085,7 +3085,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curve should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curve should end at the selected point to be able to join them.</translation>
+      <translation>結合するには2曲線の端点だけが選択されている必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3522,7 +3522,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="203"/>
       <source>All types</source>
-      <translation type="unfinished">All types</translation>
+      <translation>全てのタイプ</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="204"/>
@@ -3547,27 +3547,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="208"/>
       <source>Arc of circle</source>
-      <translation type="unfinished">Arc of circle</translation>
+      <translation>円弧</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="209"/>
       <source>Arc of ellipse</source>
-      <translation type="unfinished">Arc of ellipse</translation>
+      <translation>楕円弧</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="210"/>
       <source>Arc of hyperbola</source>
-      <translation type="unfinished">Arc of hyperbola</translation>
+      <translation>双曲線弧</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="211"/>
       <source>Arc of parabola</source>
-      <translation type="unfinished">Arc of parabola</translation>
+      <translation>放物線弧</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="212"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>B-スプライン曲線</translation>
     </message>
   </context>
   <context>
@@ -4207,7 +4207,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show coordinates beside cursor while editing</source>
-      <translation type="unfinished">Show coordinates beside cursor while editing</translation>
+      <translation>編集中にカーソルの横に座標を表示</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="275"/>
@@ -4459,17 +4459,17 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>クリックしてフィルターを切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation type="unfinished">Click to show filters</translation>
+      <translation>クリックしてフィルターを表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
       <source>Filters</source>
-      <translation type="unfinished">Filters</translation>
+      <translation>フィルター</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
@@ -4530,17 +4530,17 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>クリックしてフィルターを切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation type="unfinished">Click to show filters</translation>
+      <translation>クリックしてフィルターを表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
       <source>Filters</source>
-      <translation type="unfinished">Filters</translation>
+      <translation>フィルター</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
@@ -5773,12 +5773,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../../Profiles.py" line="53"/>
       <source>Creates a hexagonal profile</source>
-      <translation type="unfinished">Creates a hexagonal profile</translation>
+      <translation>六角形のプロファイルを作成</translation>
     </message>
     <message>
       <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
-      <translation type="unfinished">Creates a hexagonal profile in the sketch</translation>
+      <translation>スケッチに六角形のプロファイルを作成</translation>
     </message>
   </context>
   <context>
@@ -5792,7 +5792,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid settings</source>
-      <translation type="unfinished">Grid settings</translation>
+      <translation>グリッドの設定</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
@@ -5802,12 +5802,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
       <source>Automatically adapt grid spacing based on the viewer dimensions.</source>
-      <translation type="unfinished">Automatically adapt grid spacing based on the viewer dimensions.</translation>
+      <translation>ビューアー寸法に基づいてグリッド間隔を自動調整</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid Auto Spacing</source>
-      <translation type="unfinished">Grid Auto Spacing</translation>
+      <translation>グリッド間隔を自動調整</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="73"/>
@@ -5818,45 +5818,45 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid Auto Spacing' is enabled, will be used as base value.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.
-If 'Grid Auto Spacing' is enabled, will be used as base value.</translation>
+      <translation>後続の2つのグリッド線間の距離。
+「グリッド間隔を自動調整」が有効になっている場合、基本値として使用されます。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="115"/>
       <source>Pixel size threshold</source>
-      <translation type="unfinished">Pixel size threshold</translation>
+      <translation>ピクセルサイズのしきい値</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="125"/>
       <source>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
 The grid spacing change if it becomes smaller than this number of pixel.</source>
-      <translation type="unfinished">While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
-The grid spacing change if it becomes smaller than this number of pixel.</translation>
+      <translation>「グリッド間隔を自動調整」を使用すると、グリッド間隔にピクセル単位のしきい値が設定されます。
+このピクセル数より小さくなるとグリッド間隔が変化します。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="151"/>
       <source>Grid display</source>
-      <translation type="unfinished">Grid display</translation>
+      <translation>グリッド表示</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>補助グリッド線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>主グリッド線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>主グリッド線の間隔:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>N本の線ごとに主線が引かれます。1に設定すると主線を無効にします。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -5889,12 +5889,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="323"/>
       <source>Line pattern used for grid division.</source>
-      <translation type="unfinished">Line pattern used for grid division.</translation>
+      <translation>グリッド分割に使用される線種</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="343"/>
       <source>Distance between two subsequent division lines</source>
-      <translation type="unfinished">Distance between two subsequent division lines</translation>
+      <translation>後続の2つの分割線間の距離</translation>
     </message>
   </context>
   <context>
@@ -5902,17 +5902,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1006"/>
       <source>Grid Auto Spacing</source>
-      <translation type="unfinished">Grid Auto Spacing</translation>
+      <translation>グリッド間隔を自動調整</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1007"/>
       <source>Resize grid automatically depending on zoom.</source>
-      <translation type="unfinished">Resize grid automatically depending on zoom.</translation>
+      <translation>ズームに応じてグリッドのサイズを自動変更</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Spacing</source>
-      <translation type="unfinished">Spacing</translation>
+      <translation>間隔</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -5925,12 +5925,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1098"/>
       <source>Activate Grid</source>
-      <translation type="unfinished">Activate Grid</translation>
+      <translation>グリッドを有効にする</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1099"/>
       <source>Activate grid and grid settings</source>
-      <translation type="unfinished">Activate grid and grid settings</translation>
+      <translation>グリッドとグリッド設定を有効にする</translation>
     </message>
   </context>
   <context>
@@ -6023,7 +6023,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>オブジェクトにスナップ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -6033,24 +6033,24 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Snap to Grid</source>
-      <translation type="unfinished">Snap to Grid</translation>
+      <translation>グリッドにスナップ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+      <translation>新しい点は最も近いグリッド線にスナップします。
+点はスナップするグリッド線のグリッド間隔の5分の1より近くなければなりません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>スナップ角度</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <translation>「角度でスナップ」（例えば線）を使用するツールの角度ステップ。 CTRLキーを押していると「角度でスナップ」が有効になります。角度は東向きの軸（水平線の右方向）から開始します。</translation>
     </message>
   </context>
   <context>
@@ -6058,12 +6058,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>スナップの切り替え</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
-      <translation type="unfinished">Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</translation>
+      <translation>すべてのスナップ機能を切り替えます。メニューで個別に「グリッドにスナップ」、「オブジェクトにスナップ」、その他のスナップ設定を切り替えられます。</translation>
     </message>
   </context>
 </TS>

@@ -1593,7 +1593,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     //DeepSOIC: this hardcore math can probably be replaced with a couple of
     //clever OCC calls... See forum thread "Sketch mapping enhancement" for a
     //picture on how this math was derived.
-    //http://forum.freecadweb.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
+    //http://forum.freecad.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
     axA.Normalize();
     axB.Normalize();
     edA.Normalize();

@@ -34,7 +34,7 @@ modules.
 
 __title__ = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import os
 import os.path
@@ -252,7 +252,7 @@ def _getBesideBase(solver):
     # doc=App.newDocument()
     # doc.FileName
     # the above returns an empty string in FreeCAD 0.19
-    # https://forum.freecadweb.org/viewtopic.php?f=10&t=48842
+    # https://forum.freecad.org/viewtopic.php?f=10&t=48842
     if path == "":
         error_message = (
             "Please save the file before executing the solver. "

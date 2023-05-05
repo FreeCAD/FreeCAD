@@ -182,9 +182,9 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
             if (vpPlaneXY) { vpPlaneXY->Size.setValue ( szXY ); }
             if (vpPlaneXZ) { vpPlaneXZ->Size.setValue ( szXZ ); }
             if (vpPlaneYZ) { vpPlaneYZ->Size.setValue ( szYZ ); }
-            if (vpLineX) { vpLineX->Size.setValue ( szX ); }
-            if (vpLineY) { vpLineY->Size.setValue ( szY ); }
-            if (vpLineZ) { vpLineZ->Size.setValue ( szZ ); }
+            if (vpLineX) { vpLineX->Size.setValue ( szX * axesScaling ); }
+            if (vpLineY) { vpLineY->Size.setValue ( szY * axesScaling ); }
+            if (vpLineZ) { vpLineZ->Size.setValue ( szZ * axesScaling ); }
 
         } catch (const Base::Exception &ex) {
             // While restoring a document don't report errors if one of the lines or planes

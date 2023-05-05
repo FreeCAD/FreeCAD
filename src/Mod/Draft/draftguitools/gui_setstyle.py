@@ -41,7 +41,7 @@ translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Styling tools"
 __author__ = ("Yorik van Havre")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 PRESETPATH = os.path.join(FreeCAD.getUserAppDataDir(),"Draft","StylePresets.json")
 

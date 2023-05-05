@@ -278,7 +278,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>თუ ჩართულია, დამატებითი ხაზები შეივსება თითოეული განხილული ობიექტით. თუ არა, მხოლოდ ჯამები.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -288,7 +288,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>თუ ჩართულია, დამგეგმავი და ასოცირებული ცხრილი განახლდება იმდენჯერ, რამდენჯერაც დოკუმენტი გადაითვლება.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -2929,7 +2929,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>პანელის მორგება</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3062,12 +3062,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>წაიშალა თვისება 'შედეგი' და დაემატა თვისება 'ავტომატური განახლება'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>დამატებულია თვისება 'Schedule'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
@@ -3077,7 +3077,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>ცხრილის წაშლა</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -3842,7 +3842,7 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>ArchSketch-ს ბაზის მონიშნული წიბოები (ან წიბოების ჯგუფები) ამ არქიტექტურული სტრუქტურის მონახაზის შექმნისას გამოსაყენებლად (ნაგულისხმებად ყველა საბაზისო მონახაზის წიბოს მაგიერ). საჭიროებს წიბოების ან ჯგუფების ინდექსის ნომრებს.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
@@ -5369,12 +5369,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>თუ ჩართულია, დამგეგმავი და ასოცირებული ცხრილი განახლდება იმდენჯერ, რამდენჯერაც დოკუმენტი გადაითვლება</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The Arch Schedule that uses this spreadsheet</translation>
+      <translation>Arch დამგეგმავი, რომელიც ამ ცხრილს იყენებს</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>

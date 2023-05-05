@@ -1312,14 +1312,14 @@ int Application::getUserEditMode(const std::string &mode) const
         return userEditMode;
     }
     for (auto const &uem : userEditModes) {
-        if (uem.second == mode) {
+        if (uem.second.first == mode) {
             return uem.first;
         }
     }
     return -1;
 }
 
-std::string Application::getUserEditModeName(int mode) const
+std::pair<std::string,std::string> Application::getUserEditModeUIStrings(int mode) const
 {
     if (mode == -1) {
         return userEditModes.at(userEditMode);
@@ -1327,7 +1327,7 @@ std::string Application::getUserEditModeName(int mode) const
     if (userEditModes.find(mode) != userEditModes.end()) {
         return userEditModes.at(mode);
     }
-    return "";
+    return std::make_pair(std::string(), std::string());
 }
 
 bool Application::setUserEditMode(int mode)
@@ -1343,7 +1343,7 @@ bool Application::setUserEditMode(int mode)
 bool Application::setUserEditMode(const std::string &mode)
 {
     for (auto const &uem : userEditModes) {
-        if (uem.second == mode) {
+        if (uem.second.first == mode) {
             return setUserEditMode(uem.first);
         }
     }
@@ -1994,7 +1994,7 @@ void Application::runApplication()
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
+    // http://forum.freecad.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Make sure that we use '.' as decimal point. See also
@@ -2073,7 +2073,7 @@ void Application::runApplication()
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
 #else
     // Option to opt-out from using a Linux desktop icon theme.
-    // https://forum.freecadweb.org/viewtopic.php?f=4&t=35624
+    // https://forum.freecad.org/viewtopic.php?f=4&t=35624
     bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
     if (!themePaths) {
         QStringList searchPaths;
@@ -2336,7 +2336,7 @@ void Application::runApplication()
     Base::Console().Log("Init: Entering event loop\n");
 
     // boot phase reference point
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=21665
+    // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
     try {
@@ -2433,7 +2433,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     // }
     //
     // See https://stackoverflow.com/questions/5497799/how-do-i-customise-the-appearance-of-links-in-qlabels-using-style-sheets
-    // and https://forum.freecadweb.org/viewtopic.php?f=34&t=50744
+    // and https://forum.freecad.org/viewtopic.php?f=34&t=50744
     static bool init = true;
     if (init) {
         init = false;
@@ -2510,7 +2510,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     // At startup time unpolish() mustn't be executed because otherwise the QSint widget
     // appear incorrect due to an outdated cache.
     // See https://doc.qt.io/qt-5/qstyle.html#unpolish-1
-    // See https://forum.freecadweb.org/viewtopic.php?f=17&t=50783
+    // See https://forum.freecad.org/viewtopic.php?f=17&t=50783
     if (!d->startingUp) {
         if (mdi->style())
             mdi->style()->unpolish(qApp);

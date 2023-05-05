@@ -99,12 +99,12 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>Secționat de un plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>Secţiune cu plan</translation>
     </message>
   </context>
   <context>
@@ -167,12 +167,12 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Conectează marginile dacă distanța este mai mică de</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Eșec</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@ Această comandă funcționează doar cu un obiect 'plasă', nu cu o față sau 
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Utilizaţi plasa standard</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
@@ -300,7 +300,7 @@ Această comandă funcționează doar cu un obiect 'plasă', nu cu o față sau 
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Deformarea liniară maximă a unei secțiuni de plasă de pe suprafața obiectului</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -310,14 +310,14 @@ Această comandă funcționează doar cu un obiect 'plasă', nu cu o față sau 
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Deformarea maximă unghiulară a unei secțiuni cu ochiuri la secțiunea următoare</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Deviația liniară maximă a unui segment de plasă va fi specificată
+Deviația de suprafață înmulțită cu lungimea segmentului de plasă curent (margine)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -327,7 +327,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Mesh va obține culorile feței obiectului</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -339,9 +339,9 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Segmentele de plasă vor fi grupate în funcție de culoarea fețelor obiectului.
+Aceste grupuri vor fi exportate pentru formatele de ieșire Plasă
+această caracteristică (de ex. formatul OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -356,7 +356,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Folosiți plasa Mefisto</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -367,13 +367,13 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Dacă acest număr este mai mic, plasa devine mai mică.
+Cea mai mică valoare este 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Estimare</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="206"/>
@@ -383,7 +383,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Utilizează plasa Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -429,8 +429,8 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Dacă acest parametru este mai mic, ochiul devine mai mic.
+O valoare în intervalul 0.1-1.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
@@ -442,8 +442,8 @@ A value in the range of 0.1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Dacă acest parametru este mai mare, Plasă devine mai bun.
+O valoare în intervalul 0.2-10.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
@@ -453,7 +453,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>Dacă se va realiza optimizarea formei suprafeței</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -463,7 +463,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>Dacă elementele celei de-a doua comenzi vor fi generate</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -473,7 +473,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Dacă ochiurile de plasă vor fi aranjate de preferință utilizând fețe cvadrilaterale</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -483,12 +483,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Păstrați panoul deschis</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Zgură</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="225"/>
@@ -500,15 +500,15 @@ A value in the range of 0.2-10.</translation>
       <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>Ai selectat un corp fără sfaturi.
+Te rog setează vârful corpului sau selectează o altă formă.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation type="unfinished">You have selected a shape without faces.
-Select a different shape, please.</translation>
+      <translation>Ați selectat o formă fără fețe.
+Selectați o altă formă, vă rog.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="267"/>
@@ -554,12 +554,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Dedesubt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Deasupra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -580,12 +580,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Desfaceți plasă</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Găsește o reprezentare plană a unei ochiuri de plasă.</translation>
     </message>
   </context>
   <context>
@@ -593,12 +593,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Desfaceți Fața</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Găsiți o reprezentare plană a unei fețe.</translation>
     </message>
   </context>
 </TS>

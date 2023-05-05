@@ -273,7 +273,7 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 #ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
 #else
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
     lineEdit()->setTextMargins(0, 2, 0, 0);
 #endif
 }

@@ -21,7 +21,7 @@
 
 __title__ = "Fem Tools for results"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -233,7 +233,7 @@ def get_all_stats(res_obj):
     the methods _getFreeCADMechResultVectorProperties()
     and _getFreeCADMechResultScalarProperties()
     as well as forum topic
-    https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434
+    https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=30#p277434
 
     Parameters
     ----------
@@ -384,7 +384,7 @@ def add_von_mises(res_obj):
 def add_principal_stress_std(res_obj):
     # saved into PrincipalMax, PrincipalMed, PrincipalMin
     # TODO may be use only one container for principal stresses in result object
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p416006
     # but which one is better
     prinstress1 = []
     prinstress2 = []
@@ -414,7 +414,7 @@ def add_principal_stress_std(res_obj):
 
     #
     # Add critical strain ratio using the Stress Modified Critical Strain (SMCS) criterion
-    #   Forum Discussion: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+    #   Forum Discussion: https://forum.freecad.org/viewtopic.php?f=18&t=35893#p303392
     #   Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
     #
     #   critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
@@ -454,7 +454,7 @@ def add_principal_stress_std(res_obj):
 def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
     """Calculate critical strain ratio.
 
-    Forum Discussion: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+    Forum Discussion: https://forum.freecad.org/viewtopic.php?f=18&t=35893#p303392
     Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
 
     critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
@@ -534,7 +534,7 @@ def add_principal_stress_reinforced(res_obj):
     #
     # saved into PS1Vector, PS2Vector, PS3Vector
     # TODO may be use only one container for principal stresses in result object
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p416006
     # but which one is better
     prinstress1 = []
     prinstress2 = []
@@ -644,7 +644,7 @@ def compact_result(res_obj):
     """
     compacts result.Mesh and appropriate result.NodeNumbers
     """
-    # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
+    # as workaround for https://www.freecad.org/tracker/view.php?id=2873
 
     # get compact mesh data
     from femmesh.meshtools import compact_mesh
@@ -669,7 +669,7 @@ def compact_result(res_obj):
 def calculate_von_mises(stress_tensor):
     """Calculate Von mises stress.
     See http://en.wikipedia.org/wiki/Von_Mises_yield_criterion
-    Simplification: https://forum.freecadweb.org/viewtopic.php?f=18&t=33974&p=296542#p296542
+    Simplification: https://forum.freecad.org/viewtopic.php?f=18&t=33974&p=296542#p296542
 
     stress_tensor ... (Sxx, Syy, Szz, Sxy, Sxz, Syz)
     """
@@ -686,8 +686,8 @@ def calculate_principal_stress_std(
     stress_tensor
 ):
     # if NaN is inside the array, which can happen on Calculix frd result files return NaN
-    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649#p274291
+    # https://forum.freecad.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    # https://forum.freecad.org/viewtopic.php?f=18&t=32649#p274291
     for s in stress_tensor:
         if isnan(s) is True:
             return (float("NaN"), float("NaN"), float("NaN"), float("NaN"))
@@ -702,7 +702,7 @@ def calculate_principal_stress_std(
         [s11, s12, s31],
         [s12, s22, s23],
         [s31, s23, s33]
-    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    ])  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     eigvals = list(np.linalg.eigvalsh(sigma))
     eigvals.sort()
@@ -719,7 +719,7 @@ def calculate_principal_stress_reinforced(stress_tensor):
     on the diagonal of the stress tensor
 
     Difference with the original method:
-    https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=90#p296539
+    https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=90#p296539
     """
 
     s11 = stress_tensor[0]  # Sxx
@@ -732,7 +732,7 @@ def calculate_principal_stress_reinforced(stress_tensor):
         [s11, s12, s31],
         [s12, s22, s23],
         [s31, s23, s33]
-    ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    ])  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     eigenvalues, eigenvectors = np.linalg.eig(sigma)
 
@@ -767,7 +767,7 @@ def calculate_rho(stress_tensor, fy):
     - fy: factored yield strength of reinforcement bars
 
     See post:
-    https://forum.freecadweb.org/viewtopic.php?f=18&t=28821
+    https://forum.freecad.org/viewtopic.php?f=18&t=28821
 
     """
 
@@ -935,7 +935,7 @@ def calculate_mohr_coulomb(prin1, prin3, phi, fck):
 
 
 def calculate_disp_abs(displacements):
-    # see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=100#p296657
+    # see https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=100#p296657
     return [np.linalg.norm(nd) for nd in displacements]
 
 ##  @}

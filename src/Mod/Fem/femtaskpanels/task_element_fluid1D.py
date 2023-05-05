@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD FEM element fluid 1D task panel for the document object"
 __author__ = "Ofentse Kgoa, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package task_element_fluid1D
 #  \ingroup FEM

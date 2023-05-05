@@ -329,7 +329,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection
     ret.push_back(curve.Value(reversed ? elast : efirst));
 
     // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
-    // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
+    // https://forum.freecad.org/viewtopic.php?f=15&t=42628
     //
     // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
     //

@@ -1353,7 +1353,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         Q_EMIT  mainWindowClosed();
         d->activityTimer->stop();
 
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=67748
+        // https://forum.freecad.org/viewtopic.php?f=8&t=67748
         // When the session manager jumps in it can happen that the closeEvent()
         // function is triggered twice and for the second call the main window might be
         // invisible. In this case the window settings shouldn't be saved.
@@ -1604,13 +1604,15 @@ void MainWindow::loadWindowSettings()
     }
     std::clog << "Main window restored" << std::endl;
 
-// make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
-    QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
-#endif
-
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
+
+    // make menus and tooltips usable in fullscreen under Windows, see issue #7563
+#if defined(Q_OS_WIN)
+    if (QWindow* win = this->windowHandle()) {
+        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
+    }
+#endif
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();

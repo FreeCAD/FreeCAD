@@ -1,22 +1,23 @@
 #! python
 # -*- coding: utf-8 -*-
-# (c) 2006 Juergen Riegel 
+# (c) 2006 Juergen Riegel
 
 from . import template
 import generateBase.generateModel_Module
 import generateBase.generateTools
 
-class TemplateFeature (template.ModelTemplate):
-  def Generate(self):
-    file = open(self.path + self.feature.Name + "Imp.cpp",'w')
-    generateBase.generateTools.replace(self.TemplateImplement,locals(),file)
-    file = open(self.path + self.feature.Name + ".cpp",'w')
-    generateBase.generateTools.replace(self.TemplateModule,locals(),file)
-    file = open(self.path + self.feature.Name + ".h",'w')
-    generateBase.generateTools.replace(self.TemplateHeader,locals(),file)
-    #file.write( generateBase.generateTools.replace(self.Template,locals()))
 
-  TemplateHeader = """
+class TemplateFeature(template.ModelTemplate):
+    def Generate(self):
+        file = open(self.path + self.feature.Name + "Imp.cpp", "w")
+        generateBase.generateTools.replace(self.TemplateImplement, locals(), file)
+        file = open(self.path + self.feature.Name + ".cpp", "w")
+        generateBase.generateTools.replace(self.TemplateModule, locals(), file)
+        file = open(self.path + self.feature.Name + ".h", "w")
+        generateBase.generateTools.replace(self.TemplateHeader, locals(), file)
+        # file.write( generateBase.generateTools.replace(self.Template,locals()))
+
+    TemplateHeader = """
 #ifndef @self.module.Name.upper()@_FEATURE_@self.feature.Name.upper()@_H
 #define @self.module.Name.upper()@_FEATURE_@self.feature.Name.upper()@_H
 
@@ -54,7 +55,7 @@ public:
 #endif // @self.module.Name.upper()@_FEATURE_@self.feature.Name.upper()@_H
 
 """
-  TemplateModule = """
+    TemplateModule = """
 #include "PreCompiled.h"
 
 #include "@self.feature.Name@.h"
@@ -69,10 +70,10 @@ PROPERTY_SOURCE(@self.module.Name@::@self.feature.Name@, App::Feature)
   ADD_PROPERTY(@i.Name@,(0.0));
 -
 }
-"""	
-  # Here's the template for the user part of the implementation. This does NOT get overwritten if it already exists.
-  TemplateImplement = """
-// 
+"""
+    # Here's the template for the user part of the implementation. This does NOT get overwritten if it already exists.
+    TemplateImplement = """
+//
 #include "PreCompiled.h"
 
 #include "@self.feature.Name@.h"

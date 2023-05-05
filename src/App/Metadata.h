@@ -183,7 +183,7 @@ struct AppExport GenericMetadata {
     *
     * The metadata format is based on https://ros.org/reps/rep-0149.html, modified for FreeCAD
     * use. Full format documentation is available at the FreeCAD Wiki:
-    * https://wiki.freecadweb.org/Package_Metadata
+    * https://wiki.freecad.org/Package_Metadata
     */
 class AppExport Metadata
 {

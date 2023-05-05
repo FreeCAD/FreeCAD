@@ -284,7 +284,7 @@ Ifc Type: Pared. Sólo considerará aquellos objetos cuyo Tipo de Ifc es Pared.
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Si esto está habilitado, se llenarán líneas adicionales con cada objeto considerado. Si no, sólo los totales.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -2943,7 +2943,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Opciones del panel</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3091,7 +3091,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Borrar la hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -5126,148 +5126,148 @@ Creación de construcción cancelada.</translation>
       <location filename="../../ArchPanel.py" line="1016"/>
       <location filename="../../ArchPanel.py" line="1275"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>Un margen dentro de los límites</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
       <location filename="../../ArchPanel.py" line="1277"/>
       <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <translation>Activa o desactiva la visualización del margen</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1100"/>
       <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <translation>Los cortes del panel vinculado</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1102"/>
       <source>The tag text to display</source>
-      <translation type="unfinished">The tag text to display</translation>
+      <translation>El texto de la etiqueta para mostrar</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1112"/>
       <source>The font file</source>
-      <translation type="unfinished">The font file</translation>
+      <translation>El archivo de la tipografía</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1114"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>El ancho de la hoja</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1117"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>El alto de la hoja</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1120"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>La relación de llenado de esta hoja</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1125"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
+      <translation>Especifica un ángulo para el grano de madera (en sentido horario, 0 es del norte)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1127"/>
       <source>Specifies the scale applied to each panel view.</source>
-      <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
+      <translation>Especifica la escala aplicada a cada vista del panel.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1130"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>Una lista de posibles rotaciones para el nester</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1279"/>
       <source>Turns the display of the wood grain texture on/off</source>
-      <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
+      <translation>Activa o desactiva la textura del grano de madera</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="172"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Un objeto huésped opcional para este muro cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="175"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>La altura del muro cortina, si se establece desde una arista</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="179"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>El número de parteluces verticales</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="183"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
+      <translation>Si el perfil de los parteluces verticales se alinea con la superficie o no</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="186"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
+      <translation>El número de secciones verticales de este muro cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="194"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>La altura del perfil de los parteluces verticales, si no se utiliza ningún perfil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="198"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>La anchura del perfil de los parteluces verticales, si no se utiliza ningún perfil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="202"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
-      <translation type="unfinished">A profile for vertical mullions (disables vertical mullion size)</translation>
+      <translation>Un perfil para parteluces verticales (deshabilita el tamaño vertical de los paneles)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="205"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>El número de parteluces horizontales</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="209"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the horizontal mullions gets aligned with the surface or not</translation>
+      <translation>Si el perfil de los parteluces horizontales resulta alineado con la superficie o no</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="212"/>
       <source>The number of horizontal sections of this curtain wall</source>
-      <translation type="unfinished">The number of horizontal sections of this curtain wall</translation>
+      <translation>El número de secciones horizontales de este muro cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="220"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>La altura del perfil de los parteluces horizontales, si no se utiliza ningún perfil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="224"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>La anchura del perfil de los parteluces horizontales, si no se utiliza ningún perfil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="228"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for horizontal mullions (disables horizontal mullion size)</translation>
+      <translation>Un perfil para parteluces horizontales (deshabilita el tamaño horizontal del panel)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="231"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>El número de parteluces diagonales</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="235"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
+      <translation>El tamaño de los parteluces diagonales, si hay, en caso de que ningún perfil sea usado</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="239"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
+      <translation>Un perfil de los parteluces diagonales, si hay (deshabilita el tamaño horizontal del parteluz)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="242"/>
@@ -5282,62 +5282,62 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="250"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Intercambia líneas horizontales y verticales</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="253"/>
       <source>Perform subtractions between components so none overlap</source>
-      <translation type="unfinished">Perform subtractions between components so none overlap</translation>
+      <translation>Realizar sustracciones entre componentes de modo que no se solapen</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="256"/>
       <source>Centers the profile over the edges or not</source>
-      <translation type="unfinished">Centers the profile over the edges or not</translation>
+      <translation>Centra el perfil sobre los bordes o no</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="260"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
+      <translation>La referencia de la dirección vertical utilizada por este objeto deduciendo las direcciones verticales/horizontales. Úselo cerca de la dirección vertical de su muro cortina</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="199"/>
       <source>The diameter of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The diameter of this pipe, if not based on a profile</translation>
+      <translation>El diámetro de esta tubería, si no está basado en un perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="201"/>
       <source>The length of this pipe, if not based on an edge</source>
-      <translation type="unfinished">The length of this pipe, if not based on an edge</translation>
+      <translation>La longitud de esta tubería, si no está basado en una arista</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="203"/>
       <source>An optional closed profile to base this pipe on</source>
-      <translation type="unfinished">An optional closed profile to base this pipe on</translation>
+      <translation>Un perfil cerrado opcional en el que basar esta tubería</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="205"/>
       <source>Offset from the start point</source>
-      <translation type="unfinished">Offset from the start point</translation>
+      <translation>Desplazamiento desde el punto de inicio</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="207"/>
       <source>Offset from the end point</source>
-      <translation type="unfinished">Offset from the end point</translation>
+      <translation>Desplazamiento desde el punto final</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="209"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The wall thickness of this pipe, if not based on a profile</translation>
+      <translation>El grosor de la pared de esta tubería, si no está basado en un perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="360"/>
       <source>The curvature radius of this connector</source>
-      <translation type="unfinished">The curvature radius of this connector</translation>
+      <translation>El radio de curvatura de este conector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="362"/>
       <source>The pipes linked by this connector</source>
-      <translation type="unfinished">The pipes linked by this connector</translation>
+      <translation>Las tuberías unidas por este conector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="364"/>
@@ -5372,7 +5372,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="134"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
-      <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
+      <translation>Si es verdadero, una hoja de cálculo que contiene los resultados es recreada cuando es necesario</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
@@ -5387,7 +5387,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>
       <source>If True, additional lines with each individual object are added to the results</source>
-      <translation type="unfinished">If True, additional lines with each individual object are added to the results</translation>
+      <translation>Si es verdadero, se añaden líneas adicionales con cada objeto individual a los resultados</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="213"/>
@@ -5403,7 +5403,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="125"/>
       <source>The angles of each axis</source>
-      <translation type="unfinished">The angles of each axis</translation>
+      <translation>Los ángulos de cada eje</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="127"/>
@@ -5413,22 +5413,22 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="129"/>
       <source>An optional custom bubble number</source>
-      <translation type="unfinished">An optional custom bubble number</translation>
+      <translation>Un número opcional personalizado de burbuja</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="131"/>
       <source>The length of the axes</source>
-      <translation type="unfinished">The length of the axes</translation>
+      <translation>La longitud de los ejes</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="138"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Si no es cero, los ejes no están representados como una línea completa sino como dos líneas de la longitud dada</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="230"/>
       <source>The size of the axis bubbles</source>
-      <translation type="unfinished">The size of the axis bubbles</translation>
+      <translation>El tamaño de las burbujas del eje</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="233"/>
@@ -5438,7 +5438,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="237"/>
       <source>The type of line to draw this axis</source>
-      <translation type="unfinished">The type of line to draw this axis</translation>
+      <translation>El tipo de línea para dibujar este eje</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="241"/>
@@ -5846,7 +5846,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchWall.py" line="767"/>
       <source>Enable this to make the wall generate blocks</source>
-      <translation type="unfinished">Enable this to make the wall generate blocks</translation>
+      <translation>Permitir esto para hacer bloques de pared generados</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="769"/>
@@ -5861,12 +5861,12 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchWall.py" line="773"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the first line of blocks</translation>
+      <translation>El desplazamiento horizontal de la primera línea de bloques</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="775"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the second line of blocks</translation>
+      <translation>El desplazamiento horizontal de la segunda línea de bloques</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="777"/>
@@ -5903,7 +5903,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
       <source>Creates an equipment object from a selected object (Part or Mesh)</source>
-      <translation type="unfinished">Creates an equipment object from a selected object (Part or Mesh)</translation>
+      <translation>Crea un objeto de equipamiento desde un objeto seleccionado (Parte o Malla)</translation>
     </message>
   </context>
   <context>
@@ -5916,7 +5916,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="232"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation type="unfinished">Creates 3 views (top, front, side) from a mesh-based object</translation>
+      <translation>Crea 3 vistas (planta, alzado, perfil) de un objeto basado en una malla</translation>
     </message>
   </context>
   <context>

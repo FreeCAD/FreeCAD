@@ -30,7 +30,7 @@ a few unrelated function useful at various places in the Fem module.
 
 __title__ = "FEM Utilities"
 __author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import os
 import subprocess
@@ -108,7 +108,7 @@ def is_derived_from(obj, t):
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
      type is just checked for equality. If the type doesn't match
      ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+     https://forum.freecad.org/viewtopic.php?f=10&t=32625
     """
     if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
         return True
@@ -271,7 +271,7 @@ def getBoundBoxOfAllDocumentShapes(doc):
     overallboundbox = None
     # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
     # a FemMesh without a Shape could be clipped too
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
+    # https://forum.freecad.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
 
         FreeCAD.Console.PrintMessage(":\n")  # debug only

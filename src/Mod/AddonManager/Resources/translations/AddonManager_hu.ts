@@ -1485,17 +1485,17 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Ez a bővítmény a FreeCAD következő újraindításakor lesz engedélyezve.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Ez a bővítmény a FreeCAD következő újraindításakor lesz kiiktatva.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
+      <translation>QtWebEngine Python kötések nem telepítettek -- a tartalék README megjelenítést használja.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="682"/>
@@ -2230,7 +2230,7 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>Nem találta a makró által megadott {} fájlt (a {}-nál kellett volna lennie)</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="355"/>
@@ -2251,7 +2251,7 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <location filename="../../Addon.py" line="778"/>
       <location filename="../../Addon.py" line="794"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Hibát kapott, amikor megpróbálta importálni a {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>

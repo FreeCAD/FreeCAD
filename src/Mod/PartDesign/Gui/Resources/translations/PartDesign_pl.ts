@@ -125,7 +125,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Odległość, o jaką profil odniesienia jest przesuwany na zewnątrz, znormalizowana przez moduł.</translation>
     </message>
   </context>
   <context>
@@ -1080,7 +1080,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Współczynnik przesunięcia profilu</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1615,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Utworzono pustą fazę !
 </translation>
     </message>
   </context>
@@ -1716,7 +1716,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Utworzono puste pochylenie !
 </translation>
     </message>
   </context>
@@ -1921,7 +1921,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Utworzono puste zaokrąglenie !
 </translation>
     </message>
   </context>
@@ -3145,7 +3145,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Utworzono pustą grubość !
 </translation>
     </message>
   </context>
@@ -4551,8 +4551,8 @@ Dostępne tylko dla otworów bez gwintu</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>W przypadku pogłębienia stożkowego jest to głębokość
+wierzchołka śruby poniżej powierzchni</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

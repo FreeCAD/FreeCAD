@@ -280,7 +280,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Jeśli ta opcja jest włączona, dla każdego uwzględnionego obiektu zostaną wypełnione dodatkowe linie. Jeśli nie, tylko sumy.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -290,7 +290,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Jeśli ta opcja jest włączona, harmonogram i powiązany arkusz kalkulacyjny są aktualizowane za każdym razem, gdy dokument jest przeliczany.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
@@ -2956,7 +2956,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchPanel.py" line="208"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Opcje panelu</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="243"/>
@@ -3089,12 +3089,12 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>usunięto właściwość "Wynik" i dodano właściwość "'Aktualizacja automatyczna"</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>dodano właściwość "Harmonogram"</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
@@ -3104,7 +3104,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Usuń Arkusz Kalkulacyjny</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -5105,7 +5105,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="825"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation>Tekst do wyświetlenia. Może to być %tag%, %label% lub %description%, aby wyświetlić panel tekstowy lub etykietę</translation>
+      <translation>Tekst do wyświetlenia. Może to być %tag%, %label% lub %description%, aby wyświetlić panel tekstowy lub nazwę</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="831"/>
@@ -5390,12 +5390,12 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>Jeśli True, harmonogram i powiązany arkusz kalkulacyjny są aktualizowane za każdym razem, gdy dokument jest ponownie przeliczany</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The Arch Schedule that uses this spreadsheet</translation>
+      <translation>Harmonogram architektoniczny, który używa tego arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>
@@ -5421,7 +5421,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="127"/>
       <source>The label of each axis</source>
-      <translation>Etykieta każdej osi</translation>
+      <translation>Nazwa każdej osi</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="129"/>
@@ -5486,7 +5486,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="259"/>
       <source>If true, show the labels</source>
-      <translation>Jeśli parametr ma wartość Prawda, pokaż etykiety</translation>
+      <translation>Jeśli parametr ma wartość Prawda, pokaż nazwy</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="261"/>
@@ -5859,7 +5859,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchWall.py" line="767"/>
       <source>Enable this to make the wall generate blocks</source>
-      <translation>Włącz to, aby ściana generowała bloki</translation>
+      <translation>Włącz tę opcję, aby ściana była murowana z pustaków</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="769"/>
@@ -5869,22 +5869,22 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchWall.py" line="771"/>
       <source>The height of each block</source>
-      <translation>Wysokość każdego bloku</translation>
+      <translation>Wysokość każdego pustaka</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="773"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation>Odsunięcie poziome pierwszej linii bloków</translation>
+      <translation>Przesunięcie poziome pierwszej warstwy pustaków</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="775"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation>Odsunięcie poziome drugiej linii bloków</translation>
+      <translation>Przesunięcie poziome drugiej warstwy pustaków</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="777"/>
       <source>The size of the joints between each block</source>
-      <translation>Rozmiar złączy między każdym blokiem</translation>
+      <translation>Grubość spoiny między każdym pustakiem</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="779"/>
@@ -5894,7 +5894,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchWall.py" line="782"/>
       <source>The number of broken blocks</source>
-      <translation>Liczba złamanych bloków</translation>
+      <translation>Liczba pustaków ułamkowych</translation>
     </message>
   </context>
   <context>

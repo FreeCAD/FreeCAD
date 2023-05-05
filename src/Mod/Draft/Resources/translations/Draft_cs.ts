@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Manažer vrstev</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -1704,7 +1704,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>Pokud toto pole ponecháte prázdné, rozměry rozměrů se zobrazí v aktuálních jednotkách definovaných ve FreeCADu. Zadáním jednotky, jako je m nebo cm, můžete vynutit zobrazení nových rozměrů v této jednotce.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="513"/>
@@ -1734,7 +1734,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>Zvolená metoda pro import barvy objektu SVG do FreeCADu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
@@ -1755,8 +1755,8 @@ such as "Arial:Bold"</source>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>Pokud je zaškrtnuto, neproběhne žádná konverze jednotek.
+Jedna jednotka v souboru SVG se přeloží jako jeden milimetr. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
@@ -1786,7 +1786,7 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation type="unfinished">All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>Všechny bílé čáry se v SVG zobrazí černě pro lepší čitelnost na bílém pozadí</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="161"/>

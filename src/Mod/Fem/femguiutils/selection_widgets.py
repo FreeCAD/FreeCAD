@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM select widget"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package FemSelectWidget
 #  \ingroup FEM

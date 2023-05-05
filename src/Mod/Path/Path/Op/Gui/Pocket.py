@@ -37,7 +37,7 @@ else:
 
 __title__ = "Path Pocket Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Pocket operation page controller and command implementation."
 
 

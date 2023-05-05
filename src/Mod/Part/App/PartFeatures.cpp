@@ -138,7 +138,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute()
         if (S2.ShapeType() != TopAbs_EDGE && S2.ShapeType() != TopAbs_WIRE)
             return new App::DocumentObjectExecReturn("Linked shape is neither edge nor wire.");
 
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=24052
+        // https://forum.freecad.org/viewtopic.php?f=8&t=24052
         //
         // if both shapes are sub-elements of one common shape then the fill algorithm
         // leads to problems if the shape has set a placement
@@ -494,7 +494,7 @@ App::DocumentObjectExecReturn *Sweep::execute()
             }
             // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
             // If we re-create the wire then everything works fine.
-            // http://forum.freecadweb.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
+            // http://forum.freecad.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
             if (shape.ShapeType() == TopAbs_FACE) {
                 TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
                 profiles.Append(faceouterWire);

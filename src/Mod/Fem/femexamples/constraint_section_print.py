@@ -63,7 +63,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?t=43044
+https://forum.freecad.org/viewtopic.php?t=43044
 
 constraint section print with volume elements
 
@@ -106,7 +106,7 @@ def setup(doc=None, solvertype="ccxtools"):
         Part.LineSegment(Vector(47, 0, 0), Vector(67, 0, 0))
     ]
     arc_sketch.addGeometry(geoList, False)
-    # https://wiki.freecadweb.org/Sketcher_ConstrainCoincident
+    # https://wiki.freecad.org/Sketcher_ConstrainCoincident
     # but the best way is to add a constraint is watching
     # FreeCAD python console while create this one by the Gui
     conList = [

@@ -123,7 +123,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Der Abstand, um den das Referenzprofil nach außen verschoben ist, normiert durch den Modul.</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1078,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Profilverschiebungskoeffizient</translation>
     </message>
   </context>
   <context>
@@ -4546,8 +4546,8 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Für Kegelsenkungen ist dies die Höhe des
+Schraubenkopfes unter der Oberfläche</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

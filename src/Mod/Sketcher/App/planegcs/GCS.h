@@ -343,6 +343,8 @@ namespace GCS
 
         int addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId,
                                      bool driving = true);
+        int addConstraintC2LDistance(Circle &c, Line &l, double *dist, int tagId,
+                                     bool driving = true);
 
         // internal alignment constraints
         int addConstraintInternalAlignmentPoint2Ellipse(Ellipse& e, Point& p1,

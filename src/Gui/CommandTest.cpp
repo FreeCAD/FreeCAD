@@ -715,8 +715,8 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
 {
     sGroup      = "Standard-Test";
     sMenuText   = QT_TR_NOOP("Test console output");
-    sToolTipText= QT_TR_NOOP("Test console output");
-    sStatusTip  = QT_TR_NOOP("Test console output");
+    sToolTipText= QT_TR_NOOP("Run test cases to verify console messages");
+    sStatusTip  = QT_TR_NOOP("Run test cases to verify console messages");
 }
 
 namespace Gui {

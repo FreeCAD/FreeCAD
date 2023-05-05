@@ -202,10 +202,10 @@ void EditDatumDialog::accepted()
             // THIS IS A WORK-AROUND NOT TO DELAY 0.19 RELEASE
             //
             // depsAreTouched is not returning true in this case:
-            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061#p478477
+            //  https://forum.freecad.org/viewtopic.php?f=3&t=55633&p=481061#p478477
             //
             // It appears related to a drastic change in how dependencies are calculated, see:
-            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061#p481061
+            //  https://forum.freecad.org/viewtopic.php?f=3&t=55633&p=481061#p481061
             //
             // This is NOT the solution, as there is no point in systematically executing the ExpressionEngine
             // on every dimensional constraint change. Just a quick fix to avoid clearly unwanted behaviour in

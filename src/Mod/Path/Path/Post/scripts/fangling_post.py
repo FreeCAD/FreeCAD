@@ -92,7 +92,7 @@ PRECISION = 3
 
 # Preamble text will appear at the beginning of the GCODE output file.
 #PREAMBLE = '''G17 G54 G40 G49 G80 G90'''
-#Changed to matche preamble produced by Fusipn 360 
+#Changed to match preamble produced by Fusion 360
 PREAMBLE = '''G90
 '''
 
@@ -199,7 +199,7 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     gcode += linenumber() + "G92 X0 Y0\n"
-    
+
     for obj in objectslist:
 
         # Skip inactive operations
@@ -328,20 +328,20 @@ def parse(pathobj):
             command = c.Name
 
             if c.Name in ["G0", "G00"] and lastcommand in ["G1", "G2", "G3"]:
-                    # A rapid move following a positioning move indicates the cut is complete
-                    # print ("end of cut")
-                    if OUTPUT_COMMENTS:
-                        out += linenumber() + " (Torch Off)\n"
-                    out += linenumber() + " M08\n"
+                # A rapid move following a positioning move indicates the cut is complete
+                # print ("end of cut")
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + " (Torch Off)\n"
+                out += linenumber() + " M08\n"
             if c.Name in ["G1", "G2", "G3"] and lastcommand in ["G0", "G00"]:
-                    # A positioning move following a rapid move indicates a new cut is starting
-                    # print ("new cut") 
-                    if OUTPUT_COMMENTS:
-                         out += linenumber() + " (Torch On)\n"
-                    out += linenumber() + " M07\n"
-                    if OUTPUT_COMMENTS:
-                         out += linenumber() + " (Pierce Delay)\n"
-                    out += linenumber() + " G4 P1\n"
+                # A positioning move following a rapid move indicates a new cut is starting
+                # print ("new cut")
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + " (Torch On)\n"
+                out += linenumber() + " M07\n"
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + " (Pierce Delay)\n"
+                out += linenumber() + " G4 P1\n"
 
             if adaptiveOp and c.Name in ["G0", "G00"]:
                 if opHorizRapid and opVertRapid:
@@ -373,7 +373,7 @@ def parse(pathobj):
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if (param == 'F'):
+                    if param == 'F':
                         continue
                     elif param in ['T', 'H', 'D', 'S']:
                         outstring.append(param + str(int(c.Parameters[param])))
@@ -431,5 +431,5 @@ def writeFile(filename, final):
         gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
-    
+
     return

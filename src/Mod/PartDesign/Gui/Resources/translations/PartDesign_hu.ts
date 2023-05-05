@@ -123,7 +123,7 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>A távolság, amellyel a referenciaprofil kifelé tolódik, a modul által normalizálva.</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1078,7 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Profileltolódási együttható</translation>
     </message>
   </context>
   <context>
@@ -1611,7 +1611,7 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
+      <translation>Üres letörést hozott létre !
 </translation>
     </message>
   </context>
@@ -1711,7 +1711,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
+      <translation>Üres tervrajzot hozott létre !
 </translation>
     </message>
   </context>
@@ -1915,7 +1915,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
+      <translation>Üres lekerekítést hozott létre !
 </translation>
     </message>
   </context>
@@ -3137,7 +3137,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
+      <translation>Üres vastagságot hozott létre !
 </translation>
     </message>
   </context>
@@ -4541,8 +4541,8 @@ Csak menet nélküli furatokhoz érhető el</translation>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Süllyesztéseknél ez a mélység a
+a csavar teteje a felszín alatt</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>

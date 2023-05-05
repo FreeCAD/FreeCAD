@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer tasks"
 __author__ = "Markus Hovorka"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -366,7 +366,7 @@ class Results(run.Results):
     def _getResultFile(self):
         postPath = None
         # elmer post file path changed with version x.x
-        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=42732
+        # see https://forum.freecad.org/viewtopic.php?f=18&t=42732
         # workaround
         possible_post_file_old = os.path.join(self.directory, "case0001.vtu")
         possible_post_file_single = os.path.join(self.directory, "FreeCAD_t0001.vtu")

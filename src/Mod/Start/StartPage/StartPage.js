@@ -48,7 +48,7 @@ function load() {
             // load forum recent posts
             ddiv = document.getElementById("forum");
             ddiv.innerHTML = "Connecting...";
-            var tobj=new JSONscriptRequest('https://www.freecadweb.org/xml-to-json.php?callback=printForum&url=https://forum.freecadweb.org/feed.php');
+            var tobj=new JSONscriptRequest('https://www.freecad.org/xml-to-json.php?callback=printForum&url=https://forum.freecad.org/feed.php');
             tobj.buildScriptTag(); // Build the script tag
             tobj.addScriptTag(); // Execute (add) the script tag
             ddiv.innerHTML = "Downloading addons list...";

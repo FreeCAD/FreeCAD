@@ -558,7 +558,7 @@ class PackageDetails(QtWidgets.QWidget):
             }
         }
     } else if (url.hostname === "wiki.freecad.org" ||
-               url.hostname === "wiki.freecadweb.org") {
+               url.hostname === "wiki.freecad.org") {
         const first_heading = document.getElementById('firstHeading');
         const body_content = document.getElementById('bodyContent');
         const new_node = document.createElement("div");
@@ -736,7 +736,7 @@ if HAS_QTWEBENGINE:
                 # otherwise ask the OS to open it
                 if (
                     requested_url.host() == "wiki.freecad.org"
-                    or requested_url.host() == "wiki.freecadweb.org"
+                    or requested_url.host() == "wiki.freecad.org"
                 ):
                     return super().acceptNavigationRequest(
                         requested_url, _type, isMainFrame

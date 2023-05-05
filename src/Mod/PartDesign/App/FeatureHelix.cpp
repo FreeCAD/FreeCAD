@@ -434,7 +434,7 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     Base::Vector3d profileCenter = getProfileCenterPoint();
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
-    // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
+    // This improves the issue reported in https://forum.freecad.org/viewtopic.php?f=10&t=65048
     double axisOffset = 100.0 * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
