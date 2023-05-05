@@ -1628,7 +1628,7 @@ void System::initSolution(Algorithm alg)
     }
     std::vector<Constraint *> clistR;
     for (auto constr = clist.cbegin(); constr != clist.cend(); ++constr) {
-        if (redundant.empty() || redundant.count(constr->get()) != 0)
+        if (redundant.empty() || redundant.count(constr->get()) == 0)
         {
             clistR.push_back(constr->get());
         }
