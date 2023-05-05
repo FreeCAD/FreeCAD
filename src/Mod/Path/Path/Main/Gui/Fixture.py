@@ -152,7 +152,7 @@ class CommandPathFixture:
             "Pixmap": "Path_Datums",
             "MenuText": QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Fixture", "Creates a Fixture Offset object"
+                "Path_Fixture", "Creates a Fixture Offset"
             ),
         }
 
