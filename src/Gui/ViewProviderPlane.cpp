@@ -127,7 +127,7 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
 
     // pick label above all and by bounding box
     auto ps = new SoPickStyle();
-    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
+    ps->style.setValue(SoPickStyle::BOUNDING_BOX_ON_TOP);
     sep->addChild(ps);
 
     sep->addChild ( getLabel () );
