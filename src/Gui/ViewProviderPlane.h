@@ -39,6 +39,12 @@ public:
     ~ViewProviderPlane() override;
 
     void attach ( App::DocumentObject * ) override;
+ 
+protected: 
+    void onChanged(const App::Property* prop) override; 
+ 
+protected: 
+    SoMaterial * pPlaneFaceMaterial; 
 };
 
 } //namespace Gui

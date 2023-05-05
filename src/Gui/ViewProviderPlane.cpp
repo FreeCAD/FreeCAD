@@ -48,10 +48,31 @@ PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderOriginFeature)
 ViewProviderPlane::ViewProviderPlane()
 {
     sPixmap = "Std_Plane";
+
+    // setup semi transparent face material
+    const App::Color &c = ShapeColor.getValue();
+    pPlaneFaceMaterial = new SoMaterial();
+    pPlaneFaceMaterial->transparency.setValue(0.95f);
+    pPlaneFaceMaterial->ambientColor.setValue(c.r, c.g, c.b);
+    pPlaneFaceMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    pPlaneFaceMaterial->ref();
 }
 
 ViewProviderPlane::~ViewProviderPlane()
-{ }
+{
+    pPlaneFaceMaterial->unref();
+}
+
+void ViewProviderPlane::onChanged(const App::Property* prop)
+{
+    if (prop == &ShapeColor) {
+        // update semi trasnparent face color
+        const App::Color &c = ShapeColor.getValue();
+        pPlaneFaceMaterial->ambientColor.setValue(c.r, c.g, c.b);
+        pPlaneFaceMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    }
+    ViewProviderOriginFeature::onChanged(prop);
+}
 
 void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     ViewProviderOriginFeature::attach ( obj );
@@ -79,16 +100,7 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
 
     // add semi transparent face
     auto faceSeparator = new SoSeparator();
-    sep->addChild(faceSeparator);
-
-    auto material = new SoMaterial();
-    material->transparency.setValue(0.95f);
-    auto color = new SbColor();
-    float alpha = 0.0f;
-    color->setPackedValue(ViewProviderOrigin::defaultColor, alpha);
-    material->ambientColor.setValue(*color);
-    material->diffuseColor.setValue(*color);
-    faceSeparator->addChild(material);
+    faceSeparator->addChild(pPlaneFaceMaterial);
 
     // disable backface culling and render with two-sided lighting
     auto shapeHints = new SoShapeHints();
@@ -96,7 +108,7 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     faceSeparator->addChild(shapeHints);
 
-    // disable picking
+    // disable picking face
     auto pickStyle = new SoPickStyle();
     pickStyle->style = SoPickStyle::UNPICKABLE;
     faceSeparator->addChild(pickStyle);
@@ -107,10 +119,13 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     faceSet->vertexProperty.setValue(vertexProperty);
     faceSeparator->addChild(faceSet);
 
+    sep->addChild(faceSeparator);
+
     auto textTranslation = new SoTranslation ();
     textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size * 9./10., 0 ) );
     sep->addChild ( textTranslation );
 
+    // pick label above all and by bounding box
     auto ps = new SoPickStyle();
     ps->style.setValue(SoPickStyle::BOUNDING_BOX);
     sep->addChild(ps);
