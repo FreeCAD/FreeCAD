@@ -39,6 +39,7 @@ import addonmanager_utilities as utils
 from Addon import Addon, MissingDependencies
 
 translate = FreeCAD.Qt.translate
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # pylint: disable=c-extension-no-member,too-few-public-methods,too-many-instance-attributes
 
@@ -155,11 +156,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 for dep in bad_packages:
                     message += f"<li>{dep}</li>"
             else:
-                message += (
-                    "<li>("
-                    + translate("AddonsInstaller", "Too many to list")
-                    + ")</li>"
-                )
+                message += "<li>(" + translate("AddonsInstaller", "Too many to list") + ")</li>"
             message += "</ul>"
             message += "To ignore this error and install anyway, press OK."
             r = QtWidgets.QMessageBox.critical(
@@ -224,15 +221,13 @@ class AddonInstallerGUI(QtCore.QObject):
             item.setCheckState(QtCore.Qt.Unchecked)
             self.dependency_dialog.listWidgetPythonOptional.addItem(item)
 
-        self.dependency_dialog.buttonBox.button(
-            QtWidgets.QDialogButtonBox.Yes
-        ).clicked.connect(self._dependency_dialog_yes_clicked)
-        self.dependency_dialog.buttonBox.button(
-            QtWidgets.QDialogButtonBox.Ignore
-        ).clicked.connect(self._dependency_dialog_ignore_clicked)
-        self.dependency_dialog.buttonBox.button(
-            QtWidgets.QDialogButtonBox.Cancel
-        ).setDefault(True)
+        self.dependency_dialog.buttonBox.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            self._dependency_dialog_yes_clicked
+        )
+        self.dependency_dialog.buttonBox.button(QtWidgets.QDialogButtonBox.Ignore).clicked.connect(
+            self._dependency_dialog_ignore_clicked
+        )
+        self.dependency_dialog.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setDefault(True)
         self.dependency_dialog.exec()
 
     def _check_python_version(self, missing: MissingDependencies) -> bool:
@@ -302,9 +297,7 @@ class AddonInstallerGUI(QtCore.QObject):
 
     def _run_dependency_installer(self, addons, python_requires, python_optional):
         """Run the dependency installer (in a separate thread) for the given dependencies"""
-        self.dependency_installer = DependencyInstaller(
-            addons, python_requires, python_optional
-        )
+        self.dependency_installer = DependencyInstaller(addons, python_requires, python_optional)
         self.dependency_installer.no_python_exe.connect(self._report_no_python_exe)
         self.dependency_installer.no_pip.connect(self._report_no_pip)
         self.dependency_installer.failure.connect(self._report_dependency_failure)
@@ -323,9 +316,7 @@ class AddonInstallerGUI(QtCore.QObject):
             QtWidgets.QMessageBox.Cancel,
             parent=utils.get_main_am_window(),
         )
-        self.dependency_installation_dialog.rejected.connect(
-            self._cancel_dependency_installation
-        )
+        self.dependency_installation_dialog.rejected.connect(self._cancel_dependency_installation)
         self.dependency_installation_dialog.show()
         self.dependency_worker_thread.start()
 
@@ -392,9 +383,7 @@ class AddonInstallerGUI(QtCore.QObject):
         if self.dependency_installation_dialog is not None:
             self.dependency_installation_dialog.hide()
         if self.dependency_installer and hasattr(self.dependency_installer, "finished"):
-            self.dependency_installer.finished.disconnect(
-                self._report_dependency_success
-            )
+            self.dependency_installer.finished.disconnect(self._report_dependency_success)
         FreeCAD.Console.PrintError(details + "\n")
         result = QtWidgets.QMessageBox.critical(
             utils.get_main_am_window(),
@@ -474,9 +463,7 @@ class AddonInstallerGUI(QtCore.QObject):
             while self.worker_thread.isRunning():
                 self.worker_thread.wait(50)
                 QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-        path = os.path.join(
-            self.installer.installation_path, self.addon_to_install.name
-        )
+        path = os.path.join(self.installer.installation_path, self.addon_to_install.name)
         if os.path.exists(path):
             utils.rmdir(path)
         dlg.hide()
@@ -527,12 +514,8 @@ class MacroInstallerGUI(QtCore.QObject):
         self.addon_to_install = addon
         self.worker_thread = None
         self.installer = MacroInstaller(self.addon_to_install)
-        self.addon_params = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Addons"
-        )
-        self.toolbar_params = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Workbench/Global/Toolbar"
-        )
+        self.addon_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        self.toolbar_params = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
         self.macro_dir = FreeCAD.getUserMacroDir(True)
 
     def __del__(self):
@@ -565,20 +548,14 @@ class MacroInstallerGUI(QtCore.QObject):
     def _ask_to_install_toolbar_button(self) -> None:
         """Presents a dialog to the user asking if they want to install a toolbar button for
         a particular macro, and walks through that process if they agree to do so."""
-        do_not_show_dialog = self.addon_params.GetBool(
-            "dontShowAddMacroButtonDialog", False
-        )
+        do_not_show_dialog = self.addon_params.GetBool("dontShowAddMacroButtonDialog", False)
         button_exists = self._macro_button_exists()
         if not do_not_show_dialog and not button_exists:
             add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
             )
-            add_toolbar_button_dialog.setWindowFlag(
-                QtCore.Qt.WindowStaysOnTopHint, True
-            )
-            add_toolbar_button_dialog.buttonYes.clicked.connect(
-                self._install_toolbar_button
-            )
+            add_toolbar_button_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
+            add_toolbar_button_dialog.buttonYes.clicked.connect(self._install_toolbar_button)
             add_toolbar_button_dialog.buttonNever.clicked.connect(
                 lambda: self.addon_params.SetBool("dontShowAddMacroButtonDialog", True)
             )
@@ -671,7 +648,7 @@ class MacroInstallerGUI(QtCore.QObject):
         # unique.
 
         # First, the displayed name
-        custom_toolbar_name = "Auto-Created Macro Toolbar"
+        custom_toolbar_name = QT_TRANSLATE_NOOP("Workbench", "Auto-Created Macro Toolbar")
         custom_toolbars = self.toolbar_params.GetGroups()
         name_taken = self._check_for_toolbar(custom_toolbar_name)
         if name_taken:
@@ -730,9 +707,7 @@ class MacroInstallerGUI(QtCore.QObject):
                 custom_toolbar = self._ask_for_toolbar(custom_toolbars)
                 if custom_toolbar:
                     custom_toolbar_name = custom_toolbar.GetString("Name")
-                    self.addon_params.SetString(
-                        "CustomToolbarName", custom_toolbar_name
-                    )
+                    self.addon_params.SetString("CustomToolbarName", custom_toolbar_name)
         else:
             # Create a custom toolbar
             custom_toolbar = self.toolbar_params.GetGroup("Custom_1")
@@ -742,9 +717,7 @@ class MacroInstallerGUI(QtCore.QObject):
         if custom_toolbar:
             self._install_macro_to_toolbar(custom_toolbar)
         else:
-            FreeCAD.Console.PrintMessage(
-                "In the end, no custom toolbar was set, bailing out\n"
-            )
+            FreeCAD.Console.PrintMessage("In the end, no custom toolbar was set, bailing out\n")
 
     def _install_macro_to_toolbar(self, toolbar: object) -> None:
         """Adds an icon for the given macro to the given toolbar."""
@@ -771,9 +744,7 @@ class MacroInstallerGUI(QtCore.QObject):
                 )
         elif self.addon_to_install.macro.xpm:
             icon_file = os.path.normpath(
-                os.path.join(
-                    self.macro_dir, self.addon_to_install.macro.name + "_icon.xpm"
-                )
+                os.path.join(self.macro_dir, self.addon_to_install.macro.name + "_icon.xpm")
             )
             with open(icon_file, "w", encoding="utf-8") as f:
                 f.write(self.addon_to_install.macro.xpm)
@@ -824,14 +795,10 @@ class MacroInstallerGUI(QtCore.QObject):
         see if one is set up for this macro. If so, remove it, including any
         toolbar entries."""
 
-        command = FreeCADGui.Command.findCustomCommand(
-            self.addon_to_install.macro.filename
-        )
+        command = FreeCADGui.Command.findCustomCommand(self.addon_to_install.macro.filename)
         if not command:
             return
-        custom_toolbars = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Workbench/Global/Toolbar"
-        )
+        custom_toolbars = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
         toolbar_groups = custom_toolbars.GetGroups()
         for group in toolbar_groups:
             toolbar = custom_toolbars.GetGroup(group)
