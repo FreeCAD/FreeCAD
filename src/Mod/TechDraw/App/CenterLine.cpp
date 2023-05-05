@@ -902,32 +902,6 @@ CenterLine* CenterLine::copy() const
     return newCL;
 }
 
-boost::uuids::uuid CenterLine::getTag() const
-{
-    return tag;
-}
-
-std::string CenterLine::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CenterLine::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    static boost::mt19937 ran;
-    static bool seeded = false;
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-
-    tag = gen();
-}
-
 void CenterLine::assignTag(const TechDraw::CenterLine * ce)
 {
     if(ce->getTypeId() == this->getTypeId())

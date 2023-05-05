@@ -60,12 +60,32 @@ public:
     std::string toString() const;
 };
 
+// to be implemented template<typename T>
+class TechDrawExport Cosmetic : public Base::Persistence
+{
+public:
+    LineFormat m_format;
+    boost::uuids::uuid getTag() const;
+    std::string getTagAsString() const;
+    //T* clone() const; to be implemented
+
+protected:
+    void createNewTag();
+    //void assignTag(const T* object); to be implemented
+    boost::uuids::uuid tag;
+    Py::Object PythonObject;
+private:
+};
+
 //********** CosmeticEdge ******************************************************
 
-class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
+class TechDrawExport CosmeticEdge : public TechDraw::Cosmetic, public TechDraw::BaseGeom
 {
+
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
+    using Cosmetic::getTag;
+    using Cosmetic::getTagAsString;
     CosmeticEdge();
     CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
     CosmeticEdge(CosmeticEdge* ce);
@@ -95,25 +115,19 @@ public:
     double permaRadius;
 //    void unscaleEnds(double scale);
     TechDraw::BaseGeomPtr m_geometry;
-    LineFormat m_format;
-
-    boost::uuids::uuid getTag() const;
-    std::string getTagAsString() const override;
 
 protected:
     //Uniqueness
-    void createNewTag();
     void assignTag(const TechDraw::CosmeticEdge* ce);
-    boost::uuids::uuid tag;
+    using Cosmetic::createNewTag;
 
-    Py::Object PythonObject;
-
+    using Cosmetic::tag;
 };
 
 //********** GeomFormat ********************************************************
 
 // format specifier for geometric edges (Edge5)
-class TechDrawExport GeomFormat: public Base::Persistence
+class TechDrawExport GeomFormat: public TechDraw::Cosmetic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -138,18 +152,9 @@ public:
 
     //std::string linkTag;
     int m_geomIndex;            //connection to edgeGeom
-    LineFormat m_format;
-
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
 
 protected:
-    void createNewTag();
     void assignTag(const TechDraw::GeomFormat* gf);
-
-    boost::uuids::uuid tag;
-    Py::Object PythonObject;
 };
 
 } //end namespace TechDraw
