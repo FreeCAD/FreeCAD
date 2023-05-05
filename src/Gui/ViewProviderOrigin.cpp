@@ -24,7 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoLightModel.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/Document.h>
@@ -59,6 +60,10 @@ ViewProviderOrigin::ViewProviderOrigin()
 
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();
+
+    auto lm = new SoLightModel();
+    lm->model = SoLightModel::BASE_COLOR;
+    pcRoot->insertChild(lm, 0);
 }
 
 ViewProviderOrigin::~ViewProviderOrigin() {
