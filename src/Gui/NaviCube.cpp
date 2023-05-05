@@ -126,6 +126,7 @@ private:
     struct Face {
         ShapeId type;
         vector<Vector3f> vertexArray;
+        SbRotation rotation;
     };
     struct LabelTexture {
         vector<Vector3f> vertexArray;
@@ -145,7 +146,7 @@ private:
 
     void setHilite(PickId);
 
-    void addCubeFace(const Vector3f&, const Vector3f&, ShapeId, PickId);
+    void addCubeFace(const Vector3f&, const Vector3f&, ShapeId, PickId, float rotZ = 0.0);
     void addButtonFace(PickId);
 
     SbRotation setView(float, float) const;
@@ -536,12 +537,31 @@ void NaviCubeImplementation::addButtonFace(PickId pickId)
     m_Faces[pickId].type = ShapeId::Button;
 }
 
-
-void NaviCubeImplementation::addCubeFace( const Vector3f& x, const Vector3f& z, ShapeId shapeType, PickId pickId) {
+void NaviCubeImplementation::addCubeFace(const Vector3f& x, const Vector3f& z, ShapeId shapeType, PickId pickId, float rotZ) {
     m_Faces[pickId].vertexArray.clear();
     m_Faces[pickId].type = shapeType;
 
     Vector3f y = x.cross(-z);
+
+    // Determine the standard orientations based on vector x and vector z
+    // Rotate by an additional rotZ if vector x and vector z are not already the standard orientation
+
+    // Create normalized vectors for x, y and z
+    SbVec3f xN(x.x(), x.y(), x.z());
+    SbVec3f yN(y.x(), y.y(), y.z());
+    SbVec3f zN(z.x(), z.y(), z.z());
+    xN.normalize();
+    yN.normalize();
+    zN.normalize();
+
+    // Create a rotation matrix
+    SbMatrix R(xN[0], yN[0], zN[0], 0,
+                 xN[1], yN[1], zN[1], 0,
+                 xN[2], yN[2], zN[2], 0,
+                 0,     0,     0,     1);
+
+    // Store the standard orientation
+    m_Faces[pickId].rotation = (SbRotation(R) * SbRotation(SbVec3f(0, 0, 1), rotZ)).inverse();
 
     if (shapeType == ShapeId::Corner) {
         auto xC = x * m_Chamfer;
@@ -613,28 +633,28 @@ void NaviCubeImplementation::prepare() {
     addCubeFace( x,-z, ShapeId::Main, PickId::Bottom);
 
     // create corner faces
-    addCubeFace(-x-y, x-y+z, ShapeId::Corner, PickId::FrontTopRight);
-    addCubeFace(-x+y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft);
+    addCubeFace(-x-y, x-y+z, ShapeId::Corner, PickId::FrontTopRight, M_PI);
+    addCubeFace(-x+y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft, M_PI);
     addCubeFace(x+y, x-y-z, ShapeId::Corner, PickId::FrontBottomRight);
     addCubeFace(x-y,-x-y-z, ShapeId::Corner, PickId::FrontBottomLeft);
-    addCubeFace(x-y, x+y+z, ShapeId::Corner, PickId::RearTopRight);
-    addCubeFace(x+y,-x+y+z, ShapeId::Corner, PickId::RearTopLeft);
+    addCubeFace(x-y, x+y+z, ShapeId::Corner, PickId::RearTopRight, M_PI);
+    addCubeFace(x+y,-x+y+z, ShapeId::Corner, PickId::RearTopLeft, M_PI);
     addCubeFace(-x+y, x+y-z, ShapeId::Corner, PickId::RearBottomRight);
     addCubeFace(-x-y,-x+y-z, ShapeId::Corner, PickId::RearBottomLeft);
 
     // create edge faces
     addCubeFace(x, z-y, ShapeId::Edge, PickId::FrontTop);
     addCubeFace(x,-z-y, ShapeId::Edge, PickId::FrontBottom);
-    addCubeFace(x, y-z, ShapeId::Edge, PickId::RearBottom);
-    addCubeFace(x, y+z, ShapeId::Edge, PickId::RearTop);
-    addCubeFace(z, x+y, ShapeId::Edge, PickId::RearRight);
-    addCubeFace(z, x-y, ShapeId::Edge, PickId::FrontRight);
-    addCubeFace(z,-x-y, ShapeId::Edge, PickId::FrontLeft);
-    addCubeFace(z, y-x, ShapeId::Edge, PickId::RearLeft);
-    addCubeFace(y, z-x, ShapeId::Edge, PickId::TopLeft);
+    addCubeFace(x, y-z, ShapeId::Edge, PickId::RearBottom, M_PI);
+    addCubeFace(x, y+z, ShapeId::Edge, PickId::RearTop, M_PI);
+    addCubeFace(z, x+y, ShapeId::Edge, PickId::RearRight, M_PI_2);
+    addCubeFace(z, x-y, ShapeId::Edge, PickId::FrontRight, M_PI_2);
+    addCubeFace(z,-x-y, ShapeId::Edge, PickId::FrontLeft, M_PI_2);
+    addCubeFace(z, y-x, ShapeId::Edge, PickId::RearLeft, M_PI_2);
+    addCubeFace(y, z-x, ShapeId::Edge, PickId::TopLeft, M_PI);
     addCubeFace(y, x+z, ShapeId::Edge, PickId::TopRight);
     addCubeFace(y, x-z, ShapeId::Edge, PickId::BottomRight);
-    addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft);
+    addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft, M_PI);
 
     // create the flat buttons
     addButtonFace(PickId::ArrowNorth);
