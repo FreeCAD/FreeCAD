@@ -35,7 +35,7 @@
 namespace TechDraw {
 class DrawViewPart;
 
-class TechDrawExport CenterLine: public Base::Persistence
+class TechDrawExport CenterLine: public TechDraw::Cosmetic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -148,20 +148,10 @@ public:
 
     TechDraw::BaseGeomPtr m_geometry;
 
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
-
 protected:
     void initialize();
 
-    void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);
-
-    boost::uuids::uuid tag;
-
-    Py::Object PythonObject;
-
 };
 
 }  // namespace TechDraw

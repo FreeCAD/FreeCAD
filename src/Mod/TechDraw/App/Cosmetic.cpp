@@ -288,31 +288,6 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     }
 }
 
-boost::uuids::uuid CosmeticEdge::getTag() const
-{
-    return tag;
-}
-
-std::string CosmeticEdge::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CosmeticEdge::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    static boost::mt19937 ran;
-    static bool seeded = false;
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
 void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge * ce)
 {
     if(ce->getTypeId() == this->getTypeId())
@@ -441,31 +416,6 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
 }
 
-boost::uuids::uuid GeomFormat::getTag() const
-{
-    return tag;
-}
-
-std::string GeomFormat::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void GeomFormat::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    static boost::mt19937 ran;
-    static bool seeded = false;
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
 void GeomFormat::assignTag(const TechDraw::GeomFormat * ce)
 {
     if(ce->getTypeId() == this->getTypeId())
@@ -506,3 +456,27 @@ bool CosmeticVertex::restoreCosmetic()
     return Preferences::getPreferenceGroup("General")->GetBool("restoreCosmetic", true);
 }
 
+boost::uuids::uuid Cosmetic::getTag() const
+{
+    return tag;
+}
+
+std::string Cosmetic::getTagAsString() const
+{
+    return boost::uuids::to_string(getTag());
+}
+
+void Cosmetic::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
+}
