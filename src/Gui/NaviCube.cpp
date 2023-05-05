@@ -974,357 +974,40 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
     setHilite(PickId::None);
     m_MouseDown = false;
 
-    // get the current view
-    SbMatrix ViewRotMatrix;
-    SbRotation CurrentViewRot = m_View3DInventorViewer->getCameraOrientation();
-    CurrentViewRot.getValue(ViewRotMatrix);
+    SbRotation currentOrientation = m_View3DInventorViewer->getCameraOrientation();
 
     if (m_Dragging) {
         m_Dragging = false;
     } else {
-        float rot = 45;
-        float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
         PickId pick = pickFace(x, y);
         long step = Base::clamp(long(m_NaviStepByTurn), 4L, 36L);
-        float rotStepAngle = 360.0f / step;
-        bool applyRotation = true;
+        float rotStepAngle = (2 * M_PI) / step;
 
-        SbRotation viewRot = CurrentViewRot;
-
-        switch (pick) {
-        default:
-            return false;
-            break;
-        case PickId::Front:
-            viewRot = setView(0, 90);
-            // we don't want to dumb rotate to the same view since depending on from where the user clicked on Front
-            // we have one of four suitable end positions.
-            // we use here the same rotation logic used by other programs using OCC like "CAD Assistant"
-            // when current matrix's 0,0 entry is larger than its |1,0| entry, we already have the final result
-            // otherwise rotate around y
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::Rear:
-            viewRot = setView(180, 90);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::Left:
-            viewRot = setView(270, 90);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::Right:
-            viewRot = setView(90, 90);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::Top:
-            viewRot = setView(0, 0);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::Bottom:
-            viewRot = setView(0, 180);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::FrontTop:
-            // set to Front then rotate
-            viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, DirId::Right, 45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::FrontBottom:
-            // set to Front then rotate
-            viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, DirId::Right, -45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::RearBottom:
-            // set to Rear then rotate
-            viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, DirId::Right, -45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::RearTop:
-            // set to Rear then rotate
-            viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, DirId::Right, 45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::FrontLeft:
-            // set to Front then rotate
-            viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, DirId::Up, 45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::FrontRight:
-            // set to Front then rotate
-            viewRot = setView(0, 90);
-            viewRot = rotateView(viewRot, DirId::Up, -45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::RearRight:
-            // set to Rear then rotate
-            viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, DirId::Up, 45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::RearLeft:
-            // set to Rear then rotate
-            viewRot = setView(180, 90);
-            viewRot = rotateView(viewRot, DirId::Up, -45);
-            if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-                viewRot = rotateView(viewRot, DirId::Out, 180);
-            else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                viewRot = rotateView(viewRot, DirId::Out, -90);
-            else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-                viewRot = rotateView(viewRot, DirId::Out, 90);
-            break;
-        case PickId::TopLeft:
-            // set to Left then rotate
-            viewRot = setView(270, 90);
-            viewRot = rotateView(viewRot, DirId::Right, 45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::TopRight:
-            // set to Right then rotate
-            viewRot = setView(90, 90);
-            viewRot = rotateView(viewRot, DirId::Right, 45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::BottomRight:
-            // set to Right then rotate
-            viewRot = setView(90, 90);
-            viewRot = rotateView(viewRot, DirId::Right, -45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-                else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-            }
-            break;
-        case PickId::BottomLeft:
-            // set to Left then rotate
-            viewRot = setView(270, 90);
-            viewRot = rotateView(viewRot, DirId::Right, -45);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 180);
-                else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, -90);
-                else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-                    viewRot = rotateView(viewRot, DirId::Out, 90);
-            }
-            break;
-        case PickId::FrontBottomLeft:
-            viewRot = setView(rot - 90, 90 + tilt);
-            // we have 3 possible end states:
-            // - z-axis is not rotated larger than 120 deg from (0, 1, 0) -> we are already there
-            // - y-axis is not rotated larger than 120 deg from (0, 1, 0)
-            // - x-axis is not rotated larger than 120 deg from (0, 1, 0)
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, 1, 1));
-                else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, 1, 1));
-            }
-            break;
-        case PickId::FrontBottomRight:
-            viewRot = setView(90 + rot - 90, 90 + tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, 1, 1));
-                else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, 1, 1));
-            }
-            break;
-        case PickId::RearBottomRight:
-            viewRot = setView(180 + rot - 90, 90 + tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, -1, 1));
-                else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, -1, 1));
-            }
-            break;
-        case PickId::RearBottomLeft:
-            viewRot = setView(270 + rot - 90, 90 + tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, -1, 1));
-                else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, -1, 1));
-            }
-            break;
-        case PickId::FrontTopRight:
-            viewRot = setView(rot, 90 - tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, 1, -1));
-                else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, 1, -1));
-            }
-            break;
-        case PickId::FrontTopLeft:
-            viewRot = setView(rot - 90, 90 - tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, 1, -1));
-                else if (ViewRotMatrix[1][1] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, 1, -1));
-            }
-            break;
-        case PickId::RearTopLeft:
-            viewRot = setView(rot - 180, 90 - tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] < -0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(1, -1, -1));
-                else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(1, -1, -1));
-            }
-            break;
-        case PickId::RearTopRight:
-            viewRot = setView(rot - 270, 90 - tilt);
-            if (m_RotateToNearest) {
-                if (ViewRotMatrix[1][0] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, 120, SbVec3f(-1, -1, -1));
-                else if (ViewRotMatrix[1][1] > 0.4823)
-                    viewRot = rotateView(viewRot, DirId::Custom, -120, SbVec3f(-1, -1, -1));
-            }
-            break;
-        case PickId::ArrowLeft:
-            viewRot = rotateView(viewRot, DirId::Out, rotStepAngle);
-            break;
-        case PickId::ArrowRight:
-            viewRot = rotateView(viewRot, DirId::Out, -rotStepAngle);
-            break;
-        case PickId::ArrowWest:
-            viewRot = rotateView(viewRot, DirId::Up, -rotStepAngle);
-            break;
-        case PickId::ArrowEast:
-            viewRot = rotateView(viewRot, DirId::Up, rotStepAngle);
-            break;
-        case PickId::ArrowNorth:
-            viewRot = rotateView(viewRot, DirId::Right, -rotStepAngle);
-            break;
-        case PickId::ArrowSouth:
-            viewRot = rotateView(viewRot, DirId::Right, rotStepAngle);
-            break;
-        case PickId::DotBackside:
-            viewRot = rotateView(viewRot, DirId::Up, 180);
-            break;
-        case PickId::ViewMenu:
-            handleMenu();
-            applyRotation = false;
-            break;
+        if (m_Faces[pick].type == ShapeId::Main || m_Faces[pick].type == ShapeId::Edge || m_Faces[pick].type == ShapeId::Corner) {
+            // Handle the cube faces
+            m_View3DInventorViewer->setCameraOrientation(m_Faces[pick].rotation);
         }
+        else if (m_Faces[pick].type == ShapeId::Button) {
 
-        if (applyRotation)
-            rotateView(viewRot);
+            // Handle the menu
+            if (pick == PickId::ViewMenu) {
+                handleMenu();
+                return true;
+            }
+
+            // Handle the flat buttons
+            SbRotation orientation = m_Faces[pick].rotation;
+            if (pick == PickId::DotBackside) {
+                orientation.scaleAngle(M_PI);
+            }
+            else {
+                orientation.scaleAngle(rotStepAngle);
+            }
+            m_View3DInventorViewer->setCameraOrientation(orientation * currentOrientation);
+        }
+        else {
+            return false;
+        }
     }
     return true;
 }
