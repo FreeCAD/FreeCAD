@@ -151,10 +151,6 @@ private:
     void addCubeFace(const Vector3f&, const Vector3f&, ShapeId, PickId, float rotZ = 0.0);
     void addButtonFace(PickId, const SbVec3f& direction = SbVec3f(0, 0, 0));
 
-    SbRotation setView(float, float) const;
-    SbRotation rotateView(SbRotation, DirId, float, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
-    void rotateView(const SbRotation&);
-
     QString str(const char* str);
     QMenu* createNaviCubeMenu();
     void drawNaviCube(bool picking);
@@ -920,50 +916,6 @@ bool NaviCubeImplementation::mousePressed(short x, short y) {
     PickId pick = pickFace(x, y);
     setHilite(pick);
     return pick != PickId::None;
-}
-
-SbRotation NaviCubeImplementation::setView(float rotZ, float rotX) const {
-    SbRotation rz, rx, t;
-    rz.setValue(SbVec3f(0, 0, 1), rotZ * M_PI / 180);
-    rx.setValue(SbVec3f(1, 0, 0), rotX * M_PI / 180);
-    return rx * rz;
-}
-
-SbRotation NaviCubeImplementation::rotateView(SbRotation viewRot, DirId axis, float rotAngle, SbVec3f customAxis) const {
-    SbVec3f up;
-    viewRot.multVec(SbVec3f(0, 1, 0), up);
-
-    SbVec3f out;
-    viewRot.multVec(SbVec3f(0, 0, 1), out);
-
-    SbVec3f right;
-    viewRot.multVec(SbVec3f(1, 0, 0), right);
-
-    SbVec3f direction;
-    switch (axis) {
-    default:
-        return viewRot;
-    case DirId::Up:
-        direction = up;
-        break;
-    case DirId::Out:
-        direction = out;
-        break;
-    case DirId::Right:
-        direction = right;
-        break;
-    case DirId::Custom:
-        direction = customAxis;
-        break;
-    }
-
-    SbRotation rot(direction, -rotAngle * M_PI / 180.0);
-    SbRotation newViewRot = viewRot * rot;
-    return newViewRot;
-}
-
-void NaviCubeImplementation::rotateView(const SbRotation& rot) {
-    m_View3DInventorViewer->setCameraOrientation(rot);
 }
 
 void NaviCubeImplementation::handleMenu() {
