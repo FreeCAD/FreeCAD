@@ -272,7 +272,7 @@ bool GeometryMatcher::compareEllipseArcs(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
 // not sure how successful this would be.  For now, we just say it doesn't match
 bool GeometryMatcher::compareDifferent(TopoDS_Edge &edge1, TopoDS_Edge &edge2)
 {
-    Base::Console().Message("GM::compareDifferent()\n");
+//    Base::Console().Message("GM::compareDifferent()\n");
     BRepAdaptor_Curve adapt1(edge1);
     BRepAdaptor_Curve adapt2(edge2);
     return false;
