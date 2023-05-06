@@ -1,0 +1,24 @@
+#pragma once
+#include <memory>
+
+#include "Item.h"
+//#include "PartFrame.h"
+
+namespace MbD {
+	class Constraint : public Item
+	{
+		//iG aG lam mu lamDeriv owner 
+	public:
+		Constraint();
+		Constraint(const char* str);
+		void initialize();
+		void setOwner(Item* x);
+		Item* getOwner();
+		
+		int iG;
+		double aG;  //Constraint function
+		double lam; //Lambda is Lagrange Multiplier
+		Item* owner; //A Joint or PartFrame owns the constraint
+	};
+}
+

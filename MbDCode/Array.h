@@ -8,8 +8,9 @@ namespace MbD {
 	{
 	public:
 		Array(){}
-		Array(int i) : std::vector<T>(i) {}
-		Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
+        Array(size_t count) : std::vector<T>(count) {}
+        Array(size_t count, const T& value) : std::vector<T>(count, value) {}
+        Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
         void copy(std::shared_ptr<Array<T>> x);
     };
     template<typename T>

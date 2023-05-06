@@ -7,7 +7,8 @@ namespace MbD {
     {
     public:
         Vector() {}
-        Vector(int i) : Array<T>(i) {}
+        Vector(size_t count) : Array<T>(count) {}
+        Vector(size_t count, const T& value) : Array<T>(count, value) {}
         Vector(std::initializer_list<T> list) : Array<T>{ list } {}
     };
 }

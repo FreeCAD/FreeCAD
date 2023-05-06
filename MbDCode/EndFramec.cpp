@@ -2,7 +2,15 @@
 
 using namespace MbD;
 
-EndFramec::EndFramec()
+EndFramec::EndFramec() {
+	initialize();
+}
+
+EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
+	initialize();
+}
+
+void EndFramec::initialize()
 {
 }
 

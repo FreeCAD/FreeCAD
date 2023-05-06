@@ -12,6 +12,8 @@ namespace MbD {
         //markerFrame rOeO aAOe 
     public:
         EndFramec();
+        EndFramec(const char* str);
+        void initialize();
         void setMarkerFrame(MarkerFrame* markerFrm);
 
         MarkerFrame* markerFrame;

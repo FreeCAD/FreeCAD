@@ -1,0 +1,12 @@
+#include "EulerConstraint.h"
+#include "Constraint.h"
+
+using namespace MbD;
+
+EulerConstraint::EulerConstraint()
+{
+}
+
+EulerConstraint::EulerConstraint(Item* item) : Constraint::Constraint(item)
+{
+}

@@ -2,6 +2,14 @@
 
 using namespace MbD;
 
-EndFrameqc::EndFrameqc() : EndFramec()
+EndFrameqc::EndFrameqc() {
+	initialize();
+}
+
+EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
+	initialize();
+}
+
+void EndFrameqc::initialize()
 {
 }

@@ -1,0 +1,11 @@
+#pragma once
+#include "Joint.h"
+
+namespace MbD {
+    class PrescribedMotion : public Joint
+    {
+    public:
+        void connectsItoJ(std::shared_ptr<EndFramec> frmI, std::shared_ptr<EndFramec> frmJ) override;
+    };
+}
+

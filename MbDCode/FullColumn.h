@@ -10,7 +10,8 @@ namespace MbD {
 	class FullColumn : public Vector<T>
 	{
 	public:
-		FullColumn(int i) : Vector<T>(i) {}
+		FullColumn(size_t count) : Vector<T>(count) {}
+		FullColumn(size_t count, const T& value) : Vector<T>(count, value) {}
 		FullColumn(std::initializer_list<T> list) : Vector<T>{ list } {}
 		std::string toString()
 		{

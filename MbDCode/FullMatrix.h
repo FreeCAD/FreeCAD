@@ -19,6 +19,12 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
+		FullMatrix(std::initializer_list<std::shared_ptr<FullRow<T>>> listOfRows) {
+			for (auto row : listOfRows)
+			{
+				this->push_back(row);
+			}
+		}
 		FullMatrix(std::initializer_list<std::initializer_list<T>> list2D) {
 			for (auto rowList : list2D)
 			{
@@ -29,8 +35,10 @@ namespace MbD {
 	};
 
 	typedef std::initializer_list<std::initializer_list<double>> ListListD;
+	typedef std::initializer_list<FullRowDptr> ListFRD;
 	typedef std::shared_ptr<FullMatrix<double>> FullMatDptr;
-	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FullMatFCptr;
-	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FullMatFMptr;
+	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDptr;
+	typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDptr;
+
 }
 

@@ -6,14 +6,15 @@
 #include "FullRow.h"
 
 namespace MbD {
-
 	class EulerConstraint : public Constraint
 	{
-	public:
-		EulerConstraint() : Constraint() {
-		}
 		//pGpE iqE 
-		FullRow<double> pGpE = FullRow<double>(4);    //partial derivative of G wrt pE
+	public:
+		EulerConstraint();
+		EulerConstraint(const char* str);
+		void initialize();
+
+		FullRowDptr pGpE = std::make_shared<FullRow<double>>(4);    //partial derivative of G wrt pE
 		int iqE = -1;
 	};
 }

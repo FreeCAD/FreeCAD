@@ -1,3 +1,11 @@
+/*****************************************************************//**
+ * \file   System.h
+ * \brief  Multibody system of parts, joints, forces.
+ * 
+ * \author askoh
+ * \date   May 2023
+ *********************************************************************/
+
 #pragma once
 #include <memory>
 #include <vector>
@@ -6,6 +14,7 @@
 #include "Part.h"
 #include "Joint.h"
 #include "SystemSolver.h"
+#include "Time.h"
 
 namespace MbD {
 	class Part;
@@ -21,13 +30,25 @@ namespace MbD {
 			static System singleInstance; // Block-scoped static Singleton instance
 			return singleInstance;
 		};
-		std::vector<std::shared_ptr<Part>> parts;
-		std::vector<std::shared_ptr<Joint>> jointsMotions;
+		static System& getInstance(const char* str) {
+			//https://medium.com/@caglayandokme/further-enhancing-the-singleton-pattern-in-c-8278b02b1ac7
+			static System singleInstance(str); // Block-scoped static Singleton instance
+			return singleInstance;
+		};
+		std::unique_ptr<std::vector<std::shared_ptr<Part>>> parts;
+		std::unique_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
 		void addPart(std::shared_ptr<Part> part);
+		void runKINEMATICS();
+		void initializeLocally();
+		void initializeGlobally();
+
+		double timeValue;
+		std::unique_ptr<Time> time;
 	private:
 		System();
+		System(const char* str);
 		//System() = default; // Private constructor
 		System(const System&) = delete;
 		System& operator=(const System&) = delete; // Deleted copy assignment

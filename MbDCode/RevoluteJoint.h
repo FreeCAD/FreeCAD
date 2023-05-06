@@ -3,6 +3,11 @@
 namespace MbD {
     class RevoluteJoint : public Joint
     {
+        //
+    public:
+        RevoluteJoint();
+        RevoluteJoint(const char* str);
+        void initialize();
     };
 }
 

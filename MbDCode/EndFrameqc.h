@@ -11,6 +11,8 @@ namespace MbD {
         //prOeOpE pprOeOpEpE pAOepE ppAOepEpE
     public:
         EndFrameqc();
+        EndFrameqc(const char* str);
+        void initialize();
         FullMatDptr prOeOpE = std::make_shared<FullMatrix<double>>(3, 4);
         //std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(3, 4);
         std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOepE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
