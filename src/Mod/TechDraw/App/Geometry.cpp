@@ -283,6 +283,7 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
     } else {
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+        throw Base::RuntimeError("no OCC edge in Geometry::findEndPoints");
     }
     return result;
 }
