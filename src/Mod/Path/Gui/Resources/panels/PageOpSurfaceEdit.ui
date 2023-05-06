@@ -26,7 +26,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
         <property name="text">
-         <string>ToolController</string>
+         <string>Tool Controller</string>
         </property>
        </widget>
       </item>
