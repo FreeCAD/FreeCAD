@@ -44,7 +44,6 @@ CosmeticExtension::CosmeticExtension()
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (nullptr), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(Cosmetics, (nullptr), cgroup, App::Prop_Output, "Cosmetics Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
@@ -316,28 +315,17 @@ void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
 std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)
 {
 //    Base::Console().Message("CEx::addGeomFormat(gf: %X)\n", gf);
-    std::vector<GeomFormat*> formats = GeomFormats.getValues();
     TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(gf);
-    formats.push_back(newGF);
-    GeomFormats.setValues(formats);
+    Cosmetics.addValue(newGF);
     return newGF->getTagAsString();
 }
 
 
 //get GF by unique id
-TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tagString) const
+TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tag) const
 {
 //    Base::Console().Message("CEx::getGeomFormat(%s)\n", tagString.c_str());
-    const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
-    for (auto& gf: formats) {
-        std::string gfTag = gf->getTagAsString();
-        if (gfTag == tagString) {
-            return gf;
-        }
-    }
-
-    // Nothing found
-    return nullptr;
+    return Cosmetics.getValue<GeomFormat*>(tag);
 }
 
 // find the cosmetic edge corresponding to selection name (Edge5)
@@ -351,7 +339,7 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string na
         return nullptr;
     }
     int idx = DrawUtil::getIndexFromName(name);
-    const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
+    const std::vector<TechDraw::GeomFormat*> formats = Cosmetics.getValues<GeomFormat*>();
     for (auto& gf: formats) {
         if (gf->m_geomIndex == idx) {
             return gf;
@@ -371,17 +359,10 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
     return getGeomFormatBySelection(edgeName.str());
 }
 
-void CosmeticExtension::removeGeomFormat(std::string delTag)
+void CosmeticExtension::removeGeomFormat(std::string tag)
 {
 //    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
-    std::vector<GeomFormat*> cFormats = GeomFormats.getValues();
-    std::vector<GeomFormat*> newFormats;
-    for (auto& gf: cFormats) {
-        if (gf->getTagAsString() != delTag)  {
-            newFormats.push_back(gf);
-        }
-    }
-    GeomFormats.setValues(newFormats);
+    Cosmetics.removeValue(tag);
 }
 
 //================================================================================

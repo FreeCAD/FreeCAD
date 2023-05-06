@@ -60,7 +60,6 @@
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticList.h"
 #include "PropertyCosmeticVertexList.h"
-#include "PropertyGeomFormatList.h"
 
 
 
@@ -117,7 +116,6 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTileWeld        ::init();
     TechDraw::DrawWeldSymbol      ::init();
 
-    TechDraw::PropertyGeomFormatList::init();
     TechDraw::GeomFormat            ::init();
     TechDraw::PropertyCenterLineList::init();
     TechDraw::CenterLine            ::init();

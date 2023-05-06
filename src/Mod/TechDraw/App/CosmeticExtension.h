@@ -32,7 +32,6 @@
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticList.h"
 #include "PropertyCosmeticVertexList.h"
-#include "PropertyGeomFormatList.h"
 
 
 namespace TechDraw {
@@ -49,7 +48,6 @@ public:
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
     TechDraw::PropertyCosmeticList       Cosmetics; // to be renamed!!
     TechDraw::PropertyCenterLineList     CenterLines;
-    TechDraw::PropertyGeomFormatList     GeomFormats;          //formats for geometric edges
 
     virtual std::string     addCosmeticVertex(Base::Vector3d pos);
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
