@@ -127,7 +127,9 @@ private:
         ShapeId type;
         vector<Vector3f> vertexArray;
         // The rotation is the standard orientation for the faces of the cube
-        // For the flat buttons it is the direction of the rotation
+        // For the flat buttons the rotation contains the direction of the rotation
+        // The standard orientation is the desired camera orientation when a face is selected and
+        // rotate to nearest is disabled
         SbRotation rotation;
     };
     struct LabelTexture {
@@ -155,6 +157,7 @@ private:
     QMenu* createNaviCubeMenu();
     void drawNaviCube(bool picking);
 
+    SbRotation getNearestOrientation(PickId pickId);
 
 public:
 
@@ -922,40 +925,86 @@ void NaviCubeImplementation::handleMenu() {
     m_Menu->exec(QCursor::pos());
 }
 
+SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId) {
+    SbRotation cameraOrientation = m_View3DInventorViewer->getCameraOrientation();
+    SbRotation standardOrientation = m_Faces[pickId].rotation;
+
+    SbVec3f cameraZ;
+    cameraOrientation.multVec(SbVec3f(0, 0, 1), cameraZ);
+
+    SbVec3f standardZ;
+    standardOrientation.multVec(SbVec3f(0, 0, 1), standardZ);
+
+    // Rotate the camera to the selected face by the smallest angle to align the z-axis
+    SbRotation intermediateOrientation = cameraOrientation * SbRotation(cameraZ, standardZ);
+
+    // Find an axis and angle to go from the intermediateOrientation to the standardOrientation
+    SbVec3f axis;
+    float angle;
+    SbRotation rotation = intermediateOrientation.inverse() * standardOrientation;
+    rotation.getValue(axis, angle);
+
+    // f is a small value used to control orientation priority when the camera is almost excactly between two
+    // orientations (e.g. +45 and -45 degrees). The standard orientation is preferred compared to
+    // +90 and -90 degree orientations and the +90 and -90 degree orientations are preferred compared to an
+    // upside down standard orientation
+    float f = angle > M_PI ? 0.00001 : -0.00001;
+
+    // Find the angle to rotate to the nearest orientation
+    if (m_Faces[pickId].type == ShapeId::Corner) {
+        // 6 possible orientations for the corners
+        angle = angle - floor((angle + f + M_PI / 6.0) / (M_PI / 3.0)) * (M_PI / 3.0);
+    }
+    else {
+        // 4 possible orientations for the main and edge faces
+        angle = angle - floor((angle + f + M_PI_4) / M_PI_2) * M_PI_2;
+    }
+
+    // Set the rotation to go from the intermediateOrientation to the nearest orientation
+    rotation.setValue(axis, angle);
+
+    return intermediateOrientation * rotation;
+}
+
 bool NaviCubeImplementation::mouseReleased(short x, short y) {
     setHilite(PickId::None);
     m_MouseDown = false;
 
-    SbRotation currentOrientation = m_View3DInventorViewer->getCameraOrientation();
-
     if (m_Dragging) {
         m_Dragging = false;
     } else {
-        PickId pick = pickFace(x, y);
+        PickId pickId = pickFace(x, y);
         long step = Base::clamp(long(m_NaviStepByTurn), 4L, 36L);
         float rotStepAngle = (2 * M_PI) / step;
 
-        if (m_Faces[pick].type == ShapeId::Main || m_Faces[pick].type == ShapeId::Edge || m_Faces[pick].type == ShapeId::Corner) {
+        if (m_Faces[pickId].type == ShapeId::Main || m_Faces[pickId].type == ShapeId::Edge || m_Faces[pickId].type == ShapeId::Corner) {
             // Handle the cube faces
-            m_View3DInventorViewer->setCameraOrientation(m_Faces[pick].rotation);
+            SbRotation orientation;
+            if (m_RotateToNearest) {
+                orientation = getNearestOrientation(pickId);
+            }
+            else {
+                orientation = m_Faces[pickId].rotation;
+            }
+            m_View3DInventorViewer->setCameraOrientation(orientation);
         }
-        else if (m_Faces[pick].type == ShapeId::Button) {
+        else if (m_Faces[pickId].type == ShapeId::Button) {
 
             // Handle the menu
-            if (pick == PickId::ViewMenu) {
+            if (pickId == PickId::ViewMenu) {
                 handleMenu();
                 return true;
             }
 
             // Handle the flat buttons
-            SbRotation orientation = m_Faces[pick].rotation;
-            if (pick == PickId::DotBackside) {
-                orientation.scaleAngle(M_PI);
+            SbRotation rotation = m_Faces[pickId].rotation;
+            if (pickId == PickId::DotBackside) {
+                rotation.scaleAngle(M_PI);
             }
             else {
-                orientation.scaleAngle(rotStepAngle);
+                rotation.scaleAngle(rotStepAngle);
             }
-            m_View3DInventorViewer->setCameraOrientation(orientation * currentOrientation);
+            m_View3DInventorViewer->setCameraOrientation(rotation * m_View3DInventorViewer->getCameraOrientation());
         }
         else {
             return false;
