@@ -221,10 +221,7 @@ unsigned int CosmeticEdge::getMemSize () const
 
 void CosmeticEdge::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CosmeticEdge  type=\""
-                    << getTypeId().getName() << "\">" << std::endl;
-    writer.incInd();
-    
+    // writer.Stream() << writer.ind() << "<CosmeticType value\"CosmeticEdge\" />" << endl;
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
@@ -244,9 +241,6 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     } else {
         Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
-    
-    writer.decInd();
-    writer.Stream() << writer.ind() << "</CosmeticEdge>" << std::endl;
 }
 
 void CosmeticEdge::Restore(Base::XMLReader &reader)

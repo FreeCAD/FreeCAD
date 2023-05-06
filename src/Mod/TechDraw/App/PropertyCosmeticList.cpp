@@ -28,6 +28,8 @@
 
 #include "PropertyCosmeticList.h"
 #include "CosmeticEdgePy.h"
+#include "Cosmetic.h"
+#include "CenterLine.h"
 
 
 using namespace App;
@@ -114,7 +116,14 @@ void PropertyCosmeticList::Save(Writer &writer) const
                     << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
+        writer.Stream() << writer.ind() << "<Cosmetic type=\""
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
+        writer.incInd();
+        
         _lValueList[i]->Save(writer);
+    
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</Cosmetic>" << std::endl;
     }
     writer.decInd();
     writer.Stream() << writer.ind() << "</CosmeticList>" << std::endl;
@@ -130,9 +139,20 @@ void PropertyCosmeticList::Restore(Base::XMLReader &reader)
     std::vector<Cosmetic*> values;
     values.reserve(count);
     for (int i = 0; i < count; i++) {
-        reader.readElement("CosmeticEdge");
+        reader.readElement("Cosmetic");
         const char* TypeName = reader.getAttribute("type");
-        Cosmetic *newG = static_cast<Cosmetic *>(Base::Type::fromName(TypeName).createInstance());
+        // using CosmeticType = Cosmetic*;
+        // if (std::strcmp(TypeName, "CosmeticEdge") == 0) {
+        //     CosmeticType = CosmeticEdge;
+        // }
+        // else if (std::strcmp(TypeName, "GeomFormat") == 0) {
+        //     CosmeticType = GeomFormat;
+        // }
+        // else if (std::strcmp(TypeName, "CenterLine") == 0) {
+        //     CosmeticType = CenterLine;
+        // }
+        // else { throw; }
+        Cosmetic* newG = static_cast<Cosmetic*>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
