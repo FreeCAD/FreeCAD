@@ -42,7 +42,7 @@ CosmeticExtension::CosmeticExtension()
     static const char *cgroup = "Cosmetics";
 
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (nullptr), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (nullptr), cgroup, App::Prop_Output, "CosmeticEdge Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(Cosmetics, (nullptr), cgroup, App::Prop_Output, "Cosmetics Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
 
@@ -151,38 +151,23 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
                                                Base::Vector3d end)
 {
 //    Base::Console().Message("CEx::addCosmeticEdge(s, e)\n");
-    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
-    edges.push_back(ce);
-    CosmeticEdges.setValues(edges);
+    Cosmetics.addValue(ce);
     return ce->getTagAsString();
 }
 
 std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
 {
 //    Base::Console().Message("CEx::addCosmeticEdge(bg: %X)\n", bg);
-    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(bg);
-    edges.push_back(ce);
-    CosmeticEdges.setValues(edges);
+    Cosmetics.addValue(ce);
     return ce->getTagAsString();
 }
 
 //get CE by unique id
-TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tagString) const
+TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tag) const
 {
-//    Base::Console().Message("CEx::getCosmeticEdge(%s)\n", tagString.c_str());
-    const std::vector<TechDraw::CosmeticEdge*> edges = CosmeticEdges.getValues();
-    for (auto& ce: edges) {
-        std::string ceTag = ce->getTagAsString();
-        if (ceTag == tagString) {
-            return ce;
-        }
-    }
-
-    // None found
-    Base::Console().Message("CEx::getCosmeticEdge - CE for tag: %s not found.\n", tagString.c_str());
-    return nullptr;
+    return Cosmetics.getValue<CosmeticEdge*>(tag);
 }
 
 // find the cosmetic edge corresponding to selection name (Edge5)
@@ -215,15 +200,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) con
 
 void CosmeticExtension::removeCosmeticEdge(std::string delTag)
 {
-//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
-    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
-    std::vector<CosmeticEdge*> newEdges;
-    for (auto& ce: cEdges) {
-        if (ce->getTagAsString() != delTag)  {
-            newEdges.push_back(ce);
-        }
-    }
-    CosmeticEdges.setValues(newEdges);
+    Cosmetics.removeValue(delTag);
 }
 
 void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)

@@ -276,7 +276,7 @@ short DrawViewPart::mustExecute() const
         || SmoothVisible.isTouched() || SeamVisible.isTouched() || IsoVisible.isTouched()
         || HardHidden.isTouched() || SmoothHidden.isTouched() || SeamHidden.isTouched()
         || IsoHidden.isTouched() || IsoCount.isTouched() || CoarseView.isTouched()
-        || CosmeticVertexes.isTouched() || CosmeticEdges.isTouched() || CenterLines.isTouched()) {
+        || CosmeticVertexes.isTouched() || Cosmetics.isTouched() || CenterLines.isTouched()) {
         return 1;
     }
 
@@ -1496,15 +1496,14 @@ int DrawViewPart::getCVIndex(std::string tag)
 //for completeness.  not actually used anywhere?
 void DrawViewPart::clearCosmeticEdges()
 {
-    std::vector<CosmeticEdge*> noEdges;
-    CosmeticEdges.setValues(noEdges);
+    Cosmetics.clear<CosmeticEdge*>();
 }
 
 //add the cosmetic edges to geometry edge list
 void DrawViewPart::addCosmeticEdgesToGeom()
 {
     //    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
-    const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    const std::vector<TechDraw::CosmeticEdge*> cEdges = Cosmetics.getValues<CosmeticEdge*>();
     for (auto& ce : cEdges) {
         TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
         if (!scaledGeom)
@@ -1634,7 +1633,7 @@ void DrawViewPart::dumpCosVerts(std::string text)
 
 void DrawViewPart::dumpCosEdges(std::string text)
 {
-    std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    std::vector<TechDraw::CosmeticEdge*> cEdges = Cosmetics.getValues<CosmeticEdge*>();
     Base::Console().Message("%s - dumping %d CosmeticEdge\n", text.c_str(), cEdges.size());
     for (auto& ce : cEdges) {
         ce->dump("a CE");

@@ -337,7 +337,7 @@ int TaskRestoreLines::countInvisibleGeoms()
 int TaskRestoreLines::countInvisibleCosmetics()
 {
     int iCosmos = 0;
-    const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
+    const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->Cosmetics.getValues<CosmeticEdge*>();
     for (auto& c : cosmos) {
         if (!c->m_format.m_visible) {
             iCosmos++;
@@ -379,13 +379,13 @@ void TaskRestoreLines::restoreInvisibleGeoms()
 
 void TaskRestoreLines::restoreInvisibleCosmetics()
 {
-    const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
+    const std::vector<TechDraw::CosmeticEdge*>& cosmos = m_partFeat->Cosmetics.getValues<CosmeticEdge*>();
     for (auto& c : cosmos) {
         if (!c->m_format.m_visible) {
             c->m_format.m_visible = true;
         }
     }
-    m_partFeat->CosmeticEdges.setValues(cosmos);
+    // m_partFeat->CosmeticEdges.setValues(cosmos); This line is uneeded? Right?
     m_parent->apply(false);                   //don't undo the work we just did
 }
 

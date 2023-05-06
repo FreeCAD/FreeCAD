@@ -30,7 +30,7 @@
 
 #include "Geometry.h"
 #include "PropertyCenterLineList.h"
-#include "PropertyCosmeticEdgeList.h"
+#include "PropertyCosmeticList.h"
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyGeomFormatList.h"
 
@@ -47,7 +47,7 @@ public:
     ~CosmeticExtension() override;
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
-    TechDraw::PropertyCosmeticEdgeList   CosmeticEdges;
+    TechDraw::PropertyCosmeticList       Cosmetics; // to be renamed!!
     TechDraw::PropertyCenterLineList     CenterLines;
     TechDraw::PropertyGeomFormatList     GeomFormats;          //formats for geometric edges
 

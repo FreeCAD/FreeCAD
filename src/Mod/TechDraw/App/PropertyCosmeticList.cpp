@@ -71,6 +71,22 @@ void PropertyCosmeticList::setValues(const std::vector<Cosmetic*>& lValue)
     hasSetValue();
 }
 
+void PropertyCosmeticList::addValue(Cosmetic* newValue) {
+    _lValueList.push_back(newValue);
+}
+
+void PropertyCosmeticList::removeValue(const std::string& tag) {
+//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
+    _lValueList.erase(
+        std::remove_if(
+            _lValueList.begin(),
+            _lValueList.end(),
+            [&tag](Cosmetic* value) { return value->getTagAsString() == tag; }
+        ),
+        _lValueList.end()
+    );
+}
+
 PyObject *PropertyCosmeticList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
@@ -153,6 +169,12 @@ void PropertyCosmeticList::Restore(Base::XMLReader &reader)
         // }
         // else { throw; }
         Cosmetic* newG = static_cast<Cosmetic*>(Base::Type::fromName(TypeName).createInstance());
+        if(dynamic_cast<CosmeticEdge*>(newG)) {
+            Base::Console().Message("IS COSMETICEDGE");
+        }
+        else {
+            Base::Console().Message("NOT COSMETICEDGE");
+        }
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
@@ -170,7 +192,7 @@ void PropertyCosmeticList::Restore(Base::XMLReader &reader)
             values.push_back(newG);
         }
 
-        reader.readEndElement("CosmeticEdge");
+        reader.readEndElement("Cosmetic");
     }
 
     reader.readEndElement("CosmeticList");
@@ -199,3 +221,55 @@ unsigned int PropertyCosmeticList::getMemSize() const
         size += _lValueList[i]->getMemSize();
     return size;
 }
+
+template<typename T>
+void PropertyCosmeticList::clear() {
+    static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
+
+    _lValueList.erase(
+        std::remove_if(
+            _lValueList.begin(),
+            _lValueList.end(),
+            [](Cosmetic* obj) { return static_cast<bool>(dynamic_cast<T>(obj) != nullptr); }
+        ),
+        _lValueList.end()
+    );
+}
+template void PropertyCosmeticList::clear<CosmeticEdge*>();
+
+template<typename T>
+const T PropertyCosmeticList::getValue(std::string tag) const {
+    // Base::Console().Message("PropertyCosmeticList::getValue(%s)\n", tagString.c_str());
+    static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
+
+    for (auto& value: _lValueList) {
+        std::string valueTag = value->getTagAsString();
+        if (valueTag == tag) {  // Assuming tags are unique across GeomFormat, CenterLine, CosmeticEdge. Is this true?????
+            return static_cast<T>(value);
+        }
+    }
+
+    Base::Console().Message("PropertyCosmeticList::getValue - Cosmetic for tag: %s not found.\n", tag.c_str());
+    return nullptr;
+}
+// Notice that const comes after the type when you have to make your own explicit template instantiation...
+// only took 1 hour to find out (https://stackoverflow.com/questions/1296907/function-template-specialization-with-reference-to-pointer)
+template CosmeticEdge* const PropertyCosmeticList::getValue(std::string tag) const;
+
+template<typename T>
+const std::vector<T> PropertyCosmeticList::getValues() const {
+    static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
+
+    std::vector<T> result;
+    for(auto& value: _lValueList) {
+        T attempt = dynamic_cast<T>(value);
+        // only push_back if value is of type T. If not, dynamic cast will fail returning a nullptr
+        if(attempt) {
+            result.push_back(attempt);
+        }
+    }
+    return result;
+}
+template const std::vector<CosmeticEdge*> PropertyCosmeticList::getValues<CosmeticEdge*>() const;
+
+// If you get linker errors, remember to do explicit template instantiation!!!

@@ -54,17 +54,30 @@ public:
 /*    void setValue(const CosmeticEdge*);*/
     void setValue(Cosmetic*);
     void setValues(const std::vector<Cosmetic*>&);
+    void addValue(Cosmetic* newValue);
+    void removeValue(const std::string& tag);
+
+    //! Get the value with the given tag
+    template<typename T>
+    const T getValue(std::string tag) const;
+
+    //! Clear all values of the given type
+    template<typename T>
+    void clear();
 
     /// index operator
-    const Cosmetic *operator[] (const int idx) const {
+    const Cosmetic* operator[] (const int idx) const {
         return _lValueList[idx];
     }
 
-    const std::vector<Cosmetic*> &getValues(void) const {
+    const std::vector<Cosmetic*>& getValues(void) const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
+    template<typename T>
+    const std::vector<T> getValues() const;
+
+    virtual PyObject* getPyObject(void);
     virtual void setPyObject(PyObject *);
 
     virtual void Save(Base::Writer &writer) const;
