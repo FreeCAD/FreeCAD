@@ -265,7 +265,7 @@ class ObjectSlot(PathOp.ObjectOp):
             "Reference1": [
                 (translate("Path_Slot", "Center of Mass"), "Center of Mass"),
                 (
-                    translate("Path_Slot", "Center of BoundBox"),
+                    translate("Path_Slot", "Center of Bounding Box"),
                     "Center of BoundBox",
                 ),
                 (translate("Path_Slot", "Lowest Point"), "Lowest Point"),
@@ -277,7 +277,7 @@ class ObjectSlot(PathOp.ObjectOp):
             "Reference2": [
                 (translate("Path_Slot", "Center of Mass"), "Center of Mass"),
                 (
-                    translate("Path_Slot", "Center of BoundBox"),
+                    translate("Path_Slot", "Center of Bounding Box"),
                     "Center of BoundBox",
                 ),
                 (translate("Path_Slot", "Lowest Point"), "Lowest Point"),
