@@ -4,18 +4,18 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="656"/>
       <source>Add triangle</source>
       <translation>Dodaj trikotnik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="846"/>
-      <location filename="../../Command.cpp" line="848"/>
+      <location filename="../../Command.cpp" line="657"/>
+      <location filename="../../Command.cpp" line="659"/>
       <source>Add triangle manually to a mesh</source>
       <translation>Ročno dodaj v ploskovje trikotnik</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1559"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1560"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Boundings info...</source>
       <translation>Podatki o mejah …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1561"/>
-      <location filename="../../Command.cpp" line="1563"/>
+      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>Prikaže meje izbranega ploskovja</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Regular solid...</source>
       <translation>Preprosto telo …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
-      <location filename="../../Command.cpp" line="1605"/>
+      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>Builds a regular solid</source>
       <translation>Zgradi preprosto telo</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1071"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1072"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
       <translation>Prečni prerezi …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
       <translation>Prečni prerezi</translation>
     </message>
@@ -80,45 +80,32 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1236"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1237"/>
       <source>Decimation...</source>
       <translation>Desetkanje ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
-      <location filename="../../Command.cpp" line="1463"/>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1238"/>
+      <location filename="../../Command.cpp" line="1239"/>
+      <location filename="../../Command.cpp" line="1240"/>
       <source>Decimates a mesh</source>
       <translation>Zdesetka ploskovje</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
-    <message>
-      <location filename="../../Command.cpp" line="127"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="128"/>
-      <source>Interactive demolding direction</source>
-      <translation>Sodejna smer odstranitve iz kalupa</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="158"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="294"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>Difference</source>
       <translation>Razlika</translation>
     </message>
@@ -126,18 +113,18 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../Command.cpp" line="1005"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>Face info</source>
       <translation>Podatki ploskve</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1196"/>
-      <location filename="../../Command.cpp" line="1198"/>
+      <location filename="../../Command.cpp" line="1007"/>
+      <location filename="../../Command.cpp" line="1009"/>
       <source>Information about face</source>
       <translation>Podatki o ploskvi</translation>
     </message>
@@ -145,18 +132,18 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1359"/>
+      <location filename="../../Command.cpp" line="1170"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1171"/>
       <source>Check solid mesh</source>
       <translation>Preveri ploskovje telesa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1361"/>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1172"/>
+      <location filename="../../Command.cpp" line="1174"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Preveri, ali je ploskovje telo</translation>
     </message>
@@ -164,18 +151,18 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="962"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1153"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>Evaluate and repair mesh...</source>
       <translation>Ovrednoti in popravi ploskovje...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1154"/>
-      <location filename="../../Command.cpp" line="1156"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Odpre pogovorno okno za analizo in popravilo ploskovja</translation>
     </message>
@@ -183,18 +170,18 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="351"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="352"/>
       <source>Export mesh...</source>
       <translation>Izvozi ploskovje …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
-      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="353"/>
+      <location filename="../../Command.cpp" line="355"/>
       <source>Exports a mesh to file</source>
       <translation>Izvozi ploskovje v datoteko</translation>
     </message>
@@ -202,18 +189,18 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1671"/>
+      <location filename="../../Command.cpp" line="1447"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1448"/>
       <source>Close hole</source>
       <translation>Zapri luknjo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1449"/>
+      <location filename="../../Command.cpp" line="1451"/>
       <source>Close holes interactively</source>
       <translation>Zapri luknjo sodejno</translation>
     </message>
@@ -221,18 +208,18 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1632"/>
+      <location filename="../../Command.cpp" line="1408"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1633"/>
+      <location filename="../../Command.cpp" line="1409"/>
       <source>Fill holes...</source>
       <translation>Zapolni luknje …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1410"/>
+      <location filename="../../Command.cpp" line="1412"/>
       <source>Fill holes of the mesh</source>
       <translation>Zapolni luknje ploskovja</translation>
     </message>
@@ -240,18 +227,18 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1301"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>Flip normals</source>
       <translation>Obrni normale</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
-      <location filename="../../Command.cpp" line="1529"/>
+      <location filename="../../Command.cpp" line="1303"/>
+      <location filename="../../Command.cpp" line="1305"/>
       <source>Flips the normals of the mesh</source>
       <translation>Obrne normale ploskovja</translation>
     </message>
@@ -259,18 +246,18 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="426"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="427"/>
       <source>Create mesh from geometry...</source>
       <translation>Ustvari ploskovje iz geometrije …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="563"/>
-      <location filename="../../Command.cpp" line="565"/>
+      <location filename="../../Command.cpp" line="428"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>Create mesh from the selected geometry</source>
       <translation>Ustvari ploskovje iz izbrane geometrije</translation>
     </message>
@@ -278,17 +265,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="620"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="621"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
       <translation>Ustvari ploskovje iz oblike …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Tessellate shape</source>
       <translation>Teseliraj obliko</translation>
     </message>
@@ -296,18 +283,18 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Harmonize normals</source>
       <translation>Uskladi normale</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1269"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Uskladi normale ploskovja</translation>
     </message>
@@ -315,18 +302,18 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>Import mesh...</source>
       <translation>Uvozi ploskovje …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Imports a mesh from file</source>
       <translation>Uvozi ploskovje iz datoteke</translation>
     </message>
@@ -334,12 +321,12 @@
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="229"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="230"/>
       <source>Intersection</source>
       <translation>Sečišče</translation>
     </message>
@@ -347,17 +334,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1561"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Merge</source>
       <translation>Združi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1787"/>
+      <location filename="../../Command.cpp" line="1563"/>
       <source>Merges selected meshes into one</source>
       <translation>Združi izbrana ploskovja v eno</translation>
     </message>
@@ -365,18 +352,18 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="702"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Cut mesh</source>
       <translation>Reži ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
-      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="704"/>
+      <location filename="../../Command.cpp" line="706"/>
       <source>Cuts a mesh with a picked polygon</source>
       <translation>Reže ploskovje z izbranim mnogokotnikom</translation>
     </message>
@@ -384,56 +371,37 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="736"/>
+      <location filename="../../Command.cpp" line="601"/>
       <source>Make segment</source>
       <translation>Ustvari odsek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="737"/>
-      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="602"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>Creates a mesh segment</source>
       <translation>Ustvari mrežni odsek</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshPolySelect</name>
-    <message>
-      <location filename="../../Command.cpp" line="791"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="792"/>
-      <source>Select mesh</source>
-      <translation>Izberite ploskovje</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="793"/>
-      <location filename="../../Command.cpp" line="795"/>
-      <source>Select an area of the mesh</source>
-      <translation>Izberite področje ploskovja</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1097"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1098"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Split mesh</source>
       <translation>Razcepi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="910"/>
+      <location filename="../../Command.cpp" line="912"/>
       <source>Splits a mesh into two meshes</source>
       <translation>Razcepi ploskovje v dve</translation>
     </message>
@@ -441,18 +409,18 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Trim mesh</source>
       <translation>Prireži mrežo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="765"/>
+      <location filename="../../Command.cpp" line="767"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Prireže ploskovje z izbranim mnogokotnikom</translation>
     </message>
@@ -460,18 +428,18 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1093"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
+      <location filename="../../Command.cpp" line="1094"/>
       <source>Refinement...</source>
       <translation>Dodelava ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1284"/>
-      <location filename="../../Command.cpp" line="1285"/>
+      <location filename="../../Command.cpp" line="1095"/>
+      <location filename="../../Command.cpp" line="1096"/>
       <source>Refine existing mesh</source>
       <translation>Dodelaj obstoječe ploskovje</translation>
     </message>
@@ -479,18 +447,18 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1315"/>
+      <location filename="../../Command.cpp" line="1126"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1316"/>
+      <location filename="../../Command.cpp" line="1127"/>
       <source>Remove components by hand...</source>
       <translation>Ročno odstrani sestavine …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1317"/>
-      <location filename="../../Command.cpp" line="1319"/>
+      <location filename="../../Command.cpp" line="1128"/>
+      <location filename="../../Command.cpp" line="1130"/>
       <source>Mark a component to remove it from the mesh</source>
       <translation>Označite sestavino, ki jo želite odstraniti iz ploskovja</translation>
     </message>
@@ -498,18 +466,18 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1237"/>
+      <location filename="../../Command.cpp" line="1048"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1238"/>
+      <location filename="../../Command.cpp" line="1049"/>
       <source>Remove components...</source>
       <translation>Odstrani sestavine …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1239"/>
-      <location filename="../../Command.cpp" line="1241"/>
+      <location filename="../../Command.cpp" line="1050"/>
+      <location filename="../../Command.cpp" line="1052"/>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Odstrani zvezno neodvisne sestavine iz ploskovja</translation>
     </message>
@@ -517,17 +485,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1874"/>
+      <location filename="../../Command.cpp" line="1650"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="1651"/>
       <source>Scale...</source>
       <translation>Povečava...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1876"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>Scale selected meshes</source>
       <translation>Spremeni velikost izbranega ploskovja</translation>
     </message>
@@ -535,18 +503,18 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Create section from mesh and plane</source>
       <translation>Ustvari prerez iz ploskovja in ravnine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
-      <location filename="../../Command.cpp" line="1045"/>
+      <location filename="../../Command.cpp" line="855"/>
+      <location filename="../../Command.cpp" line="856"/>
       <source>Section from mesh and plane</source>
       <translation>Prerez iz ploskovja in ravnine</translation>
     </message>
@@ -554,18 +522,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1713"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1714"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Create mesh segments...</source>
       <translation>Ustvari odseke ploskovja …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1715"/>
-      <location filename="../../Command.cpp" line="1717"/>
+      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1493"/>
       <source>Create mesh segments</source>
       <translation>Ustvari odseke ploskovja</translation>
     </message>
@@ -573,18 +541,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1749"/>
+      <location filename="../../Command.cpp" line="1525"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Ustvari dele ploskovja iz najbolje prilegajočih se površij...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1529"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Ustvari dele ploskovja iz najbolje prilegajočih se površij</translation>
     </message>
@@ -592,18 +560,18 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1208"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1209"/>
       <source>Smooth...</source>
       <translation>Zgladi …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1210"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Smooth the selected meshes</source>
       <translation>Zgladi izbrana ploskovja</translation>
     </message>
@@ -611,74 +579,36 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1828"/>
+      <location filename="../../Command.cpp" line="1604"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1829"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Split by components</source>
       <translation>Razcepi na sestavine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Split selected mesh into its components</source>
       <translation>Razcepi izbrano ploskovje na sestavine</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshToolMesh</name>
-    <message>
-      <location filename="../../Command.cpp" line="167"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="168"/>
-      <source>Segment by tool mesh</source>
-      <translation>Razčlenitev z orodjem ploskovij</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="169"/>
-      <location filename="../../Command.cpp" line="171"/>
-      <source>Creates a segment from a given tool mesh</source>
-      <translation>Ustvari odsek iz orodnrga ploskovja</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="87"/>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="88"/>
-      <source>Transform mesh</source>
-      <translation>Preoblikuj ploskovje</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="89"/>
-      <location filename="../../Command.cpp" line="91"/>
-      <source>Rotate or move a mesh</source>
-      <translation>Zasukaj ali premakni ploskovje</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="824"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1014"/>
+      <location filename="../../Command.cpp" line="825"/>
       <source>Trim mesh with a plane</source>
       <translation>Prireži ploskovje z ravnino</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="1016"/>
+      <location filename="../../Command.cpp" line="826"/>
+      <location filename="../../Command.cpp" line="827"/>
       <source>Trims a mesh with a plane</source>
       <translation>Prireže ploskovje z ravnino</translation>
     </message>
@@ -686,12 +616,12 @@
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Union</source>
       <translation>Seštevek</translation>
     </message>
@@ -699,18 +629,18 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Curvature plot</source>
       <translation>Izriši ukrivljenost</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Izračuna ukrivljenost temen ploskovja</translation>
     </message>
@@ -718,18 +648,18 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="690"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>Curvature info</source>
       <translation>Podatki ukrivljenosti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="691"/>
-      <location filename="../../Command.cpp" line="693"/>
+      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Information about curvature</source>
       <translation>Podatki o ukrivljenosti</translation>
     </message>
@@ -737,161 +667,149 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <location filename="../../Command.cpp" line="144"/>
-      <source>Mesh Create</source>
-      <translation>Ustvarjanje ploskovja</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="183"/>
-      <source>Segment by tool mesh</source>
-      <translation>Razčlenitev z orodjem ploskovij</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Mesh union</source>
       <translation>Seštevek ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Mesh difference</source>
       <translation>Razlika ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="378"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Mesh intersection</source>
       <translation>Presek ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="464"/>
+      <location filename="../../Command.cpp" line="329"/>
       <source>Import Mesh</source>
       <translation>Uvozi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="527"/>
       <source>Mesh VertexCurvature</source>
       <translation>OgliščnaUkrivljenost ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
-      <location filename="../../DlgSmoothing.cpp" line="175"/>
+      <location filename="../../DlgSmoothing.cpp" line="183"/>
       <source>Mesh Smoothing</source>
       <translation>Glajenje ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>Harmonize mesh normals</source>
       <translation>Uskladi normale ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1312"/>
       <source>Flip mesh normals</source>
       <translation>Obrni normale ploskovja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1648"/>
+      <location filename="../../Command.cpp" line="1424"/>
       <source>Fill up holes</source>
       <translation>Zapolni luknje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1799"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>Mesh merge</source>
       <translation>Združi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1842"/>
+      <location filename="../../Command.cpp" line="1618"/>
       <source>Mesh split</source>
       <translation>Razcepi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../Command.cpp" line="1670"/>
       <source>Mesh scale</source>
       <translation>Velikost ploskovja</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="149"/>
+      <location filename="../../DlgDecimating.cpp" line="153"/>
       <source>Mesh Decimating</source>
       <translation>Desetkanje ploskovja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="481"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
       <source>Harmonize normals</source>
       <translation>Uskladi normale</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="584"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
       <source>Remove non-manifolds</source>
       <translation>Odstrani nemnogoterosti</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="683"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
       <source>Fix indices</source>
       <translation>Popravi kazala</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>Remove degenerated faces</source>
       <translation>Odstrani izrojene ploskve</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="816"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="875"/>
       <source>Remove duplicated faces</source>
       <translation>Odstrani podvojene ploskve</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="881"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="940"/>
       <source>Remove duplicated points</source>
       <translation>Odstrani podvojene točke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="965"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1021"/>
       <source>Fix self-intersections</source>
       <translation>Popravi samosečnosti</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1052"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1097"/>
       <source>Remove folds</source>
       <translation>Odstrani pregibe</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1092"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1138"/>
       <source>Repair mesh</source>
       <translation>Popravi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <location filename="../../RemoveComponents.cpp" line="159"/>
       <source>Delete selection</source>
       <translation>Izbriši izbor</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="919"/>
-      <location filename="../../ViewProvider.cpp" line="974"/>
+      <location filename="../../ViewProvider.cpp" line="916"/>
+      <location filename="../../ViewProvider.cpp" line="971"/>
       <source>Cut</source>
       <translation>Izreži</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="928"/>
-      <location filename="../../ViewProvider.cpp" line="1035"/>
+      <location filename="../../ViewProvider.cpp" line="925"/>
+      <location filename="../../ViewProvider.cpp" line="1032"/>
       <source>Trim</source>
       <translation>Prireži</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1112"/>
+      <location filename="../../ViewProvider.cpp" line="1109"/>
       <source>Split</source>
       <translation>Razdeli</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1176"/>
+      <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Segment</source>
       <translation>Odsek</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1761"/>
+      <location filename="../../ViewProvider.cpp" line="1719"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1868"/>
+      <location filename="../../ViewProvider.cpp" line="1826"/>
       <source>Fill hole</source>
       <translation>Zapolni luknjo</translation>
     </message>
@@ -920,7 +838,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="93"/>
+      <location filename="../../DlgDecimating.cpp" line="96"/>
       <source>Absolute number</source>
       <translation>Neodnosno število</translation>
     </message>
@@ -930,7 +848,7 @@
       <translation>Dopustno odstopanje</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="87"/>
+      <location filename="../../DlgDecimating.cpp" line="90"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>Neodnosno število (Največ: %1)</translation>
     </message>
@@ -1062,180 +980,166 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="148"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="147"/>
       <source>Settings...</source>
       <translation>Nastavitve...</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="184"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="345"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="256"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="417"/>
       <source>No selection</source>
       <translation>Brez izbora</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="372"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="373"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="374"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="375"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="376"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="377"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="378"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="379"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="380"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="381"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="382"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="445"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="446"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="447"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="449"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <source>No information</source>
       <translation>Ni podatkov</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
-      <source>Flipped normals found</source>
-      <translation>Najdene obrnjene normale</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="488"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
       <source>Orientation</source>
       <translation>Usmerjenost</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="449"/>
-      <source>Check failed due to folds on the surface.
-Please run the command to repair folds first</source>
-      <translation>Preverjanje ni uspelo zaradi pregibov na površju.
-Najprej zaženite ukaz za odpravljaje pregibov</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="457"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="516"/>
       <source>No flipped normals</source>
       <translation>Ni obrnjenih normal</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="463"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="522"/>
       <source>%1 flipped normals</source>
       <translation>%1 obrnjenih normal</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="543"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
       <source>No non-manifolds</source>
       <translation>Ni nemnogoternosti</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="550"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="609"/>
       <source>%1 non-manifolds</source>
       <translation>%1 nemnogoternosti</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="597"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Non-manifolds</source>
       <translation>Nemnogoterosti</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Nemnogoternosti ni mogoče odstraniti</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="638"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="697"/>
       <source>Invalid face indices</source>
       <translation>Neveljavna kazala ploskve</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="645"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="704"/>
       <source>Invalid point indices</source>
       <translation>Neveljavna kazala točke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="652"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="711"/>
       <source>Multiple point indices</source>
       <translation>Večkratna kazala točke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>Invalid neighbour indices</source>
       <translation>Neveljavna sosednja kazala</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
       <source>No invalid indices</source>
       <translation>Ni neveljavnih kazal</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="690"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
       <source>Indices</source>
       <translation>Kazala</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="784"/>
       <source>No degenerations</source>
       <translation>Ni popačenj</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="731"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="790"/>
       <source>%1 degenerated faces</source>
       <translation>%1 izrojenih ploskev</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="756"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="815"/>
       <source>Degenerations</source>
       <translation>Popačenja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="791"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="850"/>
       <source>No duplicated faces</source>
       <translation>Ni podvojenih ploskev</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="797"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="856"/>
       <source>%1 duplicated faces</source>
       <translation>%1 podvojenih ploskev</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="823"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="882"/>
       <source>Duplicated faces</source>
       <translation>Podvojene ploskve</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="857"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="916"/>
       <source>No duplicated points</source>
       <translation>Ni podvojenih točk</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="863"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="888"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="922"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="947"/>
       <source>Duplicated points</source>
       <translation>Podvojene točke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="929"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
       <source>No self-intersections</source>
       <translation>Ni samosečišč</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="935"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="973"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="994"/>
       <source>Self-intersections</source>
       <translation>Samosečišča</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1017"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
       <source>No folds on surface</source>
       <translation>Ni pregibov na površju</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1033"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1078"/>
       <source>%1 folds on surface</source>
       <translation>%1 pregibov na površju</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1059"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1104"/>
       <source>Folds</source>
       <translation>Pregibi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1191"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1194"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1237"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1240"/>
       <source>Mesh repair</source>
       <translation>Popravilo ploskovja</translation>
     </message>
@@ -1380,26 +1284,21 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Zapri</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="828"/>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
+      <source>Close</source>
+      <translation>Zapri</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="209"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="217"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="219"/>
       <source>Create %1</source>
       <translation>Ustvari %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
       <source>No active document</source>
       <translation>Ni dejavnega dokumenta</translation>
     </message>
@@ -1642,48 +1541,48 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="95"/>
       <source>Automatic</source>
       <translation>Samodejno</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="96"/>
       <source>Adaptive</source>
       <translation>Prilagodljivo</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Frontal</source>
       <translation>Čelno</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="108"/>
+      <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Frontal Quad</source>
       <translation>Čelni četverokotnik</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="109"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Parallelograms</source>
       <translation>Paralelogrami</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="180"/>
-      <location filename="../../RemeshGmsh.cpp" line="236"/>
+      <location filename="../../RemeshGmsh.cpp" line="189"/>
+      <location filename="../../RemeshGmsh.cpp" line="245"/>
       <source>Time:</source>
       <translation>Čas:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="225"/>
+      <location filename="../../RemeshGmsh.cpp" line="234"/>
       <source>Running gmsh...</source>
       <translation>Zaganjanje Gmsh-ja ...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="247"/>
+      <location filename="../../RemeshGmsh.cpp" line="256"/>
       <source>Failed to start</source>
       <translation>Zagon spodletel</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="254"/>
+      <location filename="../../RemeshGmsh.cpp" line="263"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
@@ -1757,12 +1656,12 @@ s Phongovim senčenjem doseže gladkejši videz.
       <translation>Izračunaj</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="285"/>
+      <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
       <translation>Brez izbora</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="285"/>
+      <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Pred prilagajanjem površja izberite območje.</translation>
     </message>
@@ -2021,29 +1920,29 @@ s Phongovim senčenjem doseže gladkejši videz.
       <translation>Krogla</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="337"/>
-      <location filename="../../SegmentationBestFit.cpp" line="363"/>
+      <location filename="../../SegmentationBestFit.cpp" line="352"/>
+      <location filename="../../SegmentationBestFit.cpp" line="378"/>
       <source>Base</source>
       <translation>Osnova</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="338"/>
+      <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
       <translation>Običajno</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="364"/>
+      <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
       <translation>Os</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="365"/>
-      <location filename="../../SegmentationBestFit.cpp" line="392"/>
+      <location filename="../../SegmentationBestFit.cpp" line="380"/>
+      <location filename="../../SegmentationBestFit.cpp" line="407"/>
       <source>Radius</source>
       <translation>Polmer</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="391"/>
+      <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
       <translation>Središče</translation>
     </message>
@@ -2077,12 +1976,12 @@ s Phongovim senčenjem doseže gladkejši videz.
       <translation>Upoštevaj samo trikotnike, katerih normale kažejo proti zaslonu</translation>
     </message>
     <message>
-      <location filename="../../Selection.cpp" line="70"/>
+      <location filename="../../Selection.cpp" line="83"/>
       <source>Use a brush tool to select the area</source>
       <translation>Uporabite orodje čopiča za izbiro področja</translation>
     </message>
     <message>
-      <location filename="../../Selection.cpp" line="73"/>
+      <location filename="../../Selection.cpp" line="86"/>
       <source>Clears completely the selected area</source>
       <translation>Popolnoma počisti izbrano področje</translation>
     </message>
@@ -2090,14 +1989,14 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="174"/>
-      <location filename="../../RemoveComponents.cpp" line="231"/>
+      <location filename="../../RemoveComponents.cpp" line="203"/>
+      <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="175"/>
-      <location filename="../../RemoveComponents.cpp" line="232"/>
+      <location filename="../../RemoveComponents.cpp" line="204"/>
+      <location filename="../../RemoveComponents.cpp" line="261"/>
       <source>Invert</source>
       <translation>Obrni</translation>
     </message>
@@ -2144,7 +2043,7 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1577"/>
+      <location filename="../../Command.cpp" line="1353"/>
       <source>Boundings of %1:</source>
       <translation>Meje %1:</translation>
     </message>
@@ -2152,26 +2051,26 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
-      <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="339"/>
-      <location filename="../../Command.cpp" line="344"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="133"/>
+      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="280"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Med izvajanjem OpenSCADa je prišlo do neznane napake.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <location filename="../../Command.cpp" line="345"/>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="210"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>V vašem sistemu ni mogoče najti OpenSCADa.
@@ -2181,7 +2080,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1237"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1283"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Ovrednoti in popravi ploskovje</translation>
     </message>
@@ -2194,175 +2093,175 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>Uvoz - Izvoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>All Mesh Files</source>
       <translation>Vse datoteke ploskovij</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
-      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Binary STL</source>
       <translation>Dvojiški STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
-      <location filename="../../Command.cpp" line="506"/>
-      <location filename="../../Command.cpp" line="507"/>
+      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Binary Mesh</source>
       <translation>Dvojiško ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>Alias Mesh</source>
       <translation>Vzdevek mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Object File Format</source>
       <translation>Zapis datoteke predmeta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Inventor V2.1 ASCII</source>
       <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="381"/>
       <source>Stanford Polygon</source>
       <translation>Mnogokotnik Stanford</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>NASTRAN</source>
       <translation>NASTRAN</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <location filename="../../Command.cpp" line="523"/>
+      <location filename="../../Command.cpp" line="321"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>All Files</source>
       <translation>Vse datoteke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="325"/>
       <source>Import mesh</source>
       <translation>Uvozi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Simple Model Format</source>
       <translation>Oblika preprostega modela</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="377"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="378"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D razširljiv 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="379"/>
       <source>Compressed X3D</source>
       <translation>Stisnjen X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>WebGL/X3D</source>
       <translation>WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="382"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="383"/>
       <source>Compressed VRML 2.0</source>
       <translation>Stisnjen VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="384"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="385"/>
       <source>Python module def</source>
       <translation>Določilo modula Python</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="521"/>
+      <location filename="../../Command.cpp" line="386"/>
       <source>Asymptote Format</source>
       <translation>Oblika približevalnice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="522"/>
+      <location filename="../../Command.cpp" line="387"/>
       <source>3D Manufacturing Format</source>
       <translation>Zapis za 3D izdelavo (3MF)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Export mesh</source>
       <translation>Izvozi ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Meshing Tolerance</source>
       <translation>Dopustna odstopanja ploskovjenja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Vnesite dopustno odstopanju pri ploskovjenju geometrije:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Ploskovje '%1' ni telo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Ploskovje '%1' je telo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1190"/>
       <source>Solid Mesh</source>
       <translation>Telesno ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1582"/>
+      <location filename="../../Command.cpp" line="1358"/>
       <source>Boundings</source>
       <translation>Meje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1420"/>
       <source>Fill holes</source>
       <translation>Zapolni luknje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>Zapolni luknje z največjim številom robov:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1889"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Scaling</source>
       <translation>Skaliranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1890"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>Enter scaling factor:</source>
       <translation>Vnesite skalirni faktor:</translation>
     </message>
@@ -2372,53 +2271,53 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>[točk: %1, robov: %2, ploskev: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="779"/>
+      <location filename="../../ViewProvider.cpp" line="776"/>
       <source>Display components</source>
       <translation>Prikaži sestavine</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="785"/>
+      <location filename="../../ViewProvider.cpp" line="782"/>
       <source>Display segments</source>
       <translation>Prikaži odseke</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="791"/>
+      <location filename="../../ViewProvider.cpp" line="788"/>
       <source>Display colors</source>
       <translation>Barve prikaza</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1612"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="497"/>
+      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Zapusti podatkovni način</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1671"/>
+      <location filename="../../ViewProvider.cpp" line="1629"/>
       <source>Index: %1</source>
       <translation>Kazalo: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1694"/>
+      <location filename="../../ViewProvider.cpp" line="1652"/>
       <source>Leave hole-filling mode</source>
       <translation>Zapusti način zapolnjevanja lukenj</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1740"/>
+      <location filename="../../ViewProvider.cpp" line="1698"/>
       <source>Leave removal mode</source>
       <translation>Zapusti odstranjevalni način</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1741"/>
+      <location filename="../../ViewProvider.cpp" line="1699"/>
       <source>Delete selected faces</source>
       <translation>Izbriši izbrane ploskve</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1742"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Clear selected faces</source>
       <translation>Počisti izbrane ploskve</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="494"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="495"/>
       <source>Annotation</source>
       <translation>Opis</translation>
     </message>

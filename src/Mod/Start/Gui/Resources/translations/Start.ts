@@ -391,17 +391,27 @@ By using &quot;;;&quot; to separate paths, you can add several folders here</sou
     </message>
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
-        <source>The &lt;a href=&quot;http://forum.freecadweb.org&quot;&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href=&quot;https://forum.freecadweb.org/viewforum.php?f=3&quot;&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+        <source>The &lt;a href=&quot;http://forum.freecad.org&quot;&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href=&quot;https://forum.freecad.org/viewforum.php?f=3&quot;&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
-        <source>If it is the first time you are posting on the forum, be sure to &lt;a href=&quot;https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264&quot;&gt;read the guidelines&lt;/a&gt; first!</source>
+        <source>If it is the first time you are posting on the forum, be sure to &lt;a href=&quot;https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264&quot;&gt;read the guidelines&lt;/a&gt; first!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
-        <source>FreeCAD also maintains a public &lt;a href=&quot;https://www.freecadweb.org/tracker&quot;&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href=&quot;https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236&quot;&gt;bug submission guide&lt;/a&gt; before posting.</source>
+        <source>FreeCAD also maintains a public &lt;a href=&quot;https://www.freecad.org/tracker&quot;&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href=&quot;https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236&quot;&gt;bug submission guide&lt;/a&gt; before posting.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+        <source>Below are the latest changes added to the &lt;a href=&quot;http://github.com/FreeCAD/FreeCAD/&quot;&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href=&quot;https://www.freecad.org/wiki/Downloads&quot;&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
+        <source>The latest posts on the &lt;a href=&quot;https://forum.freecad.org&quot;&gt;FreeCAD forum&lt;/a&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -427,11 +437,6 @@ By using &quot;;;&quot; to separate paths, you can add several folders here</sou
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
         <source>Recent commits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
-        <source>Below are the latest changes added to the &lt;a href=&quot;http://github.com/FreeCAD/FreeCAD/&quot;&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href=&quot;https://www.freecadweb.org/wiki/Downloads&quot;&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -467,11 +472,6 @@ By using &quot;;;&quot; to separate paths, you can add several folders here</sou
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
         <source>Forum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
-        <source>The latest posts on the &lt;a href=&quot;https://forum.freecadweb.org&quot;&gt;FreeCAD forum&lt;/a&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

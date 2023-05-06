@@ -38,7 +38,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="782"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="783"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="857"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="858"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="970"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="971"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="775"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="776"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../Command.cpp" line="437"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="438"/>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="679"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="680"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="528"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="529"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="../../Command.cpp" line="1400"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1401"/>
@@ -147,7 +147,7 @@
     <message>
       <location filename="../../Command.cpp" line="1035"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1036"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="568"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="569"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="1099"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1100"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1136"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1137"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1221"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../Command.cpp" line="621"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="622"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1126"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1127"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="389"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="390"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="204"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="205"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1244"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1245"/>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../Command.cpp" line="748"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="258"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="259"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="102"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="103"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1344"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1345"/>
@@ -390,7 +390,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1674"/>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1776"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1777"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1075"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1076"/>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="897"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="898"/>
@@ -464,7 +464,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1039"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1040"/>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="964"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="965"/>
@@ -504,7 +504,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2029"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2030"/>
@@ -522,7 +522,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="748"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="749"/>
@@ -540,7 +540,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="226"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="227"/>
@@ -560,7 +560,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="260"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="261"/>
@@ -578,7 +578,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1416"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1417"/>
@@ -596,7 +596,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1772"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1773"/>
@@ -614,7 +614,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1227"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1228"/>
@@ -634,7 +634,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1929"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1930"/>
@@ -654,7 +654,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1567"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1568"/>
@@ -674,7 +674,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2129"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2130"/>
@@ -692,7 +692,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1382"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1383"/>
@@ -712,7 +712,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1736"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1737"/>
@@ -732,7 +732,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1292"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1293"/>
@@ -752,7 +752,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1996"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1997"/>
@@ -772,7 +772,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1639"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1640"/>
@@ -792,7 +792,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2205"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2206"/>
@@ -810,7 +810,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="424"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="425"/>
@@ -830,7 +830,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1063"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1064"/>
@@ -848,7 +848,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="901"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
@@ -868,7 +868,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="964"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="965"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1028"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1029"/>
@@ -912,7 +912,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1603"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1604"/>
@@ -932,7 +932,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="152"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="153"/>
@@ -952,7 +952,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="391"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="392"/>
@@ -972,7 +972,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="457"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="458"/>
@@ -990,7 +990,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="124"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="125"/>
@@ -1010,7 +1010,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="248"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="249"/>
@@ -1028,7 +1028,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="157"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="158"/>
@@ -1048,7 +1048,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1300"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1301"/>
@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1231"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1232"/>
@@ -1086,7 +1086,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1265"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1266"/>
@@ -1106,7 +1106,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1408"/>
@@ -1124,7 +1124,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="748"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="749"/>
@@ -1142,7 +1142,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="584"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="585"/>
@@ -1162,7 +1162,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="713"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="714"/>
@@ -1182,7 +1182,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="646"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="647"/>
@@ -1202,7 +1202,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1451"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1452"/>
@@ -1220,7 +1220,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="215"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="216"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="714"/>
@@ -1256,7 +1256,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1638"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1639"/>
@@ -1276,7 +1276,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="538"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="539"/>
@@ -1296,7 +1296,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="434"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="435"/>
@@ -1316,7 +1316,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="486"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="487"/>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="382"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="383"/>
@@ -1356,7 +1356,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="573"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="574"/>
@@ -1374,7 +1374,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="808"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="809"/>
@@ -1392,7 +1392,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="952"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="953"/>
@@ -1415,7 +1415,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="671"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="672"/>
@@ -1428,7 +1428,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="169"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="170"/>
@@ -1441,7 +1441,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="71"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="72"/>
@@ -1454,7 +1454,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="483"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="484"/>
@@ -1467,7 +1467,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1050"/>
@@ -1480,7 +1480,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="237"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="238"/>
@@ -1509,7 +1509,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1257"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1258"/>
@@ -1522,7 +1522,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="90"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="91"/>
@@ -1535,7 +1535,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="384"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="385"/>
@@ -1548,7 +1548,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="873"/>
@@ -1561,7 +1561,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="450"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="451"/>
@@ -1574,7 +1574,7 @@
     <message>
       <location filename="../../Command.cpp" line="96"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="97"/>
@@ -1587,7 +1587,7 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
@@ -1610,7 +1610,7 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -1623,7 +1623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1630"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1631"/>
@@ -1636,7 +1636,7 @@
     <message>
       <location filename="../../Command.cpp" line="796"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>
@@ -1654,7 +1654,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="489"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="490"/>
@@ -1667,7 +1667,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="132"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="133"/>
@@ -1680,7 +1680,7 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
@@ -1693,7 +1693,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="152"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="153"/>
@@ -1706,7 +1706,7 @@
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="468"/>
@@ -1729,7 +1729,7 @@
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="560"/>
@@ -1742,7 +1742,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1323"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1324"/>
@@ -1755,7 +1755,7 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -1773,7 +1773,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="237"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="238"/>
@@ -1786,7 +1786,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="357"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="358"/>
@@ -1799,7 +1799,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
@@ -1832,7 +1832,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
@@ -1845,7 +1845,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="298"/>
@@ -1858,7 +1858,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1452"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1453"/>
@@ -1876,7 +1876,7 @@
     <message>
       <location filename="../../Command.cpp" line="1293"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1294"/>
@@ -1894,7 +1894,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="289"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="290"/>
@@ -1908,7 +1908,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="582"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="583"/>
@@ -1921,7 +1921,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1162"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1163"/>
@@ -1934,7 +1934,7 @@
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="298"/>
@@ -1952,7 +1952,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1388"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1389"/>
@@ -2014,8 +2014,8 @@
       <translation>Ustvari preglednični pogled</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="716"/>
       <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../MDIViewPage.cpp" line="716"/>
       <source>Save page to dxf</source>
       <translation>Shrani stran kot DXF</translation>
     </message>
@@ -2603,16 +2603,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="316"/>
-      <location filename="../../CommandAnnotate.cpp" line="415"/>
-      <location filename="../../CommandAnnotate.cpp" line="1152"/>
-      <location filename="../../CommandAnnotate.cpp" line="1160"/>
-      <location filename="../../CommandAnnotate.cpp" line="1207"/>
-      <location filename="../../CommandAnnotate.cpp" line="1349"/>
-      <location filename="../../CommandAnnotate.cpp" line="1356"/>
-      <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="375"/>
       <location filename="../../Command.cpp" line="601"/>
       <location filename="../../Command.cpp" line="718"/>
@@ -2630,6 +2620,16 @@
       <location filename="../../Command.cpp" line="1429"/>
       <location filename="../../Command.cpp" line="1435"/>
       <location filename="../../Command.cpp" line="1478"/>
+      <location filename="../../CommandAnnotate.cpp" line="316"/>
+      <location filename="../../CommandAnnotate.cpp" line="415"/>
+      <location filename="../../CommandAnnotate.cpp" line="1152"/>
+      <location filename="../../CommandAnnotate.cpp" line="1160"/>
+      <location filename="../../CommandAnnotate.cpp" line="1207"/>
+      <location filename="../../CommandAnnotate.cpp" line="1349"/>
+      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1420"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
@@ -2661,9 +2661,10 @@
       <translation>V izboru ni nobenega prereznega predmeta</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="345"/>
-      <location filename="../../CommandDecorate.cpp" line="352"/>
-      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="951"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="978"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="292"/>
       <location filename="../../CommandCreateDims.cpp" line="418"/>
@@ -2675,33 +2676,33 @@
       <location filename="../../CommandCreateDims.cpp" line="1437"/>
       <location filename="../../CommandCreateDims.cpp" line="1445"/>
       <location filename="../../CommandCreateDims.cpp" line="1454"/>
-      <location filename="../../Command.cpp" line="951"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="966"/>
-      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../CommandDecorate.cpp" line="345"/>
+      <location filename="../../CommandDecorate.cpp" line="352"/>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Incorrect selection</source>
       <translation>Nepravilen izbor</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <source>Select an object first</source>
       <translation>Izberite najprej predmet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <source>Too many objects selected</source>
       <translation>Izbranih je preveč predmetov</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <source>Create a page first.</source>
       <translation>Najprej ustvarite stran.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="979"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="293"/>
       <location filename="../../CommandCreateDims.cpp" line="419"/>
@@ -2710,7 +2711,6 @@
       <location filename="../../CommandCreateDims.cpp" line="714"/>
       <location filename="../../CommandCreateDims.cpp" line="810"/>
       <location filename="../../CommandCreateDims.cpp" line="1085"/>
-      <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
       <translation>V izboru ni pogleda na del.</translation>
     </message>
@@ -2822,8 +2822,6 @@
       <translation>Izbrani rob je B-zlepek. Polmer bo približen. Nadaljevanje?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="372"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="313"/>
@@ -2843,10 +2841,12 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="372"/>
+      <location filename="../../TaskDimension.cpp" line="400"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Nepravilna Izbira</translation>
     </message>
@@ -2974,6 +2974,9 @@
       <translation>Izberite dva točkovna predmeta in en pogled. (2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="634"/>
       <location filename="../../CommandAnnotate.cpp" line="104"/>
       <location filename="../../CommandAnnotate.cpp" line="165"/>
       <location filename="../../CommandAnnotate.cpp" line="217"/>
@@ -2999,11 +3002,6 @@
       <location filename="../../CommandCreateDims.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1177"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="262"/>
       <location filename="../../CommandExtensionDims.cpp" line="471"/>
       <location filename="../../CommandExtensionDims.cpp" line="763"/>
@@ -3011,18 +3009,23 @@
       <location filename="../../CommandExtensionDims.cpp" line="1430"/>
       <location filename="../../CommandExtensionDims.cpp" line="1788"/>
       <location filename="../../CommandExtensionDims.cpp" line="2043"/>
-      <location filename="../../Command.cpp" line="479"/>
-      <location filename="../../Command.cpp" line="572"/>
-      <location filename="../../Command.cpp" line="634"/>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1079"/>
       <location filename="../../CommandExtensionPack.cpp" line="1315"/>
       <location filename="../../CommandExtensionPack.cpp" line="1688"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Opravilo je v teku</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="635"/>
       <location filename="../../CommandAnnotate.cpp" line="105"/>
       <location filename="../../CommandAnnotate.cpp" line="166"/>
       <location filename="../../CommandAnnotate.cpp" line="218"/>
@@ -3048,11 +3051,6 @@
       <location filename="../../CommandCreateDims.cpp" line="967"/>
       <location filename="../../CommandCreateDims.cpp" line="1065"/>
       <location filename="../../CommandCreateDims.cpp" line="1178"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="263"/>
       <location filename="../../CommandExtensionDims.cpp" line="472"/>
       <location filename="../../CommandExtensionDims.cpp" line="764"/>
@@ -3060,14 +3058,16 @@
       <location filename="../../CommandExtensionDims.cpp" line="1431"/>
       <location filename="../../CommandExtensionDims.cpp" line="1789"/>
       <location filename="../../CommandExtensionDims.cpp" line="2044"/>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="635"/>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="1080"/>
       <location filename="../../CommandExtensionPack.cpp" line="1316"/>
       <location filename="../../CommandExtensionPack.cpp" line="1689"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zapri dejavno pogovorno okno z opravili in poskusi ponovno.</translation>
     </message>
@@ -3317,8 +3317,8 @@
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="211"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ali ste prepričani da želite nadaljevati?</translation>
     </message>
@@ -3353,9 +3353,9 @@
       <translation>Ustvarjalnik obogatenega besedila</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="310"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
       <source>Rich text editor</source>
       <translation>Urejevalnik obogatenega besedila</translation>
     </message>
@@ -3473,15 +3473,15 @@
       <translation>Uredi podrobni pogled</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="120"/>
       <location filename="../../ViewProviderBalloon.cpp" line="85"/>
+      <location filename="../../ViewProviderDimension.cpp" line="120"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="563"/>
       <source>TechDraw PosHorizChainDimension</source>
-      <translation>TehRisba Položaj vodoravnih zaporednih kot</translation>
+      <translation>TehRisbe (TechDraw) položaj vodoravnih zaporednih kot</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="564"/>
@@ -3492,7 +3492,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="624"/>
       <source>TechDraw PosVertChainDimension</source>
-      <translation>TehRisba Položaj navpični zaporednih kot</translation>
+      <translation>TehRisbe (TechDraw) položaj navpični zaporednih kot</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="625"/>
@@ -3503,7 +3503,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="686"/>
       <source>TechDraw PosObliqueChainDimension</source>
-      <translation>TehRisba Položaj oiševnik zaporednih kot</translation>
+      <translation>TehRisbe (TechDraw) položaj poševnih zaporednih kot</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="687"/>
@@ -3514,17 +3514,17 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="872"/>
       <source>TechDraw CascadeHorizDimension</source>
-      <translation>TehRisbe Stopniči vodoravne kote</translation>
+      <translation>TehRisbe (TechDraw) stopniči vodoravne kote</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="938"/>
       <source>TechDraw CascadeVertDimension</source>
-      <translation>TehRisbe Stopniči navpične kote</translation>
+      <translation>TehRisbe (TechDraw) stopniči navpične kote</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1005"/>
       <source>TechDraw CascadeObliqueDimension</source>
-      <translation>TehRisbe Stopniči poševne kote</translation>
+      <translation>TehRisbe (TechDraw) stopniči poševne kote</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
@@ -3554,7 +3554,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1468"/>
       <source>TechDraw Position Section View</source>
-      <translation>TehRisba Položaj prereznega pogleda</translation>
+      <translation>TehRisbe (TechDraw) položaj prereznega pogleda</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1809"/>
@@ -3668,19 +3668,19 @@ it has a weld symbol that would become broken.</source>
 oznako za varjenje, ki bi postala okvarjena.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="317"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="325"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="333"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="317"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="325"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="333"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Odvisnosti predmetov</translation>
     </message>
@@ -3690,20 +3690,20 @@ oznako za varjenje, ki bi postala okvarjena.</translation>
       <translation>Sidrnega pogleda skupine preslikav ne morete izbrisati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="314"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="314"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Tega pogleda ne morete izbrisati, ker vsebuje prerezni pogled, ki bi postal okvarjen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Tega pogleda ne morete izbrisati, ker vsebuje podrobni pogled, ki bi postal okvarjen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="330"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="330"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Tega pogleda ne morete izbrisati, ker vsebuje opisnično črto, ki bi postala okvarjena.</translation>
     </message>
@@ -4158,6 +4158,11 @@ Spreminjajte le, če veste, kaj počnete!</translation>
       <translation>Plosko</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="533"/>
+      <source>Use New Face Finder Algorithm</source>
+      <translation type="unfinished">Use New Face Finder Algorithm</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="213"/>
       <source>Max SVG Hatch Tiles</source>
       <translation>Največ SVG opločnic črtkanja</translation>
@@ -4199,19 +4204,14 @@ uporabi pri črtkanju ploskve z vzorcem PAT</translation>
       <translation>Če je označeno, bo FreeCAD upošteval novi algoritem za iskanje ploskev. Če ni označeno, bo FreeCAD uporabil izvirni iskalnik ploskev.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="533"/>
-      <source>Use New Face Finder</source>
-      <translation>Uporabi novi iskalnik ploskev</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="567"/>
       <source>Overlap Edges Scrub Passes</source>
-      <translation type="unfinished">Overlap Edges Scrub Passes</translation>
+      <translation>Število preletov trebljenja robov</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Število poskusov odstranjevanja prekrivajočih robov, ki jih izpostavi algoritem Odstranjevanje skritih črt. Vrednost 0 pomeni nič čiščenja, 1 pomeni enkraten prelet in 2, da se izvede še drugi prelet. Vrednosti večje od 2 navadno niso plodovite. Vsak dodaten prelet podaljša čas obdelovanje risbe.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="607"/>
@@ -4761,12 +4761,12 @@ uporabi pri črtkanju ploskve z vzorcem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upravlja velikost odmika pomožne kotirne črte od kotirane točke pri ISO kotiranju. Količnik * debelina črte je razmik. Običajno se uporablja brez odmika, če pa ta je, je priporočena vrednost 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="546"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upravlja velikost odmika pomožne kotirne črte od kotirane točke pri ASME kotiranju. Količnik * debelina črte je razmik. Običajno se uporablja brez odmika, če pa ta je, je priporočena vrednost 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="570"/>
@@ -4776,12 +4776,12 @@ uporabi pri črtkanju ploskve z vzorcem PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
       <source>Line Spacing - ISO</source>
-      <translation type="unfinished">Line Spacing - ISO</translation>
+      <translation>Besedilni odmik - ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="580"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upravlja velikost odmika med kotirno črto in besedilom kote. Vrednost*debelina črte je besedilni odmik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
@@ -6032,312 +6032,312 @@ Ali želite nadaljevati?</translation>
   <context>
     <name>TechDrawGui::TaskCustomizeFormat</name>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="14"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="26"/>
       <source>Format Symbols</source>
       <translation>Oblika znakov</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="20"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
       <source>GD&amp;T</source>
       <translation>Velikost in odstopki</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="29"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="41"/>
       <source>Straightness</source>
       <translation>Premost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="39"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="51"/>
       <source>Flatness</source>
       <translation>Ravnost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="49"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="61"/>
       <source>Circularity</source>
       <translation>Okroglost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="59"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="71"/>
       <source>Cylindricity</source>
       <translation>Valjnost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="69"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="81"/>
       <source>Parallelism</source>
       <translation>Vzporednost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="79"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="91"/>
       <source>Perpendicularity</source>
       <translation>Pravokotnost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="89"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="101"/>
       <source>Angularity</source>
       <translation>Kotnost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="104"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="116"/>
       <source>Profile of a line</source>
       <translation>Presek črte</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="114"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="126"/>
       <source>Profile of a surface</source>
       <translation>Presek površja</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="124"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="136"/>
       <source>Circular runout</source>
       <translation>Krožno opletanje</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="134"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="146"/>
       <source>Total runout</source>
       <translation>Skupno opletanje</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="144"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="156"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="154"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="166"/>
       <source>Concentricity</source>
       <translation>Sosrediščnost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="164"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Symmetry</source>
       <translation>Somernost</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="176"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="188"/>
       <source>Modifiers</source>
       <translation>Spremenilniki</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="190"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="202"/>
       <source>derived geometry element</source>
       <translation>izpeljana geometrijska prvina</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="205"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="217"/>
       <source>Minimax (Tschebyschew)</source>
       <translation>Najmanši največji (Čebišov)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="220"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="232"/>
       <source>Hull condition</source>
       <translation type="unfinished">Hull condition</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="235"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="247"/>
       <source>Free state</source>
       <translation type="unfinished">Free state</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="250"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="262"/>
       <source>Least square geometry element</source>
       <translation type="unfinished">Least square geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="265"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="277"/>
       <source>Least material condition (LMC)</source>
       <translation type="unfinished">Least material condition (LMC)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="280"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="292"/>
       <source>Maximum material condition (MMC)</source>
       <translation type="unfinished">Maximum material condition (MMC)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="295"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="307"/>
       <source>least inscribed geometry element</source>
       <translation type="unfinished">least inscribed geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="310"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="322"/>
       <source>Projected tolerance zone</source>
       <translation type="unfinished">Projected tolerance zone</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="325"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="337"/>
       <source>Reciprocity condition</source>
       <translation type="unfinished">Reciprocity condition</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="340"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="352"/>
       <source>Regardless of feature size (RFS)</source>
       <translation type="unfinished">Regardless of feature size (RFS)</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="355"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="367"/>
       <source>Tangent plane</source>
       <translation type="unfinished">Tangent plane</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="370"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="382"/>
       <source>Unequal Bilateral</source>
       <translation type="unfinished">Unequal Bilateral</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="385"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="397"/>
       <source>most inscribed geometry element</source>
       <translation type="unfinished">most inscribed geometry element</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="397"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="409"/>
       <source>Radius &amp; Diameter</source>
       <translation type="unfinished">Radius &amp; Diameter</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="406"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="418"/>
       <source>Radius</source>
       <translation>Polmer</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="416"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="428"/>
       <source>Diameter</source>
       <translation>Premer</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="426"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="438"/>
       <source>Radius of sphere</source>
       <translation type="unfinished">Radius of sphere</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="436"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="448"/>
       <source>Diameter of sphere</source>
       <translation type="unfinished">Diameter of sphere</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="446"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="458"/>
       <source>Square</source>
       <translation>Kvadrat</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="458"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="470"/>
       <source>Angles</source>
       <translation type="unfinished">Angles</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="467"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="479"/>
       <source>Degree</source>
       <translation>Stopinje</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="477"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="489"/>
       <source>(Arc) Minute</source>
       <translation type="unfinished">(Arc) Minute</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="487"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="499"/>
       <source>(Arc) Second</source>
       <translation type="unfinished">(Arc) Second</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="497"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="509"/>
       <source>(Arc) Tertie</source>
       <translation type="unfinished">(Arc) Tertie</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="509"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="521"/>
       <source>Other</source>
       <translation>Drugo</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="521"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="533"/>
       <source>Taper</source>
       <translation>Koniči</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="531"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="543"/>
       <source>Slope</source>
       <translation>Naklon</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="541"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="553"/>
       <source>Counterbore</source>
       <translation>Valjno grezenje</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="551"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="563"/>
       <source>Countersink</source>
       <translation>Kotno grezenje</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="561"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="573"/>
       <source>Plus - Minus</source>
       <translation type="unfinished">Plus - Minus</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="571"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="583"/>
       <source>Centerline</source>
       <translation>Središčnica</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="581"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="593"/>
       <source>Left/right arrow</source>
       <translation type="unfinished">Left/right arrow</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="591"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="603"/>
       <source>Downward arrow</source>
       <translation type="unfinished">Downward arrow</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="601"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="613"/>
       <source>Multiplication sign</source>
       <translation type="unfinished">Multiplication sign</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="613"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="625"/>
       <source>Greek Letters</source>
       <translation type="unfinished">Greek Letters</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="622"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="634"/>
       <source>Capital delta</source>
       <translation type="unfinished">Capital delta</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="632"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="644"/>
       <source>Capital sigma</source>
       <translation type="unfinished">Capital sigma</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="642"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="654"/>
       <source>Capital omega</source>
       <translation type="unfinished">Capital omega</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="652"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="664"/>
       <source>Small mu</source>
       <translation type="unfinished">Small mu</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="662"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="674"/>
       <source>Small sigma</source>
       <translation type="unfinished">Small sigma</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="672"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="684"/>
       <source>Small phi</source>
       <translation type="unfinished">Small phi</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="682"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="694"/>
       <source>Small omega</source>
       <translation type="unfinished">Small omega</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="696"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format:</source>
       <translation type="unfinished">Format:</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="706"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="718"/>
       <source>Preview:</source>
       <translation>Predogled:</translation>
     </message>
@@ -7024,7 +7024,7 @@ Izberete lahko še druge točke, da dobite črtne odseke.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="26"/>
       <source>Line Decoration</source>
-      <translation>Olepšava črt</translation>
+      <translation>Videz črt</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="34"/>
@@ -8135,7 +8135,7 @@ s pomočjo podanih X/Y odmikov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>Razširitve: Središčnice/Navoji</translation>
     </message>
@@ -8162,50 +8162,70 @@ s pomočjo podanih X/Y odmikov</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="47"/>
-      <source>TechDraw Pages</source>
-      <translation>TehRisbe Strani</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
-      <source>TechDraw Views</source>
-      <translation>TehRisbe Pogledi</translation>
+      <source>TechDraw Attributes</source>
+      <translation>TehRisbe (TechDraw) značilke</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
-      <source>TechDraw Clips</source>
-      <translation>TehRisbe Izrezki</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="50"/>
-      <source>TechDraw Dimensions</source>
-      <translation>TehRisbe Kote</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="51"/>
-      <source>TechDraw Tool Attributes</source>
-      <translation>TehRisba Značilke orodja</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="52"/>
-      <source>TechDraw File Access</source>
-      <translation>TehRisbe Datotečni dostop</translation>
+      <source>TechDraw Centerlines</source>
+      <translation>TehRisbe (TechDraw) središčnice</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
-      <source>TechDraw Decoration</source>
-      <translation>TehRisbe Okrasitev</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>TechDraw Annotation</source>
-      <translation>TehRisbe Pripisi</translation>
+      <source>TechDraw Extend Dimensions</source>
+      <translation>TehRisbe (TechDraw) podaljšaj kote</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
+      <source>TechDraw Pages</source>
+      <translation>TehRisbe (TechDraw) strani</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="56"/>
+      <source>TechDraw Stacking</source>
+      <translation type="unfinished">TechDraw Stacking</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="58"/>
+      <source>TechDraw Views</source>
+      <translation>TehRisbe (TechDraw) pogledi</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="50"/>
+      <source>TechDraw Clips</source>
+      <translation>TehRisbe (TechDraw) izrezki</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="52"/>
+      <source>TechDraw Dimensions</source>
+      <translation>TehRisbe (TechDraw) kote</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="57"/>
+      <source>TechDraw Tool Attributes</source>
+      <translation>TehRisbe (TechDraw) značilke orodja</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>TechDraw File Access</source>
+      <translation>TehRisbe (TechDraw) datotečni dostop</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="51"/>
+      <source>TechDraw Decoration</source>
+      <translation>TehRisbe (TechDraw) podoba</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>TechDraw Annotation</source>
+      <translation>TehRisbe (TechDraw) pripisi</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Views</source>
       <translation>Pogledi</translation>
     </message>
@@ -8223,33 +8243,33 @@ s pomočjo podanih X/Y odmikov</translation>
       <translation>Premakni pogled na novo stran</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="48"/>
       <source>Move View to a different Page</source>
       <translation>Premakni pogled na drugo stran</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="79"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
       <source>Select View to move from list.</source>
       <translation>Pogled za prestavitev izberite s seznama.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="81"/>
       <source>Select View</source>
       <translation>Izberite pogled</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="102"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
       <source>Select From Page.</source>
       <translation>Izberite izhodiščno stran.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="104"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="127"/>
       <source>Select Page</source>
       <translation>Izberite stran</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="125"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
       <source>Select To Page.</source>
       <translation>Izberite ciljno stran.</translation>
     </message>
@@ -8267,38 +8287,38 @@ s pomočjo podanih X/Y odmikov</translation>
       <translation>Deli pogled še na drugo stran</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>Share View with another Page</source>
       <translation>Deli pogled z drugo stranjo</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="48"/>
       <source>View to share</source>
       <translation>Pogled za deljenje</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="79"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="80"/>
       <source>Select View to share from list.</source>
       <translation>Pogled za deljenje izberite s seznama.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="80"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="81"/>
       <source>Select View</source>
       <translation>Izberite pogled</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="102"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
       <source>Select From Page.</source>
       <translation>Izberite izhodiščno stran.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="104"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="128"/>
       <source>Select Page</source>
       <translation>Izberite stran</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="126"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
       <source>Select To Page.</source>
       <translation>Izberite ciljno stran.</translation>
     </message>
@@ -8379,7 +8399,7 @@ s pomočjo podanih X/Y odmikov</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1202"/>
       <source>TechDraw</source>
-      <translation>TehRisbe</translation>
+      <translation>TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1203"/>
@@ -8464,6 +8484,102 @@ s pomočjo podanih X/Y odmikov</translation>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="59"/>
       <source>Hole / Shaft Fit ISO 286</source>
       <translation>Prileganje izvrtine oz. gredi po ISO 286</translation>
+    </message>
+  </context>
+  <context>
+    <name>ArrowPropEnum</name>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="32"/>
+      <source>Filled Arrow</source>
+      <translation type="unfinished">Filled Arrow</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="33"/>
+      <source>Open Arrow</source>
+      <translation type="unfinished">Open Arrow</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
+      <source>Tick</source>
+      <translation>Kljukica</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="35"/>
+      <source>Dot</source>
+      <translation>Pika</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>
+      <source>Open Circle</source>
+      <translation type="unfinished">Open Circle</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="37"/>
+      <source>Fork</source>
+      <translation type="unfinished">Fork</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="38"/>
+      <source>Filled Triangle</source>
+      <translation type="unfinished">Filled Triangle</translation>
+    </message>
+    <message>
+      <location filename="../../../App/ArrowPropEnum.cpp" line="39"/>
+      <source>None</source>
+      <translation>Brez</translation>
+    </message>
+  </context>
+  <context>
+    <name>DrawProjGroupItem</name>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="44"/>
+      <source>Front</source>
+      <translation>Spredaj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="45"/>
+      <source>Left</source>
+      <translation>Levo</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="46"/>
+      <source>Right</source>
+      <translation>Desno</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="47"/>
+      <source>Rear</source>
+      <translation>Zadaj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="48"/>
+      <source>Top</source>
+      <translation>Zgoraj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="49"/>
+      <source>Bottom</source>
+      <translation>Spodaj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="50"/>
+      <source>FrontTopLeft</source>
+      <translation type="unfinished">FrontTopLeft</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="51"/>
+      <source>FrontTopRight</source>
+      <translation type="unfinished">FrontTopRight</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="52"/>
+      <source>FrontBottomLeft</source>
+      <translation type="unfinished">FrontBottomLeft</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DrawProjGroupItem.cpp" line="53"/>
+      <source>FrontBottomRight</source>
+      <translation type="unfinished">FrontBottomRight</translation>
     </message>
   </context>
 </TS>

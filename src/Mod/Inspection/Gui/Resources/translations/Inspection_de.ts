@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Get distance information</source>
-      <translation type="unfinished">Get distance information</translation>
+      <translation>Entfernungsangaben abrufen</translation>
     </message>
   </context>
   <context>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Suchdistanz</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
