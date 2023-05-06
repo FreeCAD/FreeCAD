@@ -76,7 +76,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>BoundBox</string>
+         <string>Bounding Box</string>
         </property>
        </widget>
       </item>

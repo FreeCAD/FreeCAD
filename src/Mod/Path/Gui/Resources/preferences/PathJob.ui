@@ -372,7 +372,7 @@
             </item>
             <item>
              <property name="text">
-              <string>Extend Model's Bound Box</string>
+              <string>Extend Model's Bounding Box</string>
              </property>
             </item>
            </widget>
