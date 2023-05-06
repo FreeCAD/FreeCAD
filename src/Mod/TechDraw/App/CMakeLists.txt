@@ -194,6 +194,8 @@ SET(Geometry_SRCS
     PropertyCenterLineList.h
     PropertyCosmeticEdgeList.cpp
     PropertyCosmeticEdgeList.h
+    PropertyCosmeticList.cpp
+    PropertyCosmeticList.h
     PropertyCosmeticVertexList.cpp
     PropertyCosmeticVertexList.h
     CosmeticExtension.cpp
