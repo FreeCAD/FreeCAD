@@ -399,7 +399,7 @@ class CommandPathSanity:
         outTable = ""
         d = data["outputData"]
 
-        gcodeFileLabel = translate("Path_Sanity", "Gcode File")
+        gcodeFileLabel = translate("Path_Sanity", "G-code File")
         lastpostLabel = translate("Path_Sanity", "Last Post Process Date")
         stopsLabel = translate("Path_Sanity", "Stops")
         programmerLabel = translate("Path_Sanity", "Programmer")

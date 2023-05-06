@@ -51,7 +51,7 @@ class ObjectCustom(PathOp.ObjectOp):
             "App::PropertyStringList",
             "Gcode",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"),
+            QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
         )
 
         obj.Proxy = self

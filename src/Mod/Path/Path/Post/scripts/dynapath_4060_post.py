@@ -36,8 +36,8 @@ import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a post processor file for the FreeCAD Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
 and tested on FreeCAD Path workbench bundled with FreeCAD v21.
 This post processor, once placed in the appropriate PathScripts folder, can be
 used directly from inside FreeCAD, via the GUI importer or via python scripts with:
