@@ -325,7 +325,7 @@ int TaskRestoreLines::countInvisibleLines()
 int TaskRestoreLines::countInvisibleGeoms()
 {
     int iGeoms = 0;
-    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->GeomFormats.getValues();
+    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->Cosmetics.getValues<GeomFormat*>();
     for (auto& g : geoms) {
         if (!g->m_format.m_visible) {
             iGeoms++;
@@ -367,13 +367,13 @@ void TaskRestoreLines::restoreInvisibleLines()
 
 void TaskRestoreLines::restoreInvisibleGeoms()
 {
-    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->GeomFormats.getValues();
+    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->Cosmetics.getValues<GeomFormat*>();
     for (auto& g : geoms) {
         if (!g->m_format.m_visible) {
             g->m_format.m_visible = true;
         }
     }
-    m_partFeat->GeomFormats.setValues(geoms);
+    // m_partFeat->GeomFormats.setValues(geoms);
     m_parent->apply(false);                   //don't undo the work we just did
 }
 
