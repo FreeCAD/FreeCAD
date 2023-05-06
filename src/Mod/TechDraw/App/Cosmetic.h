@@ -68,6 +68,8 @@ public:
     boost::uuids::uuid getTag() const;
     std::string getTagAsString() const;
     //T* clone() const; to be implemented
+    virtual void Save(Base::Writer &/*writer*/) const = 0;
+    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
 
 protected:
     void createNewTag();
