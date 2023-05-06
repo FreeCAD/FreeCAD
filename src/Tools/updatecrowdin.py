@@ -72,6 +72,7 @@ import json
 import os
 import sys
 import shutil
+import subprocess
 import tempfile
 import zipfile
 import re
@@ -428,7 +429,16 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
     shutil.copyfile(tsfilepath, newpath)
-    os.system("lrelease " + newpath + " >/dev/null 2>&1")
+    try:
+        subprocess.run(
+            [
+                "lrelease",
+                newpath,
+            ],
+            timeout=5,
+        )
+    except Exception as e:
+        print(e)
     newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
     if not os.path.exists(newqm):
         print("ERROR: impossible to create " + newqm + ", aborting")
