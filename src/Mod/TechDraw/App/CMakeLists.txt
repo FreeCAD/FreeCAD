@@ -192,8 +192,6 @@ SET(Geometry_SRCS
     PropertyGeomFormatList.h
     PropertyCenterLineList.cpp
     PropertyCenterLineList.h
-    PropertyCosmeticEdgeList.cpp
-    PropertyCosmeticEdgeList.h
     PropertyCosmeticList.cpp
     PropertyCosmeticList.h
     PropertyCosmeticVertexList.cpp
