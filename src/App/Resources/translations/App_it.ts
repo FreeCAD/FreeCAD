@@ -19,4 +19,45 @@ che fanno riferimento allo stesso oggetto configurabile</translation>
       <translation>Senza nome</translation>
     </message>
   </context>
+  <context>
+    <name>App::Origin</name>
+    <message>
+      <location filename="../../Origin.cpp" line="140"/>
+      <source>X-axis</source>
+      <translation>Asse-X</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="141"/>
+      <source>Y-axis</source>
+      <translation>Asse-Y</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="142"/>
+      <source>Z-axis</source>
+      <translation>Asse-Z</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="143"/>
+      <source>XY-plane</source>
+      <translation>Piano-XY</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="144"/>
+      <source>XZ-plane</source>
+      <translation>Piano-XZ</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="145"/>
+      <source>YZ-plane</source>
+      <translation>Piano-YZ</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::OriginGroupExtension</name>
+    <message>
+      <location filename="../../OriginGroupExtension.cpp" line="134"/>
+      <source>Origin</source>
+      <translation>Origine</translation>
+    </message>
+  </context>
 </TS>

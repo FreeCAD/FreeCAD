@@ -737,7 +737,7 @@
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Le placement est calqué sur le Placement de l’objet lié.</translation>
+      <translation>Le placement est identique au Placement de l’objet lié.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="61"/>
@@ -1109,7 +1109,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Profilé</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -1251,9 +1251,9 @@
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
-      <translation>Mesurer la distance linéaire entre deux points. Si des 
-arêtes ou des faces sont sélectionnées, cela mesurera
-entre deux de leurs sommets.</translation>
+      <translation>Mesurer la distance linéaire entre deux points ;
+Si des arêtes ou des faces sont sélectionnées,
+cela mesurera entre deux de leurs sommets.</translation>
     </message>
   </context>
   <context>
@@ -2220,7 +2220,7 @@ de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="298"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation>Créer une copie non-paramétrique avec un placement transformé</translation>
+      <translation>Créer une copie non paramétrique avec un placement transformé</translation>
     </message>
   </context>
   <context>
@@ -2327,7 +2327,7 @@ de la projection.</translation>
       <translation>Modifier la pièce jointe</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="423"/>
+      <location filename="../../TaskFaceColors.cpp" line="419"/>
       <source>Change face colors</source>
       <translation>Changer les couleurs de la face</translation>
     </message>
@@ -2743,7 +2743,7 @@ it inside the Placement property.</source>
     <message>
       <location filename="../../DlgExportStep.ui" line="94"/>
       <source>Export single object placement</source>
-      <translation>Exporter le placement d'un seul objet</translation>
+      <translation>Exporter l'emplacement d'un seul objet</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
@@ -2931,25 +2931,30 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
       <translation>Document « %1 » inexistant.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="499"/>
-      <location filename="../../DlgExtrusion.cpp" line="504"/>
+      <location filename="../../DlgExtrusion.cpp" line="500"/>
+      <location filename="../../DlgExtrusion.cpp" line="506"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>La création d’extrusion a échoué.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="571"/>
+      <location filename="../../DlgExtrusion.cpp" line="573"/>
       <source>Object not found: %1</source>
       <translation>Objet introuvable : %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="633"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Aucune forme sélectionnée pour l’extrusion. Sélectionnez-en une d’abord.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="654"/>
+      <location filename="../../DlgExtrusion.cpp" line="652"/>
+      <source>Unknown error</source>
+      <translation type="unfinished">Unknown error</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="656"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2958,12 +2963,12 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="656"/>
+      <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Le mode de direction consiste à utiliser une arête, mais aucune arête n’est liée.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="679"/>
+      <location filename="../../DlgExtrusion.cpp" line="681"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2972,12 +2977,12 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="689"/>
+      <location filename="../../DlgExtrusion.cpp" line="691"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>La direction du vecteur d’extrusion est de longueur nulle. Elle doit être différente de zéro.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="700"/>
+      <location filename="../../DlgExtrusion.cpp" line="702"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Longueur totale d’extrusion est à zéro (length1 == - length2). Elle doit être différente de zéro.</translation>
     </message>
@@ -3312,7 +3317,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="75"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Réduire le nombre d'objets en utilisant le tableau de liaisons</translation>
+      <translation>Réduire le nombre d'objets en utilisant une matrice liée</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="78"/>
@@ -4087,6 +4092,11 @@ during file reading (slower but higher details).</source>
 %1</translation>
     </message>
     <message>
+      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <source>Unknown error</source>
+      <translation type="unfinished">Unknown error</translation>
+    </message>
+    <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>La direction d’axe de révolution est de longueur nulle. Elle ne doit pas être nulle.</translation>
@@ -4779,7 +4789,7 @@ seules les coupes créées seront visibles</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="540"/>
       <source>Select two vertices to create an edge</source>
-      <translation>Sélectionner deux sommets pour créer une arête</translation>
+      <translation>Sélectionnez deux sommets pour créer une arête</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="547"/>
@@ -4886,7 +4896,7 @@ seules les coupes créées seront visibles</translation>
       <location filename="../../TaskSweep.cpp" line="438"/>
       <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Sweep path</source>
-      <translation>Chemin de balayage</translation>
+      <translation>Trajectoire de balayage</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="438"/>
@@ -5100,50 +5110,53 @@ Remarque : le placement est exprimé dans le système de coordonnées local de l
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="998"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
       <source>Shape Content</source>
       <translation>Contenu de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
       <source>Settings</source>
       <translation>Réglages</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip settings page</source>
       <translation>Sauter cette page des paramètres</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
-      <source>Skip this settings page and run the geometry check automatically.
-Default: false</source>
-      <translation>Sauter cette page de paramètres et exécuter la vérification de la géométrie automatiquement.
-Valeur par défaut : false</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <source>Skip this settings page and run the geometry check automatically.</source>
+      <translation>Sauter cette page de paramètres et exécuter la vérification de la géométrie automatiquement.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
-      <source>Run BOP check</source>
-      <translation>Éxecuter la vérification BOP</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <source>Default: false</source>
+      <translation>Par défaut : faux</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <source>Run boolean operation check</source>
+      <translation>Exécuter la vérification de l’opération booléenne</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
       <source>Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
+the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation>Vérification supplémentaire des opérations booléennes. Elle peut parfois
+      <translation>La vérification supplémentaire des opérations booléennes peut parfois
 trouver des erreurs que la vérification standard de la géométrie BRep aura 
-manqué. Ces erreurs ne signifient pas toujours que l'objet vérifié est inutilisable.
-Valeur par défaut : false</translation>
+manqué. Ces erreurs ne signifient pas toujours que l’objet vérifié est inutilisable.
+Valeur par défaut : faux</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
       <source>Single-threaded</source>
       <translation>Exécution non parallélisée</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Lancer la vérification de la géométrie avec un seul thread.
@@ -5151,23 +5164,23 @@ C'est plus lent, mais plus stable.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
       <source>Log errors</source>
       <translation>Journal des erreurs</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Journal des erreurs vers la vue rapport.
 Par défaut: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
       <source>Expand shape content</source>
       <translation>Développer le contenu de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Développer le contenu de la forme. Les modifications prendront effet la
@@ -5175,12 +5188,12 @@ prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Advanced shape content</source>
       <translation>Contenu avancé de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la
@@ -5188,118 +5201,117 @@ prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
-      <source>
-Individual BOP Checks:</source>
-      <translation>
-Vérifications des opérations booléennes :</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
-      <source>  Bad type</source>
-      <translation>  Mauvais type</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <source>
+Individual boolean operation checks:</source>
+      <translation>
+Vérifications d’opération booléenne individuelle :</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <source>Bad type</source>
+      <translation>Mauvais type</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <source>Self-intersect</source>
+      <translation>Auto-intersection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <source>Too small edge</source>
+      <translation>L'arête est trop petite</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <source>Nonrecoverable face</source>
+      <translation>Face non-récupérable</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <source>Continuity</source>
+      <translation>Continuité</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <source>Incompatibility of face</source>
+      <translation>Incompatibilité de la face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <source>Incompatibility of vertex</source>
+      <translation>Incompatibilité de sommet</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <source>Incompatibility of edge</source>
+      <translation>Incompatibilité de l'arête</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <source>Invalid curve on surface</source>
+      <translation>Courbe de surface non valable</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Vérifier la présence de mauvais types d'arguments.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
-      <source>  Self-intersect</source>
-      <translation>  Auto-intersection</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Vérifier la présence d'auto-intersections.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
-      <source>  Too small edge</source>
-      <translation>  Arête trop petite</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Vérifier la présence d'arêtes trop petites.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
-      <source>  Nonrecoverable face</source>
-      <translation>  Face non-récupérable</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Vérifier la présence de faces non-récupérables. 
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
-      <source>  Continuity</source>
-      <translation>  Continuité</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Vérifier la continuité.
 Par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
-      <source>  Incompatibility of face</source>
-      <translation>  Incompatibilité de la face</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Vérifier la présence de faces incompatibles.
 Par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
-      <source>  Incompatibility of vertex</source>
-      <translation>  Incompatibilité de sommets</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation>Vérifier la présence de sommets incompatibles.
-Valeur par défaut : true</translation>
+      <translation>Vérifier la présence de sommets incompatibles.. Par défaut : vrai</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
-      <source>  Incompatibility of edge</source>
-      <translation>  Incompatibilité de l'arête</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Vérifier la présence d'arêtes incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
-      <source>  Invalid curve on surface</source>
-      <translation>  Courbe de surface invalide</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Vérifier la présence de courbes invalides sur des surfaces.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
       <source>Run check</source>
       <translation>Lancer la vérification</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Results</source>
       <translation>Résultats</translation>
     </message>
@@ -5317,13 +5329,41 @@ Valeur par défaut : true</translation>
       <translation>Vérification en cours...</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="418"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="422"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="417"/>
+      <source>Boolean operation check...</source>
+      <translation>Vérification d’opération booléenne...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="419"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
       <source>Check geometry</source>
       <translation>Vérifier la géométrie</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="587"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <source>Invalid</source>
+      <translation>Invalide</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <source>Checking</source>
+      <translation>Vérification</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <source>%1 processed out of %2 selected</source>
+      <translation>%1 traités sur %2 sélectionnés</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <source>%n invalid shapes.</source>
+      <translation>
+        <numerusform>%n forme invalide.</numerusform>
+        <numerusform>%n formes invalides.</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
       <source>Checked object</source>
       <translation>Objet coché</translation>
     </message>
@@ -5498,7 +5538,7 @@ en traçant un rectangle de sélection dans la vue 3D</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from vertices</source>
-      <translation>Face depuis des sommets</translation>
+      <translation>Face à partir de sommets</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
@@ -5551,7 +5591,7 @@ en traçant un rectangle de sélection dans la vue 3D</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Chemin de balayage</translation>
+      <translation>Trajectoire de balayage</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -5602,8 +5642,8 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="95"/>
-      <location filename="../../TaskThickness.cpp" line="293"/>
-      <location filename="../../TaskThickness.cpp" line="303"/>
+      <location filename="../../TaskThickness.cpp" line="294"/>
+      <location filename="../../TaskThickness.cpp" line="304"/>
       <source>Thickness</source>
       <translation>Evidement</translation>
     </message>
@@ -5618,7 +5658,7 @@ in the 3D view for the sweep path.</source>
       <translation>Fait</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="258"/>
+      <location filename="../../TaskThickness.cpp" line="259"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -5671,8 +5711,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
     </message>
@@ -5764,20 +5804,20 @@ Voulez-vous continuer ?</translation>
       <translation>Aucune référence sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Arête</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>
@@ -5989,71 +6029,70 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>Out Of Enum Range:</source>
-      <translation>Hors de la plage Enum :</translation>
+      <translation>Hors de la plage d'énumération :</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo Vérifier les inconnues</translation>
+      <source>Boolean Op Check Unknown</source>
+      <translation>Opération booléenne  : vérification Inconnue</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo MauvaisType</translation>
+      <source>Boolean Op Bad Type</source>
+      <translation>Opération booléenne  : type erroné</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo auto intersection</translation>
+      <source>Boolean Op Self Intersect</source>
+      <translation>Opération booléenne  : auto-intersection</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo Arête trop courte</translation>
+      <source>Boolean Op Too Small Edge</source>
+      <translation>Opération booléenne : arête trop petite</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo Face non récupérable</translation>
+      <source>Boolean Op Non-Recoverable Face</source>
+      <translation>Opération booléenne : face non récupérable</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo incompatibilité de sommet</translation>
+      <source>Boolean Op Incompatibility Of Vertex</source>
+      <translation>Opération booléenne : incompatibilité de sommets</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo Incompatibilité d'arête</translation>
+      <source>Boolean Op Incompatibility Of Edge</source>
+      <translation>Opération booléenne : incompatibilité d'arêtes</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo Incompatibilité de face</translation>
+      <source>Boolean Op Incompatibility Of Face</source>
+      <translation>Opération booléenne : incompatibilité de faces</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo Opération avortée</translation>
+      <source>Boolean Op Operation Aborted</source>
+      <translation>Opération booléenne : opération annulée</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
+      <source>Boolean Op GeomAbs_C0</source>
+      <translation>Opération booléenne : erreur d'Open Cascade (GeomAbs_C0)</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_Courbe invalide sur surface</translation>
+      <source>Boolean Op Invalid Curve On Surface</source>
+      <translation>Opération booléenne : courbe non valide sur la surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo Non valide</translation>
+      <source>Boolean Op Not Valid</source>
+      <translation>Opération booléenne : invalide</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="696"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
       <source>Invalid</source>
       <translation>Invalide</translation>
     </message>
@@ -6342,73 +6381,16 @@ Voulez-vous continuer ?</translation>
       <translation>Continuer</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
-      <source>Boolean fragments</source>
-      <translation>Éléments booléens</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Créer un objet "Éléments booléens" à partir de deux ou plusieurs objets sélectionnés ou des formes à l'intérieur d'un composé.
-Il s'agit d'une union booléenne qui est ensuite coupée aux intersections des formes originales.
-Un "filtre de composé" peut être utilisé pour extraire différents morceaux.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Sélectionner au moins deux objets, ou un ou plusieurs composés. Si un seul composé est sélectionné, les formes composées seront intersectées entre elles (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
-      <source>Slice to compound</source>
-      <translation>Scinder vers composé</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Scindez un objet sélectionné en utilisant d'autres objets comme outils de coupe.
-Les morceaux résultants seront enregistrés dans un composé.
-Un "filtre composé" peut être utilisé pour extraire les différentes couches.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
       <translation>Sélectionner au moins deux objets. Le premier est l'objet à scinder, les autres objets serviront à la coupe.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
-      <source>Slice apart</source>
-      <translation>Séparer et exploser</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Sépare un objet sélectionné par d'autres objets et l'explose.
-Cela va créer un "filtre composé" pour chaque morceau.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
-      <source>Boolean XOR</source>
-      <translation>OU exclusif</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>Réaliser une opération booléenne "OU exclusif" avec deux ou plusieurs objets sélectionnés, ou avec les formes à l'intérieur d'un composé.
-Cela signifie que les volumes superposés des formes seront supprimés.
-Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</translation>
     </message>
   </context>
   <context>
@@ -6708,6 +6690,75 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
       <source>Placement</source>
       <translation>Placement</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_BooleanFragments</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean fragments</source>
+      <translation>Éléments booléens</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Créer un objet "Éléments booléens" à partir de deux ou plusieurs objets sélectionnés ou des formes à l'intérieur d'un composé.
+Il s'agit d'une union booléenne qui est ensuite coupée aux intersections des formes originales.
+Un "filtre de composé" peut être utilisé pour extraire différents morceaux.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Slice</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice to compound</source>
+      <translation>Scinder vers composé</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Scindez un objet sélectionné en utilisant d'autres objets comme outils de coupe.
+Les morceaux résultants seront enregistrés dans un composé.
+Un "filtre composé" peut être utilisé pour extraire les différentes couches.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SliceApart</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+      <source>Slice apart</source>
+      <translation>Séparer et exploser</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Sépare un objet sélectionné par d'autres objets et l'explose.
+Cela va créer un "filtre composé" pour chaque morceau.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_XOR</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Boolean XOR</source>
+      <translation>OU exclusif</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Réaliser une opération booléenne "OU exclusif" avec deux ou plusieurs objets sélectionnés, ou avec les formes à l'intérieur d'un composé.
+Cela signifie que les volumes superposés des formes seront supprimés.
+Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</translation>
     </message>
   </context>
 </TS>

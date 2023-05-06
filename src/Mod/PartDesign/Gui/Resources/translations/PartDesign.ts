@@ -877,8 +877,8 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SketchWorkflow.cpp" line="297"/>
         <location filename="../../Command.cpp" line="874"/>
+        <location filename="../../SketchWorkflow.cpp" line="297"/>
         <source>Make copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -903,8 +903,8 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgActiveBody.cpp" line="104"/>
         <location filename="../../CommandBody.cpp" line="189"/>
+        <location filename="../../DlgActiveBody.cpp" line="104"/>
         <source>Add a Body</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1072,39 +1072,6 @@ so that self intersection is avoided.</source>
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="239"/>
         <source>Profile Shift Coefficient</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartDesign::Groove</name>
-    <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="101"/>
-        <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartDesign::Hole</name>
-    <message>
-        <location filename="../../../App/FeatureHole.cpp" line="1669"/>
-        <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartDesign::Pocket</name>
-    <message>
-        <location filename="../../../App/FeaturePocket.cpp" line="101"/>
-        <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2043,7 +2010,17 @@ click again to end selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHelixParameters.cpp" line="333"/>
+        <location filename="../../TaskHelixParameters.cpp" line="281"/>
+        <source>Warning: helix might be self intersecting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHelixParameters.cpp" line="286"/>
+        <source>Error: helix touches itself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskHelixParameters.cpp" line="334"/>
         <source>Error: unsupported mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3242,7 +3219,7 @@ click again to end selection</source>
 <context>
     <name>PartDesignGui::ViewProviderLinearPattern</name>
     <message>
-        <location filename="../../ViewProviderLinearPattern.h" line="38"/>
+        <location filename="../../ViewProviderLinearPattern.h" line="37"/>
         <source>LinearPattern parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3250,7 +3227,7 @@ click again to end selection</source>
 <context>
     <name>PartDesignGui::ViewProviderMultiTransform</name>
     <message>
-        <location filename="../../ViewProviderMultiTransform.h" line="38"/>
+        <location filename="../../ViewProviderMultiTransform.h" line="37"/>
         <source>MultiTransform parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3258,7 +3235,7 @@ click again to end selection</source>
 <context>
     <name>PartDesignGui::ViewProviderPolarPattern</name>
     <message>
-        <location filename="../../ViewProviderPolarPattern.h" line="38"/>
+        <location filename="../../ViewProviderPolarPattern.h" line="37"/>
         <source>PolarPattern parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3266,7 +3243,7 @@ click again to end selection</source>
 <context>
     <name>PartDesignGui::ViewProviderScaled</name>
     <message>
-        <location filename="../../ViewProviderScaled.h" line="38"/>
+        <location filename="../../ViewProviderScaled.h" line="37"/>
         <source>Scaled parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3282,7 +3259,7 @@ click again to end selection</source>
 <context>
     <name>PartDesignGuii::ViewProviderMirrored</name>
     <message>
-        <location filename="../../ViewProviderMirrored.h" line="38"/>
+        <location filename="../../ViewProviderMirrored.h" line="37"/>
         <source>Mirrored parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3484,28 +3461,28 @@ click again to end selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderHole.cpp" line="79"/>
-        <location filename="../../ViewProviderDatum.cpp" line="246"/>
-        <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+        <location filename="../../Command.cpp" line="895"/>
+        <location filename="../../Command.cpp" line="1914"/>
         <location filename="../../SketchWorkflow.cpp" line="591"/>
         <location filename="../../ViewProvider.cpp" line="98"/>
         <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+        <location filename="../../ViewProviderDatum.cpp" line="246"/>
+        <location filename="../../ViewProviderHole.cpp" line="79"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-        <location filename="../../Command.cpp" line="895"/>
-        <location filename="../../Command.cpp" line="1914"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderHole.cpp" line="80"/>
-        <location filename="../../ViewProviderDatum.cpp" line="247"/>
-        <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+        <location filename="../../Command.cpp" line="896"/>
+        <location filename="../../Command.cpp" line="1915"/>
         <location filename="../../SketchWorkflow.cpp" line="592"/>
         <location filename="../../ViewProvider.cpp" line="99"/>
         <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+        <location filename="../../ViewProviderDatum.cpp" line="247"/>
+        <location filename="../../ViewProviderHole.cpp" line="80"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-        <location filename="../../Command.cpp" line="896"/>
-        <location filename="../../Command.cpp" line="1915"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3767,14 +3744,14 @@ This may lead to unexpected results.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="287"/>
         <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="287"/>
         <source>Vertical sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="288"/>
         <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="288"/>
         <source>Horizontal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3826,11 +3803,10 @@ If you have a legacy document with PartDesign objects without Body, use the migr
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="65"/>
         <location filename="../../ViewProvider.cpp" line="65"/>
-        <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
+        <location filename="../../ViewProviderDressUp.cpp" line="50"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="76"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3873,12 +3849,12 @@ If you have a legacy document with PartDesign objects without Body, use the migr
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderDressUp.cpp" line="71"/>
+        <location filename="../../ViewProviderDressUp.cpp" line="74"/>
         <source>Feature error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderDressUp.cpp" line="72"/>
+        <location filename="../../ViewProviderDressUp.cpp" line="75"/>
         <source>%1 misses a base feature.
 This feature is broken and can&apos;t be edited.</source>
         <translation type="unfinished"></translation>
@@ -3939,17 +3915,17 @@ This feature is broken and can&apos;t be edited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="169"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="179"/>
         <source>One transformed shape does not intersect support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="171"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="181"/>
         <source>%1 transformed shapes do not intersect support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="181"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="191"/>
         <source>Transformation succeeded</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3988,6 +3964,51 @@ Although you will be able to migrate any moment later with &apos;Part Design -&g
     <message>
         <location filename="../../ViewProviderHelix.cpp" line="55"/>
         <source>Edit helix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderChamfer.cpp" line="41"/>
+        <source>Edit chamfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderDraft.cpp" line="42"/>
+        <source>Edit draft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderFillet.cpp" line="41"/>
+        <source>Edit fillet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
+        <source>Edit linear pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderMirrored.cpp" line="39"/>
+        <source>Edit mirrored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
+        <source>Edit multi-transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
+        <source>Edit polar pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderScaled.cpp" line="39"/>
+        <source>Edit scaled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderThickness.cpp" line="41"/>
+        <source>Edit thickness</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4697,58 +4718,979 @@ over 90: larger hole radius at the bottom</source>
 <context>
     <name>WizardShaftTable</name>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
         <source>Length [mm]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
         <source>Diameter [mm]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
         <source>Inner diameter [mm]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
         <source>Constraint type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
         <source>Start edge type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
         <source>Start edge size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
         <source>End edge type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
         <source>End edge size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+        <source>Shaft wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+        <source>Section 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+        <source>Section 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+        <source>Add column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+        <source>Section %s</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WizardShaft</name>
+    <name>TaskWizardShaft</name>
     <message>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+        <source>Missing module</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+        <source>You may have to install the Plot add-on</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesign_WizardShaft</name>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
         <source>Shaft design wizard...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-        <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
         <source>Start the shaft design wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesign_WizardShaftCallBack</name>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+        <source>Shaft design wizard...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+        <source>Start the shaft design wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Exception</name>
+    <message>
+        <location filename="../../../App/Body.cpp" line="401"/>
+        <source>Linked object is not a PartDesign feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/Body.cpp" line="408"/>
+        <source>Tip shape is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBase.cpp" line="62"/>
+        <source>BaseFeature link is not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBase.cpp" line="65"/>
+        <source>BaseFeature must be a Part::Feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBase.cpp" line="69"/>
+        <source>BaseFeature has an empty shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="78"/>
+        <source>Cannot do boolean cut without BaseFeature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
+        <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
+        <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="99"/>
+        <source>Cannot do boolean operation with invalid base shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="105"/>
+        <source>Cannot do boolean on feature which is not in a body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="119"/>
+        <source>Base shape is null</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="122"/>
+        <source>Tool shape is null</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
+        <source>Fusion of tools failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+        <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+        <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
+        <source>Resulting shape is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="136"/>
+        <source>Cut out failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
+        <source>Common operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
+        <source>Boolean: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
+        <source>Failed to create chamfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
+        <location filename="../../../App/FeatureDraft.cpp" line="319"/>
+        <location filename="../../../App/FeatureFillet.cpp" line="120"/>
+        <source>Resulting shape is null</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
+        <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+        <source>Resulting shape is invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+        <source>Chamfer: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
+        <source>Size must be greater than zero</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
+        <source>Size2 must be greater than zero</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
+        <source>Angle must be greater than 0 and less than 180</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureDraft.cpp" line="315"/>
+        <source>Failed to create draft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureDraft.cpp" line="323"/>
+        <source>Fuse: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureFillet.cpp" line="93"/>
+        <source>Fillet radius must be greater than zero</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+        <source>Failed to create fillet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+        <source>Fillet: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="78"/>
+        <source>Angle of groove too large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="82"/>
+        <source>Angle of groove too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+        <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+        <source>The requested feature cannot be created. The reason may be that:
+  - the active Body does not contain a base shape, so there is no
+  material to be removed;
+  - the selected sketch does not belong to the active Body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="118"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
+        <source>Creating a face from sketch failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="140"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
+        <source>Revolve axis intersects the sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="156"/>
+        <source>Cut out of base feature failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+        <source>Groove: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="173"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
+        <source>Could not revolve the sketch!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureGroove.cpp" line="180"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
+        <source>Could not create face from sketch.
+Intersecting sketch entities in a sketch are not allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="127"/>
+        <source>Error: Pitch too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="129"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+        <source>Error: height too small!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+        <source>Error: pitch too small!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="137"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="145"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="151"/>
+        <source>Error: turns too small!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="155"/>
+        <source>Error: either height or growth must not be zero!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="169"/>
+        <source>Error: unsupported mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="181"/>
+        <source>Error: No valid sketch or face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="190"/>
+        <source>Error: Face must be planar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+        <source>Error: Could not build</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="296"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="330"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="360"/>
+        <location filename="../../../App/FeatureHole.cpp" line="2145"/>
+        <source>Error: Result is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="310"/>
+        <source>Error: There is nothing to subtract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="334"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="364"/>
+        <source>Error: Result has multiple solids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="324"/>
+        <source>Error: Adding the helix failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="347"/>
+        <source>Error: Intersecting the helix failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="354"/>
+        <source>Error: Subtracting the helix failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHelix.cpp" line="376"/>
+        <source>Error: Could not create face from sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1687"/>
+        <source>Hole error: Creating a face from sketch failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1712"/>
+        <source>Hole error: Unsupported length specification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1715"/>
+        <source>Hole error: Invalid hole depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1738"/>
+        <source>Hole error: Invalid taper angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1759"/>
+        <source>Hole error: Hole cut diameter too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1763"/>
+        <source>Hole error: Hole cut depth must be less than hole depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1767"/>
+        <source>Hole error: Hole cut depth must be greater or equal to zero</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1789"/>
+        <source>Hole error: Invalid countersink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1822"/>
+        <source>Hole error: Invalid drill point angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+        <source>Hole error: Invalid drill point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1866"/>
+        <source>Hole error: Could not revolve sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1870"/>
+        <source>Hole error: Resulting shape is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1880"/>
+        <source>Error: Adding the thread failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1892"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+        <source>Boolean operation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+        <source>Hole: Resulting shape is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+        <source>Hole: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+        <location filename="../../../App/FeaturePocket.cpp" line="248"/>
+        <source>Could not create face from sketch.
+Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="2025"/>
+        <source>Thread type out of range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="2028"/>
+        <source>Thread size out of range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureHole.cpp" line="2120"/>
+        <source>Error: Thread could not be built</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="135"/>
+        <source>Loft: At least one section is needed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="140"/>
+        <source>Loft: Could not obtain profile shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="153"/>
+        <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="161"/>
+        <source>Loft: All sections need to be part features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="166"/>
+        <source>Loft: Could not obtain section shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="182"/>
+        <source>Loft: A section doesn&apos;t contain any wires nor is a single vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="184"/>
+        <source>Loft: Only the profile and the last section can be vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="186"/>
+        <source>Loft: For closed lofts only the profile can be a vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="193"/>
+        <source>Loft: all loft sections need to have the same amount of inner wires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="232"/>
+        <source>Loft could not be built</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+        <source>Loft: Result is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="278"/>
+        <source>Loft: There is nothing to subtract from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="288"/>
+        <source>Loft: Adding the loft failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+        <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+        <source>Loft: Resulting shape is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+        <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+        <source>Loft: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="306"/>
+        <source>Loft: Subtracting the loft failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureLoft.cpp" line="330"/>
+        <source>Loft: A fatal error occurred when making the loft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="75"/>
+        <source>Length of pad too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="78"/>
+        <source>Second length of pad too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="130"/>
+        <source>Pad: Creation failed because direction is orthogonal to sketch&apos;s normal vector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="141"/>
+        <source>Pad: Creating a face from sketch failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="205"/>
+        <source>Pad: Resulting shape is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="216"/>
+        <source>Pad: Fusion with base feature failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="222"/>
+        <source>Pad: Resulting shape is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="226"/>
+        <location filename="../../../App/FeaturePad.cpp" line="235"/>
+        <source>Pad: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="248"/>
+        <source>Could not create face from sketch.
+Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="172"/>
+        <source>Pipe: Could not obtain profile shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="177"/>
+        <source>No spine linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="190"/>
+        <source>No auxiliary spine linked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="211"/>
+        <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="217"/>
+        <source>Pipe: At least one section is needed when using a single point for profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+        <source>Pipe: All sections need to be part features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="237"/>
+        <source>Pipe: Could not obtain section shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="246"/>
+        <source>Pipe: Only the profile and last section can be vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="255"/>
+        <source>Multisections need to have the same amount of inner wires as the base section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="282"/>
+        <source>Path must not be a null shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="317"/>
+        <source>Pipe could not be built</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="363"/>
+        <source>Result is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="378"/>
+        <source>Pipe: There is nothing to subtract from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="389"/>
+        <source>Adding the pipe failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+        <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+        <source>Pipe: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="409"/>
+        <source>Subtracting the pipe failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="433"/>
+        <source>A fatal error occurred when making the pipe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="558"/>
+        <source>Invalid element in spine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="561"/>
+        <source>Element in spine is neither an edge nor a wire.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="574"/>
+        <source>Spine is not connected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="578"/>
+        <source>Spine is neither an edge nor a wire.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePipe.cpp" line="582"/>
+        <source>Invalid spine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="82"/>
+        <source>Pocket: Length of pocket too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="86"/>
+        <source>Pocket: Second length of pocket too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="138"/>
+        <source>Pocket: Creation failed because direction is orthogonal to sketch&apos;s normal vector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+        <source>Pocket: Creating a face from sketch failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="155"/>
+        <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="190"/>
+        <source>Pocket: Up to face: Could not get SubShape!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="197"/>
+        <location filename="../../../App/FeaturePocket.cpp" line="232"/>
+        <source>Pocket: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="214"/>
+        <source>Pocket: Resulting shape is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="223"/>
+        <source>Pocket: Cut out of base feature failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePocket.cpp" line="228"/>
+        <source>Pocket: Resulting shape is not a solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="90"/>
+        <source>Cannot subtract primitive feature without base feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="99"/>
+        <source>Adding the primitive failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
+        <source>Additive: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="119"/>
+        <source>Subtracting the primitive failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
+        <source>Subtractive: Result has multiple solids. This is not supported at this time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
+        <source>Length of box too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
+        <source>Width of box too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="203"/>
+        <source>Height of box too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
+        <source>Radius of cylinder too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
+        <source>Height of cylinder too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="253"/>
+        <source>Rotation angle of cylinder too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="306"/>
+        <source>Radius of sphere too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
+        <source>Radius of cone cannot be negative</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="359"/>
+        <source>The radii for cones must not be equal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="361"/>
+        <source>Height of cone too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
+        <source>Radius of ellipsoid too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
+        <source>Radius of torus too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="567"/>
+        <source>Polygon of prism is invalid, must have 3 or more sides</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
+        <source>Circumradius of the polygon, of the prism, is too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
+        <source>Height of prism is too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="652"/>
+        <source>delta x of wedge too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
+        <source>delta y of wedge too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
+        <source>delta z of wedge too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
+        <source>delta z2 of wedge is negative</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
+        <source>delta x2 of wedge is negative</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureRevolution.cpp" line="77"/>
+        <source>Angle of revolution too large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureRevolution.cpp" line="81"/>
+        <source>Angle of revolution too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+        <source>Fusion with base feature failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
+        <source>Transformation feature Linked object is not a Part object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
+        <source>No originals linked to the transformed feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+        <source>Cannot transform invalid support shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+        <source>Transformation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+        <source>Shape of addsub feature is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+        <source>Only additive and subtractive features can be transformed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

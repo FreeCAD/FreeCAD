@@ -1303,8 +1303,8 @@ non murrizketa edo materiala aplikatzen den.</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
-      <translation type="unfinished">Existing result objects will be kept
-otherwise overwritten by new solver run</translation>
+      <translation>Existitzen diren emaitzako objektuak mantenduko dira,
+bestela ebazlearen exekuzio berriak gainidatziko ditu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="315"/>
@@ -2627,15 +2627,15 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
+      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM material</source>
       <translation>FEM materiala</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
-      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Materiala</translation>
     </message>
@@ -2660,9 +2660,9 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Materialaren izena</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
-      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Testu-etiketa</translation>
     </message>
@@ -3008,17 +3008,17 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -3033,11 +3033,11 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Zentrifugazio-parametroa</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametroa</translation>
     </message>
@@ -3067,13 +3067,13 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Sekzio-inprimatzearen parametroa</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Constraint Properties</source>
       <translation>Murrizketa-propietateak</translation>
     </message>
@@ -3088,9 +3088,12 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Potentziala:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3103,18 +3106,15 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>zehaztu gabea</translation>
     </message>
@@ -3141,16 +3141,16 @@ with a harmonic/oscillating driving force</source>
 duten ekuazioetan soilik erabiltzen da</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Erreala</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Irudikaria</translation>
     </message>
@@ -3170,9 +3170,9 @@ duten ekuazioetan soilik erabiltzen da</translation>
       <translation>Potentzial eskalar baten zati irudikaria</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3191,9 +3191,9 @@ Note: has no effect if a solid was selected</source>
 Oharra: ez du eraginik solido bat hautatu bada</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>y</translation>
     </message>
@@ -3212,9 +3212,9 @@ Note: has no effect if a solid was selected</source>
 Oharra: ez du eraginik solido bat hautatu bada</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3279,8 +3279,8 @@ Oharra: ez du eraginik solido bat hautatu bada</translation>
       <translation>Habe-sekzioaren parametroa</translation>
     </message>
     <message>
-      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
+      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Zeharkako sekzioaren parametroa</translation>
     </message>
@@ -3331,30 +3331,30 @@ Oharra: ez du eraginik solido bat hautatu bada</translation>
       <translation>Biraketa:     </translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <location filename="../ui/FlowVelocity.ui" line="25"/>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>formula</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>X abiadura:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Y abiadura:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Z abiadura:</translation>
     </message>
@@ -3484,14 +3484,14 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
       <translation>Potentzialaren Y osagaiaren zati irudikaria</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="262"/>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
+      <location filename="../ui/Magnetization.ui" line="262"/>
       <source>Real part of potential z-component</source>
       <translation>Potentzialaren Z osagaiaren zati erreala</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="306"/>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
+      <location filename="../ui/Magnetization.ui" line="306"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Potentzialaren Z osagaiaren zati irudikaria</translation>
     </message>
@@ -3616,26 +3616,26 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
       <translation>Editatu murrizketa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="319"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="807"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="319"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="807"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="808"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="808"/>
       <source>Do you want to close this dialog?</source>
       <translation>Koadro hori itxi nahi duzu?</translation>
     </message>
@@ -4407,8 +4407,8 @@ Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Formulas are only valid
-for the Emer solver</source>
-      <translation>Formulak Emer ebazlerako
+for the Elmer solver</source>
+      <translation>Formulak Elmer ebazlerako
 soilik dira baliozkoak</translation>
     </message>
     <message>
@@ -4439,10 +4439,10 @@ soilik dira baliozkoak</translation>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation type="unfinished">Flow solution is used to determine
-surface force (and thus displacement)
-generated by the flow
-(Option only applies for Elmer solver)</translation>
+      <translation>Fluxu-konponbidea erabiltzen da
+fluxuak sortutako gainazal-indarra
+(beraz, desplazamendua) zehazteko
+(Elmer ebazleari soilik aplikatzen zaio)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="233"/>
@@ -6020,19 +6020,6 @@ elastikotasunerako (estreserako)</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1104"/>
-      <source>Solver CalculiX (new framework)</source>
-      <translation>CalculiX ebazlea (lan-marko berria)</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1109"/>
-      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation>FEM CalculiX ebazlearen lan-marko berria sortzen du (emaitzen errore-maneiatze gutxiago)</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1123"/>
@@ -6193,9 +6180,9 @@ elastikotasunerako (estreserako)</translation>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="268"/>
-      <source>Geometry reference selector for a</source>
-      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="269"/>
+      <source>Geometry reference selector for a {}</source>
+      <translation>Geometria-erreferentziaren hautatzailea {} baterako</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="271"/>
@@ -6203,22 +6190,22 @@ elastikotasunerako (estreserako)</translation>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="277"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
       <translation>Sakatu 'Gehitu' eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko.{} Honako geometria-elementuak hautatu daitezke: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="279"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="281"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{}Zerrendari geometriarik gehitzen ez bazaio, geratzen direnak erabiliko dira.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="293"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="294"/>
       <source>Selection mode</source>
       <translation>Hautapen modua</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
       <source>Solid</source>
       <translation>Solidoa</translation>
     </message>
@@ -6573,6 +6560,19 @@ deformaziorako (elastikotasun ez linealerako)</translation>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Elmer ebazlerako ekuazio mekanikoak</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1104"/>
+      <source>Solver CalculiX (new framework)</source>
+      <translation>CalculiX ebazlea (lan-marko berria)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1109"/>
+      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
+      <translation>FEM CalculiX ebazlearen lan-marko berria sortzen du (emaitzen errore-maneiatze gutxiago)</translation>
     </message>
   </context>
 </TS>

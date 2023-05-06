@@ -267,8 +267,8 @@ A bővítmény kezelő automatikusan telepítse őket? Válassza a &quot;Elvet&q
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
-      <source>Pause cache update</source>
-      <translation>Gyorsítótár frissítésének szüneteltetése</translation>
+      <source>Stop the cache update</source>
+      <translation type="unfinished">Stop the cache update</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -417,49 +417,53 @@ A bővítmény kezelő automatikusan telepítse őket? Válassza a &quot;Elvet&q
   <context>
     <name>ExpandedView</name>
     <message>
-      <location filename="../../expanded_view.py" line="130"/>
+      <location filename="../../expanded_view.py" line="116"/>
       <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Űrlap</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="131"/>
+      <location filename="../../expanded_view.py" line="117"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
       <translation>Ikon</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="134"/>
+      <location filename="../../expanded_view.py" line="120"/>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
       <translation>&lt;h1&gt;Csomag neve&lt;/h1&gt;</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="137"/>
+      <location filename="../../expanded_view.py" line="121"/>
       <location filename="../../expanded_view.ui" line="114"/>
       <source>Version</source>
       <translation>Verzió</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="140"/>
+      <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
       <translation>(címkék)</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="143"/>
+      <location filename="../../expanded_view.py" line="125"/>
       <location filename="../../expanded_view.ui" line="149"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="146"/>
+      <location filename="../../expanded_view.py" line="126"/>
       <location filename="../../expanded_view.ui" line="171"/>
       <source>Maintainer</source>
       <translation>Közreműködő</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="149"/>
+      <location filename="../../expanded_view.py" line="129"/>
+      <source>Update Available</source>
+      <translation type="unfinished">Update Available</translation>
+    </message>
+    <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
       <translation>Frissítés elérhető</translation>
@@ -1271,18 +1275,18 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>A makró végrehajtása sikertelen. A hiba részleteit lásd a konzolon.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Közreműködő</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Létrehozó</translation>
     </message>
@@ -1498,8 +1502,8 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>QtWebEngine Python kötések nem telepítettek -- a tartalék README megjelenítést használja.</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
-      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Sikerült</translation>
@@ -1631,9 +1635,9 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>Válasszon ki egy ikonfájlt ehhez a tartalmi elemhez</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} nem alkönyvtára ennek: {}</translation>
     </message>
@@ -1689,18 +1693,18 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>Egyéb...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="152"/>
+      <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
       <translation>Ez a bővítmény olyan Python-csomagokat igényel, amelyek nincsenek telepítve, és nem is telepíthetők automatikusan. A munkakörnyezet használatához a következő Python csomagokat magának kell telepítenie:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="161"/>
+      <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
       <translation>Túl sok a listázáshoz</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="167"/>
-      <location filename="../../addonmanager_installer_gui.py" line="204"/>
+      <location filename="../../addonmanager_installer_gui.py" line="164"/>
+      <location filename="../../addonmanager_installer_gui.py" line="201"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="146"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="163"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="178"/>
@@ -1709,136 +1713,136 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>Hiányzó követelmény</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="187"/>
+      <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
       <translation>A &apos;{}&apos; bővítményhez a &apos;{}&apos;, csomagra van szükség, amely nem érhető el a FreeCAD-ben.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="195"/>
+      <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
       <translation>A &apos;{}&apos; bővítmény olyan munkafelületeket igényel, amelyek nem állnak rendelkezésre a FreeCAD példányában:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="202"/>
+      <location filename="../../addonmanager_installer_gui.py" line="199"/>
       <source>Press OK to install anyway.</source>
       <translation>Nyomja meg az OK gombot a telepítés kényszerítéséhez.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="248"/>
+      <location filename="../../addonmanager_installer_gui.py" line="243"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="231"/>
       <source>Incompatible Python version</source>
       <translation>Nem kompatibilis Python verzió</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="252"/>
+      <location filename="../../addonmanager_installer_gui.py" line="247"/>
       <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
       <translation>Ez a bővítmény (vagy valamelyik függősége) Python {}.{}-t igényel, és az Ön rendszerén {}.{} fut. A telepítés törlődött.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="273"/>
+      <location filename="../../addonmanager_installer_gui.py" line="268"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
       <translation>A rendszer figyelmen kívül hagyja a választható függőséget a(z) {} sablontól, mert nem szerepel az engedélyezett listán</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="321"/>
-      <location filename="../../addonmanager_installer_gui.py" line="322"/>
+      <location filename="../../addonmanager_installer_gui.py" line="314"/>
+      <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
       <translation>Függőségek telepítése</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="349"/>
+      <location filename="../../addonmanager_installer_gui.py" line="340"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="84"/>
       <source>Cannot execute Python</source>
       <translation>Python nem hajtható végre</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="354"/>
+      <location filename="../../addonmanager_installer_gui.py" line="345"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
       <translation>Nem sikerült automatikusan megtalálni a Python futtatható fájlt, vagy az elérési út rosszul van megadva. Ellenőrizze a bővítmény kezelő beállításban a Python környezet elérési útvonalát.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="358"/>
+      <location filename="../../addonmanager_installer_gui.py" line="349"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
       <translation>A függőségeket nem sikerült telepíteni. Folytassa a {} telepítését?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="373"/>
+      <location filename="../../addonmanager_installer_gui.py" line="364"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="98"/>
       <source>Cannot execute pip</source>
       <translation>Pip nem hajtható végre</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="378"/>
+      <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
       <translation>Nem sikerült a pip futtatása, ami lehet, hogy hiányzik a Python telepítéséből. Kérjük, győződjön meg róla, hogy a rendszerén telepítve van a pip, és próbálja meg újra. A sikertelen parancs a következő volt: </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="382"/>
-      <location filename="../../addonmanager_installer_gui.py" line="409"/>
+      <location filename="../../addonmanager_installer_gui.py" line="373"/>
+      <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
       <translation>Folytassa a {} telepítését?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="401"/>
+      <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="112"/>
       <source>Package installation failed</source>
       <translation>Oldal telepítése sikertelen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="405"/>
+      <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
       <translation>A részletes hibanaplót a Jelentésnézet című témakörben tekintheti meg.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="446"/>
+      <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
       <translation>Bővítmény telepítése</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="447"/>
+      <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
       <translation>A FreeCAD &apos;{}&apos; bővítmény telepítése</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="461"/>
+      <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
       <translation>Megszakít</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="462"/>
+      <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
       <translation>A &apos;{}&apos; telepítésének megszakítása</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="490"/>
+      <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
       <translation>{} sikeresen telepítve</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="502"/>
+      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="68"/>
       <source>Installation Failed</source>
       <translation>Telepítés sikertelen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="503"/>
+      <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
       <translation>A {} nem sikerült telepíteni</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="630"/>
+      <location filename="../../addonmanager_installer_gui.py" line="607"/>
       <location filename="../../install_to_toolbar.py" line="102"/>
       <source>Create new toolbar</source>
       <translation>Új eszköztár létrehozása</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="760"/>
+      <location filename="../../addonmanager_installer_gui.py" line="733"/>
       <location filename="../../install_to_toolbar.py" line="245"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation>A FreeCAD bővítmény kezelővel telepített makró</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="762"/>
+      <location filename="../../addonmanager_installer_gui.py" line="735"/>
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
@@ -2233,23 +2237,23 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>Nem találta a makró által megadott {} fájlt (a {}-nál kellett volna lennie)</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="355"/>
+      <location filename="../../Addon.py" line="348"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: Nem ismert belső munkafelület &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="388"/>
+      <location filename="../../Addon.py" line="381"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>Bővítmény fejlesztői figyelmeztetés: A bővítmény {} ({}) package.xml fájlban megadott tároló URL címe nem egyezik az URL-címmel, ahonnan lehívásra került ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="396"/>
+      <location filename="../../Addon.py" line="389"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Bővítmény fejlesztői figyelmeztetés: A package.xml fájlban a {} ({}) bővítmény tárolt változata nem egyezik azzal a változattal, ahonnan lekérdezték ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="778"/>
-      <location filename="../../Addon.py" line="794"/>
+      <location filename="../../Addon.py" line="767"/>
+      <location filename="../../Addon.py" line="783"/>
       <source>Got an error when trying to import {}</source>
       <translation>Hibát kapott, amikor megpróbálta importálni a {}</translation>
     </message>
@@ -2492,6 +2496,14 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <location filename="../../addonmanager_update_all_gui.py" line="197"/>
       <source>Finished updating the following addons</source>
       <translation>A következő bővítmények frissítése befejeződött</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="652"/>
+      <source>Auto-Created Macro Toolbar</source>
+      <translation type="unfinished">Auto-Created Macro Toolbar</translation>
     </message>
   </context>
 </TS>

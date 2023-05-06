@@ -316,7 +316,7 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular array</source>
-      <translation>Réseau circulaire</translation>
+      <translation>Matrice circulaire</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
@@ -339,8 +339,8 @@
       <location filename="../ui/TaskPanel_CircularArray.ui" line="87"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>Distance d’un élément d’une ligne du tableau à l’élément suivant de la même ligne.
-Ne peut être nulle.</translation>
+      <translation>Distance d’un élément d’une ligne de la matrice à l’élément suivant de la même ligne.
+Ça ne peut pas être zéro.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="80"/>
@@ -364,7 +364,7 @@ Doit être au moins de 2.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation>Nombre de lignes de symétrie dans la matrice circulaire.</translation>
+      <translation>Le nombre de lignes de symétrie dans la matrice circulaire.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="132"/>
@@ -412,8 +412,8 @@ Changer la direction de l’axe lui-même dans l’éditeur de propriété.</tra
       <location filename="../ui/TaskPanel_CircularArray.ui" line="243"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Coché, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
-Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
+      <translation>Si coché, les objets résultants de la matrice seront fusionnés s'ils se touchent.
+Cela ne fonctionne que si "Matrice liée" est désactivée.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="247"/>
@@ -424,13 +424,13 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Coché, l'objet résultant sera une "Réseau lié" au lieu d'un réseau normal.
-Une réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
+      <translation>Si coché, l'objet résultant sera une "Matrice liée" au lieu d'une matrice normal.
+Une matrice liée est plus efficace lors de la création de plusieurs copies, mais elle ne peut pas être fusionnée.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="258"/>
       <source>Link array</source>
-      <translation>Réseau de liens</translation>
+      <translation>Matrice liée</translation>
     </message>
   </context>
   <context>
@@ -438,7 +438,7 @@ Une réseau lié est plus efficace lors de la création de plusieurs copies, mai
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation>Réseau orthogonale</translation>
+      <translation>Matrice orthogonale</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
@@ -449,7 +449,7 @@ Une réseau lié est plus efficace lors de la création de plusieurs copies, mai
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation>Nombre d'éléments du tableau dans la direction spécifiée, y-compris une copie de l’objet d’origine.
+      <translation>Nombre d'éléments dans la matrice dans la direction spécifiée, dont une copie de l’objet originel.
 Le nombre doit être d’au moins 1 dans chaque direction.</translation>
     </message>
     <message>
@@ -549,8 +549,8 @@ Les valeurs négatives se traduiront par des copies produites dans la direction 
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Coché, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
-Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
+      <translation>Si coché, les objets résultants de la matrice seront fusionnés s'ils se touchent.
+Cela ne fonctionne que si "Matrice liée" est désactivée.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -561,13 +561,13 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Coché, l'objet résultant sera une "Réseau lié" au lieu d'un réseau normal.
-Une réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
+      <translation>Si coché, l'objet résultant sera une "Matrice liée" au lieu d'une matrice normal.
+Une matrice liée est plus efficace lors de la création de plusieurs copies, mais elle ne peut pas être fusionnée.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>Réseau de liens</translation>
+      <translation>Matrice liée</translation>
     </message>
   </context>
   <context>
@@ -602,8 +602,8 @@ La valeur absolue maximale est de 360 degrés.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Nombre d’éléments du tableau, y-compris une copie de l’objet d’origine.
-Doit être d’au moins 2.</translation>
+      <translation>Nombre d’éléments dans la matrice, dont une copie de l’objet originel.
+Ça doit être au moins 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="90"/>
@@ -651,8 +651,8 @@ Changer la direction de l’axe lui-même dans l’éditeur de propriété.</tra
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Coché, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
-Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
+      <translation>Si coché, les objets résultants de la matrice seront fusionnés s'ils se touchent.
+Cela ne fonctionne que si "Matrice liée" est désactivée.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
@@ -663,13 +663,13 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Coché, l'objet résultant sera une "Réseau lié" au lieu d'un réseau normal.
-Une réseau lié est plus efficace lors de la création de plusieurs copies, mais il ne peut pas être fusionné.</translation>
+      <translation>Si coché, l'objet résultant sera une "Matrice liée" au lieu d'une matrice normal.
+Une matrice liée est plus efficace lors de la création de plusieurs copies, mais elle ne peut pas être fusionnée.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>Réseau de liens</translation>
+      <translation>Matrice liée</translation>
     </message>
   </context>
   <context>
@@ -748,7 +748,8 @@ Une réseau lié est plus efficace lors de la création de plusieurs copies, mai
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
-      <translation>Sélectionnez une face ou un proxy de plan de travail ou trois sommets ou prenez l’une des options ci-dessous</translation>
+      <translation>Sélectionnez une face ou un proxy de plan de travail ou trois sommets.
+Ou prenez l’une des options ci-dessous</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
@@ -1560,7 +1561,6 @@ comme "Arial:Bold"</translation>
       <translation>Hauteur par défaut pour les textes et les cotes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="209"/>
       <location filename="../ui/preferences-drafttexts.ui" line="92"/>
       <location filename="../ui/preferences-drafttexts.ui" line="211"/>
       <location filename="../ui/preferences-drafttexts.ui" line="247"/>
@@ -1568,6 +1568,7 @@ comme "Arial:Bold"</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="365"/>
       <location filename="../ui/preferences-drafttexts.ui" line="432"/>
       <location filename="../ui/preferences-dxf.ui" line="535"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1886,9 +1887,9 @@ Vous pouvez également le faire manuellement en installant l'atelier "dxf_librar
       <translation>Permettre à FreeCAD de télécharger et mettre à jour automatiquement les librairies DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="26"/>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
+      <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import options</source>
       <translation>Options d'importation</translation>
     </message>
@@ -2093,8 +2094,8 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
 Si c'est défini à "0", la spline entière est traitée comme un segment droit.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="107"/>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
+      <location filename="../ui/preferences-svg.ui" line="107"/>
       <source>Export options</source>
       <translation>Options d'exportation</translation>
     </message>
@@ -2110,15 +2111,15 @@ Si c'est défini à "0", la spline entière est traitée comme un segment droit.
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="587"/>
-      <source>Drawing Views will be exported as blocks.
+      <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation>Les vues Drawing seront exportées en tant que blocs.
-Cela pourrait échouer pour les modèles DXF R12.</translation>
+      <translation>Les vues TechDraw seront exportées sous forme de blocs.
+Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
-      <source>Export Drawing Views as blocks</source>
-      <translation>Exporter les vues d'un dessin sous forme de blocs</translation>
+      <source>Export TechDraw Views as blocks</source>
+      <translation>Exporter les vues TechDraw sous forme de blocs</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
@@ -2394,7 +2395,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation>Chemin d'accès du convertisseur de fichiers</translation>
+      <translation>Chemin d'accès au convertisseur de fichiers</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
@@ -2764,7 +2765,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
       <location filename="../../WorkingPlane.py" line="840"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="386"/>
       <source>Front</source>
-      <translation>Face</translation>
+      <translation>Devant</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="561"/>
@@ -3065,10 +3066,10 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     </message>
     <message>
       <location filename="../../DraftGui.py" line="864"/>
-      <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
       <location filename="../../draftguitools/gui_offset.py" line="246"/>
       <location filename="../../draftguitools/gui_offset.py" line="263"/>
       <location filename="../../draftguitools/gui_offset.py" line="327"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
       <source>Offset</source>
       <translation>Décalage</translation>
     </message>
@@ -3254,11 +3255,11 @@ Ou téléchargez ces bibliothèques manuellement, comme expliqué sur https://gi
 Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="51"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="58"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="65"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="156"/>
-      <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
       <source>Custom</source>
       <translation>Personnalisée</translation>
     </message>
@@ -3283,41 +3284,41 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
       <translation>Définir l'échelle utilisée par les outils d'annotation de Draft</translation>
     </message>
     <message>
-      <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
-      <location filename="../../draftutils/utils.py" line="1051"/>
-      <location filename="../../draftmake/make_patharray.py" line="171"/>
-      <location filename="../../draftmake/make_patharray.py" line="358"/>
-      <location filename="../../draftmake/make_label.py" line="195"/>
-      <location filename="../../draftmake/make_pointarray.py" line="91"/>
-      <location filename="../../draftmake/make_text.py" line="84"/>
-      <location filename="../../draftmake/make_text.py" line="172"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_array.py" line="86"/>
       <location filename="../../draftmake/make_dimension.py" line="215"/>
       <location filename="../../draftmake/make_dimension.py" line="308"/>
       <location filename="../../draftmake/make_dimension.py" line="438"/>
       <location filename="../../draftmake/make_dimension.py" line="564"/>
-      <location filename="../../draftmake/make_array.py" line="86"/>
+      <location filename="../../draftmake/make_label.py" line="195"/>
       <location filename="../../draftmake/make_layer.py" line="58"/>
       <location filename="../../draftmake/make_layer.py" line="149"/>
-      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_patharray.py" line="171"/>
+      <location filename="../../draftmake/make_patharray.py" line="358"/>
+      <location filename="../../draftmake/make_pointarray.py" line="91"/>
+      <location filename="../../draftmake/make_text.py" line="84"/>
+      <location filename="../../draftmake/make_text.py" line="172"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
+      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/utils.py" line="1051"/>
       <source>No active document. Aborting.</source>
       <translation>Aucun document actif. Abandon.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftmake/make_circulararray.py" line="131"/>
+      <location filename="../../draftmake/make_dimension.py" line="322"/>
+      <location filename="../../draftmake/make_dimension.py" line="447"/>
+      <location filename="../../draftmake/make_label.py" line="236"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="167"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
       <location filename="../../draftmake/make_patharray.py" line="378"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="167"/>
-      <location filename="../../draftmake/make_label.py" line="236"/>
       <location filename="../../draftmake/make_pointarray.py" line="100"/>
       <location filename="../../draftmake/make_pointarray.py" line="111"/>
-      <location filename="../../draftmake/make_dimension.py" line="322"/>
-      <location filename="../../draftmake/make_dimension.py" line="447"/>
-      <location filename="../../draftmake/make_circulararray.py" line="131"/>
       <location filename="../../draftmake/make_polararray.py" line="103"/>
+      <location filename="../../draftutils/groups.py" line="132"/>
+      <location filename="../../draftutils/gui_utils.py" line="782"/>
       <source>Wrong input: object not in document.</source>
       <translation>Mauvaise entrée : l'objet n'est pas dans le document.</translation>
     </message>
@@ -3384,7 +3385,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
     <message>
       <location filename="../../draftutils/utils.py" line="656"/>
       <source>Vertices:</source>
-      <translation>Noeuds :</translation>
+      <translation>Sommets :</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="660"/>
@@ -3405,7 +3406,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
     <message>
       <location filename="../../draftutils/utils.py" line="711"/>
       <source>Objects have different placements. Distance between the two base points: </source>
-      <translation>Les objets ont des positions différentes. Distance entre les deux points de base : </translation>
+      <translation>Les objets ont des emplacements différents. Distance entre les deux points de base : </translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="714"/>
@@ -3461,6 +3462,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
       <source>Dir</source>
+      <comment>Dir here means Direction, not Directory. Also shorten the translation because of available space in GUI</comment>
       <translation>Répertoire</translation>
     </message>
     <message>
@@ -3472,7 +3474,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="147"/>
       <source>Path array</source>
-      <translation>Réseau selon une courbe</translation>
+      <translation>Matrice selon une trajectoire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="80"/>
@@ -3497,9 +3499,9 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
       <translation>Sélectionner la position du texte </translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="83"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="123"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="83"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
       <translation>Sélectionner le premier point</translation>
@@ -3515,6 +3517,8 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
       <translation>Créer une polyligne</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="149"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
       <location filename="../../draftguitools/gui_lines.py" line="222"/>
       <location filename="../../draftguitools/gui_lines.py" line="230"/>
       <location filename="../../draftguitools/gui_lines.py" line="237"/>
@@ -3522,8 +3526,6 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
       <location filename="../../draftguitools/gui_lines.py" line="255"/>
       <location filename="../../draftguitools/gui_splines.py" line="140"/>
       <location filename="../../draftguitools/gui_splines.py" line="145"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="149"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
       <source>Pick next point</source>
       <translation>Sélectionner le point suivant</translation>
     </message>
@@ -3944,8 +3946,8 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Sélectionner l'objet à réduire ou agrandir</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <location filename="../../draftguitools/gui_offset.py" line="146"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <source>Pick distance</source>
       <translation>Choisir la distance</translation>
     </message>
@@ -3980,9 +3982,9 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>La spline a été fermée</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <location filename="../../draftguitools/gui_beziers.py" line="141"/>
       <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
       <translation>Le dernier point a été supprimé</translation>
     </message>
@@ -4212,7 +4214,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="113"/>
       <source>Point array</source>
-      <translation>Réseau de points</translation>
+      <translation>Matrice selon des points</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
@@ -4326,7 +4328,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation>Réseau torsadé selon une courbe</translation>
+      <translation>Matrice torsadée selon une trajectoire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="79"/>
@@ -4339,8 +4341,8 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Changer la pente</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
       <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
       <translation>Sélectionner un objet à mettre à niveau</translation>
     </message>
@@ -4397,49 +4399,49 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
-      <translation>Sélectionner un objet à mettre en réseau</translation>
+      <translation>Sélectionnez un objet à transformé en matrice</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
       <source>Array</source>
-      <translation>Réseau</translation>
+      <translation>Matrice</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
       <source>Task panel:</source>
       <translation>Panneau des tâches :</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_polararray.py" line="94"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="95"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="258"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
-      <location filename="../../draftmake/make_polararray.py" line="94"/>
       <source>Polar array</source>
       <translation>Réseau polaire</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
       <source>At least one element must be selected.</source>
       <translation>Au moins un élément doit être sélectionné.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
       <source>Selection is not suitable for array.</source>
-      <translation>La sélection n'est pas adaptée pour un réseau.</translation>
+      <translation>La sélection n'est pas adaptée pour une matrice.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
       <source>Object:</source>
       <translation>Objet :</translation>
     </message>
@@ -4459,24 +4461,24 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>L'angle est inférieur à -360 degrés. Il est défini à cette valeur pour continuer.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
       <source>Center reset:</source>
       <translation>Réinitialisation du centre :</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
       <source>Fuse:</source>
       <translation>Union :</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
       <source>Create Link array:</source>
-      <translation>Créer un réseau lié :</translation>
+      <translation>Créer une matrice liée :</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
@@ -4489,26 +4491,26 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Angle polaire :</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
       <source>Center of rotation:</source>
       <translation>Centre de rotation :</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
       <source>Aborted:</source>
       <translation>Abandonné :</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="275"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="95"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="269"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="275"/>
       <source>Orthogonal array</source>
-      <translation>Réseau orthogonale</translation>
+      <translation>Matrice orthogonale</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
@@ -4571,13 +4573,13 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Défaut</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_circulararray.py" line="122"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="95"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="290"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
-      <location filename="../../draftmake/make_circulararray.py" line="122"/>
       <source>Circular array</source>
-      <translation>Réseau circulaire</translation>
+      <translation>Matrice circulaire</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
@@ -4587,7 +4589,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation>La distance radiale est nulle. Le réseau qui en résulte peut ne pas être correct.</translation>
+      <translation>La distance radiale est de zéro. La matrice résultante peut sembler incorrect.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
@@ -4692,7 +4694,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <location filename="../../draftobjects/pointarray.py" line="140"/>
       <location filename="../../draftobjects/pointarray.py" line="156"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation>ajout de la propriété "ExtraPlacement"</translation>
+      <translation>ajout de la propriété "Placement supplémentaire"</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="104"/>
@@ -4785,7 +4787,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <location filename="../../draftmake/make_arc_3points.py" line="193"/>
       <location filename="../../draftmake/make_arc_3points.py" line="204"/>
       <source>Final placement:</source>
-      <translation>Placement final :</translation>
+      <translation>Emplacement final :</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="195"/>
@@ -4803,22 +4805,19 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Mode carte :</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_label.py" line="313"/>
+      <location filename="../../draftmake/make_layer.py" line="201"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="151"/>
       <location filename="../../draftmake/make_patharray.py" line="201"/>
       <location filename="../../draftmake/make_patharray.py" line="283"/>
       <location filename="../../draftmake/make_patharray.py" line="292"/>
       <location filename="../../draftmake/make_patharray.py" line="388"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="151"/>
-      <location filename="../../draftmake/make_label.py" line="313"/>
       <location filename="../../draftmake/make_polararray.py" line="119"/>
-      <location filename="../../draftmake/make_layer.py" line="201"/>
       <source>Wrong input: must be a number.</source>
       <translation>Mauvaise entrée : doit être un nombre.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="210"/>
-      <location filename="../../draftmake/make_patharray.py" line="264"/>
-      <location filename="../../draftmake/make_patharray.py" line="275"/>
-      <location filename="../../draftmake/make_label.py" line="204"/>
+      <location filename="../../draftmake/make_circulararray.py" line="164"/>
       <location filename="../../draftmake/make_dimension.py" line="222"/>
       <location filename="../../draftmake/make_dimension.py" line="229"/>
       <location filename="../../draftmake/make_dimension.py" line="237"/>
@@ -4828,14 +4827,17 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <location filename="../../draftmake/make_dimension.py" line="571"/>
       <location filename="../../draftmake/make_dimension.py" line="599"/>
       <location filename="../../draftmake/make_dimension.py" line="607"/>
-      <location filename="../../draftmake/make_circulararray.py" line="164"/>
+      <location filename="../../draftmake/make_label.py" line="204"/>
+      <location filename="../../draftmake/make_patharray.py" line="210"/>
+      <location filename="../../draftmake/make_patharray.py" line="264"/>
+      <location filename="../../draftmake/make_patharray.py" line="275"/>
       <location filename="../../draftmake/make_polararray.py" line="126"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Mauvaise entrée : doit être un vecteur.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="223"/>
       <location filename="../../draftmake/make_label.py" line="251"/>
+      <location filename="../../draftmake/make_patharray.py" line="223"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Mauvaise entrée : doit être une liste ou un uplet de chaînes de caractères, ou une seule chaîne de caractère.</translation>
     </message>
@@ -4847,7 +4849,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="60"/>
       <source>Internal orthogonal array</source>
-      <translation>Réseau orthogonal interne</translation>
+      <translation>Matrice orthogonale interne</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="87"/>
@@ -4862,8 +4864,8 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Entrée : valeur unique développée en vecteur.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="119"/>
       <location filename="../../draftmake/make_circulararray.py" line="154"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="119"/>
       <location filename="../../draftmake/make_polararray.py" line="112"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>Mauvaise entrée : doit être un nombre entier.</translation>
@@ -4878,17 +4880,17 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation>Réseau orthogonal 2D</translation>
+      <translation>Matrice orthogonale 2D</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation>Réseau rectangulaire</translation>
+      <translation>Matrice rectangulaire</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation>Réseau rectangulaire 2D</translation>
+      <translation>Matrice rectangulaire 2D</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="215"/>
@@ -4898,8 +4900,8 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Mauvaise entrée : doit être un placement, un vecteur ou une rotation.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="230"/>
       <location filename="../../draftmake/make_dimension.py" line="316"/>
+      <location filename="../../draftmake/make_label.py" line="230"/>
       <source>Wrong input: object must not be a list.</source>
       <translation>Mauvaise entrée : l'objet ne doit pas être une liste.</translation>
     </message>
@@ -5274,9 +5276,9 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>ajout de la propriété de vue "TextColor"</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="94"/>
-      <location filename="../../draftobjects/label.py" line="258"/>
       <location filename="../../draftobjects/dimension.py" line="214"/>
+      <location filename="../../draftobjects/label.py" line="258"/>
+      <location filename="../../draftobjects/text.py" line="94"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
       <translation>les options "DisplayMode" ont été renommées en "World/Screen"</translation>
     </message>
@@ -5362,7 +5364,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="89"/>
       <source>Array tools</source>
-      <translation>Outils pour les réseaux</translation>
+      <translation>Outils matriciels</translation>
     </message>
   </context>
   <context>
@@ -5449,16 +5451,16 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
       <translation>La direction du décalage n'est pas définie. Déplacer d'abord la souris de chaque côté de l'objet pour indiquer une direction</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="144"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="144"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="148"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="148"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
@@ -5515,7 +5517,7 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftobjects/pointarray.py" line="219"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation>L'objet Point n'a pas de point défini, il ne peut pas être utilisé pour un réseau.</translation>
+      <translation>L'objet Point n'a pas de point défini, il ne peut pas être utilisé pour une matrice.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="111"/>
@@ -5602,12 +5604,12 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1770"/>
+      <location filename="../../importSVG.py" line="1780"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Style d'exportation SVG inconnu, changer de méthode</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1790"/>
+      <location filename="../../importSVG.py" line="1800"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>La liste d'exportation ne contient aucun objet avec une boite englobante valide</translation>
     </message>
@@ -5632,7 +5634,7 @@ Vous pouvez également sélectionner trois sommets ou un Proxy de plan de travai
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation>Réseau selon une courbe</translation>
+      <translation>Matrice selon une trajectoire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="76"/>
@@ -5649,14 +5651,14 @@ La trajectoire peut être une polyligne, une B-spline, une courbe de Bézier, ou
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="167"/>
       <source>Path Link array</source>
-      <translation>Réseau lié selon une courbe</translation>
+      <translation>Matrice de trajectoires liées</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="170"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Comme l'outil Réseau selon une courbe, mais crée un "réseau de lien" à la place.
-Un "réseau de lien" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" ne peut pas être utilisée.</translation>
+      <translation>Comme l'outil Matrice selon une Trajectoire, mais crée une "matrice liée" à la place.
+Une "matrice liée" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" est inutilisable.</translation>
     </message>
   </context>
   <context>
@@ -6111,7 +6113,7 @@ sur les nœuds et les objets pris en charge.</translation>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="65"/>
       <source>Circular array</source>
-      <translation>Réseau circulaire</translation>
+      <translation>Matrice circulaire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="68"/>
@@ -6119,9 +6121,9 @@ sur les nœuds et les objets pris en charge.</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation>Crée des copies de l'objet sélectionné, et place les copies selon un modèle radial créant diverses couches circulaires.
+      <translation>Crée des copies de l'objet sélectionné et place les copies dans un motif radial créant diverses couches circulaires.
 
-Le réseau peut être transformé en un réseau orthogonal ou polaire en changeant son type.</translation>
+La matrice est transformable en une matrice orthogonale ou polaire en changeant son type.</translation>
     </message>
   </context>
   <context>
@@ -6321,7 +6323,7 @@ Si d'autres objets sont sélectionnés, ils seront ignorés.</translation>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
       <translation>Crée un polygone régulier (triangle, carré, pentagon...) en définissant le nombre de côtés et le rayon circonscrit.
-Ctrl pour aimanter, Maj pour contraindre</translation>
+CTRL pour aimanter, MAJ pour contraindre</translation>
     </message>
   </context>
   <context>
@@ -6475,7 +6477,7 @@ Ctrl pour aimanter, Alt pour sélectionner des objets tangents.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="65"/>
       <source>Array</source>
-      <translation>Réseau</translation>
+      <translation>Matrice</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="68"/>
@@ -6486,7 +6488,7 @@ The array can be turned into a polar or a circular array by changing its type.</
       <translation>Crée des copies de l'objet sélectionné et place les copies dans un motif orthogonal,
 ce qui signifie que les copies suivent la direction spécifiée dans les axes X, Y, Z.
 
-Le réseau peut être transformé en réseau polaire ou circulaire en changeant son type.</translation>
+La matrice est transformable en une matrice polaire ou circulaire en changeant son type.</translation>
     </message>
   </context>
   <context>
@@ -6524,7 +6526,7 @@ Les objets ajoutés à ce calque peuvent partager les mêmes propriétés visuel
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="67"/>
       <source>Point array</source>
-      <translation>Réseau de points</translation>
+      <translation>Matrice selon des points</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
@@ -6539,14 +6541,14 @@ Sélectionner d'abord l'objet de base, puis sélectionner l'objet point.</transl
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="132"/>
       <source>PointLinkArray</source>
-      <translation>Réseau lié selon des points</translation>
+      <translation>Matrice liée selon des points</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="135"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
-      <translation>Comme l'outil Réseau de points, mais crée un "Réseau lié selon des points" à la place.
-Un "Réseau lié selon des points" est plus efficace lors de la manipulation de nombreuses copies.</translation>
+      <translation>Comme l'outil Matrice selon des points, mais crée une "Matrice liée selon des points" à la place.
+Une "Matrice liée selon des points" est plus efficace lors de la manipulation de nombreuses copies.</translation>
     </message>
   </context>
   <context>
@@ -6554,12 +6556,12 @@ Un "Réseau lié selon des points" est plus efficace lors de la manipulation de 
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation>Outils pour les réseaux</translation>
+      <translation>Outils matriciels</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation>Créer différents type de réseaux, notamment rectangulaire, polaire, circulaire, selon un chemin et selon des points</translation>
+      <translation>Créer différents types de matrices, notamment rectangulaire, polaire, circulaire, selon une trajectoire et selon des points</translation>
     </message>
   </context>
   <context>
@@ -6657,7 +6659,7 @@ Vous pouvez également sélectionner un objet "App::MeasureDistance" avant de la
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
       <translation>Étire les objets sélectionnés.
-Sélectionner un objet, puis dessiner un rectangle pour choisir les sommets qui seront étirés,
+Sélectionnez un objet, puis dessiner un rectangle pour choisir les sommets qui seront étirés,
 puis tracer une ligne pour spécifier la distance et la direction de l'étirement.</translation>
     </message>
   </context>
@@ -6692,7 +6694,7 @@ puis tracer une ligne pour spécifier la distance et la direction de l'étiremen
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation>Réseau torsadé selon une courbe</translation>
+      <translation>Matrice torsadée selon une trajectoire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="69"/>
@@ -6709,14 +6711,14 @@ La trajectoire peut être une polyligne, une B-spline, une courbe de Bézier, ou
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted Link array</source>
-      <translation>Réseau lié torsadé selon une courbe</translation>
+      <translation>Matrice liée torsadée selon une trajectoire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Comme l'outil Réseau torsadé selon une courbe, mais crée un "réseau orthogonal" à la place.
-Un "réseau orthogonal" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" ne peut pas être utilisée.</translation>
+      <translation>Comme l'outil de Matrice Torsadée selon une Trajectoire, mais crée une "matrice liée" à la place.
+Une "matrice liée" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" est inutilisable.</translation>
     </message>
   </context>
   <context>
@@ -6747,10 +6749,10 @@ Le clone résultant peut être mis à l'échelle dans chacune de ses trois direc
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation>Crée des copies de l'objet sélectionné, et place les copies dans un motif polaire
+      <translation>Crée des copies de l'objet sélectionné et place les copies dans un motif polaire
 défini par un centre de rotation et son angle.
 
-Le réseau peut être transformé en un réseau orthogonal ou circulaire en changeant son type.</translation>
+La matrice est transformable en une matrice orthogonale ou circulaire en changeant son type.</translation>
     </message>
   </context>
   <context>
@@ -6883,7 +6885,7 @@ Par exemple, il explose les polylignes sélectionnées en faces, polylignes et a
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
       <source>Array</source>
-      <translation>Réseau</translation>
+      <translation>Matrice</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
@@ -6891,10 +6893,10 @@ Par exemple, il explose les polylignes sélectionnées en faces, polylignes et a
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation>Créer un réseau à partir d'un objet sélectionné.
-Par défaut, c'est une réseau orthogonal de 2x2.
-Une fois le réseau créé, son type peut être changé
-en type polaire ou circulaire, et ses propriétés 
+      <translation>Créer une matrice à partir d'un objet sélectionné.
+Par défaut, c'est une matrice orthogonale de 2x2.
+Une fois la matrice créée, son type peut être changé
+en polaire ou circulaire, et ses propriétés 
 peuvent être modifiées.</translation>
     </message>
   </context>
@@ -6903,14 +6905,14 @@ peuvent être modifiées.</translation>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation>Réseau orthogonal</translation>
+      <translation>Matrice liée</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Comme l'outil Réseau, mais crée un "Réseau orthogonal" à la place.
-Un "Réseau orthogonal" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" ne peut pas être utilisée.</translation>
+      <translation>Comme l'outil Matrice, mais crée une "Matrice orthogonale" à la place.
+Une "Matrice orthogonale" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" est inutilisable.</translation>
     </message>
   </context>
   <context>
@@ -6918,7 +6920,7 @@ Un "Réseau orthogonal" est plus efficace lors de la gestion de nombreuses copie
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
       <source>The placement of the base point of the first line</source>
-      <translation>La position du point de base de la première ligne</translation>
+      <translation>Le placement du point de base de la première ligne</translation>
     </message>
     <message>
       <location filename="../../draftobjects/text.py" line="69"/>
@@ -7018,19 +7020,19 @@ régler à Vrai pour la fusion ou Faux pour un composé</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="58"/>
-      <location filename="../../draftobjects/polygon.py" line="68"/>
       <location filename="../../draftobjects/ellipse.py" line="58"/>
+      <location filename="../../draftobjects/polygon.py" line="68"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
       <source>Create a face</source>
       <translation>Créer une face</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/bezcurve.py" line="70"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
       <location filename="../../draftobjects/circle.py" line="62"/>
       <location filename="../../draftobjects/polygon.py" line="72"/>
-      <location filename="../../draftobjects/bezcurve.py" line="70"/>
       <location filename="../../draftobjects/rectangle.py" line="67"/>
       <location filename="../../draftobjects/wire.py" line="93"/>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
       <source>The area of this object</source>
       <translation>La surface de cet objet</translation>
     </message>
@@ -7074,8 +7076,8 @@ régler à Vrai pour la fusion ou Faux pour un composé</translation>
       <translation>L'objet de base qui sera dupliqué.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <location filename="../../draftobjects/patharray.py" line="185"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>L'objet le long duquel les copies seront distribuées. Il doit contenir des "Arêtes".</translation>
     </message>
@@ -7087,15 +7089,15 @@ régler à Vrai pour la fusion ou Faux pour un composé</translation>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation>Facteur de rotation du réseau torsadé.</translation>
+      <translation>Facteur de rotation de la matrice torsadée.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
-      <location filename="../../draftobjects/patharray.py" line="216"/>
       <location filename="../../draftobjects/array.py" line="335"/>
+      <location filename="../../draftobjects/patharray.py" line="216"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
       <location filename="../../draftobjects/pointarray.py" line="100"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation>Afficher les éléments isolés du réseau (uniquement pour les réseaux de liens)</translation>
+      <translation>Afficher les éléments isolés de la matrice (uniquement pour les matrices liées)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="68"/>
@@ -7195,12 +7197,12 @@ For 'Position', 'Length', and 'Area' these properties will be extracted from the
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
       <translation>Le type d'information affiché par cette étiquette.
 
-Si "Custom" est choisi, le contenu de "Custom Text" sera utilisé.
-Pour les autres types, la chaîne de caractère sera calculée automatiquement à partir de l'objet défini dans "Target".
-"Tag" et "Material" ne fonctionnent que pour les objets qui ont ces propriétés, comme les objets Arch.
+Si 'Personnalisé' est choisi, le contenu de 'Texte Personnalisé' sera utilisé.
+Pour les autres types, la chaîne de caractère sera calculée automatiquement à partir de l'objet défini dans 'Cible'.
+'Attache' et 'Matériau' ne fonctionnent que pour les objets qui ont ces propriétés, comme les objets Architecture.
 
-Pour "Position", "Length" et "Area", ces propriétés seront extraites de l'objet principal dans "Target",
-ou à partir du sous-élément "VertexN", "EdgeN" ou "FaceN" respectivement, si cela est spécifié.</translation>
+Pour 'Position', 'Longueur', et 'Zone', ces propriétés seront extraites de l'objet principal dans 'Cible',
+ou à partir du sous-élément 'SommetN', 'ArêteN', ou 'FaceN', respectivement, si elles sont spécifiées.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="89"/>
@@ -7221,8 +7223,8 @@ Lorsque vous utilisez un style enregistré, certaines des propriétés de la vue
 elles ne seront modifiables qu'en changeant le style à l'aide de l'outil "Éditeur de style d'annotation".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="177"/>
       <location filename="../../draftobjects/array.py" line="97"/>
+      <location filename="../../draftobjects/patharray.py" line="177"/>
       <source>The base object that will be duplicated</source>
       <translation>L'objet de base qui sera dupliqué</translation>
     </message>
@@ -7300,9 +7302,9 @@ Sinon les copies auront la même orientation que l'objet de base d'origine.</tra
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation>Le type de réseau à créer :
-- Orthogonal : place les copies dans la direction des axes globaux X, Y, Z ;
-- Polaire : place les copies le long d'un arc circulaire, jusqu'à un angle spécifié, et avec une certaine orientation définie par un centre et un axe ;
+      <translation>Le type de matrice à créer :
+- Orthogonal : place les copies dans la direction des axes globaux X, Y, Z.
+- Polaire : place les copies le long d'un arc circulaire, jusqu'à un angle spécifié, et avec une certaine orientation définie par un centre et un axe.
 - Circulaire : place les copies en couches circulaires concentriques autour de l'objet de base.</translation>
     </message>
     <message>
@@ -7343,22 +7345,22 @@ Sinon les copies auront la même orientation que l'objet de base d'origine.</tra
     <message>
       <location filename="../../draftobjects/array.py" line="214"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>La direction de l'axe autour duquel les éléments d'un réseau polaire ou circulaire seront créés</translation>
+      <translation>La direction de l'axe autour duquel les éléments d'une matrice polaire ou circulaire seront créés</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="225"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation>Point central pour les réseaux polaires et circulaires.
-L'"axe" passe par ce point.</translation>
+      <translation>Point central pour les matrices polaires et circulaires.
+L'"axe" passe à travers ce point.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="244"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation>L'objet axe qui remplace la valeur de l'"axe" et du "centre", par exemple, une ligne de données.
-Son placement, sa position et sa rotation seront utilisés lors de la création de réseaux polaires et circulaires.
+      <translation>L'objet axe qui remplace la valeur de l'"axe" et du "centre", par exemple, une droite de référence.
+Son placement, sa position et sa rotation seront utilisés lors de la création de matrices polaires et circulaires.
 Laisser cette propriété vide pour pouvoir définir l'"axe" et le "centre" manuellement.</translation>
     </message>
     <message>
@@ -7394,14 +7396,14 @@ Laisser cette propriété vide pour pouvoir définir l'"axe" et le "centre" manu
     <message>
       <location filename="../../draftobjects/array.py" line="320"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation>Un paramètre qui détermine le nombre de plans de symétrie que le réseau circulaire aura.</translation>
+      <translation>Un paramètre qui détermine le nombre de plans de symétrie que la matrice circulaire aura.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="137"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>Nombre total d'éléments dans le réseau.
-Cette propriété est en lecture seule, car le nombre dépend des paramètres du réseau.</translation>
+      <translation>Nombre total d'éléments dans la matrice.
+Cette propriété est en lecture seule, car le nombre dépend des paramètres de la matrice.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="67"/>
@@ -7417,8 +7419,8 @@ Cette propriété est en lecture seule, car le nombre dépend des paramètres du
       <location filename="../../draftobjects/pointarray.py" line="83"/>
       <source>Number of copies in the array.
 This property is read-only, as the number depends on the points in 'Point Object'.</source>
-      <translation>Nombre total d'éléments dans le réseau.
-Cette propriété est en lecture seule, car le nombre dépend des points contenus dans l'"objet point".</translation>
+      <translation>Nombre de copies dans la matrice.
+Cette propriété est en lecture seule, car le nombre dépend des points dans l'"Objet Point".</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="92"/>
@@ -7538,7 +7540,7 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
       <source>The placement of this object</source>
-      <translation>Le positionnement de cet objet</translation>
+      <translation>L'emplacement de cet objet</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
@@ -7624,7 +7626,7 @@ There are various possibilities:
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
       <translation>L'objet, et ses sous-éléments particuliers,
-que l'objet dimension mesure.
+que cet objet dimension mesure.
 
 Il existe plusieurs possibilités :
 - Un objet et une de ses arêtes.
@@ -7860,12 +7862,12 @@ des propriétés du "premier angle" et du "dernier angle".</translation>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation>Forcer le placement des motifs de synchronisation même lorsque les éléments du réseau sont étendus</translation>
+      <translation>Forcer le placement des motifs synchronisés même lorsque les éléments de la matrice sont étendus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="112"/>
       <source>Show the individual array elements</source>
-      <translation>Afficher les éléments isolés du réseau</translation>
+      <translation>Afficher les éléments isolés de la matrice</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="141"/>
@@ -8023,14 +8025,14 @@ Laisser vide pour la valeur par défaut du système.
 Utiliser "arch" pour forcer la notation architecturale US</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="201"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <source>Arrow size</source>
       <translation>Taille de la flèche</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="111"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="210"/>
+      <location filename="../../draftviewproviders/view_label.py" line="111"/>
       <source>Arrow type</source>
       <translation>Type de flèche</translation>
     </message>
@@ -8083,7 +8085,7 @@ au-delà de la ligne de la dimension</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
-      <translation>Définir/modifier les différentes couches de votre projet BIM</translation>
+      <translation>Définir/modifier les différentes calques de votre projet BIM</translation>
     </message>
   </context>
 </TS>

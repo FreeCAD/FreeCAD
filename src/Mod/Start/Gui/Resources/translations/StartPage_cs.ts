@@ -11,7 +11,7 @@
     <message>
       <location filename="TranslationTexts.py" line="43"/>
       <source>Documents</source>
-      <translation>Dokumenty</translation>
+      <translation>Dokument</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="44"/>

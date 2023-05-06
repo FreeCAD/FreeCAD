@@ -19,4 +19,45 @@ that reference the same configurable object</translation>
       <translation>未命名</translation>
     </message>
   </context>
+  <context>
+    <name>App::Origin</name>
+    <message>
+      <location filename="../../Origin.cpp" line="140"/>
+      <source>X-axis</source>
+      <translation type="unfinished">X-axis</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="141"/>
+      <source>Y-axis</source>
+      <translation type="unfinished">Y-axis</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="142"/>
+      <source>Z-axis</source>
+      <translation type="unfinished">Z-axis</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="143"/>
+      <source>XY-plane</source>
+      <translation type="unfinished">XY-plane</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="144"/>
+      <source>XZ-plane</source>
+      <translation type="unfinished">XZ-plane</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="145"/>
+      <source>YZ-plane</source>
+      <translation type="unfinished">YZ-plane</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::OriginGroupExtension</name>
+    <message>
+      <location filename="../../OriginGroupExtension.cpp" line="134"/>
+      <source>Origin</source>
+      <translation>原点</translation>
+    </message>
+  </context>
 </TS>
