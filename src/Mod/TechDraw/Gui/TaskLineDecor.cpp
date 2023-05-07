@@ -275,10 +275,10 @@ TaskRestoreLines::~TaskRestoreLines()
 
 void TaskRestoreLines::initUi()
 {
-    ui->l_All->setText(QString::number(countInvisibleLines()));
-    ui->l_Geometry->setText(QString::number(countInvisibleGeoms()));
-    ui->l_Cosmetic->setText(QString::number(countInvisibleCosmetics()));
-    ui->l_Center->setText(QString::number(countInvisibleCenters()));
+    ui->l_All->setText(QString::number(countInvisible<Cosmetic>()));
+    ui->l_Center->setText(QString::number(countInvisible<CenterLine>()));
+    ui->l_Cosmetic->setText(QString::number(countInvisible<CosmeticEdge>()));
+    ui->l_Geometry->setText(QString::number(countInvisible<GeomFormat>()));
 }
 
 void TaskRestoreLines::onAllPressed()
@@ -292,115 +292,54 @@ void TaskRestoreLines::onAllPressed()
 void TaskRestoreLines::onGeometryPressed()
 {
 //    Base::Console().Message("TRL::onGeometryPressed()\n");
-    restoreInvisibleGeoms();
+    restoreInvisible<GeomFormat>();
     ui->l_Geometry->setText(QString::number(0));
-    ui->l_All->setText(QString::number(countInvisibleLines()));
+    ui->l_All->setText(QString::number(countInvisible<Cosmetic>()));
 }
 
 void TaskRestoreLines::onCosmeticPressed()
 {
 //    Base::Console().Message("TRL::onCosmeticPressed()\n");
-    restoreInvisibleCosmetics();
+    restoreInvisible<CosmeticEdge>();
     ui->l_Cosmetic->setText(QString::number(0));
-    ui->l_All->setText(QString::number(countInvisibleLines()));
+    ui->l_All->setText(QString::number(countInvisible<Cosmetic>()));
 }
 
 void TaskRestoreLines::onCenterPressed()
 {
 //    Base::Console().Message("TRL::onCenterPressed()\n");
-    restoreInvisibleCenters();
+    restoreInvisible<CenterLine>();
     ui->l_Center->setText(QString::number(0));
-    ui->l_All->setText(QString::number(countInvisibleLines()));
+    ui->l_All->setText(QString::number(countInvisible<Cosmetic>()));
 }
 
-int TaskRestoreLines::countInvisibleLines()
+template <typename T>
+int TaskRestoreLines::countInvisible()
 {
-    int result = 0;
-    result += countInvisibleGeoms();
-    result += countInvisibleCosmetics();
-    result += countInvisibleCenters();
-    return result;
+    static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
+
+    std::vector<T*> cosmetics = m_partFeat->Cosmetics.getValues<T*>();
+    return std::count_if(
+        cosmetics.begin(),
+        cosmetics.end(),
+        [](Cosmetic* cosmetic){ return cosmetic->m_format.m_visible; }
+    );
 }
 
-int TaskRestoreLines::countInvisibleGeoms()
+template<typename T>
+void TaskRestoreLines::restoreInvisible()
 {
-    int iGeoms = 0;
-    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->Cosmetics.getValues<GeomFormat*>();
-    for (auto& g : geoms) {
-        if (!g->m_format.m_visible) {
-            iGeoms++;
+    static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
+
+    const std::vector<T*> cosmetics = m_partFeat->Cosmetics.getValues<T*>();
+    for (auto& cosmetic : cosmetics) {
+        if (!cosmetic->m_format.m_visible) {
+            cosmetic->m_format.m_visible = true;
         }
     }
-    return iGeoms;
-}
-
-int TaskRestoreLines::countInvisibleCosmetics()
-{
-    int iCosmos = 0;
-    const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->Cosmetics.getValues<CosmeticEdge*>();
-    for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) {
-            iCosmos++;
-        }
-    }
-    return iCosmos++;
-}
-
-int TaskRestoreLines::countInvisibleCenters()
-{
-    int iCenter = 0;
-    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->Cosmetics.getValues<CenterLine*>();
-    for (auto& c : centers) {
-        if (!c->m_format.m_visible) {
-            iCenter++;
-        }
-    }
-    return iCenter++;
-}
-
-void TaskRestoreLines::restoreInvisibleLines()
-{
-    restoreInvisibleGeoms();
-    restoreInvisibleCosmetics();
-    restoreInvisibleCenters();
-}
-
-void TaskRestoreLines::restoreInvisibleGeoms()
-{
-    const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->Cosmetics.getValues<GeomFormat*>();
-    for (auto& g : geoms) {
-        if (!g->m_format.m_visible) {
-            g->m_format.m_visible = true;
-        }
-    }
-    // m_partFeat->GeomFormats.setValues(geoms);
+    // m_partFeat->Cosmetics.setValues(cosmetics);
     m_parent->apply(false);                   //don't undo the work we just did
 }
-
-void TaskRestoreLines::restoreInvisibleCosmetics()
-{
-    const std::vector<TechDraw::CosmeticEdge*>& cosmos = m_partFeat->Cosmetics.getValues<CosmeticEdge*>();
-    for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) {
-            c->m_format.m_visible = true;
-        }
-    }
-    // m_partFeat->CosmeticEdges.setValues(cosmos); This line is uneeded? Right?
-    m_parent->apply(false);                   //don't undo the work we just did
-}
-
-void TaskRestoreLines::restoreInvisibleCenters()
-{
-    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->Cosmetics.getValues<CenterLine*>();
-    for (auto& c : centers) {
-        if (!c->m_format.m_visible) {
-            c->m_format.m_visible = true;
-        }
-    }
-    //m_partFeat->CenterLines.setValues(centers);
-    m_parent->apply(false);                   //don't undo the work we just did
-}
-
 
 bool TaskRestoreLines::accept()
 {

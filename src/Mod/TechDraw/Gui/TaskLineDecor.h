@@ -98,14 +98,10 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e) override;
     void initUi();
-    int countInvisibleLines();
-    int countInvisibleGeoms();
-    int countInvisibleCosmetics();
-    int countInvisibleCenters();
-    void restoreInvisibleLines();
-    void restoreInvisibleGeoms();
-    void restoreInvisibleCosmetics();
-    void restoreInvisibleCenters();
+    template<typename T>
+    int countInvisible();
+    template<typename T>
+    void restoreInvisible();
 
 private:
     std::unique_ptr<Ui_TaskRestoreLines> ui;
