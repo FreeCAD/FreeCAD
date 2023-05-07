@@ -208,13 +208,20 @@ void CosmeticExtension::removeCosmetic(std::vector<std::string> tags) {
 // find the center line corresponding to selection name (Edge5)
 //overload for index only
 template<typename T>
-T CosmeticExtension::getCosmeticByName(int i) const
+T CosmeticExtension::getCosmeticByName(int index) const
 {
     static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
-//    Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
-    std::stringstream edgeName;
-    edgeName << "Edge" << i;
-    return getCosmeticByName<T>(edgeName.str());
+    // Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
+    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
+    if (!dvp) {
+        return nullptr;
+    }
+    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(index);
+    if (!base || base->getCosmeticTag().empty()) {
+        return nullptr;
+    }
+    return Cosmetics.getValue<T>(base->getCosmeticTag());
 }
 template CenterLine* CosmeticExtension::getCosmeticByName(int i) const;
 template CosmeticEdge* CosmeticExtension::getCosmeticByName(int i) const;
@@ -225,18 +232,9 @@ template<typename T>
 T CosmeticExtension::getCosmeticByName(std::string name) const
 {
     static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
-//    Base::Console().Message("CEx::getCLBySelection(%s)\n", name.c_str());
-    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (!dvp) {
-        return nullptr;
-    }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (!base || base->getCosmeticTag().empty()) {
-        return nullptr;
-    }
-    return Cosmetics.getValue<T>(base->getCosmeticTag());
+    // Base::Console().Message("CEx::getCLBySelection(%s)\n", name.c_str());
+    int index = DrawUtil::getIndexFromName(name);
+    return getCosmeticByName<T>(index);
 }
 template CenterLine* CosmeticExtension::getCosmeticByName(std::string name) const;
 template CosmeticEdge* CosmeticExtension::getCosmeticByName(std::string name) const;
