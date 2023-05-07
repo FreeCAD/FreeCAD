@@ -953,7 +953,7 @@ SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId) {
     SbRotation rotation = intermediateOrientation.inverse() * standardOrientation;
     rotation.getValue(axis, angle);
 
-    // f is a small value used to control orientation priority when the camera is almost excactly between two
+    // f is a small value used to control orientation priority when the camera is almost exactly between two
     // orientations (e.g. +45 and -45 degrees). The standard orientation is preferred compared to
     // +90 and -90 degree orientations and the +90 and -90 degree orientations are preferred compared to an
     // upside down standard orientation
