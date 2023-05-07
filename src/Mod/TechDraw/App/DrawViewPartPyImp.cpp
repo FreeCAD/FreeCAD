@@ -308,7 +308,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
-    std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
+    std::string newTag = dvp->addCosmetic<CosmeticEdge>(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->Cosmetics.getValue<CosmeticEdge*>(newTag);
     if (ce) {
         ce->m_format.m_style = style;
@@ -353,7 +353,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     pnt2 = pnt2 - centroid;
     pnt2 = DrawUtil::invertY(dvp->projectPoint(pnt2));
 
-    std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
+    std::string newTag = dvp->addCosmetic<CosmeticEdge>(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->Cosmetics.getValue<CosmeticEdge*>(newTag);
     if (ce) {
         ce->m_format.m_style = style;

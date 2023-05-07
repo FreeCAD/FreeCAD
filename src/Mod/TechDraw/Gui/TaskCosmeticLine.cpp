@@ -189,7 +189,7 @@ void TaskCosmeticLine::createCosmeticLine(void)
         p1 = DrawUtil::invertY(m_partFeat->projectPoint(p1));
     }
 
-    m_tag = m_partFeat->addCosmeticEdge(p0, p1);
+    m_tag = m_partFeat->addCosmetic<CosmeticEdge>(p0, p1);
     m_ce = m_partFeat->Cosmetics.getValue<CosmeticEdge*>(m_tag);
 
     Gui::Command::commitCommand();

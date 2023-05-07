@@ -141,38 +141,6 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
     }
 }
 
-//********** Cosmetic Edge *****************************************************
-
-//returns unique CE id
-//only adds ce to celist property.  does not add to display geometry until dvp executes.
-std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
-                                               Base::Vector3d end)
-{
-//    Base::Console().Message("CEx::addCosmeticEdge(s, e)\n");
-    TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
-    Cosmetics.addValue(ce);
-    return ce->getTagAsString();  // What happens to ce??? Memore-leak???
-}
-
-//********** Center Line *******************************************************
-
-//returns unique CL id
-//only adds cl to cllist property.  does not add to display geometry until dvp executes.
-std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
-                                               Base::Vector3d end)
-{
-//    Base::Console().Message("CEx::addCenterLine(%s)\n",
-//                            DrawUtil::formatVector(start).c_str(),
-//                            DrawUtil::formatVector(end).c_str());
-    TechDraw::CenterLine* centerLine = new TechDraw::CenterLine(start, end);
-    Cosmetics.addValue(centerLine);
-    return centerLine->getTagAsString();  // What happens to centerLine??? Memore-leak???
-}
-
-
-
-
-
 //********** Geometry Formats **************************************************
 // find the cosmetic edge corresponding to selection name (Edge5)
 // used when selecting
@@ -272,6 +240,21 @@ T CosmeticExtension::getCosmeticByName(std::string name) const
 }
 template CenterLine* CosmeticExtension::getCosmeticByName(std::string name) const;
 template CosmeticEdge* CosmeticExtension::getCosmeticByName(std::string name) const;
+
+//returns unique CE id
+//only adds ce to celist property.  does not add to display geometry until dvp executes.
+template<typename T>
+std::string CosmeticExtension::addCosmetic(const Base::Vector3d& start, const Base::Vector3d& end)
+{
+    static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
+    //    Base::Console().Message("CEx::addCosmeticEdge(s, e)\n");
+    T* newCosmetic = new T(start, end);
+    Cosmetics.addValue(newCosmetic);
+    return newCosmetic->getTagAsString();  // What happens to newCosmetic??? Memory-leak???
+}
+template std::string CosmeticExtension::addCosmetic<CenterLine>(const Base::Vector3d& start, const Base::Vector3d& end);
+template std::string CosmeticExtension::addCosmetic<CosmeticEdge>(const Base::Vector3d& start, const Base::Vector3d& end);
+
 
 //================================================================================
 PyObject* CosmeticExtension::getExtensionPyObject(void) {
