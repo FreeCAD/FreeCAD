@@ -237,6 +237,7 @@ T CosmeticExtension::getCosmeticByName(std::string name) const
     return getCosmeticByName<T>(index);
 }
 template CenterLine* CosmeticExtension::getCosmeticByName(std::string name) const;
+template Cosmetic* CosmeticExtension::getCosmeticByName(std::string name) const;
 template CosmeticEdge* CosmeticExtension::getCosmeticByName(std::string name) const;
 
 //returns unique CE id

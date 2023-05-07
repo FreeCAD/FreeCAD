@@ -74,10 +74,8 @@ Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3
 void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor);
 void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat,
                         float factor);
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
-void _setLineAttributes(TechDraw::CenterLine* cosEdge);
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color);
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color);
+void _setLineAttributes(TechDraw::Cosmetic* cosmetic);
+void _setLineAttributes(TechDraw::Cosmetic* cosmetic, int style, float weight, App::Color color);
 float _getAngle(Base::Vector3d center, Base::Vector3d point);
 std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
                                              TechDraw::DrawViewPart* objFeat);
@@ -769,17 +767,9 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     for (const std::string& name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
-        if (baseGeo) {
-            if (baseGeo->getCosmetic()) {
-                if (baseGeo->source() == 1) {
-                    TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticByName<CosmeticEdge*>(name);
-                    _setLineAttributes(cosEdgeTag);
-                }
-                else if (baseGeo->source() == 2) {
-                    TechDraw::CenterLine* centerLineTag = objFeat->getCosmeticByName<CenterLine*>(name);
-                    _setLineAttributes(centerLineTag);
-                }
-            }
+        if (baseGeo && baseGeo->getCosmetic()) {
+            TechDraw::Cosmetic* cosmetic = objFeat->getCosmeticByName<Cosmetic*>(name);
+            _setLineAttributes(cosmetic);
         }
     }
     getSelection().clearSelection();
@@ -2079,36 +2069,20 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
     }
 }
 
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
+void _setLineAttributes(TechDraw::Cosmetic* cosmetic)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosmetic->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosmetic->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
+    cosmetic->m_format.m_color = _getActiveLineAttributes().getColorValue();
 }
 
-void _setLineAttributes(TechDraw::CenterLine* cosEdge)
+void _setLineAttributes(TechDraw::Cosmetic* cosmetic, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
-}
-
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
-{
-    // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = style;
-    cosEdge->m_format.m_weight = weight;
-    cosEdge->m_format.m_color = color;
-}
-
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
-{
-    // set line attributes of a centerline
-    cosEdge->m_format.m_style = style;
-    cosEdge->m_format.m_weight = weight;
-    cosEdge->m_format.m_color = color;
+    cosmetic->m_format.m_style = style;
+    cosmetic->m_format.m_weight = weight;
+    cosmetic->m_format.m_color = color;
 }
 }// namespace TechDrawGui
 
