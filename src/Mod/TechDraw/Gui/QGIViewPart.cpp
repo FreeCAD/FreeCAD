@@ -630,7 +630,7 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
     //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
     bool result = true;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
-    TechDraw::CosmeticEdge* ce = partFeat ? partFeat->getCosmeticEdge(cTag) : nullptr;
+    TechDraw::CosmeticEdge* ce = partFeat ? partFeat->Cosmetics.getValue<CosmeticEdge*>(cTag) : nullptr;
     if (ce) {
         App::Color color = Preferences::getAccessibleColor(ce->m_format.m_color);
         item->setNormalColor(color.asValue<QColor>());
@@ -647,7 +647,7 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
     //    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n", sourceIndex);
     bool result = true;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
-    TechDraw::CenterLine* cl = partFeat ? partFeat->getCenterLine(cTag) : nullptr;
+    TechDraw::CenterLine* cl = partFeat ? partFeat->Cosmetics.getValue<CenterLine*>(cTag) : nullptr;
     if (cl) {
         App::Color color = Preferences::getAccessibleColor(cl->m_format.m_color);
         item->setNormalColor(color.asValue<QColor>());

@@ -154,12 +154,6 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     return ce->getTagAsString();  // What happens to ce??? Memore-leak???
 }
 
-//get CE by unique id
-TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tag) const
-{
-    return Cosmetics.getValue<CosmeticEdge*>(tag);
-}
-
 // find the cosmetic edge corresponding to selection name (Edge5)
 // used when selecting
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::string name) const
@@ -176,7 +170,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
         return nullptr;
     }
 
-    return getCosmeticEdge(base->getCosmeticTag());
+    return Cosmetics.getValue<CosmeticEdge*>(base->getCosmeticTag());
 }
 
 //overload for index only
@@ -203,13 +197,6 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
     return centerLine->getTagAsString();  // What happens to centerLine??? Memore-leak???
 }
 
-//get CL by unique id
-TechDraw::CenterLine* CosmeticExtension::getCenterLine(std::string tag) const
-{
-//    Base::Console().Message("CEx::getCenterLine(%s)\n", tagString.c_str());
-    return Cosmetics.getValue<CenterLine*>(tag);
-}
-
 // find the center line corresponding to selection name (Edge5)
 // used when selecting
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string name) const
@@ -225,7 +212,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
     if (!base || base->getCosmeticTag().empty()) {
         return nullptr;
     }
-    return getCenterLine(base->getCosmeticTag());
+    return Cosmetics.getValue<CenterLine*>(base->getCosmeticTag());
 }
 
 //overload for index only
@@ -241,13 +228,6 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 
 
 //********** Geometry Formats **************************************************
-//get GF by unique id
-TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tag) const
-{
-//    Base::Console().Message("CEx::getGeomFormat(%s)\n", tagString.c_str());
-    return Cosmetics.getValue<GeomFormat*>(tag);
-}
-
 // find the cosmetic edge corresponding to selection name (Edge5)
 // used when selecting
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string name) const

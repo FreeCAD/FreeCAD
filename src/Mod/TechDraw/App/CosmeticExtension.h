@@ -58,16 +58,13 @@ public:
     virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
-    virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
 
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual CenterLine*     getCenterLineBySelection(std::string name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
-    virtual CenterLine*     getCenterLine(std::string tag) const;
 
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
-    virtual GeomFormat*     getGeomFormat(std::string id) const;
 
     template<typename T>
     std::string             addCosmetic(BaseGeomPtr bg);

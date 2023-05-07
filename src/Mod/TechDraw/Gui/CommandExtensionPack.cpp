@@ -122,7 +122,7 @@ void execHoleCircle(Gui::Command* cmd)
     TechDraw::BaseGeomPtr bigCircle =
         std::make_shared<TechDraw::Circle>(bigCenter / scale, bigRadius / scale);
     std::string bigCircleTag = objFeat->addCosmetic<CosmeticEdge>(bigCircle);
-    TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
+    TechDraw::CosmeticEdge* ceCircle = objFeat->Cosmetics.getValue<CosmeticEdge*>(bigCircleTag);
     _setLineAttributes(ceCircle);
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
         Base::Vector3d oneCircleCenter = oneCircle->center;
@@ -133,7 +133,7 @@ void execHoleCircle(Gui::Command* cmd)
         startPt.y = -startPt.y;
         endPt.y = -endPt.y;
         std::string oneLineTag = objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
-        TechDraw::CosmeticEdge* ceLine = objFeat->getCosmeticEdge(oneLineTag);
+        TechDraw::CosmeticEdge* ceLine = objFeat->Cosmetics.getValue<CosmeticEdge*>(oneLineTag);
         _setLineAttributes(ceLine);
     }
     cmd->getSelection().clearSelection();
@@ -204,9 +204,9 @@ void execCircleCenterLines(Gui::Command* cmd)
                 Base::Vector3d bottom(center.x, center.y - radius - 2.0, 0.0);
                 std::string line1tag = objFeat->addCosmeticEdge(right / scale, left / scale);
                 std::string line2tag = objFeat->addCosmeticEdge(top / scale, bottom / scale);
-                TechDraw::CosmeticEdge* horiz = objFeat->getCosmeticEdge(line1tag);
+                TechDraw::CosmeticEdge* horiz = objFeat->Cosmetics.getValue<CosmeticEdge*>(line1tag);
                 _setLineAttributes(horiz);
-                TechDraw::CosmeticEdge* vert = objFeat->getCosmeticEdge(line2tag);
+                TechDraw::CosmeticEdge* vert = objFeat->Cosmetics.getValue<CosmeticEdge*>(line2tag);
                 _setLineAttributes(vert);
             }
         }
@@ -883,7 +883,7 @@ void execDrawCosmArc(Gui::Command* cmd)
         TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::AOC>(
             vertexPoints[0] / scale, arcRadius / scale, -angle2, -angle1);
         std::string arcTag = objFeat->addCosmetic<CosmeticEdge>(baseGeo);
-        TechDraw::CosmeticEdge* arcEdge = objFeat->getCosmeticEdge(arcTag);
+        TechDraw::CosmeticEdge* arcEdge = objFeat->Cosmetics.getValue<CosmeticEdge*>(arcTag);
         _setLineAttributes(arcEdge);
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
@@ -946,7 +946,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
         TechDraw::BaseGeomPtr baseGeo =
             std::make_shared<TechDraw::Circle>(vertexPoints[0] / scale, circleRadius / scale);
         std::string cicleTag = objFeat->addCosmetic<CosmeticEdge>(baseGeo);
-        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
+        TechDraw::CosmeticEdge* circleEdge = objFeat->Cosmetics.getValue<CosmeticEdge*>(cicleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
@@ -1010,7 +1010,7 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
         TechDraw::BaseGeomPtr theCircle =
             std::make_shared<TechDraw::Circle>(circleCenter / scale, circleRadius / scale);
         std::string cicleTag = objFeat->addCosmetic<CosmeticEdge>(theCircle);
-        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
+        TechDraw::CosmeticEdge* circleEdge = objFeat->Cosmetics.getValue<CosmeticEdge*>(cicleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
@@ -1212,7 +1212,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
             startPoint.y = -startPoint.y;
             endPoint.y = -endPoint.y;
             std::string lineTag = objFeat->addCosmeticEdge(startPoint / scale, endPoint / scale);
-            TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
+            TechDraw::CosmeticEdge* lineEdge = objFeat->Cosmetics.getValue<CosmeticEdge*>(lineTag);
             _setLineAttributes(lineEdge);
             objFeat->refreshCEGeoms();
             objFeat->requestPaint();
@@ -1550,7 +1550,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
                         if (baseGeo->source() == 1) {
-                            auto cosEdge = objFeat->getCosmeticEdge(uniTag);
+                            auto cosEdge = objFeat->Cosmetics.getValue<CosmeticEdge*>(uniTag);
                             oldStyle = cosEdge->m_format.m_style;
                             oldWeight = cosEdge->m_format.m_weight;
                             oldColor = cosEdge->m_format.m_color;
@@ -1558,7 +1558,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         }
                         else if (baseGeo->source() == 2) {
                             isCenterLine = true;
-                            centerEdge = objFeat->getCenterLine(uniTag);
+                            centerEdge = objFeat->Cosmetics.getValue<CenterLine*>(uniTag);
                         }
                         double scale = objFeat->getScale();
                         Base::Vector3d direction = (P1 - P0).Normalize();
@@ -1581,7 +1581,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         else {
                             std::string lineTag =
                                 objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
-                            TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
+                            TechDraw::CosmeticEdge* lineEdge = objFeat->Cosmetics.getValue<CosmeticEdge*>(lineTag);
                             _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
                             objFeat->refreshCEGeoms();
                         }
@@ -2024,7 +2024,7 @@ void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, floa
         TechDraw::BaseGeomPtr threadArc =
             std::make_shared<TechDraw::AOC>(center / scale, radius * factor / scale, 255.0, 165.0);
         std::string arcTag = objFeat->addCosmetic<CosmeticEdge>(threadArc);
-        TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
+        TechDraw::CosmeticEdge* arc = objFeat->Cosmetics.getValue<CosmeticEdge*>(arcTag);
         _setLineAttributes(arc);
     }
 }
@@ -2071,8 +2071,8 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
             objFeat->addCosmeticEdge((start0 - delta) / scale, (end0 - delta) / scale);
         std::string line1Tag =
             objFeat->addCosmeticEdge((start1 + delta) / scale, (end1 + delta) / scale);
-        TechDraw::CosmeticEdge* cosTag0 = objFeat->getCosmeticEdge(line0Tag);
-        TechDraw::CosmeticEdge* cosTag1 = objFeat->getCosmeticEdge(line1Tag);
+        TechDraw::CosmeticEdge* cosTag0 = objFeat->Cosmetics.getValue<CosmeticEdge*>(line0Tag);
+        TechDraw::CosmeticEdge* cosTag1 = objFeat->Cosmetics.getValue<CosmeticEdge*>(line1Tag);
         _setLineAttributes(cosTag0);
         _setLineAttributes(cosTag1);
     }

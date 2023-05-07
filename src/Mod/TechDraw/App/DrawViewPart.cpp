@@ -1516,7 +1516,7 @@ void DrawViewPart::addCosmeticEdgesToGeom()
 int DrawViewPart::add1CEToGE(std::string tag)
 {
     //    Base::Console().Message("CEx::add1CEToGE(%s) 2\n", tag.c_str());
-    TechDraw::CosmeticEdge* ce = getCosmeticEdge(tag);
+    TechDraw::CosmeticEdge* ce = Cosmetics.getValue<CosmeticEdge*>(tag);
     if (!ce) {
         Base::Console().Message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
         return -1;
@@ -1552,7 +1552,7 @@ void DrawViewPart::clearCenterLines()
 int DrawViewPart::add1CLToGE(std::string tag)
 {
     //    Base::Console().Message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
-    TechDraw::CenterLine* cl = getCenterLine(tag);
+    TechDraw::CenterLine* cl = Cosmetics.getValue<CenterLine*>(tag);
     if (!cl) {
         Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
         return -1;

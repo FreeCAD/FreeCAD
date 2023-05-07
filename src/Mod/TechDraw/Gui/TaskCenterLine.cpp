@@ -70,7 +70,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     const TechDraw::BaseGeomPtrVector &geoms = partFeat->getEdgeGeometry();
     BaseGeomPtr bg = geoms.at(m_geomIndex);
     std::string tag = bg->getCosmeticTag();
-    m_cl = partFeat->getCenterLine(tag);
+    m_cl = partFeat->Cosmetics.getValue<CenterLine*>(tag);
     //existence of m_cl is checked in CommandAnnotate
     m_type = m_cl->m_type;
    m_mode = m_cl->m_mode;
