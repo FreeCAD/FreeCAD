@@ -331,7 +331,7 @@ void TaskCenterLine::createCenterLine()
     cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
     cl->m_format.m_visible = true;
-    m_partFeat->addCenterLine(cl);
+    m_partFeat->addCosmetic<CenterLine>(cl);
 
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
@@ -339,7 +339,7 @@ void TaskCenterLine::createCenterLine()
 
     // entering the edit mode
     m_editMode = true;
-    m_cl = cl;
+    m_cl = cl;  // What happens to cl??? Memory-leak???
 }
 
 void TaskCenterLine::updateOrientation()

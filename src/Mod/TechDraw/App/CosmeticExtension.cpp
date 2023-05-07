@@ -151,7 +151,7 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
 //    Base::Console().Message("CEx::addCosmeticEdge(s, e)\n");
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
     Cosmetics.addValue(ce);
-    return ce->getTagAsString();
+    return ce->getTagAsString();  // What happens to ce??? Memore-leak???
 }
 
 //get CE by unique id
@@ -200,14 +200,7 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
 //                            DrawUtil::formatVector(end).c_str());
     TechDraw::CenterLine* centerLine = new TechDraw::CenterLine(start, end);
     Cosmetics.addValue(centerLine);
-    return centerLine->getTagAsString();
-}
-
-std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* centerLine)
-{
-//    Base::Console().Message("CEx::addCenterLine(cl: %X)\n", cl);
-    Cosmetics.addValue(centerLine);
-    return centerLine->getTagAsString();
+    return centerLine->getTagAsString();  // What happens to centerLine??? Memore-leak???
 }
 
 //get CL by unique id
@@ -248,17 +241,6 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 
 
 //********** Geometry Formats **************************************************
-//returns unique GF id
-//only adds gf to gflist property.  does not add to display geometry until dvp repaints.
-std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)
-{
-//    Base::Console().Message("CEx::addGeomFormat(gf: %X)\n", gf);
-    TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(gf);
-    Cosmetics.addValue(newGF);
-    return newGF->getTagAsString();
-}
-
-
 //get GF by unique id
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tag) const
 {
@@ -306,6 +288,18 @@ std::string CosmeticExtension::addCosmetic(BaseGeomPtr bg) {
     return cosmetic->getTagAsString();
 }
 template std::string CosmeticExtension::addCosmetic<CosmeticEdge>(BaseGeomPtr bg);
+
+//only adds gf to gflist property.  does not add to display geometry until dvp repaints.
+template<typename T>
+std::string CosmeticExtension::addCosmetic(T* cosmetic) {
+    static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
+
+    T* newCosmetic = new T(cosmetic);
+    Cosmetics.addValue(newCosmetic);
+    return newCosmetic->getTagAsString();
+}
+template std::string CosmeticExtension::addCosmetic<GeomFormat>(GeomFormat* cosmetic);
+template std::string CosmeticExtension::addCosmetic<CenterLine>(CenterLine* cosmetic);
 
 void CosmeticExtension::removeCosmetic(std::string tag) {
     Cosmetics.removeValue(tag);
