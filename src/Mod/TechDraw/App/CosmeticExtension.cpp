@@ -43,7 +43,6 @@ CosmeticExtension::CosmeticExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (nullptr), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(Cosmetics, (nullptr), cgroup, App::Prop_Output, "Cosmetics Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
@@ -219,46 +218,33 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
 //    Base::Console().Message("CEx::addCenterLine(%s)\n",
 //                            DrawUtil::formatVector(start).c_str(),
 //                            DrawUtil::formatVector(end).c_str());
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    TechDraw::CenterLine* cl = new TechDraw::CenterLine(start, end);
-    cLines.push_back(cl);
-    CenterLines.setValues(cLines);
-    return cl->getTagAsString();
+    TechDraw::CenterLine* centerLine = new TechDraw::CenterLine(start, end);
+    Cosmetics.addValue(centerLine);
+    return centerLine->getTagAsString();
 }
 
-std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
+std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* centerLine)
 {
 //    Base::Console().Message("CEx::addCenterLine(cl: %X)\n", cl);
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    cLines.push_back(cl);
-    CenterLines.setValues(cLines);
-    return cl->getTagAsString();
+    Cosmetics.addValue(centerLine);
+    return centerLine->getTagAsString();
 }
 
 
 std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
 {
 //    Base::Console().Message("CEx::addCenterLine(bg: %X)\n", bg);
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    TechDraw::CenterLine* cl = new TechDraw::CenterLine(bg);
-    cLines.push_back(cl);
-    CenterLines.setValues(cLines);
-    return cl->getTagAsString();
+    TechDraw::CenterLine* centerLine = new TechDraw::CenterLine(bg);
+    Cosmetics.addValue(centerLine);
+    return centerLine->getTagAsString();
 }
 
 
 //get CL by unique id
-TechDraw::CenterLine* CosmeticExtension::getCenterLine(std::string tagString) const
+TechDraw::CenterLine* CosmeticExtension::getCenterLine(std::string tag) const
 {
 //    Base::Console().Message("CEx::getCenterLine(%s)\n", tagString.c_str());
-    const std::vector<TechDraw::CenterLine*> cLines = CenterLines.getValues();
-    for (auto& cl: cLines) {
-        std::string clTag = cl->getTagAsString();
-        if (clTag == tagString) {
-            return cl;
-        }
-    }
-    return nullptr;
+    return Cosmetics.getValue<CenterLine*>(tag);
 }
 
 // find the center line corresponding to selection name (Edge5)
@@ -288,17 +274,10 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
     return getCenterLineBySelection(edgeName.str());
 }
 
-void CosmeticExtension::removeCenterLine(std::string delTag)
+void CosmeticExtension::removeCenterLine(std::string tag)
 {
 //    Base::Console().Message("DVP::removeCL(%s)\n", delTag.c_str());
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    std::vector<CenterLine*> newLines;
-    for (auto& cl: cLines) {
-        if (cl->getTagAsString() != delTag)  {
-            newLines.push_back(cl);
-        }
-    }
-    CenterLines.setValues(newLines);
+    Cosmetics.removeValue(tag);
 }
 
 void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)

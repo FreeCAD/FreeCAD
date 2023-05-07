@@ -235,6 +235,7 @@ void PropertyCosmeticList::clear() {
         _lValueList.end()
     );
 }
+template void PropertyCosmeticList::clear<CenterLine*>();
 template void PropertyCosmeticList::clear<CosmeticEdge*>();
 template void PropertyCosmeticList::clear<GeomFormat*>();
 
@@ -255,6 +256,7 @@ const T PropertyCosmeticList::getValue(std::string tag) const {
 }
 // Notice that const comes after the type when you have to make your own explicit template instantiation...
 // only took 1 hour to find out (https://stackoverflow.com/questions/1296907/function-template-specialization-with-reference-to-pointer)
+template CenterLine* const PropertyCosmeticList::getValue(std::string tag) const;
 template CosmeticEdge* const PropertyCosmeticList::getValue(std::string tag) const;
 template GeomFormat* const PropertyCosmeticList::getValue(std::string tag) const;
 // Qualifier warnings????
@@ -273,6 +275,7 @@ const std::vector<T> PropertyCosmeticList::getValues() const {
     }
     return result;
 }
+template const std::vector<CenterLine*> PropertyCosmeticList::getValues<CenterLine*>() const;
 template const std::vector<CosmeticEdge*> PropertyCosmeticList::getValues<CosmeticEdge*>() const;
 template const std::vector<GeomFormat*> PropertyCosmeticList::getValues<GeomFormat*>() const;
 
