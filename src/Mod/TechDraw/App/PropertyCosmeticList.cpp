@@ -277,6 +277,7 @@ const std::vector<T> PropertyCosmeticList::getValues() const {
 }
 template const std::vector<CenterLine*> PropertyCosmeticList::getValues<CenterLine*>() const;
 template const std::vector<CosmeticEdge*> PropertyCosmeticList::getValues<CosmeticEdge*>() const;
+template const std::vector<Cosmetic*> PropertyCosmeticList::getValues<Cosmetic*>() const;
 template const std::vector<GeomFormat*> PropertyCosmeticList::getValues<GeomFormat*>() const;
 
 // If you get linker errors, remember to do explicit template instantiation!!!
