@@ -190,7 +190,7 @@ void TaskCosmeticLine::createCosmeticLine(void)
     }
 
     m_tag = m_partFeat->addCosmeticEdge(p0, p1);
-    m_ce = m_partFeat->getCosmeticEdge(m_tag);
+    m_ce = m_partFeat->Cosmetics.getValue<CosmeticEdge*>(m_tag);
 
     Gui::Command::commitCommand();
 }
