@@ -56,7 +56,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 {
     //existence of partFeat is checked in calling command
 
-    m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
+    m_ce = m_partFeat->getCosmeticByName<CosmeticEdge*>(m_edgeName);
     if (!m_ce) {
         Base::Console().Error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
         return;

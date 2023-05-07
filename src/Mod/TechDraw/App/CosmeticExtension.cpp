@@ -154,32 +154,13 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     return ce->getTagAsString();  // What happens to ce??? Memore-leak???
 }
 
-// find the cosmetic edge corresponding to selection name (Edge5)
-// used when selecting
-TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::string name) const
-{
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
-    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (!dvp) {
-        return nullptr;
-    }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (!base || base->getCosmeticTag().empty()) {
-        return nullptr;
-    }
-
-    return Cosmetics.getValue<CosmeticEdge*>(base->getCosmeticTag());
-}
-
 //overload for index only
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
     std::stringstream edgeName;
     edgeName << "Edge" << i;
-    return getCosmeticEdgeBySelection(edgeName.str());
+    return getCosmeticByName<CosmeticEdge*>(edgeName.str());
 }
 
 //********** Center Line *******************************************************
@@ -197,31 +178,13 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
     return centerLine->getTagAsString();  // What happens to centerLine??? Memore-leak???
 }
 
-// find the center line corresponding to selection name (Edge5)
-// used when selecting
-TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string name) const
-{
-//    Base::Console().Message("CEx::getCLBySelection(%s)\n", name.c_str());
-    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (!dvp) {
-        return nullptr;
-    }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (!base || base->getCosmeticTag().empty()) {
-        return nullptr;
-    }
-    return Cosmetics.getValue<CenterLine*>(base->getCosmeticTag());
-}
-
 //overload for index only
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
     std::stringstream edgeName;
     edgeName << "Edge" << i;
-    return getCenterLineBySelection(edgeName.str());
+    return getCosmeticByName<CenterLine*>(edgeName.str());
 }
 
 
@@ -290,6 +253,28 @@ void CosmeticExtension::removeCosmetic(std::vector<std::string> tags) {
         Cosmetics.removeValue(tag);
     }
 }
+
+// find the center line corresponding to selection name (Edge5)
+// used when selecting
+template<typename T>
+T CosmeticExtension::getCosmeticByName(std::string name) const
+{
+    static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
+//    Base::Console().Message("CEx::getCLBySelection(%s)\n", name.c_str());
+    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
+    if (!dvp) {
+        return nullptr;
+    }
+    int idx = DrawUtil::getIndexFromName(name);
+    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
+    if (!base || base->getCosmeticTag().empty()) {
+        return nullptr;
+    }
+    return Cosmetics.getValue<T>(base->getCosmeticTag());
+}
+template CenterLine* CosmeticExtension::getCosmeticByName(std::string name) const;
+template CosmeticEdge* CosmeticExtension::getCosmeticByName(std::string name) const;
 
 //================================================================================
 PyObject* CosmeticExtension::getExtensionPyObject(void) {

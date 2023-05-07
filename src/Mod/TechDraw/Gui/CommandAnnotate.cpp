@@ -756,7 +756,7 @@ void execCenterLine(Gui::Command* cmd)
                              QObject::tr("No CenterLine in selection."));
         return;
     } else {
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
+        TechDraw::CenterLine* cl = baseFeat->getCosmeticByName<CenterLine*>(edgeNames.front());
         if (!cl) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a CenterLine."));
@@ -827,7 +827,7 @@ void exec2LineCenterLine(Gui::Command* cmd)
                                                         selectedEdges,
                                                         false));
     } else if (selectedEdges.size() == 1) {
-        TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(selectedEdges.front());
+        TechDraw::CenterLine* cl = dvp->getCosmeticByName<CenterLine*>(selectedEdges.front());
         if (!cl) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a CenterLine."));
@@ -939,7 +939,7 @@ void exec2PointCenterLine(Gui::Command* cmd)
                                                         vertexNames,
                                                         false));
     } else if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
+        TechDraw::CenterLine* cl = baseFeat->getCosmeticByName<CenterLine*>(edgeNames.front());
         if (!cl) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a CenterLine."));
@@ -1060,7 +1060,7 @@ void execLine2Points(Gui::Command* cmd)
 
     //check if editing existing edge
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
+        TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticByName<CosmeticEdge*>(edgeNames.front());
         if (!ce) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a Cosmetic Line."));
