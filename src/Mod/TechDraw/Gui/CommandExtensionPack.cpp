@@ -1554,7 +1554,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                             oldStyle = cosEdge->m_format.m_style;
                             oldWeight = cosEdge->m_format.m_weight;
                             oldColor = cosEdge->m_format.m_color;
-                            objFeat->removeCosmeticEdge(toDelete);
+                            objFeat->removeCosmetic(toDelete);
                         }
                         else if (baseGeo->source() == 2) {
                             isCenterLine = true;
