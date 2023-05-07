@@ -1215,10 +1215,10 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
         }
 
         if (!ce2Delete.empty()) {
-            objFeat->removeCosmeticEdge(ce2Delete);
+            objFeat->removeCosmetic(ce2Delete);
         }
         if (!cl2Delete.empty()) {
-            objFeat->removeCenterLine(cl2Delete);
+            objFeat->removeCosmetic(cl2Delete);
         }
     objFeat->recomputeFeature();
     }

@@ -188,18 +188,6 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) con
     return getCosmeticEdgeBySelection(edgeName.str());
 }
 
-void CosmeticExtension::removeCosmeticEdge(std::string delTag)
-{
-    Cosmetics.removeValue(delTag);
-}
-
-void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
-{
-    for (auto& t: delTags) {
-        removeCosmeticEdge(t);
-    }
-}
-
 //********** Center Line *******************************************************
 
 //returns unique CL id
@@ -256,18 +244,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
     return getCenterLineBySelection(edgeName.str());
 }
 
-void CosmeticExtension::removeCenterLine(std::string tag)
-{
-//    Base::Console().Message("DVP::removeCL(%s)\n", delTag.c_str());
-    Cosmetics.removeValue(tag);
-}
 
-void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
-{
-    for (auto& t: delTags) {
-        removeCenterLine(t);
-    }
-}
 
 
 //********** Geometry Formats **************************************************
@@ -320,12 +297,6 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
     return getGeomFormatBySelection(edgeName.str());
 }
 
-void CosmeticExtension::removeGeomFormat(std::string tag)
-{
-//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
-    Cosmetics.removeValue(tag);
-}
-
 template<typename T>
 std::string CosmeticExtension::addCosmetic(BaseGeomPtr bg) {
     static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
@@ -335,6 +306,16 @@ std::string CosmeticExtension::addCosmetic(BaseGeomPtr bg) {
     return cosmetic->getTagAsString();
 }
 template std::string CosmeticExtension::addCosmetic<CosmeticEdge>(BaseGeomPtr bg);
+
+void CosmeticExtension::removeCosmetic(std::string tag) {
+    Cosmetics.removeValue(tag);
+}
+
+void CosmeticExtension::removeCosmetic(std::vector<std::string> tags) {
+    for(auto& tag: tags) {
+        Cosmetics.removeValue(tag);
+    }
+}
 
 //================================================================================
 PyObject* CosmeticExtension::getExtensionPyObject(void) {

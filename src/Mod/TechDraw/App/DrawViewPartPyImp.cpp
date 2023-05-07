@@ -502,7 +502,7 @@ PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    dvp->removeCosmeticEdge(tag);
+    dvp->removeCosmetic(tag);
 
     Py_Return;
 }
@@ -600,7 +600,7 @@ PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    dvp->removeCenterLine(tag);
+    dvp->removeCosmetic(tag);
 
     Py_Return;
 }

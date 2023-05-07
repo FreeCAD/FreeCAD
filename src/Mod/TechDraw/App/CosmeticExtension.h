@@ -59,26 +59,22 @@ public:
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
     virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
-    virtual void            removeCosmeticEdge(std::string tag);
-    virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
 
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
     virtual CenterLine*     getCenterLineBySelection(std::string name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
     virtual CenterLine*     getCenterLine(std::string tag) const;
-    virtual void            removeCenterLine(std::string tag);
-    virtual void            removeCenterLine(std::vector<std::string> delTags);
 
     virtual std::string     addGeomFormat(TechDraw::GeomFormat* gf);
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
     virtual GeomFormat*     getGeomFormat(std::string id) const;
-    virtual void            removeGeomFormat(std::string tag);
 
     template<typename T>
     std::string             addCosmetic(BaseGeomPtr bg);
-
+    void                    removeCosmetic(std::string tag);
+    void                    removeCosmetic(std::vector<std::string> tag);
     PyObject* getExtensionPyObject() override;
 
 protected:
