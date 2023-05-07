@@ -390,7 +390,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
     TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::Circle> (pnt1, radius);
-    std::string newTag = dvp->addCosmeticEdge(bg);
+    std::string newTag = dvp->addCosmetic<CosmeticEdge>(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
@@ -430,7 +430,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
     TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::AOC> (pnt1, radius, angle1, angle2);
-    std::string newTag = dvp->addCosmeticEdge(bg);
+    std::string newTag = dvp->addCosmetic<CosmeticEdge>(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;

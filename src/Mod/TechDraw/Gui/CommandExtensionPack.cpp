@@ -121,7 +121,7 @@ void execHoleCircle(Gui::Command* cmd)
     float bigRadius = (Circles[0]->center - bigCenter).Length();
     TechDraw::BaseGeomPtr bigCircle =
         std::make_shared<TechDraw::Circle>(bigCenter / scale, bigRadius / scale);
-    std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
+    std::string bigCircleTag = objFeat->addCosmetic<CosmeticEdge>(bigCircle);
     TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
     _setLineAttributes(ceCircle);
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
@@ -882,7 +882,7 @@ void execDrawCosmArc(Gui::Command* cmd)
         float angle2 = _getAngle(vertexPoints[0], vertexPoints[2]);
         TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::AOC>(
             vertexPoints[0] / scale, arcRadius / scale, -angle2, -angle1);
-        std::string arcTag = objFeat->addCosmeticEdge(baseGeo);
+        std::string arcTag = objFeat->addCosmetic<CosmeticEdge>(baseGeo);
         TechDraw::CosmeticEdge* arcEdge = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arcEdge);
         objFeat->refreshCEGeoms();
@@ -945,7 +945,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
         float circleRadius = (vertexPoints[1] - vertexPoints[0]).Length();
         TechDraw::BaseGeomPtr baseGeo =
             std::make_shared<TechDraw::Circle>(vertexPoints[0] / scale, circleRadius / scale);
-        std::string cicleTag = objFeat->addCosmeticEdge(baseGeo);
+        std::string cicleTag = objFeat->addCosmetic<CosmeticEdge>(baseGeo);
         TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
@@ -1009,7 +1009,7 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
         float circleRadius = (vertexPoints[0] - circleCenter).Length();
         TechDraw::BaseGeomPtr theCircle =
             std::make_shared<TechDraw::Circle>(circleCenter / scale, circleRadius / scale);
-        std::string cicleTag = objFeat->addCosmeticEdge(theCircle);
+        std::string cicleTag = objFeat->addCosmetic<CosmeticEdge>(theCircle);
         TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
@@ -2023,7 +2023,7 @@ void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, floa
         float radius = cgen->radius;
         TechDraw::BaseGeomPtr threadArc =
             std::make_shared<TechDraw::AOC>(center / scale, radius * factor / scale, 255.0, 165.0);
-        std::string arcTag = objFeat->addCosmeticEdge(threadArc);
+        std::string arcTag = objFeat->addCosmetic<CosmeticEdge>(threadArc);
         TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arc);
     }
