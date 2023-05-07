@@ -209,7 +209,7 @@ void TaskLineDecor::applyDecorations()
                     TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(num,
                                                                            fmt);
 //                    int idx =
-                    m_partFeat->addGeomFormat(newGF);
+                    m_partFeat->addCosmetic<GeomFormat>(newGF);  // What happens to newGF??? Memory-leak???
                }
             }
         }

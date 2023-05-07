@@ -540,7 +540,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
     if (!subs.empty()) {
         cl = CenterLine::CenterLineBuilder(dvp, subs, mode);     //vert, horiz, align
         if (cl) {
-            tag = dvp->addCenterLine(cl);
+            tag = dvp->addCosmetic<CenterLine>(cl);  // What happens to cl??? Memory-leak???
         }
         else {
             PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCenterLine - line creation failed");
@@ -634,7 +634,7 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
         TechDraw::LineFormat fmt(style, weight, color, visible);
         TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(idx, fmt);
 //                    int idx =
-        dvp->addGeomFormat(newGF);
+        dvp->addCosmetic<GeomFormat>(newGF);  // What happens to newGF??? Memory-leak??????
     }
 
     Py_Return;
