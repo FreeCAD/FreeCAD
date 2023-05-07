@@ -154,14 +154,6 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     return ce->getTagAsString();
 }
 
-std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
-{
-//    Base::Console().Message("CEx::addCosmeticEdge(bg: %X)\n", bg);
-    TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(bg);
-    Cosmetics.addValue(ce);
-    return ce->getTagAsString();
-}
-
 //get CE by unique id
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tag) const
 {
@@ -229,16 +221,6 @@ std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* centerLine)
     Cosmetics.addValue(centerLine);
     return centerLine->getTagAsString();
 }
-
-
-std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
-{
-//    Base::Console().Message("CEx::addCenterLine(bg: %X)\n", bg);
-    TechDraw::CenterLine* centerLine = new TechDraw::CenterLine(bg);
-    Cosmetics.addValue(centerLine);
-    return centerLine->getTagAsString();
-}
-
 
 //get CL by unique id
 TechDraw::CenterLine* CosmeticExtension::getCenterLine(std::string tag) const
@@ -343,6 +325,16 @@ void CosmeticExtension::removeGeomFormat(std::string tag)
 //    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
     Cosmetics.removeValue(tag);
 }
+
+template<typename T>
+std::string CosmeticExtension::addCosmetic(BaseGeomPtr bg) {
+    static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
+
+    T* cosmetic = new T(bg);
+    Cosmetics.addValue(cosmetic);
+    return cosmetic->getTagAsString();
+}
+template std::string CosmeticExtension::addCosmetic<CosmeticEdge>(BaseGeomPtr bg);
 
 //================================================================================
 PyObject* CosmeticExtension::getExtensionPyObject(void) {
