@@ -28,6 +28,7 @@
 
 #include "FCGlobal.h"
 
+#include "Application.h"
 #include "MappedElement.h"
 #include "StringHasher.h"
 
@@ -138,20 +139,30 @@ public:
      * An element can have multiple mapped names. However, a name can only be
      * mapped to one element
      *
-     * Note: the original proc passed `ComplexGeoData& master` for getting the `Tag`,
-     *   now it just passes `long masterTag`.
+     * Note: the original proc was in the context of ComplexGeoData, which provided `Tag` access,
+     *   now you must pass in `long masterTag` explicitly.
      */
-    MappedName setElementName(const IndexedName& element, const MappedName& name,
-                              ElementMapPtr& elementMap, long masterTag,
-                              const ElementIDRefs* sid = nullptr, bool overwrite = false);
+    MappedName setElementName(const IndexedName& element,
+                              const MappedName& name,
+                              long masterTag,
+                              const ElementIDRefs* sid = nullptr,
+                              bool overwrite = false);
 
     /* Generates a new MappedName from the current details.
-     * Note: the original encodeElementName passed `ComplexGeoData& master` for getting the `Tag`,
-     *   now it just passes `long masterTag`.
+     *
+     * The result is streamed to `ss` and stored in `name`.
+     *
+     * Note: the original proc was in the context of ComplexGeoData, which provided `Tag` access,
+     *   now you must pass in `long masterTag` explicitly.
      */
-    void encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
-                           ElementIDRefs* sids, long masterTag, const char* postfix = 0,
-                           long tag = 0, bool forceTag = false) const;
+    void encodeElementName(char element_type,
+                           MappedName& name,
+                           std::ostringstream& ss,
+                           ElementIDRefs* sids,
+                           long masterTag,
+                           const char* postfix = 0,
+                           long tag = 0,
+                           bool forceTag = false) const;
 
     /** Convenience method to hash the main element name
      *
@@ -202,8 +213,12 @@ public:
 
     bool hasChildElementMap() const;
 
-    /* Note: the original hashChildMaps passed `ComplexGeoData& master` for getting the `Tag`,
-     *   now it just passes `long masterTag`.*/
+    /* Ensures that for each IndexedName mapped to IndexedElements, that
+     *  each child is properly hashed (cached).
+     *
+     * Note: the original proc was in the context of ComplexGeoData, which provided `Tag` access,
+     *   now you must pass in `long masterTag` explicitly.
+     */
     void hashChildMaps(long masterTag);
 
     void collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
@@ -226,7 +241,8 @@ public:
 
     /* Note: the original addChildElements passed `ComplexGeoData& master` for getting the `Tag`,
      *   now it just passes `long masterTag`.*/
-    void addChildElements(ElementMapPtr& elementMap, long masterTag,
+    void addChildElements(ElementMapPtr& elementMap,
+                          long masterTag,
                           const std::vector<MappedChildElements>& children);
 
     std::vector<MappedChildElements> getChildElements() const;
@@ -267,6 +283,7 @@ private:
 
     /// String hasher for element name shortening
     App::StringHasherRef hasher;
+    void init();
 };
 
 

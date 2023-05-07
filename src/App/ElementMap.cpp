@@ -39,8 +39,7 @@ static std::unordered_map<const ElementMap*, unsigned> _ElementMapToId;
 static std::unordered_map<unsigned, ElementMapPtr> _IdToElementMap;
 
 
-ElementMap::ElementMap()
-{
+void ElementMap::init() {
     static bool inited;
     if (!inited) {
         inited = true;
@@ -60,6 +59,12 @@ ElementMap::ElementMap()
         });
     }
 }
+
+ElementMap::ElementMap()
+{
+    init();
+}
+
 
 void ElementMap::beforeSave(const ::App::StringHasherRef& hasher) const
 {
@@ -474,15 +479,17 @@ void ElementMap::addPostfix(const QByteArray& postfix, std::map<QByteArray, int>
     }
 }
 
-MappedName ElementMap::setElementName(const IndexedName& element, const MappedName& name,
-                                      ElementMapPtr& elementMap, long masterTag,
-                                      const ElementIDRefs* sid, bool overwrite)
+MappedName ElementMap::setElementName(const IndexedName& element,
+                                      const MappedName& name,
+                                      long masterTag,
+                                      const ElementIDRefs* sid,
+                                      bool overwrite)
 {
     if (!element)
         throw Base::ValueError("Invalid input");
     if (!name) {
-        if (elementMap)
-            elementMap->erase(element);
+        if (this)
+            erase(element);
         return MappedName();
     }
 
@@ -496,8 +503,8 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
         if (c == '.' || std::isspace((int)c))
             FC_THROWM(Base::RuntimeError, "Illegal character in element name: " << element);
     }
-    if (!elementMap)
-        elementMap = std::make_shared<ElementMap>();
+    if (!this)
+        init();
 
     ElementIDRefs _sid;
     if (!sid)
@@ -507,7 +514,7 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
     Data::MappedName n(name);
     for (int i = 0;;) {
         IndexedName existing;
-        MappedName res = elementMap->addName(n, element, *sid, overwrite, &existing);
+        MappedName res = this->addName(n, element, *sid, overwrite, &existing);
         if (res)
             return res;
         if (++i == 100) {
@@ -867,9 +874,9 @@ void ElementMap::hashChildMaps(long masterTag)
     if (childElements.empty() || !this->hasher)
         return;
     std::ostringstream ss;
-    for (auto& v : this->indexedNames) {
-        for (auto& vv : v.second.children) {
-            auto& child = vv.second;
+    for (auto& indexedNameIndexedElements : this->indexedNames) {
+        for (auto& indexedChild : indexedNameIndexedElements.second.children) {
+            auto& child = indexedChild.second;
             int len = 0;
             long tag;
             int pos = MappedName::fromRawData(child.postfix)
@@ -1056,7 +1063,7 @@ void ElementMap::addChildElements(ElementMapPtr& elementMap, long masterTag,
                 ss.str("");
                 encodeElementName(
                     idx[0], name, ss, &sids, masterTag, child.postfix.constData(), child.tag);
-                setElementName(idx, name, elementMap, masterTag, &sids);
+                setElementName(idx, name, masterTag, &sids);
             }
             continue;
         }
