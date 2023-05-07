@@ -772,11 +772,11 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
         if (baseGeo) {
             if (baseGeo->getCosmetic()) {
                 if (baseGeo->source() == 1) {
-                    TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticEdgeBySelection(name);
+                    TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticByName<CosmeticEdge*>(name);
                     _setLineAttributes(cosEdgeTag);
                 }
                 else if (baseGeo->source() == 2) {
-                    TechDraw::CenterLine* centerLineTag = objFeat->getCenterLineBySelection(name);
+                    TechDraw::CenterLine* centerLineTag = objFeat->getCosmeticByName<CenterLine*>(name);
                     _setLineAttributes(centerLineTag);
                 }
             }

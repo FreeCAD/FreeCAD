@@ -483,7 +483,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
 
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeBySelection(name);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticByName<CosmeticEdge*>(name);
     if (ce) {
         return ce->getPyObject();
     }
@@ -581,7 +581,7 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(tag);
+    TechDraw::CenterLine* cl = dvp->getCosmeticByName<CenterLine*>(tag);
     if (cl) {
         return cl->getPyObject();
     }
