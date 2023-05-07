@@ -1554,9 +1554,9 @@ double System::calculateConstraintErrorByTag(int tagId)
     double sqErr = 0.0; //accumulator of squared errors
     double err = 0.0;//last computed signed error value
 
-    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
-        if ((*constr)->getTag() == tagId){
-            err = (*constr)->error();
+    for (const auto& constr: clist) {
+        if (constr->getTag() == tagId){
+            err = constr->error();
             sqErr += err*err;
             cnt++;
         };
@@ -1623,10 +1623,10 @@ void System::initSolution(Algorithm alg)
             return;
     }
     std::vector<Constraint *> clistR;
-    for (auto constr = clist.cbegin(); constr != clist.cend(); ++constr) {
-        if (redundant.empty() || redundant.count(constr->get()) == 0)
+    for (const auto& constr: clist) {
+        if (redundant.empty() || redundant.count(constr.get()) == 0)
         {
-            clistR.push_back(constr->get());
+            clistR.push_back(constr.get());
         }
     }
 
@@ -4638,20 +4638,20 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
 
     int jacobianconstraintcount=0;
     int allcount=0;
-    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
-        (*constr)->revertParams();
+    for (const auto& constr: clist) {
+        constr->revertParams();
         ++allcount;
-        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
+        if (constr->getTag() >= 0 && constr->isDriving()) {
             jacobianconstraintcount++;
             for (int j=0; j < int(pdiagnoselist.size()); j++) {
-                J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
+                J(jacobianconstraintcount-1,j) = constr->grad(pdiagnoselist[j]);
             }
 
             // parallel processing: create tag multiplicity map
-            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
-                tagmultiplicity[(*constr)->getTag()] = 0;
+            if(tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end())
+                tagmultiplicity[constr->getTag()] = 0;
             else
-                tagmultiplicity[(*constr)->getTag()]++;
+                tagmultiplicity[constr->getTag()]++;
 
             jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
         }
@@ -5394,9 +5394,9 @@ void System::identifyConflictingRedundantConstraints(
 
     std::vector<Constraint *> clistTmp;
     clistTmp.reserve(clist.size());
-    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
-        if ((*constr)->isDriving() && skipped.count(constr->get()) == 0)
-            clistTmp.push_back(constr->get());
+    for (const auto& constr: clist) {
+        if (constr->isDriving() && skipped.count(constr.get()) == 0)
+            clistTmp.push_back(constr.get());
     }
 
     SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
@@ -5485,9 +5485,10 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     // remove tags represented at least in one non-redundant constraint
-    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr)
-        if (redundant.count(constr->get()) == 0)
-            redundantTagsSet.erase((*constr)->getTag());
+    for (const auto& constr: clist) {
+        if (redundant.count(constr.get()) == 0)
+            redundantTagsSet.erase(constr->getTag());
+    }
 
     redundantTags.resize(redundantTagsSet.size());
     std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
