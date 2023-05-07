@@ -56,10 +56,8 @@ public:
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
 
     virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
-    virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
 
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
-    virtual CenterLine*     getCenterLineBySelection(int i) const;
 
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
@@ -72,6 +70,8 @@ public:
     void                    removeCosmetic(std::vector<std::string> tag);
     template<typename T>
     T                       getCosmeticByName(std::string name) const;
+    template<typename T>
+    T                       getCosmeticByName(int i) const;
     PyObject* getExtensionPyObject() override;
 
 protected:
