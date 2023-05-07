@@ -1623,6 +1623,10 @@ void System::initSolution(Algorithm alg)
             return;
     }
     std::vector<Constraint *> clistR;
+    if(redundant.empty())
+    {
+        clistR.reserve(clist.size());
+    }
     for (const auto& constr: clist) {
         if (redundant.empty() || redundant.count(constr.get()) == 0)
         {
