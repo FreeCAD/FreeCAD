@@ -512,31 +512,7 @@ void QGIViewPart::drawViewPart()
             item->setWidth(lineWidth);
             item->setNormalColor(edgeColor);
             item->setStyle(Qt::SolidLine);
-            if ((*itGeom)->getCosmetic()) {
-                int source = (*itGeom)->source();
-                if (source == COSMETICEDGE) {
-                    std::string cTag = (*itGeom)->getCosmeticTag();
-                    showItem = formatGeomFromCosmetic(cTag, item);
-                }
-                else if (source == CENTERLINE) {
-                    std::string cTag = (*itGeom)->getCosmeticTag();
-                    showItem = formatGeomFromCenterLine(cTag, item);
-                }
-                else {
-                    Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",
-                                            i, source);
-                }
-            }
-            else {
-                TechDraw::GeomFormat* gf = viewPart->getGeomFormatBySelection(i);
-                if (gf) {
-                    App::Color  color = Preferences::getAccessibleColor(gf->m_format.m_color);
-                    item->setNormalColor(color.asValue<QColor>());
-                    item->setWidth(gf->m_format.m_weight * lineScaleFactor);
-                    item->setStyle(gf->m_format.m_style);
-                    showItem = gf->m_format.m_visible;
-                }
-            }
+            formatGeom(item, *itGeom, i);
 
             addToGroup(item);      //item is at scene(0, 0), not group(0, 0)
             item->setPos(0.0, 0.0);//now at group(0, 0)
@@ -625,37 +601,31 @@ void QGIViewPart::drawViewPart()
     }
 }
 
-bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
-{
-    //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
-    bool result = true;
+bool QGIViewPart::formatGeom(QGIEdge* item, BaseGeomPtr bg, int i) {
+    TechDraw::Cosmetic* cosmetic;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
-    TechDraw::CosmeticEdge* ce = partFeat ? partFeat->Cosmetics.getValue<CosmeticEdge*>(cTag) : nullptr;
-    if (ce) {
-        App::Color color = Preferences::getAccessibleColor(ce->m_format.m_color);
-        item->setNormalColor(color.asValue<QColor>());
-        item->setWidth(ce->m_format.m_weight * lineScaleFactor);
-        item->setStyle(ce->m_format.m_style);
-        result = ce->m_format.m_visible;
+    if(!partFeat) {
+        return true;
     }
-    return result;
-}
-
-
-bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
-{
-    //    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n", sourceIndex);
-    bool result = true;
-    auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
-    TechDraw::CenterLine* cl = partFeat ? partFeat->Cosmetics.getValue<CenterLine*>(cTag) : nullptr;
-    if (cl) {
-        App::Color color = Preferences::getAccessibleColor(cl->m_format.m_color);
-        item->setNormalColor(color.asValue<QColor>());
-        item->setWidth(cl->m_format.m_weight * lineScaleFactor);
-        item->setStyle(cl->m_format.m_style);
-        result = cl->m_format.m_visible;
+    
+    if (bg->getCosmetic()) {
+        std::string cTag = bg->getCosmeticTag();
+        cosmetic = partFeat->Cosmetics.getValue<Cosmetic*>(cTag);
     }
-    return result;
+    else {
+        // cosmetic = viewPart->getGeomFormatBySelection(i);
+        cosmetic = partFeat->getGeomFormatBySelection(i);
+    }
+
+    if (!cosmetic) {
+        Base::Console().Message("QGIVP::drawVP - edge: %d is confused\n", i);
+        return true;  // Why do we always return true if formatting fails????
+    }
+    App::Color color = Preferences::getAccessibleColor(cosmetic->m_format.m_color);
+    item->setNormalColor(color.asValue<QColor>());
+    item->setWidth(cosmetic->m_format.m_weight * lineScaleFactor);
+    item->setStyle(cosmetic->m_format.m_style);
+    return cosmetic->m_format.m_visible;
 }
 
 QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)

@@ -116,8 +116,7 @@ protected:
     bool prefFaceEdges();
     bool prefPrintCenters();
 
-    bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
-    bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
+    bool formatGeom(QGIEdge* item, TechDraw::BaseGeomPtr bg, int i);
 
     bool m_isExporting;
 
