@@ -349,7 +349,7 @@ int TaskRestoreLines::countInvisibleCosmetics()
 int TaskRestoreLines::countInvisibleCenters()
 {
     int iCenter = 0;
-    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
+    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->Cosmetics.getValues<CenterLine*>();
     for (auto& c : centers) {
         if (!c->m_format.m_visible) {
             iCenter++;
@@ -391,13 +391,13 @@ void TaskRestoreLines::restoreInvisibleCosmetics()
 
 void TaskRestoreLines::restoreInvisibleCenters()
 {
-    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
+    const std::vector<TechDraw::CenterLine*> centers = m_partFeat->Cosmetics.getValues<CenterLine*>();
     for (auto& c : centers) {
         if (!c->m_format.m_visible) {
             c->m_format.m_visible = true;
         }
     }
-    m_partFeat->CenterLines.setValues(centers);
+    //m_partFeat->CenterLines.setValues(centers);
     m_parent->apply(false);                   //don't undo the work we just did
 }
 

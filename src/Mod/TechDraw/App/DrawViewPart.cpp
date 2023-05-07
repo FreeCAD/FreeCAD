@@ -276,7 +276,7 @@ short DrawViewPart::mustExecute() const
         || SmoothVisible.isTouched() || SeamVisible.isTouched() || IsoVisible.isTouched()
         || HardHidden.isTouched() || SmoothHidden.isTouched() || SeamHidden.isTouched()
         || IsoHidden.isTouched() || IsoCount.isTouched() || CoarseView.isTouched()
-        || CosmeticVertexes.isTouched() || Cosmetics.isTouched() || CenterLines.isTouched()) {
+        || CosmeticVertexes.isTouched() || Cosmetics.isTouched()) {
         return 1;
     }
 
@@ -1546,8 +1546,7 @@ void DrawViewPart::refreshCEGeoms()
 // CenterLines -----------------------------------------------------------------
 void DrawViewPart::clearCenterLines()
 {
-    std::vector<CenterLine*> noLines;
-    CenterLines.setValues(noLines);
+    Cosmetics.clear<CenterLine*>();
 }
 
 int DrawViewPart::add1CLToGE(std::string tag)
@@ -1583,15 +1582,15 @@ void DrawViewPart::refreshCLGeoms()
 void DrawViewPart::addCenterLinesToGeom()
 {
     //   Base::Console().Message("DVP::addCenterLinesToGeom()\n");
-    const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
-    for (auto& cl : lines) {
-        TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(this);
+    const std::vector<TechDraw::CenterLine*> centerLines = Cosmetics.getValues<CenterLine*>();
+    for (auto& centerLine : centerLines) {
+        TechDraw::BaseGeomPtr scaledGeom = centerLine->scaledGeometry(this);
         if (!scaledGeom) {
             Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
         //        int idx =
-        (void)geometryObject->addCenterLine(scaledGeom, cl->getTagAsString());
+        (void) geometryObject->addCenterLine(scaledGeom, centerLine->getTagAsString());
     }
 }
 

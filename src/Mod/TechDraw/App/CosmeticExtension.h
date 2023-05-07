@@ -28,8 +28,8 @@
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "CenterLine.h"
 #include "Geometry.h"
-#include "PropertyCenterLineList.h"
 #include "PropertyCosmeticList.h"
 #include "PropertyCosmeticVertexList.h"
 
@@ -47,7 +47,6 @@ public:
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
     TechDraw::PropertyCosmeticList       Cosmetics; // to be renamed!!
-    TechDraw::PropertyCenterLineList     CenterLines;
 
     virtual std::string     addCosmeticVertex(Base::Vector3d pos);
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
