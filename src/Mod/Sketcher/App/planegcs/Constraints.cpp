@@ -2901,9 +2901,21 @@ void ConstraintC2LDistance::errorgrad(double *err, double *grad, double *param)
     double dlength;
     double length = v_line.length(dlength);
 
-    double h = std::abs(area) / length;
-    double dh = (std::copysign(darea, area) - h * dlength) / length;
+    // vector product (cross vector) has a magnitude corresponding to the area of
+    // the parallelogram defined by the vectors above. The area of the triangle is
+    // half the parallelogram area. The height of the triangle is the area divided by
+    // the base, which is the distance from the center of the circle to the line.
     //
+    // However, the vector (which points in z direction), can be positive or negative.
+    // the area is the absolute value
+    double h = std::abs(area) / length;
+
+    // darea is the magnitude of a vector in the z direction, which makes the area vector
+    // increase or decrease. If area vector is negative a negative value makes the area increase
+    // and a positive value makes it decrease.
+    darea = std::signbit(area) ? -darea : darea;
+
+    double dh =  (darea - h * dlength) / length;
 
     if (err) {
         *err = *distance() + *circle.rad - h;
@@ -2912,7 +2924,7 @@ void ConstraintC2LDistance::errorgrad(double *err, double *grad, double *param)
         if ( param == distance() || param == circle.rad) {
             *grad = 1.0;
         } else {
-            *grad = dh;
+            *grad = -dh;
         }
     }
 }
