@@ -1175,24 +1175,17 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             break;
         }
         std::vector<std::string> cv2Delete;
-        std::vector<std::string> ce2Delete;
-        std::vector<std::string> cl2Delete;
         for (auto& s: subNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
                 if (bg && bg->getCosmetic()) {
-                    int source = bg->source();
-                    std::string tag = bg->getCosmeticTag();
-                    if (source == COSMETICEDGE) {
-                        ce2Delete.push_back(tag);
-                    } else if (source == CENTERLINE) {
-                        cl2Delete.push_back(tag);
-                    } else {
-                        Base::Console().Message(
-                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, source);
+                    if(bg->source() == GEOMETRYEDGE) {
+                        Base::Console().Message("CMD::CosmeticEraser - edge: %d is confused\n",
+                                                idx);
                     }
+                    objFeat->removeCosmetic(bg->getCosmeticTag());
                 }
             } else if (geomType == "Vertex") {
                 TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
@@ -1212,13 +1205,6 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
         }
         if (!cv2Delete.empty()) {
             objFeat->removeCosmeticVertex(cv2Delete);
-        }
-
-        if (!ce2Delete.empty()) {
-            objFeat->removeCosmetic(ce2Delete);
-        }
-        if (!cl2Delete.empty()) {
-            objFeat->removeCosmetic(cl2Delete);
         }
     objFeat->recomputeFeature();
     }
