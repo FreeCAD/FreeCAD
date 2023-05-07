@@ -236,6 +236,15 @@ namespace GCS
         void clearByTag(int tagId);
 
         int addConstraint(Constraint *constr);
+        /**
+         * @brief Constraints are added together with some redundant information.
+         * This function removes the constraint and the extra information,
+         * keeping consistency.
+         * @param constr Pointer to \class Constraint to be removed.
+         * @attention This is inefficient if you:
+         * 1. Remove many constraints at once.
+         * 2. Already has an iterator for clist.
+         */
         void removeConstraint(Constraint *constr);
 
         // basic constraints
@@ -461,6 +470,14 @@ namespace GCS
         }
 
         void invalidatedDiagnosis();
+
+    protected:
+        /**
+         * @brief Removes the redundant information that,
+         * for performance reasons, is kept for each constraint.
+         * @param constr the \class Constraint to be removed.
+         */
+        void prepareForConstraintRemoval(Constraint* constr);
 
         // Unit testing interface - not intended for use by production code
     protected:

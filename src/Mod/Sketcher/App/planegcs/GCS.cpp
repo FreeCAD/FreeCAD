@@ -600,15 +600,13 @@ void System::invalidatedDiagnosis()
 
 void System::clearByTag(int tagId)
 {
-    // TODO: Check if we could simply remove in reverse order.
-    std::vector<Constraint *> constrvec;
-    for (auto constr=clist.cbegin(); constr != clist.cend(); ++constr) {
-        if ((*constr)->getTag() == tagId)
-            constrvec.push_back(constr->get());
-    }
-    for (auto constr=constrvec.cbegin(); constr != constrvec.cend(); ++constr) {
-        removeConstraint(*constr);
-    }
+    clist.erase(std::remove_if(clist.begin(), clist.end(), [this, tagId](auto& constraint) {
+        if (constraint->getTag() == tagId) {
+            prepareForConstraintRemoval(constraint.get());
+            return true;
+        }
+        return false;
+    }), clist.cend());
 }
 
 int System::addConstraint(Constraint *constr)
@@ -630,14 +628,9 @@ int System::addConstraint(Constraint *constr)
 
 void System::removeConstraint(Constraint *constr)
 {
-    auto it = clist.cbegin();
-    for(; it != clist.cend(); ++it)
-    {
-        if(it->get() == constr)
-        {
-            break;
-        }
-    }
+    auto it = std::find_if(clist.cbegin(), clist.cend(), [constr](auto& candidate){
+        return (candidate.get() == constr);
+    });
     if (it == clist.cend())
     {
         // TODO: someone is removing a nonexistent constraint.
@@ -645,6 +638,12 @@ void System::removeConstraint(Constraint *constr)
         return;
     }
 
+    prepareForConstraintRemoval(constr);
+    clist.erase(it);
+}
+
+void System::prepareForConstraintRemoval(Constraint* constr)
+{
     if (constr->getTag() >= 0)
         hasDiagnosis = false;
     clearSubSystems();
@@ -657,10 +656,7 @@ void System::removeConstraint(Constraint *constr)
         constraints.erase(i);
     }
     c2p.erase(constr);
-
-    clist.erase(it);
 }
-
 // basic constraints
 
 int System::addConstraintEqual(double* param1, double* param2, int tagId, bool driving,
