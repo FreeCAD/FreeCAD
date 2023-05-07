@@ -154,15 +154,6 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     return ce->getTagAsString();  // What happens to ce??? Memore-leak???
 }
 
-//overload for index only
-TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
-{
-//    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
-    std::stringstream edgeName;
-    edgeName << "Edge" << i;
-    return getCosmeticByName<CosmeticEdge*>(edgeName.str());
-}
-
 //********** Center Line *******************************************************
 
 //returns unique CL id
@@ -178,14 +169,6 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
     return centerLine->getTagAsString();  // What happens to centerLine??? Memore-leak???
 }
 
-//overload for index only
-TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
-{
-//    Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
-    std::stringstream edgeName;
-    edgeName << "Edge" << i;
-    return getCosmeticByName<CenterLine*>(edgeName.str());
-}
 
 
 
@@ -255,6 +238,20 @@ void CosmeticExtension::removeCosmetic(std::vector<std::string> tags) {
 }
 
 // find the center line corresponding to selection name (Edge5)
+//overload for index only
+template<typename T>
+T CosmeticExtension::getCosmeticByName(int i) const
+{
+    static_assert(std::is_pointer<T>::value, "Template argument must be pointer!!!");
+//    Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
+    std::stringstream edgeName;
+    edgeName << "Edge" << i;
+    return getCosmeticByName<T>(edgeName.str());
+}
+template CenterLine* CosmeticExtension::getCosmeticByName(int i) const;
+template CosmeticEdge* CosmeticExtension::getCosmeticByName(int i) const;
+
+
 // used when selecting
 template<typename T>
 T CosmeticExtension::getCosmeticByName(std::string name) const
