@@ -241,11 +241,13 @@ void NaviCube::setSize(int size)
 {
     m_NaviCubeImplementation->setSize(size);
 }
+
 void NaviCube::setChamfer(float chamfer)
 {
     m_NaviCubeImplementation->m_Chamfer = min(max(0.05f, chamfer), 0.18f);
     m_NaviCubeImplementation->m_Prepared = false;
 }
+
 void NaviCube::setNaviRotateToNearest(bool toNearest)
 {
     m_NaviCubeImplementation->m_RotateToNearest = toNearest;
@@ -301,7 +303,6 @@ void NaviCube::setBorderWidth(double BorderWidth)
     m_NaviCubeImplementation->m_BorderWidth = BorderWidth;
 }
 
-
 void NaviCube::setShowCS(bool showCS)
 {
     m_NaviCubeImplementation->m_ShowCS = showCS;
@@ -311,6 +312,7 @@ void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 {
     m_NaviCubeImplementation->setLabels(labels);
 }
+
 void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
 {
     m_LabelTextures[PickId::Front].label  = labels[0];
@@ -322,8 +324,9 @@ void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
     m_Prepared = false;
 }
 
-
 NaviCubeImplementation::NaviCubeImplementation(Gui::View3DInventorViewer* viewer)
+    : m_BaseColor{226, 232, 239}
+    , m_HiliteColor{170, 226, 255}
 {
     m_View3DInventorViewer = viewer;
     m_PickingFramebuffer = nullptr;
@@ -368,6 +371,10 @@ auto convertWeights = [](int weight) -> QFont::Weight {
 };
 
 int imageVerticalBalance(QImage p, int sizeHint) {
+    if (sizeHint < 0) {
+        return 0;
+    }
+
     int h = p.height();
     int startRow = (h - sizeHint) / 2;
     bool done = false;
@@ -394,8 +401,10 @@ void NaviCubeImplementation::createCubeFaceTextures() {
     int texSize = 192; // Works well for the max cube size 1024
     // find font sizes
     QFont font;
-    QString fontString = QString::fromStdString(m_TextFont);
-    font.fromString(fontString);
+    if (!m_TextFont.empty()) {
+        QString fontString = QString::fromStdString(m_TextFont);
+        font.fromString(fontString);
+    }
     if (m_FontWeight > 0) {
         font.setWeight(convertWeights(m_FontWeight));
     }
