@@ -46,7 +46,7 @@ typedef std::shared_ptr<ElementMap> ElementMapPtr;
 
 /* This class provides for ComplexGeoData's ability to provide proper naming.
  * Specifically, ComplexGeoData uses this class for it's `_id` property.
- * Most of the operations work with the `indexedNames` and `mappedNamed` maps.
+ * Most of the operations work with the `indexedNames` and `mappedNames` maps.
  * `indexedNames` maps a string to both a name queue and children.
  *   each of those children store an IndexedName, offset details, postfix, ids, and
  *   possibly a recursive elementmap
@@ -55,6 +55,10 @@ typedef std::shared_ptr<ElementMap> ElementMapPtr;
 class ElementMap: public std::enable_shared_from_this<ElementMap>
 {
 public:
+    /** Default constructor: hooks internal functions to \c signalSaveDocument and 
+     * \c signalStartRestoreDocument. This is related to the save and restore process 
+     * of the map.
+    */
     ElementMap();
 
     /** Ensures that naming is properly assigned. It then marks as "used" all the StringID
@@ -63,22 +67,59 @@ public:
      * 
      * @param hasher where all the StringID needed to build the map are stored.
     */
+    // FIXME this should be made part of \c save, to achieve symmetry with the restore method
     void beforeSave(const ::App::StringHasherRef& hasher) const;
 
+    /** Serialize this map
+     * @param s: serialized stream 
+     * @param childMapSet: where all child element maps are stored
+     * @param postfixMap. where all postfixes are stored
+    */
+    // FIXME this should be made private I think
     void save(std::ostream& s, int index, const std::map<const ElementMap*, int>& childMapSet,
               const std::map<QByteArray, int>& postfixMap) const;
 
+    /** Serialize this map. Calls \c collectChildMaps to get \c childMapSet and
+     * \c postfixMap, then calls the other save function with those parameters.
+     * @param s: serialized stream 
+    */
     void save(std::ostream& s) const;
 
+    /** Deserialize and restore this map. This function restores \c childMaps and 
+     * \c postfixes from the stream, then calls the other restore function with those 
+     * parameters.
+     * @param hasher: where all the StringIDs are stored
+     * @param s: stream to deserialize
+    */
     ElementMapPtr restore(::App::StringHasherRef hasher, std::istream& s);
 
+    /** Deserialize and restore this map.
+     * @param hasher: where all the StringIDs are stored
+     * @param s: stream to deserialize
+     * @param childMaps: where all child element maps are stored
+     * @param postfixes. where all postfixes are stored
+    */
+    // FIXME this should be made private I think
     ElementMapPtr restore(::App::StringHasherRef hasher, std::istream& s,
                           std::vector<ElementMapPtr>& childMaps,
                           const std::vector<std::string>& postfixes);
 
+    /** Associate the MappedName \c name with the IndexedName \c idx.
+     * @param name: the name to add
+     * @param idx: the indexed name that \c name will be bound to
+     * @param sids: where StringIDs that make up the name are stored
+     * @param overwrite: if true, all the names associated with \c idx will be discarded
+     * @param existing: out variable: if not overwriting, and \c name is already 
+     * associated with another indexedName, set \c existing to that indexedname
+     * @return the name just added, or an empty name if it wasn't added.
+     */
     MappedName addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
                        bool overwrite, IndexedName* existing);
 
+    /** Utility function that adds \c postfix to \c postfixMap, and to \c postfixes
+     * if it was not present in the map. 
+    */
+    //FIXME this should be private probably
     static void addPostfix(const QByteArray& postfix, std::map<QByteArray, int>& postfixMap,
                            std::vector<QByteArray>& postfixes);
 
@@ -128,9 +169,12 @@ public:
     virtual MappedName renameDuplicateElement(int index, const IndexedName& element,
                                               const IndexedName& element2, const MappedName& name,
                                               ElementIDRefs& sids, long masterTag);
-
+    /** Remove \c name from the map
+    */
     bool erase(const MappedName& name);
 
+    /** Remove \c idx and all the MappedNames associated with it
+    */
     bool erase(const IndexedName& idx);
 
     unsigned long size() const;
