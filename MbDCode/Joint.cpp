@@ -1,3 +1,5 @@
+#include<algorithm>
+
 #include "Joint.h"
 
 using namespace MbD;
@@ -23,8 +25,10 @@ void Joint::connectsItoJ(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFra
 
 void Joint::initializeLocally()
 {
+	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->initializeLocally(); });
 }
 
 void Joint::initializeGlobally()
 {
+	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->initializeGlobally(); });
 }

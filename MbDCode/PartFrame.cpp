@@ -1,3 +1,5 @@
+#include<algorithm>
+
 #include "Part.h"
 #include "PartFrame.h"
 #include "EulerConstraint.h"
@@ -8,27 +10,29 @@ using namespace MbD;
 
 PartFrame::PartFrame()
 {
+	initialize();
+}
+PartFrame::PartFrame(const char* str) : CartesianFrame(str)
+{
+	initialize();
+}
+void PartFrame::initialize()
+{
 	aGeu = std::make_shared<EulerConstraint>("EulerCon");
 	aGeu->setOwner(this);
 	aGabs = std::make_unique<std::vector<std::shared_ptr<AbsConstraint>>>();
 	markerFrames = std::make_unique<std::vector<std::shared_ptr<MarkerFrame>>>();
 }
-MbD::PartFrame::PartFrame(const char* str) : CartesianFrame(str)
-{
-}
-void MbD::PartFrame::initialize()
-{
-}
-void PartFrame::setqX(FullColDptr x) {
+void PartFrame::setqX(FColDsptr x) {
 	qX->copy(x);
 }
-FullColDptr PartFrame::getqX() {
+FColDsptr PartFrame::getqX() {
 	return qX;
 }
-void PartFrame::setqE(FullColDptr x) {
+void PartFrame::setqE(FColDsptr x) {
 	qE->copy(x);
 }
-FullColDptr PartFrame::getqE() {
+FColDsptr PartFrame::getqE() {
 	return qE;
 }
 void PartFrame::setPart(Part* x) {
@@ -48,4 +52,24 @@ std::shared_ptr<EndFramec> PartFrame::endFrame(std::string name)
 {
 	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto mkr) {return mkr->getName() == name; });
 	return (*match)->endFrames->at(0);
+}
+
+void MbD::PartFrame::asFixed()
+{
+	for (int i = 0; i < 6; i++) {
+		auto con = std::make_shared<AbsConstraint>(i);
+		con->setOwner(this);
+		aGabs->push_back(con);
+	}
+}
+
+void PartFrame::initializeLocally()
+{
+	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->initializeLocally(); });
+	aGeu->initializeLocally();
+	std::for_each(aGabs->begin(), aGabs->end(), [](const auto& aGab) { aGab->initializeLocally(); });
+}
+
+void PartFrame::initializeGlobally()
+{
 }

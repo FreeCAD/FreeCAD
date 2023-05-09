@@ -12,4 +12,5 @@ CartesianFrame::CartesianFrame(const char* str) : Item(str)
 
 void CartesianFrame::initialize()
 {
+	Item::initialize();
 }

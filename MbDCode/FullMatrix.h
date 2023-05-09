@@ -1,12 +1,11 @@
 #pragma once
 #include <memory>
 
-#include "RowTypeMatrix.h"
 #include "FullColumn.h"
+#include "RowTypeMatrix.h"
 #include "FullRow.h"
 
 namespace MbD {
-	//class FullColumn<double>;
 
 	template <typename T>
 	class FullMatrix : public RowTypeMatrix<std::shared_ptr<FullRow<T>>>
@@ -35,10 +34,13 @@ namespace MbD {
 	};
 
 	typedef std::initializer_list<std::initializer_list<double>> ListListD;
-	typedef std::initializer_list<FullRowDptr> ListFRD;
-	typedef std::shared_ptr<FullMatrix<double>> FullMatDptr;
-	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDptr;
-	typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDptr;
+	typedef std::initializer_list<FRowDsptr> ListFRD;
+	typedef std::shared_ptr<FullMatrix<double>> FMatDsptr;
+	typedef std::unique_ptr<FullMatrix<double>> FMatDuptr;
+	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDsptr;
+	//typedef std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDuptr;
+	typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDsptr;
+	typedef std::unique_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDuptr;
 
 }
 

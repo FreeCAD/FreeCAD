@@ -129,10 +129,18 @@
   <ItemGroup>
     <ClCompile Include="AbsConstraint.cpp" />
     <ClCompile Include="Array.cpp" />
+    <ClCompile Include="BasicUserFunction.cpp" />
     <ClCompile Include="CartesianFrame.cpp" />
+    <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Constraint.cpp" />
+    <ClCompile Include="ConstraintIJ.cpp" />
     <ClCompile Include="CylindricalJoint.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIJ.cpp" />
+    <ClCompile Include="DirectionCosineIecJec.cpp" />
+    <ClCompile Include="DirectionCosineIeqcJec.cpp" />
+    <ClCompile Include="DirectionCosineIeqcJeqc.cpp" />
+    <ClCompile Include="DirectionCosineIeqctJeqc.cpp" />
     <ClCompile Include="EndFramec.cpp" />
     <ClCompile Include="EndFrameqc.cpp" />
     <ClCompile Include="EndFrameqct.cpp" />
@@ -145,6 +153,7 @@
     <ClCompile Include="IndependentVariable.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Joint.cpp" />
+    <ClCompile Include="KinematicIeJe.cpp" />
     <ClCompile Include="MarkerFrame.cpp" />
     <ClCompile Include="MbDCode.cpp" />
     <ClCompile Include="NewtonRaphson.cpp" />
@@ -161,8 +170,8 @@
     <ClCompile Include="Symbolic.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemSolver.cpp" />
-    <ClCompile Include="Temp.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="UserFunction.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="ZRotation.cpp" />
@@ -170,10 +179,18 @@
   <ItemGroup>
     <ClInclude Include="AbsConstraint.h" />
     <ClInclude Include="Array.h" />
+    <ClInclude Include="BasicUserFunction.h" />
     <ClInclude Include="CartesianFrame.h" />
+    <ClInclude Include="Constant.h" />
     <ClInclude Include="Constraint.h" />
+    <ClInclude Include="ConstraintIJ.h" />
     <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="DiagonalMatrix.h" />
+    <ClInclude Include="DirectionCosineConstraintIJ.h" />
+    <ClInclude Include="DirectionCosineIecJec.h" />
+    <ClInclude Include="DirectionCosineIeqcJec.h" />
+    <ClInclude Include="DirectionCosineIeqcJeqc.h" />
+    <ClInclude Include="DirectionCosineIeqctJeqc.h" />
     <ClInclude Include="EndFramec.h" />
     <ClInclude Include="EndFrameqc.h" />
     <ClInclude Include="EndFrameqct.h" />
@@ -186,6 +203,7 @@
     <ClInclude Include="IndependentVariable.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Joint.h" />
+    <ClInclude Include="KinematicIeJe.h" />
     <ClInclude Include="MarkerFrame.h" />
     <ClInclude Include="MbDCode.h" />
     <ClInclude Include="NewtonRaphson.h" />
@@ -202,8 +220,8 @@
     <ClInclude Include="Symbolic.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="SystemSolver.h" />
-    <ClInclude Include="Temp.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="UserFunction.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="ZRotation.h" />

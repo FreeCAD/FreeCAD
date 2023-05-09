@@ -20,17 +20,21 @@ namespace MbD {
         void initialize();
 		void setPartFrame(PartFrame* partFrm);
 		PartFrame* getPartFrame();
-		void setrpmp(FullColDptr x);
-		void setaApm(FullMatDptr x);
+		void setrpmp(FColDsptr x);
+		void setaApm(FMatDsptr x);
 		void addEndFrame(std::shared_ptr<EndFramec> x);
+		void initializeLocally() override;
+		void initializeGlobally() override;
 
 		PartFrame* partFrame;
-		FullColDptr rpmp = std::make_shared<FullColumn<double>>(3);
-		FullMatDptr aApm = std::make_shared<FullMatrix<double>>(3, 3);
-		FullColDptr rOmO = std::make_shared<FullColumn<double>>(3);
-		FullMatDptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
-		FullMatDptr prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
-		FullColumn<FullMatrix<double>>* pAOmpE = new FullColumn<FullMatrix<double>>(4);
+		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
+		FMatDsptr aApm = std::make_shared<FullMatrix<double>>(3, 3);
+		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
+		FMatDsptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
+		FMatDsptr prOmOpE;
+		std::unique_ptr<FullColumn<FullMatrix<double>>> pAOmpE;
+		std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOmOpEpE;
+		FMatFMatDuptr ppAOmpEpE;
 		std::unique_ptr<std::vector<std::shared_ptr<EndFramec>>> endFrames;
 
 	};

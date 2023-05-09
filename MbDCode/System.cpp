@@ -50,11 +50,11 @@ void System::runKINEMATICS()
 	systemSolver->runBasicKinematic();
 }
 
-void System::initializeLocally()
+void System::initializeLocally() 
 {
 	hasChanged = false;
-	timeValue = systemSolver->tstart;
-	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeLocally();	});
+	time->value = systemSolver->tstart;
+	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeLocally(); });
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), [](const auto& joint) { joint->initializeLocally();	});
 	systemSolver->initializeLocally();
 }

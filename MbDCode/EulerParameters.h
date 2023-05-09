@@ -8,11 +8,9 @@ namespace MbD {
 	{
 		//aA aB aC pApE
 	public:
-		static std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> ppApEpEtimesColumn(FullColDptr col);
-		static std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> ppApEpEtimesMatrix(FullMatDptr col);
+		static std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> ppApEpEtimesColumn(FColDsptr col);
+		static std::unique_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> ppApEpEtimesMatrix(FMatDsptr col);
 		
 	};
-
-	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDptr;
 }
 

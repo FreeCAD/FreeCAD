@@ -6,9 +6,7 @@
 
 using namespace MbD;
 
-//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDptr;
-
-std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters::ppApEpEtimesColumn(FullColDptr col)
+std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters::ppApEpEtimesColumn(FColDsptr col)
 {
 	double a2c1 = 2 * col->at(0);
 	double a2c2 = 2 * col->at(1);
@@ -26,23 +24,23 @@ std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters
 	auto col33 = std::make_shared<FullColumn<double>>(ListD{ m2c1, m2c2, a2c3 });
 	auto col34 = std::make_shared<FullColumn<double>>(ListD{ m2c2, a2c1, 0 });
 	auto col44 = std::make_shared<FullColumn<double>>(ListD{ a2c1, a2c2, a2c3 });
-	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
+	auto answer = std::make_unique<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
 	auto row1 = answer->at(0);
 	row1->at(0) = col11;
 	row1->at(1) = col12;
 	row1->at(2) = col13;
 	row1->at(3) = col14;
-	auto row2 = answer->at(0);
+	auto row2 = answer->at(1);
 	row2->at(0) = col12;
 	row2->at(1) = col22;
 	row2->at(2) = col23;
 	row2->at(3) = col24;
-	auto row3 = answer->at(0);
+	auto row3 = answer->at(2);
 	row3->at(0) = col13;
 	row3->at(1) = col23;
 	row3->at(2) = col33;
 	row3->at(3) = col34;
-	auto row4 = answer->at(0);
+	auto row4 = answer->at(3);
 	row4->at(0) = col14;
 	row4->at(1) = col24;
 	row4->at(2) = col34;
@@ -50,16 +48,16 @@ std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters
 	return answer;
 }
 
-std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters::ppApEpEtimesMatrix(FullMatDptr mat)
+std::unique_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters::ppApEpEtimesMatrix(FMatDsptr mat)
 {
-	FullRowDptr a2m1 = mat->at(0)->times(2.0);
-	FullRowDptr a2m2 = mat->at(1)->times(2.0);
-	FullRowDptr a2m3 = mat->at(2)->times(2.0);
-	FullRowDptr m2m1 = a2m1->negated();
-	FullRowDptr m2m2 = a2m2->negated();
-	FullRowDptr m2m3 = a2m3->negated();
+	FRowDsptr a2m1 = mat->at(0)->times(2.0);
+	FRowDsptr a2m2 = mat->at(1)->times(2.0);
+	FRowDsptr a2m3 = mat->at(2)->times(2.0);
+	FRowDsptr m2m1 = a2m1->negated();
+	FRowDsptr m2m2 = a2m2->negated();
+	FRowDsptr m2m3 = a2m3->negated();
 	auto aaaa = std::make_shared<std::vector<double>>(3, 0.0);
-	FullRowDptr zero = std::make_shared<FullRow<double>>(3, 0.0);
+	FRowDsptr zero = std::make_shared<FullRow<double>>(3, 0.0);
 	auto mat11 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m1, m2m2, m2m3 });
 	auto mat12 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m2, a2m1, zero });
 	auto mat13 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m3, zero, a2m1 });
@@ -70,7 +68,7 @@ std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters
 	auto mat33 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m1, m2m2, a2m3 });
 	auto mat34 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m2, a2m1, zero });
 	auto mat44 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m1, a2m2, a2m3 });
-	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
+	auto answer = std::make_unique<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
 	auto row1 = answer->at(0);
 	row1->at(0) = mat11;
 	row1->at(1) = mat12;

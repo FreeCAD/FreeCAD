@@ -18,8 +18,8 @@ namespace MbD {
         Joint(const char* str);
         void initialize();
         virtual void connectsItoJ(std::shared_ptr<EndFramec> frmI, std::shared_ptr<EndFramec> frmJ);
-        void initializeLocally();
-        void initializeGlobally();
+        void initializeLocally() override;
+        void initializeGlobally() override;
 
         std::shared_ptr<EndFramec> frmI;
         std::shared_ptr<EndFramec> frmJ;
