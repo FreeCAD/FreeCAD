@@ -66,6 +66,7 @@ protected Q_SLOTS:
 
 public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
+    void on_checkBox_projectUnitSystemIgnore_stateChanged(int state);
 
 private:
     void setRecentFileSize();

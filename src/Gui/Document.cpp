@@ -105,6 +105,9 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
+    
+    int projectUnitSystem=-1;
+    bool projectUnitSystemIgnore;
 
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
@@ -644,6 +647,30 @@ void Document::setPos(const char* name, const Base::Matrix4D& rclMtrx)
     if (pcProv)
         pcProv->setTransformation(rclMtrx);
 
+}
+
+void Document::setProjectUnitSystem(int pUS)
+{
+	if(pUS != d->projectUnitSystem && pUS >= 0){
+		d->projectUnitSystem = pUS;
+        setModified(true);
+	}
+}
+
+int Document::getProjectUnitSystem() const
+{
+    return d->projectUnitSystem;
+}
+
+void Document::setProjectUnitSystemIgnore(bool ignore)
+{
+	d->projectUnitSystemIgnore = ignore;
+	setModified(true);
+}
+
+bool Document::getProjectUnitSystemIgnore() const
+{
+    return d->projectUnitSystemIgnore;
 }
 
 //*****************************************************************************************************
@@ -1453,6 +1480,15 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 Base::Console().Error("%s\n", e.what());
             }
         }
+        try{
+        	localreader->readElement("ProjectUnitSystem");
+        	int US = localreader->getAttributeAsInteger("US");
+        	int ignore = localreader->getAttributeAsInteger("ignore");
+		    d->projectUnitSystem = US;
+		    d->projectUnitSystemIgnore = ignore;
+        }catch (const Base::XMLParseException& e) {
+                Base::Console().Error("ProjectUnitSystem not found\n");
+        }
     }
 
     localreader->readEndElement("Document");
@@ -1575,6 +1611,15 @@ void Document::SaveDocFile (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Camera settings=\""
         << encodeAttribute(getCameraSettings()) << "\"/>\n";
     writer.decInd(); // indentation for camera settings
+    
+    if( d->projectUnitSystem >= 0 ){
+    	writer.incInd(); // indentation for ProjectUnitSystem
+    	writer.Stream() << writer.ind() << "<ProjectUnitSystem US=\""
+        << d->projectUnitSystem << "\" ignore=\""
+        << d->projectUnitSystemIgnore << "\"/>\n";
+    	writer.decInd(); // indentation for ProjectUnitSystem
+    }
+    
     writer.Stream() << "</Document>" << std::endl;
 }
 

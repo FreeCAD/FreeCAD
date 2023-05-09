@@ -54,6 +54,8 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 
+#include <Base/UnitsApi.h>
+
 #include <Language/Translator.h>
 #include <Quarter/Quarter.h>
 
@@ -927,6 +929,19 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),Py::None());
             }
         }
+        
+        //Set Unit System.
+        int projectUnitSystemIndex = doc->second->getProjectUnitSystem();
+        int ignore = doc->second->getProjectUnitSystemIgnore();
+        if( projectUnitSystemIndex >= 0 && !ignore ){//is valid
+        	Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(projectUnitSystemIndex));
+        }else{// set up Unit system default
+			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+			   ("User parameter:BaseApp/Preferences/Units");
+			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+        }
+        
         signalActiveDocument(*doc->second);
         updateActions();
     }
