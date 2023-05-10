@@ -311,7 +311,7 @@
             <item>
              <widget class="QCheckBox" name="chkLayers">
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>Apply Lead In/Out on all layers</string>
               </property>
               <property name="text">
                <string>Include Layers</string>
