@@ -51,6 +51,7 @@ void loadWebResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Web);
+    Q_INIT_RESOURCE(Web_translation);
     Gui::Translator::instance()->refresh();
 }
 

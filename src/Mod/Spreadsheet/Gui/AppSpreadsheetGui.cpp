@@ -48,6 +48,7 @@ void loadSpreadsheetResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Spreadsheet);
+    Q_INIT_RESOURCE(Spreadsheet_translation);
     Gui::Translator::instance()->refresh();
 }
 

@@ -80,6 +80,7 @@ void loadTechDrawResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(TechDraw);
+    Q_INIT_RESOURCE(TechDraw_translation);
     Gui::Translator::instance()->refresh();
 
     // add fonts

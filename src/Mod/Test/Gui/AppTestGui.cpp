@@ -198,6 +198,7 @@ void loadTestResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Test);
+    Q_INIT_RESOURCE(Test_translation);
     Gui::Translator::instance()->refresh();
 }
 
