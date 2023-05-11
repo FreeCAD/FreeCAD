@@ -474,6 +474,9 @@ void CmdPartDesignClone::activated(int iMsg)
                           << "setEditorMode('Placement', 0)");
 
         updateActive();
+        copyVisual(cloneObj, "ShapeColor", obj);
+        copyVisual(cloneObj, "LineColor", obj);
+        copyVisual(cloneObj, "PointColor", obj);
         copyVisual(cloneObj, "Transparency", obj);
         copyVisual(cloneObj, "DisplayMode", obj);
         commitCommand();
