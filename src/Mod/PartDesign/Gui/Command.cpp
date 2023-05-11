@@ -444,25 +444,38 @@ void CmdPartDesignClone::activated(int iMsg)
         // This also fixes bug #3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
+
         auto obj = objs[0];
-        std::string FeatName = getUniqueObjectName("Clone",obj);
-        std::string BodyName = getUniqueObjectName("Body",obj);
-        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::Body','" << BodyName << "')");
-        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::FeatureBase','" << FeatName << "')");
-        auto Feat = obj->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(obj);
-        FCMD_OBJ_CMD(Feat,"BaseFeature = " << objCmd);
-        FCMD_OBJ_CMD(Feat,"Placement = " << objCmd << ".Placement");
-        FCMD_OBJ_CMD(Feat,"setEditorMode('Placement',0)");
+        std::string cloneName = getUniqueObjectName("Clone", obj);
+        std::string bodyName = getUniqueObjectName("Body", obj);
 
-        auto Body = obj->getDocument()->getObject(BodyName.c_str());
-        FCMD_OBJ_CMD(Body,"Group = [" << getObjectCmd(Feat) << "]");
+        // Create body and clone
+        Gui::cmdAppDocument(obj, std::stringstream()
+                            << "addObject('PartDesign::Body','" << bodyName << "')");
+        Gui::cmdAppDocument(obj, std::stringstream()
+                            << "addObject('PartDesign::FeatureBase','" << cloneName << "')");
 
-        // Set the tip of the body
-        FCMD_OBJ_CMD(Body,"Tip = " << getObjectCmd(Feat));
+        auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
+        auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
+
+        // In the first step set the group link and tip of the body
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "Group = [" << getObjectCmd(cloneObj) << "]");
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "Tip = " << getObjectCmd(cloneObj));
+
+        // In the second step set the link of the base feature
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "BaseFeature = " << objCmd);
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "Placement = " << objCmd << ".Placement");
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "setEditorMode('Placement', 0)");
+
         updateActive();
-        copyVisual(Feat, "Transparency", obj);
-        copyVisual(Feat, "DisplayMode", obj);
+        copyVisual(cloneObj, "Transparency", obj);
+        copyVisual(cloneObj, "DisplayMode", obj);
         commitCommand();
     }
 }
