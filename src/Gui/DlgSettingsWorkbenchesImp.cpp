@@ -254,9 +254,12 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     std::ostringstream orderedStr, disabledStr, autoloadStr;
 
     auto addStrToOss = [](std::string wbName, std::ostringstream& oss) {
-        if (!oss.str().empty())
-            oss << ",";
-        oss << wbName;
+        if (oss.str().find(wbName) == std::string::npos) {
+            if (!oss.str().empty()) {
+                oss << ",";
+            }
+            oss << wbName;
+        }
     };
 
     for (int i = 0; i < ui->wbList->count(); i++) {
