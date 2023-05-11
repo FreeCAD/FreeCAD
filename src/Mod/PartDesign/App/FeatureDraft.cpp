@@ -320,7 +320,7 @@ App::DocumentObjectExecReturn *Draft::execute()
 
         int solidCount = countSolids(shape);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fuse: Result has multiple solids. This is not supported at this time."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
         this->Shape.setValue(getSolid(shape));

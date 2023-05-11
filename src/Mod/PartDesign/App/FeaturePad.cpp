@@ -219,11 +219,11 @@ App::DocumentObjectExecReturn *Pad::execute()
             TopoDS_Shape solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Resulting shape is not a solid"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             solRes = refineShapeIfActive(solRes);
@@ -232,7 +232,7 @@ App::DocumentObjectExecReturn *Pad::execute()
         else {
             int solidCount = countSolids(prism);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
            this->Shape.setValue(getSolid(prism));

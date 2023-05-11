@@ -165,7 +165,7 @@ App::DocumentObjectExecReturn *Groove::execute()
 
             int solidCount = countSolids(solRes);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Groove: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
         }
