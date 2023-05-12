@@ -396,7 +396,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Pipe: Result has multiple solids. This is not supported at this time."));
+                    "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -416,7 +416,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Pipe: Result has multiple solids. This is not supported at this time."));
+                    "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);

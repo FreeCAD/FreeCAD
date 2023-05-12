@@ -1537,7 +1537,7 @@ CmdSketcherExternal::CmdSketcherExternal()
 {
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("External geometry");
+    sMenuText       = QT_TR_NOOP("Create an external geometry");
     sToolTipText    = QT_TR_NOOP("Create an edge linked to an external geometry");
     sWhatsThis      = "Sketcher_External";
     sStatusTip      = sToolTipText;
@@ -1566,7 +1566,7 @@ CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
 {
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Carbon copy");
+    sMenuText       = QT_TR_NOOP("Create a carbon copy");
     sToolTipText    = QT_TR_NOOP("Copy the geometry of another sketch");
     sWhatsThis      = "Sketcher_CarbonCopy";
     sStatusTip      = sToolTipText;

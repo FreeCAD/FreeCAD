@@ -1897,7 +1897,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         // We have to get the solids (fuse sometimes creates compounds)
         base = getSolid(result);
         if (base.IsNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole: Resulting shape is not a solid"));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         base = refineShapeIfActive(base);
 
 
@@ -1905,7 +1905,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         int solidCount = countSolids(base);
         if (solidCount > 1) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Hole: Result has multiple solids. This is not supported at this time."));
+                QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
         this->Shape.setValue(base);
