@@ -28,12 +28,11 @@ Path projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised
 """
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Log
-import PathScripts
 from collections import Counter
 from datetime import datetime
 import os
@@ -43,7 +42,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
