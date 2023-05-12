@@ -207,10 +207,7 @@ class ObjectDressup:
         arcs_identical = False
 
         # Set the correct twist command
-        if self.getDirectionOfPath(obj) == "left":
-            arcdir = "G3"
-        else:
-            arcdir = "G2"
+        arcdir = "G3" if self.getDirectionOfPath(obj) == "left" else "G2"
 
         if queue[1].Name == "G1":  # line
             p0 = queue[0].Placement.Base
