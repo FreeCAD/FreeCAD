@@ -1389,6 +1389,7 @@ class svgHandler(xml.sax.ContentHandler):
                     sh = self.applyTrans(sh)
                     obj = self.doc.addObject("Part::Feature", pathname)
                     obj.Shape = sh
+                    self.format(obj)
                     if self.currentsymbol:
                         self.symbols[self.currentsymbol].append(obj)
 
