@@ -663,6 +663,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.count = 0
         self.transform = None
         self.grouptransform = []
+        self.groupstyles = []
         self.lastdim = None
         self.viewbox = None
         self.symbols = {}
@@ -710,6 +711,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.count += 1
         _msg('processing element {0}: {1}'.format(self.count, name))
         _msg('existing group transform: {}'.format(self.grouptransform))
+        _msg('existing group style: {}'.format(self.groupstyles))
 
         data = {}
         for (keyword, content) in list(attrs.items()):
@@ -844,10 +846,10 @@ class svgHandler(xml.sax.ContentHandler):
                     m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
             self.grouptransform.append(m)
         if 'fill' in data:
-            if data['fill'][0] != 'none':
+            if data['fill'] != 'none':
                 self.fill = getcolor(data['fill'])
         if 'stroke' in data:
-            if data['stroke'][0] != 'none':
+            if data['stroke'] != 'none':
                 self.color = getcolor(data['stroke'])
         if 'stroke-width' in data:
             if data['stroke-width'] != 'none':
@@ -866,6 +868,27 @@ class svgHandler(xml.sax.ContentHandler):
         if self.style == 1:
             self.color = self.col
             self.width = self.lw
+
+        # apply group styles
+        if name == "g":
+            self.groupstyles.append([self.fill, self.color, self.width])
+        if self.fill is None:
+            if "fill" not in data or data['fill'] != 'none':
+                # do not override fill if this item has specifically set a none fill
+                for groupstyle in reversed(self.groupstyles):
+                    if groupstyle[0] is not None:
+                        self.fill = groupstyle[0]
+                        break
+        if self.color is None:
+            for groupstyle in reversed(self.groupstyles):
+                if groupstyle[1] is not None:
+                    self.color = groupstyle[1]
+                    break
+        if self.width is None:
+            for groupstyle in reversed(self.groupstyles):
+                if groupstyle[2] is not None:
+                    self.width = groupstyle[2]
+                    break
 
         pathname = None
         if 'id' in data:
@@ -1366,6 +1389,7 @@ class svgHandler(xml.sax.ContentHandler):
                     sh = self.applyTrans(sh)
                     obj = self.doc.addObject("Part::Feature", pathname)
                     obj.Shape = sh
+                    self.format(obj)
                     if self.currentsymbol:
                         self.symbols[self.currentsymbol].append(obj)
 
@@ -1503,6 +1527,8 @@ class svgHandler(xml.sax.ContentHandler):
         if name == "g" or name == "svg":
             _msg("closing group")
             self.grouptransform.pop()
+            if self.groupstyles:
+                self.groupstyles.pop()
         if name == "symbol":
             if self.doc.getObject("svgsymbols"):
                 group = self.doc.getObject("svgsymbols")
