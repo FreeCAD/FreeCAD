@@ -92,7 +92,7 @@ class PathWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Sanity"]
         toolcmdlist = [
             "Path_Inspect",
             "Path_Simulator",
@@ -146,7 +146,6 @@ class PathWorkbench(Workbench):
 
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append("Path_ThreadMilling")
