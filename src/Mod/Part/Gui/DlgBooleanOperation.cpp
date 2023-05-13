@@ -465,16 +465,16 @@ void DlgBooleanOperation::accept()
             "Gui.activeDocument().hide(\"%s\")",shapeTwo.c_str());
 
         // add/remove fromgroup if needed
-        App::DocumentObjectGroup* targetGroup = nullptr;
+        App::DocumentObject* targetGroup = nullptr;
 
-        App::DocumentObjectGroup* group1 = obj1->getGroup();
+        App::DocumentObject* group1 = obj1->getFirstParent();
         if (group1) {
             targetGroup = group1;
             Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                 group1->getNameInDocument(), obj1->getNameInDocument());
         }
 
-        App::DocumentObjectGroup* group2 = obj2->getGroup();
+        App::DocumentObject* group2 = obj2->getFirstParent();
         if (group2) {
             targetGroup = group2;
             Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
