@@ -1,3 +1,4 @@
+#include "System.h"
 #include "ZRotation.h"
 #include "FullColumn.h"
 #include "DirectionCosineConstraintIJ.h"
@@ -39,10 +40,10 @@ void MbD::ZRotation::initializeGlobally()
 
 void MbD::ZRotation::initMotions()
 {
-	auto xyzBlks = std::initializer_list<std::shared_ptr<Variable>>{ xBlk, yBlk, zBlk };
-	std::static_pointer_cast<EndFrameqct>(frmI)->rmemBlks = std::make_shared<FullColumn<std::shared_ptr<Variable>>>(xyzBlks);
-	auto xyzRotBlks = std::initializer_list<std::shared_ptr<Variable>>{ xBlk, yBlk, zBlk };
-	std::static_pointer_cast<EndFrameqct>(frmI)->phiThePsiBlks = std::make_shared<FullColumn<std::shared_ptr<Variable>>>(xyzRotBlks);
+	auto xyzBlks = std::initializer_list<std::shared_ptr<Symbolic>>{ xBlk, yBlk, zBlk };
+	std::static_pointer_cast<EndFrameqc>(frmI)->setrmemBlks(std::make_shared<FullColumn<std::shared_ptr<Symbolic>>>(xyzBlks));
+	auto xyzRotBlks = std::initializer_list<std::shared_ptr<Symbolic>>{ phiBlk, theBlk, psiBlk };
+	std::static_pointer_cast<EndFrameqc>(frmI)->setphiThePsiBlks(std::make_shared<FullColumn<std::shared_ptr<Symbolic>>>(xyzRotBlks));
 }
 
 void MbD::ZRotation::addConstraint(std::shared_ptr<Constraint> con)

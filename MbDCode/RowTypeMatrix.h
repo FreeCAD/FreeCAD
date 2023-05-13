@@ -1,6 +1,10 @@
 #pragma once
+
 #include "Array.h"
+#include "FullRow.h"
+
 namespace MbD {
+
 	template <typename T>
 	class RowTypeMatrix : public Array<T>
 	{
@@ -8,6 +12,7 @@ namespace MbD {
 		RowTypeMatrix() {}
 		RowTypeMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void copy(std::shared_ptr<RowTypeMatrix<T>> x);
+		void zeroSelf();
 	};
 
 	template<typename T>
@@ -15,6 +20,12 @@ namespace MbD {
 	{
 		for (int i = 0; i < x->size(); i++) {
 			this->at(i)->copy(x->at(i));
+		}
+	}
+	template <>
+	inline void RowTypeMatrix< std::shared_ptr<FullRow<double>>>::zeroSelf() {
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->zeroSelf();
 		}
 	}
 }

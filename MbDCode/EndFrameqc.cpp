@@ -2,6 +2,8 @@
 
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
+#include "Variable.h"
+#include "MarkerFrame.h"
 
 using namespace MbD;
 
@@ -15,26 +17,41 @@ EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
 
 void EndFrameqc::initialize()
 {
-    EndFramec::initialize();
-    prOeOpE = std::make_unique<FullMatrix<double>>(3, 4);
-    pprOeOpEpE = std::make_unique<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
-    pAOepE = std::make_unique<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
-    ppAOepEpE = std::make_unique<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
+	prOeOpE = std::make_shared<FullMatrix<double>>(3, 4);
+	pprOeOpEpE = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
+	pAOepE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
+	ppAOepEpE = std::make_shared<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
 }
 
 void EndFrameqc::initializeLocally()
 {
+	if (endFrameqct) {
+		endFrameqct->initializeLocally();
+	}
 }
 
 void EndFrameqc::initializeGlobally()
 {
+	if (endFrameqct) {
+		endFrameqct->initializeGlobally();
+	}
+	else {
+		pprOeOpEpE = markerFrame->pprOmOpEpE;
+		ppAOepEpE = markerFrame->ppAOmpEpE;
+	}
 }
 
-void MbD::EndFrameqc::EndFrameqctFrom(std::shared_ptr<EndFramec>& frm)
+void MbD::EndFrameqc::EndFrameqctFrom(EndFrmcptr& frm)
 {
-	std::shared_ptr<EndFramec> newFrm;
-	newFrm = std::make_shared<EndFrameqct>(frm->getName().c_str());
-	newFrm->setMarkerFrame(frm->getMarkerFrame());
-	//frm.swap(newFrm);
-	std::swap(*(frm.get()), *(newFrm.get()));
+	endFrameqct = std::make_shared<EndFrameqct>();
+}
+
+void MbD::EndFrameqc::setrmemBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzBlks)
+{
+	std::static_pointer_cast<EndFrameqct>(endFrameqct)->rmemBlks = xyzBlks;
+}
+
+void MbD::EndFrameqc::setphiThePsiBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzRotBlks)
+{
+	std::static_pointer_cast<EndFrameqct>(endFrameqct)->phiThePsiBlks = xyzRotBlks;
 }

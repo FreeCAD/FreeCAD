@@ -19,12 +19,9 @@ MarkerFrame::MarkerFrame(const char* str) : CartesianFrame(str) {
 
 void MarkerFrame::initialize()
 {
-	//prOmOpE: = StMFullMatrix new : 3 by : 4.
-	//pAOmpE : = StMFullColumn new : 4.
-	//endFrames : = OrderedCollection new
 	prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
-	pAOmpE = std::make_unique<FullColumn<FullMatrix<double>>>(4);
-	endFrames = std::make_unique<std::vector<std::shared_ptr<EndFramec>>>();
+	pAOmpE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
+	endFrames = std::make_shared<std::vector<EndFrmcptr>>();
 	auto endFrm = std::make_shared<EndFrameqc>("EndFrame1");
 	this->addEndFrame(endFrm);
 }
@@ -47,7 +44,7 @@ void MarkerFrame::setaApm(FMatDsptr x)
 {
 	aApm->copy(x);
 }
-void MarkerFrame::addEndFrame(std::shared_ptr<EndFramec> endFrm)
+void MarkerFrame::addEndFrame(EndFrmcptr endFrm)
 {
 	endFrm->setMarkerFrame(this);
 	endFrames->push_back(endFrm);
@@ -62,4 +59,5 @@ void MarkerFrame::initializeLocally()
 
 void MarkerFrame::initializeGlobally()
 {
+	std::for_each(endFrames->begin(), endFrames->end(), [](const auto& endFrame) { endFrame->initializeGlobally(); });
 }

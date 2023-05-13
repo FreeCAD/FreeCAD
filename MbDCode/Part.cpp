@@ -54,4 +54,5 @@ void Part::initializeLocally()
 
 void Part::initializeGlobally()
 {
+	partFrame->initializeGlobally();
 }

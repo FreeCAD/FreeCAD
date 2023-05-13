@@ -15,8 +15,5 @@ namespace MbD {
 			}
 		}
 	};
-	typedef std::shared_ptr<SparseMatrix<double>> SpMatDptr;
-	typedef std::initializer_list<std::initializer_list<std::initializer_list<double>>> ListListPairD;
+	using SpMatDptr = std::shared_ptr<SparseMatrix<double>>;
 }
-
-

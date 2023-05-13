@@ -11,7 +11,7 @@ namespace MbD {
         //aAijIeJe axisI axisJ aAjOIe aAjOJe 
     public:
         DirectionCosineIecJec();
-        DirectionCosineIecJec(std::shared_ptr<EndFramec> frmI, std::shared_ptr<EndFramec> frmJ, int axisI, int axisJ);
+        DirectionCosineIecJec(EndFrmcptr frmI, EndFrmcptr frmJ, int axisI, int axisJ);
 
         int axisI, axisJ;
         double aAijIeJe;

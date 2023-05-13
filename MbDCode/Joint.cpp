@@ -14,10 +14,10 @@ Joint::Joint(const char* str) : Item(str) {
 
 void Joint::initialize()
 {
-	constraints = std::make_unique<std::vector<std::shared_ptr<Constraint>>>();
+	constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 }
 
-void Joint::connectsItoJ(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj)
+void Joint::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
 {
 	frmI = frmi;
 	frmJ = frmj;

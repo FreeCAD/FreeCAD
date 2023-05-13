@@ -14,7 +14,7 @@ namespace MbD {
         FMatDsptr ppAijIeJepEIpEJ;
         FMatDsptr ppAijIeJepEJpEJ;
         FMatDsptr pAjOJepEJT;
-        std::shared_ptr<FullMatrix<FullColumn<double>>> ppAjOJepEJpEJ;
+        std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> ppAjOJepEJpEJ;
 
     };
 }

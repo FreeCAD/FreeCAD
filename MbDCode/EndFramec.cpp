@@ -14,7 +14,6 @@ EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
 
 void EndFramec::initialize()
 {
-	CartesianFrame::initialize();
 }
 
 void EndFramec::setMarkerFrame(MarkerFrame* markerFrm)

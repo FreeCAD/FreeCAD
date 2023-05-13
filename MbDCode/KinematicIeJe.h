@@ -1,5 +1,6 @@
 #pragma once
 
+//#include "typedef.h"
 #include "Item.h"
 #include "EndFramec.h"
 
@@ -9,9 +10,9 @@ namespace MbD {
         //frmI frmJ 
     public:
         KinematicIeJe();
-        KinematicIeJe(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj);
+        KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj);
 
-        std::shared_ptr<EndFramec> frmI, frmJ;
+        EndFrmcptr frmI, frmJ;
     };
 }
 

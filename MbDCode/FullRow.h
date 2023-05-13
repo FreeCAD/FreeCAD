@@ -13,7 +13,6 @@ namespace MbD {
 		std::shared_ptr<FullRow<T>> negated();
 
 	};
-	typedef std::shared_ptr<FullRow<double>> FRowDsptr;
 
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::times(double a)
@@ -30,5 +29,7 @@ namespace MbD {
 	{
 		return this->times(-1.0);
 	}
+	using ListFRD = std::initializer_list<std::shared_ptr<FullRow<double>>>;
+	using FRowDsptr = std::shared_ptr<FullRow<double>>;
 }
 

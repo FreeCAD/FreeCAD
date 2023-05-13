@@ -20,8 +20,8 @@ void PartFrame::initialize()
 {
 	aGeu = std::make_shared<EulerConstraint>("EulerCon");
 	aGeu->setOwner(this);
-	aGabs = std::make_unique<std::vector<std::shared_ptr<AbsConstraint>>>();
-	markerFrames = std::make_unique<std::vector<std::shared_ptr<MarkerFrame>>>();
+	aGabs = std::make_shared<std::vector<std::shared_ptr<AbsConstraint>>>();
+	markerFrames = std::make_shared<std::vector<std::shared_ptr<MarkerFrame>>>();
 }
 void PartFrame::setqX(FColDsptr x) {
 	qX->copy(x);
@@ -48,7 +48,7 @@ void PartFrame::addMarkerFrame(std::shared_ptr<MarkerFrame> markerFrame)
 	markerFrames->push_back(markerFrame);
 }
 
-std::shared_ptr<EndFramec> PartFrame::endFrame(std::string name)
+EndFrmcptr PartFrame::endFrame(std::string name)
 {
 	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto mkr) {return mkr->getName() == name; });
 	return (*match)->endFrames->at(0);
@@ -72,4 +72,7 @@ void PartFrame::initializeLocally()
 
 void PartFrame::initializeGlobally()
 {
+	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->initializeGlobally(); });
+	aGeu->initializeGlobally();
+	std::for_each(aGabs->begin(), aGabs->end(), [](const auto& aGab) { aGab->initializeGlobally(); });
 }

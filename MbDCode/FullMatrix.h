@@ -31,16 +31,18 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
+		void identity();
 	};
-
-	typedef std::initializer_list<std::initializer_list<double>> ListListD;
-	typedef std::initializer_list<FRowDsptr> ListFRD;
-	typedef std::shared_ptr<FullMatrix<double>> FMatDsptr;
-	typedef std::unique_ptr<FullMatrix<double>> FMatDuptr;
-	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDsptr;
-	//typedef std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDuptr;
-	typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDsptr;
-	typedef std::unique_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDuptr;
-
+	template <>
+	inline void FullMatrix<double>::identity() {
+		this->zeroSelf();
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->at(i) = 1.0;
+		}
+	}
+	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
+	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
+	//using FMatFColDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>>;
+	using FMatFMatDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>>;
 }
 

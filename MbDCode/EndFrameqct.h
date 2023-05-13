@@ -1,8 +1,10 @@
 #pragma once
 #include "EndFrameqc.h"
-#include "Variable.h"
 
 namespace MbD {
+
+	class Symbolic;
+
 	class EndFrameqct : public EndFrameqc
 	{
 		//time rmemBlks prmemptBlks pprmemptptBlks phiThePsiBlks pPhiThePsiptBlks ppPhiThePsiptptBlks 
@@ -13,14 +15,19 @@ namespace MbD {
 		void initialize();
 		void initializeLocally() override;
 		void initializeGlobally() override;
+		void initprmemptBlks();
+		void initpprmemptptBlks();
+		void initpPhiThePsiptBlks();
+		void initppPhiThePsiptptBlks();
 
 		double time;
-		std::shared_ptr<FullColumn<std::shared_ptr<Variable>>> rmemBlks;
-		std::shared_ptr<FullColumn<std::shared_ptr<Variable>>> phiThePsiBlks;
-		FColDuptr rmem, prmempt, pprmemptpt, pprOeOptpt;
-		FMatDuptr aAme, pAmept, ppAmeptpt, ppAOeptpt;
-		FMatDuptr pprOeOpEpt;
-		std::unique_ptr<FullColumn<FullMatrix<double>>> ppAOepEpt;
+		std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> rmemBlks, prmemptBlks, pprmemptptBlks;
+		std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> phiThePsiBlks, pPhiThePsiptBlks, ppPhiThePsiptptBlks;
+		FColDsptr rmem, prmempt, pprmemptpt, pprOeOptpt;
+		FMatDsptr aAme, pAmept, ppAmeptpt, ppAOeptpt;
+		FMatDsptr pprOeOpEpt;
+		std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> ppAOepEpt;
 	};
+	using EndFrmqctptr = std::shared_ptr<EndFrameqct>;
 }
 

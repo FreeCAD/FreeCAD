@@ -147,9 +147,13 @@
     <ClCompile Include="EulerArray.cpp" />
     <ClCompile Include="EulerConstraint.cpp" />
     <ClCompile Include="EulerParameters.cpp" />
+    <ClCompile Include="ExpressionX.cpp" />
     <ClCompile Include="FullColumn.cpp" />
     <ClCompile Include="FullMatrix.cpp" />
     <ClCompile Include="FullRow.cpp" />
+    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="FunctionWithManyArgs.cpp" />
+    <ClCompile Include="FunctionX.cpp" />
     <ClCompile Include="IndependentVariable.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Joint.cpp" />
@@ -160,6 +164,7 @@
     <ClCompile Include="Part.cpp" />
     <ClCompile Include="PartFrame.cpp" />
     <ClCompile Include="PrescribedMotion.cpp" />
+    <ClCompile Include="Product.cpp" />
     <ClCompile Include="RevoluteJoint.cpp" />
     <ClCompile Include="RowTypeMatrix.cpp" />
     <ClCompile Include="Solver.cpp" />
@@ -167,6 +172,7 @@
     <ClCompile Include="SparseMatrix.cpp" />
     <ClCompile Include="SparseRow.cpp" />
     <ClCompile Include="SparseVector.cpp" />
+    <ClCompile Include="Sum.cpp" />
     <ClCompile Include="Symbolic.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemSolver.cpp" />
@@ -197,9 +203,13 @@
     <ClInclude Include="EulerArray.h" />
     <ClInclude Include="EulerConstraint.h" />
     <ClInclude Include="EulerParameters.h" />
+    <ClInclude Include="ExpressionX.h" />
     <ClInclude Include="FullColumn.h" />
     <ClInclude Include="FullMatrix.h" />
     <ClInclude Include="FullRow.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="FunctionWithManyArgs.h" />
+    <ClInclude Include="FunctionX.h" />
     <ClInclude Include="IndependentVariable.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Joint.h" />
@@ -210,6 +220,7 @@
     <ClInclude Include="Part.h" />
     <ClInclude Include="PartFrame.h" />
     <ClInclude Include="PrescribedMotion.h" />
+    <ClInclude Include="Product.h" />
     <ClInclude Include="RevoluteJoint.h" />
     <ClInclude Include="RowTypeMatrix.h" />
     <ClInclude Include="Solver.h" />
@@ -217,10 +228,12 @@
     <ClInclude Include="SparseMatrix.h" />
     <ClInclude Include="SparseRow.h" />
     <ClInclude Include="SparseVector.h" />
+    <ClInclude Include="Sum.h" />
     <ClInclude Include="Symbolic.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="SystemSolver.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="typedef.h" />
     <ClInclude Include="UserFunction.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="Vector.h" />

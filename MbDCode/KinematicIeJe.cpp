@@ -6,6 +6,6 @@ MbD::KinematicIeJe::KinematicIeJe()
 {
 }
 
-MbD::KinematicIeJe::KinematicIeJe(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj) : frmI(frmi), frmJ(frmj)
+MbD::KinematicIeJe::KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
 {
 }

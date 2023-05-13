@@ -12,5 +12,3 @@ namespace MbD {
         Vector(std::initializer_list<T> list) : Array<T>{ list } {}
     };
 }
-
-typedef std::initializer_list<double> ListD;

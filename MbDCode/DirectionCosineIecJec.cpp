@@ -9,7 +9,7 @@ MbD::DirectionCosineIecJec::DirectionCosineIecJec()
 {
 }
 
-MbD::DirectionCosineIecJec::DirectionCosineIecJec(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj, int axisi, int axisj) :
+MbD::DirectionCosineIecJec::DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
 	KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj)
 {
 	aAijIeJe = 0.0;

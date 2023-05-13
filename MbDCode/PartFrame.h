@@ -14,6 +14,7 @@ namespace MbD {
 	class Part;
 	class MarkerFrame;
 	class EndFramec;
+	using EndFrmcptr = std::shared_ptr<EndFramec>;
 
 	class PartFrame : public CartesianFrame
 	{
@@ -33,7 +34,7 @@ namespace MbD {
 		void setPart(Part* x);
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
-		std::shared_ptr<EndFramec> endFrame(std::string name);
+		EndFrmcptr endFrame(std::string name);
 
 		Part* part;
 		int iqX, iqE;	//Position index of frame variables qX and qE in system list of variables
@@ -44,8 +45,8 @@ namespace MbD {
 		FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
 		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<EulerConstraint> aGeu;
-		std::unique_ptr<std::vector<std::shared_ptr<AbsConstraint>>> aGabs;
-		std::unique_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
+		std::shared_ptr<std::vector<std::shared_ptr<AbsConstraint>>> aGabs;
+		std::shared_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
 	};
 }
 

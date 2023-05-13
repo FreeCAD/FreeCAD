@@ -1,5 +1,6 @@
 #pragma once
 
+//#include "typedef.h"
 #include "Constraint.h"
 #include "EndFramec.h"
 
@@ -8,9 +9,9 @@ namespace MbD {
     {
         //frmI frmJ aConstant 
     public:
-        ConstraintIJ(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj);
+        ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
 
-        std::shared_ptr<EndFramec> frmI, frmJ;
+        EndFrmcptr frmI, frmJ;
         double aConstant;
     };
 }

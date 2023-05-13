@@ -10,6 +10,7 @@
 namespace MbD {
 	class PartFrame;
 	class EndFramec;
+	using EndFrmcptr = std::shared_ptr<EndFramec>;
 
 	class MarkerFrame : public CartesianFrame
 	{
@@ -22,7 +23,7 @@ namespace MbD {
 		PartFrame* getPartFrame();
 		void setrpmp(FColDsptr x);
 		void setaApm(FMatDsptr x);
-		void addEndFrame(std::shared_ptr<EndFramec> x);
+		void addEndFrame(EndFrmcptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
 
@@ -32,10 +33,10 @@ namespace MbD {
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
 		FMatDsptr prOmOpE;
-		std::unique_ptr<FullColumn<FullMatrix<double>>> pAOmpE;
-		std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOmOpEpE;
-		FMatFMatDuptr ppAOmpEpE;
-		std::unique_ptr<std::vector<std::shared_ptr<EndFramec>>> endFrames;
+		std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOmpE;
+		std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOmOpEpE;
+		FMatFMatDsptr ppAOmpEpE;
+		std::shared_ptr<std::vector<EndFrmcptr>> endFrames;
 
 	};
 }

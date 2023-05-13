@@ -23,7 +23,7 @@ namespace MbD {
 
 		std::shared_ptr<NewtonRaphson> icTypeSolver;
 		System* system;
-		std::unique_ptr<std::vector<std::vector<std::shared_ptr<Constraint>>>> setsOfRedundantConstraints;
+		std::shared_ptr<std::vector<std::vector<std::shared_ptr<Constraint>>>> setsOfRedundantConstraints;
 
 		double tstart = 0;
 		double tend = 25;

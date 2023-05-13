@@ -13,6 +13,7 @@ namespace MbD {
 		void initialize();
 		void setName(std::string& str);
 		const std::string& getName() const;
+		double getValue() override;
 
 		std::string name;
 		double value;

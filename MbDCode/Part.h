@@ -30,14 +30,14 @@ namespace MbD {
 		int ipX; 
 		int ipE; 
 		double m; 
-		std::unique_ptr<DiagonalMatrix<double>> aJ;
+		std::shared_ptr<DiagonalMatrix<double>> aJ;
 		std::shared_ptr<PartFrame> partFrame;
 		FColDsptr pX;
 		FColDsptr pXdot;
 		FColDsptr pE;
 		FColDsptr pEdot;
-		std::unique_ptr<DiagonalMatrix<double>> mX;
-		std::unique_ptr<DiagonalMatrix<double>> mE;
+		std::shared_ptr<DiagonalMatrix<double>> mX;
+		std::shared_ptr<DiagonalMatrix<double>> mE;
 		FMatDsptr mEdot;
 		FColDsptr pTpE;
 		FMatDsptr ppTpEpE;

@@ -1,10 +1,9 @@
 #pragma once
+
 #include "EndFramec.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
 
 namespace MbD {
-    class EndFramec;
+    class Symbolic;
 
     class EndFrameqc : public EndFramec
     {
@@ -15,12 +14,15 @@ namespace MbD {
         void initialize();
         void initializeLocally() override;
         void initializeGlobally() override;
-        void EndFrameqctFrom(std::shared_ptr<EndFramec>& frm) override;
+        void EndFrameqctFrom(EndFrmcptr& frm) override;
+        void setrmemBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzBlks);
+        void setphiThePsiBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzRotBlks);
 
-        FMatDuptr prOeOpE;
-        std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;
-        std::unique_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOepE;
-        FMatFMatDuptr ppAOepEpE;
+        FMatDsptr prOeOpE;
+        std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;
+        std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOepE;
+        FMatFMatDsptr ppAOepEpE;
+        std::shared_ptr<EndFramec> endFrameqct;
     };
 }
 

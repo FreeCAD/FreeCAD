@@ -8,6 +8,7 @@ namespace MbD {
     public:
         Constant();
         Constant(double val);
+        std::shared_ptr<Symbolic> differentiateWRT(std::shared_ptr<Symbolic> var) override;
     };
 }
 

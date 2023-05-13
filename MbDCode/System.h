@@ -37,8 +37,8 @@ namespace MbD {
 		};
 
 
-		std::unique_ptr<std::vector<std::shared_ptr<Part>>> parts;
-		std::unique_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
+		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
+		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
 		void addPart(std::shared_ptr<Part> part);
@@ -46,7 +46,7 @@ namespace MbD {
 		void initializeLocally() override;
 		void initializeGlobally() override;
 
-		std::unique_ptr<Time> time;
+		std::shared_ptr<Time> time;
 	private:
 		System();
 		System(const char* str);

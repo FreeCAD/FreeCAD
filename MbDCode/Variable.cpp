@@ -29,3 +29,8 @@ const std::string& Variable::getName() const
 {
 	return name;
 }
+
+double MbD::Variable::getValue()
+{
+	return value;
+}

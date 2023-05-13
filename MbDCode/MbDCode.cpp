@@ -6,6 +6,7 @@
 
 #include <iostream>	
 #include "System.h"
+#include "Constant.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "Part.h"
@@ -14,6 +15,8 @@
 #include "RevoluteJoint.h"
 #include "ZRotation.h"
 #include "EndFrameqc.h"
+#include "EndFrameqct.h"
+#include "Product.h"
 #include "MbDCode.h"
 
 using namespace MbD;
@@ -21,7 +24,6 @@ using namespace MbD;
 int main()
 {
 	std::cout << "Hello World!\n";
-	//System& TheSystem = System::getInstance();
 	System& TheSystem = System::getInstance("TheSystem");
 	std::cout << "TheSystem.getName() " << TheSystem.getName() << std::endl;
 	auto systemSolver = TheSystem.systemSolver;
@@ -195,6 +197,9 @@ int main()
 	
 	auto rotMotion1 = std::make_shared<ZRotation>("RotMotion1");
 	rotMotion1->connectsItoJ(assembly1->partFrame->endFrame("Marker2"), crankPart1->partFrame->endFrame("Marker1"));
+	auto omega = std::make_shared<Constant>(6.2831853071796);
+	auto timeScale = std::make_shared<Constant>(0.04);
+	rotMotion1->phiBlk = std::make_shared<Product>(omega, timeScale, TheSystem.time);
 	TheSystem.jointsMotions->push_back(rotMotion1);
 	//
 	TheSystem.runKINEMATICS();

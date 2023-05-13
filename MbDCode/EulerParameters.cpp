@@ -6,7 +6,7 @@
 
 using namespace MbD;
 
-std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters::ppApEpEtimesColumn(FColDsptr col)
+std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters::ppApEpEtimesColumn(FColDsptr col)
 {
 	double a2c1 = 2 * col->at(0);
 	double a2c2 = 2 * col->at(1);
@@ -24,7 +24,7 @@ std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters
 	auto col33 = std::make_shared<FullColumn<double>>(ListD{ m2c1, m2c2, a2c3 });
 	auto col34 = std::make_shared<FullColumn<double>>(ListD{ m2c2, a2c1, 0 });
 	auto col44 = std::make_shared<FullColumn<double>>(ListD{ a2c1, a2c2, a2c3 });
-	auto answer = std::make_unique<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
+	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
 	auto row1 = answer->at(0);
 	row1->at(0) = col11;
 	row1->at(1) = col12;
@@ -48,7 +48,7 @@ std::unique_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters
 	return answer;
 }
 
-std::unique_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters::ppApEpEtimesMatrix(FMatDsptr mat)
+std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters::ppApEpEtimesMatrix(FMatDsptr mat)
 {
 	FRowDsptr a2m1 = mat->at(0)->times(2.0);
 	FRowDsptr a2m2 = mat->at(1)->times(2.0);
@@ -68,7 +68,7 @@ std::unique_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters
 	auto mat33 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m1, m2m2, a2m3 });
 	auto mat34 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m2, a2m1, zero });
 	auto mat44 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m1, a2m2, a2m3 });
-	auto answer = std::make_unique<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
+	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
 	auto row1 = answer->at(0);
 	row1->at(0) = mat11;
 	row1->at(1) = mat12;

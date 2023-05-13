@@ -13,6 +13,6 @@ namespace MbD {
 		SparseRow(std::initializer_list<std::pair<const int, T>> list) : SparseVector<T>{ list } {}
 		SparseRow(std::initializer_list<std::initializer_list<T>> list) : SparseVector<T>{ list } {}
 	};
-	typedef std::shared_ptr<SparseRow<double>> SpRowDptr;
+	using SpRowDptr = std::shared_ptr<SparseRow<double>>;
 }
 
