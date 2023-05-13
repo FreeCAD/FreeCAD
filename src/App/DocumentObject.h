@@ -383,6 +383,9 @@ public:
     ///Obtain top parents and subnames of this object using its InList
     std::vector<std::pair<App::DocumentObject*,std::string> > getParents(int depth=0) const;
 
+    /// Obtain the first parent group of this object
+    App::DocumentObject* getFirstParent() const;
+
     /** Return the linked object with optional transformation
      *
      * @param recurse: If false, return the immediate linked object, or else
