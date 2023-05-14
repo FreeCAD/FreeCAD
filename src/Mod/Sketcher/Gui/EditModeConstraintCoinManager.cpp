@@ -661,7 +661,7 @@ Restart:
 
                             const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
                             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                if (Constr->SecondPos != Sketcher::PointPos::none) {  // point to line distance
+                                if (Constr->FirstPos != Sketcher::PointPos::none) {  // point to line distance
                                     const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                     Base::Vector3d l2p1 = lineSeg->getStartPoint();
                                     Base::Vector3d l2p2 = lineSeg->getEndPoint();
