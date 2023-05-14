@@ -452,7 +452,7 @@
      <item>
       <widget class="QPushButton" name="annotButton">
        <property name="toolTip">
-        <string>Apply above style to all annotations (texts and dimensions)</string>
+        <string>Apply above style to all annotations (texts, dimensions and labels)</string>
        </property>
        <property name="text">
         <string>Annotations</string>
