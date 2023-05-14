@@ -1222,6 +1222,9 @@ bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
     // Computing of CentreOfMass
     GProp_GProps prop;
     if (getShapeProperties(_Shape, prop)) {
+        if (prop.Mass() > Precision::Infinite()) {
+            return false;
+        }
         gp_Pnt pnt = prop.CentreOfMass();
         center.Set(pnt.X(), pnt.Y(), pnt.Z());
         return true;
