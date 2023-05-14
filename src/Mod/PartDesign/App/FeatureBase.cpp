@@ -73,18 +73,22 @@ App::DocumentObjectExecReturn* FeatureBase::execute() {
     return StdReturn;
 }
 
+void FeatureBase::trySetBaseFeatureOfBody()
+{
+    if (auto body = getFeatureBody()) {
+        if (BaseFeature.getValue()
+                && body->BaseFeature.getValue()
+                && body->BaseFeature.getValue() != BaseFeature.getValue()) {
+            body->BaseFeature.setValue(BaseFeature.getValue());
+        }
+    }
+}
+
 void FeatureBase::onChanged(const App::Property* prop) {
 
     // the BaseFeature property should track the Body BaseFeature and vice-versa
     if (prop == &BaseFeature) {
-
-        auto body = getFeatureBody();
-        if(!body)
-            return;
-
-        if (BaseFeature.getValue() && body->BaseFeature.getValue() != BaseFeature.getValue()) {
-            body->BaseFeature.setValue(BaseFeature.getValue());
-        }
+        trySetBaseFeatureOfBody();
     }
 
     Part::Feature::onChanged(prop);
