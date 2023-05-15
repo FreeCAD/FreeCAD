@@ -274,6 +274,29 @@ struct BaseExport Tools
     static inline QString fromStdString(const std::string & s) {
         return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
     }
+
+    /**
+     * @brief quoted Creates a quoted string.
+     * @param String to be quoted.
+     * @return A quoted std::string.
+     */
+    static std::string quoted(const char*);
+    /**
+     * @brief quoted Creates a quoted string.
+     * @param String to be quoted.
+     * @return A quoted std::string.
+     */
+    static std::string quoted(const std::string&);
+
+    /**
+     * @brief joinList
+     * Join the vector of strings \a vec using the separator \a sep
+     * @param vec
+     * @param sep
+     * @return
+     */
+    static std::string joinList(const std::vector<std::string>& vec,
+                                const std::string& sep = ", ");
 };
 
 
