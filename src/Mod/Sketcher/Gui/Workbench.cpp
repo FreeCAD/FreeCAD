@@ -135,6 +135,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
+    Gui::ToolBarItem* edittools = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+    edittools->setCommand("Sketcher edit tools");
+    addSketcherWorkbenchEditTools(*edittools);
+
      return root;
 }
 
@@ -162,7 +166,8 @@ namespace
                             QString::fromLatin1("Sketcher constraints"),
                             QString::fromLatin1("Sketcher tools"),
                             QString::fromLatin1("Sketcher B-spline tools"),
-                            QString::fromLatin1("Sketcher virtual space") };
+                            QString::fromLatin1("Sketcher virtual space"),
+                            QString::fromLatin1("Sketcher edit tools")};
     }
 
     inline const QStringList nonEditModeToolbarNames()
@@ -238,9 +243,7 @@ inline void SketcherAddWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
 {
     sketch  << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
-            << "Sketcher_ViewSection"
-            << "Sketcher_Grid"
-            << "Sketcher_Snap";
+            << "Sketcher_ViewSection";
 }
 
 template <typename T>
@@ -501,6 +504,16 @@ inline void SketcherAddWorkbenchVirtualSpace<Gui::ToolBarItem>(Gui::ToolBarItem&
     virtualspace << "Sketcher_SwitchVirtualSpace";
 }
 
+template <typename T>
+inline void SketcherAddWorkbenchEditTools(T& virtualspedittoolsace);
+
+template <>
+inline void SketcherAddWorkbenchEditTools<Gui::ToolBarItem>(Gui::ToolBarItem& edittools)
+{
+    edittools   << "Sketcher_Grid"
+                << "Sketcher_Snap";
+}
+
 void addSketcherWorkbenchSketchActions(Gui::MenuItem& sketch)
 {
     SketcherAddWorkbenchSketchActions(sketch);
@@ -569,6 +582,11 @@ void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline)
 void addSketcherWorkbenchVirtualSpace(Gui::ToolBarItem& virtualspace)
 {
     SketcherAddWorkbenchVirtualSpace(virtualspace);
+}
+
+void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools)
+{
+    SketcherAddWorkbenchEditTools(edittools);
 }
 
 } /* namespace SketcherGui */
