@@ -24,6 +24,7 @@
 #define BASE_WRITER_H
 
 
+#include <memory>
 #include <set>
 #include <string>
 #include <sstream>

@@ -36,7 +36,6 @@
 #include "Tools.h"
 
 #include <boost/iostreams/filtering_stream.hpp>
-#include <memory>
 
 using namespace Base;
 using namespace std;
