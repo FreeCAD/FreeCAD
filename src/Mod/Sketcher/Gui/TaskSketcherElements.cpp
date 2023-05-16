@@ -56,6 +56,33 @@
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
+// Translation block for context menu: do not remove
+#if 0
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point Coincidence");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point on Object");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Parallel Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Perpendicular Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Tangent Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Equal Length");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Symmetric");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Block Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Lock Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Distance");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Distance");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Length Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Diameter Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radiam Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle Constraint");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Toggle construction geometry");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Constraints");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Origin");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Horizontal Axis");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
+#endif
+
 /// Inserts a QAction into an existing menu
 /// ICONSTR is the string of the icon in the resource file
 /// NAMESTR is the text appearing in the contextual menuAction
@@ -461,6 +488,9 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QList<QListWidgetItem *> items = selectedItems();
 
+    // NOTE: If extending this context menu, be sure to add the items to the translation block at
+    // the top of this file
+
     // CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)
     CONTEXT_ITEM("Constraint_PointOnPoint","Point Coincidence","Sketcher_ConstrainCoincident",doPointCoincidence,true)
     CONTEXT_ITEM("Constraint_PointOnObject","Point on Object","Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint,true)
@@ -498,14 +528,14 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     auto submenu = menu.addMenu(tr("Layer"));
 
     auto addLayerAction = [submenu, this, items](auto && name, int layernumber){
-        auto action = submenu->addAction(tr(std::forward<decltype(name)>(name)), [this, layernumber](){changeLayer(layernumber);});
+        auto action = submenu->addAction(std::forward<decltype(name)>(name), [this, layernumber](){changeLayer(layernumber);});
         action->setEnabled(!items.isEmpty());
         return action;
     };
 
-    addLayerAction("Layer 0", 0);
-    addLayerAction("Layer 1", 1);
-    addLayerAction("Hidden", 2);
+    addLayerAction(tr("Layer 0"), 0);
+    addLayerAction(tr("Layer 1"), 1);
+    addLayerAction(tr("Hidden"), 2);
 
 
     menu.addSeparator();
