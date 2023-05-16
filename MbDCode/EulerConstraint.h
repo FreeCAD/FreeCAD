@@ -14,7 +14,7 @@ namespace MbD {
 		EulerConstraint(const char* str);
 		void initialize();
 
-		FullRowDptr pGpE = std::make_shared<FullRow<double>>(4);    //partial derivative of G wrt pE
+		FRowDsptr pGpE;//partial derivative of G wrt pE
 		int iqE = -1;
 	};
 }

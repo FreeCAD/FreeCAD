@@ -35,17 +35,18 @@ namespace MbD {
 			static System singleInstance(str); // Block-scoped static Singleton instance
 			return singleInstance;
 		};
-		std::unique_ptr<std::vector<std::shared_ptr<Part>>> parts;
-		std::unique_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
+
+
+		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
+		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
 		void addPart(std::shared_ptr<Part> part);
 		void runKINEMATICS();
-		void initializeLocally();
-		void initializeGlobally();
+		void initializeLocally() override;
+		void initializeGlobally() override;
 
-		double timeValue;
-		std::unique_ptr<Time> time;
+		std::shared_ptr<Time> time;
 	private:
 		System();
 		System(const char* str);

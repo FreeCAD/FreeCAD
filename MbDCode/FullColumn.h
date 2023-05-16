@@ -25,8 +25,7 @@ namespace MbD {
 			return ss.str();
 		}
 	};
-
-	typedef std::shared_ptr<FullColumn<double>> FullColDptr;
-	//typedef std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> FullColFMptr;
+	using FColDsptr = std::shared_ptr<FullColumn<double>>;
+	//using FColFMatDsptr = std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>>;
 }
 

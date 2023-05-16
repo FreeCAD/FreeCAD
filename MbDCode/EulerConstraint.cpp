@@ -5,12 +5,14 @@ using namespace MbD;
 
 EulerConstraint::EulerConstraint()
 {
+	initialize();
 }
 
-MbD::EulerConstraint::EulerConstraint(const char* str) : Constraint(str)
+EulerConstraint::EulerConstraint(const char* str) : Constraint(str)
 {
 }
 
-void MbD::EulerConstraint::initialize()
+void EulerConstraint::initialize()
 {
+	pGpE = std::make_shared<FullRow<double>>(4);
 }

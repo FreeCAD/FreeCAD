@@ -5,17 +5,17 @@
 using namespace MbD;
 
 System::System() {
-	time = std::make_unique<Time>();
-	parts = std::make_unique<std::vector<std::shared_ptr<Part>>>();
-	jointsMotions = std::make_unique<std::vector<std::shared_ptr<Joint>>>();
-	systemSolver = std::make_unique<SystemSolver>(this);
+	time = std::make_shared<Time>();
+	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
+	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
+	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
 System::System(const char* str) : Item(str) {
-	time = std::make_unique<Time>();
-	parts = std::make_unique<std::vector<std::shared_ptr<Part>>>();
-	jointsMotions = std::make_unique<std::vector<std::shared_ptr<Joint>>>();
-	systemSolver = std::make_unique<SystemSolver>(this);
+	time = std::make_shared<Time>();
+	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
+	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
+	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
 void System::addPart(std::shared_ptr<Part> part)
@@ -50,15 +50,18 @@ void System::runKINEMATICS()
 	systemSolver->runBasicKinematic();
 }
 
-void System::initializeLocally()
+void System::initializeLocally() 
 {
 	hasChanged = false;
-	timeValue = systemSolver->tstart;
-	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeLocally();	});
+	time->value = systemSolver->tstart;
+	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeLocally(); });
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), [](const auto& joint) { joint->initializeLocally();	});
 	systemSolver->initializeLocally();
 }
 
 void System::initializeGlobally()
 {
+	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeGlobally(); });
+	std::for_each(jointsMotions->begin(), jointsMotions->end(), [](const auto& joint) { joint->initializeGlobally();	});
+	systemSolver->initializeGlobally();
 }

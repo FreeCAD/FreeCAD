@@ -2,6 +2,9 @@
 #include "Joint.h"
 
 namespace MbD {
+
+    class Symbolic;
+
     class PrescribedMotion : public Joint
     {
         //xBlk yBlk zBlk phiBlk theBlk psiBlk 
@@ -9,7 +12,14 @@ namespace MbD {
         PrescribedMotion();
         PrescribedMotion(const char* str);
         void initialize();
-        void connectsItoJ(std::shared_ptr<EndFramec> frmI, std::shared_ptr<EndFramec> frmJ) override;
+        void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ) override;
+
+        std::shared_ptr<Symbolic> xBlk;
+        std::shared_ptr<Symbolic> yBlk;
+        std::shared_ptr<Symbolic> zBlk;
+        std::shared_ptr<Symbolic> phiBlk;
+        std::shared_ptr<Symbolic> theBlk;
+        std::shared_ptr<Symbolic> psiBlk;
     };
 }
 

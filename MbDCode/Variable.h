@@ -3,17 +3,20 @@
 
 #include "Symbolic.h"
 namespace MbD {
-    class Variable :
-        public Symbolic
+    class Variable : public Symbolic
     {
         //name value 
-    public:
 	public:
-		Variable() {}
+		Variable();
+		Variable(const char* str);
+		Variable(double val);
+		void initialize();
 		void setName(std::string& str);
 		const std::string& getName() const;
-	private:
+		double getValue() override;
+
 		std::string name;
+		double value;
 	};
 }
 

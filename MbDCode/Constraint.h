@@ -15,9 +15,9 @@ namespace MbD {
 		Item* getOwner();
 		
 		int iG;
-		double aG;  //Constraint function
-		double lam; //Lambda is Lagrange Multiplier
-		Item* owner; //A Joint or PartFrame owns the constraint
+		double aG;		//Constraint function
+		double lam;		//Lambda is Lagrange Multiplier
+		Item* owner;	//A Joint or PartFrame owns the constraint
 	};
 }
 

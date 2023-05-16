@@ -1,12 +1,11 @@
 #pragma once
 #include <memory>
 
-#include "RowTypeMatrix.h"
 #include "FullColumn.h"
+#include "RowTypeMatrix.h"
 #include "FullRow.h"
 
 namespace MbD {
-	//class FullColumn<double>;
 
 	template <typename T>
 	class FullMatrix : public RowTypeMatrix<std::shared_ptr<FullRow<T>>>
@@ -32,13 +31,18 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
+		void identity();
 	};
-
-	typedef std::initializer_list<std::initializer_list<double>> ListListD;
-	typedef std::initializer_list<FullRowDptr> ListFRD;
-	typedef std::shared_ptr<FullMatrix<double>> FullMatDptr;
-	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDptr;
-	typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDptr;
-
+	template <>
+	inline void FullMatrix<double>::identity() {
+		this->zeroSelf();
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->at(i) = 1.0;
+		}
+	}
+	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
+	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
+	//using FMatFColDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>>;
+	using FMatFMatDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>>;
 }
 

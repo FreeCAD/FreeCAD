@@ -7,6 +7,7 @@ namespace MbD {
     public:
         AbsConstraint();
         AbsConstraint(const char* str);
+        AbsConstraint(int axis);
         void initialize();
         int axis;
         int iqXminusOnePlusAxis;

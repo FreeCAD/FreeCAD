@@ -2,13 +2,15 @@
 #include <memory>
 #include <vector>
 
+//#include "typedef.h"
 #include "Item.h"
 #include "EndFramec.h"
 #include "Constraint.h"
 
 namespace MbD {
-    class EndFramec;
+    //class EndFramec;
     class Constraint;
+    //using EndFrmcptr = std::shared_ptr<EndFramec>;
 
     class Joint : public Item
     {
@@ -17,13 +19,13 @@ namespace MbD {
         Joint();
         Joint(const char* str);
         void initialize();
-        virtual void connectsItoJ(std::shared_ptr<EndFramec> frmI, std::shared_ptr<EndFramec> frmJ);
-        void initializeLocally();
-        void initializeGlobally();
+        virtual void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ);
+        void initializeLocally() override;
+        void initializeGlobally() override;
 
-        std::shared_ptr<EndFramec> frmI;
-        std::shared_ptr<EndFramec> frmJ;
-        std::unique_ptr<std::vector<std::shared_ptr<Constraint>>> constraints;
+        EndFrmcptr frmI;
+        EndFrmcptr frmJ;
+        std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> constraints;
 
     };
 }

@@ -14,6 +14,7 @@ namespace MbD {
 	class Part;
 	class MarkerFrame;
 	class EndFramec;
+	using EndFrmcptr = std::shared_ptr<EndFramec>;
 
 	class PartFrame : public CartesianFrame
 	{
@@ -22,23 +23,30 @@ namespace MbD {
 		PartFrame();
 		PartFrame(const char* str);
 		void initialize();
+		void initializeLocally() override;
+		void initializeGlobally() override;
+		void asFixed();
 
-		void setqX(FullColDptr x);
-		FullColDptr getqX();
-		void setqE(FullColDptr x);
-		FullColDptr getqE();
+		void setqX(FColDsptr x);
+		FColDsptr getqX();
+		void setqE(FColDsptr x);
+		FColDsptr getqE();
 		void setPart(Part* x);
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
-		std::shared_ptr<EndFramec> endFrame(std::string name);
+		EndFrmcptr endFrame(std::string name);
 
 		Part* part;
 		int iqX, iqE;	//Position index of frame variables qX and qE in system list of variables
-		FullColDptr qX = std::make_shared<FullColumn<double>>(3);
-		FullColDptr qE = std::make_shared<FullColumn<double>>(4);
+		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
+		FColDsptr qE = std::make_shared<FullColumn<double>>(4);
+		FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
+		FColDsptr qEdot = std::make_shared<FullColumn<double>>(4);
+		FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
+		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<EulerConstraint> aGeu;
-		std::unique_ptr<std::vector<std::shared_ptr<AbsConstraint>>> aGabs;
-		std::unique_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
+		std::shared_ptr<std::vector<std::shared_ptr<AbsConstraint>>> aGabs;
+		std::shared_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
 	};
 }
 

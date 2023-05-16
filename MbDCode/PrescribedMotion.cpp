@@ -1,9 +1,11 @@
+#include <iostream>	
 #include <memory>
 #include <typeinfo>
 #include <assert.h>
 
 #include "PrescribedMotion.h"
 #include "EndFrameqct.h"
+#include "Constant.h"
 
 using namespace MbD;
 
@@ -17,15 +19,16 @@ PrescribedMotion::PrescribedMotion(const char* str) : Joint(str) {
 
 void PrescribedMotion::initialize()
 {
+	xBlk = std::make_shared<Constant>(0.0);
+	yBlk = std::make_shared<Constant>(0.0);
+	zBlk = std::make_shared<Constant>(0.0);
+	phiBlk = std::make_shared<Constant>(0.0);
+	theBlk = std::make_shared<Constant>(0.0);
+	psiBlk = std::make_shared<Constant>(0.0);
 }
 
-void PrescribedMotion::connectsItoJ(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj)
+void PrescribedMotion::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
 {
 	Joint::connectsItoJ(frmi, frmj);
-	if (typeid(frmI).name() != "EndFrameqct") {
-		std::shared_ptr<EndFramec> newFrmI;
-		newFrmI = std::make_shared<EndFrameqct>();
-		std::swap(frmI, newFrmI);
-		assert(typeid(frmI).name() != "EndFrameqct");
-	}
+	frmI->EndFrameqctFrom(frmI);
 }
