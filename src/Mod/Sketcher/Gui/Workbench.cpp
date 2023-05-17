@@ -511,7 +511,8 @@ template <>
 inline void SketcherAddWorkbenchEditTools<Gui::ToolBarItem>(Gui::ToolBarItem& edittools)
 {
     edittools   << "Sketcher_Grid"
-                << "Sketcher_Snap";
+                << "Sketcher_Snap"
+                << "Sketcher_RenderingOrder";
 }
 
 void addSketcherWorkbenchSketchActions(Gui::MenuItem& sketch)

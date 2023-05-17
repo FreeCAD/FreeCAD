@@ -1444,6 +1444,232 @@ bool CmdSketcherSnap::isActive()
     return false;
 }
 
+
+/* Rendering Order */
+class RenderingOrderAction : public QWidgetAction
+{
+public:
+    RenderingOrderAction(QObject* parent) : QWidgetAction(parent) {
+        setEnabled(false);
+    }
+
+    void updateWidget() {
+
+        auto hGrp = getParameterPath();
+
+        // 1->Normal Geometry, 2->Construction, 3->External
+        int topid = hGrp->GetInt("TopRenderGeometryId", 1);
+        int midid = hGrp->GetInt("MidRenderGeometryId", 2);
+        int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
+
+        {
+            QSignalBlocker block(this);
+            list->clear();
+
+            QListWidgetItem* newItem = new QListWidgetItem;
+            newItem->setData(Qt::UserRole, QVariant(topid));
+            newItem->setText(topid == 1 ? tr("Normal Geometry") : topid == 2 ? tr("Construction Geometry") : tr("External Geometry"));
+            list->insertItem(0, newItem);
+
+            newItem = new QListWidgetItem;
+            newItem->setData(Qt::UserRole, QVariant(midid));
+            newItem->setText(midid == 1 ? tr("Normal Geometry") : midid == 2 ? tr("Construction Geometry") : tr("External Geometry"));
+            list->insertItem(1, newItem);
+
+            newItem = new QListWidgetItem;
+            newItem->setData(Qt::UserRole, QVariant(lowid));
+            newItem->setText(lowid == 1 ? tr("Normal Geometry") : lowid == 2 ? tr("Construction Geometry") : tr("External Geometry"));
+            list->insertItem(2, newItem);
+        }
+    }
+
+    void languageChange()
+    {
+        updateWidget();
+    }
+
+protected:
+    QWidget* createWidget(QWidget* parent) override
+    {
+        list = new QListWidget();
+        list->setDragDropMode(QAbstractItemView::InternalMove);
+        list->setDefaultDropAction(Qt::MoveAction);
+        list->setSelectionMode(QAbstractItemView::SingleSelection);
+        list->setDragEnabled(true);
+
+        QWidget* renderingWidget = new QWidget(parent);
+        auto* layout = new QGridLayout(renderingWidget);
+        layout->addWidget(list, 0, 0, 0, 0);
+
+        languageChange();
+
+        // Handle change in the order of the list entries
+        QObject::connect(list->model(), &QAbstractItemModel::rowsMoved,
+                         [this](const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
+                                const QModelIndex &destinationParent, int destinationRow) {
+            Q_UNUSED(sourceParent)
+            Q_UNUSED(sourceStart)
+            Q_UNUSED(sourceEnd)
+            Q_UNUSED(destinationParent)
+            Q_UNUSED(destinationRow)
+
+            int topid = list->item(0)->data(Qt::UserRole).toInt();
+            int midid = list->item(1)->data(Qt::UserRole).toInt();
+            int lowid = list->item(2)->data(Qt::UserRole).toInt();
+
+            auto hGrp = getParameterPath();
+
+            hGrp->SetInt("TopRenderGeometryId", topid);
+            hGrp->SetInt("MidRenderGeometryId", midid);
+            hGrp->SetInt("LowRenderGeometryId", lowid);
+        });
+
+        return renderingWidget;
+    }
+
+private:
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    }
+
+private:
+    QListWidget* list;
+};
+
+class CmdRenderingOrder : public Gui::Command, public ParameterGrp::ObserverType
+{
+    enum class ElementType {
+        Normal = 1,
+        Construction = 2,
+        External = 3,
+    };
+public:
+    CmdRenderingOrder();
+    virtual ~CmdRenderingOrder();
+    virtual const char* className() const override
+    { return "CmdRenderingOrder"; }
+    virtual void languageChange() override;
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+protected:
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Gui::Action * createAction(void) override;
+private:
+    void updateIcon();
+
+    ParameterGrp::handle getParameterPath() {
+        return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    }
+
+    CmdRenderingOrder(const CmdRenderingOrder&) = delete;
+    CmdRenderingOrder(CmdRenderingOrder&&) = delete;
+    CmdRenderingOrder& operator= (const CmdRenderingOrder&) = delete;
+    CmdRenderingOrder& operator= (CmdRenderingOrder&&) = delete;
+
+    ElementType TopElement = ElementType::Normal;
+};
+
+CmdRenderingOrder::CmdRenderingOrder()
+    : Command("Sketcher_RenderingOrder")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Configure rendering order");
+    sToolTipText = QT_TR_NOOP("Reorder the items in the list to configure rendering order.");
+    sWhatsThis = "Sketcher_RenderingOrder";
+    sStatusTip = sToolTipText;
+    eType = 0;
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Attach(this);
+
+    TopElement = static_cast<ElementType>(getParameterPath()->GetInt("TopRenderGeometryId", 1));
+}
+
+CmdRenderingOrder::~CmdRenderingOrder() {
+
+    ParameterGrp::handle hGrp = this->getParameterPath();
+    hGrp->Detach(this);
+}
+
+void CmdRenderingOrder::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    Q_UNUSED(rCaller)
+
+    if (strcmp(sReason, "TopRenderGeometryId") == 0) {
+        TopElement = static_cast<ElementType>(getParameterPath()->GetInt("TopRenderGeometryId", 1));
+
+        updateIcon();
+    }
+}
+
+void CmdRenderingOrder::updateIcon()
+{
+    static QIcon normal = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Normal");
+    static QIcon construction = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Construction");
+    static QIcon external = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_External");
+
+    auto * pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+
+    if(TopElement == ElementType::Normal) {
+        pcAction->setIcon(normal);
+    }
+    else if(TopElement == ElementType::Construction) {
+        pcAction->setIcon(construction);
+    }
+    else if(TopElement == ElementType::External) {
+        pcAction->setIcon(external);
+    }
+}
+
+void CmdRenderingOrder::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+}
+
+Gui::Action* CmdRenderingOrder::createAction()
+{
+    auto * pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setExclusive(false);
+    applyCommandData(this->className(), pcAction);
+
+    RenderingOrderAction* roa = new RenderingOrderAction(pcAction);
+    pcAction->addAction(roa);
+
+    _pcAction = pcAction;
+
+    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [roa](QMenu * menu) {
+        Q_UNUSED(menu)
+        roa->updateWidget();
+    });
+
+    // set the right pixmap
+    updateIcon();
+
+    return pcAction;
+}
+
+void CmdRenderingOrder::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    auto* roa = static_cast<RenderingOrderAction *>(a[0]);
+    roa->languageChange();
+}
+
+bool CmdRenderingOrder::isActive()
+{
+    return isSketchInEdit(getActiveGuiDocument());;
+}
+
+
 void CreateSketcherCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1461,4 +1687,5 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdSketcherViewSection());
     rcCmdMgr.addCommand(new CmdSketcherGrid());
     rcCmdMgr.addCommand(new CmdSketcherSnap());
+    rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
