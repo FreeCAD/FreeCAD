@@ -54,9 +54,7 @@ class Ui_CompactView(object):
         sizePolicy2 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(
-            self.labelDescription.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy2.setHeightForWidth(self.labelDescription.sizePolicy().hasHeightForWidth())
         self.labelDescription.setSizePolicy(sizePolicy2)
         self.labelDescription.setTextFormat(Qt.PlainText)
         self.labelDescription.setWordWrap(False)
@@ -76,21 +74,17 @@ class Ui_CompactView(object):
     # setupUi
 
     def retranslateUi(self, CompactView):
-        CompactView.setWindowTitle(
-            QCoreApplication.translate("CompactView", "Form", None)
-        )
+        CompactView.setWindowTitle(QCoreApplication.translate("CompactView", "Form", None))
         self.labelIcon.setText(QCoreApplication.translate("CompactView", "Icon", None))
         self.labelPackageName.setText(
             QCoreApplication.translate("CompactView", "<b>Package Name</b>", None)
         )
-        self.labelVersion.setText(
-            QCoreApplication.translate("CompactView", "Version", None)
-        )
+        self.labelVersion.setText(QCoreApplication.translate("CompactView", "Version", None))
         self.labelDescription.setText(
             QCoreApplication.translate("CompactView", "Description", None)
         )
         self.labelStatus.setText(
-            QCoreApplication.translate("CompactView", "UpdateAvailable", None)
+            QCoreApplication.translate("CompactView", "Update Available", None)
         )
 
     # retranslateUi
