@@ -598,9 +598,10 @@ public:
             "The sorted list can be used to create a Wire."
         );
         add_varargs_method("sortEdges",&Module::sortEdges2,
-            "sortEdges(list of edges) -- list of lists of edges\n"
+            "sortEdges(list of edges, [tol3d]) -- list of lists of edges\n"
             "It does basically the same as __sortEdges__ but sorts all input edges and thus returns\n"
-            "a list of lists of edges"
+            "a list of lists of edges\n"
+            "optional 3D tolerance defaults to Precision::Confusion"
         );
         add_varargs_method("__toPythonOCC__",&Module::toPythonOCC,
             "__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"
@@ -2168,7 +2169,8 @@ private:
     Py::Object sortEdges2(const Py::Tuple& args)
     {
         PyObject *obj;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &obj)) {
+        double tol3d = Precision::Confusion();
+        if (!PyArg_ParseTuple(args.ptr(), "O|d", &obj, &tol3d)) {
             throw Py::Exception(PartExceptionOCCError, "list of edges expected");
         }
 
@@ -2191,7 +2193,7 @@ private:
 
         Py::List root_list;
         while(!edges.empty()) {
-            std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
+            std::list<TopoDS_Edge> sorted = sort_Edges(tol3d, edges);
             Py::List sorted_list;
             for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
                 sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
