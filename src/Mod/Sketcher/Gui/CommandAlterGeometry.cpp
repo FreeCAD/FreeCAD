@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
 #endif
 
 #include <Gui/Action.h>
@@ -30,6 +29,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -138,16 +138,18 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select edge(s) from the sketch."));
+            Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Select edge(s) from the sketch."));
             return;
         }
 
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select edge(s) from the sketch."));
+            Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Select edge(s) from the sketch."));
             return;
         }
 

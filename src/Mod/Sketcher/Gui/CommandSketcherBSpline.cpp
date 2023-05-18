@@ -23,10 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-
 # include <QApplication>
-# include <QMessageBox>
-
 # include <Inventor/SbString.h>
 #endif
 
@@ -38,6 +35,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -461,8 +459,10 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
 
     if (GeoIdList.empty()) {
         abortCommand();
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("None of the selected elements is an edge."));
+
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("None of the selected elements is an edge."));
     }
     else {
         commitCommand();
@@ -531,9 +531,9 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     }
 
     if (ignored) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("At least one of the selected "
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("At least one of the selected "
                                          "objects was not a B-Spline and was ignored."));
     }
 
@@ -609,9 +609,9 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     }
 
     if (ignored) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("At least one of the selected "
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("At least one of the selected "
                                          "objects was not a B-Spline and was ignored."));
     }
 
@@ -661,8 +661,9 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     if (SubNames.size() > 1) {
         // Check that only one object is selected,
         // as we need only one object to get the new GeoId after multiplicity change
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selection comprises more than one item. Please select just one knot."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("The selection comprises more than one item. Please select just one knot."));
         return;
     }
 
@@ -698,27 +699,28 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         catch (const Base::CADKernelError& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                QMessageBox::warning(Gui::getMainWindow(),
-                                     QObject::tr("CAD Kernel Error"),
-                                     QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                QObject::tr("CAD Kernel Error"),
+                                QObject::tr(e.getMessage().c_str()));
+
             }
             getSelection().clearSelection();
         }
         catch (const Base::Exception& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                QMessageBox::warning(Gui::getMainWindow(),
-                                     QObject::tr("Input Error"),
-                                     QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                QObject::tr("Input Error"),
+                                QObject::tr(e.getMessage().c_str()));
             }
             getSelection().clearSelection();
         }
     }
 
     if (notaknot) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("None of the selected elements is a knot of a B-spline"));
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("None of the selected elements is a knot of a B-spline"));
     }
 
     if (applied)
@@ -742,7 +744,9 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyUserError(Obj,
+                        QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                        e.what());
                 getSelection().clearSelection();
             }
         }
@@ -799,8 +803,9 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     if (SubNames.size() > 1) {
         // Check that only one object is selected,
         // as we need only one object to get the new GeoId after multiplicity change
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selection comprises more than one item. Please select just one knot."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("The selection comprises more than one item. Please select just one knot."));
         return;
     }
 
@@ -833,15 +838,18 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
             // particularly B-spline GeoID might have changed.
         }
         catch (const Base::Exception& e) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                                 QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+            Gui::TranslatedUserError(Obj,
+                            QObject::tr("Error"),
+                            QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+
             getSelection().clearSelection();
         }
     }
 
     if (notaknot) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("None of the selected elements is a knot of a B-spline"));
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("None of the selected elements is a knot of a B-spline"));
     }
 
     if (applied)
@@ -865,7 +873,9 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyUserError(Obj,
+                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                                     e.what());
                 getSelection().clearSelection();
             }
         }
@@ -1048,17 +1058,17 @@ public:
         catch (const Base::CADKernelError& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                QMessageBox::warning(Gui::getMainWindow(),
-                                     QObject::tr("CAD Kernel Error"),
-                                     QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                QObject::tr("CAD Kernel Error"),
+                                QObject::tr(e.getMessage().c_str()));
             }
         }
         catch (const Base::Exception& e) {
             e.ReportException();
             if (e.getTranslatable()) {
-                QMessageBox::warning(Gui::getMainWindow(),
-                                     QObject::tr("Input Error"),
-                                     QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(Obj,
+                                QObject::tr("Input Error"),
+                                QObject::tr(e.getMessage().c_str()));
             }
         }
 
@@ -1083,7 +1093,9 @@ public:
                     Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", newGeoId);
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
+                    Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
                 }
             }
         }
@@ -1161,11 +1173,13 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
-      // Check that only one object is selected,
-      // as we need only one object to get the new GeoId after multiplicity change
-      QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
-                           QObject::tr("Nothing is selected. Please select a b-spline."));
-      return;
+        // Check that only one object is selected,
+        // as we need only one object to get the new GeoId after multiplicity change
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                        QObject::tr("Selection is empty"),
+                        QObject::tr("Nothing is selected. Please select a b-spline."));
+
+        return;
     }
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
@@ -1176,10 +1190,10 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())
         ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Please select a b-spline curve to insert a knot (not a knot on it). "
-                                         "If the curve is not a b-spline, please convert it into one first."));
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Please select a b-spline curve to insert a knot (not a knot on it). "
+                                    "If the curve is not a b-spline, please convert it into one first."));
     }
 
     getSelection().clearSelection();
@@ -1230,8 +1244,9 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     switch (SubNames.size()) {
     case 0: {
         // Nothing is selected
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
-                             QObject::tr("Nothing is selected. Please select end points of curves."));
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Selection is empty"),
+                        QObject::tr("Nothing is selected. Please select end points of curves."));
         return;
     }
     case 1: {
@@ -1256,17 +1271,19 @@ void CmdSketcherJoinCurves::activated(int iMsg)
                     ++j;
                 }
                 else {
-                    QMessageBox::warning(
-                        Gui::getMainWindow(), QObject::tr("Too many curves on point"),
-                        QObject::tr("Exactly two curves should end at the selected point to be able to join them."));
+                    Gui::TranslatedUserWarning(Obj,
+                                    QObject::tr("Too many curves on point"),
+                                    QObject::tr("Exactly two curves should end at the selected point to be able to join them."));
+
                     return;
                 }
             }
         }
         if (j < 2) {
-            QMessageBox::warning(
-                Gui::getMainWindow(), QObject::tr("Too few curves on point"),
-                QObject::tr("Exactly two curves should end at the selected point to be able to join them."));
+            Gui::TranslatedUserWarning(Obj,
+                            QObject::tr("Too few curves on point"),
+                            QObject::tr("Exactly two curves should end at the selected point to be able to join them."));
+
             return;
         }
 
@@ -1278,8 +1295,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         break;
     }
     default: {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Two end points, or coincident point should be selected."));
+        Gui::TranslatedUserWarning(Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Two end points, or coincident point should be selected."));
+
         return;
     }
     }
@@ -1296,8 +1315,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         // Warning: GeoId list will have changed
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                             QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+        Gui::TranslatedUserError(Obj,
+                        QObject::tr("Error"),
+                        QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+
         getSelection().clearSelection();
     }
 

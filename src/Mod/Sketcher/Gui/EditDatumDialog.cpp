@@ -27,7 +27,6 @@
 /// Qt Include Files
 # include <QApplication>
 # include <QDialog>
-# include <QMessageBox>
 # include <Inventor/sensors/SoSensor.h>
 #endif
 
@@ -36,6 +35,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -78,8 +78,9 @@ void EditDatumDialog::exec(bool atCursor)
     if (Constr->isDimensional()) {
 
         if (sketch->hasConflicts()) {
-            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Distance constraint"),
-                                  QObject::tr("Not allowed to edit the datum because the sketch contains conflicting constraints"));
+            Gui::TranslatedUserWarning(sketch,
+                        QObject::tr("Dimensional constraint"),
+                        QObject::tr("Not allowed to edit the datum because the sketch contains conflicting constraints"));
             return;
         }
 
@@ -219,7 +220,10 @@ void EditDatumDialog::accepted()
             tryAutoRecompute(sketch);
         }
         catch (const Base::Exception& e) {
-            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
+            Gui::NotifyUserError(sketch,
+                        QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+                        e.what());
+
             Gui::Command::abortCommand();
 
             if(sketch->noRecomputes) // if setdatum failed, it is highly likely that solver information is invalid.

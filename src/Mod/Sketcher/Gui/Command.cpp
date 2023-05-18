@@ -42,6 +42,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/PrefWidgets.h>
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/SelectionFilter.h>
@@ -166,9 +167,9 @@ void CmdSketcherNewSketch::activated(int iMsg)
         if (msgid == Attacher::SuggestResult::srOK)
             bAttach = true;
         if (msgid != Attacher::SuggestResult::srOK && msgid != Attacher::SuggestResult::srNoModesFit){
-            QMessageBox::warning(Gui::getMainWindow(),
-                QObject::tr("Sketch mapping"),
-                QObject::tr("Can't map the sketch to selected object. %1.").arg(msg_str));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                        QObject::tr("Sketch mapping"),
+                        QObject::tr("Can't map the sketch to selected object. %1.").arg(msg_str));
             return;
         }
         if (validModes.size() > 1){
@@ -524,9 +525,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
         App::Document* doc = App::GetApplication().getActiveDocument();
         std::vector<App::DocumentObject*> sketches = doc->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         if (sketches.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                qApp->translate("Sketcher_MapSketch", "No sketch found"),
-                qApp->translate("Sketcher_MapSketch", "The document doesn't have a sketch"));
+            Gui::TranslatedUserWarning(doc->Label.getStrValue(),
+                        qApp->translate("Sketcher_MapSketch", "No sketch found"),
+                        qApp->translate("Sketcher_MapSketch", "The document doesn't have a sketch"));
             return;
         }
 
@@ -652,9 +653,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
             doCommand(Gui,"App.activeDocument().recompute()");
         }
     } catch (ExceptionWrongInput &e) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("Sketcher_MapSketch", "Map sketch"),
-                             qApp->translate("Sketcher_MapSketch",
+        Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                    qApp->translate("Sketcher_MapSketch", "Map sketch"),
+                    qApp->translate("Sketcher_MapSketch",
                                              "Can't map a sketch to support:\n"
                                              "%1").arg(e.ErrMsg.length() ? e.ErrMsg : msg_str));
     }
@@ -725,9 +726,9 @@ void CmdSketcherValidateSketch::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdSketcherValidateSketch", "Wrong selection"),
-            qApp->translate("CmdSketcherValidateSketch", "Select only one sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                    qApp->translate("CmdSketcherValidateSketch", "Wrong selection"),
+                    qApp->translate("CmdSketcherValidateSketch", "Select only one sketch."));
         return;
     }
 
@@ -764,9 +765,9 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
-            qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                    qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
+                    qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches."));
         return;
     }
 
@@ -869,9 +870,9 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
-                             qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                        qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
+                        qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches."));
         return;
     }
 
