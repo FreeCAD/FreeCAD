@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <QMessageBox>
 #endif
 
 #include <Base/Console.h>
@@ -34,7 +33,7 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-
+#include <Gui/Notifications.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
 
@@ -108,16 +107,18 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select constraint(s) from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
 
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select constraint(s) from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
 
@@ -139,8 +140,10 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select constraint(s) from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Select constraint(s) from the sketch."));
+
             return;
         }
 

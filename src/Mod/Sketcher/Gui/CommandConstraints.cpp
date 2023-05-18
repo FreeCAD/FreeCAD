@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <QMessageBox>
 # include <QPainter>
 # include <Precision.hxx>
 #endif
@@ -226,7 +225,9 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
             geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                    e.what());
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -290,7 +291,9 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
             geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -371,7 +374,9 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
                               geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -447,7 +452,10 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
                               geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
+
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -945,8 +953,9 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
                     new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select an edge from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                        QObject::tr("Select an edge from the sketch."));
         }
         return;
     }
@@ -1173,8 +1182,9 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
                 new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select an edge from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select an edge from the sketch."));
         }
         return;
     }
@@ -1411,8 +1421,9 @@ void CmdSketcherConstrainLock::activated(int iMsg)
                 new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select vertices from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -1636,8 +1647,9 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
                             new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                    QObject::tr("Select vertices from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -2002,8 +2014,9 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two or more points from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two or more points from the sketch."));
         }
         return;
     }
@@ -2198,8 +2211,9 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             getSelection().clearSelection();
         }
         else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select vertices from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -2724,8 +2738,9 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -2925,8 +2940,9 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         }
         else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -3183,8 +3199,9 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -3434,8 +3451,9 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two or more lines from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two or more lines from the sketch."));
         }
         return;
     }
@@ -3607,8 +3625,9 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             QString strError = QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
             strError.append(QString::fromLatin1("\n\n"));
             strError.append(strBasicHelp);
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 std::move(strError));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       std::move(strError));
         }
         return;
     }
@@ -3904,7 +3923,9 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
+                    Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
                     Gui::Command::abortCommand();
 
                     tryAutoRecompute(Obj);
@@ -4087,7 +4108,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
                 commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyUserError(Obj,
+                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                                     e.what());
                 Gui::Command::abortCommand();
             }
 
@@ -4309,8 +4332,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             QString strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
             strError.append(QString::fromLatin1("\n\n"));
             strError.append(strBasicHelp);
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 std::move(strError));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       std::move(strError));
         }
         return;
     }
@@ -4997,8 +5021,9 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -5304,8 +5329,9 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -5588,8 +5614,9 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -6055,8 +6082,9 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -6583,8 +6611,9 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
                             new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two edges from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two edges from the sketch."));
         }
         return;
     }
@@ -6828,8 +6857,9 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                             new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two points and a symmetry line, "
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two points and a symmetry line, "
                                              "two points and a symmetry point "
                                              "or a line and a symmetry point from the sketch."));
         }
@@ -7135,8 +7165,9 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
                                 "from one sketch.", dmbg);
 
         strError.append(strHelp);
-        Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                                std::move(strError));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   std::move(strError));
     }
 
     // get the needed lists and objects
@@ -7324,8 +7355,9 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
-            Gui::TranslatedUserWarning("Sketcher", QObject::tr("Wrong selection"),
-                QObject::tr("Select constraints from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select constraints from the sketch."));
             return;
         }
 
@@ -7442,7 +7474,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
-            Gui::TranslatedUserWarning("Sketcher",
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
                                  QObject::tr("Wrong selection"),
                                  QObject::tr("Select constraints from the sketch."));
             return;
