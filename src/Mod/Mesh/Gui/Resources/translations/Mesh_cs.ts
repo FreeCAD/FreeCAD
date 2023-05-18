@@ -2087,7 +2087,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Import-Export</translation>
     </message>

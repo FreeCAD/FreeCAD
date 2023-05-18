@@ -1500,8 +1500,8 @@
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="258"/>
-      <source>Image (*.png *.jpg *.jpeg)</source>
-      <translation>Выява (*.png *.jpg *.jpeg)</translation>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
+      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
     </message>
   </context>
   <context>
@@ -1778,7 +1778,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="238"/>
       <source>Move view to bottom of stack</source>
-      <translation>Перамясціць прагляд у ніз стэку</translation>
+      <translation>Перамясціць прагляд у ніз зборкі</translation>
     </message>
   </context>
   <context>
@@ -1804,7 +1804,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
       <source>Adjust stacking order of views</source>
-      <translation>Адрэгуляваць парадак праглядаў</translation>
+      <translation>Адрэгуляваць парадак зборкі праглядаў</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="143"/>
@@ -1837,7 +1837,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
       <source>Move view to top of stack</source>
-      <translation>Перамясціць прагляд у верх стэку</translation>
+      <translation>Перамясціць прагляд у верх зборкі</translation>
     </message>
   </context>
   <context>
@@ -1892,13 +1892,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="289"/>
+      <location filename="../../CommandDecorate.cpp" line="288"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="289"/>
       <location filename="../../CommandDecorate.cpp" line="290"/>
-      <location filename="../../CommandDecorate.cpp" line="291"/>
       <source>Turn View Frames On/Off</source>
       <translation>Уключыць/адключыць рамку для змены чарцяжа</translation>
     </message>
@@ -2061,7 +2061,7 @@
       <translation>Стварыць геаметрычную штрыхоўку</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="266"/>
+      <location filename="../../CommandDecorate.cpp" line="265"/>
       <source>Create Image</source>
       <translation>Стварыць выяву</translation>
     </message>
@@ -2086,7 +2086,7 @@
       <translation>Стварыць бягучы выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="298"/>
+      <location filename="../../TaskCenterLine.cpp" line="332"/>
       <source>Create CenterLine</source>
       <translation>Стварыць цэнтральную лінію</translation>
     </message>
@@ -2676,9 +2676,9 @@
       <location filename="../../CommandCreateDims.cpp" line="1437"/>
       <location filename="../../CommandCreateDims.cpp" line="1445"/>
       <location filename="../../CommandCreateDims.cpp" line="1454"/>
-      <location filename="../../CommandDecorate.cpp" line="345"/>
-      <location filename="../../CommandDecorate.cpp" line="352"/>
-      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
+      <location filename="../../CommandDecorate.cpp" line="351"/>
+      <location filename="../../CommandDecorate.cpp" line="358"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Incorrect selection</source>
       <translation>Няправільны выбар</translation>
@@ -2727,7 +2727,7 @@
     <message>
       <location filename="../../Command.cpp" line="1172"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Абярыце роўна адну суполку выразак.</translation>
+      <translation>Абярыце толькі адну суполку выразак.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1181"/>
@@ -2841,8 +2841,8 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="372"/>
+      <location filename="../../CommandDecorate.cpp" line="365"/>
+      <location filename="../../CommandDecorate.cpp" line="371"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
@@ -3209,7 +3209,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1421"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
-      <translation>Абярыце роўна адну лінію зноскі, альбо адзін сімвал зварнога шва.</translation>
+      <translation>Абярыце толькі адну лінію зноскі, альбо адзін сімвал зварнога шва.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
@@ -3238,33 +3238,33 @@
       <translation>Некаторыя грані ў абраным ужо заштрыхаваныя. Замяніць?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="311"/>
+      <location filename="../../CommandDecorate.cpp" line="310"/>
       <source>No TechDraw Page</source>
       <translation>Без старонкі Тэхнічнага чарцяжа</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="312"/>
+      <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Для каманды патрэбна старонка Тэхнічнага чарцяжа</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="346"/>
+      <location filename="../../CommandDecorate.cpp" line="345"/>
       <source>Select a Face first</source>
       <translation>Спачатку абярыце грань</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="353"/>
+      <location filename="../../CommandDecorate.cpp" line="352"/>
       <source>No TechDraw object in selection</source>
       <translation>Без аб'екту Тэхнічнага чарцяжа ў абраным</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="360"/>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Create a page to insert.</source>
       <translation>Стварыць старонку каб уставіць.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="367"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="372"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Без граняў для штрыхоўкі ў абраным</translation>
     </message>
@@ -3395,12 +3395,12 @@
       <translation>Не атрымалася знайсці сродак трохмернага прадстаўлення</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="167"/>
+      <location filename="../../TaskCenterLine.cpp" line="168"/>
       <source>Create Center Line</source>
       <translation>Стварыць цэнтральную лінію</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="197"/>
+      <location filename="../../TaskCenterLine.cpp" line="201"/>
       <source>Edit Center Line</source>
       <translation>Змяніць цэнтральную лінію</translation>
     </message>
@@ -4020,7 +4020,7 @@ line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</source>
       <translation>Калі птушка, Тэхнічны чарцёж паспрабуе пабудаваць грані, з дапамогай адрэзкаў ліній, якія вяртаюцца алгарытмам выдалення схаваных ліній.
-Для ўжывання штрыхоўкі грані павінны быць выяўленыя, але ў складаных мадэлях можа прывесці да зніжэння прадукцыйнасці.</translation>
+Для ўжывання штрыхоўкі грані павінны быць выяўленыя, але ў складаных мадэлях можа прывесці да зніжэння эфектыўнасці.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="470"/>
@@ -5227,7 +5227,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="341"/>
       <source>Show hidden equal parameterization lines</source>
-      <translation>Паказаць нябачныя роўныя лінія параметрызацыі</translation>
+      <translation>Паказаць нябачныя аднолькавыя лінія параметрызацыі</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="368"/>
@@ -5661,8 +5661,8 @@ Do you want to continue?</source>
   half of the angle the lines have to each other
 - points: in equal distance to the points</source>
       <translation>цэнтральная лінія паміж
-- лініямі: на роўнай адлегласці ад ліній і з паловай вугла паміж лініямі
-- кропкамі: на роўнай адлегласці ад кропак</translation>
+- лініямі: на аднолькавай адлегласці ад ліній і з паловай вугла паміж лініямі
+- кропкамі: на аднолькавай адлегласці ад кропак</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="130"/>
@@ -6238,7 +6238,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="533"/>
       <source>Taper</source>
-      <translation>Конус</translation>
+      <translation>Конус зянкоўкі</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="543"/>
@@ -8070,7 +8070,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../CommandStack.cpp" line="148"/>
       <source>Move view to bottom of stack</source>
-      <translation>Перамясціць прагляд у ніз стэку</translation>
+      <translation>Перамясціць прагляд у ніз зборкі</translation>
     </message>
   </context>
   <context>
@@ -8086,7 +8086,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../CommandStack.cpp" line="144"/>
       <source>Move view to top of stack</source>
-      <translation>Перамясціць прагляд у верх стэку</translation>
+      <translation>Перамясціць прагляд у верх зборкі</translation>
     </message>
   </context>
   <context>
@@ -8171,7 +8171,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw Stacking</source>
-      <translation type="unfinished">TechDraw Stacking</translation>
+      <translation>Зборка Тэхнічных чарцяжоў</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>

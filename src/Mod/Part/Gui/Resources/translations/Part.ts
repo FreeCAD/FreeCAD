@@ -5659,21 +5659,21 @@ in the 3D view for the sweep path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="227"/>
+        <location filename="../../AppPartGui.cpp" line="228"/>
         <source>Part and Part Design workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="228"/>
         <location filename="../../AppPartGui.cpp" line="229"/>
         <location filename="../../AppPartGui.cpp" line="230"/>
         <location filename="../../AppPartGui.cpp" line="231"/>
+        <location filename="../../AppPartGui.cpp" line="232"/>
         <source>Part/Part Design</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="232"/>
         <location filename="../../AppPartGui.cpp" line="233"/>
+        <location filename="../../AppPartGui.cpp" line="234"/>
         <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5974,62 +5974,62 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-        <source>Boolean Op Check Unknown</source>
+        <source>Boolean operation: Unknown check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-        <source>Boolean Op Bad Type</source>
+        <source>Boolean operation: Bad type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-        <source>Boolean Op Self Intersect</source>
+        <source>Boolean operation: Self-intersection found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-        <source>Boolean Op Too Small Edge</source>
+        <source>Boolean operation: Edge too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-        <source>Boolean Op Non-Recoverable Face</source>
+        <source>Boolean operation: Non-recoverable face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-        <source>Boolean Op Incompatibility Of Vertex</source>
+        <source>Boolean operation: Incompatibility of vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-        <source>Boolean Op Incompatibility Of Edge</source>
+        <source>Boolean operation: Incompatibility of edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-        <source>Boolean Op Incompatibility Of Face</source>
+        <source>Boolean operation: Incompatibility of face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-        <source>Boolean Op Operation Aborted</source>
+        <source>Boolean operation: Aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-        <source>Boolean Op GeomAbs_C0</source>
+        <source>Boolean operation: GeomAbs_C0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-        <source>Boolean Op Invalid Curve On Surface</source>
+        <source>Boolean operation: Invalid curve on surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-        <source>Boolean Op Not Valid</source>
+        <source>Boolean operation: Not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

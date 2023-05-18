@@ -1655,7 +1655,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Ничего не выбрано</translation>
+      <translation>Нет выбора</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -2085,7 +2085,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Импорт/экспорт</translation>
     </message>

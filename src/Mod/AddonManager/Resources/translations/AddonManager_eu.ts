@@ -22,37 +22,41 @@
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="81"/>
+      <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Inprimakia</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="82"/>
+      <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
       <translation>Ikonoa</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="85"/>
+      <location filename="../../compact_view.py" line="81"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
       <translation>&lt;b&gt;Pakete-izena&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="88"/>
+      <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
       <translation>Bertsioa</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="91"/>
+      <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
       <translation>Deskribapena</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="94"/>
+      <location filename="../../compact_view.py" line="88"/>
+      <source>Update Available</source>
+      <translation>Eguneraketa eskuragarri</translation>
+    </message>
+    <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
       <translation>Eguneratzea eskuragarri</translation>
@@ -268,7 +272,7 @@ Gehigarrien kudeatzaileak automatikoki instalatu ditzan nahi al duzu? Aukeratu &
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Gelditu cachearen eguneratzea</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -461,7 +465,7 @@ Gehigarrien kudeatzaileak automatikoki instalatu ditzan nahi al duzu? Aukeratu &
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Eguneraketa eskuragarri</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -2502,7 +2506,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="652"/>
       <source>Auto-Created Macro Toolbar</source>
-      <translation type="unfinished">Auto-Created Macro Toolbar</translation>
+      <translation>Makrorako automatikoki sortutako tresna-barra</translation>
     </message>
   </context>
 </TS>

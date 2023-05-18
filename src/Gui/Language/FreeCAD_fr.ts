@@ -202,7 +202,7 @@
     <message>
       <location filename="../ViewProviderLink.cpp" line="2570"/>
       <source>Toggle array elements</source>
-      <translation>Activer/désactiver des éléments de la matrice</translation>
+      <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2979"/>
@@ -228,7 +228,7 @@
       <location filename="../TaskView/TaskImage.cpp" line="258"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="65"/>
       <source>Edit image</source>
-      <translation>Modifier image</translation>
+      <translation>Modifier l'image</translation>
     </message>
   </context>
   <context>
@@ -711,47 +711,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="418"/>
-      <location filename="../Splashscreen.cpp" line="427"/>
+      <location filename="../Splashscreen.cpp" line="450"/>
+      <location filename="../Splashscreen.cpp" line="459"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Remerciements</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="429"/>
+      <location filename="../Splashscreen.cpp" line="461"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCAD ne serait pas possible sans les contributions de</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="432"/>
+      <location filename="../Splashscreen.cpp" line="464"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Particuliers</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="445"/>
+      <location filename="../Splashscreen.cpp" line="477"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organisations</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="472"/>
-      <location filename="../Splashscreen.cpp" line="712"/>
+      <location filename="../Splashscreen.cpp" line="504"/>
+      <location filename="../Splashscreen.cpp" line="744"/>
       <source>License</source>
       <translation>Licence</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="511"/>
+      <location filename="../Splashscreen.cpp" line="543"/>
       <source>Libraries</source>
       <translation>Bibliothèques</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="673"/>
+      <location filename="../Splashscreen.cpp" line="705"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>Ce logiciel utilise des composants open source dont le copyright et autres droits associés appartiennent à leurs propriétaires respectifs :</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="699"/>
+      <location filename="../Splashscreen.cpp" line="731"/>
       <source>Collection</source>
       <translation>Collection</translation>
     </message>
@@ -1271,7 +1271,7 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     <message>
       <location filename="../DlgKeyboard.ui" line="107"/>
       <source>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</source>
-      <translation>Pour modifier un raccourci en cours, entrez le nouveau raccourci dans le champ ci-dessous et appuyez sur "Affecter".</translation>
+      <translation>Pour modifier l'actuel raccourci, entrez le nouveau raccourci dans le champ ci-dessous et appuyez sur "Affecter".</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
@@ -2122,7 +2122,7 @@ selon la taille de votre écran ou votre goût personnel</translation>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
       <translation>L'arrière-plan de la fenêtre principale (quand aucun document n'est ouvert) sera constitué de tuiles d'une image spéciale.
-Voir le Wiki FreeCAD pour plus de détails sur l'image.</translation>
+Voir le Wiki de FreeCAD pour plus de détails sur l'image.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="317"/>
@@ -6807,62 +6807,62 @@ Voulez enregistrer les modifications ?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2066"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>Dimension</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="460"/>
+      <location filename="../MainWindow.cpp" line="459"/>
       <source>Ready</source>
       <translation>Prêt</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="872"/>
+      <location filename="../MainWindow.cpp" line="871"/>
       <source>Help addon needed!</source>
       <translation>Extension d'aide nécessaire!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="873"/>
+      <location filename="../MainWindow.cpp" line="872"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>Le système d'aide de %1 est maintenant géré par l'extension "Help". Il peut facilement être installé via le gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="875"/>
+      <location filename="../MainWindow.cpp" line="874"/>
       <source>Open Addon Manager</source>
       <translation>Ouvrir le gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1070"/>
+      <location filename="../MainWindow.cpp" line="1069"/>
       <source>Close All</source>
       <translation>Fermer tout</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1273"/>
       <location filename="../MainWindow.cpp" line="1274"/>
       <location filename="../MainWindow.cpp" line="1275"/>
-      <location filename="../MainWindow.cpp" line="1276"/>
       <source>Toggles this toolbar</source>
       <translation>Bascule cette barre d'outils</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1288"/>
       <location filename="../MainWindow.cpp" line="1289"/>
       <location filename="../MainWindow.cpp" line="1290"/>
-      <location filename="../MainWindow.cpp" line="1291"/>
       <source>Toggles this dockable window</source>
       <translation>Bascule cette fenêtre dockable</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1857"/>
-      <location filename="../MainWindow.cpp" line="1949"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>Document non sauvegardé</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1858"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>L'objet exporté contient un lien externe. Veuillez enregistrer le document au moins une fois avant l'exportation.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1950"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Pour créer un lien vers des objets externes, le document doit être enregistré au moins une fois.
@@ -8387,37 +8387,37 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="510"/>
+      <location filename="../MainWindow.cpp" line="509"/>
       <source>Tree view</source>
       <translation>Vue arborescente</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="538"/>
+      <location filename="../MainWindow.cpp" line="537"/>
       <source>Property view</source>
       <translation>Affichage des propriétés</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="556"/>
+      <location filename="../MainWindow.cpp" line="555"/>
       <source>Selection view</source>
       <translation>Afficher la sélection</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="578"/>
+      <location filename="../MainWindow.cpp" line="577"/>
       <source>Combo View</source>
       <translation>Vue combinée</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="612"/>
+      <location filename="../MainWindow.cpp" line="611"/>
       <source>DAG View</source>
       <translation>Vue du DAG</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="630"/>
+      <location filename="../MainWindow.cpp" line="629"/>
       <source>Report view</source>
       <translation>Vue rapport</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="650"/>
+      <location filename="../MainWindow.cpp" line="649"/>
       <source>Python console</source>
       <translation>Console Python</translation>
     </message>
@@ -8539,7 +8539,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1189"/>
-      <location filename="../MainWindow.cpp" line="703"/>
+      <location filename="../MainWindow.cpp" line="702"/>
       <source>Unsaved document</source>
       <translation>Document non sauvegardé</translation>
     </message>
@@ -9123,32 +9123,32 @@ Veuillez ouvrir une fenêtre de navigateur et saisir : http://localhost:%1.</tra
       <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="705"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Voulez-vous enregistrer les modifications apportées au document "%1" avant sa fermeture ?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="708"/>
+      <location filename="../MainWindow.cpp" line="707"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Voulez-vous enregistrer les modifications apportées au document avant sa fermeture ?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="710"/>
+      <location filename="../MainWindow.cpp" line="709"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Si vous n'enregistrez pas, vos modifications seront perdues.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="715"/>
+      <location filename="../MainWindow.cpp" line="714"/>
       <source>Apply answer to all</source>
       <translation>Appliquez la réponse à tout</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="805"/>
+      <location filename="../MainWindow.cpp" line="804"/>
       <source>%1 Document(s) not saved</source>
       <translation>Document(s) %1 non enregistré(s)</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="806"/>
+      <location filename="../MainWindow.cpp" line="805"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Certains documents n'ont pas pu être enregistrés. Voulez-vous annuler la fermeture ?</translation>
     </message>
@@ -9361,12 +9361,12 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     <message>
       <location filename="../ViewProviderLink.cpp" line="2568"/>
       <source>Toggle array elements</source>
-      <translation>Activer/désactiver des éléments de la matrice</translation>
+      <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2577"/>
       <source>Change whether show each link array element as individual objects</source>
-      <translation>Modifie l'affichage de chaque élément de la matrice liée en tant qu'objets isolés</translation>
+      <translation>Modifier l'affichage de chaque élément du réseau de liens en tant qu'objets isolés</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2595"/>
@@ -9385,7 +9385,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
       <translation>Modifier %1</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="146"/>
+      <location filename="../ViewProviderImagePlane.cpp" line="147"/>
       <source>Change image...</source>
       <translation>Modifier l'image...</translation>
     </message>
@@ -9397,7 +9397,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     <message>
       <location filename="../SoFCColorLegend.cpp" line="87"/>
       <source>Color Legend</source>
-      <translation>Légende des couleurs</translation>
+      <translation>Légende de couleur</translation>
     </message>
   </context>
   <context>
@@ -9420,7 +9420,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
       <location filename="../CommandView.cpp" line="2957"/>
       <location filename="../CommandView.cpp" line="2959"/>
       <source>Box element selection</source>
-      <translation>Sélectionner des éléments par une boîte</translation>
+      <translation>Sélection d'éléments par boîte</translation>
     </message>
   </context>
   <context>
@@ -9666,7 +9666,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     <message>
       <location filename="../CommandMacro.cpp" line="103"/>
       <source>Macros ...</source>
-      <translation>Macros ...</translation>
+      <translation>Macros...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="104"/>
@@ -9694,7 +9694,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     <message>
       <location filename="../CommandMacro.cpp" line="46"/>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Enregistrement de macro ...</translation>
+      <translation>&amp;Enregistrer une macro...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="47"/>
@@ -10146,7 +10146,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     <message>
       <location filename="../CommandLink.cpp" line="646"/>
       <source>Select the linked object and switch to its owner document</source>
-      <translation>Sélectionnez l'objet lié et basculez vers son document propriétaire</translation>
+      <translation>Sélectionner l'objet lié et basculer vers son document propriétaire</translation>
     </message>
   </context>
   <context>
@@ -10328,7 +10328,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2054"/>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>
@@ -12317,7 +12317,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="252"/>
       <source>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</source>
-      <translation>Empêcher l'apparition de notifications non intrusives lorsque la fenêtre FreeCAD n'est pas la fenêtre active</translation>
+      <translation>Empêcher l'apparition de notifications non intrusives lorsque la fenêtre de FreeCAD n'est pas la fenêtre active</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
@@ -12332,7 +12332,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="280"/>
       <source>Limit the number of messages that will be kept in the list. If 0 there is no limit.</source>
-      <translation>Limite le nombre de messages qui seront conservés dans la liste. Si 0 il n'y a pas de limite.</translation>
+      <translation>Limite le nombre de messages qui seront conservés dans la liste. Si c'est 0 il n'y a pas de limite.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="299"/>
@@ -12372,7 +12372,7 @@ Actuellement, votre système dispose des ateliers suivants :&lt;/p&gt;&lt;/body&
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="63"/>
       <source>Start up workbench:</source>
-      <translation>Démarrage de l'atelier :</translation>
+      <translation>Atelier de démarrage :</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
@@ -12453,7 +12453,7 @@ après le lancement de FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image plane settings</source>
-      <translation>Paramètres du plan de l'image</translation>
+      <translation>Réglages du plan de l'image</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
@@ -12498,7 +12498,7 @@ après le lancement de FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="143"/>
       <source>Rotation :</source>
-      <translation>Rotation  :</translation>
+      <translation>Rotation :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
@@ -12561,7 +12561,7 @@ après le lancement de FreeCAD</translation>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="90"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Ceci est le module de démarrage actuel et doit être activé. Voir Préférences/Générales/Autoload pour en changer.</translation>
+      <translation>Ceci est le module de démarrage actuel et doit être activé. Voir Préférences/Général/Chargement automatique pour en changer.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenchesImp.cpp" line="113"/>
@@ -12602,17 +12602,17 @@ après le lancement de FreeCAD</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="469"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
       <source>Toolbar</source>
       <translation>Barre d'outils</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="470"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
       <source>Left corner</source>
       <translation>Coin gauche</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="471"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
       <source>Right corner</source>
       <translation>Coin droit</translation>
     </message>
@@ -12681,7 +12681,7 @@ après le lancement de FreeCAD</translation>
     <message>
       <location filename="../CommandView.cpp" line="1982"/>
       <source>Load image...</source>
-      <translation>Chargement de l'image...</translation>
+      <translation>Charger une image...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1983"/>
@@ -12701,12 +12701,12 @@ après le lancement de FreeCAD</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1377"/>
+      <location filename="../NaviCube.cpp" line="1093"/>
       <source>Movable navigation cube</source>
       <translation>Cube de navigation déplaçable</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1378"/>
+      <location filename="../NaviCube.cpp" line="1094"/>
       <source>Drag and place NaviCube</source>
       <translation>Glisser et placer le NaviCube</translation>
     </message>
@@ -12714,32 +12714,32 @@ après le lancement de FreeCAD</translation>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="543"/>
+      <location filename="../View3DSettings.cpp" line="545"/>
       <source>FRONT</source>
       <translation>AVANT</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="545"/>
+      <location filename="../View3DSettings.cpp" line="547"/>
       <source>TOP</source>
       <translation>HAUT</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="547"/>
+      <location filename="../View3DSettings.cpp" line="549"/>
       <source>RIGHT</source>
       <translation>DROITE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="549"/>
+      <location filename="../View3DSettings.cpp" line="551"/>
       <source>REAR</source>
       <translation>ARRIÈRE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="551"/>
+      <location filename="../View3DSettings.cpp" line="553"/>
       <source>BOTTOM</source>
       <translation>BAS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="553"/>
+      <location filename="../View3DSettings.cpp" line="555"/>
       <source>LEFT</source>
       <translation>GAUCHE</translation>
     </message>

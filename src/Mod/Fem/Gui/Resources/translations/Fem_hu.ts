@@ -1096,7 +1096,7 @@ will be merged to make the volume boundaries invisible.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hagyja üresen az alapértelmezett Elmer elmer bináris fájl&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Megjegyzés:&lt;/span&gt; A többszálú működés használatához itt&lt;br&gt; kell megadnia a végrehajtható változatot a &amp;quot;_mpi&amp;quot; utótaggal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hagyja üresen az alapértelmezett Elmer bináris fájl használatához&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Megjegyzés:&lt;/span&gt; A többszálú működés használatához itt&lt;br&gt; kell megadnia a végrehajtható változatot a &amp;quot;_mpi&amp;quot; utótaggal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
@@ -1836,7 +1836,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -3362,7 +3362,7 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation>Növekedési ütem</translation>
+      <translation>Emelkedési ütem</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
@@ -3636,19 +3636,19 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
       <translation>Kényszerítés erőltetése</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
+      <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
       <translation>VEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
+      <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
       <translation>Importálás-Exportálás</translation>
     </message>
@@ -3703,7 +3703,7 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
       <translation>Rugó kötés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
       <translation>Rögzített hőmérséklet</translation>
     </message>
@@ -5282,7 +5282,7 @@ az Elmer megoldóhoz</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Growth Rate:</source>
-      <translation>Növekedési ráta:</translation>
+      <translation>Emelkedési ráta:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>

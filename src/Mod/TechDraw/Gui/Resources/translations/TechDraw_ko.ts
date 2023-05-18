@@ -69,7 +69,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="971"/>
       <source>Add Cosmetic Line Through 2 Points</source>
-      <translation type="unfinished">Add Cosmetic Line Through 2 Points</translation>
+      <translation>두 점을 지나는 꾸밈선 추가</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="776"/>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation type="unfinished">Insert 3-Point Angle Dimension</translation>
+      <translation>3점 각도 치수 삽입</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../Command.cpp" line="438"/>
       <source>Insert Active View (3D View)</source>
-      <translation type="unfinished">Insert Active View (3D View)</translation>
+      <translation>활성 뷰 삽입 (3D 뷰)</translation>
     </message>
   </context>
   <context>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="680"/>
       <source>Insert Angle Dimension</source>
-      <translation type="unfinished">Insert Angle Dimension</translation>
+      <translation>각도 치수 삽입</translation>
     </message>
   </context>
   <context>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="529"/>
       <source>Insert Annotation</source>
-      <translation type="unfinished">Insert Annotation</translation>
+      <translation>주석 삽입</translation>
     </message>
   </context>
   <context>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Insert Arch Workbench Object</source>
-      <translation type="unfinished">Insert Arch Workbench Object</translation>
+      <translation>Arch 워크벤치 객체 삽입</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from Arch Workbench</translation>
+      <translation>Arch 워크벤치에서 단면 뷰 삽입하기</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="1036"/>
       <source>Insert Balloon Annotation</source>
-      <translation type="unfinished">Insert Balloon Annotation</translation>
+      <translation>풍선 주석 삽입</translation>
     </message>
   </context>
   <context>
@@ -165,12 +165,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="569"/>
       <source>Insert Center Line</source>
-      <translation type="unfinished">Insert Center Line</translation>
+      <translation>중심 선 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="642"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>면에 중심선 추가</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="1100"/>
       <source>Insert Clip Group</source>
-      <translation type="unfinished">Insert Clip Group</translation>
+      <translation>Clip 그룹 삽입</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1137"/>
       <source>Add View to Clip Group</source>
-      <translation type="unfinished">Add View to Clip Group</translation>
+      <translation>Clip 그룹에 뷰 추가</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1221"/>
       <source>Remove View from Clip Group</source>
-      <translation type="unfinished">Remove View from Clip Group</translation>
+      <translation>Clip 그룹에서 뷰 제거</translation>
     </message>
   </context>
   <context>
@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Insert Complex Section</source>
-      <translation type="unfinished">Insert Complex Section</translation>
+      <translation>복합 단면 삽입</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Insert a Complex Section</source>
-      <translation type="unfinished">Insert a Complex Section</translation>
+      <translation>복합 단면 삽입하기</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1127"/>
       <source>Remove Cosmetic Object</source>
-      <translation type="unfinished">Remove Cosmetic Object</translation>
+      <translation>꾸밈 객체 제거</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="390"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>꾸밈 꼭짓점 추가</translation>
     </message>
   </context>
   <context>
@@ -266,12 +266,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="205"/>
       <source>Insert Cosmetic Vertex</source>
-      <translation type="unfinished">Insert Cosmetic Vertex</translation>
+      <translation>꾸밈 꼭짓점 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>꾸밈 꼭짓점 추가</translation>
     </message>
   </context>
   <context>
@@ -284,12 +284,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1245"/>
       <source>Change Appearance of Lines</source>
-      <translation type="unfinished">Change Appearance of Lines</translation>
+      <translation>선 외형 변경</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1246"/>
       <source>Change Appearance of selected Lines</source>
-      <translation type="unfinished">Change Appearance of selected Lines</translation>
+      <translation>선택한 선의 외형 변경</translation>
     </message>
   </context>
   <context>
@@ -302,7 +302,7 @@
     <message>
       <location filename="../../Command.cpp" line="749"/>
       <source>Insert Detail View</source>
-      <translation type="unfinished">Insert Detail View</translation>
+      <translation>상세 뷰 삽입</translation>
     </message>
   </context>
   <context>
@@ -315,7 +315,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="259"/>
       <source>Insert Diameter Dimension</source>
-      <translation type="unfinished">Insert Diameter Dimension</translation>
+      <translation>직경 치수 삽입</translation>
     </message>
   </context>
   <context>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="103"/>
       <source>Insert Dimension</source>
-      <translation type="unfinished">Insert Dimension</translation>
+      <translation>치수 삽입</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1345"/>
       <source>Insert Draft Workbench Object</source>
-      <translation type="unfinished">Insert Draft Workbench Object</translation>
+      <translation>Draft 워크벤치 객체 삽입</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1346"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
+      <translation>Draft 워크벤치 객체의 뷰 삽입</translation>
     </message>
   </context>
   <context>
@@ -359,12 +359,12 @@
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Export Page as DXF</source>
-      <translation type="unfinished">Export Page as DXF</translation>
+      <translation>페이지를 DXF로 내보내기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1602"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>DXF 파일 저장</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1603"/>
@@ -382,7 +382,7 @@
     <message>
       <location filename="../../Command.cpp" line="1527"/>
       <source>Export Page as SVG</source>
-      <translation type="unfinished">Export Page as SVG</translation>
+      <translation>페이지를 SVG로 내보내기</translation>
     </message>
   </context>
   <context>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1674"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>연장선</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1675"/>
@@ -413,7 +413,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1777"/>
       <source>Calculate the area of selected faces</source>
-      <translation type="unfinished">Calculate the area of selected faces</translation>
+      <translation>선택한 면들의 면적 계산</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1778"/>
@@ -918,7 +918,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1604"/>
       <location filename="../../CommandExtensionPack.cpp" line="1742"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>연장선</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1605"/>
@@ -1420,7 +1420,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="672"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>면에 중심선 추가</translation>
     </message>
   </context>
   <context>
@@ -1500,8 +1500,8 @@
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="258"/>
-      <source>Image (*.png *.jpg *.jpeg)</source>
-      <translation type="unfinished">Image (*.png *.jpg *.jpeg)</translation>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
+      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
     </message>
   </context>
   <context>
@@ -1892,13 +1892,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="289"/>
+      <location filename="../../CommandDecorate.cpp" line="288"/>
       <source>TechDraw</source>
       <translation type="unfinished">TechDraw</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="289"/>
       <location filename="../../CommandDecorate.cpp" line="290"/>
-      <location filename="../../CommandDecorate.cpp" line="291"/>
       <source>Turn View Frames On/Off</source>
       <translation type="unfinished">Turn View Frames On/Off</translation>
     </message>
@@ -2061,7 +2061,7 @@
       <translation type="unfinished">Create GeomHatch</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="266"/>
+      <location filename="../../CommandDecorate.cpp" line="265"/>
       <source>Create Image</source>
       <translation type="unfinished">Create Image</translation>
     </message>
@@ -2086,7 +2086,7 @@
       <translation type="unfinished">Create ActiveView</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="298"/>
+      <location filename="../../TaskCenterLine.cpp" line="332"/>
       <source>Create CenterLine</source>
       <translation type="unfinished">Create CenterLine</translation>
     </message>
@@ -2159,7 +2159,7 @@
     <message>
       <location filename="../../TaskCosVertex.cpp" line="135"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>꾸밈 꼭짓점 추가</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="105"/>
@@ -2676,9 +2676,9 @@
       <location filename="../../CommandCreateDims.cpp" line="1437"/>
       <location filename="../../CommandCreateDims.cpp" line="1445"/>
       <location filename="../../CommandCreateDims.cpp" line="1454"/>
-      <location filename="../../CommandDecorate.cpp" line="345"/>
-      <location filename="../../CommandDecorate.cpp" line="352"/>
-      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
+      <location filename="../../CommandDecorate.cpp" line="351"/>
+      <location filename="../../CommandDecorate.cpp" line="358"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Incorrect selection</source>
       <translation type="unfinished">Incorrect selection</translation>
@@ -2841,8 +2841,8 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="372"/>
+      <location filename="../../CommandDecorate.cpp" line="365"/>
+      <location filename="../../CommandDecorate.cpp" line="371"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
@@ -3238,33 +3238,33 @@
       <translation type="unfinished">Some Faces in selection are already hatched.  Replace?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="311"/>
+      <location filename="../../CommandDecorate.cpp" line="310"/>
       <source>No TechDraw Page</source>
       <translation type="unfinished">No TechDraw Page</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="312"/>
+      <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>Need a TechDraw Page for this command</source>
       <translation type="unfinished">Need a TechDraw Page for this command</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="346"/>
+      <location filename="../../CommandDecorate.cpp" line="345"/>
       <source>Select a Face first</source>
       <translation type="unfinished">Select a Face first</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="353"/>
+      <location filename="../../CommandDecorate.cpp" line="352"/>
       <source>No TechDraw object in selection</source>
       <translation type="unfinished">No TechDraw object in selection</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="360"/>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Create a page to insert.</source>
       <translation type="unfinished">Create a page to insert.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="367"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="372"/>
       <source>No Faces to hatch in this selection</source>
       <translation type="unfinished">No Faces to hatch in this selection</translation>
     </message>
@@ -3395,12 +3395,12 @@
       <translation type="unfinished">Can not find a 3D viewer</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="167"/>
+      <location filename="../../TaskCenterLine.cpp" line="168"/>
       <source>Create Center Line</source>
       <translation type="unfinished">Create Center Line</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="197"/>
+      <location filename="../../TaskCenterLine.cpp" line="201"/>
       <source>Edit Center Line</source>
       <translation type="unfinished">Edit Center Line</translation>
     </message>
@@ -5428,7 +5428,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="701"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>DXF 파일 저장</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="702"/>

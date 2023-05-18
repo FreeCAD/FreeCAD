@@ -752,7 +752,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="316"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation>Калі птушка, пераўтварэнне адбываецца хутчэй, але вынік усё роўна можа ўтрымліваць трыангуляваныя грані</translation>
+      <translation>Калі птушка, пераўтварэнне адбываецца хутчэй, але вынік таксама можа ўтрымліваць трыангуляваныя грані</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="319"/>
@@ -2956,17 +2956,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Памылка вылічэнне фігуры</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1380"/>
+      <location filename="../../ArchPanel.py" line="1385"/>
       <source>Tools</source>
       <translation>Інструменты</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1389"/>
       <source>Edit views positions</source>
       <translation>Змяніць становішча выглядаў</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1474"/>
+      <location filename="../../ArchPanel.py" line="1479"/>
       <source>This object has no face</source>
       <translation>Аб'ект не мае грані</translation>
     </message>
@@ -2990,7 +2990,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="160"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation>Калі ласка, абярыце роўна два ці тры аб'екта трубаправода</translation>
+      <translation>Калі ласка, абярыце толькі два ці тры аб'екта трубаправода</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="165"/>
@@ -3557,12 +3557,12 @@ Building creation aborted.</source>
       <translation>Не атрымалася вылічыць блокі для сцен</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1061"/>
+      <location filename="../../ArchWall.py" line="1062"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Памылка: немагчыма змяніць асноўны аб'ект сцяны</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1738"/>
+      <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
       <translation>Адваротны напрамак</translation>
     </message>
@@ -3779,22 +3779,22 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Зрушэнне па восі X паміж асноўнай кропкай пачатку каардынат і воссю інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool роўны True)</translation>
+      <translation>Зрушэнне па восі X паміж асноўнай кропкай пачатку каардынат і воссю інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool зададзены ў True)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Зрушэнне па восі Y паміж асноўнай кропкай пачатку каардынат і воссю інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool роўны True)</translation>
+      <translation>Зрушэнне па восі Y паміж асноўнай кропкай пачатку каардынат і воссю інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool зададзены ў True)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Сіметрычнае адлюстраванне асновы наўздоўж восі Y (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool роўны True)</translation>
+      <translation>Сіметрычнае адлюстраванне асновы наўздоўж восі Y (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool зададзены ў True)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Кручэнне асновы вакол восі інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool роўны True)</translation>
+      <translation>Кручэнне асновы вакол восі інструмента (ужываецца толькі ў тым выпадку, калі BasePerpendicularToTool зададзены ў True)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="390"/>
@@ -5069,13 +5069,13 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="1109"/>
       <source>The size of the tag text</source>
       <translation>Памер тэксту меткі</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="1116"/>
       <source>The font of the tag text</source>
       <translation>Шрыфт тэксту меткі</translation>
     </message>
@@ -5086,19 +5086,19 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1107"/>
+      <location filename="../../ArchPanel.py" line="1112"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>Становішча тэксту меткі. Пакіньце (0,0,0) для цэнтральнага становішча</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1109"/>
+      <location filename="../../ArchPanel.py" line="1114"/>
       <source>The rotation of the tag text</source>
       <translation>Паварот тэксту меткі</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1123"/>
+      <location filename="../../ArchPanel.py" line="1128"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Калі True, аб'ект візуалізуецца як грань, калі гэтае магчыма.</translation>
     </message>
@@ -5114,63 +5114,63 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1275"/>
+      <location filename="../../ArchPanel.py" line="1280"/>
       <source>A margin inside the boundary</source>
       <translation>Унутраныя водступы ад мяжы</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1277"/>
+      <location filename="../../ArchPanel.py" line="1282"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Уключае/адключае адлюстраванне водступу</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1100"/>
+      <location filename="../../ArchPanel.py" line="1105"/>
       <source>The linked Panel cuts</source>
       <translation>Звязаныя выразы панэляў</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1102"/>
+      <location filename="../../ArchPanel.py" line="1107"/>
       <source>The tag text to display</source>
       <translation>Тэкст меткі для адлюстравання</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1112"/>
+      <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font file</source>
       <translation>Файл шрыфту</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1114"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>The width of the sheet</source>
       <translation>Шырыня аркуша</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1117"/>
+      <location filename="../../ArchPanel.py" line="1122"/>
       <source>The height of the sheet</source>
       <translation>Вышыня аркуша</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1120"/>
+      <location filename="../../ArchPanel.py" line="1125"/>
       <source>The fill ratio of this sheet</source>
       <translation>Каэфіцыент запаўнення аркуша</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1125"/>
+      <location filename="../../ArchPanel.py" line="1130"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Вызначае напрамак драўняных валокнаў (па гадзінніку, 0 - поўнач)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="1132"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Задае маштаб, які ўжываецца да кожнага з выглядаў панэлі.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1130"/>
+      <location filename="../../ArchPanel.py" line="1135"/>
       <source>A list of possible rotations for the nester</source>
       <translation>Спіс магчымага вярчэння для раскрою</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1284"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Уключае/адключае адлюстраванне тэкстуры драўняных валокнаў</translation>
     </message>
@@ -5413,7 +5413,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="138"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation>Калі не роўна нулю, восі прадстаўлены не як адна поўная лінія, а як дзве лініі зададзенай даўжыні</translation>
+      <translation>Калі не нуль, восі прадстаўлены не як адна поўная лінія, а як дзве лініі зададзенай даўжыні</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="230"/>
@@ -5659,7 +5659,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
-      <translation>Адлегласць паміж плоскасцю разрэзу і фактычным разрэзам выгляду (пакіньце гэтае значэнне вельмі малым, але не роўным нулю)</translation>
+      <translation>Адлегласць паміж плоскасцю разрэзу і фактычным разрэзам выгляду (пакіньце гэтае значэнне вельмі малым, але не нуль)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="960"/>
@@ -5801,7 +5801,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="740"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
-      <translation>Пераназначае атрыбут Шырыня, каб задаць шырыню кожнага адрэзку сцяны. Прапускаецца, калі асноўны аб'ект падае інфармацыю аб шырыні з дапамогай метаду getwidth(). (Першае значэнне пераназначае атрыбут 'Шырыня' для першага адрэзку сцены; калі значэнне роўна нулю, будзе прытрымлівацца першае значэнне 'Пераназначэнне шырыні')</translation>
+      <translation>Пераназначае атрыбут Шырыня, каб задаць шырыню кожнага адрэзку сцяны. Прапускаецца, калі асноўны аб'ект падае інфармацыю аб шырыні з дапамогай метаду getwidth(). (Першае значэнне пераназначае атрыбут 'Шырыня' для першага адрэзку сцены; калі значэнне нуль - будзе прытрымлівацца першае значэнне 'Пераназначэнне шырыні')</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="743"/>
@@ -6383,12 +6383,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1403"/>
+      <location filename="../../ArchPanel.py" line="1408"/>
       <source>Nest</source>
       <translation>Кампаноўка</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1412"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Кампануе серыю абраных фігур у кантэйнер</translation>
     </message>
@@ -6396,8 +6396,8 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1571"/>
-      <location filename="../../ArchPanel.py" line="1574"/>
+      <location filename="../../ArchPanel.py" line="1576"/>
+      <location filename="../../ArchPanel.py" line="1579"/>
       <source>Panel tools</source>
       <translation>Інструменты панэлі</translation>
     </message>

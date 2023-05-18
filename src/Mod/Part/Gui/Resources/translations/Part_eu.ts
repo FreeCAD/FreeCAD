@@ -1124,7 +1124,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="169"/>
       <source>Both sides</source>
-      <translation>Alde biak</translation>
+      <translation>Bi aldeak</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="181"/>
@@ -1786,12 +1786,12 @@ X, Y eta Z osagaietan.</translation>
     <message>
       <location filename="../../Command.cpp" line="1606"/>
       <source>Loft...</source>
-      <translation>Goratu...</translation>
+      <translation>Jaurti...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>Utility to loft</source>
-      <translation>Goratzeko utilitatea</translation>
+      <translation>Jaurtitzeko utilitatea</translation>
     </message>
   </context>
   <context>
@@ -2334,7 +2334,7 @@ zehazten du.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="203"/>
       <source>Loft</source>
-      <translation>Goratu</translation>
+      <translation>Jaurti</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="265"/>
@@ -2952,7 +2952,7 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Errore ezezaguna</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -4098,7 +4098,7 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Errore ezezaguna</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4520,7 +4520,7 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="245"/>
       <source>Loft</source>
-      <translation>Goratu</translation>
+      <translation>Jaurti</translation>
     </message>
   </context>
   <context>
@@ -5423,7 +5423,7 @@ hatapen-laukizuzen bat arrastatuta 3D bistan</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Goratu</translation>
+      <translation>Jaurti</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -5712,21 +5712,21 @@ in the 3D view for the sweep path.</source>
       <translation>Editatu %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Piezen eta pieza-diseinuaren lan-mahaia</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Pieza/Piezen diseinua</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Inportatu-Esportatu</translation>
     </message>
@@ -6027,63 +6027,63 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation>Eragiketa boolearraren egiaztatze ezezaguna</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation type="unfinished">Boolean operation: Unknown check</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation>Eragiketa boolearraren mota okerra</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation type="unfinished">Boolean operation: Bad type</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation>Eragiketa boolearraren autoebakidura</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation type="unfinished">Boolean operation: Self-intersection found</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation>Eragiketa boolearrak ertz txikiegia</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation type="unfinished">Boolean operation: Edge too small</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation>Eragiketa boolearrak aurpegi berreskuraezina</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation type="unfinished">Boolean operation: Non-recoverable face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation>Eragiketa boolearrak erpin-bateraezintasuna</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation type="unfinished">Boolean operation: Incompatibility of vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation>Eragiketa boolearrak ertz-bateraezintasuna</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation type="unfinished">Boolean operation: Incompatibility of edge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation>Eragiketa boolearrak aurpegi-bateraezintasuna</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation type="unfinished">Boolean operation: Incompatibility of face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation>Eragiketa boolearra abortatu da</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation type="unfinished">Boolean operation: Aborted</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation>Eragiketa boolearrak GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation>Eragiketa boolearrak kurba baliogabea gainazalean</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation type="unfinished">Boolean operation: Invalid curve on surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation>Eragiketa boolear baliogabea</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation type="unfinished">Boolean operation: Not valid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>

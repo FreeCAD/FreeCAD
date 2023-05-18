@@ -22,37 +22,41 @@
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="81"/>
+      <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="82"/>
+      <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
       <translation>Symbol</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="85"/>
+      <location filename="../../compact_view.py" line="81"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
       <translation>&lt;b&gt;Paketname&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="88"/>
+      <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
       <translation>Version</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="91"/>
+      <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
       <translation>Beschreibung</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="94"/>
+      <location filename="../../compact_view.py" line="88"/>
+      <source>Update Available</source>
+      <translation>Aktualisierung verfügbar</translation>
+    </message>
+    <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
       <translation>Update verfügbar</translation>
@@ -176,7 +180,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Auf heute setzen (CalVer style)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -268,7 +272,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Cache-Update stoppen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -461,7 +465,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Aktualisierung verfügbar</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -939,7 +943,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Auf heute setzen (CalVer style)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -1354,7 +1358,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="87"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>Sind Sie sicher, dass Sie {} deinstallieren möchten?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
@@ -1411,7 +1415,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="210"/>
       <source>On branch {}, update available to version</source>
-      <translation type="unfinished">On branch {}, update available to version</translation>
+      <translation>Auf Zweig {}, Aktualisierung verfügbar auf Version</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="219"/>
@@ -1477,7 +1481,7 @@ installed addons will be checked for available updates
       <location filename="../../package_details.py" line="510"/>
       <location filename="../../package_details.py" line="523"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Keine URL oder Wiki-Seite von diesem Makro bereitgestellt</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="627"/>
@@ -1487,12 +1491,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="653"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Dieses Addon wird beim nächsten Neustart von FreeCAD aktiviert.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="671"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Dieses Addon wird beim nächsten Neustart von FreeCAD deaktiviert.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="949"/>
@@ -1693,7 +1697,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</translation>
+      <translation>Dieses Addon benötigt Python-Pakete, die nicht installiert sind und nicht automatisch installiert werden können. Um diesen Arbeitsbereich nutzen zu können, müssen Sie die folgenden Python-Pakete manuell installieren:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
@@ -1837,7 +1841,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
       <location filename="../../install_to_toolbar.py" line="245"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>Ein Makro, das mit dem FreeCAD Addon Manager installiert wurde</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="735"/>
@@ -2501,7 +2505,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="652"/>
       <source>Auto-Created Macro Toolbar</source>
-      <translation type="unfinished">Auto-Created Macro Toolbar</translation>
+      <translation>Automatisch erstellte Makro-Symbolleiste</translation>
     </message>
   </context>
 </TS>

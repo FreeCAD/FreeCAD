@@ -2944,17 +2944,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ფორმის გამოთვლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1380"/>
+      <location filename="../../ArchPanel.py" line="1385"/>
       <source>Tools</source>
       <translation>ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1389"/>
       <source>Edit views positions</source>
       <translation>ხედების პოზიციის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1474"/>
+      <location filename="../../ArchPanel.py" line="1479"/>
       <source>This object has no face</source>
       <translation>ამ ობიექტს ზედაპირი არ გააჩნია</translation>
     </message>
@@ -3545,12 +3545,12 @@ Building creation aborted.</source>
       <translation>კედლისთვის ბლოკების გამოთვლა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1061"/>
+      <location filename="../../ArchWall.py" line="1062"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>შეცდომა: ამ კედლის ძირითადი ობიექტის შეცვლა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1738"/>
+      <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
       <translation>საპირისპირო მიმართულება</translation>
     </message>
@@ -5063,13 +5063,13 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="1109"/>
       <source>The size of the tag text</source>
       <translation>ჭდის ტექსტის ზომა</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="1116"/>
       <source>The font of the tag text</source>
       <translation>ჭდის ტექსტის ფონტი</translation>
     </message>
@@ -5080,19 +5080,19 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1107"/>
+      <location filename="../../ArchPanel.py" line="1112"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>ჭდის ტექსტის პოზიცია. ცენტრში დასატოვებლად დატოვეთ (0,0,0)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1109"/>
+      <location filename="../../ArchPanel.py" line="1114"/>
       <source>The rotation of the tag text</source>
       <translation>ჭდის ტექსტის შემობრუნება</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1123"/>
+      <location filename="../../ArchPanel.py" line="1128"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>თუ ჩართულია, შესაძლებლობის შემთხვევაში ობიექტი დარენდერდება, როგორც ზედაპირი.</translation>
     </message>
@@ -5108,63 +5108,63 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1275"/>
+      <location filename="../../ArchPanel.py" line="1280"/>
       <source>A margin inside the boundary</source>
       <translation>მანძილი ფურცლის კიდესა და მის შემცველობას შორის</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1277"/>
+      <location filename="../../ArchPanel.py" line="1282"/>
       <source>Turns the display of the margin on/off</source>
       <translation>ზღვრის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1100"/>
+      <location filename="../../ArchPanel.py" line="1105"/>
       <source>The linked Panel cuts</source>
       <translation>პანელების გადაბმული ჭრილები</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1102"/>
+      <location filename="../../ArchPanel.py" line="1107"/>
       <source>The tag text to display</source>
       <translation>ჭდის საჩვენებელი ტექსტი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1112"/>
+      <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font file</source>
       <translation>ფონტის ფაილი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1114"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>The width of the sheet</source>
       <translation>ფურცლის სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1117"/>
+      <location filename="../../ArchPanel.py" line="1122"/>
       <source>The height of the sheet</source>
       <translation>ფურცის სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1120"/>
+      <location filename="../../ArchPanel.py" line="1125"/>
       <source>The fill ratio of this sheet</source>
       <translation>ამ ფურცლის შევსების თანაფარდობა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1125"/>
+      <location filename="../../ArchPanel.py" line="1130"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>ხის ტექსტურის კუთხის მითითება (საათის ისრის მიმართულებით, 0 ჩრდილოეთია)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="1132"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>განსაზღვრავს მასშტაბს, რომელიც გამოიყენება პანელის თითოეულ ხედზე.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1130"/>
+      <location filename="../../ArchPanel.py" line="1135"/>
       <source>A list of possible rotations for the nester</source>
       <translation>შესაძლო ბრუნვათა სია ნესტინგისათვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1284"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>ხის ტექსტურის ჩვენების ჩართ/გამორთ</translation>
     </message>
@@ -6377,12 +6377,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1403"/>
+      <location filename="../../ArchPanel.py" line="1408"/>
       <source>Nest</source>
       <translation>ერთმანეთში ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1412"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>აკეთებს მონიშნულ ფორმათა მწკრივის ნესტინგს კონტეინერში</translation>
     </message>
@@ -6390,8 +6390,8 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1571"/>
-      <location filename="../../ArchPanel.py" line="1574"/>
+      <location filename="../../ArchPanel.py" line="1576"/>
+      <location filename="../../ArchPanel.py" line="1579"/>
       <source>Panel tools</source>
       <translation>პანელის ხელსაწყოები</translation>
     </message>

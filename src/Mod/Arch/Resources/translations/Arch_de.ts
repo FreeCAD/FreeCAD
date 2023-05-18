@@ -1926,31 +1926,31 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1247"/>
       <location filename="../../ArchStructure.py" line="1279"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Wählen Sie ein anderes Strukturobjekt aus:</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1252"/>
       <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Das ausgewählte Objekt ist keine Struktur</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Das ausgewählte Objekt hat keine Strukturknoten</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1258"/>
       <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Eines dieser Objekte hat mehr als 2 Knoten</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1265"/>
       <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Es konnte kein geeigneter Schnittpunkt gefunden werden</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1268"/>
@@ -1973,7 +1973,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchPanel.py" line="756"/>
       <location filename="../../ArchStructure.py" line="1441"/>
       <source>Couldn't compute a shape</source>
-      <translation type="unfinished">Couldn't compute a shape</translation>
+      <translation>Es konnte keine Form berechnet werden</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -1993,22 +1993,22 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="244"/>
       <source>The selected object must be a mesh</source>
-      <translation type="unfinished">The selected object must be a mesh</translation>
+      <translation>Das ausgewählte Objekt muss ein Netz sein</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="248"/>
       <source>This mesh has more than 1000 facets.</source>
-      <translation type="unfinished">This mesh has more than 1000 facets.</translation>
+      <translation>Dieses Netz hat mehr als 1000 Facetten.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="249"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation>Diese Operation kann einige Zeit in Anspruch nehmen. Fortfahren?</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="256"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>Das Netz hat mehr als 500 Facetten. Dies wird ein paar Minuten dauern...</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="257"/>
@@ -2256,12 +2256,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchFrame.py" line="51"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Rahmen</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="92"/>
       <source>Create Frame</source>
-      <translation type="unfinished">Create Frame</translation>
+      <translation>Rahmen erstellen</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="229"/>
@@ -2380,12 +2380,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1747"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Komponente konnte nicht erzeugt werden</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1785"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Fensterelemente</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
@@ -2462,7 +2462,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
       <source>Create new component</source>
-      <translation type="unfinished">Create new component</translation>
+      <translation>Neue Komponente erstellen</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="869"/>
@@ -2543,12 +2543,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="88"/>
       <source>Create Axis System</source>
-      <translation type="unfinished">Create Axis System</translation>
+      <translation>Achsensystem erstellen</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="93"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>Bitte wählen Sie mindestens eine Achse</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="804"/>
@@ -2579,7 +2579,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchCurtainWall.py" line="113"/>
       <location filename="../../ArchTruss.py" line="94"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>Bitte wählen Sie nur ein Basisobjekt oder keines</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="98"/>
@@ -2600,7 +2600,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importIFClegacy.py" line="396"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>IFC Schema nicht gefunden, IFC import deaktiviert.</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="931"/>
@@ -2722,12 +2722,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Gesamtbreite</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="425"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Gesamthöhe</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
@@ -2742,12 +2742,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
       <source>Add col</source>
-      <translation type="unfinished">Add col</translation>
+      <translation>Spalte hinzufügen</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="429"/>
       <source>Del col</source>
-      <translation type="unfinished">Del col</translation>
+      <translation>Spalte entfernen</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="430"/>
@@ -2762,12 +2762,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Zeilen</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Spalten</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1004"/>
@@ -2936,17 +2936,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Error computing shape of</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1380"/>
+      <location filename="../../ArchPanel.py" line="1385"/>
       <source>Tools</source>
       <translation>Werkzeuge</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1389"/>
       <source>Edit views positions</source>
       <translation type="unfinished">Edit views positions</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1474"/>
+      <location filename="../../ArchPanel.py" line="1479"/>
       <source>This object has no face</source>
       <translation type="unfinished">This object has no face</translation>
     </message>
@@ -2975,7 +2975,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="165"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Bitte wählen Sie nur Rohrobjekte aus</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="169"/>
@@ -3036,7 +3036,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="425"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Rohre sind bereits ausgerichtet</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="465"/>
@@ -3537,12 +3537,12 @@ Building creation aborted.</translation>
       <translation type="unfinished">Cannot compute blocks for wall</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1061"/>
+      <location filename="../../ArchWall.py" line="1062"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1738"/>
+      <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
       <translation>Richtung umkehren</translation>
     </message>
@@ -4487,7 +4487,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="611"/>
       <source>The preset number this window is based on</source>
-      <translation type="unfinished">The preset number this window is based on</translation>
+      <translation>Die Voreinstellungsnummer, auf der dieses Fenster basiert</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="614"/>
@@ -4764,12 +4764,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="387"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Die Dicke der unteren Bodenplatte</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="389"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>Die Dicke der oberen Bodenplatte</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="391"/>
@@ -4784,22 +4784,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFence.py" line="62"/>
       <source>A single section of the fence</source>
-      <translation type="unfinished">A single section of the fence</translation>
+      <translation>Ein einzelner Zaunabschnitt</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="66"/>
       <source>A single fence post</source>
-      <translation type="unfinished">A single fence post</translation>
+      <translation>Ein einzelner Zaunpfosten</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
       <source>The Path the fence should follow</source>
-      <translation type="unfinished">The Path the fence should follow</translation>
+      <translation>Der Pfad, dem der Zaun folgen soll</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="74"/>
       <source>The number of sections the fence is built of</source>
-      <translation type="unfinished">The number of sections the fence is built of</translation>
+      <translation>Die Anzahl der Abschnitte aus denen der Zaun besteht</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="79"/>
@@ -4809,7 +4809,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFence.py" line="269"/>
       <source>When true, the fence will be colored like the original post and section.</source>
-      <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
+      <translation>Wenn wahr, wird der Zaun wie der ursprüngliche Pfosten und Abschnitt gefärbt.</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="294"/>
@@ -4820,7 +4820,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="298"/>
       <source>A URL where to find information about this material</source>
-      <translation type="unfinished">A URL where to find information about this material</translation>
+      <translation>Eine URL wo Informationen zu diesem Werkstoff zu finden sind</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="300"/>
@@ -4945,7 +4945,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="536"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Der Typ dieser Platte</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="539"/>
@@ -5049,13 +5049,13 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="1109"/>
       <source>The size of the tag text</source>
       <translation type="unfinished">The size of the tag text</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="1116"/>
       <source>The font of the tag text</source>
       <translation type="unfinished">The font of the tag text</translation>
     </message>
@@ -5066,19 +5066,19 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1107"/>
+      <location filename="../../ArchPanel.py" line="1112"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1109"/>
+      <location filename="../../ArchPanel.py" line="1114"/>
       <source>The rotation of the tag text</source>
       <translation type="unfinished">The rotation of the tag text</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1123"/>
+      <location filename="../../ArchPanel.py" line="1128"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
     </message>
@@ -5094,63 +5094,63 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1275"/>
+      <location filename="../../ArchPanel.py" line="1280"/>
       <source>A margin inside the boundary</source>
       <translation type="unfinished">A margin inside the boundary</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1277"/>
+      <location filename="../../ArchPanel.py" line="1282"/>
       <source>Turns the display of the margin on/off</source>
       <translation type="unfinished">Turns the display of the margin on/off</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1100"/>
+      <location filename="../../ArchPanel.py" line="1105"/>
       <source>The linked Panel cuts</source>
       <translation type="unfinished">The linked Panel cuts</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1102"/>
+      <location filename="../../ArchPanel.py" line="1107"/>
       <source>The tag text to display</source>
       <translation type="unfinished">The tag text to display</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1112"/>
+      <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font file</source>
       <translation>Die Schriftartdatei</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1114"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>The width of the sheet</source>
       <translation>Die Breite des Blattes</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1117"/>
+      <location filename="../../ArchPanel.py" line="1122"/>
       <source>The height of the sheet</source>
       <translation>Die Höhe des Blattes</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1120"/>
+      <location filename="../../ArchPanel.py" line="1125"/>
       <source>The fill ratio of this sheet</source>
       <translation>Das Füllverhältnis dieses Blattes</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1125"/>
+      <location filename="../../ArchPanel.py" line="1130"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="1132"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1130"/>
+      <location filename="../../ArchPanel.py" line="1135"/>
       <source>A list of possible rotations for the nester</source>
       <translation type="unfinished">A list of possible rotations for the nester</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1284"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
     </message>
@@ -6114,7 +6114,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Rahmen</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6363,12 +6363,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1403"/>
+      <location filename="../../ArchPanel.py" line="1408"/>
       <source>Nest</source>
       <translation type="unfinished">Nest</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1412"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation type="unfinished">Nests a series of selected shapes in a container</translation>
     </message>
@@ -6376,8 +6376,8 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1571"/>
-      <location filename="../../ArchPanel.py" line="1574"/>
+      <location filename="../../ArchPanel.py" line="1576"/>
+      <location filename="../../ArchPanel.py" line="1579"/>
       <source>Panel tools</source>
       <translation type="unfinished">Panel tools</translation>
     </message>

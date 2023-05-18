@@ -2088,7 +2088,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>가져오기 내보내기</translation>
     </message>

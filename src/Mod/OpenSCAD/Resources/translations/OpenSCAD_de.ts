@@ -168,7 +168,7 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>Es sieht so aus, als würdest du eine Snap-Version von OpenSCAD verwenden.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>
@@ -179,7 +179,7 @@
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Es sieht so aus, als würdest du eine Sandbox-Version von FreeCAD verwenden.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="92"/>
@@ -189,12 +189,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Kanten in Flächen umwandeln</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Please select 3 objects first</source>
-      <translation type="unfinished">Please select 3 objects first</translation>
+      <translation>Bitte zuerst 3 Objekte auswählen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="334"/>
@@ -242,7 +242,7 @@
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>as Mesh</source>
-      <translation type="unfinished">as Mesh</translation>
+      <translation>als Netz</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="352"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="654"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD-Datei enthält sowohl 2D- als auch 3D-Formen. Dies wird in diesem Importierer nicht unterstützt, alle Formen müssen die gleiche Dimensionalität haben.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="665"/>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="136"/>
       <source>Convert Edges To Faces</source>
-      <translation type="unfinished">Convert Edges To Faces</translation>
+      <translation>Kanten zu Flächen umwandeln</translation>
     </message>
   </context>
   <context>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>Objekt ersetzen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="530"/>
       <source>Add OpenSCAD Element...</source>
-      <translation type="unfinished">Add OpenSCAD Element...</translation>
+      <translation>OpenSCAD Element hinzufügen...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="534"/>
@@ -467,7 +467,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="549"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Operation auszuführen</translation>
     </message>
   </context>
   <context>
@@ -480,7 +480,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="569"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>OpenSCAD verwenden, um Rumpf zu erzeugen</translation>
     </message>
   </context>
   <context>
@@ -506,7 +506,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="589"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>Benutze OpenSCAD um eine Minkowski-Summe zu erzeugen</translation>
     </message>
   </context>
 </TS>

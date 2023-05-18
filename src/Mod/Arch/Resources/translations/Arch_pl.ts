@@ -295,7 +295,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="134"/>
       <source>Auto update</source>
-      <translation>Aktualizacja automatyczna</translation>
+      <translation>Aktualizuj automatycznie</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="145"/>
@@ -2971,17 +2971,17 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
       <translation>Błąd obliczania kształtu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1380"/>
+      <location filename="../../ArchPanel.py" line="1385"/>
       <source>Tools</source>
       <translation>Przybory</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1389"/>
       <source>Edit views positions</source>
       <translation>Edytuj pozycje widoków</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1474"/>
+      <location filename="../../ArchPanel.py" line="1479"/>
       <source>This object has no face</source>
       <translation>Obiekt nie ma powierzchni</translation>
     </message>
@@ -3572,12 +3572,12 @@ Tworzenie budynku zostało przerwane.</translation>
       <translation>Nie można obliczyć bloków dla ściany</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1061"/>
+      <location filename="../../ArchWall.py" line="1062"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Błąd: Nie można zmodyfikować obiektu podstawowego tej ściany</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1738"/>
+      <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
       <translation>Odwróć kierunek</translation>
     </message>
@@ -5084,13 +5084,13 @@ Tworzenie budynku zostało przerwane.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="1109"/>
       <source>The size of the tag text</source>
       <translation>Rozmiar czcionki dla etykiety tekstowej</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="1116"/>
       <source>The font of the tag text</source>
       <translation>Czcionka etykiety tekstowej</translation>
     </message>
@@ -5101,19 +5101,19 @@ Tworzenie budynku zostało przerwane.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1107"/>
+      <location filename="../../ArchPanel.py" line="1112"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>Pozycja pola tekstowego. Wprowadź wartość (0,0,0) aby wyśrodkować</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1109"/>
+      <location filename="../../ArchPanel.py" line="1114"/>
       <source>The rotation of the tag text</source>
       <translation>Obrót pola tekstowego</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1123"/>
+      <location filename="../../ArchPanel.py" line="1128"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Jeśli parametr ma wartość Prawda, obiekt jest renderowany jako ściana, jeśli to możliwe.</translation>
     </message>
@@ -5129,63 +5129,63 @@ Tworzenie budynku zostało przerwane.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1275"/>
+      <location filename="../../ArchPanel.py" line="1280"/>
       <source>A margin inside the boundary</source>
       <translation>Margines wewnątrz granicy</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1277"/>
+      <location filename="../../ArchPanel.py" line="1282"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Przełącza wyświetlanie marginesu, włącz / wyłącz</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1100"/>
+      <location filename="../../ArchPanel.py" line="1105"/>
       <source>The linked Panel cuts</source>
       <translation>Powiązane wycięcia panelu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1102"/>
+      <location filename="../../ArchPanel.py" line="1107"/>
       <source>The tag text to display</source>
       <translation>Tekst do wyświetlenia</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1112"/>
+      <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font file</source>
       <translation>Plik czcionki</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1114"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>The width of the sheet</source>
       <translation>Szerokość arkusza</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1117"/>
+      <location filename="../../ArchPanel.py" line="1122"/>
       <source>The height of the sheet</source>
       <translation>Wysokość arkusza</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1120"/>
+      <location filename="../../ArchPanel.py" line="1125"/>
       <source>The fill ratio of this sheet</source>
       <translation>Współczynnik wypełnienia tego arkusza</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1125"/>
+      <location filename="../../ArchPanel.py" line="1130"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Określa kąt dla włókien drewna (zgodnie z ruchem wskazówek zegara, 0 oznacza północ)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="1132"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Określa skalę stosowaną dla każdego widoku panelu.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1130"/>
+      <location filename="../../ArchPanel.py" line="1135"/>
       <source>A list of possible rotations for the nester</source>
       <translation>Lista możliwych obrotów dla zagnieżdżenia</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1284"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Włącza / wyłącza wyświetlanie tekstury słojów drewna</translation>
     </message>
@@ -6398,12 +6398,12 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1403"/>
+      <location filename="../../ArchPanel.py" line="1408"/>
       <source>Nest</source>
       <translation>Zagnieżdżanie</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1412"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Zagnieżdża serię wybranych kształtów w pojemniku</translation>
     </message>
@@ -6411,8 +6411,8 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1571"/>
-      <location filename="../../ArchPanel.py" line="1574"/>
+      <location filename="../../ArchPanel.py" line="1576"/>
+      <location filename="../../ArchPanel.py" line="1579"/>
       <source>Panel tools</source>
       <translation>Narzędzia panelu</translation>
     </message>

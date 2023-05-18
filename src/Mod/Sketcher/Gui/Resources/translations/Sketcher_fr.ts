@@ -70,8 +70,8 @@
     <name>CmdSketcherCarbonCopy</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
-      <source>Carbon copy</source>
-      <translation>Copie carbone</translation>
+      <source>Create a carbon copy</source>
+      <translation type="unfinished">Create a carbon copy</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -1094,8 +1094,8 @@ with respect to a line or a third point</source>
     <name>CmdSketcherExternal</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
-      <source>External geometry</source>
-      <translation>Géométrie externe</translation>
+      <source>Create an external geometry</source>
+      <translation type="unfinished">Create an external geometry</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -1230,7 +1230,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="768"/>
       <source>Wrong selection</source>
-      <translation>Mauvaise sélection</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="769"/>
@@ -1269,12 +1269,12 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1837"/>
       <source>Rectangular array</source>
-      <translation>Matrice rectangulaire</translation>
+      <translation>Réseau rectangulaire</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1838"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation>Crée motif d'une matrice rectangulaire de la géométrie en prenant comme référence le dernier point sélectionné</translation>
+      <translation>Créer un réseau rectangulaire de la géométrie en prenant comme référence le dernier point sélectionné</translation>
     </message>
   </context>
   <context>
@@ -1980,11 +1980,6 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Ajouter une géométrie externe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
-      <source>Add carbon copy</source>
-      <translation>Ajouter une copie carbone</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="183"/>
       <source>Add slot</source>
       <translation>Ajouter une rainure</translation>
@@ -2071,9 +2066,9 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="159"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1022"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1133"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1397"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1027"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1138"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1402"/>
       <source>Update constraint's virtual space</source>
       <translation>Mettre à jour l'espace virtuel de la contrainte</translation>
     </message>
@@ -2083,12 +2078,12 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Ajouter des contraintes automatiques</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="621"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="626"/>
       <source>Swap constraint names</source>
       <translation>Intervertir les noms de contrainte</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1118"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1123"/>
       <source>Rename sketch constraint</source>
       <translation>Renommer la contrainte d'esquisse</translation>
     </message>
@@ -2116,6 +2111,11 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="109"/>
       <source>Add Knot Point</source>
       <translation>Ajouter un point de nœud</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
+      <source>Create a carbon copy</source>
+      <translation type="unfinished">Create a carbon copy</translation>
     </message>
   </context>
   <context>
@@ -2232,10 +2232,10 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="131"/>
       <location filename="../../AppSketcherGui.cpp" line="132"/>
       <location filename="../../AppSketcherGui.cpp" line="133"/>
       <location filename="../../AppSketcherGui.cpp" line="134"/>
+      <location filename="../../AppSketcherGui.cpp" line="135"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -3090,8 +3090,8 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
-      <source>Exactly two curve should end at the selected point to be able to join them.</source>
-      <translation>Exactement deux courbes doivent se terminer au point sélectionné pour pouvoir les connecter.</translation>
+      <source>Exactly two curves should end at the selected point to be able to join them.</source>
+      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3169,12 +3169,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <translation>La suppression de l'alignement des axes nécessite au moins un élément géométrique non externe sélectionné</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="446"/>
+      <location filename="../../TaskSketcherElements.cpp" line="473"/>
       <source>Unsupported visual layer operation</source>
       <translation>L'opération du calque visuel n'est pas prise en charge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="447"/>
+      <location filename="../../TaskSketcherElements.cpp" line="474"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Il n'est pas possible pour l'instant de déplacer une géométrie externe vers une autre couche visuelle. La géométrie externe sera omise</translation>
     </message>
@@ -3368,62 +3368,67 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="488"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
+      <source>Select Elements</source>
+      <translation type="unfinished">Select Elements</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
       <source>Change value</source>
       <translation>Changer la valeur</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="492"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="497"/>
       <source>Toggle to/from reference</source>
       <translation>Basculer vers ou à partir d'une référence</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="495"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
       <source>Deactivate</source>
       <translation>Désactiver</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="495"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
       <source>Activate</source>
       <translation>Activer</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="499"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="504"/>
       <source>Show constraints</source>
       <translation>Montrer les contraintes</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="506"/>
       <source>Hide constraints</source>
       <translation>Masquer les contraintes</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="512"/>
       <source>Rename</source>
       <translation>Renommer</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="514"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="519"/>
       <source>Center sketch</source>
       <translation>Centrer l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="517"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="522"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="521"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="526"/>
       <source>Swap constraint names</source>
       <translation>Intervertir les noms de contrainte</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="612"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="617"/>
       <source>Unnamed constraint</source>
       <translation>Contrainte non nommée</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="613"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Seuls les noms des contraintes nommées peuvent être permutés.</translation>
     </message>
@@ -3506,72 +3511,72 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="199"/>
+      <location filename="../../TaskSketcherElements.cpp" line="226"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="200"/>
+      <location filename="../../TaskSketcherElements.cpp" line="227"/>
       <source>Construction</source>
       <translation>Construction</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="201"/>
+      <location filename="../../TaskSketcherElements.cpp" line="228"/>
       <source>Internal</source>
       <translation>Interne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="202"/>
+      <location filename="../../TaskSketcherElements.cpp" line="229"/>
       <source>External</source>
       <translation>Externe</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="203"/>
+      <location filename="../../TaskSketcherElements.cpp" line="230"/>
       <source>All types</source>
       <translation>Tous les types</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="204"/>
+      <location filename="../../TaskSketcherElements.cpp" line="231"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="205"/>
+      <location filename="../../TaskSketcherElements.cpp" line="232"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="233"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="207"/>
+      <location filename="../../TaskSketcherElements.cpp" line="234"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="208"/>
+      <location filename="../../TaskSketcherElements.cpp" line="235"/>
       <source>Arc of circle</source>
       <translation>Arc de cercle</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="209"/>
+      <location filename="../../TaskSketcherElements.cpp" line="236"/>
       <source>Arc of ellipse</source>
       <translation>Arc d’ellipse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="210"/>
+      <location filename="../../TaskSketcherElements.cpp" line="237"/>
       <source>Arc of hyperbola</source>
       <translation>Arc d'hyperbole</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="211"/>
+      <location filename="../../TaskSketcherElements.cpp" line="238"/>
       <source>Arc of parabola</source>
       <translation>Arc de parabole</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="212"/>
+      <location filename="../../TaskSketcherElements.cpp" line="239"/>
       <source>B-Spline</source>
       <translation>B-spline</translation>
     </message>
@@ -3579,12 +3584,142 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="498"/>
+      <location filename="../../TaskSketcherElements.cpp" line="61"/>
+      <source>Point Coincidence</source>
+      <translation type="unfinished">Point Coincidence</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="62"/>
+      <source>Point on Object</source>
+      <translation>Point sur Objet</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="63"/>
+      <source>Vertical Constraint</source>
+      <translation type="unfinished">Vertical Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="64"/>
+      <source>Horizontal Constraint</source>
+      <translation type="unfinished">Horizontal Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="65"/>
+      <source>Parallel Constraint</source>
+      <translation type="unfinished">Parallel Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="66"/>
+      <source>Perpendicular Constraint</source>
+      <translation type="unfinished">Perpendicular Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="67"/>
+      <source>Tangent Constraint</source>
+      <translation type="unfinished">Tangent Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="68"/>
+      <source>Equal Length</source>
+      <translation type="unfinished">Equal Length</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="69"/>
+      <source>Symmetric</source>
+      <translation>Symétrique</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="70"/>
+      <source>Block Constraint</source>
+      <translation type="unfinished">Block Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="71"/>
+      <source>Lock Constraint</source>
+      <translation type="unfinished">Lock Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="72"/>
+      <source>Horizontal Distance</source>
+      <translation>Distance horizontale</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="73"/>
+      <source>Vertical Distance</source>
+      <translation>Distance Verticale</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="74"/>
+      <source>Length Constraint</source>
+      <translation type="unfinished">Length Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="75"/>
+      <source>Radius Constraint</source>
+      <translation type="unfinished">Radius Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="76"/>
+      <source>Diameter Constraint</source>
+      <translation type="unfinished">Diameter Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="77"/>
+      <source>Radiam Constraint</source>
+      <translation type="unfinished">Radiam Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="78"/>
+      <source>Angle Constraint</source>
+      <translation type="unfinished">Angle Constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="79"/>
+      <source>Toggle construction geometry</source>
+      <translation>Basculer le mode de la géométrie de construction</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="80"/>
+      <source>Select Constraints</source>
+      <translation type="unfinished">Select Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="81"/>
+      <source>Select Origin</source>
+      <translation type="unfinished">Select Origin</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="82"/>
+      <source>Select Horizontal Axis</source>
+      <translation type="unfinished">Select Horizontal Axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="83"/>
+      <source>Select Vertical Axis</source>
+      <translation type="unfinished">Select Vertical Axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="528"/>
       <source>Layer</source>
       <translation>Calque</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="513"/>
+      <location filename="../../TaskSketcherElements.cpp" line="536"/>
+      <source>Layer 0</source>
+      <translation type="unfinished">Layer 0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="537"/>
+      <source>Layer 1</source>
+      <translation type="unfinished">Layer 1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="538"/>
+      <source>Hidden</source>
+      <translation>Masqué</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="543"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
@@ -3731,7 +3866,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="32"/>
       <source>Number of columns of the linear array</source>
-      <translation>Nombre de colonnes de la matrice linéaire</translation>
+      <translation>Nombre de colonnes de la répétition linéaire</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="52"/>
@@ -3741,7 +3876,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="59"/>
       <source>Number of rows of the linear array</source>
-      <translation>Nombre de lignes de la matrice linéaire</translation>
+      <translation>Nombre de lignes de la répétition linéaire</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="77"/>
@@ -3757,7 +3892,8 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>Si sélectionné, chaque élément de la matrice est contraint par rapport aux autres en utilisant des lignes de construction</translation>
+      <translation>Si sélectionné, chaque élément du réseau est contraint
+par rapport aux autres en utilisant des lignes de construction</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="100"/>
@@ -3792,7 +3928,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="32"/>
       <source>Number of columns of the linear array</source>
-      <translation>Nombre de colonnes de la matrice linéaire</translation>
+      <translation>Nombre de colonnes de la répétition linéaire</translation>
     </message>
   </context>
   <context>
@@ -4489,40 +4625,40 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
       <translation>Réglages</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="729"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="734"/>
       <source>Constraints</source>
       <translation>Contraintes</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="752"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="757"/>
       <source>Auto constraints</source>
       <translation>Contraintes automatiques</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="753"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="758"/>
       <source>Auto remove redundants</source>
       <translation>Suppression automatique des redondances</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="754"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="759"/>
       <source>Show only filtered Constraints</source>
       <translation>Affiche uniquement les contraintes filtrées</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="755"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="760"/>
       <source>Extended information (in widget)</source>
       <translation>Informations étendues (dans le widget)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="756"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="761"/>
       <source>Hide internal alignment (in widget)</source>
       <translation>Masquer l'alignement interne (dans le widget)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1044"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1127"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1143"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1420"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1049"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1132"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1148"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1425"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -4555,120 +4691,120 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
       <translation>Réglages</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1347"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1351"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1355"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1359"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1363"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1367"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1371"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1375"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1379"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1383"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1377"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1381"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1385"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1389"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1393"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1397"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1401"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1405"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1409"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1413"/>
       <source>Construction</source>
       <translation>Construction</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="803"/>
+      <location filename="../../TaskSketcherElements.cpp" line="833"/>
       <source>Elements</source>
       <translation>Éléments</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1346"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1348"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1448"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1449"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1376"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1378"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1478"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1479"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1347"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1351"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1355"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1359"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1363"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1367"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1371"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1375"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1379"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1383"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1377"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1381"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1385"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1389"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1393"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1397"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1401"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1405"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1409"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1413"/>
       <source>Internal</source>
       <translation>Interne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1350"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1352"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1451"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1452"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1380"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1382"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1481"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1482"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1354"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1356"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1454"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1455"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1384"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1386"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1484"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1485"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1358"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1360"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1457"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1458"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1388"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1390"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1487"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1488"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1362"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1364"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1460"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1461"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1392"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1394"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1490"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1491"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1366"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1368"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1463"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1464"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1396"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1398"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1493"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1494"/>
       <source>Elliptical Arc</source>
       <translation>Arc elliptique</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1370"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1372"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1466"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1467"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1400"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1402"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1496"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1497"/>
       <source>Hyperbolic Arc</source>
       <translation>Arc hyperbolique</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1374"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1376"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1469"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1470"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1404"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1406"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1499"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1500"/>
       <source>Parabolic Arc</source>
       <translation>Arc parabolique</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1378"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1380"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1472"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1473"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1408"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1410"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1502"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1503"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1382"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1384"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1475"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1476"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1412"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1414"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1505"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1506"/>
       <source>Other</source>
       <translation>Autre</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1518"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1548"/>
       <source>Extended information</source>
       <translation>Informations étendues</translation>
     </message>
@@ -4889,112 +5025,112 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2768"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2780"/>
       <source>Edit sketch</source>
       <translation>Modifier l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2785"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2797"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2786"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2798"/>
       <source>Do you want to close this dialog?</source>
       <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2800"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2812"/>
       <source>Invalid sketch</source>
       <translation>Esquisse non valide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2801"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2813"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Voulez-vous ouvrir l'outil de validation d'esquisse ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2802"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2814"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>L'esquisse n'est pas valide et ne peut pas être éditée.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2926"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2938"/>
       <source>Please remove the following constraint:</source>
       <translation>Veuillez supprimer la contrainte suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2927"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2939"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Veuillez supprimer au moins une des contraintes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2933"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2945"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Veuillez supprimer la contrainte redondante suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2934"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2946"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Veuillez supprimer les contraintes redondantes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2940"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2952"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La contrainte suivante est partiellement redondante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2941"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2953"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Les contraintes suivantes sont partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2947"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2959"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Veuillez supprimer la contrainte malformée suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2948"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2960"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Veuillez supprimer les contraintes malformées suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3006"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3018"/>
       <source>Empty sketch</source>
       <translation>Esquisse vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3010"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3022"/>
       <source>Over-constrained: </source>
       <translation>L'esquisse possède trop de contraintes: </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3028"/>
       <source>Malformed constraints: </source>
       <translation>Contraintes mal formées : </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3022"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3034"/>
       <source>Redundant constraints:</source>
       <translation>Contraintes redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3028"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3040"/>
       <source>Partially redundant:</source>
       <translation>Contraintes partiellement redondantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3034"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3046"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3039"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3051"/>
       <source>Under constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3041"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3053"/>
       <source>%n DoF(s)</source>
       <translation>
         <numerusform>%n Degré de liberté</numerusform>
@@ -5002,7 +5138,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3044"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3056"/>
       <source>Fully constrained</source>
       <translation>Entièrement contrainte</translation>
     </message>
@@ -5755,7 +5891,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2990"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3002"/>
       <source>and %1 more</source>
       <translation>et %1 de plus</translation>
     </message>
@@ -5795,7 +5931,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher B-spline tools</source>
-      <translation>Outils d'esquisse B-spline</translation>
+      <translation>Outils d'esquisse des B-splines</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
@@ -6099,6 +6235,43 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
       <location filename="../../Command.cpp" line="1344"/>
       <source>Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings</source>
       <translation>Activer/désactiver toutes les fonctionnalités d'aimantation. Dans le menu, vous pouvez activer individuellement les fonctions "Aimanter à la grille", "Aimanter aux objets" et d'autres paramètres d'aimantation.</translation>
+    </message>
+  </context>
+  <context>
+    <name>RenderingOrderAction</name>
+    <message>
+      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1476"/>
+      <location filename="../../Command.cpp" line="1481"/>
+      <source>Normal Geometry</source>
+      <translation type="unfinished">Normal Geometry</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1476"/>
+      <location filename="../../Command.cpp" line="1481"/>
+      <source>Construction Geometry</source>
+      <translation>Géométrie de construction</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1476"/>
+      <location filename="../../Command.cpp" line="1481"/>
+      <source>External Geometry</source>
+      <translation type="unfinished">External Geometry</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdRenderingOrder</name>
+    <message>
+      <location filename="../../Command.cpp" line="1577"/>
+      <source>Configure rendering order</source>
+      <translation type="unfinished">Configure rendering order</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1578"/>
+      <source>Reorder the items in the list to configure rendering order.</source>
+      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
     </message>
   </context>
 </TS>
