@@ -6,7 +6,8 @@ files: |
     (?x)^(
         src/Mod/AddonManager|
         src/Tools|
-        tests/src
+        tests/src|
+        src/Mod/Sketcher/App/planegcs
     )
 exclude: |
     (?x)^(
