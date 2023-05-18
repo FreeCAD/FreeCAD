@@ -33,19 +33,20 @@ using namespace Sketcher;
 
 //---------- Geometry Extension
 
-constexpr std::array<const char *, ExternalGeometryExtension::NumFlags> ExternalGeometryExtension::flag2str;
+constexpr std::array<const char*, ExternalGeometryExtension::NumFlags>
+    ExternalGeometryExtension::flag2str;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension, Part::GeometryPersistenceExtension)
 
-void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
+void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
 {
     Part::GeometryPersistenceExtension::copyAttributes(cpy);
 
-    static_cast<ExternalGeometryExtension *>(cpy)->Ref = this->Ref;
-    static_cast<ExternalGeometryExtension *>(cpy)->Flags = this->Flags;
+    static_cast<ExternalGeometryExtension*>(cpy)->Ref = this->Ref;
+    static_cast<ExternalGeometryExtension*>(cpy)->Flags = this->Flags;
 }
 
-void ExternalGeometryExtension::restoreAttributes(Base::XMLReader &reader)
+void ExternalGeometryExtension::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
@@ -53,12 +54,11 @@ void ExternalGeometryExtension::restoreAttributes(Base::XMLReader &reader)
     Flags = FlagType(reader.getAttribute("Flags"));
 }
 
-void ExternalGeometryExtension::saveAttributes(Base::Writer &writer) const
+void ExternalGeometryExtension::saveAttributes(Base::Writer& writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
 
-    writer.Stream() << "\" Ref=\"" << Ref
-                    << "\" Flags=\"" << Flags.to_string();
+    writer.Stream() << "\" Ref=\"" << Ref << "\" Flags=\"" << Flags.to_string();
 }
 
 std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy() const
@@ -67,32 +67,32 @@ std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy() const
 
     copyAttributes(cpy.get());
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
+#if defined(__GNUC__) && (__GNUC__ <= 4)
     return std::move(cpy);
 #else
     return cpy;
 #endif
 }
 
-PyObject * ExternalGeometryExtension::getPyObject()
+PyObject* ExternalGeometryExtension::getPyObject()
 {
     return new ExternalGeometryExtensionPy(new ExternalGeometryExtension(*this));
 }
 
-bool ExternalGeometryExtension::getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag)
+bool ExternalGeometryExtension::getFlagsFromName(std::string str,
+                                                 ExternalGeometryExtension::Flag& flag)
 {
-    auto pos = std::find_if(    ExternalGeometryExtension::flag2str.begin(),
-                                ExternalGeometryExtension::flag2str.end(),
-                                [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;
-                                }
-                                );
+    auto pos = std::find_if(ExternalGeometryExtension::flag2str.begin(),
+                            ExternalGeometryExtension::flag2str.end(),
+                            [str](const char* val) {
+                                return strcmp(val, str.c_str()) == 0;
+                            });
 
-    if( pos != ExternalGeometryExtension::flag2str.end()) {
-            int index = std::distance( ExternalGeometryExtension::flag2str.begin(), pos );
+    if (pos != ExternalGeometryExtension::flag2str.end()) {
+        int index = std::distance(ExternalGeometryExtension::flag2str.begin(), pos);
 
-            flag = static_cast<ExternalGeometryExtension::Flag>(index);
-            return true;
+        flag = static_cast<ExternalGeometryExtension::Flag>(index);
+        return true;
     }
 
     return false;
