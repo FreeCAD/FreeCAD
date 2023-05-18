@@ -24,12 +24,14 @@
 #ifndef SKETCHER_PythonConverter_H
 #define SKETCHER_PythonConverter_H
 
-namespace Part {
-    class Geometry;
+namespace Part
+{
+class Geometry;
 }
 
-namespace Sketcher {
-    class Constraint;
+namespace Sketcher
+{
+class Constraint;
 
 /** @brief      Class for generating python code
  *  @details
@@ -37,38 +39,38 @@ namespace Sketcher {
  *  create such objects.
  */
 
-class SketcherExport PythonConverter {
+class SketcherExport PythonConverter
+{
 
-    class SingleGeometry {
+    class SingleGeometry
+    {
     public:
         std::string creation;
         bool construction;
     };
 
 public:
-
     explicit PythonConverter() = delete;
     ~PythonConverter() = delete;
 
     /// Convert a geometry into the string representing the command creating it
-    static std::string convert(const Part::Geometry * geo);
+    static std::string convert(const Part::Geometry* geo);
 
     /// Convert a vector of geometries into the string representing the command creating them
-    static std::string convert(const std::string & doc, const std::vector<Part::Geometry *> & geos);
+    static std::string convert(const std::string& doc, const std::vector<Part::Geometry*>& geos);
 
-    static std::string convert(const Sketcher::Constraint * constraint);
+    static std::string convert(const Sketcher::Constraint* constraint);
 
-    static std::string convert(const std::string & doc, const std::vector<Sketcher::Constraint *> & constraints);
+    static std::string convert(const std::string& doc,
+                               const std::vector<Sketcher::Constraint*>& constraints);
 
 private:
-    static SingleGeometry process(const Part::Geometry * geo);
+    static SingleGeometry process(const Part::Geometry* geo);
 
-    static std::string process(const Sketcher::Constraint * constraint);
-
+    static std::string process(const Sketcher::Constraint* constraint);
 };
 
-} // namespace Sketcher
+}// namespace Sketcher
 
 
-#endif // SKETCHER_PythonConverter_H
-
+#endif// SKETCHER_PythonConverter_H
