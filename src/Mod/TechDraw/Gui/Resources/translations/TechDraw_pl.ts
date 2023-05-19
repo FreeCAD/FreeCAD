@@ -1500,8 +1500,8 @@
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="258"/>
-      <source>Image (*.png *.jpg *.jpeg)</source>
-      <translation>Obraz (*.png *.jpg *.jpeg)</translation>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
+      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
     </message>
   </context>
   <context>
@@ -1892,13 +1892,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="289"/>
+      <location filename="../../CommandDecorate.cpp" line="288"/>
       <source>TechDraw</source>
       <translation>Rysunek Techniczny</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="289"/>
       <location filename="../../CommandDecorate.cpp" line="290"/>
-      <location filename="../../CommandDecorate.cpp" line="291"/>
       <source>Turn View Frames On/Off</source>
       <translation>Włącz / wyłącz wyświetlanie ramek</translation>
     </message>
@@ -2061,7 +2061,7 @@
       <translation>Utwórz kreskowanie geometryczne</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="266"/>
+      <location filename="../../CommandDecorate.cpp" line="265"/>
       <source>Create Image</source>
       <translation>Utwórz obraz</translation>
     </message>
@@ -2086,7 +2086,7 @@
       <translation>Utwórz aktywny widok</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="298"/>
+      <location filename="../../TaskCenterLine.cpp" line="332"/>
       <source>Create CenterLine</source>
       <translation>Utwórz linię środkową</translation>
     </message>
@@ -2676,9 +2676,9 @@
       <location filename="../../CommandCreateDims.cpp" line="1437"/>
       <location filename="../../CommandCreateDims.cpp" line="1445"/>
       <location filename="../../CommandCreateDims.cpp" line="1454"/>
-      <location filename="../../CommandDecorate.cpp" line="345"/>
-      <location filename="../../CommandDecorate.cpp" line="352"/>
-      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
+      <location filename="../../CommandDecorate.cpp" line="351"/>
+      <location filename="../../CommandDecorate.cpp" line="358"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Incorrect selection</source>
       <translation>Nieprawidłowy wybór</translation>
@@ -2841,8 +2841,8 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="372"/>
+      <location filename="../../CommandDecorate.cpp" line="365"/>
+      <location filename="../../CommandDecorate.cpp" line="371"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
@@ -3158,7 +3158,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1015"/>
       <source>Selection is empty.</source>
-      <translation>Obszar zaznaczenia jest pusty.</translation>
+      <translation>Obszar zaznaczenia nie zawiera obiektów.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1046"/>
@@ -3238,33 +3238,33 @@
       <translation>Niektóre wybrane ściany posiadają już kreskowanie. Zastąpić?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="311"/>
+      <location filename="../../CommandDecorate.cpp" line="310"/>
       <source>No TechDraw Page</source>
       <translation>Brak strony TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="312"/>
+      <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Potrzebujesz strony Rysunku Technicznego dla tego polecenia</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="346"/>
+      <location filename="../../CommandDecorate.cpp" line="345"/>
       <source>Select a Face first</source>
       <translation>Najpierw wybierz ścianę</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="353"/>
+      <location filename="../../CommandDecorate.cpp" line="352"/>
       <source>No TechDraw object in selection</source>
       <translation>Brak obiektu środowiska Rysunek Techniczny w wyborze</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="360"/>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Create a page to insert.</source>
       <translation>Utwórz stronę do wstawienia.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="367"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="372"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Brak ściany do zakreskowania w tym zaznaczeniu</translation>
     </message>
@@ -3330,7 +3330,7 @@
     <message>
       <location filename="../../ViewProviderPage.cpp" line="234"/>
       <source>Toggle KeepUpdated</source>
-      <translation>Włącz / wyłącz automatyczną aktualizacje</translation>
+      <translation>Włącz / wyłącz automatyczną aktualizację</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="47"/>
@@ -3395,12 +3395,12 @@
       <translation>Nie można znaleźć przeglądarki 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="167"/>
+      <location filename="../../TaskCenterLine.cpp" line="168"/>
       <source>Create Center Line</source>
       <translation>Utwórz linię środkową</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="197"/>
+      <location filename="../../TaskCenterLine.cpp" line="201"/>
       <source>Edit Center Line</source>
       <translation>Edytuj linię środkową</translation>
     </message>
@@ -8173,17 +8173,17 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Attributes</source>
-      <translation>Atrybuty TechDraw</translation>
+      <translation>Rysunek Techniczny — atrybuty</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Centerlines</source>
-      <translation>Linie środkowe TechDraw</translation>
+      <translation>Rysunek Techniczny — linie środkowe</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Extend Dimensions</source>
-      <translation>Rozszerz wymiary TechDraw</translation>
+      <translation>Rysunek Techniczny — rozszerzenie wymiary</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -8193,7 +8193,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw Stacking</source>
-      <translation type="unfinished">TechDraw Stacking</translation>
+      <translation>Rysunek Techniczny — sortowanie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>

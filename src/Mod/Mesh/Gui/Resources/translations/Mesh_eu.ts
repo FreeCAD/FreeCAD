@@ -2088,7 +2088,7 @@ Jo http://www.openscad.org/index.html helbidera hura instalatzeko.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Inportatu-Esportatu</translation>
     </message>

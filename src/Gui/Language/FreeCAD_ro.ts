@@ -85,7 +85,7 @@
       <location filename="../CommandTest.cpp" line="718"/>
       <location filename="../CommandTest.cpp" line="719"/>
       <source>Run test cases to verify console messages</source>
-      <translation type="unfinished">Run test cases to verify console messages</translation>
+      <translation>Rulează testele pentru verificarea mesajelor din consolă</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3303"/>
       <source>Clear all visible measurements</source>
-      <translation type="unfinished">Clear all visible measurements</translation>
+      <translation>Ştergeţi toate măsurătorile vizibile</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3333"/>
       <source>Turn on or off the display of all measurements</source>
-      <translation type="unfinished">Turn on or off the display of all measurements</translation>
+      <translation>Porniţi sau opriţi afişajul tuturor măsurătorilor</translation>
     </message>
   </context>
   <context>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
-      <translation type="unfinished">The object will be edited using the mode defined internally to be the most appropriate for the object type</translation>
+      <translation>Obiectul va fi editat folosind modul definit intern pentru a fi cel mai potrivit pentru tipul obiectului</translation>
     </message>
     <message>
       <location filename="../Application.h" line="259"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../Application.h" line="260"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
-      <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
+      <translation>Obiectul va avea posibilitatea de a plasa cu comanda Std TransformManip</translation>
     </message>
     <message>
       <location filename="../Application.h" line="264"/>
@@ -448,7 +448,7 @@
     <message>
       <location filename="../Application.h" line="265"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
-      <translation type="unfinished">This edit mode is implemented as available but currently does not seem to be used by any object</translation>
+      <translation>Acest mod de editare este implementat ca disponibil, dar în prezent nu pare să fie folosit de orice obiect</translation>
     </message>
     <message>
       <location filename="../Application.h" line="269"/>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../Application.h" line="270"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceColors command</translation>
+      <translation>Obiectul va avea culoarea fețelor sale individuale editabile cu comanda Part FaceColors</translation>
     </message>
   </context>
   <context>
@@ -712,47 +712,47 @@ while doing a left or right click and move the mouse up or down</translation>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="418"/>
-      <location filename="../Splashscreen.cpp" line="427"/>
+      <location filename="../Splashscreen.cpp" line="450"/>
+      <location filename="../Splashscreen.cpp" line="459"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Contributii</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="429"/>
+      <location filename="../Splashscreen.cpp" line="461"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCAD nu ar fi posibil fără contribuțiile</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="432"/>
+      <location filename="../Splashscreen.cpp" line="464"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Persoane</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="445"/>
+      <location filename="../Splashscreen.cpp" line="477"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organizaţii</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="472"/>
-      <location filename="../Splashscreen.cpp" line="712"/>
+      <location filename="../Splashscreen.cpp" line="504"/>
+      <location filename="../Splashscreen.cpp" line="744"/>
       <source>License</source>
       <translation>Licenţă</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="511"/>
+      <location filename="../Splashscreen.cpp" line="543"/>
       <source>Libraries</source>
       <translation>Libraries</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="673"/>
+      <location filename="../Splashscreen.cpp" line="705"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="699"/>
+      <location filename="../Splashscreen.cpp" line="731"/>
       <source>Collection</source>
       <translation>Colecție</translation>
     </message>
@@ -836,12 +836,12 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Clipping.ui" line="14"/>
       <source>Clipping</source>
-      <translation>Clipire</translation>
+      <translation>Secțiune</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="20"/>
       <source>Clipping X</source>
-      <translation>Clipire X</translation>
+      <translation>Secţiune de-a lungul axei X</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="32"/>
@@ -861,17 +861,17 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Clipping.ui" line="65"/>
       <source>Clipping Y</source>
-      <translation>Clipire Y</translation>
+      <translation>Secţiune de-a lungul axei Y</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="110"/>
       <source>Clipping Z</source>
-      <translation>Clipire Z</translation>
+      <translation>Secţiune de-a lungul axei Z</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Clipping custom direction</source>
-      <translation>Decupare urmând o direcție personalizată</translation>
+      <translation>Secțiune urmând o direcție personalizată</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -881,7 +881,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Clipping.ui" line="197"/>
       <source>Adjust to view direction</source>
-      <translation>Ajustează pentru a vizualiza direcția</translation>
+      <translation>Ajustează pe direcția de vizualizare</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="204"/>
@@ -6814,62 +6814,62 @@ Doriți să salvați modificările?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2066"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>Dimensiune</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="460"/>
+      <location filename="../MainWindow.cpp" line="459"/>
       <source>Ready</source>
       <translation>Gata</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="872"/>
+      <location filename="../MainWindow.cpp" line="871"/>
       <source>Help addon needed!</source>
       <translation>Ajutor supliment necesar!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="873"/>
+      <location filename="../MainWindow.cpp" line="872"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>Sistemul de ajutor al %1 este acum gestionat de suplimentul "Ajutor". Acesta poate fi instalat cu uşurinţă prin Addons Manager</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="875"/>
+      <location filename="../MainWindow.cpp" line="874"/>
       <source>Open Addon Manager</source>
       <translation>Deschide Addon Manager</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1070"/>
+      <location filename="../MainWindow.cpp" line="1069"/>
       <source>Close All</source>
       <translation>Inchide toate</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1273"/>
       <location filename="../MainWindow.cpp" line="1274"/>
       <location filename="../MainWindow.cpp" line="1275"/>
-      <location filename="../MainWindow.cpp" line="1276"/>
       <source>Toggles this toolbar</source>
       <translation>Activează/dezactivează această bară de instrumente</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1288"/>
       <location filename="../MainWindow.cpp" line="1289"/>
       <location filename="../MainWindow.cpp" line="1290"/>
-      <location filename="../MainWindow.cpp" line="1291"/>
       <source>Toggles this dockable window</source>
       <translation>Activează/dezactivează această fereastră fixabilă</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1857"/>
-      <location filename="../MainWindow.cpp" line="1949"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>Document nesalvat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1858"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Obiectul exportat conține o legătură externă. Vă rugăm să salvați documentul cel puțin o dată înainte de al exporta.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1950"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Pentru face legăturile la obiecte externe, documentul trebuie salvat cel puțin o dată.
@@ -6963,7 +6963,7 @@ Cum doresti sa continuam?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1135"/>
       <source>Point_%1</source>
-      <translation type="unfinished">Point_%1</translation>
+      <translation>Punct_%1</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1237"/>
@@ -6983,12 +6983,12 @@ Cum doresti sa continuam?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1262"/>
       <source>&amp;Align</source>
-      <translation type="unfinished">&amp;Align</translation>
+      <translation>Aliniere</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1263"/>
       <source>&amp;Remove last point</source>
-      <translation type="unfinished">&amp;Remove last point</translation>
+      <translation>&amp;Elimină ultimul punct</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1265"/>
@@ -6998,7 +6998,7 @@ Cum doresti sa continuam?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1269"/>
       <source>&amp;Synchronize views</source>
-      <translation type="unfinished">&amp;Synchronize views</translation>
+      <translation>&amp;Sincronizează vizualizările</translation>
     </message>
   </context>
   <context>
@@ -8397,37 +8397,37 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="510"/>
+      <location filename="../MainWindow.cpp" line="509"/>
       <source>Tree view</source>
       <translation>Vizualizare arborescentă</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="538"/>
+      <location filename="../MainWindow.cpp" line="537"/>
       <source>Property view</source>
       <translation>Vizualizare proprietăţi</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="556"/>
+      <location filename="../MainWindow.cpp" line="555"/>
       <source>Selection view</source>
       <translation>Vizualizare selecție</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="578"/>
+      <location filename="../MainWindow.cpp" line="577"/>
       <source>Combo View</source>
       <translation>Vizualizare combo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="612"/>
+      <location filename="../MainWindow.cpp" line="611"/>
       <source>DAG View</source>
       <translation>Vizualizare DAG</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="630"/>
+      <location filename="../MainWindow.cpp" line="629"/>
       <source>Report view</source>
       <translation>Vezualizare raport</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="650"/>
+      <location filename="../MainWindow.cpp" line="649"/>
       <source>Python console</source>
       <translation>Consola Python</translation>
     </message>
@@ -8549,7 +8549,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1189"/>
-      <location filename="../MainWindow.cpp" line="703"/>
+      <location filename="../MainWindow.cpp" line="702"/>
       <source>Unsaved document</source>
       <translation>Document nesalvat</translation>
     </message>
@@ -9132,32 +9132,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Doriţi să închideţi această fereastră de dialog?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="705"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Vreți să salvați modificările dvs înainte de a închide?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="708"/>
+      <location filename="../MainWindow.cpp" line="707"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Doriți să salvați modificările documentului înainte de închidere?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="710"/>
+      <location filename="../MainWindow.cpp" line="709"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Dacă nu salvați, schimbările vor fi pierdute.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="715"/>
+      <location filename="../MainWindow.cpp" line="714"/>
       <source>Apply answer to all</source>
       <translation>Aplică răspunsul tuturor</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="805"/>
+      <location filename="../MainWindow.cpp" line="804"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Document(e) nu au fost salvate</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="806"/>
+      <location filename="../MainWindow.cpp" line="805"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Unele documente nu au putut fi salvate. Doriți să renunțați la închiderea documentelor?</translation>
     </message>
@@ -9397,7 +9397,7 @@ copia curentă va fi pierdută.
       <translation>Editare %1</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="146"/>
+      <location filename="../ViewProviderImagePlane.cpp" line="147"/>
       <source>Change image...</source>
       <translation>Schimbă imaginea...</translation>
     </message>
@@ -9446,7 +9446,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandView.cpp" line="2695"/>
       <location filename="../CommandView.cpp" line="2697"/>
       <source>Activate the box selection tool</source>
-      <translation type="unfinished">Activate the box selection tool</translation>
+      <translation>Activează unealta de selecție a casetei</translation>
     </message>
   </context>
   <context>
@@ -9530,7 +9530,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandView.cpp" line="2107"/>
       <location filename="../CommandView.cpp" line="2108"/>
       <source>Turns on or off the axis cross at the origin</source>
-      <translation type="unfinished">Turns on or off the axis cross at the origin</translation>
+      <translation>Se roteşte sau se opreşte axa încrucişată la origine</translation>
     </message>
   </context>
   <context>
@@ -9838,7 +9838,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandDoc.cpp" line="1691"/>
       <location filename="../CommandDoc.cpp" line="1693"/>
       <source>Actions that apply to expressions</source>
-      <translation type="unfinished">Actions that apply to expressions</translation>
+      <translation>Acțiuni care se aplică expresiilor</translation>
     </message>
   </context>
   <context>
@@ -10040,7 +10040,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandLink.cpp" line="875"/>
       <location filename="../CommandLink.cpp" line="877"/>
       <source>Actions that apply to link objects</source>
-      <translation type="unfinished">Actions that apply to link objects</translation>
+      <translation>Acțiuni care se aplică obiectelor de legătură</translation>
     </message>
   </context>
   <context>
@@ -10226,7 +10226,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandMacro.cpp" line="268"/>
       <location filename="../CommandMacro.cpp" line="270"/>
       <source>Step to the next line executed</source>
-      <translation type="unfinished">Step to the next line executed</translation>
+      <translation>Pas la linia următoare executată</translation>
     </message>
   </context>
   <context>
@@ -10240,7 +10240,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandMacro.cpp" line="241"/>
       <location filename="../CommandMacro.cpp" line="243"/>
       <source>Step to the next line in this file</source>
-      <translation type="unfinished">Step to the next line in this file</translation>
+      <translation>Pas la linia următoare din acest fișier</translation>
     </message>
   </context>
   <context>
@@ -10282,7 +10282,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandView.cpp" line="3124"/>
       <location filename="../CommandView.cpp" line="3126"/>
       <source>Activate the distance measurement tool</source>
-      <translation type="unfinished">Activate the distance measurement tool</translation>
+      <translation>Activați unealta de măsurare a distanței</translation>
     </message>
   </context>
   <context>
@@ -10340,7 +10340,7 @@ copia curentă va fi pierdută.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2054"/>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>
@@ -10561,7 +10561,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandFeat.cpp" line="79"/>
       <location filename="../CommandFeat.cpp" line="81"/>
       <source>Set each selected object to a randomly-selected color</source>
-      <translation type="unfinished">Set each selected object to a randomly-selected color</translation>
+      <translation>Setează fiecare obiect selectat la o culoare selectată aleatoriu</translation>
     </message>
   </context>
   <context>
@@ -10911,7 +10911,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandMacro.cpp" line="295"/>
       <location filename="../CommandMacro.cpp" line="297"/>
       <source>Add or remove a breakpoint at this position</source>
-      <translation type="unfinished">Add or remove a breakpoint at this position</translation>
+      <translation>Adaugă sau elimină un punct de întrerupere la această poziție</translation>
     </message>
   </context>
   <context>
@@ -10919,13 +10919,13 @@ copia curentă va fi pierdută.
     <message>
       <location filename="../CommandView.cpp" line="600"/>
       <source>Clipping plane</source>
-      <translation>Planul de tăiere</translation>
+      <translation>Plan de secțiune</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="601"/>
       <location filename="../CommandView.cpp" line="603"/>
       <source>Toggles clipping plane for active view</source>
-      <translation>Activează/dezactivează planul de tăiere pentru vederea activă</translation>
+      <translation>Activează/dezactivează planul de secțiune pentru vederea activă</translation>
     </message>
   </context>
   <context>
@@ -11549,7 +11549,7 @@ copia curentă va fi pierdută.
     <message>
       <location filename="../CommandWindow.cpp" line="417"/>
       <source>Activate window</source>
-      <translation type="unfinished">Activate window</translation>
+      <translation>Activează fereastra</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="418"/>
@@ -11787,7 +11787,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandView.cpp" line="2625"/>
       <location filename="../CommandView.cpp" line="2627"/>
       <source>Activate the box zoom tool</source>
-      <translation type="unfinished">Activate the box zoom tool</translation>
+      <translation>Activează unealta de mărire a cutiei</translation>
     </message>
   </context>
   <context>
@@ -11871,7 +11871,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandView.cpp" line="2430"/>
       <location filename="../CommandView.cpp" line="2432"/>
       <source>Increase the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Increase the zoom factor by a fixed amount</translation>
+      <translation>Crește factorul de zoom cu o sumă fixă</translation>
     </message>
   </context>
   <context>
@@ -11885,7 +11885,7 @@ copia curentă va fi pierdută.
       <location filename="../CommandView.cpp" line="2459"/>
       <location filename="../CommandView.cpp" line="2461"/>
       <source>Decrease the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Decrease the zoom factor by a fixed amount</translation>
+      <translation>Scade factorul zoom cu o valoare fixă</translation>
     </message>
   </context>
   <context>
@@ -12289,7 +12289,7 @@ Doriți în continuare să continuați?</translation>
       <location filename="../DlgSettingsNotificationArea.ui" line="140"/>
       <location filename="../DlgSettingsNotificationArea.ui" line="165"/>
       <source>s</source>
-      <translation type="unfinished">s</translation>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="162"/>
@@ -12452,7 +12452,7 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Direcție inversă</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -12490,7 +12490,7 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Direcție inversă</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
@@ -12614,17 +12614,17 @@ după lansarea FreeCAD</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="469"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
       <source>Toolbar</source>
       <translation>Bară de instrumente</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="470"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
       <source>Left corner</source>
       <translation>Colț stânga</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="471"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
       <source>Right corner</source>
       <translation>Colţul din dreapta</translation>
     </message>
@@ -12713,45 +12713,45 @@ după lansarea FreeCAD</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1377"/>
+      <location filename="../NaviCube.cpp" line="1093"/>
       <source>Movable navigation cube</source>
-      <translation type="unfinished">Movable navigation cube</translation>
+      <translation>Cub de navigare mobil</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1378"/>
+      <location filename="../NaviCube.cpp" line="1094"/>
       <source>Drag and place NaviCube</source>
-      <translation type="unfinished">Drag and place NaviCube</translation>
+      <translation>Trage și plasează NaviCube</translation>
     </message>
   </context>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="543"/>
+      <location filename="../View3DSettings.cpp" line="545"/>
       <source>FRONT</source>
       <translation>FRONTUL</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="545"/>
+      <location filename="../View3DSettings.cpp" line="547"/>
       <source>TOP</source>
       <translation>DE SUS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="547"/>
+      <location filename="../View3DSettings.cpp" line="549"/>
       <source>RIGHT</source>
       <translation>DREPTUL</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="549"/>
+      <location filename="../View3DSettings.cpp" line="551"/>
       <source>REAR</source>
       <translation>SPATE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="551"/>
+      <location filename="../View3DSettings.cpp" line="553"/>
       <source>BOTTOM</source>
       <translation>DE JOS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="553"/>
+      <location filename="../View3DSettings.cpp" line="555"/>
       <source>LEFT</source>
       <translation>STANGA</translation>
     </message>

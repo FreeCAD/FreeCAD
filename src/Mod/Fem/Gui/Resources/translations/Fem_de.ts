@@ -1827,7 +1827,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -3253,7 +3253,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam section parameter</source>
-      <translation>Trägerschnittsparameter</translation>
+      <translation>Stabquerschnitt-Parameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
@@ -3627,19 +3627,19 @@ Note: for 2D only setting for x is possible,
       <translation>Randbedingung Krafteinwirkung</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
+      <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
+      <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
       <translation>Import / Export</translation>
     </message>
@@ -3694,7 +3694,7 @@ Note: for 2D only setting for x is possible,
       <translation>Randbedingung Feder</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
       <translation>Randbedingung Temperatur</translation>
     </message>
@@ -5332,7 +5332,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Materials</source>
-      <translation>Materialien</translation>
+      <translation>Werkstoffe</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -5565,12 +5565,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="250"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Randbedingung elektrostatisches Potential</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="254"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Erstellt eine FEM-Randbedingung elektrostatisches Potential</translation>
     </message>
   </context>
   <context>
@@ -5591,12 +5591,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="284"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Startbedingung Strömungsgeschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="288"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Erstellt eine FEM-Startbedingung für die Strömungsgeschwindigkeit</translation>
     </message>
   </context>
   <context>
@@ -5604,12 +5604,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Constraint initial pressure</source>
-      <translation type="unfinished">Constraint initial pressure</translation>
+      <translation>Startbedingung Druck</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Creates a FEM constraint initial pressure</source>
-      <translation type="unfinished">Creates a FEM constraint initial pressure</translation>
+      <translation>Erstellt eine FEM-Startbedingung für den Druck</translation>
     </message>
   </context>
   <context>
@@ -5669,12 +5669,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="403"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Stabquerschnitt</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="407"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Erstellt einen FEM-Querschnitt für (Zug-/Druck-) Stäbe und (Biege-) Träger/Balken</translation>
     </message>
   </context>
   <context>
@@ -5695,12 +5695,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="437"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Stabdrehung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="441"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Erstellt eine FEM-Drehung für (Zug-/Druck-) Stäbe und (Biege-) Träger/Balken</translation>
     </message>
   </context>
   <context>
@@ -5797,12 +5797,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="629"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Werkstoff-Editor</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="633"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Öffnet den FreeCAD-Werkstoff-Editor</translation>
     </message>
   </context>
   <context>
@@ -5975,12 +5975,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1039"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Ergebnisse löschen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Löscht alle Ergebnisse aus der aktiven Analyse</translation>
     </message>
   </context>
   <context>
@@ -6330,12 +6330,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="318"/>
       <source>Constraint magnetization</source>
-      <translation type="unfinished">Constraint magnetization</translation>
+      <translation>Randbedingung Magnetisierung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="322"/>
       <source>Creates a FEM constraint magnetization</source>
-      <translation type="unfinished">Creates a FEM constraint magnetization</translation>
+      <translation>Erstellt eine FEM-Randbedingung Magnetisierung</translation>
     </message>
   </context>
   <context>

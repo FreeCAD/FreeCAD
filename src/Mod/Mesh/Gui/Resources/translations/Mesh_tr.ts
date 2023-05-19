@@ -2084,7 +2084,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>İçe-Dışa Aktar</translation>
     </message>

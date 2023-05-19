@@ -1658,7 +1658,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Nie wybrano</translation>
+      <translation>Brak zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -2088,7 +2088,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>
@@ -2367,7 +2367,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Siatka — segmentacja</translation>
+      <translation>Segmentacja siatki</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
