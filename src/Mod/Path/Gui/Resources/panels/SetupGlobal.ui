@@ -128,7 +128,7 @@ Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</string>
             <property name="toolTip">
              <string>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
-Default: "3 mm"</string>
+Default: 3 mm</string>
             </property>
            </widget>
           </item>
