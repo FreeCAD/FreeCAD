@@ -882,7 +882,9 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
             module = module.left(match.capturedStart());
         }
 
-        button->setText(QString::fromLatin1("%1 (%2)").arg(filter, module));
+        auto filterText = QObject::tr(filter); // Filter should be in the QObject context
+        auto providerText = translate("Workbench", module); // Provider is usually a Workbench
+        button->setText(QString::fromLatin1("%1 (%2)").arg(filterText, providerText));
         button->setObjectName(it.value());
         gridLayout1->addWidget(button, index, 0, 1, 1);
         group->addButton(button, index);
