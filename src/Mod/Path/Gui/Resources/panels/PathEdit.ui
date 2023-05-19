@@ -394,11 +394,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
        <item row="3" column="0">
         <widget class="QCheckBox" name="splitOutput">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.
-
-
-
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</string>
          </property>
          <property name="whatsThis">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
@@ -1038,10 +1034,9 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
            <item row="0" column="1">
             <widget class="QLineEdit" name="setupStartDepthExpr">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.
+              <string>Expression set as the StartDepth of a newly created operation.
 
-
-Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+Default: OpStartDepth</string>
              </property>
             </widget>
            </item>
@@ -1055,10 +1050,9 @@ Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            <item row="1" column="1">
             <widget class="QLineEdit" name="setupFinalDepthExpr">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.
+              <string>Expression set as the FinalDepth for a newly created operation.
 
-
-Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+Default: OpFinalDepth</string>
              </property>
             </widget>
            </item>
@@ -1072,10 +1066,9 @@ Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            <item row="2" column="1">
             <widget class="QLineEdit" name="setupStepDownExpr">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.
+              <string>Expression set as the StepDown of a newly created operation.
 
-
-Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+Default: OpToolDiameter</string>
              </property>
             </widget>
            </item>
