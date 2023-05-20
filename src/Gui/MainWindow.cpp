@@ -2252,9 +2252,12 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+    (void) recipient;
+    (void) content;
 
     int messageType = -1;
     switch(level){

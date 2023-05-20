@@ -40,9 +40,13 @@ public:
 
     void flush() {buffer.str("");buffer.clear();}
 
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override{
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override{
         (void) notifiername;
         (void) msg;
+        (void) recipient;
+        (void) content;
+
         switch(level){
             case Base::LogStyle::Warning:
                 buffer << "WRN";

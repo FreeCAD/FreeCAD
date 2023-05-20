@@ -49,11 +49,14 @@ namespace Base {
 class ConsoleEvent : public QEvent {
 public:
     ConsoleSingleton::FreeCAD_ConsoleMsgType msgtype;
+    IntendedRecipient recipient;
+    ContentType content;
     std::string notifier;
     std::string msg;
 
-    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& notifier, const std::string& msg)
-    : QEvent(QEvent::User), msgtype(type), notifier(notifier),msg(msg)
+    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, IntendedRecipient recipient,
+                   ContentType content, const std::string& notifier, const std::string& msg)
+    : QEvent(QEvent::User), msgtype(type), recipient(recipient), content(content), notifier(notifier), msg(msg)
     {
     }
     ~ConsoleEvent() override = default;
@@ -77,25 +80,25 @@ public:
             ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
             switch (ce->msgtype) {
                 case ConsoleSingleton::MsgType_Txt:
-                    Console().Notify<LogStyle::Message>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::Message, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
                 case ConsoleSingleton::MsgType_Log:
-                    Console().Notify<LogStyle::Log>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::Log, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
                 case ConsoleSingleton::MsgType_Wrn:
-                    Console().Notify<LogStyle::Warning>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::Warning, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
                 case ConsoleSingleton::MsgType_Err:
-                    Console().Notify<LogStyle::Error>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::Error, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
                 case ConsoleSingleton::MsgType_Critical:
-                    Console().Notify<LogStyle::Critical>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::Critical, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
                 case ConsoleSingleton::MsgType_Notification:
-                    Console().Notify<LogStyle::Notification>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::Notification, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
                 case ConsoleSingleton::MsgType_TranslatedNotification:
-                    Console().Notify<LogStyle::TranslatedNotification>(ce->notifier, ce->msg);
+                    Console().notifyPrivate(LogStyle::TranslatedNotification, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
             }
         }
@@ -286,18 +289,20 @@ void ConsoleSingleton::DetachObserver(ILogger *pcObserver)
     _aclObservers.erase(pcObserver);
 }
 
-void Base::ConsoleSingleton::notifyPrivate(LogStyle category, const std::string& notifiername, const std::string& msg)
+void Base::ConsoleSingleton::notifyPrivate(LogStyle category, IntendedRecipient recipient,
+                   ContentType content, const std::string& notifiername, const std::string& msg)
 {
     for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if ((*Iter)->isActive(category)) {
-            (*Iter)->SendLog(notifiername, msg, category);   // send string to the listener
+            (*Iter)->SendLog(notifiername, msg, category, recipient, content);   // send string to the listener
         }
     }
 }
 
-void ConsoleSingleton::postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& notifiername, const std::string& msg)
+void ConsoleSingleton::postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, IntendedRecipient recipient,
+                                 ContentType content, const std::string& notifiername, const std::string& msg)
 {
-    QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(type, notifiername, msg));
+    QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(type, recipient, content, notifiername, msg));
 }
 
 ILogger *ConsoleSingleton::Get(const char *Name) const
