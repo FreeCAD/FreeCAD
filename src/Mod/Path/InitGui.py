@@ -64,11 +64,6 @@ class PathWorkbench(Workbench):
 
         translate = FreeCAD.Qt.translate
 
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
-        FreeCADGui.addPreferencePage(
-            PathPreferencesPathDressup.DressupPreferencesPage, "Path"
-        )
-
         # load the builtin modules
         import Path
         import PathScripts
@@ -88,6 +83,11 @@ class PathWorkbench(Workbench):
         import PathCommands
         import subprocess
         from packaging.version import Version, parse
+
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path"))
+        FreeCADGui.addPreferencePage(
+            PathPreferencesPathDressup.DressupPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
+        )
 
         Path.GuiInit.Startup()
 
@@ -263,7 +263,7 @@ class PathWorkbench(Workbench):
         from Path.Preferences import preferences
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
+            PathPreferencesAdvanced.AdvancedPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
         )
         Log("Loading Path workbench... done\n")
 
