@@ -87,7 +87,7 @@ PyMOD_INIT_FUNC(PathGui)
     loadPathResource();
 
     // register preferences pages
-    new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> ("Path");
+    new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> (QT_TRANSLATE_NOOP("QObject","Path"));
 
     PyMOD_Return(mod);
 }
