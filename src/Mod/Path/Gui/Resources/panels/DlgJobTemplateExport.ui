@@ -130,11 +130,9 @@ Any values of the SetupSheet that are changed from their default are preselected
      <item row="3" column="0" colspan="2">
        <widget class="QListWidget" name="settingsOpsList">
         <property name="toolTip">
-         <string>Enable all Operations for which the configuration values should be exported.
+         <string>Enable all operations for which the configuration values should be exported.
 
-&lt;br/&gt;
-
-Note that only operations are listed which currently have configuration values setup.</string>
+Note that only operations which currently have configuration values set are listed.</string>
         </property>
        </widget>
       </item>

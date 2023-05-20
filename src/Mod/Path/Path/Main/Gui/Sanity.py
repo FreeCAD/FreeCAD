@@ -425,7 +425,7 @@ class CommandPathSanity:
         machineLabel = translate("Path_Sanity", "Machine")
         postLabel = translate("Path_Sanity", "Postprocessor")
         flagsLabel = translate("Path_Sanity", "Post Processor Flags")
-        fileSizeLabel = translate("Path_Sanity", "File Size (kbs)")
+        fileSizeLabel = translate("Path_Sanity", "File Size (kb)")
         lineCountLabel = translate("Path_Sanity", "Line Count")
 
         outTable += "|*{}*|{}\n".format(gcodeFileLabel, d["lastgcodefile"])
