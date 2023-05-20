@@ -19,16 +19,21 @@
 #*                                                                         *
 #***************************************************************************
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 # add import/export types
-FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
-FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","exportIFC")
-FreeCAD.addExportType("Industry Foundation Classes - IFCJSON (*.ifcJSON)","exportIFC")
-FreeCAD.addImportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
-FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
-FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
-FreeCAD.addExportType("JavaScript Object Notation (*.json)","importJSON")
-FreeCAD.addImportType("Collada (*.dae)","importDAE")
-FreeCAD.addExportType("Collada (*.dae)","importDAE")
-FreeCAD.addImportType("3D Studio mesh (*.3ds)","import3DS")
-FreeCAD.addImportType("SweetHome3D XML export (*.zip)","importSH3D")
-FreeCAD.addImportType("Shapefile (*.shp)","importSHP")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Industry Foundation Classes (*.ifc)"), "importIFC")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Industry Foundation Classes (*.ifc)"), "exportIFC")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Industry Foundation Classes - IFCJSON (*.ifcJSON)"), "exportIFC")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Wavefront OBJ - Arch module (*.obj)"), "importOBJ")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Wavefront OBJ - Arch module (*.obj)"), "importOBJ")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "WebGL file (*.html)"),"importWebGL")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "JavaScript Object Notation (*.json)"), "importJSON")
+FreeCAD.addImportType("Collada (*.dae)", "importDAE")
+FreeCAD.addExportType("Collada (*.dae)", "importDAE")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "3D Studio mesh (*.3ds)"), "import3DS")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "SweetHome3D XML export (*.zip)"), "importSH3D")
+FreeCAD.addImportType("Shapefile (*.shp)", "importSHP")

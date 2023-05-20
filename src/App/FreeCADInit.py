@@ -30,6 +30,10 @@
 # imports the one and only
 import FreeCAD
 
+
+def QT_TRANSLATE_NOOP(_, txt):
+    return txt
+
 def removeFromPath(module_name):
     """removes the module from the sys.path. The entry point for imports
         will therefore always be FreeCAD.
@@ -690,7 +694,7 @@ except Exception as e:
     Err(traceback.format_exc())
     Err('-'*80+'\n')
 
-FreeCAD.addImportType("FreeCAD document (*.FCStd)","FreeCAD")
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat","FreeCAD document (*.FCStd)"), "FreeCAD")
 
 # set to no gui, is overwritten by InitGui
 App.GuiUp = 0

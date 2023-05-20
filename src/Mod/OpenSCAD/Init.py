@@ -26,7 +26,12 @@
 import os
 import FreeCAD
 
-FreeCAD.addImportType("OpenSCAD CSG Format (*.csg)", "importCSG")
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
+FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "OpenSCAD CSG Format (*.csg)"), "importCSG")
 
 param = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
@@ -34,8 +39,8 @@ openscadfilename = param.GetString('openscadexecutable')
 openscadbin = openscadfilename and os.path.isfile(openscadfilename)
 
 if openscadbin:
-    FreeCAD.addImportType("OpenSCAD Format (*.scad)", "importCSG")
+    FreeCAD.addImportType(QT_TRANSLATE_NOOP("FileFormat", "OpenSCAD Format (*.scad)"), "importCSG")
     FreeCAD.__unit_test__ += ["TestOpenSCADApp"]
 
-FreeCAD.addExportType("OpenSCAD CSG Format (*.csg)", "exportCSG")
-FreeCAD.addExportType("OpenSCAD Format (*.scad)", "exportCSG")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "OpenSCAD CSG Format (*.csg)"), "exportCSG")
+FreeCAD.addExportType(QT_TRANSLATE_NOOP("FileFormat", "OpenSCAD Format (*.scad)"), "exportCSG")

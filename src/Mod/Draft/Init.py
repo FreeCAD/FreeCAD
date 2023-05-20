@@ -22,15 +22,20 @@
 
 import FreeCAD as App
 
+
+def QT_TRANSLATE_NOOP(_1, txt):
+    return txt
+
+
 # add Import/Export types
-App.addImportType("Autodesk DXF 2D (*.dxf)", "importDXF")
-App.addImportType("SVG as geometry (*.svg)", "importSVG")
-App.addImportType("Open CAD Format (*.oca *.gcad)", "importOCA")
-App.addImportType("Common airfoil data (*.dat)", "importAirfoilDAT")
-App.addExportType("Autodesk DXF 2D (*.dxf)", "importDXF")
-App.addExportType("Flattened SVG (*.svg)", "importSVG")
-App.addExportType("Open CAD Format (*.oca)", "importOCA")
-App.addImportType("Autodesk DWG 2D (*.dwg)", "importDWG")
-App.addExportType("Autodesk DWG 2D (*.dwg)", "importDWG")
+App.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Autodesk DXF 2D (*.dxf)"), "importDXF")
+App.addImportType(QT_TRANSLATE_NOOP("FileFormat", "SVG as geometry (*.svg)"), "importSVG")
+App.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Open CAD Format (*.oca *.gcad)"), "importOCA")
+App.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Common airfoil data (*.dat)"), "importAirfoilDAT")
+App.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Autodesk DXF 2D (*.dxf)"), "importDXF")
+App.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Flattened SVG (*.svg)"), "importSVG")
+App.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Open CAD Format (*.oca)"), "importOCA")
+App.addImportType(QT_TRANSLATE_NOOP("FileFormat", "Autodesk DWG 2D (*.dwg)"), "importDWG")
+App.addExportType(QT_TRANSLATE_NOOP("FileFormat", "Autodesk DWG 2D (*.dwg)"), "importDWG")
 
 App.__unit_test__ += ["TestDraft"]
