@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "typedef.h"
 #include "Item.h"
 #include "EndFramec.h"
 

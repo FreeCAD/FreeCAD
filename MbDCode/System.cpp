@@ -1,17 +1,23 @@
 #include<algorithm>
 
 #include "System.h"
+#include "Part.h"
+#include "Joint.h"
+#include "SystemSolver.h"
+#include "Time.h"
 
 using namespace MbD;
 
 System::System() {
-	time = std::make_shared<Time>();
-	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
-	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
-	systemSolver = std::make_shared<SystemSolver>(this);
+	initialize();
 }
 
 System::System(const char* str) : Item(str) {
+	initialize();
+}
+
+void MbD::System::initialize()
+{
 	time = std::make_shared<Time>();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
@@ -26,31 +32,33 @@ void System::addPart(std::shared_ptr<Part> part)
 
 void System::runKINEMATICS()
 {
-	//Smalltalk code
-	//admSystem   preMbDrun.
-
-	//	[self initializeLocally.
-	//	self initializeGlobally.
-	//	self hasChanged]
-	//				whileTrue.
-	//	self partsJointsMotionsForcesTorquesDo : [:item | item postInput] .
-	//	admSystem outputFor : #INPUT.
-	//	mbdSystemSolver runAllIC.
-	//	admSystem outputFor : #'INITIAL CONDITIONS'.
-	//	mbdSystemSolver runBasicKinematic.
-	//	admSystem postMbDrun
-
 	while (true)
 	{
 		initializeLocally();
 		initializeGlobally();
 		if (!hasChanged) break;
 	}
+	postInput();
+	outputInput();
 	systemSolver->runAllIC();
+	outputInitialConditions();
 	systemSolver->runBasicKinematic();
+	outputTimeSeries();
 }
 
-void System::initializeLocally() 
+void MbD::System::outputInput()
+{
+}
+
+void MbD::System::outputInitialConditions()
+{
+}
+
+void MbD::System::outputTimeSeries()
+{
+}
+
+void System::initializeLocally()
 {
 	hasChanged = false;
 	time->value = systemSolver->tstart;
@@ -64,4 +72,15 @@ void System::initializeGlobally()
 	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeGlobally(); });
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), [](const auto& joint) { joint->initializeGlobally();	});
 	systemSolver->initializeGlobally();
+}
+
+std::shared_ptr<std::vector<std::string>> MbD::System::discontinuitiesAtIC()
+{
+	return std::shared_ptr<std::vector<std::string>>();
+}
+
+void MbD::System::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	std::for_each(parts->begin(), parts->end(), f);
+	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 }

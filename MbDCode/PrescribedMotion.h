@@ -2,7 +2,6 @@
 #include "Joint.h"
 
 namespace MbD {
-
     class Symbolic;
 
     class PrescribedMotion : public Joint

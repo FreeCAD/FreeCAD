@@ -3,8 +3,10 @@ namespace MbD {
 	class Solver
 	{
 	public:
-		virtual void initializeLocally() = 0;
-		virtual void initializeGlobally() = 0;
+		virtual void initialize();
+		virtual void initializeLocally();
+		virtual void initializeGlobally();
+		virtual void run();
 	};
 }
 

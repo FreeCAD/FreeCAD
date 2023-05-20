@@ -1,24 +1,31 @@
 #include "Part.h"
 #include "PartFrame.h"
-#include "FullColumn.h"
 
 using namespace MbD;
 
 Part::Part() {
-	initialize();
 }
 
 Part::Part(const char* str) : Item(str) {
-	initialize();
 }
 
 void Part::initialize()
 {
-	partFrame = std::make_shared<PartFrame>();
+	partFrame = PartFrame::Create();
 	partFrame->setPart(this);
 	pTpE = std::make_shared<FullColumn<double>>(4);
 	ppTpEpE = std::make_shared<FullMatrix<double>>(4, 4);
 	ppTpEpEdot = std::make_shared<FullMatrix<double>>(4, 4);
+}
+
+void Part::initializeLocally()
+{
+	partFrame->initializeLocally();
+}
+
+void Part::initializeGlobally()
+{
+	partFrame->initializeGlobally();
 }
 
 void Part::setqX(FColDsptr x) {
@@ -37,22 +44,36 @@ FColDsptr Part::getqE() {
 	return partFrame->getqE();
 }
 
+void Part::setqXdot(FColDsptr x) {
+	partFrame->setqXdot(x);
+}
+
+FColDsptr Part::getqXdot() {
+	return partFrame->getqXdot();
+}
+
+void Part::setomeOpO(FColDsptr x) {
+	partFrame->setomeOpO(x);
+}
+
+FColDsptr Part::getomeOpO() {
+	return partFrame->getomeOpO();
+}
+
 void Part::setSystem(System& sys)
 {
 	//May be needed in the future
 }
 
-void MbD::Part::asFixed()
+void Part::asFixed()
 {
 	partFrame->asFixed();
 }
 
-void Part::initializeLocally()
+void MbD::Part::postInput()
 {
-	partFrame->initializeLocally();
 }
 
-void Part::initializeGlobally()
+void MbD::Part::calcPostDynCorrectorIteration()
 {
-	partFrame->initializeGlobally();
 }

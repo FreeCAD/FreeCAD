@@ -8,18 +8,14 @@
 using namespace MbD;
 
 ZRotation::ZRotation() {
-	initialize();
+
 }
 
 ZRotation::ZRotation(const char* str) : PrescribedMotion(str) {
-	initialize();
+
 }
 
-void ZRotation::initialize()
-{
-}
-
-void MbD::ZRotation::initializeGlobally()
+void ZRotation::initializeGlobally()
 {
 	//constraints isEmpty
 	//	ifTrue :
@@ -38,7 +34,7 @@ void MbD::ZRotation::initializeGlobally()
 	}
 }
 
-void MbD::ZRotation::initMotions()
+void ZRotation::initMotions()
 {
 	auto xyzBlks = std::initializer_list<std::shared_ptr<Symbolic>>{ xBlk, yBlk, zBlk };
 	std::static_pointer_cast<EndFrameqc>(frmI)->setrmemBlks(std::make_shared<FullColumn<std::shared_ptr<Symbolic>>>(xyzBlks));
@@ -46,6 +42,6 @@ void MbD::ZRotation::initMotions()
 	std::static_pointer_cast<EndFrameqc>(frmI)->setphiThePsiBlks(std::make_shared<FullColumn<std::shared_ptr<Symbolic>>>(xyzRotBlks));
 }
 
-void MbD::ZRotation::addConstraint(std::shared_ptr<Constraint> con)
+void ZRotation::addConstraint(std::shared_ptr<Constraint> con)
 {
 }

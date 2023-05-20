@@ -14,7 +14,7 @@ namespace MbD {
 		virtual std::shared_ptr<Symbolic> simplified();
 		virtual std::shared_ptr<Symbolic> expandUntil(std::shared_ptr<std::unordered_set<Symbolic>> set);
 		virtual std::shared_ptr<Symbolic> simplifyUntil(std::shared_ptr<std::unordered_set<Symbolic>> set);
-		virtual double getValue() = 0;
+		virtual double getValue();
 	};
 }
 

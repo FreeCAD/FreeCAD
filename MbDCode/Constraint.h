@@ -11,6 +11,7 @@ namespace MbD {
 		Constraint();
 		Constraint(const char* str);
 		void initialize();
+		void postInput() override;
 		void setOwner(Item* x);
 		Item* getOwner();
 		

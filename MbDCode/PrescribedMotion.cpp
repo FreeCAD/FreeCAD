@@ -10,15 +10,16 @@
 using namespace MbD;
 
 PrescribedMotion::PrescribedMotion() {
-	initialize();
+
 }
 
 PrescribedMotion::PrescribedMotion(const char* str) : Joint(str) {
-	initialize();
+
 }
 
 void PrescribedMotion::initialize()
 {
+	Joint::initialize();
 	xBlk = std::make_shared<Constant>(0.0);
 	yBlk = std::make_shared<Constant>(0.0);
 	zBlk = std::make_shared<Constant>(0.0);
@@ -30,5 +31,5 @@ void PrescribedMotion::initialize()
 void PrescribedMotion::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
 {
 	Joint::connectsItoJ(frmi, frmj);
-	frmI->EndFrameqctFrom(frmI);
+	frmI->initEndFrameqct();
 }

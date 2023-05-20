@@ -2,7 +2,7 @@
 
 using namespace MbD;
 
-double MbD::Product::getValue()
+double Product::getValue()
 {
 	double answer = 1.0;
 	for (int i = 0; i < terms->size(); i++) answer *= terms->at(i)->getValue();

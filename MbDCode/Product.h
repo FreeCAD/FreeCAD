@@ -3,6 +3,8 @@
 #include "FunctionWithManyArgs.h"
 
 namespace MbD {
+    class Symbolic;
+
     class Product : public FunctionWithManyArgs
     {
     public:

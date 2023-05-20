@@ -2,10 +2,10 @@
 
 using namespace MbD;
 
-MbD::KinematicIeJe::KinematicIeJe()
+KinematicIeJe::KinematicIeJe()
 {
 }
 
-MbD::KinematicIeJe::KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
+KinematicIeJe::KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
 {
 }

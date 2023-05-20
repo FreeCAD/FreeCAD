@@ -3,6 +3,8 @@
 #include "Function.h"
 
 namespace MbD {
+    class Symbolic;
+
     class FunctionWithManyArgs : public Function
     {
         //terms

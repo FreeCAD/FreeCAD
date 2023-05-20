@@ -9,17 +9,16 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <functional>
 
 #include "Item.h"
-#include "Part.h"
-#include "Joint.h"
-#include "SystemSolver.h"
-#include "Time.h"
+//#include "Time.h"
 
 namespace MbD {
 	class Part;
 	class Joint;
 	class SystemSolver;
+	class Time;
 
 	class System : public Item
 	{
@@ -31,10 +30,19 @@ namespace MbD {
 			return singleInstance;
 		};
 		static System& getInstance(const char* str) {
-			//https://medium.com/@caglayandokme/further-enhancing-the-singleton-pattern-in-c-8278b02b1ac7
 			static System singleInstance(str); // Block-scoped static Singleton instance
 			return singleInstance;
 		};
+
+		void initialize() override;
+		void initializeLocally() override;
+		void initializeGlobally() override;
+		void runKINEMATICS();
+		void outputInput();
+		void outputInitialConditions();
+		void outputTimeSeries();
+		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
+		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 
 
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
@@ -42,9 +50,6 @@ namespace MbD {
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
 		void addPart(std::shared_ptr<Part> part);
-		void runKINEMATICS();
-		void initializeLocally() override;
-		void initializeGlobally() override;
 
 		std::shared_ptr<Time> time;
 	private:

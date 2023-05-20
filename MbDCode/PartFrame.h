@@ -3,45 +3,53 @@
 #include <vector>
 
 #include "CartesianFrame.h"
-#include "Part.h"
-#include "MarkerFrame.h"
 #include "EndFramec.h"
-#include "EulerConstraint.h"
-#include "AbsConstraint.h"
 #include "FullColumn.h"
+#include "EulerParameters.h"
+#include "EulerParametersDot.h"
 
 namespace MbD {
 	class Part;
 	class MarkerFrame;
-	class EndFramec;
-	using EndFrmcptr = std::shared_ptr<EndFramec>;
+	class EulerConstraint;
+	class AbsConstraint;
+	//class EulerParameters;
+	//class EulerParametersDot;
 
 	class PartFrame : public CartesianFrame
 	{
 		//ToDo: part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
 	public:
+		static std::shared_ptr<PartFrame> Create();
 		PartFrame();
 		PartFrame(const char* str);
 		void initialize();
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void asFixed();
+		void postInput() override;
+		void calcPostDynCorrectorIteration() override;
 
 		void setqX(FColDsptr x);
 		FColDsptr getqX();
 		void setqE(FColDsptr x);
 		FColDsptr getqE();
+		void setqXdot(FColDsptr x);
+		FColDsptr getqXdot();
+		void setomeOpO(FColDsptr x);
+		FColDsptr getomeOpO();
 		void setPart(Part* x);
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmcptr endFrame(std::string name);
 
-		Part* part;
-		int iqX, iqE;	//Position index of frame variables qX and qE in system list of variables
+		Part* part = nullptr;
+		int iqX = -1;
+		int iqE = -1;	//Position index of frame variables qX and qE in system list of variables
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
-		FColDsptr qE = std::make_shared<FullColumn<double>>(4);
+		std::shared_ptr<EulerParameters<double>> qE = std::make_shared<EulerParameters<double>>(4);
 		FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
-		FColDsptr qEdot = std::make_shared<FullColumn<double>>(4);
+		std::shared_ptr<EulerParametersDot<double>> qEdot = std::make_shared<EulerParametersDot<double>>(4);
 		FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
 		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<EulerConstraint> aGeu;

@@ -2,19 +2,20 @@
 #include <memory>
 
 #include "Item.h"
-#include "System.h"
-#include "PartFrame.h"
 #include "FullColumn.h"
-#include "DiagonalMatrix.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	class System;
 	class PartFrame;
+	template <typename T>
+	class DiagonalMatrix;
 
 	class Part : public Item
 	{
 		//ToDo: ipX ipE m aJ partFrame pX pXdot pE pEdot mX mE mEdot pTpE ppTpEpE ppTpEpEdot 
 	public:
+		static std::shared_ptr<Part> Create(const char* name);
 		Part();
 		Part(const char* str);
 		void initialize();
@@ -24,12 +25,18 @@ namespace MbD {
 		FColDsptr getqX();
 		void setqE(FColDsptr x);
 		FColDsptr getqE();
+		void setqXdot(FColDsptr x);
+		FColDsptr getqXdot();
+		void setomeOpO(FColDsptr x);
+		FColDsptr getomeOpO();
 		void setSystem(System& sys);
 		void asFixed();
+		void postInput() override;
+		void calcPostDynCorrectorIteration() override;
 
-		int ipX; 
-		int ipE; 
-		double m; 
+		int ipX = -1; 
+		int ipE = -1; 
+		double m = 0.0; 
 		std::shared_ptr<DiagonalMatrix<double>> aJ;
 		std::shared_ptr<PartFrame> partFrame;
 		FColDsptr pX;
