@@ -214,8 +214,8 @@ public:
 
     /// Function that is called by the console interface for this observer with the message
     /// information
-    void SendLog(const std::string& notifiername, const std::string& msg,
-                 Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// Name of the observer
     const char* Name() override
@@ -242,8 +242,8 @@ NotificationAreaObserver::~NotificationAreaObserver()
     Base::Console().DetachObserver(this);
 }
 
-void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg,
-                                       Base::LogStyle level)
+void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                       Base::IntendedRecipient recipient, Base::ContentType content)
 {
     // 1. As notification system is shared with report view and others, the expectation is that any
     // individual error and warning message will end in "\n". This means the string must be stripped
@@ -252,6 +252,9 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
     // context, shall not include
     // "\n", as this generates problems with the translation system. Then the string must be
     // stripped of "\n" before translation.
+
+    (void) recipient;
+    (void) content;
 
     auto simplifiedstring =
         QString::fromStdString(msg)

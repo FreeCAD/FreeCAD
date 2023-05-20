@@ -474,6 +474,18 @@ enum class LogStyle{
     TranslatedNotification, // Special message for already translated notifications to the user (e.g. educational)
 };
 
+enum class IntendedRecipient {
+    All,                    // All recipients, Developers and Users (One notification covers all)
+    User,                   // User only (notification intended only for a user)
+    Developer,              // Developer only (notification intended only for a developer)
+};
+
+enum class ContentType {
+    Untranslated,           // Not translated, but translatable
+    Translated,             // Already translated
+    Untranslatable,         // Cannot and should not be translated (Dynamic content, trace,...)
+};
+
 /** The Logger Interface
  *  This class describes an Interface for logging within FreeCAD. If you want to add a new
  *  "sink" to FreeCAD's logging mechanism, then inherit this class. You'll also need to
@@ -490,7 +502,8 @@ public:
 
     /** Used to send a Log message at the given level.
      */
-    virtual void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level) = 0;
+    virtual void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
+                         IntendedRecipient recipient, ContentType content) = 0;
 
     /**
      * Returns whether a LogStyle category is active or not
@@ -559,7 +572,10 @@ public:
 
         Notification can be direct or via queue.
     */
-    template <LogStyle, typename... Args>
+    template <Base::LogStyle,
+          Base::IntendedRecipient = Base::IntendedRecipient::All,
+          Base::ContentType = Base::ContentType::Untranslated,
+          typename... Args>
     inline void Send( const std::string & notifiername, const char * pMsg, Args&&... args );
 
     /// Prints a Message
@@ -587,19 +603,19 @@ public:
 
     /// Prints a Message with source indication
     template <typename... Args>
-    inline void Message (const std::string &, const char * pMsg, Args&&... args);
+    inline void Message (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a warning Message with source indication
     template <typename... Args>
-    inline void Warning (const std::string &, const char * pMsg, Args&&... args);
+    inline void Warning (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a error Message with source indication
     template <typename... Args>
-    inline void Error   (const std::string &, const char * pMsg, Args&&... args);
+    inline void Error   (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a log Message with source indication
     template <typename... Args>
-    inline void Log     (const std::string &, const char * pMsg, Args&&... args);
+    inline void Log     (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a Critical Message with source indication
     template <typename... Args>
-    inline void Critical (const std::string &, const char * pMsg, Args&&... args);
+    inline void Critical (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Sends a User Notification with source indication
     template <typename... Args>
     inline void UserNotification( const std::string & notifier, const char * pMsg, Args&&... args );
@@ -608,7 +624,9 @@ public:
     inline void UserTranslatedNotification( const std::string & notifier, const char * pMsg, Args&&... args );
 
     // Notify a message directly to observers
-    template <LogStyle>
+    template <Base::LogStyle,
+          Base::IntendedRecipient = Base::IntendedRecipient::All,
+          Base::ContentType = Base::ContentType::Untranslated>
     inline void Notify(const std::string & notifiername, const std::string & msg);
 
     /// Attaches an Observer to FCConsole
@@ -691,8 +709,10 @@ protected:
     virtual ~ConsoleSingleton();
 
 private:
-    void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& notifiername, const std::string& msg);
-    void notifyPrivate(LogStyle category, const std::string& notifiername, const std::string& msg);
+    void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, IntendedRecipient recipient,
+                   ContentType content, const std::string& notifiername, const std::string& msg);
+    void notifyPrivate(LogStyle category, IntendedRecipient recipient, ContentType content,
+                       const std::string& notifiername, const std::string& msg);
 
     // singleton
     static void Destruct();
@@ -873,26 +893,31 @@ inline void Base::ConsoleSingleton::Log( const std::string & notifier, const cha
     Send<Base::LogStyle::Log>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
-template <Base::LogStyle category, typename... Args>
+template <Base::LogStyle category,
+          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
+          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/,
+          typename... Args>
 inline void Base::ConsoleSingleton::Send( const std::string & notifiername, const char * pMsg, Args&&... args )
 {
     std::string format = fmt::sprintf(pMsg, args...);
 
     if (connectionMode == Direct) {
-        Notify<category>(notifiername,format);
+        Notify<category, recipient, contenttype>(notifiername,format);
     }
     else {
 
         auto type = getConsoleMsg(category);
 
-        postEvent(type, notifiername, format);
+        postEvent(type, recipient, contenttype, notifiername, format);
     }
 }
 
-template <Base::LogStyle category>
+template <Base::LogStyle category,
+          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
+          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/>
 inline void Base::ConsoleSingleton::Notify(const std::string & notifiername, const std::string & msg)
 {
-    notifyPrivate(category, notifiername, msg);
+    notifyPrivate(category, recipient, contenttype, notifiername, msg);
 }
 
 #if defined(__clang__)

@@ -58,9 +58,12 @@ ConsoleObserverFile::~ConsoleObserverFile()
     cFileStream.close();
 }
 
-void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
+void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
+                                  IntendedRecipient recipient, ContentType content)
 {
     (void) notifiername;
+    (void) recipient;
+    (void) content;
     
     std::string prefix;
     switch(level){
@@ -101,9 +104,12 @@ ConsoleObserverStd::ConsoleObserverStd() :
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
+void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
+                                 IntendedRecipient recipient, ContentType content)
 {
     (void) notifiername;
+    (void) recipient;
+    (void) content;
     
     switch(level){
         case LogStyle::Warning:
