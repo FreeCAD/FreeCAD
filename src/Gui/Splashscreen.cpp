@@ -182,7 +182,7 @@ public:
         Q_UNUSED(notifiername)
         Q_UNUSED(recipient)
         Q_UNUSED(content)
-        
+
 #ifdef FC_DEBUG
         Log(msg.c_str());
         Q_UNUSED(level)

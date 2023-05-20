@@ -62,8 +62,10 @@ void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::st
                                   IntendedRecipient recipient, ContentType content)
 {
     (void) notifiername;
-    (void) recipient;
-    (void) content;
+
+    // Do not log translated messages, or messages intended only to the user to log file
+    if(recipient == IntendedRecipient::User || content == ContentType::Translated)
+        return;
     
     std::string prefix;
     switch(level){
@@ -108,8 +110,10 @@ void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::str
                                  IntendedRecipient recipient, ContentType content)
 {
     (void) notifiername;
-    (void) recipient;
-    (void) content;
+
+    // Do not log translated messages, or messages intended only to the user to std log
+    if(recipient == IntendedRecipient::User || content == ContentType::Translated)
+        return;
     
     switch(level){
         case LogStyle::Warning:

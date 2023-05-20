@@ -125,8 +125,10 @@ void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg
                          Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
-    (void) recipient;
-    (void) content;
+
+    // Do not log translated messages, or messages intended only to the user to std log
+    if(recipient == Base::IntendedRecipient::User || content == Base::ContentType::Translated)
+        return;
 
     switch(level){
         case Base::LogStyle::Warning:
