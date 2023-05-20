@@ -476,8 +476,11 @@ void ReportOutput::SendLog(const std::string& notifiername, const std::string& m
                            Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
-    (void) recipient;
-    (void) content;
+
+    // Do not log translated messages, or messages intended only to the user to the Report View
+    if( recipient == Base::IntendedRecipient::User ||
+        content == Base::ContentType::Translated)
+        return;
 
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
     switch (level) {

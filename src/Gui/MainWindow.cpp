@@ -2256,8 +2256,12 @@ void StatusBarObserver::SendLog(const std::string& notifiername, const std::stri
                                 Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
-    (void) recipient;
-    (void) content;
+
+    // Do not log untranslated messages, or messages intended only to a developer to status bar
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslated ||
+        content == Base::ContentType::Untranslatable )
+        return;
 
     int messageType = -1;
     switch(level){
