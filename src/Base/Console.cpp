@@ -364,21 +364,45 @@ ConsoleSingleton & ConsoleSingleton::Instance()
 
 // ConsoleSingleton Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
-    {"PrintMessage",         ConsoleSingleton::sPyMessage, METH_VARARGS,
+    {"PrintMessage",                ConsoleSingleton::sPyMessage, METH_VARARGS,
      "PrintMessage(obj) -> None\n\n"
      "Print a message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
-    {"PrintLog",             ConsoleSingleton::sPyLog, METH_VARARGS,
+    {"PrintLog",                    ConsoleSingleton::sPyLog, METH_VARARGS,
      "PrintLog(obj) -> None\n\n"
      "Print a log message to the output.\n\n"
      "obj : object\n    The string representation is printed."},
-    {"PrintError",           ConsoleSingleton::sPyError, METH_VARARGS,
+    {"PrintError",                  ConsoleSingleton::sPyError, METH_VARARGS,
      "PrintError(obj) -> None\n\n"
      "Print an error message to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintDeveloperError",         ConsoleSingleton::sPyDeveloperError, METH_VARARGS,
+     "PrintDeveloperError(obj) -> None\n\n"
+     "Print an error message intended only for Developers to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintUserError",              ConsoleSingleton::sPyUserError, METH_VARARGS,
+     "PrintUserError(obj) -> None\n\n"
+     "Print an error message intended only for the User to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintTranslatedUserError",    ConsoleSingleton::sPyTranslatedUserError, METH_VARARGS,
+     "PrintTranslatedUserError(obj) -> None\n\n"
+     "Print an already translated error message intended only for the User to the output.\n\n"
      "obj : object\n    The string representation is printed."},
     {"PrintWarning",         ConsoleSingleton::sPyWarning, METH_VARARGS,
      "PrintWarning(obj) -> None\n\n"
      "Print a warning message to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintDeveloperWarning",         ConsoleSingleton::sPyDeveloperWarning, METH_VARARGS,
+     "PrintDeveloperWarning(obj) -> None\n\n"
+     "Print an warning message intended only for Developers to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintUserWarning",              ConsoleSingleton::sPyUserWarning, METH_VARARGS,
+     "PrintUserWarning(obj) -> None\n\n"
+     "Print a warning message intended only for the User to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintTranslatedUserWarning",    ConsoleSingleton::sPyTranslatedUserWarning, METH_VARARGS,
+     "PrintTranslatedUserWarning(obj) -> None\n\n"
+     "Print an already translated warning message intended only for the User to the output.\n\n"
      "obj : object\n    The string representation is printed."},
      {"PrintCritical",ConsoleSingleton::sPyCritical, METH_VARARGS,
      "PrintCritical(obj) -> None\n\n"
@@ -467,7 +491,9 @@ PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*, const char *)> func, 
 PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 {
     return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
-        Instance().Message(notifier, "%s", msg);
+        Instance().Send<Base::LogStyle::Message,
+                        Base::IntendedRecipient::Developer,
+                        Base::ContentType::Untranslatable>(notifier, "%s", msg);
     }, args);
 }
 
@@ -478,38 +504,102 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
     }, args);
 }
 
+PyObject *ConsoleSingleton::sPyDeveloperWarning(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
+        Instance().Send<Base::LogStyle::Warning,
+                        Base::IntendedRecipient::Developer,
+                        Base::ContentType::Untranslatable>(notifier, "%s", msg);
+    }, args);
+}
+
+PyObject *ConsoleSingleton::sPyUserWarning(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
+        Instance().Send<Base::LogStyle::Warning,
+                        Base::IntendedRecipient::User,
+                        Base::ContentType::Untranslated>(notifier, "%s", msg);
+    }, args);
+}
+
+PyObject *ConsoleSingleton::sPyTranslatedUserWarning(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
+        Instance().Send<Base::LogStyle::Warning,
+                        Base::IntendedRecipient::User,
+                        Base::ContentType::Translated>(notifier, "%s", msg);
+    }, args);
+}
+
 PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 {
     return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
-        Instance().Error(notifier, "%s", msg);
+        Instance().Send<Base::LogStyle::Error,
+                        Base::IntendedRecipient::All,
+                        Base::ContentType::Untranslated>(notifier, "%s", msg);
+    }, args);
+}
+
+PyObject *ConsoleSingleton::sPyDeveloperError(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
+        Instance().Send<Base::LogStyle::Error,
+                        Base::IntendedRecipient::Developer,
+                        Base::ContentType::Untranslatable>(notifier, "%s", msg);
+    }, args);
+}
+
+PyObject *ConsoleSingleton::sPyUserError(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
+        Instance().Send<Base::LogStyle::Error,
+                        Base::IntendedRecipient::User,
+                        Base::ContentType::Untranslated>(notifier, "%s", msg);
+    }, args);
+}
+
+PyObject *ConsoleSingleton::sPyTranslatedUserError(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
+        Instance().Send<Base::LogStyle::Error,
+                        Base::IntendedRecipient::User,
+                        Base::ContentType::Translated>(notifier, "%s", msg);
     }, args);
 }
 
 PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 {
     return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
-        Instance().Log(notifier, "%s", msg);
+        Instance().Send<Base::LogStyle::Log,
+                        Base::IntendedRecipient::Developer,
+                        Base::ContentType::Untranslatable>(notifier, "%s", msg);
     }, args);
 }
 
 PyObject *ConsoleSingleton::sPyCritical(PyObject * /*self*/, PyObject *args)
 {
     return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
-        Instance().Critical(notifier, "%s", msg);
+        Instance().Send<Base::LogStyle::Critical,
+                        Base::IntendedRecipient::All,
+                        Base::ContentType::Untranslated>(notifier, "%s", msg);
     }, args);
 }
 
 PyObject *ConsoleSingleton::sPyNotification(PyObject * /*self*/, PyObject *args)
 {
     return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
-        Instance().UserNotification(notifier, "%s", msg);
+        Instance().Send<Base::LogStyle::Notification,
+                        Base::IntendedRecipient::User,
+                        Base::ContentType::Untranslated>(notifier, "%s", msg);
     }, args);
 }
 
 PyObject *ConsoleSingleton::sPyTranslatedNotification(PyObject * /*self*/, PyObject *args)
 {
     return FC_PYCONSOLE_MSG([](const std::string & notifier, const char* msg) {
-        Instance().UserTranslatedNotification(notifier, "%s", msg);
+        Instance().Send<Base::LogStyle::Notification,
+                        Base::IntendedRecipient::User,
+                        Base::ContentType::Translated>(notifier, "%s", msg);
     }, args);
 }
 
