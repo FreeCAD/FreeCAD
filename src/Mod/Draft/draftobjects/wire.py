@@ -96,7 +96,7 @@ class Wire(DraftObject):
         obj.Closed = False
 
     def execute(self, obj):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.
             obj.positionBySupport()
             self.update_start_end(obj)
             self.props_changed_clear()
