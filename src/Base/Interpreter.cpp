@@ -131,7 +131,7 @@ void PyException::ReportException () const
 {
     if (!_isReported) {
         _isReported = true;
-        Base::Console().Error("%s%s: %s\n",
+        Base::Console().DeveloperError("%s%s: %s\n",
             _stackTrace.c_str(), _errorType.c_str(), what());
     }
 }
