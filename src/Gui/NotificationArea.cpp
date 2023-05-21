@@ -234,7 +234,6 @@ NotificationAreaObserver::NotificationAreaObserver(NotificationArea* notificatio
     bLog = false;                  // ignore log messages
     bMsg = false;                  // ignore messages
     bNotification = true;          // activate user notifications
-    bTranslatedNotification = true;// activate translated user notifications
 }
 
 NotificationAreaObserver::~NotificationAreaObserver()
@@ -377,16 +376,14 @@ public:
         if (tableWidget) {
             for (int i = tableWidget->topLevelItemCount() - 1; i >= 0; i--) {
                 auto* item = static_cast<NotificationItem*>(tableWidget->topLevelItem(i));
-                if (item->notificationType == Base::LogStyle::Notification
-                    || item->notificationType == Base::LogStyle::TranslatedNotification) {
+                if (item->notificationType == Base::LogStyle::Notification) {
                     delete item;
                 }
             }
         }
         for (int i = pushedItems.size() - 1; i >= 0; i--) {
             auto* item = static_cast<NotificationItem*>(pushedItems.at(i));
-            if (item->notificationType == Base::LogStyle::Notification
-                || item->notificationType == Base::LogStyle::TranslatedNotification) {
+            if (item->notificationType == Base::LogStyle::Notification) {
                 delete pushedItems.takeAt(i);
             }
         }
@@ -1057,9 +1054,7 @@ void NotificationArea::showInNotificationArea()
                             item->notifying = false;
 
                             if (pImp->autoRemoveUserNotifications) {
-                                if (item->notificationType == Base::LogStyle::Notification
-                                    || item->notificationType
-                                        == Base::LogStyle::TranslatedNotification) {
+                                if (item->notificationType == Base::LogStyle::Notification) {
 
                                     static_cast<NotificationsAction*>(pImp->notificationaction)
                                         ->deleteItem(item);

@@ -97,9 +97,6 @@ public:
                 case ConsoleSingleton::MsgType_Notification:
                     Console().notifyPrivate(LogStyle::Notification, ce->recipient, ce->content, ce->notifier, ce->msg);
                     break;
-                case ConsoleSingleton::MsgType_TranslatedNotification:
-                    Console().notifyPrivate(LogStyle::TranslatedNotification, ce->recipient, ce->content, ce->notifier, ce->msg);
-                    break;
             }
         }
     }
@@ -212,11 +209,6 @@ ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsg
                 flags |= MsgType_Notification;
             pObs->bNotification = b;
         }
-        if ( type&MsgType_TranslatedNotification ){
-            if ( pObs->bTranslatedNotification != b )
-                flags |= MsgType_TranslatedNotification;
-            pObs->bTranslatedNotification = b;
-        }
 
         return flags;
     }
@@ -242,8 +234,6 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
             return pObs->bCritical;
         case MsgType_Notification:
             return pObs->bNotification;
-        case MsgType_TranslatedNotification:
-            return pObs->bTranslatedNotification;
         default:
             return false;
         }
@@ -628,10 +618,8 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
             b = pObs->bCritical;
         else if (strcmp(pstr2,"Notification") == 0)
             b = pObs->bNotification;
-        else if (strcmp(pstr2,"TranslatedNotification") == 0)
-            b = pObs->bTranslatedNotification;
         else
-            Py_Error(Base::PyExc_FC_GeneralError,"Unknown message type (use 'Log', 'Err', 'Wrn', 'Msg', 'Critical', 'Notification' or 'TranslatedNotification')");
+            Py_Error(Base::PyExc_FC_GeneralError,"Unknown message type (use 'Log', 'Err', 'Wrn', 'Msg', 'Critical' or 'Notification')");
 
         return PyBool_FromLong(b ? 1 : 0);
     }
@@ -662,10 +650,8 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
                 pObs->bCritical = status;
             else if (strcmp(pstr2,"Notification") == 0)
                 pObs->bNotification = status;
-            else if (strcmp(pstr2,"TranslatedNotification") == 0)
-                pObs->bTranslatedNotification = status;
             else
-                Py_Error(Base::PyExc_FC_GeneralError,"Unknown message type (use 'Log', 'Err', 'Wrn', 'Msg', 'Critical', 'Notification' or 'TranslatedNotification')");
+                Py_Error(Base::PyExc_FC_GeneralError,"Unknown message type (use 'Log', 'Err', 'Wrn', 'Msg', 'Critical' or 'Notification')");
 
             Py_Return;
         }
