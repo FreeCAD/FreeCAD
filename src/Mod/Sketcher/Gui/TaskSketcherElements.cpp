@@ -469,7 +469,7 @@ void ElementView::changeLayer(int layer)
                 }
             }
             else {
-                Gui::TranslatedNotification(sketchobject,
+                Gui::TranslatedUserWarning(sketchobject,
                                             QObject::tr("Unsupported visual layer operation"),
                                             QObject::tr("It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted"));
             }
