@@ -253,8 +253,10 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
     // "\n", as this generates problems with the translation system. Then the string must be
     // stripped of "\n" before translation.
 
-    (void) recipient;
-    (void) content;
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslatable) {
+        return;
+    }
 
     auto simplifiedstring =
         QString::fromStdString(msg)
@@ -264,7 +266,7 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
     if (simplifiedstring.isEmpty())
         return;
 
-    if (level == Base::LogStyle::TranslatedNotification) {
+    if (content == Base::ContentType::Translated) {
         notificationArea->pushNotification(
             QString::fromStdString(notifiername), simplifiedstring, level);
     }
@@ -369,7 +371,7 @@ public:
     }
 
 public:
-    /// deletes only notifications (messages of type Notification and TranslatedNotification)
+    /// deletes only notifications (messages of type Notification)
     void deleteNotifications()
     {
         if (tableWidget) {
