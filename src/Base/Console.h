@@ -714,7 +714,13 @@ protected:
     static PyObject *sPyLog                     (PyObject *self,PyObject *args);
     static PyObject *sPyMessage                 (PyObject *self,PyObject *args);
     static PyObject *sPyWarning                 (PyObject *self,PyObject *args);
+    static PyObject *sPyDeveloperWarning        (PyObject *self,PyObject *args);
+    static PyObject *sPyUserWarning             (PyObject *self,PyObject *args);
+    static PyObject *sPyTranslatedUserWarning   (PyObject *self,PyObject *args);
     static PyObject *sPyError                   (PyObject *self,PyObject *args);
+    static PyObject *sPyDeveloperError          (PyObject *self,PyObject *args);
+    static PyObject *sPyUserError               (PyObject *self,PyObject *args);
+    static PyObject *sPyTranslatedUserError     (PyObject *self,PyObject *args);
     static PyObject *sPyCritical                (PyObject *self,PyObject *args);
     static PyObject *sPyNotification            (PyObject *self,PyObject *args);
     static PyObject *sPyTranslatedNotification  (PyObject *self,PyObject *args);
