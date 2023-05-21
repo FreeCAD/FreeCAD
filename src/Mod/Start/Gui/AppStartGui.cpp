@@ -100,7 +100,7 @@ PyMOD_INIT_FUNC(StartGui)
     Base::Console().Log("Loading GUI of Start module... done\n");
 
     // register preferences pages
-    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> ("Start");
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> (QT_TRANSLATE_NOOP("QObject", "Start"));
 
     // instantiating the commands
     CreateStartCommands();

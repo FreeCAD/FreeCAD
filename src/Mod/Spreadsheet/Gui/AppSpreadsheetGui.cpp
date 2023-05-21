@@ -118,7 +118,7 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::SheetViewPy::init_type();
 
     // register preference page
-    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> (QT_TRANSLATE_NOOP("QObject","Spreadsheet"));
 
     // add resources and reloads the translators
     loadSpreadsheetResource();
