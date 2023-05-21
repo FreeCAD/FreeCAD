@@ -1480,14 +1480,15 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 Base::Console().Error("%s\n", e.what());
             }
         }
-        try{
-        	localreader->readElement("ProjectUnitSystem");
-        	int US = localreader->getAttributeAsInteger("US");
-        	int ignore = localreader->getAttributeAsInteger("ignore");
-		    d->projectUnitSystem = US;
-		    d->projectUnitSystemIgnore = ignore;
-        }catch (const Base::XMLParseException& e) {
-                Base::Console().Error("ProjectUnitSystem not found\n");
+        
+	    try{
+	    	localreader->readElement("ProjectUnitSystem");
+	    	int US = localreader->getAttributeAsInteger("US");
+	    	int ignore = localreader->getAttributeAsInteger("ignore");
+			d->projectUnitSystem = US;
+			d->projectUnitSystemIgnore = ignore;
+		}catch (const Base::XMLParseException& e) {
+			Base::Console().Warning("ProjectUnitSystem not found: %s\n", e.getMessage().c_str());
         }
     }
 
