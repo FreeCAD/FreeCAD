@@ -81,7 +81,7 @@ public:
     // Constructor that will block message types passed as parameter. By default, all types are blocked.
     inline explicit ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes =
         ConsoleSingleton::MsgType_Txt | ConsoleSingleton::MsgType_Log | ConsoleSingleton::MsgType_Wrn | ConsoleSingleton::MsgType_Err |
-        ConsoleSingleton::MsgType_Critical | ConsoleSingleton::MsgType_Notification | ConsoleSingleton::MsgType_TranslatedNotification);
+        ConsoleSingleton::MsgType_Critical | ConsoleSingleton::MsgType_Notification);
     // Disable copy & move constructors
     ILoggerBlocker(ILoggerBlocker const&) = delete;
     ILoggerBlocker(ILoggerBlocker const &&) = delete;

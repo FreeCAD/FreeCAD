@@ -471,7 +471,6 @@ enum class LogStyle{
     Log,
     Critical,               // Special message to mark critical notifications
     Notification,           // Special message for notifications to the user (e.g. educational)
-    TranslatedNotification, // Special message for already translated notifications to the user (e.g. educational)
 };
 
 enum class IntendedRecipient {
@@ -497,7 +496,7 @@ class BaseExport ILogger
 {
 public:
     ILogger()
-    :bErr(true), bMsg(true), bLog(true), bWrn(true), bCritical(true), bNotification(false), bTranslatedNotification(false){}
+    :bErr(true), bMsg(true), bLog(true), bWrn(true), bCritical(true), bNotification(false){}
     virtual ~ILogger() = 0;
 
     /** Used to send a Log message at the given level.
@@ -542,23 +541,20 @@ public:
         if(category == Base::LogStyle::Notification) {
             return bNotification;
         }
-        else
-        if(category == Base::LogStyle::TranslatedNotification) {
-            return bTranslatedNotification;
-        }
+
         return false;
     }
 
     virtual const char *Name(){return nullptr;}
-    bool bErr, bMsg, bLog, bWrn, bCritical, bNotification, bTranslatedNotification;
+    bool bErr, bMsg, bLog, bWrn, bCritical, bNotification;
 };
 
 
 /** The console class
  *  This class manage all the stdio stuff. This includes
- *  Messages, Warnings, Log entries, Errors, Criticals, Notifications and
- *  TranslatedNotifications. The incoming Messages are distributed with the
- *  FCConsoleObserver. The FCConsole class itself makes no IO, it's more like a manager.
+ *  Messages, Warnings, Log entries, Errors, Criticals, Notifications. The incoming Messages are
+ *  distributed with the FCConsoleObserver. The FCConsole class itself makes no IO, it's more like
+ *  a manager.
  *  \par
  *  ConsoleSingleton is a singleton! That means you can access the only
  *  instance of the class from every where in c++ by simply using:
@@ -576,9 +572,9 @@ class BaseExport ConsoleSingleton
 public:
     // exported functions goes here +++++++++++++++++++++++++++++++++++++++
 
-    /** Sends a message of type LogStyle (Message, Warning, Error, Log, Critical, Notification or TranslatedNotification).
-        This function is used by all specific convenience functions (Send(), Message(), Warning(), Error(), Log(), Critical
-        UserNotification and UserTranslatedNotification, without or without notifier id).
+    /** Sends a message of type LogStyle (Message, Warning, Error, Log, Critical or Notification).
+        This function is used by all specific convenience functions (Send(), Message(), Warning(), Error(), Log(), Critical and
+        UserNotification, without or without notifier id).
 
         Notification can be direct or via queue.
     */
@@ -672,7 +668,6 @@ public:
         MsgType_Err                     = 8,
         MsgType_Critical                = 16,  // Special message to notify critical information
         MsgType_Notification            = 32, // Special message to for notifications to the user
-        MsgType_TranslatedNotification  = 64, // Special message for already translated notifications to the user
     };
 
     /// Change mode
@@ -771,8 +766,7 @@ inline constexpr ConsoleSingleton::FreeCAD_ConsoleMsgType ConsoleSingleton::getC
         FreeCAD_ConsoleMsgType::MsgType_Err,
         FreeCAD_ConsoleMsgType::MsgType_Log,
         FreeCAD_ConsoleMsgType::MsgType_Critical,
-        FreeCAD_ConsoleMsgType::MsgType_Notification,
-        FreeCAD_ConsoleMsgType::MsgType_TranslatedNotification
+        FreeCAD_ConsoleMsgType::MsgType_Notification
     };
 
     return msgTypes.at(static_cast<std::size_t>(style));
