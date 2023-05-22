@@ -734,6 +734,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Звярніцеся да клеткі па псеўданіму, напрыклад
 Аркуш.імя_псеўданіма замест Аркуш.В1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Аркуш</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Creează o copie de carbon</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2878"/>
       <source>Constrain horizontal distance</source>
-      <translation type="unfinished">Constrain horizontal distance</translation>
+      <translation>Constrânge distanța orizontală</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2879"/>
@@ -1098,7 +1098,7 @@ cu privire la o linie sau un al treilea punct</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create an external geometry</source>
-      <translation type="unfinished">Create an external geometry</translation>
+      <translation>Creează o geometrie externă</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -2120,7 +2120,7 @@ constrângeri nevalide, geometrie degenerată, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Creează o copie de carbon</translation>
     </message>
   </context>
   <context>
@@ -2134,94 +2134,94 @@ constrângeri nevalide, geometrie degenerată, etc.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="472"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Eroare de autoconstrângere: schiță nerezolvabilă în timp ce se aplică constrângeri de coincidență.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="559"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Eroare de autoconstrângere: schiță nerezolvată în timp ce se aplică constrângeri verticale/orizontale.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="766"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Eroare de autoconstrângere: schiță nerezolvabilă în timp ce se aplică constrângeri privind egalitatea.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Eroare de autoconstrângere: schiță fără soluție fără constrângeri.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="870"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Eroare de autoconstrângere: schiță nerezolvabilă după aplicarea constrângerilor orizontale și verticale.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Eroare de autoconstrângere: schiță nerezolvabilă după aplicarea constrângerilor punct-la-punct.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="927"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Eroare de autoconstrângere: schiță nerezolvabilă după aplicarea constrângerilor de egalitate.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1983"/>
+      <location filename="../../../App/SketchObject.cpp" line="2117"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nu puteți ghici intersecția curbelor. Încercați să adăugați o constrângere de potrivire între vârfurile curbelor pe care intenționați să le completați.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5866"/>
-      <location filename="../../../App/SketchObject.cpp" line="6040"/>
+      <location filename="../../../App/SketchObject.cpp" line="6300"/>
+      <location filename="../../../App/SketchObject.cpp" line="6508"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indicele de geometrie BSpline (GeoID) nu este în limite maxime.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5869"/>
+      <location filename="../../../App/SketchObject.cpp" line="6305"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nu cereți nicio schimbare în multiplicitatea nodului.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5874"/>
-      <location filename="../../../App/SketchObject.cpp" line="6048"/>
+      <location filename="../../../App/SketchObject.cpp" line="6311"/>
+      <location filename="../../../App/SketchObject.cpp" line="6518"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Indicele de geometrie (GeoId) furnizat nu este o curbă B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5881"/>
+      <location filename="../../../App/SketchObject.cpp" line="6320"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indexul nod este în afara limitelor. Reţineţi că în conformitate cu notaţia OCC, primul nod are indexul 1 şi nu zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5888"/>
+      <location filename="../../../App/SketchObject.cpp" line="6331"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multiplicitatea nu poate fi crescută dincolo de gradul curbei B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5891"/>
+      <location filename="../../../App/SketchObject.cpp" line="6339"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multiplicitatea nu poate fi diminuată sub zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6353"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC este în imposibilitatea de a reduce multiplicarea în limitele toleranței maxime.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6043"/>
+      <location filename="../../../App/SketchObject.cpp" line="6512"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Nu poate avea multiplicitate zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6057"/>
+      <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Multiplicitatea nodului nu poate fi mai mare decât gradul BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6060"/>
+      <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Nu se poate insera un nod în afara intervalului parametrului BSpline.</translation>
     </message>
@@ -3093,7 +3093,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>Exact două curbe ar trebui să se termine în punctul selectat pentru a putea să li se alăture.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3373,7 +3373,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
       <source>Select Elements</source>
-      <translation type="unfinished">Select Elements</translation>
+      <translation>Selectează elemente</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
@@ -3589,7 +3589,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="61"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>Coincidență punct</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
@@ -3599,32 +3599,32 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
       <source>Vertical Constraint</source>
-      <translation type="unfinished">Vertical Constraint</translation>
+      <translation>Constrângere verticală</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="64"/>
       <source>Horizontal Constraint</source>
-      <translation type="unfinished">Horizontal Constraint</translation>
+      <translation>Constrângere orizontală</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Parallel Constraint</source>
-      <translation type="unfinished">Parallel Constraint</translation>
+      <translation>Constrângere paralelă</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="66"/>
       <source>Perpendicular Constraint</source>
-      <translation type="unfinished">Perpendicular Constraint</translation>
+      <translation>Constrângere perpendiculară</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Tangent Constraint</source>
-      <translation type="unfinished">Tangent Constraint</translation>
+      <translation>Constrângere tangentă</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Equal Length</source>
-      <translation type="unfinished">Equal Length</translation>
+      <translation>Lungime egală</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
@@ -3634,12 +3634,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Block Constraint</source>
-      <translation type="unfinished">Block Constraint</translation>
+      <translation>Constrângere bloc</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Lock Constraint</source>
-      <translation type="unfinished">Lock Constraint</translation>
+      <translation>Constrângere de blocare</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -3654,27 +3654,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Length Constraint</source>
-      <translation type="unfinished">Length Constraint</translation>
+      <translation>Constrângere de lungime</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Radius Constraint</source>
-      <translation type="unfinished">Radius Constraint</translation>
+      <translation>Constrângere rază</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Diameter Constraint</source>
-      <translation type="unfinished">Diameter Constraint</translation>
+      <translation>Constrângere Diametru</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>Constrângere Radiam</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Angle Constraint</source>
-      <translation type="unfinished">Angle Constraint</translation>
+      <translation>Constrângere unghi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -3684,22 +3684,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Selectați constrângeri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>Selectaţi originea</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>Selectaţi axa orizontală</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>Selectaţi axa verticală</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="528"/>
@@ -3709,12 +3709,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="536"/>
       <source>Layer 0</source>
-      <translation type="unfinished">Layer 0</translation>
+      <translation>Nivel 0</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="537"/>
       <source>Layer 1</source>
-      <translation type="unfinished">Layer 1</translation>
+      <translation>Nivelul 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="538"/>
@@ -5136,10 +5136,10 @@ Acest lucru se realizează prin analizarea geometrelor și constrângerilor schi
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="3053"/>
       <source>%n DoF(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+      <translation>
+        <numerusform>%n ore</numerusform>
+        <numerusform>%n ore</numerusform>
+        <numerusform>in ore</numerusform>
       </translation>
     </message>
     <message>
@@ -6113,17 +6113,17 @@ Schimbarea spațierii grilei dacă devine mai mică decât acest număr de pixel
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="302"/>
+      <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Schița a malformat constrângerile!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="306"/>
+      <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Schița are constrângeri parțial redundante!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8326"/>
+      <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolele au fost migrate. Fișierele migrate nu vor fi deschise în versiunile anterioare de FreeCAD!
@@ -6250,7 +6250,7 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Geometrie normală</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -6264,7 +6264,7 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Geometrie externă</translation>
     </message>
   </context>
   <context>
@@ -6272,12 +6272,12 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>Configurați ordinea de redare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1578"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>Reordonați elementele din listă pentru a configura comanda.</translation>
     </message>
   </context>
 </TS>

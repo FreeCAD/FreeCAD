@@ -740,6 +740,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
 </translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Hoja de cálculo</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

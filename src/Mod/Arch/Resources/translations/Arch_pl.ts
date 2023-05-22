@@ -2083,7 +2083,7 @@ które pozwalają na wybór systemu miar przy otwieraniu pliku.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
       <source>Create group...</source>
-      <translation>Utwórz grupę...</translation>
+      <translation>Utwórz grupę ...</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="937"/>
@@ -2098,8 +2098,6 @@ które pozwalają na wybór systemu miar przy otwieraniu pliku.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Architektura</translation>
     </message>
@@ -3015,7 +3013,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchPipe.py" line="169"/>
       <source>Create Connector</source>
-      <translation>Utwórz złącze</translation>
+      <translation>Utwórz złączkę</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="225"/>
@@ -5944,21 +5942,6 @@ Tworzenie budynku zostało przerwane.</translation>
       <source>Writing camera position</source>
       <translation>Zapisywanie pozycji kamery</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Rysunek roboczy</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Import-Eksport</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6523,7 +6506,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="114"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation>Tworzy pręt zbrojeniowy na bazie wybranej powierzchni, bryły lub szkicu</translation>
+      <translation>Tworzy zbrojenie z prętów na bazie wybranej powierzchni, bryły lub szkicu</translation>
     </message>
   </context>
   <context>
@@ -6768,6 +6751,30 @@ Tworzenie budynku zostało przerwane.</translation>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Architektura</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Rysunek roboczy</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Import-Eksport</translation>
     </message>
   </context>
 </TS>

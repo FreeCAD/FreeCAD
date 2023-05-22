@@ -424,17 +424,17 @@
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1075"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1079"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1076"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1080"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation type="unfinished">Cascade Horizontal Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1077"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1081"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -442,19 +442,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="897"/>
+      <location filename="../../CommandExtensionDims.cpp" line="901"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="898"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="902"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation type="unfinished">Cascade Horizontal Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="899"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="903"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1157"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -462,19 +462,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1039"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1043"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1040"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1170"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1044"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1174"/>
       <source>Cascade Oblique Dimensions</source>
       <translation type="unfinished">Cascade Oblique Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1041"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1171"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1045"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1175"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -482,19 +482,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="964"/>
+      <location filename="../../CommandExtensionDims.cpp" line="968"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="965"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1161"/>
+      <location filename="../../CommandExtensionDims.cpp" line="969"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1165"/>
       <source>Cascade Vertical Dimensions</source>
       <translation type="unfinished">Cascade Vertical Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="966"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1162"/>
+      <location filename="../../CommandExtensionDims.cpp" line="970"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1166"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -502,17 +502,17 @@
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2029"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2030"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2049"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2031"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2050"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
     </message>
@@ -576,17 +576,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1416"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1426"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1417"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1427"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1418"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1428"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
     </message>
@@ -594,17 +594,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1772"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1787"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1773"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1788"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1774"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1789"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
     </message>
@@ -612,19 +612,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1233"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1228"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1491"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1234"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1501"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1229"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1492"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1235"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1502"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
     </message>
@@ -632,19 +632,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1929"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1946"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1930"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2097"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1947"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2116"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1931"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2098"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1948"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
     </message>
@@ -652,19 +652,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1567"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1579"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1568"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1849"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1580"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1569"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1850"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1581"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1865"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
     </message>
@@ -672,17 +672,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2148"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2130"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2149"/>
       <source>Create Arc Length Dimension</source>
       <translation type="unfinished">Create Arc Length Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2150"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</translation>
     </message>
@@ -690,19 +690,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1382"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1392"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1383"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1505"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1393"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1515"/>
       <source>Create Oblique Chain Dimensions</source>
       <translation type="unfinished">Create Oblique Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1384"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1394"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1516"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</translation>
     </message>
@@ -710,19 +710,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1736"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1751"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1737"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1867"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1752"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1882"/>
       <source>Create Oblique Coordinate Dimensions</source>
       <translation type="unfinished">Create Oblique Coordinate Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1738"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1868"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1753"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1883"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</translation>
     </message>
@@ -730,19 +730,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1292"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1300"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1293"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1498"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1301"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1508"/>
       <source>Create Vertical Chain Dimensions</source>
       <translation type="unfinished">Create Vertical Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1294"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1499"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1302"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
     </message>
@@ -750,19 +750,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1996"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2015"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1997"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2104"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2016"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2123"/>
       <source>Create Vertical Chamfer Dimension</source>
       <translation type="unfinished">Create Vertical Chamfer Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1998"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2105"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2017"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2124"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
     </message>
@@ -770,19 +770,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1639"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1652"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1640"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1858"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1873"/>
       <source>Create Vertical Coordinate Dimensions</source>
       <translation type="unfinished">Create Vertical Coordinate Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1641"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1859"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1874"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
     </message>
@@ -790,17 +790,17 @@
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2205"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2226"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2206"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2227"/>
       <source>Customize Format Label</source>
       <translation type="unfinished">Customize Format Label</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2207"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2228"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
       <translation type="unfinished">Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</translation>
     </message>
@@ -808,19 +808,19 @@
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="424"/>
+      <location filename="../../CommandExtensionDims.cpp" line="428"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="425"/>
-      <location filename="../../CommandExtensionDims.cpp" line="532"/>
+      <location filename="../../CommandExtensionDims.cpp" line="429"/>
+      <location filename="../../CommandExtensionDims.cpp" line="536"/>
       <source>Decrease Decimal Places</source>
       <translation type="unfinished">Decrease Decimal Places</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="426"/>
-      <location filename="../../CommandExtensionDims.cpp" line="533"/>
+      <location filename="../../CommandExtensionDims.cpp" line="430"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -950,19 +950,19 @@
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="391"/>
+      <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="392"/>
-      <location filename="../../CommandExtensionDims.cpp" line="525"/>
+      <location filename="../../CommandExtensionDims.cpp" line="396"/>
+      <location filename="../../CommandExtensionDims.cpp" line="529"/>
       <source>Increase Decimal Places</source>
       <translation type="unfinished">Increase Decimal Places</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="393"/>
-      <location filename="../../CommandExtensionDims.cpp" line="526"/>
+      <location filename="../../CommandExtensionDims.cpp" line="397"/>
+      <location filename="../../CommandExtensionDims.cpp" line="530"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -970,17 +970,17 @@
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="457"/>
+      <location filename="../../CommandExtensionDims.cpp" line="461"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="458"/>
+      <location filename="../../CommandExtensionDims.cpp" line="462"/>
       <source>Increase Decimal Places</source>
       <translation type="unfinished">Increase Decimal Places</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="459"/>
+      <location filename="../../CommandExtensionDims.cpp" line="463"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -988,19 +988,19 @@
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="124"/>
+      <location filename="../../CommandExtensionDims.cpp" line="128"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="125"/>
-      <location filename="../../CommandExtensionDims.cpp" line="323"/>
+      <location filename="../../CommandExtensionDims.cpp" line="129"/>
+      <location filename="../../CommandExtensionDims.cpp" line="327"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="126"/>
-      <location filename="../../CommandExtensionDims.cpp" line="324"/>
+      <location filename="../../CommandExtensionDims.cpp" line="130"/>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1008,17 +1008,17 @@
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="248"/>
+      <location filename="../../CommandExtensionDims.cpp" line="252"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="249"/>
+      <location filename="../../CommandExtensionDims.cpp" line="253"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation type="unfinished">Insert &apos;⌀&apos; Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="250"/>
+      <location filename="../../CommandExtensionDims.cpp" line="254"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1026,19 +1026,19 @@
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="157"/>
+      <location filename="../../CommandExtensionDims.cpp" line="161"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="158"/>
-      <location filename="../../CommandExtensionDims.cpp" line="330"/>
+      <location filename="../../CommandExtensionDims.cpp" line="162"/>
+      <location filename="../../CommandExtensionDims.cpp" line="334"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="159"/>
-      <location filename="../../CommandExtensionDims.cpp" line="331"/>
+      <location filename="../../CommandExtensionDims.cpp" line="163"/>
+      <location filename="../../CommandExtensionDims.cpp" line="335"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1122,17 +1122,17 @@
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="748"/>
+      <location filename="../../CommandExtensionDims.cpp" line="752"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="749"/>
+      <location filename="../../CommandExtensionDims.cpp" line="753"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="750"/>
+      <location filename="../../CommandExtensionDims.cpp" line="754"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1140,19 +1140,19 @@
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="584"/>
+      <location filename="../../CommandExtensionDims.cpp" line="588"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="585"/>
-      <location filename="../../CommandExtensionDims.cpp" line="824"/>
+      <location filename="../../CommandExtensionDims.cpp" line="589"/>
+      <location filename="../../CommandExtensionDims.cpp" line="828"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation type="unfinished">Position Horizontal Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="586"/>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="590"/>
+      <location filename="../../CommandExtensionDims.cpp" line="829"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1160,19 +1160,19 @@
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="713"/>
+      <location filename="../../CommandExtensionDims.cpp" line="717"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="714"/>
-      <location filename="../../CommandExtensionDims.cpp" line="840"/>
+      <location filename="../../CommandExtensionDims.cpp" line="718"/>
+      <location filename="../../CommandExtensionDims.cpp" line="844"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation type="unfinished">Position Oblique Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="715"/>
-      <location filename="../../CommandExtensionDims.cpp" line="841"/>
+      <location filename="../../CommandExtensionDims.cpp" line="719"/>
+      <location filename="../../CommandExtensionDims.cpp" line="845"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1180,19 +1180,19 @@
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="646"/>
+      <location filename="../../CommandExtensionDims.cpp" line="650"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="647"/>
-      <location filename="../../CommandExtensionDims.cpp" line="832"/>
+      <location filename="../../CommandExtensionDims.cpp" line="651"/>
+      <location filename="../../CommandExtensionDims.cpp" line="836"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation type="unfinished">Position Vertical Chain Dimensions</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="648"/>
-      <location filename="../../CommandExtensionDims.cpp" line="833"/>
+      <location filename="../../CommandExtensionDims.cpp" line="652"/>
+      <location filename="../../CommandExtensionDims.cpp" line="837"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1218,17 +1218,17 @@
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="215"/>
+      <location filename="../../CommandExtensionDims.cpp" line="219"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="216"/>
+      <location filename="../../CommandExtensionDims.cpp" line="220"/>
       <source>Remove Prefix</source>
       <translation type="unfinished">Remove Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="217"/>
+      <location filename="../../CommandExtensionDims.cpp" line="221"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
@@ -2162,92 +2162,92 @@
       <translation>Afig un vèrtex cosmètic</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="105"/>
+      <location filename="../../CommandExtensionDims.cpp" line="109"/>
       <source>Insert Prefix</source>
       <translation type="unfinished">Insert Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="191"/>
+      <location filename="../../CommandExtensionDims.cpp" line="195"/>
       <source>Remove Prefix</source>
       <translation type="unfinished">Remove Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="363"/>
+      <location filename="../../CommandExtensionDims.cpp" line="367"/>
       <source>Increase/Decrease Decimal</source>
       <translation type="unfinished">Increase/Decrease Decimal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="558"/>
+      <location filename="../../CommandExtensionDims.cpp" line="562"/>
       <source>Pos Horiz Chain Dim</source>
       <translation type="unfinished">Pos Horiz Chain Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="619"/>
+      <location filename="../../CommandExtensionDims.cpp" line="623"/>
       <source>Pos Vert Chain Dim</source>
       <translation type="unfinished">Pos Vert Chain Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="681"/>
+      <location filename="../../CommandExtensionDims.cpp" line="685"/>
       <source>Pos Oblique Chain Dim</source>
       <translation type="unfinished">Pos Oblique Chain Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="867"/>
+      <location filename="../../CommandExtensionDims.cpp" line="871"/>
       <source>Cascade Horiz Dim</source>
       <translation type="unfinished">Cascade Horiz Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="933"/>
+      <location filename="../../CommandExtensionDims.cpp" line="937"/>
       <source>Cascade Vert Dim</source>
       <translation type="unfinished">Cascade Vert Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1000"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1004"/>
       <source>Cascade Oblique Dim</source>
       <translation type="unfinished">Cascade Oblique Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1197"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1203"/>
       <source>Create Horiz Chain Dim</source>
       <translation type="unfinished">Create Horiz Chain Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1261"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1269"/>
       <source>Create Vert Chain Dim</source>
       <translation type="unfinished">Create Vert Chain Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1325"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1335"/>
       <source>Create Oblique Chain Dim</source>
       <translation type="unfinished">Create Oblique Chain Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1531"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1543"/>
       <source>Create Horiz Coord Dim</source>
       <translation type="unfinished">Create Horiz Coord Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1602"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1615"/>
       <source>Create Vert Coord Dim</source>
       <translation type="unfinished">Create Vert Coord Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1674"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1689"/>
       <source>Create Oblique Coord Dim</source>
       <translation type="unfinished">Create Oblique Coord Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1895"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1912"/>
       <source>Create Horiz Chamfer Dim</source>
       <translation type="unfinished">Create Horiz Chamfer Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1962"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1981"/>
       <source>Create Vert Chamfer Dim</source>
       <translation type="unfinished">Create Vert Chamfer Dim</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2146"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2167"/>
       <source>Create Arc Length Dim</source>
       <translation type="unfinished">Create Arc Length Dim</translation>
     </message>
@@ -3002,13 +3002,13 @@
       <location filename="../../CommandCreateDims.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1177"/>
-      <location filename="../../CommandExtensionDims.cpp" line="262"/>
-      <location filename="../../CommandExtensionDims.cpp" line="471"/>
-      <location filename="../../CommandExtensionDims.cpp" line="763"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1091"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1430"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1788"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2043"/>
+      <location filename="../../CommandExtensionDims.cpp" line="266"/>
+      <location filename="../../CommandExtensionDims.cpp" line="475"/>
+      <location filename="../../CommandExtensionDims.cpp" line="767"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1095"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1440"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1803"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2062"/>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1079"/>
@@ -3051,13 +3051,13 @@
       <location filename="../../CommandCreateDims.cpp" line="967"/>
       <location filename="../../CommandCreateDims.cpp" line="1065"/>
       <location filename="../../CommandCreateDims.cpp" line="1178"/>
-      <location filename="../../CommandExtensionDims.cpp" line="263"/>
-      <location filename="../../CommandExtensionDims.cpp" line="472"/>
-      <location filename="../../CommandExtensionDims.cpp" line="764"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1092"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1431"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1789"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2044"/>
+      <location filename="../../CommandExtensionDims.cpp" line="267"/>
+      <location filename="../../CommandExtensionDims.cpp" line="476"/>
+      <location filename="../../CommandExtensionDims.cpp" line="768"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1096"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1441"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1804"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2063"/>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="1080"/>
@@ -3479,56 +3479,61 @@
       <translation>Edita %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="563"/>
+      <location filename="../../CommandExtensionDims.cpp" line="567"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation type="unfinished">TechDraw PosHorizChainDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="564"/>
-      <location filename="../../CommandExtensionDims.cpp" line="873"/>
+      <location filename="../../CommandExtensionDims.cpp" line="568"/>
+      <location filename="../../CommandExtensionDims.cpp" line="877"/>
       <source>No horizontal dimensions selected</source>
       <translation type="unfinished">No horizontal dimensions selected</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="624"/>
+      <location filename="../../CommandExtensionDims.cpp" line="628"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation type="unfinished">TechDraw PosVertChainDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="625"/>
-      <location filename="../../CommandExtensionDims.cpp" line="939"/>
+      <location filename="../../CommandExtensionDims.cpp" line="629"/>
+      <location filename="../../CommandExtensionDims.cpp" line="943"/>
       <source>No vertical dimensions selected</source>
       <translation type="unfinished">No vertical dimensions selected</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="686"/>
+      <location filename="../../CommandExtensionDims.cpp" line="690"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation type="unfinished">TechDraw PosObliqueChainDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="687"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1006"/>
+      <location filename="../../CommandExtensionDims.cpp" line="691"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1010"/>
       <source>No oblique dimensions selected</source>
       <translation type="unfinished">No oblique dimensions selected</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="872"/>
+      <location filename="../../CommandExtensionDims.cpp" line="876"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation type="unfinished">TechDraw CascadeHorizDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="938"/>
+      <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation type="unfinished">TechDraw CascadeVertDimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1005"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1009"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation type="unfinished">TechDraw CascadeObliqueDimension</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2304"/>
+      <source>No subelements selected</source>
+      <translation type="unfinished">No subelements selected</translation>
+    </message>
+    <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2247"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2268"/>
       <location filename="../../CommandExtensionPack.cpp" line="1469"/>
       <location filename="../../CommandExtensionPack.cpp" line="1957"/>
       <source>Selection is empty</source>
@@ -3536,7 +3541,7 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1474"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2263"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2284"/>
       <location filename="../../CommandExtensionPack.cpp" line="1964"/>
       <source>No object selected</source>
       <translation type="unfinished">No object selected</translation>
@@ -3656,6 +3661,17 @@
       <location filename="../../TaskDimRepair.cpp" line="150"/>
       <source>Can not make dimension from selection</source>
       <translation type="unfinished">Can not make dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../AppTechDrawGui.cpp" line="171"/>
+      <location filename="../../AppTechDrawGui.cpp" line="172"/>
+      <location filename="../../AppTechDrawGui.cpp" line="173"/>
+      <location filename="../../AppTechDrawGui.cpp" line="174"/>
+      <location filename="../../AppTechDrawGui.cpp" line="175"/>
+      <location filename="../../AppTechDrawGui.cpp" line="176"/>
+      <location filename="../../AppTechDrawGui.cpp" line="177"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
   </context>
   <context>
@@ -8021,12 +8037,12 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="337"/>
+      <location filename="../../CommandExtensionDims.cpp" line="341"/>
       <source>Remove Prefix</source>
       <translation type="unfinished">Remove Prefix</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="338"/>
+      <location filename="../../CommandExtensionDims.cpp" line="342"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>

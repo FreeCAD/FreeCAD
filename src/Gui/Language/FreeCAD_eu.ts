@@ -711,47 +711,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="450"/>
-      <location filename="../Splashscreen.cpp" line="459"/>
+      <location filename="../Splashscreen.cpp" line="471"/>
+      <location filename="../Splashscreen.cpp" line="480"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Kredituak</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="461"/>
+      <location filename="../Splashscreen.cpp" line="482"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCADik ez litzateke egongo honakoen laguntzarik gabe:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="464"/>
+      <location filename="../Splashscreen.cpp" line="485"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Banakoak</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="477"/>
+      <location filename="../Splashscreen.cpp" line="498"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Erakundeak</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="504"/>
-      <location filename="../Splashscreen.cpp" line="744"/>
+      <location filename="../Splashscreen.cpp" line="525"/>
+      <location filename="../Splashscreen.cpp" line="765"/>
       <source>License</source>
       <translation>Lizentzia</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="543"/>
+      <location filename="../Splashscreen.cpp" line="564"/>
       <source>Libraries</source>
       <translation>Liburutegiak</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="705"/>
+      <location filename="../Splashscreen.cpp" line="726"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>Software honek kode irekiko osagaiak darabiltza, eta horien copyright-a eta beste jabetza-eskubide batzuk beren jabearenak dira:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="731"/>
+      <location filename="../Splashscreen.cpp" line="752"/>
       <source>Collection</source>
       <translation>Bilduma</translation>
     </message>
@@ -8065,7 +8065,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <message>
       <location filename="../Tree.cpp" line="2774"/>
       <source>Show items hidden in tree view</source>
-      <translation>Erakutsi Zuhaitz-bistako elementuak</translation>
+      <translation>Erakutsi zuhaitz-bistan ezkutatutako elementuak</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2775"/>
@@ -12344,7 +12344,7 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation>Inaktibo dagoenean ez erakutsi</translation>
+      <translation>Ez erakutsi inaktibo dagoenean</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
@@ -12359,7 +12359,7 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="299"/>
       <source>Maximum Messages (0 = no limit):</source>
-      <translation>Mezu maximoak (0 = ez du mugarik):</translation>
+      <translation>Mezu kopuru maximoa (0 = ez du mugarik):</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="306"/>
@@ -12394,7 +12394,7 @@ Une honetan, zure sistemak honako lan-mahaiak ditu:&lt;/p&gt;&lt;/body&gt;&lt;/h
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="63"/>
       <source>Start up workbench:</source>
-      <translation>Lan-mahaia abiarazi:</translation>
+      <translation>Abiarazi lan-mahaia:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
@@ -12520,7 +12520,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="143"/>
       <source>Rotation :</source>
-      <translation>Rotazioa:</translation>
+      <translation>Biraketa:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
@@ -12545,7 +12545,7 @@ FreeCAD abiarazi ondoren</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="237"/>
       <source>Keep aspect ratio</source>
-      <translation>Itxura-erlazioa mantendu</translation>
+      <translation>Mantendu aspektu-erlazioa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>

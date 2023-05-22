@@ -4975,7 +4975,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Rezultat ima više punih tela: ovo trenutno nije podržano.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -5674,7 +5674,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Tipski oblik je prazan</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>

@@ -1066,7 +1066,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>ზემო სტილის ყველა ანოტაციაზე (ტექსტები, ზომები და ჭდეები) გადატარება</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1151,12 +1151,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>გაფ. ხაზები</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>ზომის ხაზების გაგრძელების ხაზებს მიღმა გაგრძელების ზომა</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1186,7 +1186,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>გაფართოების ხაზების სიგრძე ზომის ხაზის მიღმა</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -2041,27 +2041,27 @@ Otherwise default colors will be applied. </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>საწყისი ფერების DXF ფაილიდან მიღება (მხოლოდ მოძველებული შემომტანისთვის)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>დაშტრიხვის ხაზების საზღვრების პოლიხაზებად შემოტანა (მხოლოდ მოძველებული შემომტანისთვის)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>პოლიხაზების სიგანით რენდერი (მხოლოდ მოძველებული შემომტანისთვის)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>3D ობიექტების პოლიზედაპირული ბადეების სახით გატანა (მხოლოდ მოძველებული გამტანისთვის)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>გატანილი ობიექტების პროექცია მიმდინარე ხედის მიმართულებით (მხოლოდ მოძველებული გამტანისთვის)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -3242,19 +3242,19 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>LibreDWG გარდამქმნელი ვერ ვიპოვე</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>ODA გარდამქმნელი ვერ ვიპოვე</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>QCAD გარდამქმნელი ვერ ვიპოვე</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3263,9 +3263,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>შესაფერისი გარე DWG გადამყვანი აღმოჩენილი არაა.
+დააყენეთ ის მენიუში ჩასწორება -&gt; მორგება -&gt; შეტანა/გატანა -&gt;DWG-დან
+მეტი ინფორმაციისთვის იხილეთ:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -4448,16 +4448,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>დაქვეითება</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>აირჩიეთ მასივში ჩასამატებელი ობიექტი</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>მასივი</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -4685,7 +4675,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>ShapeString: ზედაპირის შექმნის შეცდომა ერთი სიმბოლოსთვის</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5426,23 +5416,6 @@ The final angle will be the base angle plus this amount.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>წყალშიგი</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>შეტანა-გატანა</translation>
-    </message>
-    <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
@@ -5489,7 +5462,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>შეცდომა: json მოდული ვერ მოიძებნა. სტილის ჩატვირთვა შეუძლებელია</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -6944,40 +6917,6 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>მასივი</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>არჩეული ობიექტიდან ქმნის მასივს.
-ნაგულისხმევად, ეს არის 2x2 ორთოგონალური მასივი.
-მასივის შექმნის შემდეგ მისი ტიპი შეიძლება შეიცვალოს
-პოლარული ან წრიული და მისი თვისებები შეიძლება შეიცვალოს.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation>ბმულების მასივი</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>მასივის ხელსაწყოს მსგავსია, მაგრამ ქმნის 'ბმულების მასივს'.
-'ბმულების მასივი' მრავალი ასლის მართვის უფრო ეფექტური საშუალებაა, მაგრამ შეუძლებელ 'შერწყმის' პარამეტრის გამოყენება.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8143,6 +8082,26 @@ beyond the dimension line</source>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation>ამ დოკუმენტის სხვადასხვა ფენების დაყენება/შეცვლა</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>წყალშიგი</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>შეტანა-გატანა</translation>
     </message>
   </context>
 </TS>

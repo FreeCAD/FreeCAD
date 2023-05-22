@@ -711,47 +711,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="450"/>
-      <location filename="../Splashscreen.cpp" line="459"/>
+      <location filename="../Splashscreen.cpp" line="471"/>
+      <location filename="../Splashscreen.cpp" line="480"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Danksagungen</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="461"/>
+      <location filename="../Splashscreen.cpp" line="482"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCAD wäre nicht möglich ohne die Beiträge von</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="464"/>
+      <location filename="../Splashscreen.cpp" line="485"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Personen</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="477"/>
+      <location filename="../Splashscreen.cpp" line="498"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organisationen</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="504"/>
-      <location filename="../Splashscreen.cpp" line="744"/>
+      <location filename="../Splashscreen.cpp" line="525"/>
+      <location filename="../Splashscreen.cpp" line="765"/>
       <source>License</source>
       <translation>Lizenz</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="543"/>
+      <location filename="../Splashscreen.cpp" line="564"/>
       <source>Libraries</source>
       <translation>Bibliotheken</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="705"/>
+      <location filename="../Splashscreen.cpp" line="726"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>Dieses Programm verwendet Open-Source-Komponenten, deren Urheberrechte und andere Eigentumsrechte ihren jeweiligen Eigentümern gehören:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="731"/>
+      <location filename="../Splashscreen.cpp" line="752"/>
       <source>Collection</source>
       <translation>Sammlung</translation>
     </message>
@@ -1281,7 +1281,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay: </source>
-      <translation type="unfinished">Multi-key sequence delay: </translation>
+      <translation>Multi-Tasten Sequenz Verzögerung: </translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
@@ -3461,16 +3461,12 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU.
+      <translation>Falls gewählt, werden Vertex Buffer Objects (VBO) verwendet.
+Ein VBO ist eine OpenGL-Funktion, die Methoden zum Hochladen von Netzpunkt-Daten (Position, normaler Vektor, Farbe, etc.) auf die Grafikkarte unterstützt.
+VBOs bieten erhebliche Leistungssteigerungen, da die Daten
+im Grafikspeicher und nicht im Systemspeicher liegen und somit direkt durch die GPU gerendert werden können. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Hinweis: Manchmal kann diese Funktion zu unerwarteten Problemen führen, die von grafischen Anomalien bis hin zu GPU-Absturzfehlern reichen. Wenn Sie Unterstützung in freeCAD-Foren suchen, sollten Sie darauf hinweisen, dass Sie diese Funktion aktiviert haben.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="205"/>
@@ -3481,13 +3477,12 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>'Render Caching' ist eine andere Art der ''Rendering-Beschleunigung''.
+Es stehen 3 Optionen zur Verfügung: 
+1) 'Auto' (Standard), lassen Sie Coin3D entscheiden, wo das Caching stattfinden soll.
+2) 'Verteilt', manuelles Einschalten des Caches für alle View-Provider-Wurzelknoten.
+3) 'Zentralisiert', Ausschalten des Caching in allen Knoten aller View-Provider manuell, und
+nur am Wurzelknoten des Szenegraphen cachen. Dies bietet die schnellste Rendering-Geschwindigkeit aber eine langsamere Reaktion auf Szenenänderungen.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="218"/>
@@ -4212,17 +4207,17 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="48"/>
       <source>CERN Open Hardware Licence strongly-reciprocal</source>
-      <translation type="unfinished">CERN Open Hardware Licence strongly-reciprocal</translation>
+      <translation>CERN Open Hardware Lizenz stark reziprok</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="49"/>
       <source>CERN Open Hardware Licence weakly-reciprocal</source>
-      <translation type="unfinished">CERN Open Hardware Licence weakly-reciprocal</translation>
+      <translation>CERN Open Hardware Lizenz schwach reziprok</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="50"/>
       <source>CERN Open Hardware Licence permissive</source>
-      <translation type="unfinished">CERN Open Hardware Licence permissive</translation>
+      <translation>CERN Offene Hardware-Lizenz erlaubt</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="51"/>
@@ -4769,10 +4764,10 @@ Wählen Sie eine Einstellung aus und drücken Sie dann die Schaltfläche, um die
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the z-axis.</translation>
+      <translation>Rotationsart.
+Trackball: horizontales Verschieben der Maus dreht das Teil um die y-Achse
+Drehtisch: das Teil wird um die z-Achse gedreht (mit eingeschränkten Achsen).
+freier Drehtisch: Das Teil wird um die z-Achse gedreht.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="341"/>
@@ -5010,9 +5005,8 @@ wenn sie die verfügbare Zeilenlänge überschreiten</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-      </translation>
+      <translation>Bereich für das Auswählen von Elementen in der 3D-Ansicht.
+Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl kleiner Objekte unmöglich machen.      </translation>
     </message>
     <message>
       <location filename="../DlgSettingsSelection.ui" line="63"/>
@@ -5175,17 +5169,17 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="156"/>
       <source>Central:</source>
-      <translation type="unfinished">Central:</translation>
+      <translation>Farbe in der Mitte:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="157"/>
       <source>Midway:</source>
-      <translation type="unfinished">Midway:</translation>
+      <translation>Farbe in der Mitte:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="158"/>
       <source>End:</source>
-      <translation type="unfinished">End:</translation>
+      <translation>Ende:</translation>
     </message>
   </context>
   <context>
@@ -6230,7 +6224,7 @@ dieses Dialogs ausgewählt wurden</translation>
     <message>
       <location filename="../ReportView.cpp" line="609"/>
       <source>Show Report view on</source>
-      <translation type="unfinished">Show Report view on</translation>
+      <translation>Zeige Berichtsansicht auf</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="634"/>
@@ -7826,7 +7820,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="Translator.cpp" line="146"/>
       <source>Dutch</source>
-      <translation>Holländisch</translation>
+      <translation>Niederländisch</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="147"/>
@@ -8821,7 +8815,7 @@ Wollen Sie fortfahren?</translation>
       <location filename="../NotificationArea.cpp" line="531"/>
       <location filename="../NotificationArea.cpp" line="989"/>
       <source>Notifier</source>
-      <translation type="unfinished">Notifier</translation>
+      <translation>von wem</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="531"/>
@@ -8832,7 +8826,7 @@ Wollen Sie fortfahren?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="931"/>
       <source>Notifier: </source>
-      <translation type="unfinished">Notifier: </translation>
+      <translation>von wem: </translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="933"/>
@@ -9440,7 +9434,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2695"/>
       <location filename="../CommandView.cpp" line="2697"/>
       <source>Activate the box selection tool</source>
-      <translation type="unfinished">Activate the box selection tool</translation>
+      <translation>Aktivieren Sie das Auswahlwerkzeug</translation>
     </message>
   </context>
   <context>
@@ -10611,7 +10605,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1418"/>
       <location filename="../CommandDoc.cpp" line="1420"/>
       <source>Recomputes the current active document</source>
-      <translation>Aktualisiert das momentan aktive Dokument</translation>
+      <translation>Das momentan aktive Dokument aktualisieren</translation>
     </message>
   </context>
   <context>
@@ -11781,7 +11775,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2625"/>
       <location filename="../CommandView.cpp" line="2627"/>
       <source>Activate the box zoom tool</source>
-      <translation type="unfinished">Activate the box zoom tool</translation>
+      <translation>Aktivieren Sie das Zoom-Werkzeug</translation>
     </message>
   </context>
   <context>
@@ -12042,12 +12036,12 @@ Möchten Sie trotzdem fortfahren?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1139"/>
       <source>Tree view item background. Only effective in overlay.</source>
-      <translation type="unfinished">Tree view item background. Only effective in overlay.</translation>
+      <translation>Hintergrund in der Baumansicht. Nur im Overlay sichtbar.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1167"/>
       <source>Tree view item background padding.</source>
-      <translation type="unfinished">Tree view item background padding.</translation>
+      <translation>Abstand zum Nachbarn in der Baumansicht (padding).</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1195"/>
@@ -12057,12 +12051,12 @@ Möchten Sie trotzdem fortfahren?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1223"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation type="unfinished">Hide tree view scroll bar in dock overlay.</translation>
+      <translation>Den Scrollbar für die Baumansicht im Dock-Overlay ausblenden.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1251"/>
       <source>Hide tree view header view in dock overlay.</source>
-      <translation type="unfinished">Hide tree view header view in dock overlay.</translation>
+      <translation>Die Kopfzeile im Dock-Overlay ausblenden.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1279"/>

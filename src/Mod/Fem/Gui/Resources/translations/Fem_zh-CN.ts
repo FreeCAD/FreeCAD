@@ -696,7 +696,7 @@
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="280"/>
       <source>Edit Mirror</source>
-      <translation type="unfinished">Edit Mirror</translation>
+      <translation>编辑镜像</translation>
     </message>
   </context>
   <context>

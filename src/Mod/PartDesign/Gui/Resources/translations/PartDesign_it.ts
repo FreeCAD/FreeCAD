@@ -4966,7 +4966,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Il risultato ha più solidi: attualmente non è supportato.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>

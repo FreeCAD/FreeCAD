@@ -175,7 +175,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Semantic (1.2.3-beta) oder CalVer (2022.08.30) Stile unterstützt</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
@@ -239,7 +239,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation type="unfinished">Minimum Python</translation>
+      <translation>Minimum Python</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
@@ -655,18 +655,18 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Python executable (optional):</source>
-      <translation>Ausführbare Python-Datei (optional):</translation>
+      <source>Path to Python executable (optional):</source>
+      <translation type="unfinished">Path to Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="308"/>
+      <source>Path to git executable (optional):</source>
+      <translation type="unfinished">Path to git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
       <translation>Der Pfad zur ausführbaren Python-Datei für die Paketinstallation mit pip. Automatisch erkannt, wenn erforderlich, und nicht spezifiziert.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
-      <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -891,11 +891,6 @@ installed addons will be checked for available updates
       <translation>Symbol</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_add_content.ui" line="179"/>
-      <source>actualIcon</source>
-      <translation type="unfinished">actualIcon</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
       <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
@@ -938,7 +933,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Semantic (1.2.3-beta) oder CalVer (2022.08.30) Stile unterstützt</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
@@ -1177,102 +1172,97 @@ installed addons will be checked for available updates
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="125"/>
-      <source>Addon Manager</source>
-      <translation>Addon-Manager</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="236"/>
+      <location filename="../../AddonManager.py" line="229"/>
       <source>Starting up...</source>
       <translation>Wird gestartet...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="279"/>
+      <location filename="../../AddonManager.py" line="268"/>
       <source>Loading addon information</source>
       <translation>Lädt Addon-Informationen</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="305"/>
+      <location filename="../../AddonManager.py" line="294"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="363"/>
+      <location filename="../../AddonManager.py" line="350"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
       <translation type="unfinished">Previous cache process was interrupted, restarting...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="382"/>
+      <location filename="../../AddonManager.py" line="369"/>
       <source>Custom repo list changed, forcing recache...
 </source>
       <translation type="unfinished">Custom repo list changed, forcing recache...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="435"/>
+      <location filename="../../AddonManager.py" line="422"/>
       <source>Addon manager</source>
       <translation>Addon-Manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="442"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>FreeCAD muss neu gestartet werden, damit die Änderungen wirksam werden.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="448"/>
+      <location filename="../../AddonManager.py" line="435"/>
       <source>Restart now</source>
       <translation>Jetzt neu starten</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="449"/>
+      <location filename="../../AddonManager.py" line="436"/>
       <source>Restart later</source>
       <translation>Später neu starten</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="516"/>
-      <location filename="../../AddonManager.py" line="987"/>
+      <location filename="../../AddonManager.py" line="501"/>
+      <location filename="../../AddonManager.py" line="934"/>
       <source>Refresh local cache</source>
       <translation>Lokalen Cache aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="662"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
       <translation>Cache wird aktualisiert...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="706"/>
+      <location filename="../../AddonManager.py" line="663"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation type="unfinished">Could not find addon &apos;{}&apos; to select
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="736"/>
-      <location filename="../../AddonManager.py" line="771"/>
+      <location filename="../../AddonManager.py" line="691"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
       <translation>Sucht nach Updates...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="766"/>
+      <location filename="../../AddonManager.py" line="719"/>
       <source>Apply {} update(s)</source>
       <translation>{} Update(s) anwenden</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="775"/>
+      <location filename="../../AddonManager.py" line="728"/>
       <source>No updates available</source>
       <translation>Keine Aktualisierungen verfügbar</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="912"/>
-      <location filename="../../AddonManager.py" line="938"/>
-      <location filename="../../AddonManager.py" line="1041"/>
+      <location filename="../../AddonManager.py" line="861"/>
+      <location filename="../../AddonManager.py" line="887"/>
+      <location filename="../../AddonManager.py" line="988"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Ein neuer Installer kann erst nach Beendigung des Vorherigen gestartet werden.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1027"/>
+      <location filename="../../AddonManager.py" line="974"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation>Ausführen des Makros schlug fehl. Siehe Konsole für Fehlerdetails.</translation>
     </message>
@@ -1508,7 +1498,7 @@ installed addons will be checked for available updates
       <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Erfolgreich</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="686"/>
@@ -2469,12 +2459,12 @@ installed addons will be checked for available updates
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="150"/>
+      <location filename="../../AddonManager.py" line="151"/>
       <source>&amp;Addon manager</source>
       <translation>&amp;Addon-Manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="154"/>
+      <location filename="../../AddonManager.py" line="155"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Verwaltet externe Arbeitsbereiche, Makros und Voreinstellungspakete</translation>
     </message>
@@ -2506,6 +2496,14 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="652"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation>Automatisch erstellte Makro-Symbolleiste</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AddonManager.py" line="124"/>
+      <source>Addon Manager</source>
+      <translation>Addon-Manager</translation>
     </message>
   </context>
 </TS>

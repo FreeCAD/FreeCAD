@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Направи индиго копију</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -1097,7 +1097,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create an external geometry</source>
-      <translation type="unfinished">Create an external geometry</translation>
+      <translation>Направи спољашњу геометрију</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -2118,7 +2118,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Направи индиго копију</translation>
     </message>
   </context>
   <context>
@@ -2132,94 +2132,94 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="472"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица док се примењују ограничења подударности.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="559"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица док се примењују вертикална/хоризонтална ограничења.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="766"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица док се примењује ограничење једнакости.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Грешка аутоматског ограничавања: Скица је нерешива без ограничења.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="870"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица после примене вертикалних и хоризонталних ограничења.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица после примене ограничења тачка на тачку.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="927"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица после примене ограничења једнакости.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1983"/>
+      <location filename="../../../App/SketchObject.cpp" line="2117"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Није могуће одредити пресечну тачку кривих. Покушај да додаш ограничење подударности између тачака кривих где намераваш да направиш заобљење.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5866"/>
-      <location filename="../../../App/SketchObject.cpp" line="6040"/>
+      <location filename="../../../App/SketchObject.cpp" line="6300"/>
+      <location filename="../../../App/SketchObject.cpp" line="6508"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5869"/>
+      <location filename="../../../App/SketchObject.cpp" line="6305"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Не захтевате промену у вишеструкости чворова.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5874"/>
-      <location filename="../../../App/SketchObject.cpp" line="6048"/>
+      <location filename="../../../App/SketchObject.cpp" line="6311"/>
+      <location filename="../../../App/SketchObject.cpp" line="6518"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5881"/>
+      <location filename="../../../App/SketchObject.cpp" line="6320"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5888"/>
+      <location filename="../../../App/SketchObject.cpp" line="6331"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Вишеструкост се не може повећати изнад степена Б-сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5891"/>
+      <location filename="../../../App/SketchObject.cpp" line="6339"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Вишеструкост не може бити мање од нуле.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6353"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC није у стању да смањи вишеструкост унутар максималне толеранције.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6043"/>
+      <location filename="../../../App/SketchObject.cpp" line="6512"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Чвор не може имати нулту вишеструкост.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6057"/>
+      <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Вишеструкост чворова не може бити већа од степена Б-Сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6060"/>
+      <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -3094,7 +3094,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>Тачно две криве треба да се заврше у изабраној тачки да би се могле спојити.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3373,7 +3373,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
       <source>Select Elements</source>
-      <translation type="unfinished">Select Elements</translation>
+      <translation>Изабери елементе</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
@@ -3589,7 +3589,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="61"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>Подударност тачке</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
@@ -3599,32 +3599,32 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
       <source>Vertical Constraint</source>
-      <translation type="unfinished">Vertical Constraint</translation>
+      <translation>Ограничење вертикалности</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="64"/>
       <source>Horizontal Constraint</source>
-      <translation type="unfinished">Horizontal Constraint</translation>
+      <translation>Ограничење хоризонталности</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Parallel Constraint</source>
-      <translation type="unfinished">Parallel Constraint</translation>
+      <translation>Ограничење паралелности</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="66"/>
       <source>Perpendicular Constraint</source>
-      <translation type="unfinished">Perpendicular Constraint</translation>
+      <translation>Ограничење управности</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Tangent Constraint</source>
-      <translation type="unfinished">Tangent Constraint</translation>
+      <translation>Ограничење тангентности</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Equal Length</source>
-      <translation type="unfinished">Equal Length</translation>
+      <translation>Једнака дужина</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
@@ -3634,12 +3634,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Block Constraint</source>
-      <translation type="unfinished">Block Constraint</translation>
+      <translation>Oграничење блокирањем</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Lock Constraint</source>
-      <translation type="unfinished">Lock Constraint</translation>
+      <translation>Oграничење закључавањем</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -3654,27 +3654,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Length Constraint</source>
-      <translation type="unfinished">Length Constraint</translation>
+      <translation>Ограничење дужине</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Radius Constraint</source>
-      <translation type="unfinished">Radius Constraint</translation>
+      <translation>Ограничење полупречника</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Diameter Constraint</source>
-      <translation type="unfinished">Diameter Constraint</translation>
+      <translation>Ограничење пречника</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>Ограничење полупречник-пречник</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Angle Constraint</source>
-      <translation type="unfinished">Angle Constraint</translation>
+      <translation>Ограничење угла</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -3684,7 +3684,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Изабери Ограничења</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
@@ -6116,17 +6116,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="302"/>
+      <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Скица има деформисана ограничења!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="306"/>
+      <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Скица има делимично сувишна ограничења!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8326"/>
+      <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!

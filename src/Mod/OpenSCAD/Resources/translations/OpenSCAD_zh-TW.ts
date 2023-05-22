@@ -110,6 +110,11 @@
       <translation>片段之最大尺寸</translation>
     </message>
     <message>
+      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <source>angle (fa)</source>
+      <translation type="unfinished">angle (fa)</translation>
+    </message>
+    <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
       <translation>凸度</translation>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="296"/>
       <source>Minimum angle for a fragment</source>
       <translation>片段的最小角度</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="289"/>
-      <source>angular (fa)</source>
-      <translation>角 (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>

@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>ზუსტი ასლის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="437"/>
       <source>Create arc</source>
-      <translation type="unfinished">Create arc</translation>
+      <translation>რკალის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="438"/>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2878"/>
       <source>Constrain horizontal distance</source>
-      <translation type="unfinished">Constrain horizontal distance</translation>
+      <translation>ჰორიზონტალური დაშორების შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2879"/>
@@ -566,7 +566,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5564"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
+      <translation>თუ წრეწირს აირჩევთ, დიამეტრი უცვლელი იქნება, თუ რკალს/სპლაინის პოლუსი - რადიუსი</translation>
     </message>
   </context>
   <context>
@@ -1071,7 +1071,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Edit sketch</source>
-      <translation type="unfinished">Edit sketch</translation>
+      <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -1097,7 +1097,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create an external geometry</source>
-      <translation type="unfinished">Create an external geometry</translation>
+      <translation>გარე გეომეტრიის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -2118,7 +2118,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>ზუსტი ასლის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -2132,94 +2132,94 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="472"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: დამთხვევის შეზღუდვების გადატარების დროს ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="559"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: ვერტიკალური/ჰორიზონტალური შეზღუდვების გადატარების დროს ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="766"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: თანასწორობის შეზღუდვების გადატარების დროს ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: შეზღუდვების გარეშე ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="870"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: ჰორიზონტალური და ვერტიკალური შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: წერტილიდან წერტილამდე შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="927"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: თანასწორობის შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1983"/>
+      <location filename="../../../App/SketchObject.cpp" line="2117"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>მრუდების კვეთის გამოცნობის შეცდომა. სცადეთ დაამატოთ დამთხვევების შეზღუდვები მრუდების წვეროებზე, რომლის მომრგვალებასაც ცდილობთ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5866"/>
-      <location filename="../../../App/SketchObject.cpp" line="6040"/>
+      <location filename="../../../App/SketchObject.cpp" line="6300"/>
+      <location filename="../../../App/SketchObject.cpp" line="6508"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-სპლაინის გეომეტრიის ინდექსი (GeoID) დაშვებულ ლიმიტებს გარეთაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5869"/>
+      <location filename="../../../App/SketchObject.cpp" line="6305"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>თქვენ არ ითხოვთ ცვლილებას კვანძის გაყოფადობაში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5874"/>
-      <location filename="../../../App/SketchObject.cpp" line="6048"/>
+      <location filename="../../../App/SketchObject.cpp" line="6311"/>
+      <location filename="../../../App/SketchObject.cpp" line="6518"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>გეომეტრიის მითითებული ინდექსი (GeoID) B-სპლაინის მრუდს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5881"/>
+      <location filename="../../../App/SketchObject.cpp" line="6320"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>კვანძის ინდექსი საზღვრებს გარეთაა. დაიმახსოვრეთ, რომ OCC ნოტაციების შესაბამისად, პირველი კვანძის ინდექსი 1-ია და არა 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5888"/>
+      <location filename="../../../App/SketchObject.cpp" line="6331"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>სიმრავლე არ შეიძლება გაიზარდოს B-სპლაინის დონის მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5891"/>
+      <location filename="../../../App/SketchObject.cpp" line="6339"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>სიმრავლე არ შეიძლება შემცირდეს ნულს მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6353"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-ს არ შეუძლია შეამციროს სიმრავლე მაქსიმალური ტოლერანტობის ფარგლებში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6043"/>
+      <location filename="../../../App/SketchObject.cpp" line="6512"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>კვანძებს არ შეიძლება ნულოვანი მამრავლი ჰქონდეს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6057"/>
+      <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>კვანძის მამრავლი არ შეიძლება B-სპლაინის დონეზე დიდი იყოს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6060"/>
+      <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>კვანძის ჩასმა B-სპლაინის პარამეტრების დიაპაზონის გარეთ შეუძლებელია.</translation>
     </message>
@@ -2266,7 +2266,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
-      <translation type="unfinished">Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</translation>
+      <translation>მონიშნული მოხაზულობები არასწორი ფორმისაა (მაგ: ამობურცული წიბო, სადაც სწორი იყო საჭირო)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="170"/>
@@ -2456,7 +2456,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="82"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation type="unfinished">Not allowed to edit the datum because the sketch contains conflicting constraints</translation>
+      <translation>მონაცემების ჩასწორება დაუშვებელია, რადგან ესკიზი კონფლიქტურ შეზღუდვებს შეიცავს</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="222"/>
@@ -3094,7 +3094,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>იმისათვის, რომ შეგეძლოთ მათი შეერთება, აუცილებელია, ერთ წერტილში ზუსტად ორი მრუდი სრულდებოდეს.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3373,7 +3373,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
       <source>Select Elements</source>
-      <translation type="unfinished">Select Elements</translation>
+      <translation>აირჩიეთ ელემენტები</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
@@ -3589,7 +3589,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="61"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>წერტილის დამთხვევა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
@@ -3599,32 +3599,32 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
       <source>Vertical Constraint</source>
-      <translation type="unfinished">Vertical Constraint</translation>
+      <translation>ვერტიკალური შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="64"/>
       <source>Horizontal Constraint</source>
-      <translation type="unfinished">Horizontal Constraint</translation>
+      <translation>ჰორიზონტალურობის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Parallel Constraint</source>
-      <translation type="unfinished">Parallel Constraint</translation>
+      <translation>პარალელურობის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="66"/>
       <source>Perpendicular Constraint</source>
-      <translation type="unfinished">Perpendicular Constraint</translation>
+      <translation>მართკუთხა შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Tangent Constraint</source>
-      <translation type="unfinished">Tangent Constraint</translation>
+      <translation>მხების შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Equal Length</source>
-      <translation type="unfinished">Equal Length</translation>
+      <translation>თანაბარი სიგრძე</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
@@ -3634,12 +3634,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Block Constraint</source>
-      <translation type="unfinished">Block Constraint</translation>
+      <translation>შეზღუდვის დაბლოკვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Lock Constraint</source>
-      <translation type="unfinished">Lock Constraint</translation>
+      <translation>შეზღუდვის ჩაკეტვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -3654,27 +3654,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Length Constraint</source>
-      <translation type="unfinished">Length Constraint</translation>
+      <translation>სიგრძის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Radius Constraint</source>
-      <translation type="unfinished">Radius Constraint</translation>
+      <translation>რადიუსის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Diameter Constraint</source>
-      <translation type="unfinished">Diameter Constraint</translation>
+      <translation>დიამეტრის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>რადიამის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Angle Constraint</source>
-      <translation type="unfinished">Angle Constraint</translation>
+      <translation>კუთხის შეზღუდვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -3684,22 +3684,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>აირჩიეთ შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>აირჩიეთ წყარო</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>აირჩიეთ ჰორიზონტალური ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>ვერტიკალური ღერძის არჩევა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="528"/>
@@ -3709,12 +3709,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="536"/>
       <source>Layer 0</source>
-      <translation type="unfinished">Layer 0</translation>
+      <translation>ფენა 0</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="537"/>
       <source>Layer 1</source>
-      <translation type="unfinished">Layer 1</translation>
+      <translation>ფენა 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="538"/>
@@ -4359,7 +4359,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="275"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form.</source>
-      <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form.</translation>
+      <translation>მოკლე ფორმის მაგიერ კურსორის კოორდინატები წილადების სისტემურ პარამეტრს გამოიყენებს.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
@@ -4541,7 +4541,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="290"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-      <translation type="unfinished">%1 changes were made to constraints linking to endpoints of reversed arcs.</translation>
+      <translation>შემობრუნებული რკალების ბოლო წერტილების დამაკავშირებელ შეზღუდვებზე %1 ცვლილება განხორციელდა.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="306"/>
@@ -5031,7 +5031,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2780"/>
       <source>Edit sketch</source>
-      <translation type="unfinished">Edit sketch</translation>
+      <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2797"/>
@@ -6113,17 +6113,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="302"/>
+      <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>ესკიზი არასწორ შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="306"/>
+      <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>ესკიზი ნაწილობრივ დამატებით შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8326"/>
+      <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>პარაბოლები მიგრირებულია. მიგრირებული ფაილები FreeCAD-ის წინა ვერსიებში არ გაიხსნება!!
@@ -6250,7 +6250,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>ნორმალის გეომეტრია</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -6264,7 +6264,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>გარე გეომეტრია</translation>
     </message>
   </context>
   <context>
@@ -6272,12 +6272,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>რენდერის მიმდევრობის მორგება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1578"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>რენდერის მიმდევრობის მოსარგებად გადაალაგეთ სიაში ელემენტები.</translation>
     </message>
   </context>
 </TS>

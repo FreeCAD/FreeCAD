@@ -218,20 +218,7 @@ Any values of the SetupSheet that are changed from their default are preselected
       <translation type="unfinished">Enable to include the default coolant mode in the template.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="133"/>
-      <source>Enable all Operations for which the configuration values should be exported.
-
-&lt;br/&gt;
-
-Note that only operations are listed which currently have configuration values setup.</source>
-      <translation type="unfinished">Enable all Operations for which the configuration values should be exported.
-
-&lt;br/&gt;
-
-Note that only operations are listed which currently have configuration values setup.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="147"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
       <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
 
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
@@ -244,17 +231,17 @@ This option is most useful if stock is a box or cylinder, or if the machine has 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="186"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
       <source>Hint about the current stock extent setting.</source>
       <translation type="unfinished">Hint about the current stock extent setting.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="193"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
       <source>If enabled the current placement of the stock solid is stored in the template.</source>
       <translation type="unfinished">If enabled the current placement of the stock solid is stored in the template.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="212"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="210"/>
       <source>Hint about the current stock placement.</source>
       <translation type="unfinished">Hint about the current stock placement.</translation>
     </message>
@@ -269,12 +256,21 @@ Note that this option is disabled if a stock object from an existing solid is us
       <translation>Mod Coolant</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="154"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="133"/>
+      <source>Enable all operations for which the configuration values should be exported.
+
+Note that only operations which currently have configuration values set are listed.</source>
+      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+
+Note that only operations which currently have configuration values set are listed.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
       <source>Stock</source>
       <translation>depozit</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="163"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
       <source>If enabled the current size settings for the stock object are included in the template.
 
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
@@ -287,17 +283,17 @@ For Box and Cylinder stocks this means the actual size of the stock solid being 
 For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="170"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
       <source>Extent</source>
       <translation>Măsură</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="196"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="194"/>
       <source>Placement</source>
       <translation>Amplasare</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="250"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="248"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
@@ -1771,7 +1767,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Multi-pass</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
@@ -1859,16 +1855,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Caseta de încadrare extra offset X, Y</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
-      <source>Additional offset to the selected bounding box along the X axis."</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis."</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
-      <source>Additional offset to the selected bounding box along the Y axis."</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis."</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation type="unfinished">Dropcutter lines are created parallel to this axis.</translation>
@@ -1910,6 +1896,16 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
       <source>Drop Cutter Direction</source>
       <translation>Sterge Directia de Cutter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
+      <source>Additional offset to the selected bounding box along the X axis.</source>
+      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
+      <source>Additional offset to the selected bounding box along the Y axis.</source>
+      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2021,15 +2017,6 @@ Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="129"/>
-      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</translation>
-    </message>
-    <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
@@ -2061,6 +2048,15 @@ Default: "5mm"</translation>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
       <source>Safe</source>
       <translation>Sigur</translation>
+    </message>
+    <message>
+      <location filename="../panels/SetupGlobal.ui" line="129"/>
+      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</source>
+      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2135,11 +2131,6 @@ Default: "5mm"</translation>
       <translation>Plumb in/Iesit</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="63"/>
-      <source>&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
       <source>Discretization Deflection</source>
       <translation>Deficit de discretizare</translation>
@@ -2151,8 +2142,8 @@ Default: "5mm"</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
-      <source>Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
+      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -3718,8 +3709,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="85"/>
-      <location filename="../panels/PathEdit.ui" line="1288"/>
-      <location filename="../panels/PathEdit.ui" line="1507"/>
+      <location filename="../panels/PathEdit.ui" line="1281"/>
+      <location filename="../panels/PathEdit.ui" line="1500"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
@@ -3851,20 +3842,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="397"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.
-
-
-
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.
-
-
-
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="404"/>
+      <location filename="../panels/PathEdit.ui" line="400"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.
 
 
@@ -3881,217 +3859,184 @@ For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is
 If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="413"/>
+      <location filename="../panels/PathEdit.ui" line="409"/>
       <source>Split Output</source>
       <translation>Repartizați ieșirea</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="437"/>
+      <location filename="../panels/PathEdit.ui" line="433"/>
       <source>Setup</source>
       <translation type="unfinished">Setup</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="455"/>
+      <location filename="../panels/PathEdit.ui" line="451"/>
       <source>Layout</source>
       <translation>Aspect</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="461"/>
+      <location filename="../panels/PathEdit.ui" line="457"/>
       <source>Stock</source>
       <translation>depozit</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="482"/>
+      <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create Box</source>
       <translation>Crează casetă</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="487"/>
+      <location filename="../panels/PathEdit.ui" line="483"/>
       <source>Create Cylinder</source>
       <translation>Cilindru nou</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="492"/>
+      <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model's Bounding Box</source>
       <translation>Extinde caseta de încadrare a modelului</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="497"/>
+      <location filename="../panels/PathEdit.ui" line="493"/>
       <source>Use Existing Solid</source>
       <translation>Folosește un solid existent</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="505"/>
+      <location filename="../panels/PathEdit.ui" line="501"/>
       <source>Refresh</source>
       <translation>Reîmprospătare</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="539"/>
+      <location filename="../panels/PathEdit.ui" line="535"/>
       <source>Ext. X</source>
       <translation>Ext. X</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="559"/>
+      <location filename="../panels/PathEdit.ui" line="555"/>
       <source>Ext. Y</source>
       <translation>Ext Y</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="572"/>
+      <location filename="../panels/PathEdit.ui" line="568"/>
       <source>Ext. Z</source>
       <translation>Ext. Z</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="591"/>
+      <location filename="../panels/PathEdit.ui" line="587"/>
       <source>Radius</source>
       <translation>Raza</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="601"/>
-      <location filename="../panels/PathEdit.ui" line="637"/>
+      <location filename="../panels/PathEdit.ui" line="597"/>
+      <location filename="../panels/PathEdit.ui" line="633"/>
       <source>Height</source>
       <translation>Înălţime</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="617"/>
+      <location filename="../panels/PathEdit.ui" line="613"/>
       <source>Length</source>
       <translation>Lungime</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="627"/>
+      <location filename="../panels/PathEdit.ui" line="623"/>
       <source>Width</source>
       <translation>Lăţime</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="653"/>
+      <location filename="../panels/PathEdit.ui" line="649"/>
       <source>Alignment</source>
       <translation>Aliniament</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="659"/>
+      <location filename="../panels/PathEdit.ui" line="655"/>
       <source>Move to Origin</source>
       <translation>Mută la Origine</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="666"/>
+      <location filename="../panels/PathEdit.ui" line="662"/>
       <source>Set Origin</source>
       <translation>Setează Origine</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="673"/>
+      <location filename="../panels/PathEdit.ui" line="669"/>
       <source>Center in Stock</source>
       <translation>Centru în stoc</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="680"/>
+      <location filename="../panels/PathEdit.ui" line="676"/>
       <source>XY in Stock</source>
       <translation>XY în stoc</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="690"/>
+      <location filename="../panels/PathEdit.ui" line="686"/>
       <source>Set</source>
       <translation>Setează</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="696"/>
+      <location filename="../panels/PathEdit.ui" line="692"/>
       <source>X-Axis</source>
       <translation>Axa X</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="703"/>
+      <location filename="../panels/PathEdit.ui" line="699"/>
       <source>Y-Axis</source>
       <translation>Axa Y</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="710"/>
+      <location filename="../panels/PathEdit.ui" line="706"/>
       <source>Z-Axis</source>
       <translation>Axa Z</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="717"/>
+      <location filename="../panels/PathEdit.ui" line="713"/>
       <source>X=0</source>
       <translation>X=0</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="724"/>
+      <location filename="../panels/PathEdit.ui" line="720"/>
       <source>Y=0</source>
       <translation>Y=0</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="731"/>
+      <location filename="../panels/PathEdit.ui" line="727"/>
       <source>Z=0</source>
       <translation>Z=0</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="738"/>
+      <location filename="../panels/PathEdit.ui" line="734"/>
       <source>Link Stock and Model</source>
       <translation>Link Stocul și Modelul</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="748"/>
+      <location filename="../panels/PathEdit.ui" line="744"/>
       <source>Move - XY</source>
       <translation>Mutare - XY</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="906"/>
+      <location filename="../panels/PathEdit.ui" line="902"/>
       <source>Rotate - XY</source>
       <translation>Rotire - XY</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="962"/>
+      <location filename="../panels/PathEdit.ui" line="958"/>
       <source>Compound</source>
       <translation>Compus</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1022"/>
-      <location filename="../panels/PathEdit.ui" line="1326"/>
+      <location filename="../panels/PathEdit.ui" line="1018"/>
+      <location filename="../panels/PathEdit.ui" line="1319"/>
       <source>Default Values</source>
       <translation>Valori implicite</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1028"/>
+      <location filename="../panels/PathEdit.ui" line="1024"/>
       <source>Depths</source>
       <translation>Adâncimea</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1034"/>
+      <location filename="../panels/PathEdit.ui" line="1030"/>
       <source>Start Depth</source>
       <translation type="unfinished">Start Depth</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1041"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.
-
-
-Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.
-
-
-Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1058"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.
-
-
-Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.
-
-
-Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1075"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.
-
-
-Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.
-
-
-Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1121"/>
+      <location filename="../panels/PathEdit.ui" line="1114"/>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
@@ -4100,16 +4045,7 @@ Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1130"/>
-      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1146"/>
+      <location filename="../panels/PathEdit.ui" line="1139"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
@@ -4118,7 +4054,7 @@ Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1155"/>
+      <location filename="../panels/PathEdit.ui" line="1148"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</source>
@@ -4127,139 +4063,180 @@ Default: "5mm"</source>
 Default: "5mm"</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1254"/>
+      <location filename="../panels/PathEdit.ui" line="1247"/>
       <source>Horizontal Feed</source>
       <translation type="unfinished">Horizontal Feed</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1266"/>
+      <location filename="../panels/PathEdit.ui" line="1259"/>
       <source>Vertical Feed</source>
       <translation type="unfinished">Vertical Feed</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1354"/>
+      <location filename="../panels/PathEdit.ui" line="1347"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController.</source>
       <translation type="unfinished">Rapid horizontal speed assigned as HorizRapid to new ToolController.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1374"/>
+      <location filename="../panels/PathEdit.ui" line="1367"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController.</source>
       <translation type="unfinished">Rapid vertical speed assigned to VertRapid of new ToolController.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1051"/>
+      <location filename="../panels/PathEdit.ui" line="1046"/>
       <source>Final Depth</source>
       <translation type="unfinished">Final Depth</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1068"/>
+      <location filename="../panels/PathEdit.ui" line="397"/>
+      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1037"/>
+      <source>Expression set as the StartDepth of a newly created operation.
+
+Default: OpStartDepth</source>
+      <translation type="unfinished">Expression set as the StartDepth of a newly created operation.
+
+Default: OpStartDepth</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1053"/>
+      <source>Expression set as the FinalDepth for a newly created operation.
+
+Default: OpFinalDepth</source>
+      <translation type="unfinished">Expression set as the FinalDepth for a newly created operation.
+
+Default: OpFinalDepth</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1062"/>
       <source>Step Down</source>
       <translation type="unfinished">Step Down</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1088"/>
+      <location filename="../panels/PathEdit.ui" line="1069"/>
+      <source>Expression set as the StepDown of a newly created operation.
+
+Default: OpToolDiameter</source>
+      <translation type="unfinished">Expression set as the StepDown of a newly created operation.
+
+Default: OpToolDiameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1081"/>
       <source>Heights</source>
       <translation>Înălţimi</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1094"/>
+      <location filename="../panels/PathEdit.ui" line="1087"/>
       <source>Expression</source>
       <translation>Expresie</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1104"/>
+      <location filename="../panels/PathEdit.ui" line="1097"/>
       <source>Offset</source>
       <translation>Compensare</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1114"/>
+      <location filename="../panels/PathEdit.ui" line="1107"/>
       <source>Clearance</source>
       <translation>Îndepărtare</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1139"/>
+      <location filename="../panels/PathEdit.ui" line="1123"/>
+      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</source>
+      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1132"/>
       <source>Safe</source>
       <translation>Sigur</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1167"/>
+      <location filename="../panels/PathEdit.ui" line="1160"/>
       <source>Coolant</source>
       <translation type="unfinished">Coolant</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1173"/>
+      <location filename="../panels/PathEdit.ui" line="1166"/>
       <source>Coolant Mode</source>
       <translation>Mod Coolant</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1204"/>
-      <location filename="../panels/PathEdit.ui" line="1222"/>
+      <location filename="../panels/PathEdit.ui" line="1197"/>
+      <location filename="../panels/PathEdit.ui" line="1215"/>
       <source>Tools</source>
       <translation>Instrumente</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1241"/>
+      <location filename="../panels/PathEdit.ui" line="1234"/>
       <source>Name</source>
       <translation>Nume</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1246"/>
+      <location filename="../panels/PathEdit.ui" line="1239"/>
       <source>Nr.</source>
       <translation>Nr.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1251"/>
-      <location filename="../panels/PathEdit.ui" line="1263"/>
+      <location filename="../panels/PathEdit.ui" line="1244"/>
+      <location filename="../panels/PathEdit.ui" line="1256"/>
       <source>Feed</source>
       <translation>Flux</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1275"/>
+      <location filename="../panels/PathEdit.ui" line="1268"/>
       <source>Spindle</source>
       <translation>Ax</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1295"/>
+      <location filename="../panels/PathEdit.ui" line="1288"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1305"/>
+      <location filename="../panels/PathEdit.ui" line="1298"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1332"/>
+      <location filename="../panels/PathEdit.ui" line="1325"/>
       <source>Rapid Speeds</source>
       <translation>Viteze rapide</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1341"/>
+      <location filename="../panels/PathEdit.ui" line="1334"/>
       <source>Horizontal</source>
       <translation>Orizontal</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1361"/>
+      <location filename="../panels/PathEdit.ui" line="1354"/>
       <source>Vertical</source>
       <translation>Verticală</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1402"/>
+      <location filename="../panels/PathEdit.ui" line="1395"/>
       <source>Workplan</source>
       <translation>Plan de lucru</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1414"/>
+      <location filename="../panels/PathEdit.ui" line="1407"/>
       <source>Active Tool </source>
       <translation>Unealtă activă </translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1527"/>
+      <location filename="../panels/PathEdit.ui" line="1520"/>
       <source>Delete</source>
       <translation>Ştergeţi</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1538"/>
+      <location filename="../panels/PathEdit.ui" line="1531"/>
       <source>Op Defaults</source>
       <translation>Op Implicit</translation>
     </message>
@@ -5065,7 +5042,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Main/Stock.py" line="170"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Un material pentru acest obiect</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="242"/>
@@ -6101,19 +6078,11 @@ De exemplu:
     </message>
   </context>
   <context>
-    <name>PathGui</name>
-    <message>
-      <location filename="../../../Path/Base/Util.py" line="58"/>
-      <source>%s has no property %s (%s))</source>
-      <translation type="unfinished">%s has no property %s (%s))</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_PropertyBag</name>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="439"/>
       <source>PropertyBag</source>
-      <translation type="unfinished">PropertyBag</translation>
+      <translation>Geanta de proprietate</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="443"/>
@@ -6842,8 +6811,8 @@ De exemplu:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kbs)</source>
-      <translation type="unfinished">File Size (kbs)</translation>
+      <source>File Size (kb)</source>
+      <translation type="unfinished">File Size (kb)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -7230,7 +7199,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="259"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Multi-pass</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="262"/>
@@ -7576,7 +7545,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="480"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Multi-pass</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="483"/>
@@ -7892,7 +7861,7 @@ De exemplu:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="139"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Multi-pass</translation>
     </message>
   </context>
   <context>
@@ -8443,6 +8412,25 @@ Aborting op creation</translation>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="80"/>
       <source>Open an editor to manage ToolBit libraries</source>
       <translation type="unfinished">Open an editor to manage ToolBit libraries</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../../InitGui.py" line="87"/>
+      <location filename="../../../InitGui.py" line="90"/>
+      <location filename="../../../InitGui.py" line="267"/>
+      <location filename="../../AppPathGui.cpp" line="90"/>
+      <source>Path</source>
+      <translation>Drum</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui</name>
+    <message>
+      <location filename="../../../Path/Base/Util.py" line="58"/>
+      <source>%s has no property %s (%s)</source>
+      <translation type="unfinished">%s has no property %s (%s)</translation>
     </message>
   </context>
 </TS>

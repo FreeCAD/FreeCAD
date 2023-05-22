@@ -2085,8 +2085,6 @@ En cualquier caso, algunas aplicaciones BIM usarán este factor para elegir con 
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Arco</translation>
     </message>
@@ -5931,21 +5929,6 @@ Creación de construcción cancelada.</translation>
       <source>Writing camera position</source>
       <translation>Escribiendo posición de la cámara</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Calado</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Importar/Exportar</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6755,6 +6738,30 @@ Creación de construcción cancelada.</translation>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Transformar</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Arco</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Calado</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Importar/Exportar</translation>
     </message>
   </context>
 </TS>

@@ -4973,7 +4973,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>El resultado tiene múltiples sólidos: esto no está soportado actualmente.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -5241,8 +5241,8 @@ No se permiten las entidades de croquis intersectas en un croquis.</translation>
       <location filename="../../../App/FeaturePocket.cpp" line="248"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>No se pudo crear la cara a partir del croquis.
+No se permiten interceptar entidades de croquis o múltiples caras en un croquis para hacer un bolsillo hasta una cara.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2025"/>
@@ -5262,159 +5262,159 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="135"/>
       <source>Loft: At least one section is needed</source>
-      <translation type="unfinished">Loft: At least one section is needed</translation>
+      <translation>Loft: Se necesita al menos una sección</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="140"/>
       <source>Loft: Could not obtain profile shape</source>
-      <translation type="unfinished">Loft: Could not obtain profile shape</translation>
+      <translation>Loft: No se pudo obtener la forma del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="153"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation type="unfinished">Loft: When using points for profile/sections, the sketch should have a single point</translation>
+      <translation>Loft: Cuando se utilizan puntos para el perfil/secciones, el croquis debe tener un solo punto</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="161"/>
       <source>Loft: All sections need to be part features</source>
-      <translation type="unfinished">Loft: All sections need to be part features</translation>
+      <translation>Loft: Todas las secciones deben ser características de parte</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="166"/>
       <source>Loft: Could not obtain section shape</source>
-      <translation type="unfinished">Loft: Could not obtain section shape</translation>
+      <translation>Loft: No se pudo obtener la forma de la sección</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="182"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation type="unfinished">Loft: A section doesn't contain any wires nor is a single vertex</translation>
+      <translation>Loft: Una sección no contiene ningún alambre ni es un solo vértice</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
+      <translation>Loft: Sólo el perfil y la última sección pueden ser vértices</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
+      <translation>Loft: Para lofts cerrados sólo el perfil puede ser un vértice</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="193"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
+      <translation>Loft: todas las secciones de loft necesitan tener la misma cantidad de alambres internos</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="232"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>No se pudo construir Loft</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>Loft: El resultado no es un sólido</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="278"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>Loft: No hay nada que restar</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>Loft: Error al añadir el loft</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>Loft: Fallo al sustraer el loft</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="330"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>Loft: Se ha producido un error fatal al crear el loft</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="75"/>
       <source>Length of pad too small</source>
-      <translation type="unfinished">Length of pad too small</translation>
+      <translation>Longitud del pad demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="78"/>
       <source>Second length of pad too small</source>
-      <translation type="unfinished">Second length of pad too small</translation>
+      <translation>Segunda longitud del pad demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="130"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Pad: La creación ha fallado porque la dirección es ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="141"/>
       <source>Pad: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
+      <translation>Pad: Fallo al crear una cara a partir del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="205"/>
       <source>Pad: Resulting shape is empty</source>
-      <translation type="unfinished">Pad: Resulting shape is empty</translation>
+      <translation>Padre: La forma resultante está vacía</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="216"/>
       <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>Pad: Falló la fusión con la función base</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="248"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>No se pudo crear la cara a partir del croquis.
+No se permiten interceptar entidades de croquis o múltiples caras en un croquis.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>Tubería: No se pudo obtener la forma del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
       <source>No spine linked</source>
-      <translation type="unfinished">No spine linked</translation>
+      <translation>Ningún lomo vinculado</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="190"/>
       <source>No auxiliary spine linked.</source>
-      <translation type="unfinished">No auxiliary spine linked.</translation>
+      <translation>Sin vínculo a columna auxiliar.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation type="unfinished">Pipe: Only one isolated point is needed if using a sketch with isolated points for section</translation>
+      <translation>Tubería: Solo se necesita un punto aislado si se utiliza un boceto con puntos aislados para la sección</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="217"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation type="unfinished">Pipe: At least one section is needed when using a single point for profile</translation>
+      <translation>Tubería: Se necesita al menos una sección cuando se utiliza un solo punto para el perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="231"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation type="unfinished">Pipe: All sections need to be part features</translation>
+      <translation>Tubería: Todas las secciones deben ser características de parte</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation type="unfinished">Pipe: Could not obtain section shape</translation>
+      <translation>Tubería: No se pudo obtener la forma de la sección</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="246"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation type="unfinished">Pipe: Only the profile and last section can be vertices</translation>
+      <translation>Tubería: Sólo el perfil y la última sección pueden ser vértices</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>Las multisecciones necesitan tener la misma cantidad de alambres internos que la sección base</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
@@ -5424,7 +5424,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="317"/>
       <source>Pipe could not be built</source>
-      <translation type="unfinished">Pipe could not be built</translation>
+      <translation>La tubería no se pudo construir</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="363"/>
@@ -5434,92 +5434,92 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="378"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation type="unfinished">Pipe: There is nothing to subtract from</translation>
+      <translation>Tubería: No hay nada de lo que sustraer</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="389"/>
       <source>Adding the pipe failed</source>
-      <translation type="unfinished">Adding the pipe failed</translation>
+      <translation>Error al añadir la tubería</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="409"/>
       <source>Subtracting the pipe failed</source>
-      <translation type="unfinished">Subtracting the pipe failed</translation>
+      <translation>Fallo al sustraer la tubería</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation type="unfinished">A fatal error occurred when making the pipe</translation>
+      <translation>Se ha producido un error fatal al crear la tubería</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="558"/>
       <source>Invalid element in spine.</source>
-      <translation type="unfinished">Invalid element in spine.</translation>
+      <translation>Elemento no válido en la columna.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="561"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Element in spine is neither an edge nor a wire.</translation>
+      <translation>El elemento en la columna no es ni un borde ni un alambre.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="574"/>
       <source>Spine is not connected.</source>
-      <translation type="unfinished">Spine is not connected.</translation>
+      <translation>La columna no está conectada.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="578"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Spine is neither an edge nor a wire.</translation>
+      <translation>La columna no es ni un borde ni un alambre.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="582"/>
       <source>Invalid spine.</source>
-      <translation type="unfinished">Invalid spine.</translation>
+      <translation>Columna inválida.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="82"/>
       <source>Pocket: Length of pocket too small</source>
-      <translation type="unfinished">Pocket: Length of pocket too small</translation>
+      <translation>Pocket: Longitud del hueco demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="86"/>
       <source>Pocket: Second length of pocket too small</source>
-      <translation type="unfinished">Pocket: Second length of pocket too small</translation>
+      <translation>Pocket: Segunda longitud del hueco demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="138"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pocket: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Pocket: La creación falló porque la dirección es ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="149"/>
       <source>Pocket: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pocket: Creating a face from sketch failed</translation>
+      <translation>Pocket: Fallo al crear una cara a partir del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="155"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
-      <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
+      <translation>Pocket: Extruir hasta una cara sólo es posible si el croquis se encuentra en una cara</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="190"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
+      <translation>Pocket: Hasta la cara: ¡No se pudo obtener subforma!</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="214"/>
       <source>Pocket: Resulting shape is empty</source>
-      <translation type="unfinished">Pocket: Resulting shape is empty</translation>
+      <translation>Pocket: La forma resultante está vacía</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="223"/>
       <source>Pocket: Cut out of base feature failed</source>
-      <translation type="unfinished">Pocket: Cut out of base feature failed</translation>
+      <translation>Pocket: Falló el corte de la función base</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="90"/>
       <source>Cannot subtract primitive feature without base feature</source>
-      <translation type="unfinished">Cannot subtract primitive feature without base feature</translation>
+      <translation>No se puede sustraer la característica primitiva sin la función base</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="99"/>
@@ -5647,22 +5647,22 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
       <source>Fusion with base feature failed</source>
-      <translation type="unfinished">Fusion with base feature failed</translation>
+      <translation>Falló la fusión con la función base</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
       <source>Transformation feature Linked object is not a Part object</source>
-      <translation type="unfinished">Transformation feature Linked object is not a Part object</translation>
+      <translation>La característica de transformación vinculada no es un objeto Parte</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation type="unfinished">No originals linked to the transformed feature.</translation>
+      <translation>No hay originales vinculados a la característica transformada.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>No se puede transformar la forma de soporte no válida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
@@ -5672,7 +5672,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>La forma de la característica aditiva/sustractiva está vacía</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>

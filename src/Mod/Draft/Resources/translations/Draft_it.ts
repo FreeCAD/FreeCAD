@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Gestore dei livelli</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Isola</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -1066,7 +1066,7 @@ utilizzando i tasti [ e ] durante il disegno</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Applica lo stile sopra a tutte le annotazioni (testi, quote ed etichette)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1186,7 +1186,7 @@ utilizzando i tasti [ e ] durante il disegno</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Lunghezza delle linee di estensione oltre la linea di dimensione</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -2043,7 +2043,7 @@ Altrimenti verranno applicati i colori predefiniti. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Ottieni i colori originali dal file DXF (solo l'importatore legacy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
@@ -3245,19 +3245,19 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>Convertitore LibreDWG non trovato</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>Convertitore ODA non trovato</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>Convertitore QCAD non trovato</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3266,9 +3266,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Non è stato trovato alcun convertitore DWG esterno adatto.
+Si prega di impostarne uno manualmente nel menu Modifica -&gt; Preferenze -&gt; Import/Export -&gt; DWG
+Per maggiori informazioni si veda:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -4451,16 +4451,6 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Declassa</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Seleziona un oggetto per la Serie</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Serie ortogonale</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -5428,23 +5418,6 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
   </context>
   <context>
     <name>Draft</name>
-    <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>Pescaggio</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>Importa/Esporta</translation>
-    </message>
     <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
@@ -6947,40 +6920,6 @@ Ad esempio, esplode solidi 3D in facce distinte, in polilinee ed infine in linee
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>Serie ortogonale</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>Crea una serie da un oggetto selezionato.
-Per impostazione predefinita, è una serie ortogonale 2x2.
-Una volta che l'array è stato creato, il suo tipo può essere cambiato
-in polare o circolare, e le sue proprietà possono essere modificate.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8144,6 +8083,26 @@ beyond the dimension line</source>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation type="unfinished">Set/modify the different layers of this document</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>Pescaggio</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>Importa/Esporta</translation>
     </message>
   </context>
 </TS>

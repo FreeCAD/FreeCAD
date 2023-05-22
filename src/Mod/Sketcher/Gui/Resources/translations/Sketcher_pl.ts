@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Utwórz kalkę techniczną</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -1098,7 +1098,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create an external geometry</source>
-      <translation type="unfinished">Create an external geometry</translation>
+      <translation>Utwórz zewnętrzną geometrię</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -2120,7 +2120,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Utwórz kalkę techniczną</translation>
     </message>
   </context>
   <context>
@@ -2134,94 +2134,94 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="472"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania zbieżności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="559"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Błąd więzów automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania pionowego / poziomego.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="766"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic bez wiązań.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="870"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic po zastosowaniu wiązań poziomych i pionowych.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic po zastosowaniu wiązania zbieżności punktów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="927"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1983"/>
+      <location filename="../../../App/SketchObject.cpp" line="2117"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić punktu przecięcia się krzywych. Spróbuj dodać wiązanie zbieżne pomiędzy wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5866"/>
-      <location filename="../../../App/SketchObject.cpp" line="6040"/>
+      <location filename="../../../App/SketchObject.cpp" line="6300"/>
+      <location filename="../../../App/SketchObject.cpp" line="6508"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza wiązaniem.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5869"/>
+      <location filename="../../../App/SketchObject.cpp" line="6305"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Żądasz niezmienności w wielokrotności węzłów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5874"/>
-      <location filename="../../../App/SketchObject.cpp" line="6048"/>
+      <location filename="../../../App/SketchObject.cpp" line="6311"/>
+      <location filename="../../../App/SketchObject.cpp" line="6518"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5881"/>
+      <location filename="../../../App/SketchObject.cpp" line="6320"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks węzłów jest poza wiązaniem. Zauważ, że zgodnie z zapisem OCC, pierwszy węzeł ma indeks 1, a nie zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5888"/>
+      <location filename="../../../App/SketchObject.cpp" line="6331"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5891"/>
+      <location filename="../../../App/SketchObject.cpp" line="6339"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6353"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nie jest w stanie zmniejszyć wielokrotności w ramach maksymalnej tolerancji.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6043"/>
+      <location filename="../../../App/SketchObject.cpp" line="6512"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Węzeł nie może mieć zerowej krotności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6057"/>
+      <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Krotność węzłów nie może być większa niż stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6060"/>
+      <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Węzła nie można wstawić poza zakresem parametrów krzywej złożonej.</translation>
     </message>
@@ -3096,7 +3096,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>Dokładnie dwie krzywe powinny kończyć się w wybranym punkcie, aby można było je połączyć.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3375,7 +3375,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
       <source>Select Elements</source>
-      <translation type="unfinished">Select Elements</translation>
+      <translation>Wybierz elementy</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
@@ -3591,7 +3591,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="61"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>Zbieżność punktów</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
@@ -3601,32 +3601,32 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
       <source>Vertical Constraint</source>
-      <translation type="unfinished">Vertical Constraint</translation>
+      <translation>Wiązanie pionowe</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="64"/>
       <source>Horizontal Constraint</source>
-      <translation type="unfinished">Horizontal Constraint</translation>
+      <translation>Wiązanie poziome</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Parallel Constraint</source>
-      <translation type="unfinished">Parallel Constraint</translation>
+      <translation>Wiązanie równoległości</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="66"/>
       <source>Perpendicular Constraint</source>
-      <translation type="unfinished">Perpendicular Constraint</translation>
+      <translation>Wiązanie prostopadłości</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Tangent Constraint</source>
-      <translation type="unfinished">Tangent Constraint</translation>
+      <translation>Wiązanie styczności</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Equal Length</source>
-      <translation type="unfinished">Equal Length</translation>
+      <translation>Wiązanie równej długości</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
@@ -3636,12 +3636,12 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Block Constraint</source>
-      <translation type="unfinished">Block Constraint</translation>
+      <translation>Wiązanie zablokowania</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Lock Constraint</source>
-      <translation type="unfinished">Lock Constraint</translation>
+      <translation>Wiązanie blokady odległości</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -3656,27 +3656,27 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Length Constraint</source>
-      <translation type="unfinished">Length Constraint</translation>
+      <translation>Wiązanie długości</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Radius Constraint</source>
-      <translation type="unfinished">Radius Constraint</translation>
+      <translation>Wiązanie promienia</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Diameter Constraint</source>
-      <translation type="unfinished">Diameter Constraint</translation>
+      <translation>Wiązanie średnicy</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>Wiązanie promienia / średnicy</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Angle Constraint</source>
-      <translation type="unfinished">Angle Constraint</translation>
+      <translation>Wiązanie kąta</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -3686,22 +3686,22 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Wybierz wiązania</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>Wybierz odniesienie położenia</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>Wybierz oś poziomą</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>Wybierz oś pionową</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="528"/>
@@ -3711,12 +3711,12 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="536"/>
       <source>Layer 0</source>
-      <translation type="unfinished">Layer 0</translation>
+      <translation>Warstwa 0</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="537"/>
       <source>Layer 1</source>
-      <translation type="unfinished">Layer 1</translation>
+      <translation>Warstwa 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="538"/>
@@ -4708,7 +4708,7 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1409"/>
       <location filename="../../TaskSketcherElements.cpp" line="1413"/>
       <source>Construction</source>
-      <translation>Konstrukcja</translation>
+      <translation>Konstrukcyjny</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="833"/>
@@ -6117,17 +6117,17 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="302"/>
+      <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Szkic zawiera zniekształcone wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="306"/>
+      <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Szkic zawiera częściowo zbędne wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8326"/>
+      <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!</translation>
@@ -6254,7 +6254,7 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie do kąta". Kąt zaczyna się od 
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Geometria normalna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -6268,7 +6268,7 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie do kąta". Kąt zaczyna się od 
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Geometria zewnętrzna</translation>
     </message>
   </context>
   <context>
@@ -6276,12 +6276,12 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie do kąta". Kąt zaczyna się od 
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>Konfiguruj kolejność renderowania</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1578"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>Zmień kolejność elementów na liście, aby skonfigurować kolejność renderowania.</translation>
     </message>
   </context>
 </TS>

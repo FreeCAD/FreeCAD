@@ -110,20 +110,20 @@
       <translation type="unfinished">Maximum fragment size</translation>
     </message>
     <message>
+      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <source>angle (fa)</source>
+      <translation type="unfinished">angle (fa)</translation>
+    </message>
+    <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Опуклість</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
       <location filename="../ui/openscadprefs-base.ui" line="296"/>
       <source>Minimum angle for a fragment</source>
       <translation>Мінімальний кут для фрагменту</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="289"/>
-      <source>angular (fa)</source>
-      <translation>кутові (фа)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>Схоже, ви використовуєте Snap версію OpenSCAD.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Please select 3 objects first</source>
-      <translation type="unfinished">Please select 3 objects first</translation>
+      <translation>Будь ласка, спочатку оберіть 3 об'єкти</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="334"/>
@@ -236,7 +236,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Save...</source>
-      <translation type="unfinished">Save...</translation>
+      <translation>Зберегти...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
@@ -248,23 +248,23 @@
       <location filename="../../OpenSCADCommands.py" line="352"/>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>Додати елемент OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="428"/>
       <source>Open file</source>
-      <translation type="unfinished">Open file</translation>
+      <translation>Відкрити файл</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="430"/>
       <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>Файли OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="442"/>
       <source>Save file</source>
-      <translation type="unfinished">Save file</translation>
+      <translation>Зберегти файл</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="456"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>Замінити об'єкт</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>

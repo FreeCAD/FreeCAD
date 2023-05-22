@@ -1644,7 +1644,7 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Cancella</translation>
+      <translation>Pulisci</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -2082,6 +2082,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Visualizzazione</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

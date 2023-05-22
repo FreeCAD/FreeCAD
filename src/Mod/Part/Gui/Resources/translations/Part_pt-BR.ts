@@ -2944,7 +2944,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Erro desconhecido</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -4087,7 +4087,7 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Erro desconhecido</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>

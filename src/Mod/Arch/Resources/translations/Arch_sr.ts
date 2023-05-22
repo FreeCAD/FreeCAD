@@ -2089,8 +2089,6 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Лук</translation>
     </message>
@@ -5935,21 +5933,6 @@ Building creation aborted.</translation>
       <source>Writing camera position</source>
       <translation type="unfinished">Writing camera position</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Закошење</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Увоз/извоз</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6759,6 +6742,30 @@ Building creation aborted.</translation>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Помери</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Лук</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Закошење</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Увоз/извоз</translation>
     </message>
   </context>
 </TS>

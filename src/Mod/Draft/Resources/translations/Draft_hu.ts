@@ -1066,7 +1066,7 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Alkalmazza a fenti stílust az összes leírásra (szövegek, méretek és címkék)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1151,12 +1151,12 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Kiegészítő vonalak</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>A távolság, ameddig a méretvonal a meghosszabbítási vonalakon túlra nyúlik</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1181,12 +1181,13 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Méretbővítés</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>A hosszabbító vonalak hossza
+a méretvonalon túl</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1196,7 +1197,7 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Kiegészítő vonalak meghosszabbítása</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -2045,27 +2046,27 @@ Ellenkező esetben az alapértelmezett színeket alkalmazza. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Eredeti színek letöltése DXF fájlból (csak régebbi importáló)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Határok kitölttőinek importálása drótvázként (csak régebbi importőr)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Szélességű polivonalak renderelése (csak régebbi importőr)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>3D tárgyak exportálása poliéderes hálóként (csak a régiebbu exportőr)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Exportált tárgyak kivetítése az aktuális nézeti irány mentén (csak a régi exportőr)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -3248,19 +3249,19 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>LibreDWG átalakító nem található</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>ODA átalakító nem található</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>QCAD átalakító nem található</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3269,9 +3270,9 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Nem találtunk megfelelő külső DWG átalakítót.
+Kérjük, állítson be egyet kézzel a Szerkesztés -&gt; Beállítások -&gt; Import/Export -&gt; DWG menüben.
+További információkért lásd:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -4457,16 +4458,6 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>Visszaminősít</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Elem kiválasztása elrendezéshez</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Elrendezés</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -4694,7 +4685,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>Alak a szövegből: a felület létrehozása sikertelen az egyik karakter esetében</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5435,23 +5426,6 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>Tervrajz</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>Importálás-Exportálás</translation>
-    </message>
-    <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
@@ -5498,7 +5472,7 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Hiba: a json modul nem található. A stílus betöltése sikertelen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -6954,40 +6928,6 @@ Például a kijelölt vonalláncokat egyszerűbb felületekre, egyenesekre és �
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>Elrendezés</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>Elrendezést hoz létre kijelölt tárgyakból.
-Alapértelmezés szerint ez egy 2x2 merőleges elrendezés.
-Az elrendezés létrejötte után az elrendezés típusa
-sarkos vagy körkörös, és tulajdonságaik megváltoztathatóak.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation>Összekapcsolt elrendezés</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Az elrendezési eszközhöz hasonló 'Összekapcsolt elrendezést' hoz létre.
-Az összekapcsolt elrendezés több példány feldolgozásakor hatékonyabb, de az 'Egyesítés' beállítás nem használható.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8158,6 +8098,26 @@ a méretvonalon túl</translation>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation>A dokumentum különböző rétegeinek beállítása/módosítása</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>Tervrajz</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>Importálás-Exportálás</translation>
     </message>
   </context>
 </TS>

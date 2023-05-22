@@ -713,47 +713,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="450"/>
-      <location filename="../Splashscreen.cpp" line="459"/>
+      <location filename="../Splashscreen.cpp" line="471"/>
+      <location filename="../Splashscreen.cpp" line="480"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>제작진</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="461"/>
+      <location filename="../Splashscreen.cpp" line="482"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>프리캐드는 도움이 없다면 불가능 할 것이다.</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="464"/>
+      <location filename="../Splashscreen.cpp" line="485"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>개인 개발자</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="477"/>
+      <location filename="../Splashscreen.cpp" line="498"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>단체</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="504"/>
-      <location filename="../Splashscreen.cpp" line="744"/>
+      <location filename="../Splashscreen.cpp" line="525"/>
+      <location filename="../Splashscreen.cpp" line="765"/>
       <source>License</source>
       <translation>라이선스</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="543"/>
+      <location filename="../Splashscreen.cpp" line="564"/>
       <source>Libraries</source>
       <translation>라이브러리</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="705"/>
+      <location filename="../Splashscreen.cpp" line="726"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>이 소프트웨어는 오픈 소스 컴포넌트를 사용하며, 각 컴포넌트의 저작권과 기타 톡점점 권리는 해당 권리자에게 귀속됩니다.</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="731"/>
+      <location filename="../Splashscreen.cpp" line="752"/>
       <source>Collection</source>
       <translation>컬렉션</translation>
     </message>

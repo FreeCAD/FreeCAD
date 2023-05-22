@@ -328,7 +328,7 @@ Lăsați necompletat pentru a utiliza toate obiectele din document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
       <source>Put selected objects into the "Objects" column of the selected row</source>
-      <translation>Pune obiectele selectate în coloana de "Obiecte" din rândul selectat</translation>
+      <translation>Pune obiectele selectate în coloana "Obiecte" a rândului selectat</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="193"/>
@@ -2086,8 +2086,6 @@ unitate cu care să lucreze la deschiderea fișierului.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Arhi</translation>
     </message>
@@ -4948,259 +4946,259 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove height of this element</source>
-      <translation type="unfinished">The groove height of this element</translation>
+      <translation>Înălțimea canelei pentru acest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="290"/>
       <source>The spacing between the grooves of this element</source>
-      <translation type="unfinished">The spacing between the grooves of this element</translation>
+      <translation>Distanța dintre caneluri ale acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="292"/>
       <source>The number of grooves of this element</source>
-      <translation type="unfinished">The number of grooves of this element</translation>
+      <translation>Numărul de caneluri ale acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="427"/>
       <source>The dent width of this element</source>
-      <translation type="unfinished">The dent width of this element</translation>
+      <translation>Lățimea danturii acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="536"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Tipul acestei platforme</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="539"/>
       <source>The size of the base of this element</source>
-      <translation type="unfinished">The size of the base of this element</translation>
+      <translation>Dimensiunea bazei acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="541"/>
       <source>The number of holes in this element</source>
-      <translation type="unfinished">The number of holes in this element</translation>
+      <translation>Numărul de găuri în acest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="543"/>
       <source>The major radius of the holes of this element</source>
-      <translation type="unfinished">The major radius of the holes of this element</translation>
+      <translation>Raza majoră a găurilor acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="545"/>
       <source>The minor radius of the holes of this element</source>
-      <translation type="unfinished">The minor radius of the holes of this element</translation>
+      <translation>Raza minoră a găurilor acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="547"/>
       <source>The spacing between the holes of this element</source>
-      <translation type="unfinished">The spacing between the holes of this element</translation>
+      <translation>Distanța dintre găurile acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="647"/>
       <source>The length of the down floor of this element</source>
-      <translation type="unfinished">The length of the down floor of this element</translation>
+      <translation>Lungimea etajului în jos al acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="649"/>
       <source>The number of risers in this element</source>
-      <translation type="unfinished">The number of risers in this element</translation>
+      <translation>Numărul de conserve din acest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="651"/>
       <source>The riser height of this element</source>
-      <translation type="unfinished">The riser height of this element</translation>
+      <translation>Înălțimea mai mare a acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="653"/>
       <source>The tread depth of this element</source>
-      <translation type="unfinished">The tread depth of this element</translation>
+      <translation>Adâncimea benzii pentru acest element</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="394"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation type="unfinished">The thickness or extrusion depth of this element</translation>
+      <translation>Grosimea sau adâncimea de extrudare a acestui element</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="396"/>
       <source>The number of sheets to use</source>
-      <translation type="unfinished">The number of sheets to use</translation>
+      <translation>Numărul de foi de utilizat</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="399"/>
       <source>The offset between this panel and its baseline</source>
-      <translation type="unfinished">The offset between this panel and its baseline</translation>
+      <translation>Decalajul dintre acest panou și valoarea sa de bază</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="401"/>
       <source>The length of waves for corrugated elements</source>
-      <translation type="unfinished">The length of waves for corrugated elements</translation>
+      <translation>Lungimea valurilor pentru elemente ondulate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="403"/>
       <source>The height of waves for corrugated elements</source>
-      <translation type="unfinished">The height of waves for corrugated elements</translation>
+      <translation>Înălțimea valurilor pentru elemente ondulate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="405"/>
       <source>The horizontal offset of waves for corrugated elements</source>
-      <translation type="unfinished">The horizontal offset of waves for corrugated elements</translation>
+      <translation>Decalajul orizontal al valurilor pentru elemente ondulate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="407"/>
       <source>The direction of waves for corrugated elements</source>
-      <translation type="unfinished">The direction of waves for corrugated elements</translation>
+      <translation>Direcția valurilor pentru elemente ondulate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="409"/>
       <source>The type of waves for corrugated elements</source>
-      <translation type="unfinished">The type of waves for corrugated elements</translation>
+      <translation>Tipul de unde pentru elemente ondulate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="412"/>
       <source>If the wave also affects the bottom side or not</source>
-      <translation type="unfinished">If the wave also affects the bottom side or not</translation>
+      <translation>Dacă valul afectează, de asemenea, partea de jos sau nu</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="414"/>
       <source>The area of this panel</source>
-      <translation type="unfinished">The area of this panel</translation>
+      <translation>Zona acestui panou</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="823"/>
       <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
+      <translation>Obiectul legat</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="828"/>
       <location filename="../../ArchPanel.py" line="1109"/>
       <source>The size of the tag text</source>
-      <translation type="unfinished">The size of the tag text</translation>
+      <translation>Dimensiunea textului din eticheta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="835"/>
       <location filename="../../ArchPanel.py" line="1116"/>
       <source>The font of the tag text</source>
-      <translation type="unfinished">The font of the tag text</translation>
+      <translation>Fontul textului din eticheta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="825"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation type="unfinished">The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</translation>
+      <translation>Textul de afișat. Poate fi %tag%, %label% sau %description% pentru a afișa eticheta sau eticheta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="831"/>
       <location filename="../../ArchPanel.py" line="1112"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>Poziția textului etichetei. Păstrați (0,0,0) pentru poziția centrului</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="833"/>
       <location filename="../../ArchPanel.py" line="1114"/>
       <source>The rotation of the tag text</source>
-      <translation type="unfinished">The rotation of the tag text</translation>
+      <translation>Rotirea textului tag-ului</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="838"/>
       <location filename="../../ArchPanel.py" line="1128"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
+      <translation>Dacă este adevărat, obiectul este randat ca față, dacă este posibil.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="840"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation type="unfinished">The allowed angles this object can be rotated to when placed on sheets</translation>
+      <translation>Permis unghiurile acestui obiect poate fi rotit în cazul în care este plasat pe foi</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="843"/>
       <source>An offset value to move the cut plane from the center point</source>
-      <translation type="unfinished">An offset value to move the cut plane from the center point</translation>
+      <translation>O valoare offset pentru a muta planul de tăiere din punctul de centru</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1016"/>
       <location filename="../../ArchPanel.py" line="1280"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>O margine în interiorul limitei</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
       <location filename="../../ArchPanel.py" line="1282"/>
       <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <translation>Pornește afișarea marjei on/off</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1105"/>
       <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <translation>Secţiunile panourilor conectate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1107"/>
       <source>The tag text to display</source>
-      <translation type="unfinished">The tag text to display</translation>
+      <translation>Textul etichetei de afișat</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font file</source>
-      <translation type="unfinished">The font file</translation>
+      <translation>Fişier font</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1119"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>Lăţimea foii de parcurs</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1122"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>Înălţimea plăcii</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1125"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>Raportul de umplere al acestei foi</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1130"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
+      <translation>Specifică un unghi pentru boabele de lemn (în sensul acelor de ceasornic, 0 este Nord)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1132"/>
       <source>Specifies the scale applied to each panel view.</source>
-      <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
+      <translation>Specifică scara aplicată fiecărei vizualizări a panoului.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1135"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>O listă cu posibilele rotaţii ale cuibului</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1284"/>
       <source>Turns the display of the wood grain texture on/off</source>
-      <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
+      <translation>Oprește afișarea texturii grânelor de lemn pornit/oprit</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="172"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Un obiect gazdă opțional pentru acest perete de cortină</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="175"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>Înălțimea peretelui cortinei dacă se bazează pe o margine</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="179"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>Numărul de mulluri verticale</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="183"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
+      <translation>Dacă profilul mulizilor verticali se aliniază la suprafață sau nu</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="186"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
+      <translation>Numărul secțiunilor verticale ale acestui perete de cortină</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="194"/>
@@ -5456,255 +5454,255 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="253"/>
       <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <translation>Fontul folosit pentru texte</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="256"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>Dimensiunea fontului</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="259"/>
       <source>If true, show the labels</source>
-      <translation type="unfinished">If true, show the labels</translation>
+      <translation>Dacă este adevărat, afișați etichetele</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="261"/>
       <source>A transformation to apply to each label</source>
-      <translation type="unfinished">A transformation to apply to each label</translation>
+      <translation>O transformare care se aplică pe fiecare etichetă</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="195"/>
       <source>The base object this component is built upon</source>
-      <translation type="unfinished">The base object this component is built upon</translation>
+      <translation>Obiectul de bază pe care această componentă este construită</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="197"/>
       <source>The object this component is cloning</source>
-      <translation type="unfinished">The object this component is cloning</translation>
+      <translation>Obiectul pe care această componentă îl clonează</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="207"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
-      <translation type="unfinished">An optional standard (OmniClass, etc...) code for this component</translation>
+      <translation>Un cod opțional standard (OmniClass, etc...) pentru această componentă</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="209"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Un material pentru acest obiect</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="215"/>
       <source>Specifies if moving this object moves its base instead</source>
-      <translation type="unfinished">Specifies if moving this object moves its base instead</translation>
+      <translation>Specifică dacă mutarea acestui obiect mută baza sa</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="218"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation type="unfinished">Specifies if this object must move together when its host is moved</translation>
+      <translation>Specifică dacă acest obiect trebuie să se mute împreună când gazda sa este mutată</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="221"/>
       <source>The area of all vertical faces of this object</source>
-      <translation type="unfinished">The area of all vertical faces of this object</translation>
+      <translation>Suprafața tuturor fețelor verticale ale acestui obiect</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="227"/>
       <source>The perimeter length of the horizontal area</source>
-      <translation type="unfinished">The perimeter length of the horizontal area</translation>
+      <translation>Perimetrul lungimii suprafeţei orizontale</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="230"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation type="unfinished">An optional higher-resolution mesh or shape for this object</translation>
+      <translation>O plasă sau formă opțională de rezoluție superioară pentru acest obiect</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="232"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
-      <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
+      <translation>O axă opțională sau un sistem de axe pe care acest obiect ar trebui să fie duplicat</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1176"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>Utilizați culoarea materialului ca culoare de formă a acestui obiect, dacă este disponibil</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="179"/>
       <source>The diameter of the bar</source>
-      <translation type="unfinished">The diameter of the bar</translation>
+      <translation>Diametrul barei</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="181"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the first bar (concrete cover).</translation>
+      <translation>Distanța dintre granița grinzii și prima bară (copertă de beton).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="183"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the last bar (concrete cover).</translation>
+      <translation>Distanţa dintre graniţa grinzii şi ultima bară (copertă de beton).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="185"/>
       <source>The amount of bars</source>
-      <translation type="unfinished">The amount of bars</translation>
+      <translation>Cantitatea de bare</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="187"/>
       <source>The spacing between the bars</source>
-      <translation type="unfinished">The spacing between the bars</translation>
+      <translation>Distanța dintre bare</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="190"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
-      <translation type="unfinished">The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</translation>
+      <translation>Distanța totală de parcurgere a barei de gunoi. Păstrați 0 pentru a utiliza automat dimensiunea formei gazdă.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="192"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
-      <translation type="unfinished">The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</translation>
+      <translation>Direcția de utilizat pentru a răspândi barele. Păstrați (0,0,0) pentru direcție automată.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="194"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
-      <translation type="unfinished">The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</translation>
+      <translation>Fileul care se aplică unghiului profilului de bază. Această valoare este înmulțită cu diametrul bar.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="196"/>
       <source>List of placement of all the bars</source>
-      <translation type="unfinished">List of placement of all the bars</translation>
+      <translation>Lista plasării tuturor barelor</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="198"/>
       <source>The structure object that hosts this rebar</source>
-      <translation type="unfinished">The structure object that hosts this rebar</translation>
+      <translation>Structura obiectului care găzduieşte această armătură</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="200"/>
       <source>The custom spacing of rebar</source>
-      <translation type="unfinished">The custom spacing of rebar</translation>
+      <translation>Spațierea personalizată a barei</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="202"/>
       <source>Length of a single rebar</source>
-      <translation type="unfinished">Length of a single rebar</translation>
+      <translation>Lungimea unei singure armături</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="205"/>
       <source>Total length of all rebars</source>
-      <translation type="unfinished">Total length of all rebars</translation>
+      <translation>Lungimea totală a tuturor ramelor</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="212"/>
       <source>The rebar mark</source>
-      <translation type="unfinished">The rebar mark</translation>
+      <translation>Marcajul de Bară</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="506"/>
       <source>Shape of rebar</source>
-      <translation type="unfinished">Shape of rebar</translation>
+      <translation>Forma de bară</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
-      <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
+      <translation>Obiectele care trebuie luate în considerare de acest plan de secțiune. Golire înseamnă tot documentul.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation type="unfinished">If false, non-solids will be cut too, with possible wrong results.</translation>
+      <translation>Dacă sunt false, non-solide vor fi tăiate, de asemenea, cu posibile rezultate greșite.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="865"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
-      <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
+      <translation>Dacă este adevărat, vizualizările rezultate vor fi oprite în zona planului de secțiune.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
-      <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
+      <translation>Dacă este adevărat, culoarea materialului obiectelor va fi folosit pentru a umple zonele de tăiere.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="870"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Geometria va fi întreruptă mai mult decât această valoare. Păstrați zero pentru nelimitat.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="929"/>
       <source>The display length of this section plane</source>
-      <translation type="unfinished">The display length of this section plane</translation>
+      <translation>Lungimea de afişare a acestui plan de secţiune</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="935"/>
       <source>The display height of this section plane</source>
-      <translation type="unfinished">The display height of this section plane</translation>
+      <translation>Înălțimea de afișare a acestui plan de secțiune</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="941"/>
       <source>The size of the arrows of this section plane</source>
-      <translation type="unfinished">The size of the arrows of this section plane</translation>
+      <translation>Dimensiunea săgeţilor acestui plan de secţiune</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="944"/>
       <source>The transparency of this object</source>
-      <translation type="unfinished">The transparency of this object</translation>
+      <translation>Transparența acestui obiect</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="950"/>
       <location filename="../../ArchSectionPlane.py" line="955"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>Arată tăietura în vizualizarea 3D</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="952"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>Culoarea acestui obiect</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
-      <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
+      <translation>Distanța dintre planul de tăiere și punctul de vedere real (păstrează o valoare foarte mică, dar nu zero)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="960"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>Arată eticheta în vizualizarea 3D</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="962"/>
       <location filename="../../ArchSpace.py" line="514"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>Numele fontului</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="965"/>
       <location filename="../../ArchSpace.py" line="520"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>Dimensiunea fontului de text</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="274"/>
       <source>The objects that make the boundaries of this space object</source>
-      <translation type="unfinished">The objects that make the boundaries of this space object</translation>
+      <translation>Obiectele care fac limitele acestui obiect spațial</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="276"/>
       <source>The computed floor area of this space</source>
-      <translation type="unfinished">The computed floor area of this space</translation>
+      <translation>Aria de pardoseală calculată a acestui spațiu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="278"/>
       <source>The finishing of the floor of this space</source>
-      <translation type="unfinished">The finishing of the floor of this space</translation>
+      <translation>Finalizarea podelei acestui spaţiu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="280"/>
       <source>The finishing of the walls of this space</source>
-      <translation type="unfinished">The finishing of the walls of this space</translation>
+      <translation>Terminarea zidurilor acestui spaţiu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="282"/>
       <source>The finishing of the ceiling of this space</source>
-      <translation type="unfinished">The finishing of the ceiling of this space</translation>
+      <translation>Finalizarea plafonului acestui spațiu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="284"/>
@@ -5932,21 +5930,6 @@ Crearea de construcții a fost întreruptă.</translation>
       <source>Writing camera position</source>
       <translation>Scrie poziția camerei</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Pescaj</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Import/Export</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6051,7 +6034,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Crează diferite tipuri de bare, inclusiv versiuni U, în formă de L și stirrup</translation>
     </message>
   </context>
   <context>
@@ -6064,7 +6047,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
       <source>Creates a profile object</source>
-      <translation type="unfinished">Creates a profile object</translation>
+      <translation>Creează un obiect de profil</translation>
     </message>
   </context>
   <context>
@@ -6077,7 +6060,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
       <source>Creates a site object including selected objects.</source>
-      <translation type="unfinished">Creates a site object including selected objects.</translation>
+      <translation>Creează un obiect site care include obiectele selectate.</translation>
     </message>
   </context>
   <context>
@@ -6090,7 +6073,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>Creează un obiect acoperiș din sârma selectată.</translation>
     </message>
   </context>
   <context>
@@ -6098,12 +6081,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="81"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Taie cu linie</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="84"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Tăiaţi un obiect cu o linie</translation>
     </message>
   </context>
   <context>
@@ -6111,12 +6094,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="102"/>
       <source>Cut with plane</source>
-      <translation type="unfinished">Cut with plane</translation>
+      <translation>Taie cu plan</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="105"/>
       <source>Cut an object with a plane</source>
-      <translation type="unfinished">Cut an object with a plane</translation>
+      <translation>Taie un obiect cu un plan</translation>
     </message>
   </context>
   <context>
@@ -6124,12 +6107,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchReference.py" line="742"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>Referință externă</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="746"/>
       <source>Creates an external reference object</source>
-      <translation type="unfinished">Creates an external reference object</translation>
+      <translation>Creează un obiect de referință extern</translation>
     </message>
   </context>
   <context>
@@ -6142,7 +6125,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
-      <translation type="unfinished">Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</translation>
+      <translation>Creează un cadru de obiect de la un obiect 2D plane (path(s)) de extrudare şi un profil. Asiguraţi-vă că obiectele sunt selectate în această ordine.</translation>
     </message>
   </context>
   <context>
@@ -6155,7 +6138,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="168"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation type="unfinished">Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>Creează un obiect fereastră dintr-un obiect selectat (fire, dreptunghi sau schiță)</translation>
     </message>
   </context>
   <context>
@@ -6168,7 +6151,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation type="unfinished">Creates an axis system from a set of axes</translation>
+      <translation>Creează un sistem de axe pornind de la un set de axe</translation>
     </message>
   </context>
   <context>
@@ -6181,7 +6164,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="86"/>
       <source>Creates a truss object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a truss object from selected line or from scratch</translation>
+      <translation>Creează un obiect truss din linia selectată sau de la zero</translation>
     </message>
   </context>
   <context>
@@ -6194,7 +6177,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchProject.py" line="102"/>
       <source>Creates a project entity aggregating the selected sites.</source>
-      <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
+      <translation>Creează o entitate de proiect care cumulează site-urile selectate.</translation>
     </message>
   </context>
   <context>
@@ -6207,7 +6190,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="211"/>
       <source>Creates a stairs object</source>
-      <translation type="unfinished">Creates a stairs object</translation>
+      <translation>Creează un obiect scări</translation>
     </message>
   </context>
   <context>
@@ -6220,7 +6203,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="234"/>
       <source>Creates a space object from selected boundary objects</source>
-      <translation type="unfinished">Creates a space object from selected boundary objects</translation>
+      <translation>Creează un spaţiu obiect din limitele obiectelor selectate</translation>
     </message>
   </context>
   <context>
@@ -6233,7 +6216,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchFence.py" line="391"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>Creează un obiect de gard din secțiunea, postarea și calea selectate</translation>
     </message>
   </context>
   <context>
@@ -6246,7 +6229,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="120"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>Creează sau editează definiţia materială a unui obiect selectat.</translation>
     </message>
   </context>
   <context>
@@ -6254,12 +6237,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="150"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>Multi-material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="154"/>
       <source>Creates or edits multi-materials</source>
-      <translation type="unfinished">Creates or edits multi-materials</translation>
+      <translation>Creează sau editează mai multe materiale</translation>
     </message>
   </context>
   <context>
@@ -6281,67 +6264,67 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="75"/>
       <source>Creates a customizable grid object</source>
-      <translation type="unfinished">Creates a customizable grid object</translation>
+      <translation>Creează un obiect grilă personalizabil</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="101"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>Numărul de rânduri</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="103"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>Numărul de coloane</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="105"/>
       <source>The sizes for rows</source>
-      <translation type="unfinished">The sizes for rows</translation>
+      <translation>Dimensiunile rândurilor</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="107"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>Dimensiunile coloanelor</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="109"/>
       <source>The span ranges of cells that are merged together</source>
-      <translation type="unfinished">The span ranges of cells that are merged together</translation>
+      <translation>Intervalul de celule care sunt fuzionate</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="111"/>
       <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
+      <translation>Tipul punctelor 3D produse de acest obiect grilă</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="114"/>
       <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
+      <translation>Lățimea totală a acestei grile</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="116"/>
       <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
+      <translation>Înălțimea totală a acestei grile</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="118"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <translation>Creează coloane automate (setat la 0 pentru dezactivare)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="120"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <translation>Creează diviziuni automate ale rândurilor (setat la 0 pentru dezactivare)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="122"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>Când este în modul midpoint pe margine, dacă această grilă trebuie să își reorienteze copiii de-a lungul muchiei normale sau nu</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="124"/>
       <source>The indices of faces to hide</source>
-      <translation type="unfinished">The indices of faces to hide</translation>
+      <translation>Indicii de ascuns ai fețelor</translation>
     </message>
   </context>
   <context>
@@ -6349,12 +6332,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="134"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Panou</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="138"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Creează un obiect panou de la zero sau de la un obiect selectat (schiță, cablu, față sau solid)</translation>
     </message>
   </context>
   <context>
@@ -6367,7 +6350,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="325"/>
       <source>Creates 2D views of selected panels</source>
-      <translation type="unfinished">Creates 2D views of selected panels</translation>
+      <translation>Creează vizualizări 2D pentru panourile selectate</translation>
     </message>
   </context>
   <context>
@@ -6380,7 +6363,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="352"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation type="unfinished">Creates a 2D sheet which can contain panel cuts</translation>
+      <translation>Creează o foaie 2D care poate conține tăieturi panou</translation>
     </message>
   </context>
   <context>
@@ -6388,12 +6371,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="1408"/>
       <source>Nest</source>
-      <translation type="unfinished">Nest</translation>
+      <translation>Cuib</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1412"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation type="unfinished">Nests a series of selected shapes in a container</translation>
+      <translation>Cuiburi o serie de forme selectate într-un container</translation>
     </message>
   </context>
   <context>
@@ -6415,7 +6398,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>Creează un obiect curtain perete de la linia selectată sau de la zero</translation>
     </message>
   </context>
   <context>
@@ -6428,7 +6411,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>
       <source>Creates a pipe object from a given Wire or Line</source>
-      <translation type="unfinished">Creates a pipe object from a given Wire or Line</translation>
+      <translation>Creează un obiect țeavă de pe un fir sau o linie date</translation>
     </message>
   </context>
   <context>
@@ -6436,12 +6419,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="147"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Conector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="151"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation type="unfinished">Creates a connector between 2 or 3 selected pipes</translation>
+      <translation>Creează un conector între 2 sau 3 țevi selectate</translation>
     </message>
   </context>
   <context>
@@ -6463,7 +6446,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation type="unfinished">Creates a schedule to collect data from the model</translation>
+      <translation>Creează un program pentru a colecta date din model</translation>
     </message>
   </context>
   <context>
@@ -6476,7 +6459,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>Creează un obiect Building Part care reprezintă un nivel, inclusiv obiectele selectate</translation>
     </message>
   </context>
   <context>
@@ -6489,7 +6472,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="97"/>
       <source>Creates a set of axes</source>
-      <translation type="unfinished">Creates a set of axes</translation>
+      <translation>Creează un set de axe</translation>
     </message>
   </context>
   <context>
@@ -6506,12 +6489,12 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="110"/>
       <source>Custom Rebar</source>
-      <translation type="unfinished">Custom Rebar</translation>
+      <translation>Rebarare personalizată</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="114"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Creează o bară de întărire de pe fața selectată a obiectului solid și/sau schiță</translation>
     </message>
   </context>
   <context>
@@ -6519,7 +6502,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="821"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>Plan de secțiune</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="824"/>
@@ -6756,6 +6739,30 @@ Crearea de construcții a fost întreruptă.</translation>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Transformare</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Arhi</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Pescaj</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Import/Export</translation>
     </message>
   </context>
 </TS>

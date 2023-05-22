@@ -1323,7 +1323,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Define o desvio máximo da malha tesselada para a superfície. Quanto menor o valor, menor a velocidade de renderização, o que resulta em maior detalhe / resolução.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
@@ -1466,12 +1466,12 @@ a uma aparência mais suave.
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Este é o menor ângulo entre duas faces onde os padrões são calculados para fazer um sombreamento plana.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Se o ângulo entre os padrões de duas faces vizinhos é menor que o ângulo de crese, as faces estarão sem problemas sombreados em torno de sua borda comum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Dica&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definir os padrões por vértice é também chamado de &lt;span style=" font-style:italic;"&gt;sombreado Phong &lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;enquanto define os padrões por face se chama &lt;/span&gt; sombreado Flat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="359"/>
@@ -1548,7 +1548,7 @@ a uma aparência mais suave.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
       <source>Adaptive</source>
-      <translation type="unfinished">Adaptive</translation>
+      <translation>Adaptativo</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
@@ -1671,7 +1671,7 @@ a uma aparência mais suave.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Remalhar por gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -2011,33 +2011,33 @@ a uma aparência mais suave.
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Número de faces:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Limite mínimo:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="84"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Limite máximo:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="90"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Caixa de informações de malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Informação de malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="126"/>
       <location filename="../../Workbench.cpp" line="128"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2088,6 +2088,11 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Visualização</translation>
+    </message>
+    <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Importar/Exportar</translation>
@@ -2131,7 +2136,7 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="319"/>
@@ -2142,7 +2147,7 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
@@ -2208,7 +2213,7 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Formato de manufactora 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="395"/>
@@ -2283,7 +2288,7 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="788"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Cor da tela</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1570"/>
@@ -2352,17 +2357,17 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Modificar malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Malha booleana</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Corte de malha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -2372,7 +2377,7 @@ Visite http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>Análise de malha</translation>
     </message>
   </context>
 </TS>

@@ -1064,7 +1064,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Примени горњи стил на све напомене (текстове, димензије и ознаке)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1149,12 +1149,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Помоћне котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>Продужетак котне линије иза помоћне котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1179,12 +1179,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Продужетак котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Дужина помоћне котне линије изнад котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1194,7 +1194,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Продужетак помоћне котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -2043,27 +2043,27 @@ Otherwise default colors will be applied. </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Преузми оригиналне боје из DXF датотеке (само застарели увозник)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Увези границе шрафуре као жице (само застарели увозник)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Прикажи повезане линије са дебљином (само застарели увозник)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Извези 3Д објекте као полигоналне мреже страница (само застарели увозник)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Пројицирај извезене објекте дуж тренутног правца приказа (само застарели увозник)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -3245,19 +3245,19 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>LibreDWG конвертор датотека није пронађен</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>ODA конвертор није пронађен</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>QCAD конвертор није пронађен</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3266,9 +3266,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Није пронађен одговарајуц́и спољашњи ДWГ конвертор.
+Подесите га ручно у менију Уреди -&gt; Подешавања -&gt; Увоз/Извоз -&gt; DWG
+За више информација погледајте:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -4452,16 +4452,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Растави</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Изабери објекат који желиш да умножиш</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Умножавање</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -4689,7 +4679,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>ТекстуалниОблик: није успело прављење странице од једног знака</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5160,7 +5150,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="275"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
-      <translation>Уреди</translation>
+      <translation>Измени</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="444"/>
@@ -5430,23 +5420,6 @@ The final angle will be the base angle plus this amount.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>Закошење</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>Увоз/извоз</translation>
-    </message>
-    <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
@@ -5493,7 +5466,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Грешка: јсон модул није пронађен. Није могуће учитати стил</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -6951,40 +6924,6 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>Умножавање</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>Направи умножавање од изабраног објекта.
-Унапред је задано да то буде ортогонално 2x2 умножавање.
-Када се умножавање направи, његова врста се може променити
-на поларни или кружни, а њихове особине се могу модификовати.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation>Умножавање веза</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Попут алатке Умножавање, али уместо објеката ствара 'Умножавање веза'.
-'Умножавање веза' је ефикасније када се умножава велики број копија, али опција 'Унија' се не може користити.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8154,6 +8093,26 @@ beyond the dimension line</source>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation>Подеси/измени различите слојеве овог документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>Закошење</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>Увоз/извоз</translation>
     </message>
   </context>
 </TS>

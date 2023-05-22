@@ -1353,7 +1353,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>Duljina:</translation>
+      <translation>Visina:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -2088,6 +2088,11 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Prikaz</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

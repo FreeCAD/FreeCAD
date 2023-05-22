@@ -2088,6 +2088,11 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>화면</translation>
+    </message>
+    <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>가져오기 내보내기</translation>

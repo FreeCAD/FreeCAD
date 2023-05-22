@@ -2115,7 +2115,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -2198,7 +2198,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2236,7 +2236,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2284,7 +2284,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2738,7 +2738,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Mehrere Abschnitte</translation>
+      <translation>Mehrere Schnitte</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
@@ -2753,7 +2753,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="803"/>
@@ -2829,7 +2829,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Liste kann durch Ziehen neu sortiert werden</translation>
+      <translation>Die Liste kann durch Ziehen neu sortiert werden</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -4837,7 +4837,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
       <source>You may have to install the Plot add-on</source>
-      <translation type="unfinished">You may have to install the Plot add-on</translation>
+      <translation>Möglicherweise müssen Sie das Plot-Add-on installieren</translation>
     </message>
   </context>
   <context>
@@ -4881,7 +4881,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="62"/>
       <source>BaseFeature link is not set</source>
-      <translation type="unfinished">BaseFeature link is not set</translation>
+      <translation>Es ist kein Link auf ein BaseFeature gesetzt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="65"/>
@@ -4917,12 +4917,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="119"/>
       <source>Base shape is null</source>
-      <translation type="unfinished">Base shape is null</translation>
+      <translation>Grundform ist NULL</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="122"/>
       <source>Tool shape is null</source>
-      <translation type="unfinished">Tool shape is null</translation>
+      <translation>Werkzeugform ist NULL</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
@@ -4972,7 +4972,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Das Ergebnis enthält mehrere Festkörper: Dies wird derzeit leider nicht unterstützt.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -4984,7 +4984,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
       <location filename="../../../App/FeatureFillet.cpp" line="120"/>
       <source>Resulting shape is null</source>
-      <translation type="unfinished">Resulting shape is null</translation>
+      <translation>Die resultierende Form ist nichts. Null. Nienete. Nada. Da bleibt nichts übrig. Überhaupt gar nichts</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
@@ -4995,17 +4995,17 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
       <source>Size must be greater than zero</source>
-      <translation type="unfinished">Size must be greater than zero</translation>
+      <translation>Der Rundungsradius muss größer als Null sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
       <source>Size2 must be greater than zero</source>
-      <translation type="unfinished">Size2 must be greater than zero</translation>
+      <translation>Auch dieser Rundungsradius muss größer als 0 sein.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
       <source>Angle must be greater than 0 and less than 180</source>
-      <translation type="unfinished">Angle must be greater than 0 and less than 180</translation>
+      <translation>Der Winkel muss größer als 0° und kleiner als 180° sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureDraft.cpp" line="315"/>
@@ -5025,12 +5025,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="78"/>
       <source>Angle of groove too large</source>
-      <translation type="unfinished">Angle of groove too large</translation>
+      <translation>Winkel des Spalts zu groß</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="82"/>
       <source>Angle of groove too small</source>
-      <translation type="unfinished">Angle of groove too small</translation>
+      <translation>Winkel des Spalts zu klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -5053,7 +5053,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeatureGroove.cpp" line="140"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <source>Revolve axis intersects the sketch</source>
-      <translation type="unfinished">Revolve axis intersects the sketch</translation>
+      <translation>Die Drehachse schneidet die Skizze</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="156"/>
@@ -5064,15 +5064,15 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <source>Could not revolve the sketch!</source>
-      <translation type="unfinished">Could not revolve the sketch!</translation>
+      <translation>Konnte die Skizze nicht drehen!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="180"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities in a sketch are not allowed.</translation>
+      <translation>Konnte keine Fläche aus der Skizze erstellen.
+Skizzenobjekte dürfen einander nicht schneiden.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="127"/>
@@ -5110,7 +5110,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="181"/>
       <source>Error: No valid sketch or face</source>
-      <translation type="unfinished">Error: No valid sketch or face</translation>
+      <translation>Fehler: Keine gültige Skizze oder Fläche</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="190"/>
@@ -5120,7 +5120,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="256"/>
       <source>Error: Could not build</source>
-      <translation type="unfinished">Error: Could not build</translation>
+      <translation>Fehler: Konnte leider keine Helix erstellen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="296"/>
@@ -5150,77 +5150,77 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="347"/>
       <source>Error: Intersecting the helix failed</source>
-      <translation type="unfinished">Error: Intersecting the helix failed</translation>
+      <translation>Fehler: Überschneidung mit der Helix ist leider fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="354"/>
       <source>Error: Subtracting the helix failed</source>
-      <translation type="unfinished">Error: Subtracting the helix failed</translation>
+      <translation>Fehler: Abziehen der Helix ist leider fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="376"/>
       <source>Error: Could not create face from sketch</source>
-      <translation type="unfinished">Error: Could not create face from sketch</translation>
+      <translation>Fehler: Konnte keine Fläche aus Skizze erzeugen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1687"/>
       <source>Hole error: Creating a face from sketch failed</source>
-      <translation type="unfinished">Hole error: Creating a face from sketch failed</translation>
+      <translation>Fehler bei Bohrung: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1712"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation type="unfinished">Hole error: Unsupported length specification</translation>
+      <translation>Fehler bei Bohrung: Nicht erlaubte Längenangabe</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
       <source>Hole error: Invalid hole depth</source>
-      <translation type="unfinished">Hole error: Invalid hole depth</translation>
+      <translation>Lochfehler: Ungültige Lochtiefe</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1738"/>
       <source>Hole error: Invalid taper angle</source>
-      <translation type="unfinished">Hole error: Invalid taper angle</translation>
+      <translation>Lochfehler: Ungültiger Fasenwinkel</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1759"/>
       <source>Hole error: Hole cut diameter too small</source>
-      <translation type="unfinished">Hole error: Hole cut diameter too small</translation>
+      <translation>Lochfehler: Lochdurchmesser zu klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1763"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be less than hole depth</translation>
+      <translation>Fehler bei Bohrung: Die Schnitttiefe muss kleiner als die Lochtiefe sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1767"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be greater or equal to zero</translation>
+      <translation>Fehler bei Bohrung: Die Schnitttiefe muss größer oder gleich Null sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
       <source>Hole error: Invalid countersink</source>
-      <translation type="unfinished">Hole error: Invalid countersink</translation>
+      <translation>Lochfehler: Ungültige Senkung</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1822"/>
       <source>Hole error: Invalid drill point angle</source>
-      <translation type="unfinished">Hole error: Invalid drill point angle</translation>
+      <translation>Lochfehler: Ungültiger Spitzenwinkel</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1832"/>
       <source>Hole error: Invalid drill point</source>
-      <translation type="unfinished">Hole error: Invalid drill point</translation>
+      <translation>Fehler bei Bohrung: Ungültiger Bohrpunkt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1866"/>
       <source>Hole error: Could not revolve sketch</source>
-      <translation type="unfinished">Hole error: Could not revolve sketch</translation>
+      <translation>Fehler bei Bohrung: Konnte die Skizze nicht drehen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
       <source>Hole error: Resulting shape is empty</source>
-      <translation type="unfinished">Hole error: Resulting shape is empty</translation>
+      <translation>Fehler bei Bohrung: Es ergibt sich eine leere Form</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1880"/>
@@ -5239,8 +5239,8 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeaturePocket.cpp" line="248"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>Es konnte keine Fläche aus der Skizze erstellt werden.
+Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in der Skizze erlaubt. Mehrere Flächen oder sich überschneidende Skizzenobjekte können nicht auf ein Mal bearbeitet werden.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2025"/>
@@ -5260,87 +5260,87 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="135"/>
       <source>Loft: At least one section is needed</source>
-      <translation type="unfinished">Loft: At least one section is needed</translation>
+      <translation>Fehler bei Ausformung: Mindestens ein Abschnitt wird benötigt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="140"/>
       <source>Loft: Could not obtain profile shape</source>
-      <translation type="unfinished">Loft: Could not obtain profile shape</translation>
+      <translation>Fehler bei Ausformung: Konnte keine Profilform generieren</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="153"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation type="unfinished">Loft: When using points for profile/sections, the sketch should have a single point</translation>
+      <translation>Fehler bei Ausformung: Wenn Punkte für Profile oder Querschnitte verwendet werden, sollte die Skizze nur einen einzigen Punkt haben</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="161"/>
       <source>Loft: All sections need to be part features</source>
-      <translation type="unfinished">Loft: All sections need to be part features</translation>
+      <translation>Fehler bei Ausformung: Alle Querschnitte müssen zu einem Teil gehören</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="166"/>
       <source>Loft: Could not obtain section shape</source>
-      <translation type="unfinished">Loft: Could not obtain section shape</translation>
+      <translation>Fehler bei Ausformung: Konnte für einen Querschnitt keine Form generieren</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="182"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation type="unfinished">Loft: A section doesn't contain any wires nor is a single vertex</translation>
+      <translation>Fehler bei Ausformung: Ein Querschnitt enthält weder Linien noch irgend einen Scheitelpunkt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
+      <translation>Fehler bei Ausformung: Nur das Profil und der letzte Querschnitt können Scheitelpunkte sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
+      <translation>Fehler bei Ausformung: Für geschlossene Schrägen kann nur das Profil ein Scheitelpunkt sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="193"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
+      <translation>Fehler bei Ausformung: Alle Querschnitte müssen die gleiche Anzahl an Verbindungslinien haben</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="232"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>Ausformung konnte nicht erstellt werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>Fehler bei Ausformung: Es ergibt sich kein kompakter Körper</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="278"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>Fehler bei Ausformung: Es gibt nichts zum Abziehen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>Fehler bei Ausformung: Leider gelang es nicht die Schräge hinzuzufügen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>Fehler bei Ausformung: Leider gelang es nicht die Schräge von der Form abzuziehen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="330"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>Fehler bei Ausformung: Ein ganz fürchterlicher, schwerwiegender Fehler ist beim Erstellen der Schräge aufgetreten</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="75"/>
       <source>Length of pad too small</source>
-      <translation type="unfinished">Length of pad too small</translation>
+      <translation>Die Länge des Blocks ist zu klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="78"/>
       <source>Second length of pad too small</source>
-      <translation type="unfinished">Second length of pad too small</translation>
+      <translation>Die zweite Länge des Blocks ist zu klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="130"/>
@@ -5366,13 +5366,13 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <location filename="../../../App/FeaturePad.cpp" line="248"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>Konnte keine Fläche aus der Skizze erstellen.
+Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind nicht erlaubt.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>Fehler bei Rohr: Konnte keine Profilform generieren</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
@@ -5387,42 +5387,43 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation type="unfinished">Pipe: Only one isolated point is needed if using a sketch with isolated points for section</translation>
+      <translation>Fehler bei Rohr: Nur ein einzelner Punkt wird benötigt, wenn eine Skizze mit isolierten Punkten für den Querschnitt verwendet wird</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="217"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation type="unfinished">Pipe: At least one section is needed when using a single point for profile</translation>
+      <translation>Fehler bei Rohr: Mindestens ein Querschnitt wird benötigt, wenn ein einzelner Punkt für das Profil verwendet wird</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="231"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation type="unfinished">Pipe: All sections need to be part features</translation>
+      <translation>Fehler bei Rohr: Alle Querschnitte müssen zu einem Teil gehören</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation type="unfinished">Pipe: Could not obtain section shape</translation>
+      <translation>Fehler bei Rohr: Konnte für einen Querschnitt keine Form generieren</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="246"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation type="unfinished">Pipe: Only the profile and last section can be vertices</translation>
+      <translation>Fehler bei Rohr: Nur das Profil und der letzte Querschnitt können Scheitelpunkte sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>Mehrere Querschnitte müssen die gleiche Anzahl an Liniensegmenten haben wie der Basisquerschnitt</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Path must not be a null shape</source>
-      <translation type="unfinished">Path must not be a null shape</translation>
+      <translation>Jetzt benötigen wir noch einen Pfad. Ohne Pfad geht nix. Wo soll das Rohr verlaufen? 
+Im Original: "Der Pfad darf keine Nullform sein." wenn Ihnen das besser hilft</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="317"/>
       <source>Pipe could not be built</source>
-      <translation type="unfinished">Pipe could not be built</translation>
+      <translation>Rohr konnte nicht erstellt werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="363"/>
@@ -5432,22 +5433,22 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="378"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation type="unfinished">Pipe: There is nothing to subtract from</translation>
+      <translation>Fehler bei Rohr: Es gibt nichts zum Abziehen</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="389"/>
       <source>Adding the pipe failed</source>
-      <translation type="unfinished">Adding the pipe failed</translation>
+      <translation>Das Rohr konnte nicht hinzugefügt werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="409"/>
       <source>Subtracting the pipe failed</source>
-      <translation type="unfinished">Subtracting the pipe failed</translation>
+      <translation>Das Rohr konnte nicht abgezogen werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation type="unfinished">A fatal error occurred when making the pipe</translation>
+      <translation>Fehler bei Rohr: Ein ganz fürchterlicher, schwerwiegender Fehler ist beim Erstellen der Schräge aufgetreten</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="558"/>
@@ -5600,7 +5601,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
-      <translation type="unfinished">Circumradius of the polygon, of the prism, is too small</translation>
+      <translation>Umkreis des Polygons des Prismas ist zu klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
@@ -5660,7 +5661,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>Ungültige Stützform kann nicht transformiert werden</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
@@ -5670,7 +5671,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Die Form des hinzuzufügenden/abzuziehenden Formelements ist leer</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>

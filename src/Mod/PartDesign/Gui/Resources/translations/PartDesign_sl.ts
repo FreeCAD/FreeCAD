@@ -93,7 +93,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
-      <translation type="unfinished">Pressure angle of gear teeth</translation>
+      <translation>Kot pritiska zobniškega zoba</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>

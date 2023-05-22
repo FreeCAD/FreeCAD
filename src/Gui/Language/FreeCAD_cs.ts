@@ -85,7 +85,7 @@
       <location filename="../CommandTest.cpp" line="718"/>
       <location filename="../CommandTest.cpp" line="719"/>
       <source>Run test cases to verify console messages</source>
-      <translation type="unfinished">Run test cases to verify console messages</translation>
+      <translation>Spusťte zkušební případy pro ověření zpráv konzole</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3303"/>
       <source>Clear all visible measurements</source>
-      <translation type="unfinished">Clear all visible measurements</translation>
+      <translation>Vymazat všechna viditelná měření</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3333"/>
       <source>Turn on or off the display of all measurements</source>
-      <translation type="unfinished">Turn on or off the display of all measurements</translation>
+      <translation>Zapnout nebo vypnout displej všech měření</translation>
     </message>
   </context>
   <context>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
-      <translation type="unfinished">The object will be edited using the mode defined internally to be the most appropriate for the object type</translation>
+      <translation>Objekt bude upraven pomocí vnitřního režimu tak, aby byl nejvhodnější pro typ objektu</translation>
     </message>
     <message>
       <location filename="../Application.h" line="259"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../Application.h" line="260"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
-      <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
+      <translation>Objekt bude mít upravitelné umístění pomocí příkazu Std TransformManip</translation>
     </message>
     <message>
       <location filename="../Application.h" line="264"/>
@@ -448,7 +448,7 @@
     <message>
       <location filename="../Application.h" line="265"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
-      <translation type="unfinished">This edit mode is implemented as available but currently does not seem to be used by any object</translation>
+      <translation>Tento režim úprav je implementován jako dostupný, ale v současné době se zdá, že jej žádný objekt nepoužívá</translation>
     </message>
     <message>
       <location filename="../Application.h" line="269"/>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../Application.h" line="270"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceColors command</translation>
+      <translation>Objekt bude mít barvu svých jednotlivých ploch upravitelných příkazem část FaceColors</translation>
     </message>
   </context>
   <context>
@@ -711,47 +711,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="450"/>
-      <location filename="../Splashscreen.cpp" line="459"/>
+      <location filename="../Splashscreen.cpp" line="471"/>
+      <location filename="../Splashscreen.cpp" line="480"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Zásluhy</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="461"/>
+      <location filename="../Splashscreen.cpp" line="482"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCAD by nebyl možný bez příspěvků od</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="464"/>
+      <location filename="../Splashscreen.cpp" line="485"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Jednotlivci</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="477"/>
+      <location filename="../Splashscreen.cpp" line="498"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organizace</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="504"/>
-      <location filename="../Splashscreen.cpp" line="744"/>
+      <location filename="../Splashscreen.cpp" line="525"/>
+      <location filename="../Splashscreen.cpp" line="765"/>
       <source>License</source>
       <translation>Licence</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="543"/>
+      <location filename="../Splashscreen.cpp" line="564"/>
       <source>Libraries</source>
       <translation>Knihovny</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="705"/>
+      <location filename="../Splashscreen.cpp" line="726"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>Tento program používá open source komponenty, jejichž autorská a další vlastnická práva patří příslušným vlastníkům:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="731"/>
+      <location filename="../Splashscreen.cpp" line="752"/>
       <source>Collection</source>
       <translation>Kolekce</translation>
     </message>
@@ -6963,7 +6963,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1135"/>
       <source>Point_%1</source>
-      <translation type="unfinished">Point_%1</translation>
+      <translation>Bod_%1</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1237"/>
@@ -6983,12 +6983,12 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1262"/>
       <source>&amp;Align</source>
-      <translation type="unfinished">&amp;Align</translation>
+      <translation>Zarovnání</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1263"/>
       <source>&amp;Remove last point</source>
-      <translation type="unfinished">&amp;Remove last point</translation>
+      <translation>&amp;Odstranění posledního bodu</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1265"/>
@@ -6998,7 +6998,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1269"/>
       <source>&amp;Synchronize views</source>
-      <translation type="unfinished">&amp;Synchronize views</translation>
+      <translation>&amp;Synchronizovat zobrazení</translation>
     </message>
   </context>
   <context>
@@ -9446,7 +9446,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandView.cpp" line="2695"/>
       <location filename="../CommandView.cpp" line="2697"/>
       <source>Activate the box selection tool</source>
-      <translation type="unfinished">Activate the box selection tool</translation>
+      <translation>Aktivovat nástroj pro výběr polí</translation>
     </message>
   </context>
   <context>
@@ -9530,7 +9530,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandView.cpp" line="2107"/>
       <location filename="../CommandView.cpp" line="2108"/>
       <source>Turns on or off the axis cross at the origin</source>
-      <translation type="unfinished">Turns on or off the axis cross at the origin</translation>
+      <translation>Zapne nebo vypne osu protínající počátek</translation>
     </message>
   </context>
   <context>
@@ -9838,7 +9838,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandDoc.cpp" line="1691"/>
       <location filename="../CommandDoc.cpp" line="1693"/>
       <source>Actions that apply to expressions</source>
-      <translation type="unfinished">Actions that apply to expressions</translation>
+      <translation>Akce, které se vztahují na výrazy</translation>
     </message>
   </context>
   <context>
@@ -10040,7 +10040,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandLink.cpp" line="875"/>
       <location filename="../CommandLink.cpp" line="877"/>
       <source>Actions that apply to link objects</source>
-      <translation type="unfinished">Actions that apply to link objects</translation>
+      <translation>Akce, které se použijí pro propojení objektů</translation>
     </message>
   </context>
   <context>
@@ -10226,7 +10226,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandMacro.cpp" line="268"/>
       <location filename="../CommandMacro.cpp" line="270"/>
       <source>Step to the next line executed</source>
-      <translation type="unfinished">Step to the next line executed</translation>
+      <translation>Krok na další vykonaný řádek</translation>
     </message>
   </context>
   <context>
@@ -10240,7 +10240,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandMacro.cpp" line="241"/>
       <location filename="../CommandMacro.cpp" line="243"/>
       <source>Step to the next line in this file</source>
-      <translation type="unfinished">Step to the next line in this file</translation>
+      <translation>Krok na další řádek v tomto souboru</translation>
     </message>
   </context>
   <context>
@@ -10282,7 +10282,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandView.cpp" line="3124"/>
       <location filename="../CommandView.cpp" line="3126"/>
       <source>Activate the distance measurement tool</source>
-      <translation type="unfinished">Activate the distance measurement tool</translation>
+      <translation>Aktivovat nástroj pro měření vzdálenosti</translation>
     </message>
   </context>
   <context>
@@ -10561,7 +10561,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandFeat.cpp" line="79"/>
       <location filename="../CommandFeat.cpp" line="81"/>
       <source>Set each selected object to a randomly-selected color</source>
-      <translation type="unfinished">Set each selected object to a randomly-selected color</translation>
+      <translation>Nastavit každý vybraný objekt na náhodně vybranou barvu</translation>
     </message>
   </context>
   <context>
@@ -10911,7 +10911,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandMacro.cpp" line="295"/>
       <location filename="../CommandMacro.cpp" line="297"/>
       <source>Add or remove a breakpoint at this position</source>
-      <translation type="unfinished">Add or remove a breakpoint at this position</translation>
+      <translation>Přidat nebo odebrat zarážku na této pozici</translation>
     </message>
   </context>
   <context>
@@ -11549,7 +11549,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandWindow.cpp" line="417"/>
       <source>Activate window</source>
-      <translation type="unfinished">Activate window</translation>
+      <translation>Monitor aktivity</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="418"/>
@@ -11787,7 +11787,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandView.cpp" line="2625"/>
       <location filename="../CommandView.cpp" line="2627"/>
       <source>Activate the box zoom tool</source>
-      <translation type="unfinished">Activate the box zoom tool</translation>
+      <translation>Aktivovat nástroj pro výběr polí</translation>
     </message>
   </context>
   <context>
@@ -11871,7 +11871,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandView.cpp" line="2430"/>
       <location filename="../CommandView.cpp" line="2432"/>
       <source>Increase the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Increase the zoom factor by a fixed amount</translation>
+      <translation>Zvýšení faktoru přiblížení o pevnou částku</translation>
     </message>
   </context>
   <context>
@@ -11885,7 +11885,7 @@ na aktuální kopii budou ztraceny.
       <location filename="../CommandView.cpp" line="2459"/>
       <location filename="../CommandView.cpp" line="2461"/>
       <source>Decrease the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Decrease the zoom factor by a fixed amount</translation>
+      <translation>Zvýšení faktoru přiblížení o pevnou částku</translation>
     </message>
   </context>
   <context>
@@ -12452,7 +12452,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrátit směr</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -12490,7 +12490,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrátit směr</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
@@ -12715,12 +12715,12 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1093"/>
       <source>Movable navigation cube</source>
-      <translation type="unfinished">Movable navigation cube</translation>
+      <translation>Pohyblivá navigační krychle</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1094"/>
       <source>Drag and place NaviCube</source>
-      <translation type="unfinished">Drag and place NaviCube</translation>
+      <translation>Přetáhnout a umístit NaviCube</translation>
     </message>
   </context>
   <context>

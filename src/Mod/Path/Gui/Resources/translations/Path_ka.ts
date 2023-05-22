@@ -218,20 +218,7 @@ Any values of the SetupSheet that are changed from their default are preselected
       <translation type="unfinished">Enable to include the default coolant mode in the template.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="133"/>
-      <source>Enable all Operations for which the configuration values should be exported.
-
-&lt;br/&gt;
-
-Note that only operations are listed which currently have configuration values setup.</source>
-      <translation type="unfinished">Enable all Operations for which the configuration values should be exported.
-
-&lt;br/&gt;
-
-Note that only operations are listed which currently have configuration values setup.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="147"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
       <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
 
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
@@ -244,17 +231,17 @@ This option is most useful if stock is a box or cylinder, or if the machine has 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="186"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
       <source>Hint about the current stock extent setting.</source>
       <translation type="unfinished">Hint about the current stock extent setting.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="193"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
       <source>If enabled the current placement of the stock solid is stored in the template.</source>
       <translation type="unfinished">If enabled the current placement of the stock solid is stored in the template.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="212"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="210"/>
       <source>Hint about the current stock placement.</source>
       <translation type="unfinished">Hint about the current stock placement.</translation>
     </message>
@@ -269,12 +256,21 @@ Note that this option is disabled if a stock object from an existing solid is us
       <translation>გამაგრილებლის რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="154"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="133"/>
+      <source>Enable all operations for which the configuration values should be exported.
+
+Note that only operations which currently have configuration values set are listed.</source>
+      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+
+Note that only operations which currently have configuration values set are listed.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
       <source>Stock</source>
       <translation>ნედლეული</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="163"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
       <source>If enabled the current size settings for the stock object are included in the template.
 
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
@@ -287,17 +283,17 @@ For Box and Cylinder stocks this means the actual size of the stock solid being 
 For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="170"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
       <source>Extent</source>
       <translation type="unfinished">Extent</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="196"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="194"/>
       <source>Placement</source>
       <translation>მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="250"/>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="248"/>
       <source>Export</source>
       <translation type="unfinished">Export</translation>
     </message>
@@ -399,7 +395,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/PropertyCreate.ui" line="51"/>
       <source>The type of the property value.</source>
-      <translation type="unfinished">The type of the property value.</translation>
+      <translation>თვისების მნიშვნელობის ტიპი.</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -469,7 +465,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="119"/>
       <source>Add New Tool Table</source>
-      <translation type="unfinished">Add New Tool Table</translation>
+      <translation>ახალი ხელსაწყოს ცხრილის დამატება</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="139"/>
@@ -484,7 +480,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
       <source>Save the current Library</source>
-      <translation type="unfinished">Save the current Library</translation>
+      <translation>მიმდინარე ბიბლიოთეკის შენახვა</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
@@ -617,12 +613,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box's MinX</source>
-      <translation type="unfinished">Extension of bounding box's MinX</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MinX-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box's MaxX</source>
-      <translation type="unfinished">Extension of bounding box's MaxX</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MaxX-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -632,12 +628,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box's MinY</source>
-      <translation type="unfinished">Extension of bounding box's MinY</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MinY-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box's MaxY</source>
-      <translation type="unfinished">Extension of bounding box's MaxY</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MaxY-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -647,37 +643,37 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box's MinZ</source>
-      <translation type="unfinished">Extension of bounding box's MinZ</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MinZ-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box's MaxZ</source>
-      <translation type="unfinished">Extension of bounding box's MaxZ</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MaxZ-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>Radius of the Cylinder</source>
-      <translation type="unfinished">Radius of the Cylinder</translation>
+      <translation>ცილინდრის რადიუსი</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>Height of the Cylinder</source>
-      <translation type="unfinished">Height of the Cylinder</translation>
+      <translation>ცილინდრის სიმაღლე</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>Length of the Box</source>
-      <translation type="unfinished">Length of the Box</translation>
+      <translation>ჩარჩოს სიგრძე</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>Width of the Box</source>
-      <translation type="unfinished">Width of the Box</translation>
+      <translation>ჩარჩოს სიგანე</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>Height of the Box</source>
-      <translation type="unfinished">Height of the Box</translation>
+      <translation>ჩარჩოს სიმაღლე</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
@@ -743,7 +739,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
       <source>Clears list of base geometries</source>
-      <translation type="unfinished">Clears list of base geometries</translation>
+      <translation>ასუფთავებს საბაზისო გეომეტრიების სიას</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
@@ -819,7 +815,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
       <source>List of locations to be processed.</source>
-      <translation type="unfinished">List of locations to be processed.</translation>
+      <translation>დასამუშავებელი მდებარეობების სია.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
@@ -844,7 +840,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>Edit selected location.</source>
-      <translation type="unfinished">Edit selected location.</translation>
+      <translation>მონიშნული მდებარეობის ჩასწორება.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="63"/>
@@ -1157,22 +1153,22 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
       <source>Width of chamfer cut.</source>
-      <translation type="unfinished">Width of chamfer cut.</translation>
+      <translation>კუთხის ნაზოლის ამოჭრის სიგანე.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
       <source>Extra depth of tool immersion.</source>
-      <translation type="unfinished">Extra depth of tool immersion.</translation>
+      <translation>ხელსაწყოს ჩაძირვის დამატებითი სიღრმე.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
       <source>Round joint</source>
-      <translation type="unfinished">Round joint</translation>
+      <translation>მომრგვალებული შეერთება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="308"/>
       <source>Miter joint</source>
-      <translation type="unfinished">Miter joint</translation>
+      <translation>ირიბპირა შეერთება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
@@ -1701,7 +1697,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source> No Base Geometry selected </source>
-      <translation type="unfinished"> No Base Geometry selected </translation>
+      <translation> საბაზისო გეომეტრია არჩეული არაა </translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
@@ -1856,16 +1852,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>შემომსაზღვრელი ჩარჩოს დამატებითი წანაცვლების X, Y</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
-      <source>Additional offset to the selected bounding box along the X axis."</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis."</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
-      <source>Additional offset to the selected bounding box along the Y axis."</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis."</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation type="unfinished">Dropcutter lines are created parallel to this axis.</translation>
@@ -1907,6 +1893,16 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
       <source>Drop Cutter Direction</source>
       <translation type="unfinished">Drop Cutter Direction</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
+      <source>Additional offset to the selected bounding box along the X axis.</source>
+      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
+      <source>Additional offset to the selected bounding box along the Y axis.</source>
+      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2018,15 +2014,6 @@ Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="129"/>
-      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</translation>
-    </message>
-    <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
@@ -2058,6 +2045,15 @@ Default: "5mm"</translation>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
       <source>Safe</source>
       <translation>უსაფრთხო</translation>
+    </message>
+    <message>
+      <location filename="../panels/SetupGlobal.ui" line="129"/>
+      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</source>
+      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2132,11 +2128,6 @@ Default: "5mm"</translation>
       <translation>შეყვანა/გამოყვანა</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="63"/>
-      <source>&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
       <source>Discretization Deflection</source>
       <translation>ანარეკლის დისკრეტიზაცია</translation>
@@ -2148,8 +2139,8 @@ Default: "5mm"</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
-      <source>Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
+      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -2905,12 +2896,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="28"/>
       <source>Enable Lead-in move</source>
-      <translation type="unfinished">Enable Lead-in move</translation>
+      <translation>შეყვანის გადაადგილების ჩართვა</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="31"/>
       <source>Enable Lead In</source>
-      <translation type="unfinished">Enable Lead In</translation>
+      <translation>შეყვანის ჩართვა</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="38"/>
@@ -2922,12 +2913,12 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="61"/>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="135"/>
       <source>Length / Radius</source>
-      <translation type="unfinished">Length / Radius</translation>
+      <translation>სიგრძე / რადიუსი</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="68"/>
       <source>length or radius of the Lead-in</source>
-      <translation type="unfinished">length or radius of the Lead-in</translation>
+      <translation>გამოყვანის რადიუსის სიგრძე</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="81"/>
@@ -2938,27 +2929,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="88"/>
       <source>extends the leadin distance</source>
-      <translation type="unfinished">extends the leadin distance</translation>
+      <translation>ადიდებს შეყვანის მანძილს</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
       <source>Enable Lead-out move</source>
-      <translation type="unfinished">Enable Lead-out move</translation>
+      <translation>გამოყვანის გადაადგილების ჩართვა</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="105"/>
       <source>Enable Lead Out</source>
-      <translation type="unfinished">Enable Lead Out</translation>
+      <translation>გამოყვანის ჩართვა</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="142"/>
       <source>length or radius of the Lead-out</source>
-      <translation type="unfinished">length or radius of the Lead-out</translation>
+      <translation>გამოყვანის რადიუსის სიგრძე</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="162"/>
       <source>Extends the leadout distance</source>
-      <translation type="unfinished">Extends the leadout distance</translation>
+      <translation>ზრდის გამოყვანის მანძილს</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="182"/>
@@ -2968,12 +2959,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="192"/>
       <source>Apply Lead In/Out on all layers</source>
-      <translation type="unfinished">Apply Lead In/Out on all layers</translation>
+      <translation>შეყვანა/გამოყვანის გადატარება ყველა ფენაზე</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="202"/>
       <source>Keep the tool down in the path</source>
-      <translation type="unfinished">Keep the tool down in the path</translation>
+      <translation>ხელსაწყოს ტრაექტორიაში დაბლა შეკავება</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="205"/>
@@ -3468,7 +3459,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="54"/>
       <source>Enter the filename containing the probe data</source>
-      <translation type="unfinished">Enter the filename containing the probe data</translation>
+      <translation>შეიყვანეთ ზონდირების მონაცემების შემცველი ფაილის სახელი</translation>
     </message>
   </context>
   <context>
@@ -3715,8 +3706,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="85"/>
-      <location filename="../panels/PathEdit.ui" line="1288"/>
-      <location filename="../panels/PathEdit.ui" line="1507"/>
+      <location filename="../panels/PathEdit.ui" line="1281"/>
+      <location filename="../panels/PathEdit.ui" line="1500"/>
       <source>Edit</source>
       <translation>ჩასწორება</translation>
     </message>
@@ -3848,20 +3839,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="397"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.
-
-
-
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.
-
-
-
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="404"/>
+      <location filename="../panels/PathEdit.ui" line="400"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.
 
 
@@ -3878,217 +3856,184 @@ For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is
 If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="413"/>
+      <location filename="../panels/PathEdit.ui" line="409"/>
       <source>Split Output</source>
       <translation>გამოტანის გაყოფა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="437"/>
+      <location filename="../panels/PathEdit.ui" line="433"/>
       <source>Setup</source>
       <translation>დაყენება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="455"/>
+      <location filename="../panels/PathEdit.ui" line="451"/>
       <source>Layout</source>
       <translation>შაბლონი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="461"/>
+      <location filename="../panels/PathEdit.ui" line="457"/>
       <source>Stock</source>
       <translation>ნედლეული</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="482"/>
+      <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create Box</source>
       <translation>პარალელეპიპედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="487"/>
+      <location filename="../panels/PathEdit.ui" line="483"/>
       <source>Create Cylinder</source>
       <translation>ცილინდრის შექმნა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="492"/>
+      <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model's Bounding Box</source>
       <translation>მოდელის შემომსაზღვრელი ჩარჩოს გაფართოება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="497"/>
+      <location filename="../panels/PathEdit.ui" line="493"/>
       <source>Use Existing Solid</source>
       <translation>არსებული მყარი სხეულის გამოყენება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="505"/>
+      <location filename="../panels/PathEdit.ui" line="501"/>
       <source>Refresh</source>
       <translation>განახლება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="539"/>
+      <location filename="../panels/PathEdit.ui" line="535"/>
       <source>Ext. X</source>
       <translation>გაფ. X</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="559"/>
+      <location filename="../panels/PathEdit.ui" line="555"/>
       <source>Ext. Y</source>
       <translation>გაფ. Y</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="572"/>
+      <location filename="../panels/PathEdit.ui" line="568"/>
       <source>Ext. Z</source>
       <translation>გაფ. Z</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="591"/>
+      <location filename="../panels/PathEdit.ui" line="587"/>
       <source>Radius</source>
       <translation>რადიუსი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="601"/>
-      <location filename="../panels/PathEdit.ui" line="637"/>
+      <location filename="../panels/PathEdit.ui" line="597"/>
+      <location filename="../panels/PathEdit.ui" line="633"/>
       <source>Height</source>
       <translation>სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="617"/>
+      <location filename="../panels/PathEdit.ui" line="613"/>
       <source>Length</source>
       <translation>სიგრძე</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="627"/>
+      <location filename="../panels/PathEdit.ui" line="623"/>
       <source>Width</source>
       <translation>სიგანე</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="653"/>
+      <location filename="../panels/PathEdit.ui" line="649"/>
       <source>Alignment</source>
       <translation>სწორება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="659"/>
+      <location filename="../panels/PathEdit.ui" line="655"/>
       <source>Move to Origin</source>
       <translation>წყაროსთან გადატანა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="666"/>
+      <location filename="../panels/PathEdit.ui" line="662"/>
       <source>Set Origin</source>
       <translation>წყაროს დაყენება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="673"/>
+      <location filename="../panels/PathEdit.ui" line="669"/>
       <source>Center in Stock</source>
       <translation>დაცენტრება ნედლეულში</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="680"/>
+      <location filename="../panels/PathEdit.ui" line="676"/>
       <source>XY in Stock</source>
       <translation>XY ნედლეულში</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="690"/>
+      <location filename="../panels/PathEdit.ui" line="686"/>
       <source>Set</source>
       <translation>დაყენება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="696"/>
+      <location filename="../panels/PathEdit.ui" line="692"/>
       <source>X-Axis</source>
       <translation>X ღერძი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="703"/>
+      <location filename="../panels/PathEdit.ui" line="699"/>
       <source>Y-Axis</source>
       <translation>Y ღერძი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="710"/>
+      <location filename="../panels/PathEdit.ui" line="706"/>
       <source>Z-Axis</source>
       <translation>Z ღერძი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="717"/>
+      <location filename="../panels/PathEdit.ui" line="713"/>
       <source>X=0</source>
       <translation>Z=0</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="724"/>
+      <location filename="../panels/PathEdit.ui" line="720"/>
       <source>Y=0</source>
       <translation>Y=0</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="731"/>
+      <location filename="../panels/PathEdit.ui" line="727"/>
       <source>Z=0</source>
       <translation>Z=0</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="738"/>
+      <location filename="../panels/PathEdit.ui" line="734"/>
       <source>Link Stock and Model</source>
       <translation>მოდელისა და ნედლეულის მიბმა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="748"/>
+      <location filename="../panels/PathEdit.ui" line="744"/>
       <source>Move - XY</source>
       <translation>გადატანა - XY</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="906"/>
+      <location filename="../panels/PathEdit.ui" line="902"/>
       <source>Rotate - XY</source>
       <translation>შებრუნება XY</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="962"/>
+      <location filename="../panels/PathEdit.ui" line="958"/>
       <source>Compound</source>
       <translation>გადაბმა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1022"/>
-      <location filename="../panels/PathEdit.ui" line="1326"/>
+      <location filename="../panels/PathEdit.ui" line="1018"/>
+      <location filename="../panels/PathEdit.ui" line="1319"/>
       <source>Default Values</source>
       <translation>ნაგულისხმევი მნიშვნელობები</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1028"/>
+      <location filename="../panels/PathEdit.ui" line="1024"/>
       <source>Depths</source>
       <translation>სიღრმეები</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1034"/>
+      <location filename="../panels/PathEdit.ui" line="1030"/>
       <source>Start Depth</source>
       <translation>საწყისი სიღრმე</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1041"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.
-
-
-Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.
-
-
-Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1058"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.
-
-
-Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.
-
-
-Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1075"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.
-
-
-Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.
-
-
-Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1121"/>
+      <location filename="../panels/PathEdit.ui" line="1114"/>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
@@ -4097,16 +4042,7 @@ Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1130"/>
-      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: "3 mm"</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="1146"/>
+      <location filename="../panels/PathEdit.ui" line="1139"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
@@ -4115,7 +4051,7 @@ Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1155"/>
+      <location filename="../panels/PathEdit.ui" line="1148"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</source>
@@ -4124,139 +4060,180 @@ Default: "5mm"</source>
 Default: "5mm"</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1254"/>
+      <location filename="../panels/PathEdit.ui" line="1247"/>
       <source>Horizontal Feed</source>
-      <translation type="unfinished">Horizontal Feed</translation>
+      <translation>ჰოტიზონტალური მიწოდება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1266"/>
+      <location filename="../panels/PathEdit.ui" line="1259"/>
       <source>Vertical Feed</source>
-      <translation type="unfinished">Vertical Feed</translation>
+      <translation>ვერტიკალური მიწოდება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1354"/>
+      <location filename="../panels/PathEdit.ui" line="1347"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController.</source>
       <translation type="unfinished">Rapid horizontal speed assigned as HorizRapid to new ToolController.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1374"/>
+      <location filename="../panels/PathEdit.ui" line="1367"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController.</source>
       <translation type="unfinished">Rapid vertical speed assigned to VertRapid of new ToolController.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1051"/>
+      <location filename="../panels/PathEdit.ui" line="1046"/>
       <source>Final Depth</source>
       <translation>საბოლოო სიღრმე</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1068"/>
+      <location filename="../panels/PathEdit.ui" line="397"/>
+      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1037"/>
+      <source>Expression set as the StartDepth of a newly created operation.
+
+Default: OpStartDepth</source>
+      <translation type="unfinished">Expression set as the StartDepth of a newly created operation.
+
+Default: OpStartDepth</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1053"/>
+      <source>Expression set as the FinalDepth for a newly created operation.
+
+Default: OpFinalDepth</source>
+      <translation type="unfinished">Expression set as the FinalDepth for a newly created operation.
+
+Default: OpFinalDepth</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1062"/>
       <source>Step Down</source>
       <translation>ბიჯი ქვემოთ</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1088"/>
+      <location filename="../panels/PathEdit.ui" line="1069"/>
+      <source>Expression set as the StepDown of a newly created operation.
+
+Default: OpToolDiameter</source>
+      <translation type="unfinished">Expression set as the StepDown of a newly created operation.
+
+Default: OpToolDiameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1081"/>
       <source>Heights</source>
       <translation>სიმაღლეები</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1094"/>
+      <location filename="../panels/PathEdit.ui" line="1087"/>
       <source>Expression</source>
       <translation>გამოთქმა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1104"/>
+      <location filename="../panels/PathEdit.ui" line="1097"/>
       <source>Offset</source>
       <translation>წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1114"/>
+      <location filename="../panels/PathEdit.ui" line="1107"/>
       <source>Clearance</source>
       <translation>კლირენსი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1139"/>
+      <location filename="../panels/PathEdit.ui" line="1123"/>
+      <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</source>
+      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+
+Default: 3 mm</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1132"/>
       <source>Safe</source>
       <translation>უსაფრთხო</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1167"/>
+      <location filename="../panels/PathEdit.ui" line="1160"/>
       <source>Coolant</source>
       <translation>გამაგრილებელი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1173"/>
+      <location filename="../panels/PathEdit.ui" line="1166"/>
       <source>Coolant Mode</source>
       <translation>გამაგრილებლის რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1204"/>
-      <location filename="../panels/PathEdit.ui" line="1222"/>
+      <location filename="../panels/PathEdit.ui" line="1197"/>
+      <location filename="../panels/PathEdit.ui" line="1215"/>
       <source>Tools</source>
       <translation>ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1241"/>
+      <location filename="../panels/PathEdit.ui" line="1234"/>
       <source>Name</source>
       <translation>სახელი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1246"/>
+      <location filename="../panels/PathEdit.ui" line="1239"/>
       <source>Nr.</source>
       <translation>რ-ბა.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1251"/>
-      <location filename="../panels/PathEdit.ui" line="1263"/>
+      <location filename="../panels/PathEdit.ui" line="1244"/>
+      <location filename="../panels/PathEdit.ui" line="1256"/>
       <source>Feed</source>
       <translation>მიწოდება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1275"/>
+      <location filename="../panels/PathEdit.ui" line="1268"/>
       <source>Spindle</source>
       <translation>შპინდელი</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1295"/>
+      <location filename="../panels/PathEdit.ui" line="1288"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1305"/>
+      <location filename="../panels/PathEdit.ui" line="1298"/>
       <source>Remove</source>
       <translation>მოცილება</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1332"/>
+      <location filename="../panels/PathEdit.ui" line="1325"/>
       <source>Rapid Speeds</source>
       <translation>უქმი სიჩქარე</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1341"/>
+      <location filename="../panels/PathEdit.ui" line="1334"/>
       <source>Horizontal</source>
       <translation>ჰორიზონტალურად</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1361"/>
+      <location filename="../panels/PathEdit.ui" line="1354"/>
       <source>Vertical</source>
       <translation>ვერტიკალურად</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1402"/>
+      <location filename="../panels/PathEdit.ui" line="1395"/>
       <source>Workplan</source>
       <translation>სამუშაო გეგმა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1414"/>
+      <location filename="../panels/PathEdit.ui" line="1407"/>
       <source>Active Tool </source>
       <translation>აქტიური ხელსაწყო </translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1527"/>
+      <location filename="../panels/PathEdit.ui" line="1520"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1538"/>
+      <location filename="../panels/PathEdit.ui" line="1531"/>
       <source>Op Defaults</source>
       <translation>ოპ. მნიშვნელობები</translation>
     </message>
@@ -4851,7 +4828,7 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="93"/>
       <source>Length or Radius of the exit</source>
-      <translation type="unfinished">Length or Radius of the exit</translation>
+      <translation>გამოსვლის რადიუსის სიგრძე</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="99"/>
@@ -6098,14 +6075,6 @@ For example:
     </message>
   </context>
   <context>
-    <name>PathGui</name>
-    <message>
-      <location filename="../../../Path/Base/Util.py" line="58"/>
-      <source>%s has no property %s (%s))</source>
-      <translation>%s-ს არ გააჩნია თვისება %s (%s))</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_PropertyBag</name>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="439"/>
@@ -6839,8 +6808,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kbs)</source>
-      <translation>ფაილის ზომა (კბ)</translation>
+      <source>File Size (kb)</source>
+      <translation type="unfinished">File Size (kb)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -7923,7 +7892,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="667"/>
       <source>Cut pattern angle limits are +-360 degrees.</source>
-      <translation type="unfinished">Cut pattern angle limits are +-360 degrees.</translation>
+      <translation>ამოჭრის შაბლონის კუთხის ზღვარი +-360 გრადუსია.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="674"/>
@@ -8440,6 +8409,25 @@ Aborting op creation</translation>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="80"/>
       <source>Open an editor to manage ToolBit libraries</source>
       <translation>ხელსაწყოს მჭრელი იარაღის ბიბლიოთეკების რედაქტორის გახსნა</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../../InitGui.py" line="87"/>
+      <location filename="../../../InitGui.py" line="90"/>
+      <location filename="../../../InitGui.py" line="267"/>
+      <location filename="../../AppPathGui.cpp" line="90"/>
+      <source>Path</source>
+      <translation>ტრაექტორია</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui</name>
+    <message>
+      <location filename="../../../Path/Base/Util.py" line="58"/>
+      <source>%s has no property %s (%s)</source>
+      <translation type="unfinished">%s has no property %s (%s)</translation>
     </message>
   </context>
 </TS>

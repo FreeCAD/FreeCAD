@@ -1753,7 +1753,7 @@ bude pracovat při otevírání souboru.</translation>
       <location filename="../../ArchStructure.py" line="125"/>
       <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation>Paprsek</translation>
+      <translation>Nosník</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
@@ -2088,8 +2088,6 @@ bude pracovat při otevírání souboru.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Oblouk</translation>
     </message>
@@ -3195,7 +3193,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="811"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Štítek</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="87"/>
@@ -5934,21 +5932,6 @@ Building creation aborted.</translation>
       <source>Writing camera position</source>
       <translation type="unfinished">Writing camera position</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Ponor</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Import-Export</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6165,7 +6148,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
-      <translation type="unfinished">Axis System</translation>
+      <translation>Souřadný systém</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
@@ -6758,6 +6741,30 @@ Building creation aborted.</translation>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Transformace</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Oblouk</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Ponor</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Import-Export</translation>
     </message>
   </context>
 </TS>

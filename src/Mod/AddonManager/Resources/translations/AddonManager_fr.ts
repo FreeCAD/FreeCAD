@@ -618,7 +618,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation>Masquer les extensions marquées Python 2 uniquement</translation>
+      <translation>Masquer les extensions marquées d'une version Python 2 uniquement</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
@@ -657,18 +657,18 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Python executable (optional):</source>
-      <translation>L'exécutable de Python (facultatif) :</translation>
+      <source>Path to Python executable (optional):</source>
+      <translation type="unfinished">Path to Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="308"/>
+      <source>Path to git executable (optional):</source>
+      <translation type="unfinished">Path to git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
       <translation>Le chemin vers l'exécutable Python pour l'installation de paquets avec pip. Détecté automatiquement si nécessaire et non spécifié.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
-      <source>git executable (optional):</source>
-      <translation>L'exécutable de git (facultatif) :</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -891,11 +891,6 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../developer_mode_add_content.ui" line="170"/>
       <source>Icon</source>
       <translation>Icône</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_add_content.ui" line="179"/>
-      <source>actualIcon</source>
-      <translation>icône en cours</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
@@ -1179,102 +1174,97 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="125"/>
-      <source>Addon Manager</source>
-      <translation>Gestionnaire des extensions</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="236"/>
+      <location filename="../../AddonManager.py" line="229"/>
       <source>Starting up...</source>
       <translation>Démarrage en cours...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="279"/>
+      <location filename="../../AddonManager.py" line="268"/>
       <source>Loading addon information</source>
       <translation>Chargement des informations de l'extension</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="305"/>
+      <location filename="../../AddonManager.py" line="294"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>Le processus de traitement {} prend beaucoup de temps pour s’arrêter...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="363"/>
+      <location filename="../../AddonManager.py" line="350"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
       <translation>Le processus du précédent cache a été interrompu, redémarrage...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="382"/>
+      <location filename="../../AddonManager.py" line="369"/>
       <source>Custom repo list changed, forcing recache...
 </source>
       <translation>La liste des dépôts personnalisés a changé, ce qui force à relancer le cache...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="435"/>
+      <location filename="../../AddonManager.py" line="422"/>
       <source>Addon manager</source>
       <translation>Gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="442"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>Vous devez redémarrer FreeCAD pour que les modifications soient prises en compte.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="448"/>
+      <location filename="../../AddonManager.py" line="435"/>
       <source>Restart now</source>
       <translation>Redémarrer maintenant</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="449"/>
+      <location filename="../../AddonManager.py" line="436"/>
       <source>Restart later</source>
       <translation>Redémarrer plus tard</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="516"/>
-      <location filename="../../AddonManager.py" line="987"/>
+      <location filename="../../AddonManager.py" line="501"/>
+      <location filename="../../AddonManager.py" line="934"/>
       <source>Refresh local cache</source>
       <translation>Rafraîchir le cache local</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="662"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
       <translation>Mise à jour du cache...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="706"/>
+      <location filename="../../AddonManager.py" line="663"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation>Impossible de trouver l'extension &apos;{}&apos; à sélectionner
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="736"/>
-      <location filename="../../AddonManager.py" line="771"/>
+      <location filename="../../AddonManager.py" line="691"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
       <translation>Recherche de mises à jour...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="766"/>
+      <location filename="../../AddonManager.py" line="719"/>
       <source>Apply {} update(s)</source>
       <translation>Appliquer {} mise(s) à jour</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="775"/>
+      <location filename="../../AddonManager.py" line="728"/>
       <source>No updates available</source>
       <translation>Aucune mise à jour disponible</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="912"/>
-      <location filename="../../AddonManager.py" line="938"/>
-      <location filename="../../AddonManager.py" line="1041"/>
+      <location filename="../../AddonManager.py" line="861"/>
+      <location filename="../../AddonManager.py" line="887"/>
+      <location filename="../../AddonManager.py" line="988"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Impossible de lancer un nouveau programme d'installation tant que le précédent n'est pas terminé.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1027"/>
+      <location filename="../../AddonManager.py" line="974"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation>L'exécution de la macro a échoué. Voir la console pour les détails de l'échec.</translation>
     </message>
@@ -2471,12 +2461,12 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="150"/>
+      <location filename="../../AddonManager.py" line="151"/>
       <source>&amp;Addon manager</source>
       <translation>&amp;Gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="154"/>
+      <location filename="../../AddonManager.py" line="155"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Gérer les ateliers externes, les macros et les kits de préférences</translation>
     </message>
@@ -2508,6 +2498,14 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../addonmanager_installer_gui.py" line="652"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation>Barre d'outils de macro créée automatiquement</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AddonManager.py" line="124"/>
+      <source>Addon Manager</source>
+      <translation>Gestionnaire des extensions</translation>
     </message>
   </context>
 </TS>

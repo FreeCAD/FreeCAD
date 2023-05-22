@@ -711,47 +711,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="450"/>
-      <location filename="../Splashscreen.cpp" line="459"/>
+      <location filename="../Splashscreen.cpp" line="471"/>
+      <location filename="../Splashscreen.cpp" line="480"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Remerciements</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="461"/>
+      <location filename="../Splashscreen.cpp" line="482"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCAD ne serait pas possible sans les contributions de</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="464"/>
+      <location filename="../Splashscreen.cpp" line="485"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Particuliers</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="477"/>
+      <location filename="../Splashscreen.cpp" line="498"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organisations</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="504"/>
-      <location filename="../Splashscreen.cpp" line="744"/>
+      <location filename="../Splashscreen.cpp" line="525"/>
+      <location filename="../Splashscreen.cpp" line="765"/>
       <source>License</source>
       <translation>Licence</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="543"/>
+      <location filename="../Splashscreen.cpp" line="564"/>
       <source>Libraries</source>
       <translation>Bibliothèques</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="705"/>
+      <location filename="../Splashscreen.cpp" line="726"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>Ce logiciel utilise des composants open source dont le copyright et autres droits associés appartiennent à leurs propriétaires respectifs :</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="731"/>
+      <location filename="../Splashscreen.cpp" line="752"/>
       <source>Collection</source>
       <translation>Collection</translation>
     </message>
@@ -5984,7 +5984,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../SceneInspector.ui" line="25"/>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation>Rafraîchir</translation>
     </message>
     <message>
       <location filename="../SceneInspector.ui" line="45"/>
@@ -10599,7 +10599,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
     <message>
       <location filename="../CommandDoc.cpp" line="1417"/>
       <source>&amp;Refresh</source>
-      <translation>&amp;Rafraîchir</translation>
+      <translation>&amp;Actualiser</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1418"/>

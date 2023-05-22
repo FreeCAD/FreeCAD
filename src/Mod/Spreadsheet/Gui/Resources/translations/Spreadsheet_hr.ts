@@ -745,6 +745,11 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
 
 </translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Proračunska tablica</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

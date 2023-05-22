@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Sortu kalkoa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -1098,7 +1098,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create an external geometry</source>
-      <translation type="unfinished">Create an external geometry</translation>
+      <translation>Sortu kanpo-geometria</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -2120,7 +2120,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Sortu kalkoa</translation>
     </message>
   </context>
   <context>
@@ -2134,94 +2134,94 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="472"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa bat datozen murrizketak aplikatzean.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="559"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa murrizketa bertikalak/horizontalak aplikatzean.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="766"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa berdintasun-murrizketak aplikatzean.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa, murrizketarik gabekoa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="870"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa murrizketa bertikalak eta horizontalak aplikatu ondoren.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa puntuz puntuko murrizketak aplikatu ondoren.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="927"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa berdintasun-murrizketak aplikatu ondoren.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1983"/>
+      <location filename="../../../App/SketchObject.cpp" line="2117"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ezin izan da kurben ebakidura antzeman. Saiatu bat datorren murrizketa bat gehitzen biribildu nahi dituzun kurben erpinen artean.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5866"/>
-      <location filename="../../../App/SketchObject.cpp" line="6040"/>
+      <location filename="../../../App/SketchObject.cpp" line="6300"/>
+      <location filename="../../../App/SketchObject.cpp" line="6508"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline geometria-indizea (GeoID) mugetatik kanpo dago.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5869"/>
+      <location filename="../../../App/SketchObject.cpp" line="6305"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Adabegi-aniztasunean aldaketarik ez egitea eskatzen ari zara.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5874"/>
-      <location filename="../../../App/SketchObject.cpp" line="6048"/>
+      <location filename="../../../App/SketchObject.cpp" line="6311"/>
+      <location filename="../../../App/SketchObject.cpp" line="6518"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Hornitutako geometria-indizea (GeoId) ez da Bspline kurba bat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5881"/>
+      <location filename="../../../App/SketchObject.cpp" line="6320"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Adabegi-indizea mugetatik kanpo dago. Kontuan izan, OCC notazioaren arabera, lehen adabegiaren indize-zenbakiak 1 izan behar duela, ez 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5888"/>
+      <location filename="../../../App/SketchObject.cpp" line="6331"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Aniztasuna ezin da handitu Bspline-aren gradutik gora.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5891"/>
+      <location filename="../../../App/SketchObject.cpp" line="6339"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Aniztasuna ezin da txikitu zerotik behera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6353"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-k ezin du aniztasuna txikitu tolerantzia maximoaren barruan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6043"/>
+      <location filename="../../../App/SketchObject.cpp" line="6512"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Adabegiak ezin du zero aniztasuna izan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6057"/>
+      <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Adabegi-aniztasunak ezin du izan BSpline-aren graduak baino handiagoa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6060"/>
+      <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Adabegia ezin da txertatu BSpline parametro-barrutiaren kanpoaldean.</translation>
     </message>
@@ -3096,7 +3096,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>Bi kurbak soilik amaitu beharko lukete hautatutako puntuan, haiek elkartu ahal izateko.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3375,7 +3375,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
       <source>Select Elements</source>
-      <translation type="unfinished">Select Elements</translation>
+      <translation>Hautatu elementuak</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
@@ -3591,7 +3591,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="61"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>Puntu kointzidentzia</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
@@ -3601,32 +3601,32 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
       <source>Vertical Constraint</source>
-      <translation type="unfinished">Vertical Constraint</translation>
+      <translation>Murrizketa bertikala</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="64"/>
       <source>Horizontal Constraint</source>
-      <translation type="unfinished">Horizontal Constraint</translation>
+      <translation>Murrizketa horizontala</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Parallel Constraint</source>
-      <translation type="unfinished">Parallel Constraint</translation>
+      <translation>Paralelo-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="66"/>
       <source>Perpendicular Constraint</source>
-      <translation type="unfinished">Perpendicular Constraint</translation>
+      <translation>Elkartzuta-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Tangent Constraint</source>
-      <translation type="unfinished">Tangent Constraint</translation>
+      <translation>Ukitzaile-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Equal Length</source>
-      <translation type="unfinished">Equal Length</translation>
+      <translation>Luzera berdina</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
@@ -3636,12 +3636,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Block Constraint</source>
-      <translation type="unfinished">Block Constraint</translation>
+      <translation>Bloke-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Lock Constraint</source>
-      <translation type="unfinished">Lock Constraint</translation>
+      <translation>Zerrapo-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -3656,27 +3656,27 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Length Constraint</source>
-      <translation type="unfinished">Length Constraint</translation>
+      <translation>Luzera-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Radius Constraint</source>
-      <translation type="unfinished">Radius Constraint</translation>
+      <translation>Erradio-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Diameter Constraint</source>
-      <translation type="unfinished">Diameter Constraint</translation>
+      <translation>Diametro-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>Erradio/diametro murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Angle Constraint</source>
-      <translation type="unfinished">Angle Constraint</translation>
+      <translation>Angelu-murrizketa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -3686,22 +3686,22 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Hautatu murrizketak</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>Hautatu jatorria</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>Hautatu ardatz horizontala</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>Hautatu ardatz bertikala</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="528"/>
@@ -3711,12 +3711,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="536"/>
       <source>Layer 0</source>
-      <translation type="unfinished">Layer 0</translation>
+      <translation>Geruza 0</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="537"/>
       <source>Layer 1</source>
-      <translation type="unfinished">Layer 1</translation>
+      <translation>Geruza 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="538"/>
@@ -6116,17 +6116,17 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="302"/>
+      <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Krokisak gaizki eratutako murrizketak ditu!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="306"/>
+      <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Krokisak partzialki erredundanteak diren murrizketak ditu!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8326"/>
+      <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolak migratu dira. Migratutako fitxategiak ezin dira ireki FreeCADen aurreko bertsioetan.</translation>
@@ -6252,7 +6252,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Geometria normala</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -6266,7 +6266,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Kanpo-geometria</translation>
     </message>
   </context>
   <context>
@@ -6274,12 +6274,12 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>Konfiguratu errendatze-ordena</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1578"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>Zerrendako elementuak birantolatu errenderizazio ordena konfiguratzeko.</translation>
     </message>
   </context>
 </TS>

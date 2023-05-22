@@ -6029,62 +6029,62 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: Unknown check</source>
-      <translation type="unfinished">Boolean operation: Unknown check</translation>
+      <translation>Operación booleana: Chequeo desconocido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: Bad type</source>
-      <translation type="unfinished">Boolean operation: Bad type</translation>
+      <translation>Operación booleana: Tipo incorrecto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>Boolean operation: Self-intersection found</source>
-      <translation type="unfinished">Boolean operation: Self-intersection found</translation>
+      <translation>Operación booleana: Autointersección encontrada</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: Edge too small</source>
-      <translation type="unfinished">Boolean operation: Edge too small</translation>
+      <translation>Operación booleana: Borde demasiado pequeño</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: Non-recoverable face</source>
-      <translation type="unfinished">Boolean operation: Non-recoverable face</translation>
+      <translation>Operación booleana: Cara no recuperable</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: Incompatibility of vertex</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of vertex</translation>
+      <translation>Operación booleana: Incompatibilidad de vértices</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: Incompatibility of edge</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of edge</translation>
+      <translation>Operación booleana: Incompatibilidad de bordes</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: Incompatibility of face</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of face</translation>
+      <translation>Operación booleana: Incompatibilidad de caras</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: Aborted</source>
-      <translation type="unfinished">Boolean operation: Aborted</translation>
+      <translation>Operación booleana: Abortado</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: GeomAbs_C0</source>
-      <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
+      <translation>Operación booleana: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: Invalid curve on surface</source>
-      <translation type="unfinished">Boolean operation: Invalid curve on surface</translation>
+      <translation>Operación booleana: Curva no válida en la superficie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>Boolean operation: Not valid</source>
-      <translation type="unfinished">Boolean operation: Not valid</translation>
+      <translation>Operación booleana: no válida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>

@@ -1066,7 +1066,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Appliquer le style ci-dessus à toutes les annotations (textes, cotes et étiquettes)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1151,12 +1151,12 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Lignes d'extension</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>La longueur de la ligne de dimension est prolongée au-delà des lignes d'extension</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1181,12 +1181,12 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Dépassement des lignes de dimension</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Longueur des lignes d'attache au-delà de la ligne de cote</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1196,7 +1196,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Dépassement des lignes d'extension</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -2042,27 +2042,27 @@ Otherwise default colors will be applied. </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Obtenir les couleurs originales du fichier DXF (ancien importateur uniquement)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Importer les limites de hachure en tant que polyligne (importation héritée uniquement)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Dessiner les polylignes avec la largeur (importation héritée seulement)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Exporter des objets 3D en tant que des maillages polyfaces (exportateur hisorique seulement)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Projeter les objets exportés suivant la direction de la vue en cours (exportateur hisorique seulement)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -3243,19 +3243,19 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>Convertisseur LibreDWG introuvable</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>Convertisseur ODA introuvable</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>Convertisseur QCAD introuvable</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3264,10 +3264,10 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
-https://wiki.freecad.org/Import_Export_Preferences</translation>
+      <translation>Aucun convertisseur externe DWG approprié n'a été trouvé.
+En définir un manuellement dans le menu Édition -&gt; Préférences -&gt; Import-Export -&gt; DWG
+Pour plus d'informations, voir :
+https://wiki.freecad.org/Import_Export_Preferences/fr</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="279"/>
@@ -4448,16 +4448,6 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Désagréger</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Sélectionner un objet à mettre en réseau</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Réseau</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -4685,7 +4675,7 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>Formes à partir de texte : la création de face a échoué pour un caractère</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5426,23 +5416,6 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>Tirant d'eau</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
-    </message>
-    <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
@@ -5488,7 +5461,7 @@ Installer l’extension de la bibliothèque dxf manuellement depuis le menu Outi
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Erreur: module json introuvable. Impossible de charger le style</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -6942,41 +6915,6 @@ Par exemple, il explose les polylignes sélectionnées en faces, polylignes et a
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>Réseau</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>Créer un réseau à partir d'un objet sélectionné.
-Par défaut, c'est une réseau orthogonal de 2x2.
-Une fois le réseau créé, son type peut être changé
-en type polaire ou circulaire, et ses propriétés 
-peuvent être modifiées.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation>Réseau orthogonal</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Comme l'outil Réseau, mais crée un "Réseau orthogonal" à la place.
-Un "Réseau orthogonal" est plus efficace lors de la gestion de nombreuses copies mais l'option "Fusion" ne peut pas être utilisée.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8147,6 +8085,26 @@ au-delà de la ligne de la dimension</translation>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation>Définir/modifier les différentes calques de votre projet BIM</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>Tirant d'eau</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>Importer-Exporter</translation>
     </message>
   </context>
 </TS>

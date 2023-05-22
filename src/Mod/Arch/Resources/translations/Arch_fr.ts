@@ -441,7 +441,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation>Rafraîchir</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -1567,7 +1567,7 @@ Si cette case est cochée, des calculs supplémentaires seront exécutés pour j
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation>Quand l'exportation des objets se fait sans UID, l’UID généré sera stocké à l’intérieur de l’objet FreeCAD pour le réutiliser la prochaine fois que cet objet est exporté. Cela génère des petites différences entre les versions.</translation>
+      <translation>Lors de l'exportation d'objets sans identifiant unique, l'identifiant unique généré sera enregistré à l'intérieur de l'objet FreeCAD pour être réutilisé lors de la prochaine exportation de cet objet. Cela permet de réduire les différences entre les versions des fichiers.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
@@ -2057,8 +2057,6 @@ Cependant, certaines applications BIM utiliseront ce facteur pour choisir l'unit
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Architecture</translation>
     </message>
@@ -5903,21 +5901,6 @@ La création du bâtiment est abandonnée.</translation>
       <source>Writing camera position</source>
       <translation>Écrire la position de la caméra</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Tirant d'eau</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6727,6 +6710,30 @@ La création du bâtiment est abandonnée.</translation>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Transformer</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Architecture</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Tirant d'eau</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Importer-Exporter</translation>
     </message>
   </context>
 </TS>

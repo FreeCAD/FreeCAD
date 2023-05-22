@@ -1852,7 +1852,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>球</translation>
+      <translation>球体</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -2081,6 +2081,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>表示</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

@@ -1056,7 +1056,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Aplikatu goiko estiloa ohar guztiei (testuak, kotak eta etiketak)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1141,12 +1141,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Kanpo lerroak</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>Dimentsio-lerroaren distantzia luzapen-lerroetatik haratago hedatzen da</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1171,12 +1171,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Kota-lerroaren soberakina</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Luzapen-lerroek kota-lerroaz haratago duten luzera</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1186,7 +1186,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Luzapenaren soberakina</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -2029,27 +2029,27 @@ Otherwise default colors will be applied. </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Eskuratu jatorrizko koloreak DXF fitxategitik (inportatzaile zaharra soilik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Inportatu itzaleztadura-mugak alanbre gisa (inportatzaile zaharra soilik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Errendatu polilerroak zabalerarekin (inportatzaile zaharra soilik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Esportatu 3D objektuak poliaurpegien amaraun gisa (inportatzaile zaharra soilik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Proiektatu esportatutako objektuak uneko bista-norabidearen luzeran (inportatzaile zaharra soilik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -3232,19 +3232,19 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>Ez da aurkitu LibreDWG bihurtzailea</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>Ez da aurkitu ODA fitxategi-bihurtzailea</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>Ez da aurkitu QCAD bihurtzailea</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3253,9 +3253,9 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Ez da aurkitu kanpoko DWG bihurtzaile egokirik.
+Ezarri bat eskuz 'Editatu -&gt; Hobespenak -&gt; Inportatu/Esportatu -&gt; DWG' atalean
+Informazio gehiagorako, ikusi:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -4441,16 +4441,6 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
       <translation>Degradatu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Hautatu matrize bihurtuko den objektua</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Matrizea</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -4678,7 +4668,7 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>Testu-forma: aurpegiaren sorrerak huts egin du karaktere batengatik</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5419,23 +5409,6 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>Zirriborroa</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>Inportatu-Esportatu</translation>
-    </message>
-    <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
@@ -5482,7 +5455,7 @@ Instalatu DXF liburutegiaren gehigarria eskuz
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Errorea: Ez da aurkitu JSON modulua. Ezin izan da estiloa kargatu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -6941,40 +6914,6 @@ Adibidez, hautatutako polilerroak aurpegi sinpleagoetan lehertzen ditu, ondoren 
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>Matrizea</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>Matrize bat sortzen du hautatutako objektua erabilita.
-Modu lehenetsian, 2x2 matrize ortogonala izango da.
-Matrizea sortu ondoren, bere mota polarrera edo zirkularrera
-aldatu daiteke, eta bere propietateak ere aldatu daitezke.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation>EstekaMatrizea</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Matrizeen tresnaren modukoa, baina 'Esteka-matrizea' sortzen du.
-'Esteka-matrizea' eraginkorragoa da kopia anitz maneiatzen direnean, baina 'Fusionatu' aukera ezin da erabili.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8140,12 +8079,32 @@ haratago duen luzera</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation>Geruzak kudeatu...</translation>
+      <translation>Kudeatu geruzak...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation>Dokumentu honen geruza ezberdinak ezarri/aldatu</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>Zirriborroa</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>Inportatu-Esportatu</translation>
     </message>
   </context>
 </TS>

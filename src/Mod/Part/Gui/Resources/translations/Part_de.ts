@@ -5129,12 +5129,12 @@ Hinweis: Die Positionierung wird im lokalen Koordinatensystem des angehängten O
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.</translation>
+      <translation>Überspringe diese Einstellungsseite und führe die Geometrie-Prüfung automatisch aus.</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
       <source>Default: false</source>
-      <translation type="unfinished">Default: false</translation>
+      <translation>Standard: "false"</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
@@ -5219,7 +5219,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>Nonrecoverable face</source>
-      <translation type="unfinished">Nonrecoverable face</translation>
+      <translation>Nicht wiederherstellbare Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
@@ -5229,22 +5229,22 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
       <source>Incompatibility of face</source>
-      <translation type="unfinished">Incompatibility of face</translation>
+      <translation>Inkompatible Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
       <source>Incompatibility of vertex</source>
-      <translation type="unfinished">Incompatibility of vertex</translation>
+      <translation>Inkompatibler Knotenpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
       <source>Incompatibility of edge</source>
-      <translation type="unfinished">Incompatibility of edge</translation>
+      <translation>Inkompatible Kante</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>Ungültige Kurve auf der Oberfläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
@@ -5317,7 +5317,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="417"/>
       <source>Boolean operation check...</source>
-      <translation type="unfinished">Boolean operation check...</translation>
+      <translation>Prüfung boolescher Operationen...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="419"/>
@@ -5333,19 +5333,19 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="478"/>
       <source>Checking</source>
-      <translation type="unfinished">Checking</translation>
+      <translation>Überprüfe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="501"/>
       <source>%1 processed out of %2 selected</source>
-      <translation type="unfinished">%1 processed out of %2 selected</translation>
+      <translation>%1 verarbeitet von %2 ausgewählten</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>%n invalid shapes.</source>
-      <translation type="unfinished">
-        <numerusform>%n invalid shapes.</numerusform>
-        <numerusform>%n invalid shapes.</numerusform>
+      <translation>
+        <numerusform>%n ungültige Form(en).</numerusform>
+        <numerusform>%n ungültige Form(en).</numerusform>
       </translation>
     </message>
     <message>
@@ -6019,62 +6019,62 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: Unknown check</source>
-      <translation type="unfinished">Boolean operation: Unknown check</translation>
+      <translation>Boolesche Operation: Unbekannte Überprüfung</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: Bad type</source>
-      <translation type="unfinished">Boolean operation: Bad type</translation>
+      <translation>Boolesche Operation: Falscher Typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>Boolean operation: Self-intersection found</source>
-      <translation type="unfinished">Boolean operation: Self-intersection found</translation>
+      <translation>Boolesche Verknüpfung: Selbstdurchdringung gefunden</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: Edge too small</source>
-      <translation type="unfinished">Boolean operation: Edge too small</translation>
+      <translation>Boolesche Verknüpfung: Kante zu kurz</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: Non-recoverable face</source>
-      <translation type="unfinished">Boolean operation: Non-recoverable face</translation>
+      <translation>Boolesche Operation: Nicht wiederherstellbare Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: Incompatibility of vertex</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of vertex</translation>
+      <translation>Boolesche Operation: Punkt nicht Kompatibel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: Incompatibility of edge</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of edge</translation>
+      <translation>Boolesche Operation: Kanten nicht Kompatibel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: Incompatibility of face</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of face</translation>
+      <translation>Boolesche Operation: Flächen nicht Kompatibel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: Aborted</source>
-      <translation type="unfinished">Boolean operation: Aborted</translation>
+      <translation>Boolesche Verknüpfung: Abgebrochen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: GeomAbs_C0</source>
-      <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
+      <translation>Boolesche Operation: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: Invalid curve on surface</source>
-      <translation type="unfinished">Boolean operation: Invalid curve on surface</translation>
+      <translation>Boolesche Operation: Ungültige Kurve auf Oberfläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>Boolean operation: Not valid</source>
-      <translation type="unfinished">Boolean operation: Not valid</translation>
+      <translation>Boolesche Verknüpfung: Ungültig</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -6581,7 +6581,7 @@ Es wird ein 'Compound-Filter'-Objekt für jede Form erzeugt.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Wires</source>
-      <translation type="unfinished">Wires</translation>
+      <translation>Kantenzüge</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>

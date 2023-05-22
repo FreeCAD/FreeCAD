@@ -2126,7 +2126,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrátit směr</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2840,7 +2840,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Obrátit směr</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>

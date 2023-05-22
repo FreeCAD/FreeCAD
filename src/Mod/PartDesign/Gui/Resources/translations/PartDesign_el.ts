@@ -60,8 +60,8 @@ Non-zero values turn the helix into a conical spiral.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Ορίζει την κατεύθυνση στροφής προς τα αριστερά,
+δηλαδή αριστερόστροφα όταν κινείται κατά μήκος του άξονα της.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>

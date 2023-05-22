@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation>寬度:</translation>
+      <translation>寬度：</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>高度:</translation>
+      <translation>高度：</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -1615,7 +1615,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>完成</translation>
+      <translation>結束</translation>
     </message>
   </context>
   <context>
@@ -2087,6 +2087,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>顯示</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

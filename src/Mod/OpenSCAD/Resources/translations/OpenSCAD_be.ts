@@ -110,6 +110,11 @@
       <translation>Найбольшы памер фрагменту</translation>
     </message>
     <message>
+      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <source>angle (fa)</source>
+      <translation type="unfinished">angle (fa)</translation>
+    </message>
+    <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
       <translation>Выпукласць</translation>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="296"/>
       <source>Minimum angle for a fragment</source>
       <translation>Найменшы вугал фрагменту</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="289"/>
-      <source>angular (fa)</source>
-      <translation>вуглавы (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="654"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation>Файл OpenSCAD змяшчае як двухмерныя, так і трохмерныя фігуры. У гэтым імпарцёры такое не падтрымліваецца, усе формы павінны мець аднолькавую памернасць.</translation>
+      <translation>Файл OpenSCAD змяшчае як двухмерныя, так і трохмерныя фігуры. У гэтым сродку імпартавання такое не падтрымліваецца, усе формы павінны мець аднолькавую памернасць.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="665"/>

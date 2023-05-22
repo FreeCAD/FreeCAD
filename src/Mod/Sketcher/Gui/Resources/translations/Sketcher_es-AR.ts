@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1569"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Crear una copia carbónica</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1570"/>
@@ -1098,7 +1098,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create an external geometry</source>
-      <translation type="unfinished">Create an external geometry</translation>
+      <translation>Crear una geometría externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1541"/>
@@ -2119,7 +2119,7 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="131"/>
       <source>Create a carbon copy</source>
-      <translation type="unfinished">Create a carbon copy</translation>
+      <translation>Crear una copia carbónica</translation>
     </message>
   </context>
   <context>
@@ -2133,94 +2133,94 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="472"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Error de auto-restricción: Croquis sin solución al aplicar restricciones coincidentes.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="530"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="559"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Error de auto-restricción: Croquis sin solución al aplicar restricciones verticales/horizontales.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="730"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="766"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Error de auto-restricción: Croquis sin solución al aplicar restricciones de igualdad.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="784"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="825"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Error de auto-restricción: Croquis sin restricciones no tiene solución.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="821"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="870"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Error de auto-restricción: Croquis sin solución después de aplicar restricciones horizontales y verticales.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="843"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="895"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Error de auto-restricción: Croquis sin solución después de aplicar restricciones de punto a punto.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="871"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="927"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Error de auto-restricción: Croquis sin solución después de aplicar restricciones de igualdad.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1983"/>
+      <location filename="../../../App/SketchObject.cpp" line="2117"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>No se puede adivinar la intersección de las curvas. Intente agregar una restricción coincidente entre los vértices de las curvas que pretende redondear.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5866"/>
-      <location filename="../../../App/SketchObject.cpp" line="6040"/>
+      <location filename="../../../App/SketchObject.cpp" line="6300"/>
+      <location filename="../../../App/SketchObject.cpp" line="6508"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Índice de Geometría BSpline (GeoID) está fuera de límites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5869"/>
+      <location filename="../../../App/SketchObject.cpp" line="6305"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>No está solicitando ningún cambio en la multiplicidad de nudos.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5874"/>
-      <location filename="../../../App/SketchObject.cpp" line="6048"/>
+      <location filename="../../../App/SketchObject.cpp" line="6311"/>
+      <location filename="../../../App/SketchObject.cpp" line="6518"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>El índice de geometría (GeoId) proporcionado no es una curva B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5881"/>
+      <location filename="../../../App/SketchObject.cpp" line="6320"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>El índice de nudos está fuera de los límites. Tenga en cuenta que de acuerdo con la notación OCC, el primer nudo tiene índice 1 y no 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5888"/>
+      <location filename="../../../App/SketchObject.cpp" line="6331"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicidad no puede incrementarse más allá del grado de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5891"/>
+      <location filename="../../../App/SketchObject.cpp" line="6339"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicidad no puede ser disminuida más allá de cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5903"/>
+      <location filename="../../../App/SketchObject.cpp" line="6353"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC es incapaz de disminuir la multiplicidad dentro de la tolerancia máxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6043"/>
+      <location filename="../../../App/SketchObject.cpp" line="6512"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El nodo no puede tener una multiplicidad cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6057"/>
+      <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicidad del nodo no puede ser mayor que el grado de la BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6060"/>
+      <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>El nodo no puede ser insertado fuera del rango de parámetros de la B-Spline.</translation>
     </message>
@@ -3069,7 +3069,7 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1233"/>
       <source>Selection is empty</source>
-      <translation>No ha seleccionado nada</translation>
+      <translation>La selección está vacía</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1167"/>
@@ -3095,7 +3095,7 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
       <location filename="../../CommandSketcherBSpline.cpp" line="1261"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1269"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
-      <translation type="unfinished">Exactly two curves should end at the selected point to be able to join them.</translation>
+      <translation>Dos curvas deben terminar exactamente en el punto seleccionado para poder unirlas.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1268"/>
@@ -3374,7 +3374,7 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="65"/>
       <source>Select Elements</source>
-      <translation type="unfinished">Select Elements</translation>
+      <translation>Seleccionar elementos</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
@@ -3590,7 +3590,7 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="61"/>
       <source>Point Coincidence</source>
-      <translation type="unfinished">Point Coincidence</translation>
+      <translation>Coincidencia de puntos</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="62"/>
@@ -3600,32 +3600,32 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="63"/>
       <source>Vertical Constraint</source>
-      <translation type="unfinished">Vertical Constraint</translation>
+      <translation>Restricción vertical</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="64"/>
       <source>Horizontal Constraint</source>
-      <translation type="unfinished">Horizontal Constraint</translation>
+      <translation>Restricción horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Parallel Constraint</source>
-      <translation type="unfinished">Parallel Constraint</translation>
+      <translation>Restricción paralela</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="66"/>
       <source>Perpendicular Constraint</source>
-      <translation type="unfinished">Perpendicular Constraint</translation>
+      <translation>Restricción perpendicular</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Tangent Constraint</source>
-      <translation type="unfinished">Tangent Constraint</translation>
+      <translation>Restricción tangencial</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="68"/>
       <source>Equal Length</source>
-      <translation type="unfinished">Equal Length</translation>
+      <translation>Longitud igual</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
@@ -3635,12 +3635,12 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="70"/>
       <source>Block Constraint</source>
-      <translation type="unfinished">Block Constraint</translation>
+      <translation>Restricción de bloque</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Lock Constraint</source>
-      <translation type="unfinished">Lock Constraint</translation>
+      <translation>Restricción de bloqueo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -3655,27 +3655,27 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="74"/>
       <source>Length Constraint</source>
-      <translation type="unfinished">Length Constraint</translation>
+      <translation>Restricción de longitud</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Radius Constraint</source>
-      <translation type="unfinished">Radius Constraint</translation>
+      <translation>Restricción de radio</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="76"/>
       <source>Diameter Constraint</source>
-      <translation type="unfinished">Diameter Constraint</translation>
+      <translation>Restricción de diámetro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>Restricción de radio/diámetro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Angle Constraint</source>
-      <translation type="unfinished">Angle Constraint</translation>
+      <translation>Restricción angular</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -3685,22 +3685,22 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Seleccionar restricciones</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>Seleccionar origen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>Seleccionar eje horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>Seleccionar eje vertical</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="528"/>
@@ -3710,12 +3710,12 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="536"/>
       <source>Layer 0</source>
-      <translation type="unfinished">Layer 0</translation>
+      <translation>Capa 0</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="537"/>
       <source>Layer 1</source>
-      <translation type="unfinished">Layer 1</translation>
+      <translation>Capa 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="538"/>
@@ -6114,17 +6114,17 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="302"/>
+      <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>¡El croquis tiene restricciones mal formadas!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="306"/>
+      <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>¡El croquis tiene restricciones parcialmente redundantes!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8326"/>
+      <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolas ha sido migrado. Los archivos migrados no se abrirán en versiones anteriores de FreeCAD!!
@@ -6251,7 +6251,7 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Geometría normal</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -6265,7 +6265,7 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
       <location filename="../../Command.cpp" line="1476"/>
       <location filename="../../Command.cpp" line="1481"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Geometría externa</translation>
     </message>
   </context>
   <context>
@@ -6273,12 +6273,12 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>Configurar el orden del renderizado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1578"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>Reordena los elementos de la lista para configurar el orden de renderizado.</translation>
     </message>
   </context>
 </TS>
