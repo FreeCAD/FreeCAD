@@ -109,6 +109,14 @@ struct NotificationAreaP
     const unsigned int inhibitNotificationTime = 250;
     //@}
 
+    /** @name Data source control */
+    //@{
+    /* Controls whether debug warnings and errors intended for developers should be processed or not
+     */
+    bool developerErrorSubscriptionEnabled = false;
+    bool developerWarningSubscriptionEnabled = false;
+    //@}
+
     bool missedNotifications = false;
 
     // Access control
@@ -231,9 +239,9 @@ NotificationAreaObserver::NotificationAreaObserver(NotificationArea* notificatio
     : notificationArea(notificationarea)
 {
     Base::Console().AttachObserver(this);
-    bLog = false;                  // ignore log messages
-    bMsg = false;                  // ignore messages
-    bNotification = true;          // activate user notifications
+    bLog = false;        // ignore log messages
+    bMsg = false;        // ignore messages
+    bNotification = true;// activate user notifications
 }
 
 NotificationAreaObserver::~NotificationAreaObserver()
@@ -241,8 +249,9 @@ NotificationAreaObserver::~NotificationAreaObserver()
     Base::Console().DetachObserver(this);
 }
 
-void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
-                                       Base::IntendedRecipient recipient, Base::ContentType content)
+void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg,
+                                       Base::LogStyle level, Base::IntendedRecipient recipient,
+                                       Base::ContentType content)
 {
     // 1. As notification system is shared with report view and others, the expectation is that any
     // individual error and warning message will end in "\n". This means the string must be stripped
@@ -252,8 +261,19 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
     // "\n", as this generates problems with the translation system. Then the string must be
     // stripped of "\n" before translation.
 
-    if( recipient == Base::IntendedRecipient::Developer ||
-        content == Base::ContentType::Untranslatable) {
+    bool violatesBasicPolicy = (recipient == Base::IntendedRecipient::Developer
+                                || content == Base::ContentType::Untranslatable);
+
+    // We allow derogations for debug purposes according to user preferences
+    bool meetsDerogationCriteria = false;
+
+    if (violatesBasicPolicy) {
+        meetsDerogationCriteria =
+            (level == Base::LogStyle::Warning && notificationArea->areDeveloperWarningsActive())
+            || (level == Base::LogStyle::Error && notificationArea->areDeveloperErrorsActive());
+    }
+
+    if (violatesBasicPolicy && !meetsDerogationCriteria) {
         return;
     }
 
@@ -682,15 +702,15 @@ NotificationArea::ParameterObserver::ParameterObserver(NotificationArea* notific
              auto enabled = hGrp->GetBool(string.c_str(), true);
              notificationArea->pImp->preventNonIntrusiveNotificationsWhenWindowNotActive = enabled;
          }},
-        {"ErrorSubscriptionEnabled",
+        {"DeveloperErrorSubscriptionEnabled",
          [this](const std::string& string) {
-             auto enabled = hGrp->GetBool(string.c_str(), true);
-             notificationArea->pImp->observer->bErr = enabled;
+             auto enabled = hGrp->GetBool(string.c_str(), false);
+             notificationArea->pImp->developerErrorSubscriptionEnabled = enabled;
          }},
-        {"WarningSubscriptionEnabled",
+        {"DeveloperWarningSubscriptionEnabled",
          [this](const std::string& string) {
-             auto enabled = hGrp->GetBool(string.c_str(), true);
-             notificationArea->pImp->observer->bWrn = enabled;
+             auto enabled = hGrp->GetBool(string.c_str(), false);
+             notificationArea->pImp->developerWarningSubscriptionEnabled = enabled;
          }},
     };
 
@@ -863,6 +883,16 @@ void NotificationArea::mousePressEvent(QMouseEvent* e)
         menu.exec(this->mapToGlobal(e->pos()));
     }
     QPushButton::mousePressEvent(e);
+}
+
+bool NotificationArea::areDeveloperWarningsActive() const
+{
+    return pImp->developerWarningSubscriptionEnabled;
+}
+
+bool NotificationArea::areDeveloperErrorsActive() const
+{
+    return pImp->developerErrorSubscriptionEnabled;
 }
 
 void NotificationArea::pushNotification(const QString& notifiername, const QString& message,
