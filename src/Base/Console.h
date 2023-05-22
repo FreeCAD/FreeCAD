@@ -473,12 +473,28 @@ enum class LogStyle{
     Notification,           // Special message for notifications to the user (e.g. educational)
 };
 
+/** Used to indicate the intended recipient of a message (warning, error, ...).
+    While it is possible to create a custom message via Console().Send, console provides convenience
+    functions for most common combinations.
+
+    See documentation of ConsoleSingleton class for more details.
+
+    @see ConsoleSingleton
+    */
 enum class IntendedRecipient {
     All,                    // All recipients, Developers and Users (One notification covers all)
     User,                   // User only (notification intended only for a user)
     Developer,              // Developer only (notification intended only for a developer)
 };
 
+/** Used to indicate the translation state of a message (warning, error, ...).
+    While it is possible to create a custom message via Console().Send, console provides convenience
+    functions for most common combinations.
+
+    See documentation of ConsoleSingleton class for more details.
+
+    @see ConsoleSingleton
+    */
 enum class ContentType {
     Untranslated,           // Not translated, but translatable
     Translated,             // Already translated
@@ -566,6 +582,77 @@ public:
  *  ConsoleSingleton is able to switch between several modes to, e.g. switch
  *  the logging on or off, or treat Warnings as Errors, and so on...
  *  @see ConsoleObserver
+ *
+ *  When sending error, warnings and notifications, preferably a notifier string should be provided,
+ *  this enables the observer to identify the source. Any string is possible. It is common to use
+ *  the DocumentObject::getFullLabel() or the label of the Document, when available.
+ *  When using the Notification Framework of the Gui (Gui/Notifications.h) and a DocumentObject is
+ *  passed as notifier, getFullLabel() is used. See example below.
+ *
+ *  It is important for the different observers to know whether an error/warning message is intended
+ *  for a user, for a developer, or for both. This enables observers to provide distinctive
+ *  behaviour. Similarly, different observers may treat differently messages if they carry
+ *  translated, untranslated, or untranslatable messages.
+ *
+ *  While it is possible to create a tailored message, ConsoleSingleton provides convenience
+ *  functions for most common messages. A custom message can be created as follows:
+ *  \code
+ *  Send<Base::LogStyle::Error,
+ *       Base::IntendedRecipient::Developer,
+ *       Base::ContentType::Untranslatable>("OCCT", e.what());
+ *  \endcode
+ *
+ *  That code is equivalent to:
+ *  \code
+ *  DeveloperError("OCCT", e.what());
+ *  \endcode
+ *
+ *  These convenience functions cover most common cases:
+ *  - Unqualified convenience functions, such as Error() and Warning(), produce messages intended to
+ *  both User and Developer with an untranslated message.
+ *  - Functions qualified with Developer, such as DeveloperError are intended for a Developer and
+ *  are untranslatable. Functions qualified with User, such as UserError are intended only for the
+ *  User and a untranslated (leaving the responsibility to the observer to find the translation).
+ *  - Functions qualified with Translated, such as TranslatedError, are intended for the User and
+ *  the message is already translated.
+ *
+ *  An observer receiving an Untranslatable or Translated message should not attempt to translate
+ *  it.
+ *
+ *  However, an observer receiving a Translatable message may or may not attempt to translate
+ *  it, e.g. depending on whether it intends to show the message to a Log or on the UI.
+ *
+ *  Observers shall use the QT translation context "Notifications" to attempt to translate an
+ *  Untranslated message, if they need the localized version. Users shall mark Untranslated messages
+ *  for translation.
+ *
+ *  Untranslated messages have the inherent advantage that can be processed in English by observers
+ *  needing the English version, while enabling other observers to retrieve a translated version.
+ *
+ *  However, untranslated messages have the limitation that need to be known to the QT framework, so
+ *  in practice, they need be static strings (as opposed to dynamically generated ones).
+ *
+ *  Example:
+ *  \code
+ *  Base::Console().UserError(this->getFullName(), QT_TRANSLATE_NOOP("Notifications",
+ *                            "Impossible to migrate Parabolas!!\n"));
+ *  \endcode
+ *
+ *  Currently dynamically generated strings can only be properly translated at the source. This is
+ *  often the case in legacy UI code, where localized strings are already available. For these
+ *  cases the solution is to indicate the translated status. For example:
+ *  \code
+ *  Base::Console().TranslatedUserError(
+ *                              this->getFullName(),
+ *                              QObject::tr("The selected edge already has a Block constraint!"));
+ *  \endcode
+ *
+ *  However, many of this legacy UI messages were previously a QMessageBox, and it is more
+ *  convenient to use the Translations Framework provided by Gui/Notifications.h, as it takes the
+ *  same arguments as QMessageBox. Additionally, the Notifications Framework takes into account the
+ *  user preferences to receive intrusive (pop-ups) or non-intrusive (notification
+ *  area) notifications.
+ *
  */
 class BaseExport ConsoleSingleton
 {
