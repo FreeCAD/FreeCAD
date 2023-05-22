@@ -377,7 +377,11 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
 
         for (std::vector<Constraint*>::iterator it = values.begin(); it != values.end(); ++it) {
             if (!this->getSketchObjectPtr()->evaluateConstraint(*it)) {
-                PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
+                PyErr_SetString(
+                    PyExc_IndexError,
+                    QT_TRANSLATE_NOOP(
+                        "Notifications",
+                        "The constraint has invalid index information and is malformed."));
                 return nullptr;
             }
         }
