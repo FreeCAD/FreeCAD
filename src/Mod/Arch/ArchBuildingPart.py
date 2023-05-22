@@ -286,7 +286,7 @@ class CommandBuildingPart:
         return {'Pixmap'  : 'Arch_BuildingPart',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_BuildingPart","BuildingPart"),
                 'Accel': "B, P",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_BuildingPart","Creates a BuildingPart object including selected objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_BuildingPart","Creates a BuildingPart including selected objects")}
 
     def IsActive(self):
 

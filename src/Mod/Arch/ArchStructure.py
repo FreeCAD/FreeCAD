@@ -194,7 +194,7 @@ class CommandStructuresFromSelection:
     def GetResources(self):
         return {'Pixmap': 'Arch_MultipleStructures',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -231,7 +231,7 @@ class CommandStructuralSystem:
     def GetResources(self):
         return {'Pixmap': 'Arch_StructuralSystem',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Structural System"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Create a structural system object from a selected structure and axis")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Create a structural system from a selected structure and axis")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -269,7 +269,7 @@ class _CommandStructure:
         return {'Pixmap'  : 'Arch_Structure',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
                 'Accel': "S, T",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
 
