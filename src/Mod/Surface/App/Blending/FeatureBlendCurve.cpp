@@ -157,11 +157,6 @@ double FeatureBlendCurve::RelativeToRealParameters(double relativeValue, double 
 
 void FeatureBlendCurve::onChanged(const App::Property *prop)
 {
-    // using a mutex and lock to protect a recursive calling when setting the new values
-    if (lockOnChangeMutex)
-        return;
-    Base::StateLocker lock(lockOnChangeMutex);
-
     if (prop == &StartContinuity) {
         auto changedStartProp = dynamic_cast<const App::PropertyInteger *>(prop);
 
@@ -175,6 +170,12 @@ void FeatureBlendCurve::onChanged(const App::Property *prop)
 
         if (changedEndProp->getValue() > (maxDegree - 2 - StartContinuity.getValue())) {
             EndContinuity.setValue(maxDegree - 2 - StartContinuity.getValue());
+        }
+    }
+    if (prop == &StartContinuity || prop == &StartParameter || prop == &StartSize || prop == &EndContinuity || prop == &EndParameter || prop == &EndSize) {
+        if (!isRestoring()) {
+            App::DocumentObjectExecReturn *ret = recompute();
+            delete ret;
         }
     }
     Part::Spline::onChanged(prop);
