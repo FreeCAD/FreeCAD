@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>На пример, позивај се на ћелију по алтернативном имену
 Spreadsheet.моје_алтернативно_име уместо Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Табела</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

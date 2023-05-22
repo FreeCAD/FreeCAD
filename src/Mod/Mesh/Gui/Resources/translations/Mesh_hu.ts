@@ -1646,7 +1646,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Tiszta</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1990,7 +1990,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
-      <translation>Töröl</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
@@ -2084,6 +2084,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Megjelenítés</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

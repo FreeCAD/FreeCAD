@@ -737,6 +737,11 @@ switch the design configuration. The property will be created if not exist.</sou
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Tableur</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

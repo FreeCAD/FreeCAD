@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>Decimation...</source>
-      <translation>Decymacja ...</translation>
+      <translation>Uprość ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1238"/>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="153"/>
       <source>Mesh Decimating</source>
-      <translation>Dziesiątkowanie siatki</translation>
+      <translation>Upraszczanie siatki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
@@ -819,7 +819,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Dziesiątkowanie</translation>
+      <translation>Upraszczanie</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
@@ -1658,7 +1658,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Brak zaznaczenia</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -2087,6 +2087,11 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Wyświetlanie</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

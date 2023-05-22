@@ -67,7 +67,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation type="unfinished">Nominal</translation>
+      <translation>Nominal</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>

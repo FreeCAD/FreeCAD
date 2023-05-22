@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Συγχώνευση επιλεγμένων κελιών</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Διαίρεση προηγούμενων συγχωνευμένων κελιών</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Ορισμός κειμένου σε επιλεγμένα κελιά με έντονη γραφή</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Ορισμός κειμένου σε επιλεγμένα κελιά πλάγια γραφή</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Υπογράμμιση κειμένου σε επιλεγμένα κελιά</translation>
     </message>
   </context>
   <context>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Προσαρμοσμένο χρώμα</translation>
     </message>
   </context>
   <context>
@@ -294,47 +294,47 @@
     <message>
       <location filename="../../Command.cpp" line="306"/>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Αριστερή στοίχιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Στοίχιση στο κέντρο</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Δεξιά στοίχιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="462"/>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Στοίχιση προς τα πάνω</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Στοίχιση προς τα κάτω</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Κατακόρυφη στοίχιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Ορισμός έντονου κειμένου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Ορισμός πλάγιου κειμένου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Ορισμός υπογράμμισης κειμένου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="894"/>
@@ -344,12 +344,12 @@
     <message>
       <location filename="../../PropertiesDialog.cpp" line="230"/>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Ορισμός ιδιοτήτων κελιού</translation>
     </message>
     <message>
       <location filename="../../SheetModel.cpp" line="510"/>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Επεξεργασία κελιού</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="325"/>
@@ -373,7 +373,7 @@
       <location filename="../../SheetTableView.cpp" line="632"/>
       <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Καθαρισμός κελιού(ων)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="132"/>
@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation type="unfinished">Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Υπολογιστικό Φύλλο</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -848,7 +853,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Προσαρμοσμένο χρώμα</translation>
     </message>
   </context>
   <context>
@@ -866,7 +871,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Ψευδώνυμο:</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>

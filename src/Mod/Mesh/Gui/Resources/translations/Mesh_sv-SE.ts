@@ -1615,7 +1615,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>Slutför</translation>
+      <translation>Gör klart</translation>
     </message>
   </context>
   <context>
@@ -2087,6 +2087,11 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Fönster</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

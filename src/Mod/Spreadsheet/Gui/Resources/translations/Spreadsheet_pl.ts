@@ -738,6 +738,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Odniesienie do komórki według oznaczenia nazwy (alias), np.
 Arkusz.mój_alias zamiast Arkusz.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

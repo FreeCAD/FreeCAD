@@ -804,7 +804,7 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="227"/>
       <source>Additive Wedge</source>
-      <translation>Cale additive</translation>
+      <translation>Pyramide tronquée additive</translation>
     </message>
   </context>
   <context>
@@ -858,7 +858,7 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="383"/>
       <source>Subtractive Wedge</source>
-      <translation>Cale soustractive</translation>
+      <translation>Pyramide tronquée soustractive</translation>
     </message>
   </context>
   <context>
@@ -3321,7 +3321,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
-      <translation>Créer une cale additive</translation>
+      <translation>Créer une pyramide tronquée additive</translation>
     </message>
   </context>
   <context>
@@ -3364,7 +3364,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
-      <translation>Créer une cale soustractive</translation>
+      <translation>Créer une pyramide tronquée soustractive</translation>
     </message>
   </context>
   <context>
@@ -4696,7 +4696,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation>Rafraîchir</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -4958,7 +4958,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Le résultat a plusieurs solides : ce n'est pas supporté actuellement.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -5657,7 +5657,7 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>La forme de la fonction additive/soustractive est vide</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>

@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Consulte a célula por alias, por exemplo
 Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Folha de cálculo</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

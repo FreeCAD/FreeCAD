@@ -1572,7 +1572,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation>Hutsik dagoen biribilketa sortua!
+      <translation>Hutsik dagoen biribilketa sortu da
 </translation>
     </message>
   </context>
@@ -1673,7 +1673,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation>Hutsik dagoen zirriborroa sortua!
+      <translation>Hutsik dagoen zirriborroa sortu da
 </translation>
     </message>
   </context>
@@ -1878,7 +1878,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation>Hutsik dagoen alaka sortua!
+      <translation>Hutsik dagoen alaka sortu da
 </translation>
     </message>
   </context>
@@ -3112,7 +3112,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation>Hutsik dagoen lodiera sortua!
+      <translation>Hutsik dagoen lodiera sortu da
 </translation>
     </message>
   </context>
@@ -4972,7 +4972,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Emaitzak solido anitz ditu: hori ez da onartzen momentuz.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -5671,7 +5671,7 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Elementu gehitzailearen/kentzailearen forma hutsik dago</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>

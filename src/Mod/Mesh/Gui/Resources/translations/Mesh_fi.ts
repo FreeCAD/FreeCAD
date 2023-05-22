@@ -2088,6 +2088,11 @@ http://www.openscad.org/index.html asentaaksesi sen.</translation>
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Näyttö</translation>
+    </message>
+    <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Tuo/Vie</translation>

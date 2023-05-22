@@ -1612,7 +1612,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>Finalizar</translation>
+      <translation>Terminado</translation>
     </message>
   </context>
   <context>
@@ -1645,7 +1645,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Borrar</translation>
+      <translation>Limpiar</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1855,7 +1855,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Esféra</translation>
+      <translation>Esfera</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1989,7 +1989,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
-      <translation>Eliminar</translation>
+      <translation>Borrar</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
@@ -2083,6 +2083,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   </context>
   <context>
     <name>QObject</name>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Mostrar</translation>
+    </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>

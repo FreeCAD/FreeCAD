@@ -292,7 +292,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension overshoot</source>
-      <translation>Перавышэнне вымярэння</translation>
+      <translation>Перакрыццё вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
@@ -308,7 +308,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="525"/>
       <source>Extension overshoot</source>
-      <translation>Пашырэнне дапаможнай лініі</translation>
+      <translation>Перакрыццё дапаможнай лініі</translation>
     </message>
   </context>
   <context>
@@ -1064,7 +1064,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Прымяніць вышэйзгаданы стыль да ўсіх заметак (тэксты, вымярэнні і меткі)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1149,12 +1149,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Вонкавыя лініі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>Адлегласць, на якую лінія вымярэння праходзіць за вынаснымі лініямі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1179,12 +1179,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Перакрыццё вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Даўжыня вынасных лініяй за межамі лініі вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1194,7 +1194,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Перакрыццё дапаможнай лініі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1886,37 +1886,37 @@ This value is the maximum segment length. </source>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation>Ужываецца імпарцёр Python, інакш ужываецца больш новы C++.
-Заўвага: імпарцёр C++ працуе хутчэй, але покуль не такі функцыянальны</translation>
+      <translation>Ужываецца сродак імпартавання Python, інакш ужываецца больш новы C++.
+Заўвага: сродак імпартавання C++ працуе хутчэй, але покуль не такі функцыянальны</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
-      <translation>Ужываць састарэлы імпарцёр Python</translation>
+      <translation>Ужываць састарэлы сродак імпартавання Python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation>Ужываецца экспарцёр Python, інакш ужываецца больш новы C++.
-Заўвага: экспарцёр C++ працуе хутчэй, але покуль не такі функцыянальны</translation>
+      <translation>Ужываецца сродак экспартавання Python, інакш ужываецца больш новы C++.
+Заўвага: сродак экспартавання C++ працуе хутчэй, але покуль не такі функцыянальны</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
-      <translation>Ужываць састарэлы экспарцёр Python</translation>
+      <translation>Ужываць састарэлы сродак экспартавання Python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation>Аўтаматычнае абнаўленне (толькі састарэлы імпарцёр)</translation>
+      <translation>Аўтаматычнае абнаўленне (толькі састарэлы сродак імпартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation>Дазваляе FreeCAD спампаваць канвертар Python для імпартавання і экспартавання DXF.
+      <translation>Дазваляе FreeCAD спампаваць сродак пераўтварэння Python для імпартавання і экспартавання DXF.
 Вы таксама можаце зрабіць гэтае ўручную, калі ўсталюеце варштат "dxf_library"
 з Кіравання дадаткамі.</translation>
     </message>
@@ -1935,7 +1935,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Заўвага: новы імпарцёр яшчэ не ўжывае ўсе прыведзеныя ніжэй налады</translation>
+      <translation>Заўвага: новы сродак імпартавання яшчэ не ўжывае ўсе прыведзеныя ніжэй налады</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="149"/>
@@ -2042,27 +2042,27 @@ Otherwise default colors will be applied. </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Атрымаць арыгінальныя колеры з файла DXF (толькі для састарэлага сродку імпартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Імпартаваць межы штрыхоўкі ў выглядзе ломаных ліній (толькі для састарэлага сродку імпартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Візуалізацыя ломаных ліній па шырыні (толькі для састарэлага сродку імпартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Экспартаваць трохмерны аб'ект у выглядзе шматгранных сетак (толькі для састарэлага сродку экспартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Праецыраваць экспартаваныя аб'екты наўздоўж бягучага напрамку выгляду (толькі для састарэлага сродку экспартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -2408,7 +2408,9 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation>Метад, які FreeCAD будзе ўжываць для пераўтварэння файлаў DWG у DXF. Калі абрана "Аўтаматычна", FreeCAD паспрабуе знайсці адзін з наступных канвертараў у тым жа парадку, у якім яны паказаны тут. Калі FreeCAD не можа знайсці анічога, магчыма, вам спатрэбіцца абраць дакладны канвертар, і паказаць да яго шлях ніжэй. Абярыце службовую праграму "dwg2dxf", калі ўжываеце LibreDWG, "ODAFileConverter", калі ўжываеце канвертар файлаў ODA, ці службовую праграму "dwg2dwg", калі ўжываеце QCAD pro.</translation>
+      <translation>Метад, які FreeCAD будзе ўжываць для пераўтварэння файлаў DWG у DXF. Калі абрана "Аўтаматычна", FreeCAD паспрабуе знайсці адзін з наступных сродкаў пераўтварэння ў тым жа парадку, у якім яны паказаны тут.
+Калі FreeCAD не можа знайсці анічога, магчыма, вам спатрэбіцца абраць дакладны сродак пераўтварэння, і паказаць да яго шлях ніжэй.
+Абярыце службовую праграму "dwg2dxf", калі ўжываеце LibreDWG, "ODAFileConverter", калі ўжываеце сродак пераўтварэння файлаў ODA, ці службовую праграму "dwg2dwg", калі ўжываеце QCAD pro.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
@@ -2433,12 +2435,12 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation>Шлях да файлу канвертара</translation>
+      <translation>Шлях да файла сродку пераўтварэння</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation>Шлях да двайковага файла канвертара файлаў DWG</translation>
+      <translation>Шлях да двайковага файла сродку пераўтварэння файлаў DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
@@ -3241,19 +3243,19 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>Сродак пераўтварэння LibreDWG не знойдзены</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>Сродак пераўтварэння ODA не знойдзены</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>Сродак пераўтварэння QCADне знойдзены</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3262,10 +3264,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
-https://wiki.freecad.org/Import_Export_Preferences</translation>
+      <translation>Не знойдзены прыдатны вонкавы сродак пераўтварэння DWG.
+Калі ласка, задайце яго ўручную ў меню Праўка - &gt; Перавагі - &gt; Імпартаваць/экспартаваць - &gt; DWG
+Каб атрымаць дадатковую інфармацыі, глядзіце: https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="279"/>
@@ -4449,16 +4450,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Разбіць</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Абярыце аб'ект для масіву</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Масіў</translation>
-    </message>
-    <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
@@ -4686,7 +4677,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>Контур радка: не атрымалася стварыць грань для аднаго знаку</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5427,23 +5418,6 @@ The final angle will be the base angle plus this amount.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="136"/>
-      <location filename="../../InitGui.py" line="137"/>
-      <location filename="../../InitGui.py" line="138"/>
-      <location filename="../../InitGui.py" line="139"/>
-      <source>Draft</source>
-      <translation>Асадка</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="181"/>
-      <location filename="../../InitGui.py" line="182"/>
-      <location filename="../../InitGui.py" line="183"/>
-      <location filename="../../InitGui.py" line="184"/>
-      <source>Import-Export</source>
-      <translation>Імпарт-Экспарт</translation>
-    </message>
-    <message>
       <location filename="../../importDXF.py" line="135"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
@@ -5489,7 +5463,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Памылка: модуль json не знойдзены. Немагчыма загрузіць стыль</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -6941,39 +6915,6 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     </message>
   </context>
   <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-      <source>Array</source>
-      <translation>Масіў</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-      <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-      <translation>Стварае масіў з абранага аб'екта.
-Першапачаткова гэта артаганальны масіў памерам 2x2.
-Як толькі масіў створаны, яго тып можа быць зменены на палярны ці кругавы, а яго ўласцівасці могуць быць змененыя.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-      <source>LinkArray</source>
-      <translation>Сетка спасылак</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-      <source>Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation>Падобны на інструмент 'Сетка', але замест гэтага ствараецца 'Сетка спасылак'.
-'Сетка спасылак' больш эфектыўная пры апрацоўцы вялікай колькасці копій, але нельга ўжыць наладу 'Аб'яднаць'.</translation>
-    </message>
-  </context>
-  <context>
     <name>App::Property</name>
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
@@ -8121,6 +8062,26 @@ beyond the dimension line</source>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
       <translation>Задаць/змяніць розныя пласты дакументу</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="138"/>
+      <location filename="../../InitGui.py" line="139"/>
+      <source>Draft</source>
+      <translation>Асадка</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <source>Import-Export</source>
+      <translation>Імпарт-Экспарт</translation>
     </message>
   </context>
 </TS>

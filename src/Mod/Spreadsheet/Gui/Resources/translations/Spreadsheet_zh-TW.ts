@@ -731,6 +731,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>參照儲存格使用別名,例如
 Spreadsheet.my_alias_name取代Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>試算表</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>

@@ -1334,7 +1334,7 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Standard-Löser</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
@@ -5643,7 +5643,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="369"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>Zwangsverbindung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="373"/>
@@ -5736,7 +5736,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="522"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Durchflussgleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="526"/>
@@ -5775,7 +5775,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Wärmegleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="560"/>
@@ -5789,7 +5789,7 @@ für den Löser Elmer verwendet werden</translation>
       <location filename="../../../femcommands/commands.py" line="608"/>
       <location filename="../../../femcommands/commands.py" line="612"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>FEM-Beispiele öffnen</translation>
     </message>
   </context>
   <context>
@@ -5923,7 +5923,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>FEM-Netz-Gruppe</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="943"/>
@@ -6071,7 +6071,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Arbeitsverzeichnis</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
@@ -6146,7 +6146,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="149"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Volumenkörper auswählen</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="153"/>
@@ -6343,7 +6343,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="573"/>
       <source>Magnetodynamic equation</source>
-      <translation type="unfinished">Magnetodynamic equation</translation>
+      <translation>Magnetodynamische Gleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="577"/>

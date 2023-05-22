@@ -1248,7 +1248,7 @@ will already have their openings subtracted</source>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation>Імпарцёр паспрабуе выявіць выдушванне.
+      <translation>Сродак імпартавання паспрабуе выявіць выдушванне.
 Заўважце, гэта можа запаволіць працу.</translation>
     </message>
     <message>
@@ -2083,8 +2083,6 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Архітэктура</translation>
     </message>
@@ -2692,7 +2690,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importGBXML.py" line="46"/>
       <location filename="../../importGBXML.py" line="50"/>
       <source>This exporter can currently only export one site object</source>
-      <translation>У бягучы час экспарцёр можа экспартаваць толькі адзін аб'ект мясцовасці</translation>
+      <translation>У бягучы час сродак экспартавання можа экспартаваць толькі адзін аб'ект мясцовасці</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="92"/>
@@ -5929,21 +5927,6 @@ Building creation aborted.</source>
       <source>Writing camera position</source>
       <translation>Запісвае становішча камеры</translation>
     </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Асадка</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Імпарт-Экспарт</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6753,6 +6736,30 @@ Building creation aborted.</source>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Пераўтварыць</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>Архітэктура</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>Асадка</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>Імпарт-Экспарт</translation>
     </message>
   </context>
 </TS>

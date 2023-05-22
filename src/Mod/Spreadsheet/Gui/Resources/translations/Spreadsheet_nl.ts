@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Verwijs naar cel met een alias, bijvoorbeeld
 Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Rekenblad</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
