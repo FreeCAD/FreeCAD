@@ -162,5 +162,6 @@ bool ViewProviderBalloon::canDelete(App::DocumentObject *obj) const
     // deletions of a balloon object doesn't destroy anything
     // thus we can pass this action
     Q_UNUSED(obj)
+    Base::Console().Message("VPB::canDelete()\n");
     return true;
 }
