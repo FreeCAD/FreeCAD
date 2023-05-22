@@ -177,22 +177,18 @@ private:
 };
 
 // --------------------------------------------------------------------
-
-class WorkbenchGroup;
 class GuiExport WorkbenchComboBox : public QComboBox
 {
     Q_OBJECT
 
 public:
-    explicit WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=nullptr);
+    explicit WorkbenchComboBox(QWidget* parent=nullptr);
     void showPopup() override;
 
 public Q_SLOTS:
     void refreshList(QList<QAction*>);
 
 private:
-    WorkbenchGroup* group;
-
     Q_DISABLE_COPY(WorkbenchComboBox)
 };
 

@@ -603,7 +603,7 @@ void ActionGroup::onHovered (QAction *act)
 
 // --------------------------------------------------------------------
 
-WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent) : QComboBox(parent), group(wb)
+WorkbenchComboBox::WorkbenchComboBox(QWidget* parent) : QComboBox(parent)
 {
 }
 
@@ -667,13 +667,13 @@ void WorkbenchGroup::addTo(QWidget *widget)
         });
     };
     if (widget->inherits("QToolBar")) {
-        auto* box = new WorkbenchComboBox(this, widget);
+        auto* box = new WorkbenchComboBox(widget);
         setupBox(box);
 
         qobject_cast<QToolBar*>(widget)->addWidget(box);
     }
     else if (widget->inherits("QMenuBar")) {
-        auto* box = new WorkbenchComboBox(this, widget);
+        auto* box = new WorkbenchComboBox(widget);
         setupBox(box);
 
         bool left = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
@@ -684,7 +684,7 @@ void WorkbenchGroup::addTo(QWidget *widget)
         menu = menu->addMenu(action()->text());
         menu->addActions(actions());
 
-        connect(this, &WorkbenchGroup::workbenchListRefreshed, this, [this, menu](QList<QAction*> actions) {
+        connect(this, &WorkbenchGroup::workbenchListRefreshed, this, [menu](QList<QAction*> actions) {
             menu->clear();
             menu->addActions(actions);
         });
@@ -701,7 +701,10 @@ void WorkbenchGroup::refreshWorkbenchList()
         delete action;
     }
 
+    std::string activeWbName = "";
     Workbench* activeWB = WorkbenchManager::instance()->active();
+    if (activeWB)
+        activeWbName = activeWB->name();
 
     // Create action list of enabled wb
     int index = 0;
@@ -720,7 +723,7 @@ void WorkbenchGroup::refreshWorkbenchList()
         if (index < 9) {
             action->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(index + 1)));
         }
-        if (wbName.toStdString() == activeWB->name()) {
+        if (wbName.toStdString() == activeWbName) {
             action->setChecked(true);
         }
 
