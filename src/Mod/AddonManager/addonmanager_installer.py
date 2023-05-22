@@ -128,9 +128,7 @@ class AddonInstaller(QtCore.QObject):
         self.git_manager = initialize_git()
 
         if allow_list is not None:
-            AddonInstaller.allowed_packages = set(
-                allow_list if allow_list is not None else []
-            )
+            AddonInstaller.allowed_packages = set(allow_list if allow_list is not None else [])
         elif not AddonInstaller.allowed_packages:
             AddonInstaller._load_local_allowed_packages_list()
             AddonInstaller._update_allowed_packages_list()
@@ -160,6 +158,9 @@ class AddonInstaller(QtCore.QObject):
                 self.addon_to_install.enable_workbench()
         except utils.ProcessInterrupted:
             pass
+        except Exception as e:
+            FreeCAD.Console.PrintLog(e + "\n")
+            success = False
         if success:
             if (
                 hasattr(self.addon_to_install, "contains_workbench")
@@ -175,9 +176,7 @@ class AddonInstaller(QtCore.QObject):
     def _load_local_allowed_packages_list(cls) -> None:
         """Read in the local allow-list, in case the remote one is unavailable."""
         cls.allowed_packages.clear()
-        allow_file = os.path.join(
-            os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt"
-        )
+        allow_file = os.path.join(os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt")
         if os.path.exists(allow_file):
             with open(allow_file, encoding="utf8") as f:
                 lines = f.readlines()
@@ -271,9 +270,7 @@ class AddonInstaller(QtCore.QObject):
         if addon_url.startswith("file://"):
             addon_url = addon_url[len("file://") :]  # Strip off the file:// part
         name = self.addon_to_install.name
-        shutil.copytree(
-            addon_url, os.path.join(self.installation_path, name), dirs_exist_ok=True
-        )
+        shutil.copytree(addon_url, os.path.join(self.installation_path, name), dirs_exist_ok=True)
         self._finalize_successful_installation()
         return True
 
@@ -326,9 +323,7 @@ class AddonInstaller(QtCore.QObject):
         GUI thread."""
         NetworkManager.AM_NETWORK_MANAGER.progress_made.connect(self._update_zip_status)
         NetworkManager.AM_NETWORK_MANAGER.progress_complete.connect(self._finish_zip)
-        self.zip_download_index = (
-            NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zip_url)
-        )
+        self.zip_download_index = NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zip_url)
         while self.zip_download_index is not None:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 break
@@ -350,9 +345,9 @@ class AddonInstaller(QtCore.QObject):
         if response_code != 200:
             self.failure.emit(
                 self.addon_to_install,
-                translate(
-                    "AddonsInstaller", "Received {} response code from server"
-                ).format(response_code),
+                translate("AddonsInstaller", "Received {} response code from server").format(
+                    response_code
+                ),
             )
             return
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
@@ -411,9 +406,7 @@ class AddonInstaller(QtCore.QObject):
 
         if hasattr(self.addon_to_install, "metadata") and os.path.isfile(package_xml):
             self.addon_to_install.load_metadata_file(package_xml)
-            self.addon_to_install.installed_version = (
-                self.addon_to_install.metadata.version
-            )
+            self.addon_to_install.installed_version = self.addon_to_install.metadata.version
             self.addon_to_install.updated_timestamp = os.path.getmtime(package_xml)
 
     def _install_macros(self):
@@ -462,11 +455,7 @@ class AddonInstaller(QtCore.QObject):
         """Make sure the object has the necessary attributes (name, url, and branch) to be
         installed."""
 
-        if (
-            not hasattr(addon, "name")
-            or not hasattr(addon, "url")
-            or not hasattr(addon, "branch")
-        ):
+        if not hasattr(addon, "name") or not hasattr(addon, "url") or not hasattr(addon, "branch"):
             raise RuntimeError(
                 "Provided object does not provide a name, url, and/or branch attribute"
             )
@@ -505,9 +494,7 @@ class MacroInstaller(QtCore.QObject):
             temp_install_succeeded, error_list = macro.install(temp_dir)
             if not temp_install_succeeded:
                 FreeCAD.Console.PrintError(
-                    translate("AddonsInstaller", "Failed to install macro {}").format(
-                        macro.name
-                    )
+                    translate("AddonsInstaller", "Failed to install macro {}").format(macro.name)
                     + "\n"
                 )
                 for e in error_list:
@@ -536,6 +523,4 @@ class MacroInstaller(QtCore.QObject):
             or not hasattr(addon.macro, "install")
             or not callable(addon.macro.install)
         ):
-            raise RuntimeError(
-                "Provided object does not provide a macro with an install method"
-            )
+            raise RuntimeError("Provided object does not provide a macro with an install method")
