@@ -89,6 +89,18 @@ TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
 LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 
+# Locations that require QM file generation (predominantly Python workbenches)
+GENERATE_QM = {
+    "AddonManager",
+    "Arch",
+    "Cloud",
+    "Draft",
+    "Inspection",
+    "Material",
+    "OpenSCAD",
+    "Tux",
+}
+
 # locations list contains Module name, relative path to translation folder and relative path to qrc file
 
 locations = [
@@ -429,21 +441,23 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
     shutil.copyfile(tsfilepath, newpath)
-    try:
-        subprocess.run(
-            [
-                "lrelease",
-                newpath,
-            ],
-            timeout=5,
-        )
-    except Exception as e:
-        print(e)
-    newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
-    if not os.path.exists(newqm):
-        print("ERROR: impossible to create " + newqm + ", aborting")
-        sys.exit()
-    updateqrc(qrcpath, lncode)
+    if basename in GENERATE_QM:
+        print(f"Generating QM for {basename}")
+        try:
+            subprocess.run(
+                [
+                    "lrelease",
+                    newpath,
+                ],
+                timeout=5,
+            )
+        except Exception as e:
+            print(e)
+        newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
+        if not os.path.exists(newqm):
+            print("ERROR: failed to create " + newqm + ", aborting")
+            sys.exit()
+        updateqrc(qrcpath, lncode)
 
 
 def doLanguage(lncode):
