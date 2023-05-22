@@ -497,6 +497,38 @@ void SketcherGui::notifyConstraintSubstitutions(const QString & message)
                                                         QObject::tr("Keep notifying me of constraint substitutions"));
 }
 
+// returns true if successful, false otherwise
+bool addConstraintSafely(SketchObject * obj, std::function<void()> constraintadditionfunction)
+{
+    try {
+        constraintadditionfunction();
+    }
+    catch (const Base::IndexError& e) {
+        // Exceptions originating in Python have already been reported by the Interpreter as
+        // Untranslated developer intended messages (i.e. to the Report View)
+        // Example of exception carrying a static string with a pair in the "Notifications" context
+        Gui::NotifyUserError(obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
+
+        Gui::Command::abortCommand();
+
+        tryAutoRecompute(obj);
+        return false;
+    }
+    catch (const Base::Exception& e) {
+        Gui::TranslatedUserError(obj,
+                                QObject::tr("Error"),
+                                QObject::tr("Unexpected error. More information may be available in the Report View."));
+
+        Gui::Command::abortCommand();
+
+        tryAutoRecompute(obj);
+        return false;
+    }
+
+    return true;
+}
 
 namespace SketcherGui {
 
@@ -1664,25 +1696,16 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
         // undo command open
         openCommand(QT_TRANSLATE_NOOP("Command", "Add 'Block' constraint"));
 
-        try {
-
+        bool safe = addConstraintSafely(Obj, [&](){
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Block',%d))", (*itg));
+        });
 
-        } catch (const Base::Exception& e) {
-            // Exceptions originating in Python have already been reported by the Interpreter as
-            // Untranslated developer intended messages (i.e. to the Report View)
-            Gui::NotifyError(Obj,
-                        QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        e.what());
-
-            Gui::Command::abortCommand();
-
-            tryAutoRecompute(Obj);
+        if(!safe)
             return;
+        else {
+            commitCommand();
+            tryAutoRecompute(Obj);
         }
-
-        commitCommand();
-        tryAutoRecompute(Obj);
     }
 
     // clear the selection (convenience)
@@ -1710,24 +1733,17 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, 
             // undo command open
             openCommand(QT_TRANSLATE_NOOP("Command", "Add block constraint"));
 
-            try {
-
+            bool safe = addConstraintSafely(Obj, [&](){
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Block',%d))",
                                       selSeq.front().GeoId);
+            });
 
-            } catch (const Base::Exception& e) {
-                Gui::NotifyError(Obj,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            e.what());
-
-                Gui::Command::abortCommand();
-
-                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+            if(!safe)
                 return;
+            else {
+                commitCommand();
+                tryAutoRecompute(Obj);
             }
-
-            commitCommand();
-            tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
         }
         break;
     default:
@@ -3641,7 +3657,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
-            try{
+            bool safe = addConstraintSafely(Obj, [&](){
                 //add missing point-on-object constraints
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
@@ -3660,19 +3676,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
                     GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-            } catch (const Base::Exception& e) {
-                Gui::NotifyError(Obj,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            e.what());
+            });
 
-                Gui::Command::abortCommand();
-
-                tryAutoRecompute(Obj);
+            if(!safe)
                 return;
+            else {
+                commitCommand();
+                tryAutoRecompute(Obj);
             }
-
-            commitCommand();
-            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
 
@@ -4140,7 +4151,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
-        try{
+        bool safe = addConstraintSafely(Obj, [&](){
             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
@@ -4159,19 +4170,14 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
                 GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-        } catch (const Base::Exception& e) {
-            Gui::NotifyError(Obj,
-                        QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        e.what());
+        });
 
-            Gui::Command::abortCommand();
-
-            tryAutoRecompute(Obj);
+        if(!safe)
             return;
+        else {
+            commitCommand();
+            tryAutoRecompute(Obj);
         }
-
-        commitCommand();
-        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
 
@@ -4355,7 +4361,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
-            try{
+            bool safe = addConstraintSafely(Obj, [&](){
                 //add missing point-on-object constraints
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
@@ -4374,17 +4380,14 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
                     GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-            } catch (const Base::Exception& e) {
-                Gui::NotifyError(Obj,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            e.what());
-                Gui::Command::abortCommand();
-                tryAutoRecompute(Obj);
-                return;
-            }
+            });
 
-            commitCommand();
-            tryAutoRecompute(Obj);
+            if(!safe)
+                return;
+            else {
+                commitCommand();
+                tryAutoRecompute(Obj);
+            }
 
             getSelection().clearSelection();
 
@@ -4912,8 +4915,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
-        try{
-            //add missing point-on-object constraints
+        bool safe = addConstraintSafely(Obj, [&](){
+             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                 Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
                     GeoId3,static_cast<int>(PosId3),GeoId1);
@@ -4931,19 +4934,14 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
                 GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-        } catch (const Base::Exception& e) {
-            Gui::NotifyError(Obj,
-                        QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        e.what());
+        });
 
-            Gui::Command::abortCommand();
-
-            tryAutoRecompute(Obj);
+        if(!safe)
             return;
+        else {
+            commitCommand();
+            tryAutoRecompute(Obj);
         }
-
-        commitCommand();
-        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
 
@@ -7239,7 +7237,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     //add constraint
     openCommand(QT_TRANSLATE_NOOP("Command", "Add Snell's law constraint"));
 
-    try {
+    bool safe = addConstraintSafely(Obj, [&](){
         if (! IsPointAlreadyOnCurve(GeoId2,GeoId1,PosId1,Obj))
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
@@ -7259,16 +7257,14 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)",
                 ConStr.size()-1,"False");
         }*/
-    } catch (Base::Exception &e) {
-        abortCommand();
-        Gui::NotifyError(Obj,
-                    QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    e.what());
-        return;
-    }
+    });
 
-    commitCommand();
-    tryAutoRecompute(Obj);
+    if(!safe)
+        return;
+    else {
+        commitCommand();
+        tryAutoRecompute(Obj);
+    }
 
     // clear the selection (convenience)
     getSelection().clearSelection();
