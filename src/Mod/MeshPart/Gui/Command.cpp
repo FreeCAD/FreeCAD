@@ -104,6 +104,7 @@ void CmdMeshPartTrimByPlane::activated(int)
     QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Below"), QMessageBox::ActionRole);
     QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Above"), QMessageBox::ActionRole);
     QPushButton* split = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Split"), QMessageBox::ActionRole);
+    msgBox.addButton(QMessageBox::Cancel);
     msgBox.setDefaultButton(inner);
     msgBox.exec();
     QAbstractButton* click = msgBox.clickedButton();
