@@ -75,9 +75,8 @@ void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry * geo
         // at this point all calculations relate to ArcOfCircle
         calculate<CalculationType::ArcCircleHelper>(geometry, geoid);
         addUpdateNode(circleHelper);
-    } else
-        assert(false /* Not implemented */);
-};
+    }
+}
 
 void EditModeInformationOverlayCoinConverter::addToInfoGroup(SoSwitch * sw) {
     infoGroup->addChild(sw);
