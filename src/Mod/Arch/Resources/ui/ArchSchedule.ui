@@ -68,10 +68,7 @@
        <string>Property</string>
       </property>
       <property name="toolTip">
-       <string>The property to retrieve from each object.
-Can be &quot;Count&quot; to count the objects, or property names
-like &quot;Length&quot; or &quot;Shape.Volume&quot; to retrieve
-a certain property.</string>
+       <string>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</string>
       </property>
      </column>
      <column>
