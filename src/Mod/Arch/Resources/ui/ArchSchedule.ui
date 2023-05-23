@@ -98,7 +98,7 @@ Leave blank to use all objects from the document</string>
        <string>Filter</string>
       </property>
       <property name="toolTip">
-       <string>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name); !Name:Wall - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name); Description:Win - Will only consider objects with &amp;quot;win&amp;quot; in their description; !Label:Win - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label; IfcType:Wall - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot; ; !Tag:Wall - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot; If you leave this field empty, no filtering is applied</string>
+       <string>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</string>
       </property>
      </column>
     </widget>
@@ -184,7 +184,7 @@ Leave blank to use all objects from the document</string>
      <item row="1" column="0">
       <widget class="QPushButton" name="buttonSelect">
        <property name="toolTip">
-        <string>Put selected objects into the &quot;Objects&quot; column of the selected row</string>
+        <string>Put selected objects into the 'Objects' column of the selected row</string>
        </property>
        <property name="text">
         <string>Add selection</string>
@@ -208,7 +208,7 @@ Leave blank to use all objects from the document</string>
      <item row="1" column="2">
       <widget class="QPushButton" name="buttonExport">
        <property name="toolTip">
-        <string>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)</string>
+        <string>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</string>
        </property>
        <property name="text">
         <string>Export</string>
