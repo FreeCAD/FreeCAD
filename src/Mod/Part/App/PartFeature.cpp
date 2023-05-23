@@ -171,7 +171,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     catch(Standard_Failure &e) {
         // FIXME: Do not handle the exception here because it leads to a flood of irrelevant and
         // annoying error messages.
-        // For example: https://forum.freecadweb.org/viewtopic.php?f=19&t=42216
+        // For example: https://forum.freecad.org/viewtopic.php?f=19&t=42216
         // Instead either raise a sub-class of Base::Exception and let it handle by the calling
         // instance or do simply nothing. For now the error message is degraded to a log message.
         std::ostringstream str;

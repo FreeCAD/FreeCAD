@@ -418,9 +418,7 @@ void ViewProviderSketch::purgeHandler()
     Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
     Gui::View3DInventorViewer *viewer;
     viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+    viewer->setSelectionEnabled(false);
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -535,7 +533,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                viewProviderParameters.buttonPress = pressed;
 
                 // More control over Sketcher edit mode Esc key behavior
-                // https://forum.freecadweb.org/viewtopic.php?f=3&t=42207
+                // https://forum.freecad.org/viewtopic.php?f=3&t=42207
                 return viewProviderParameters.handleEscapeButton;
             }
             return false;
@@ -1393,13 +1391,25 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
         } else if (Constr->Second != GeoEnum::GeoUndef) {
             p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
             const Part::Geometry *geo = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
-            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // point to line distance
+            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                // calculate the projection of p1 onto line2
-                p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
-                p2 += p1;
+                if (Constr->FirstPos != Sketcher::PointPos::none) { // point to line distance
+                    // calculate the projection of p1 onto line2
+                    p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
+                    p2 += p1;
+                 } else {
+                     const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
+                     const Part::GeomCircle *circleSeg = static_cast<const Part::GeomCircle*>(geo1);
+                     Base::Vector3d ct = circleSeg->getCenter();
+                     double radius = circleSeg->getRadius();
+                     p1.ProjectToLine(ct-l2p1, l2p2-l2p1); //project on the line translated to origin
+                     Base::Vector3d dir = p1;
+                     dir.Normalize();
+                     p1 += ct;
+                     p2 = ct + dir * radius;
+                 }
             } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
                 const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
                 if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -3183,8 +3193,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     viewer->setCameraOrientation(rot);
 
     viewer->setEditing(true);
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+    viewer->setSelectionEnabled(false);
 
     viewer->addGraphicsItem(rubberband.get());
     rubberband->setViewer(viewer);
@@ -3204,8 +3213,7 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+    viewer->setSelectionEnabled(true);
 }
 
 void ViewProviderSketch::camSensCB(void *data, SoSensor *)

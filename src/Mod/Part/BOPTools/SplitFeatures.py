@@ -22,7 +22,7 @@
 
 __title__="BOPTools.SplitFeatures module"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Shape splitting document objects (features)."
 
 from . import SplitAPI
@@ -35,7 +35,7 @@ if FreeCAD.GuiUp:
 
 # -------------------------- translation-related code -------------------------
 # See forum thread "A new Part tool is being born... JoinFeatures!"
-# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239
+# http://forum.freecad.org/viewtopic.php?f=22&t=11112&start=30#p90239
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except Exception:

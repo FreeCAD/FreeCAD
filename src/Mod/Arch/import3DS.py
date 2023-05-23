@@ -23,7 +23,7 @@ import os,FreeCAD,Mesh
 
 __title__  = "FreeCAD 3DS importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 DEBUG = True
 

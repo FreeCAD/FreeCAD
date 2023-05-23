@@ -128,7 +128,7 @@ public:
             if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
                                             msg.pObjectName, geometryCreationMode==Construction?"True":"False");
 
@@ -159,9 +159,7 @@ private:
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         Gui::View3DInventorViewer *viewer;
         viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-        SoNode* root = viewer->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+        viewer->setSelectionEnabled(true);
 
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();

@@ -36,7 +36,7 @@ import re
 
 
 TOOLTIP = """
-Generate G-Code from a Path that is compatible with the Estlcam CNC controller.
+Generate G-code from a Path that is compatible with the Estlcam CNC controller.
 Have a look at https://www.estlcam.de/steuerung_cnc_programme_en.php
 
 This postprocessor, once placed in the appropriate PathScripts folder, can be

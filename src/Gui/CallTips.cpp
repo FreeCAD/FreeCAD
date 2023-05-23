@@ -353,12 +353,12 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             // for Py2 but silently accepts it for Py3.
             //
             // FIXME: Add methods of extension to the current instance and not its type object
-            // https://forum.freecadweb.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290#p155290
+            // https://forum.freecad.org/viewtopic.php?f=22&t=18105
+            // https://forum.freecad.org/viewtopic.php?f=3&t=20009&p=154447#p154447
+            // https://forum.freecad.org/viewtopic.php?f=10&t=12534&p=155290#p155290
             //
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30#p286772
+            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&p=286759#p286759
+            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&start=30#p286772
             Py::Object attr = obj.getAttr(name);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());

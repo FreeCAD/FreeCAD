@@ -22,21 +22,20 @@
 # ***************************************************************************
 
 
-import FreeCAD
+import FreeCAD as App
 import FreeCADGui
 import Path
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
-import math
-import copy
+from Path.Geom import CmdMoveRapid, CmdMoveStraight, CmdMoveArc, wireForPath
 
-__doc__ = """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
+__doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
-translate = FreeCAD.Qt.translate
+translate = App.Qt.translate
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -45,9 +44,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-movecommands = ["G1", "G01", "G2", "G02", "G3", "G03"]
-rapidcommands = ["G0", "G00"]
-arccommands = ["G2", "G3", "G02", "G03"]
+movecommands = CmdMoveStraight + CmdMoveArc
 currLocation = {}
 
 
@@ -84,19 +81,16 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "UseMachineCRC",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Use Machine Cutter Radius Compensation /Tool Path Offset G41/G42",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyDistance",
             "Length",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "LengthOut",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the exit"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -112,19 +106,6 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the Path"),
         )
         obj.StyleOff = lead_styles
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "RadiusCenter",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The Mode of Point Radiusoffset or Center"
-            ),
-        )
-        obj.RadiusCenter = [
-            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Radius"),
-            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Center"),
-        ]
-        obj.Proxy = self
         obj.addProperty(
             "App::PropertyDistance",
             "ExtendLeadIn",
@@ -151,6 +132,7 @@ class ObjectDressup:
                 "App::Property", "Apply LeadInOut to layers within an operation"
             ),
         )
+        obj.Proxy = self
 
         self.wire = None
         self.rapids = None
@@ -163,13 +145,12 @@ class ObjectDressup:
 
     def setup(self, obj):
         obj.Length = obj.Base.ToolController.Tool.Diameter * 0.75
+        obj.LengthOut = obj.Base.ToolController.Tool.Diameter * 0.75
         obj.LeadIn = True
         obj.LeadOut = True
         obj.KeepToolDown = False
-        obj.UseMachineCRC = False
         obj.StyleOn = "Arc"
         obj.StyleOff = "Arc"
-        obj.RadiusCenter = "Radius"
         obj.ExtendLeadIn = 0
         obj.ExtendLeadOut = 0
         obj.RapidPlunge = False
@@ -182,113 +163,83 @@ class ObjectDressup:
             return
         if not obj.Base.Path:
             return
-        if obj.Length < 0:
+        if obj.Length <= 0:
             Path.Log.error(
                 translate("Path_DressupLeadInOut", "Length/Radius positive not Null")
                 + "\n"
             )
             obj.Length = 0.1
-        self.wire, self.rapids = Path.Geom.wireForPath(PathUtils.getPathWithPlacement(obj.Base))
+
+        if obj.LengthOut <= 0:
+            Path.Log.error(
+                translate("Path_DressupLeadInOut", "Length/Radius positive not Null")
+                + "\n"
+            )
+            obj.LengthOut = 0.1
+
+        self.wire, self.rapids = wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def getDirectionOfPath(self, obj):
         op = PathDressup.baseOp(obj.Base)
 
         if hasattr(op, "Side") and op.Side == "Outside":
-            if hasattr(op, "Direction") and op.Direction == "CW":
-                return "left"
-            else:
-                return "right"
+            return (
+                "left" if hasattr(op, "Direction") and op.Direction == "CW" else "right"
+            )
         else:
-            if hasattr(op, "Direction") and op.Direction == "CW":
-                return "right"
-        return "left"
+            return (
+                "right" if hasattr(op, "Direction") and op.Direction == "CW" else "left"
+            )
 
     def getSideOfPath(self, obj):
         op = PathDressup.baseOp(obj.Base)
-        if hasattr(op, "Side"):
-            return op.Side
-
-        return ""
-
-    def normalize(self, Vector):
-        vx = 0
-        vy = 0
-
-        x = Vector.x
-        y = Vector.y
-        length = math.sqrt(x * x + y * y)
-        if (math.fabs(length)) > 0.0000000000001:
-            vx = round(x / length, 3)
-            vy = round(y / length, 3)
-
-        return FreeCAD.Vector(vx, vy, 0)
-
-    def invert(self, Vector):
-        x = Vector.x * -1
-        y = Vector.y * -1
-        z = Vector.z * -1
-        return FreeCAD.Vector(x, y, z)
-
-    def multiply(self, Vector, len):
-        x = Vector.x * len
-        y = Vector.y * len
-        z = Vector.z * len
-        return FreeCAD.Vector(x, y, z)
-
-    def rotate(self, Vector, angle):
-        s = math.sin(math.radians(angle))
-        c = math.cos(math.radians(angle))
-        xnew = Vector.x * c - Vector.y * s
-        ynew = Vector.x * s + Vector.y * c
-        return FreeCAD.Vector(xnew, ynew, Vector.z)
+        return op.Side if hasattr(op, "Side") else ""
 
     def getLeadStart(self, obj, queue, action):
         """returns Lead In G-code."""
         # Modified March 2022 by lcorley to support leadin extension
         results = []
         op = PathDressup.baseOp(obj.Base)
-        tc = PathDressup.toolController(obj.Base)
-        horizFeed = tc.HorizFeed.Value
-        vertFeed = tc.VertFeed.Value
-        toolnummer = tc.ToolNumber
+        horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+        vertFeed = PathDressup.toolController(obj.Base).VertFeed.Value
+
         arcs_identical = False
 
         # Set the correct twist command
-        if self.getDirectionOfPath(obj) == "left":
-            arcdir = "G3"
-        else:
-            arcdir = "G2"
+        arcdir = "G3" if self.getDirectionOfPath(obj) == "left" else "G2"
 
-        R = obj.Length.Value  # Radius of roll or length
         if queue[1].Name == "G1":  # line
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
-            v = self.normalize(p1.sub(p0))
+            v = App.Vector(p1.sub(p0)).normalize()
             Path.Log.debug(" CURRENT_IN Line : P0 Z:{} p1 Z:{}".format(p0.z, p1.z))
         else:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
-            v = self.normalize(p1.sub(p0))
+            Path.Log.track()
+            v = App.Vector(p1.sub(p0)).normalize()
             Path.Log.debug(
-                " CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(
-                    p0.x, p0.y, p1.x, p1.y
+                " CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} Z:{}".format(
+                    p0.x, p0.y, p1.x, p1.y, p1.z
                 )
             )
 
         # Calculate offset vector (will be overwritten for arcs)
         if self.getDirectionOfPath(obj) == "right":
-            off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
+            off_v = App.Vector(v.y * obj.Length.Value, -v.x * obj.Length.Value, 0.0)
         else:
-            off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
+            off_v = App.Vector(-v.y * obj.Length.Value, v.x * obj.Length.Value, 0.0)
 
         # Check if we enter at line or arc command
-        if queue[1].Name in movecommands and queue[1].Name not in arccommands:
+        if queue[1].Name in movecommands and queue[1].Name not in CmdMoveArc:
             # We have a line move
             vec = p1.sub(p0)
-            vec_n = self.normalize(vec)
-            vec_inv = self.invert(vec_n)
-            vec_off = self.multiply(vec_inv, obj.ExtendLeadIn)
+            vec_n = App.Vector(vec).normalize()
+            vec_inv = vec_n
+            vec_inv.multiply(-1)
+            vec_off = vec_inv
+            vec_off.multiply(obj.ExtendLeadIn)
             Path.Log.debug(
                 "LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(
                     queue[0].Name, vec_inv.x, vec_inv.y, vec_off.x, vec_off.y
@@ -297,7 +248,7 @@ class ObjectDressup:
         else:
             # We have an arc move
             # Calculate coordinates for middle of circle
-            pij = copy.deepcopy(p0)
+            pij = App.Vector(p0)
             pij.x += queue[1].Parameters["I"]
             pij.y += queue[1].Parameters["J"]
 
@@ -308,46 +259,53 @@ class ObjectDressup:
             # Calculate vector circle start -> circle middle
             vec_circ = pij.sub(p0)
 
-            # Rotate vector to get direction for lead in
-            if arcdir == "G2":
-                vec_rot = self.rotate(vec_circ, 90)
-            else:
-                vec_rot = self.rotate(vec_circ, -90)
+            angle = 90 if arcdir == "G2" else -90
+            vec_rot = App.Rotation(App.Vector(0, 0, 1), angle).multVec(vec_circ)
 
             # Normalize and invert vector
-            vec_n = self.normalize(vec_rot)
-
-            v = self.invert(vec_n)
+            vec_n = App.Vector(vec_rot).normalize()
+            v = App.Vector(vec_n).multiply(-1)
 
             # Calculate offset of lead in
             if arcdir == "G3":
-                off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
+                off_v = App.Vector(-v.y * obj.Length.Value, v.x * obj.Length.Value, 0.0)
             else:
-                off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
+                off_v = App.Vector(v.y * obj.Length.Value, -v.x * obj.Length.Value, 0.0)
 
-        offsetvector = FreeCAD.Vector(v.x * R, v.y * R, 0)  # IJ
+        offsetvector = App.Vector(
+            v.x * obj.Length.Value, v.y * obj.Length.Value, 0
+        )
 
-        if obj.RadiusCenter == "Radius":
-            leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
+        if obj.StyleOn == "Arc":
+            leadstart = (p0.add(off_v)).sub(offsetvector)
             if arcs_identical:
                 t = p0.sub(leadstart)
                 t = p0.add(t)
                 leadstart = t
                 offsetvector = self.multiply(offsetvector, -1)
-        else:
-            leadstart = p0.add(off_v)  # Dmode
+        elif obj.StyleOn == "Tangent":
+            # This is wrong.  please fix
+            leadstart = (p0.add(off_v)).sub(offsetvector)
+            if arcs_identical:
+                t = p0.sub(leadstart)
+                t = p0.add(t)
+                leadstart = t
+                offsetvector = self.multiply(offsetvector, -1)
+        else:  # perpendicular
+            leadstart = p0.add(off_v)
+
         # At this point leadstart is the beginning of the leadin arc
         # and offsetvector points from leadstart to the center of the leadin arc
         # so the offsetvector is a radius of the leadin arc at its start
         # The extend line should be tangent to the leadin arc at this point, or perpendicular to the radius
-        if arcdir == "G2":
-            tangentvec = self.rotate(offsetvector, -90)
-        else:
-            tangentvec = self.rotate(offsetvector, 90)
+
+        angle = -90 if arcdir == "G2" else 90
+        tangentvec = App.Rotation(App.Vector(0, 0, 1), angle).multVec(offsetvector)
+
         # Normalize the tangent vector
-        tangentvecNorm = self.normalize(tangentvec)
-        # Multiply tangentvecNorm by LeadIn length
-        leadlinevec = self.multiply(tangentvecNorm, obj.ExtendLeadIn)
+        tangentvecNorm = App.Vector(tangentvec).normalize()
+        leadlinevec = App.Vector(tangentvecNorm).multiply(obj.ExtendLeadIn)
+
         # leadlinevec provides the offset from the beginning of the lead arc to the beginning of the extend line
         extendstart = leadstart.add(leadlinevec)
 
@@ -388,13 +346,8 @@ class ObjectDressup:
             extendcommand = Path.Command("G0", {"Z": p1.z})
         else:
             extendcommand = Path.Command("G1", {"Z": p1.z, "F": vertFeed})
-        results.append(extendcommand)
 
-        if obj.UseMachineCRC:
-            if self.getDirectionOfPath(obj) == "right":
-                results.append(Path.Command("G42", {"D": toolnummer}))
-            else:
-                results.append(Path.Command("G41", {"D": toolnummer}))
+        results.append(extendcommand)
 
         if obj.StyleOn == "Arc":
             if obj.ExtendLeadIn != 0:
@@ -416,11 +369,10 @@ class ObjectDressup:
                 },
             )  # add G2/G3 move
             results.append(arcmove)
-        elif obj.StyleOn == "Tangent":
+        # elif obj.StyleOn in ["Tangent", "Perpendicular"]:
+        else:
             extendcommand = Path.Command("G1", {"X": p0.x, "Y": p0.y, "F": horizFeed})
             results.append(extendcommand)
-        else:
-            Path.Log.debug(" CURRENT_IN Perp")
 
         currLocation.update(results[-1].Parameters)
         currLocation["Z"] = p1.z
@@ -431,7 +383,6 @@ class ObjectDressup:
         """returns the Gcode of LeadOut."""
         results = []
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
-        R = obj.Length.Value  # Radius of roll or length
         arcs_identical = False
 
         # Set the correct twist command
@@ -443,24 +394,28 @@ class ObjectDressup:
         if queue[1].Name == "G1":  # line
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
-            v = self.normalize(p1.sub(p0))
+            v = App.Vector(p1.sub(p0)).normalize()
         else:  # dealing with a circle
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
-            v = self.normalize(p1.sub(p0))
+            v = App.Vector(p1.sub(p0)).normalize()
 
         if self.getDirectionOfPath(obj) == "right":
-            off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
+            off_v = App.Vector(
+                v.y * obj.LengthOut.Value, -v.x * obj.LengthOut.Value, 0.0
+            )
         else:
-            off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
+            off_v = App.Vector(
+                -v.y * obj.LengthOut.Value, v.x * obj.LengthOut.Value, 0.0
+            )
 
         # Check if we leave at line or arc command
-        if queue[1].Name in movecommands and queue[1].Name not in arccommands:
+        if queue[1].Name in movecommands and queue[1].Name not in CmdMoveArc:
             # We have a line move
-            vec = p1.sub(p0)
-            vec_n = self.normalize(vec)
-            vec_inv = self.invert(vec_n)
-            vec_off = self.multiply(vec_inv, obj.ExtendLeadOut)
+            vec_n = App.Vector(p1.sub(p0)).normalize()
+            vec_inv = vec_n
+            vec_inv.multiply(-1)
+            vec_off = App.Vector(vec_inv).multiply(obj.ExtendLeadOut)
             Path.Log.debug(
                 "LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(
                     queue[0].Name, vec_inv.x, vec_inv.y, vec_off.x, vec_off.y
@@ -468,7 +423,7 @@ class ObjectDressup:
             )
         else:
             # We have an arc move
-            pij = copy.deepcopy(p0)
+            pij = App.Vector(p0)
             pij.x += queue[1].Parameters["I"]
             pij.y += queue[1].Parameters["J"]
             ve = pij.sub(p1)
@@ -476,39 +431,55 @@ class ObjectDressup:
             if arcdir == queue[1].Name:
                 arcs_identical = True
 
-            if arcdir == "G2":
-                vec_rot = self.rotate(ve, -90)
-            else:
-                vec_rot = self.rotate(ve, 90)
+            angle = -90 if arcdir == "G2" else 90
+            vec_rot = App.Rotation(App.Vector(0, 0, 1), angle).multVec(ve)
 
-            vec_n = self.normalize(vec_rot)
+            vec_n = App.Vector(vec_rot).normalize()
             v = vec_n
 
             if arcdir == "G3":
-                off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
+                off_v = App.Vector(
+                    -v.y * obj.LengthOut.Value, v.x * obj.LengthOut.Value, 0.0
+                )
             else:
-                off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
+                off_v = App.Vector(
+                    v.y * obj.LengthOut.Value, -v.x * obj.LengthOut.Value, 0.0
+                )
 
-            vec_inv = self.invert(vec_rot)
+            vec_inv = vec_rot
+            vec_inv.multiply(-1)
 
-        offsetvector = FreeCAD.Vector(v.x * R, v.y * R, 0.0)
-        if obj.RadiusCenter == "Radius":
-            leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
+        offsetvector = App.Vector(
+            v.x * obj.LengthOut.Value, v.y * obj.LengthOut.Value, 0.0
+        )
+        # if obj.RadiusCenter == "Radius":
+        if obj.StyleOff == "Arc":
+            leadend = (p1.add(off_v)).add(offsetvector)
             if arcs_identical:
                 t = p1.sub(leadend)
                 t = p1.add(t)
                 leadend = t
-                off_v = self.multiply(off_v, -1)
+                off_v.multiply(-1)
+
+        elif obj.StyleOff == "Tangent":
+            # This is WRONG.  Please fix
+            leadend = (p1.add(off_v)).add(offsetvector)
+            if arcs_identical:
+                t = p1.sub(leadend)
+                t = p1.add(t)
+                leadend = t
+                off_v.multiply(-1)
         else:
-            leadend = p1.add(off_v)  # Dmode
+            leadend = p1.add(off_v)
 
         IJ = off_v
         # At this point leadend is the location of the end of the leadout arc
         # IJ is an offset from the beginning of the leadout arc to its center.
         # It is parallel to a tangent line at the end of the leadout arc
         # Create the normalized tangent vector
-        tangentvecNorm = self.normalize(IJ)
-        leadlinevec = self.multiply(tangentvecNorm, obj.ExtendLeadOut)
+        tangentvecNorm = App.Vector(IJ).normalize()
+        leadlinevec = App.Vector(tangentvecNorm).multiply(obj.ExtendLeadOut)
+
         extendleadoutend = leadend.add(leadlinevec)
 
         if obj.StyleOff == "Arc":
@@ -531,16 +502,11 @@ class ObjectDressup:
                     {"X": extendleadoutend.x, "Y": extendleadoutend.y, "F": horizFeed},
                 )
                 results.append(extendcommand)
-        elif obj.StyleOff == "Tangent":
+        else:
             extendcommand = Path.Command(
                 "G1", {"X": leadend.x, "Y": leadend.y, "F": horizFeed}
             )
             results.append(extendcommand)
-        else:
-            Path.Log.debug(" CURRENT_IN Perp")
-
-        if obj.UseMachineCRC:  # crc off
-            results.append(Path.Command("G40", {}))
 
         return results
 
@@ -558,12 +524,12 @@ class ObjectDressup:
         # Read in all commands
         for curCommand in PathUtils.getPathWithPlacement(obj.Base).Commands:
             Path.Log.debug("CurCMD: {}".format(curCommand))
-            if curCommand.Name not in movecommands + rapidcommands:
+            if curCommand.Name not in movecommands + CmdMoveRapid:
                 # Don't worry about non-move commands, just add to output
                 newpath.append(curCommand)
                 continue
 
-            if curCommand.Name in rapidcommands:
+            if curCommand.Name in CmdMoveRapid:
                 # We don't care about rapid moves
                 prevCmd = curCommand
                 currLocation.update(curCommand.Parameters)
@@ -571,7 +537,7 @@ class ObjectDressup:
 
             if curCommand.Name in movecommands:
                 if (
-                    prevCmd.Name in rapidcommands
+                    prevCmd.Name in CmdMoveRapid
                     and curCommand.Name in movecommands
                     and len(queue) > 0
                 ):
@@ -641,16 +607,15 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     def setupUi(self):
         self.connectWidget("LeadIn", self.form.chkLeadIn)
         self.connectWidget("LeadOut", self.form.chkLeadOut)
-        self.connectWidget("Length", self.form.dsbLen)
-        self.connectWidget("ExtendLeadIn", self.form.dsbExtendIn)
-        self.connectWidget("ExtendLeadOut", self.form.dsbExtendOut)
+        self.connectWidget("Length", self.form.dspLenIn)
+        self.connectWidget("LengthOut", self.form.dspLenOut)
+        self.connectWidget("ExtendLeadIn", self.form.dspExtendIn)
+        self.connectWidget("ExtendLeadOut", self.form.dspExtendOut)
         self.connectWidget("StyleOn", self.form.cboStyleIn)
         self.connectWidget("StyleOff", self.form.cboStyleOut)
-        self.connectWidget("RadiusCenter", self.form.cboRadius)
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
         self.connectWidget("IncludeLayers", self.form.chkLayers)
         self.connectWidget("KeepToolDown", self.form.chkKeepToolDown)
-        self.connectWidget("UseMachineCRC", self.form.chkUseCRC)
         self.setFields()
 
 
@@ -672,7 +637,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-                    print(i.Group)
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
@@ -746,7 +710,7 @@ class CommandPathDressupLeadInOut:
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction("Create LeadInOut Dressup")
+        App.ActiveDocument.openTransaction("Create LeadInOut Dressup")
         FreeCADGui.addModule("Path.Dressup.Gui.LeadInOut")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
@@ -764,11 +728,11 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand(
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        App.ActiveDocument.commitTransaction()
+        App.ActiveDocument.recompute()
 
 
-if FreeCAD.GuiUp:
+if App.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("Path_DressupLeadInOut", CommandPathDressupLeadInOut())
 

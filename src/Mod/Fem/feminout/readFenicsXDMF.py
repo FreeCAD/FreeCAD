@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD Fenics XDMF mesh reader"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importFenicsXDMF
 #  \ingroup FEM

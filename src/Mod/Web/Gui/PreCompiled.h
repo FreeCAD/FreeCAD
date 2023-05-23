@@ -32,6 +32,7 @@
 #include <vector>
 
 // Qt
+#include <QAbstractNativeEventFilter>
 #include <QApplication>
 #include <QDesktopServices>
 #include <QFileInfo>

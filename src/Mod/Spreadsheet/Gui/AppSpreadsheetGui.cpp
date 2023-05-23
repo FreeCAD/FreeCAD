@@ -48,6 +48,7 @@ void loadSpreadsheetResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Spreadsheet);
+    Q_INIT_RESOURCE(Spreadsheet_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -117,7 +118,7 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::SheetViewPy::init_type();
 
     // register preference page
-    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> (QT_TRANSLATE_NOOP("QObject","Spreadsheet"));
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

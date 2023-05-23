@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh boundary layer task panel for the document object"
 __author__ = "Bernd Hahnebach, Qingfeng Xia"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package task_mesh_boundarylayer
 #  \ingroup FEM

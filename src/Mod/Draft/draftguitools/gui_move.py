@@ -317,7 +317,7 @@ class Move(gui_base_original.Modifier):
             last = self.node[-1]
             self.vector = self.point.sub(last)
             self.move(self.ui.isCopy.isChecked())
-            self.finish()
+            self.finish(cont=None)
 
 
 Gui.addCommand('Draft_Move', Move())

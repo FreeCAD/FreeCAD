@@ -21,7 +21,7 @@
 
 __title__ = "FreeCAD OpenSCAD Workbench - GUI Commands"
 __author__ = "Sebastian Hoogen"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 '''
 This Script includes the GUI Commands of the OpenSCAD module
@@ -548,7 +548,7 @@ class OpenSCADMeshBoolean:
 
 class Hull:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
         import Part
@@ -568,7 +568,7 @@ class Hull:
 
 class Minkowski:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
         import Part

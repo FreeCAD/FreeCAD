@@ -41,11 +41,13 @@
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/WaitCursor.h>
 
 #include "../App/PointsFeature.h"
 #include "../App/Structured.h"
 #include "../App/Properties.h"
+#include "../App/Tools.h"
 
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
@@ -323,8 +325,8 @@ void CmdPointsMerge::activated(int iMsg)
     Points::PointKernel* kernel = pts->Points.startEditing();
 
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
-        const Points::PointKernel& k = static_cast<Points::Feature*>(*it)->Points.getValue();
+    for (auto it : docObj) {
+        const Points::PointKernel& k = static_cast<Points::Feature*>(it)->Points.getValue();
         std::size_t numPts = kernel->size();
         kernel->resize(numPts + k.size());
         for (std::size_t i=0; i<k.size(); ++i) {
@@ -333,6 +335,24 @@ void CmdPointsMerge::activated(int iMsg)
     }
 
     pts->Points.finishEditing();
+
+    // Add properties
+    std::string displayMode = "Points";
+    if (Points::copyProperty<App::PropertyColorList>(pts, docObj, "Color")) {
+        displayMode = "Color";
+    }
+    if (Points::copyProperty<Points::PropertyNormalList>(pts, docObj, "Normal")) {
+        displayMode = "Shaded";
+    }
+    if (Points::copyProperty<Points::PropertyGreyValueList>(pts, docObj, "Intensity")) {
+        displayMode = "Intensity";
+    }
+
+    if (auto vp = dynamic_cast<Gui::ViewProviderDocumentObject*>
+            (Gui::Application::Instance->getViewProvider(pts))) {
+        vp->DisplayMode.setValue(displayMode.c_str());
+    }
+
     doc->commitTransaction();
     updateActive();
 }

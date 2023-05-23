@@ -657,20 +657,33 @@ Restart:
                             pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                             pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                         } else if (Constr->Second != GeoEnum::GeoUndef) {
-                            pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
-
                             const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
-                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // point to line distance
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                                // calculate the projection of p1 onto line2
-                                pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
-                                pnt2 += pnt1;
+                                if (Constr->FirstPos != Sketcher::PointPos::none) {  // point to line distance
+                                    pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
+                                    // calculate the projection of p1 onto line2
+                                    pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
+                                    pnt2 += pnt1;
+                                } else {
+                                    const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                                    if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to line distance
+                                        const Part::GeomCircle *circleSeg = static_cast<const Part::GeomCircle*>(geo1);
+                                        Base::Vector3d ct = circleSeg->getCenter();
+                                        double radius = circleSeg->getRadius();
+                                        pnt1.ProjectToLine(ct-l2p1, l2p2-l2p1); //project on the line translated to origin
+                                        Base::Vector3d dir = pnt1;
+                                        dir.Normalize();
+                                        pnt1 += ct;
+                                        pnt2 = ct + dir * radius;
+                                    }
+                                }
 
-                            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
+                            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
-                                if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                                if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
                                     const Part::GeomCircle *circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
                                     auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                                     GetCirclesMinimalDistance(circleSeg1, circleSeg2, pnt1, pnt2);
@@ -1187,7 +1200,7 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
         relPos = norm * 0.5f + dir * multiplier;
         freePos = origPos + relPos * scaled_step;
 
-        // Prevent crash : https://forum.freecadweb.org/viewtopic.php?f=8&t=65305
+        // Prevent crash : https://forum.freecad.org/viewtopic.php?f=8&t=65305
         if (!rp) {
             return relPos * step;
         }

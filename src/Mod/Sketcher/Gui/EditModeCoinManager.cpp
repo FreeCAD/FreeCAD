@@ -91,6 +91,8 @@ void EditModeCoinManager::ParameterObserver::initParameters()
             [this](const std::string & param){updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplineKnotMultiplicityVisible>(param);}},
         {"BSplinePoleWeightVisible",
             [this](const std::string & param){updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplinePoleWeightVisible>(param);}},
+        {"ArcCircleHelperVisible",
+            [this](const std::string & param){updateOverlayVisibilityParameter<OverlayVisibilityParameter::ArcCircleHelperVisible>(param);}},
         {"TopRenderGeometryId",
             [this](const std::string & param){updateLineRenderingOrderParameters(param);}},
         {"MidRenderGeometryId",
@@ -208,6 +210,8 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(co
         Client.overlayParameters.bSplineKnotMultiplicityVisible = hGrpsk->GetBool(parametername.c_str(), true);
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplinePoleWeightVisible)
         Client.overlayParameters.bSplinePoleWeightVisible = hGrpsk->GetBool(parametername.c_str(), true);
+    else if constexpr (visibilityparameter == OverlayVisibilityParameter::ArcCircleHelperVisible)
+        Client.overlayParameters.arcCircleHelperVisible = hGrpsk->GetBool(parametername.c_str(), false);
 
     Client.overlayParameters.visibleInformationChanged = true;
 }
@@ -239,8 +243,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
     //
     // DPI considerations:
     // With hdpi monitors, the coin font labels do not respect the size passed in pixels:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610#p467610
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40#p467471
+    // https://forum.freecad.org/viewtopic.php?f=3&t=54347&p=467610#p467610
+    // https://forum.freecad.org/viewtopic.php?f=10&t=49972&start=40#p467471
     //
     // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for a "1" in a datum label as 34px,
     // and I see kilsore and Elyas screenshots showing 41px and 61px in higher resolution monitors for the same configuration, I think
@@ -611,6 +615,11 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade 
 
         ioconv.convert(geo, geoid);
     }
+    for (auto geoid : analysisResults.arcGeoIds) {
+        const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(geoid);
+        ioconv.convert(geo, geoid);
+    }
+
 
     overlayParameters.visibleInformationChanged = false; // just updated
 }

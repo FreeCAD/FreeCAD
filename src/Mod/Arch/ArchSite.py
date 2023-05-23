@@ -57,7 +57,7 @@ else:
 
 __title__= "FreeCAD Site"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):
@@ -589,7 +589,7 @@ class _Site(ArchIFC.IfcProduct):
         Terrain.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
         """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
@@ -847,7 +847,7 @@ class _ViewProviderSite:
         These include solar diagram and compass data, dealing the orientation
         of the site, and its orientation to the sun.
 
-        You can learn more about properties here: https://wiki.freecadweb.org/property
+        You can learn more about properties here: https://wiki.freecad.org/property
         """
 
         pl = vobj.PropertiesList

@@ -63,7 +63,7 @@ Pad::Pad()
     TaperAngle2.setConstraints(&floatAngle);
 
     // Remove the constraints and keep the type to allow to accept negative values
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    // https://forum.freecad.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
 }
 
@@ -72,10 +72,10 @@ App::DocumentObjectExecReturn *Pad::execute()
     // Validate parameters
     double L = Length.getValue();
     if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Length of pad too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Length of pad too small"));
     double L2 = Length2.getValue();
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Second length of pad too small");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Second length of pad too small"));
 
     // if midplane is true, disable reversed and vice versa
     bool hasMidplane = Midplane.getValue();
@@ -127,7 +127,7 @@ App::DocumentObjectExecReturn *Pad::execute()
 
         // factor would be zero if vectors are orthogonal
         if (factor < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Creation failed because direction is orthogonal to sketch's normal vector"));
 
         // perform the length correction if not along custom vector
         if (AlongSketchNormal.getValue()) {
@@ -138,7 +138,7 @@ App::DocumentObjectExecReturn *Pad::execute()
         dir.Transform(invObjLoc.Transformation());
 
         if (sketchshape.IsNull())
-            return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Creating a face from sketch failed"));
         sketchshape.Move(invObjLoc);
 
         TopoDS_Shape prism;
@@ -202,7 +202,7 @@ App::DocumentObjectExecReturn *Pad::execute()
         }
 
         if (prism.IsNull())
-            return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Resulting shape is empty"));
 
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
@@ -213,17 +213,17 @@ App::DocumentObjectExecReturn *Pad::execute()
             BRepAlgoAPI_Fuse mkFuse(base, prism);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Fusion with base feature failed"));
             TopoDS_Shape result = mkFuse.Shape();
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Pad: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             solRes = refineShapeIfActive(solRes);
@@ -232,7 +232,7 @@ App::DocumentObjectExecReturn *Pad::execute()
         else {
             int solidCount = countSolids(prism);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Pad: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
            this->Shape.setValue(getSolid(prism));
@@ -245,8 +245,8 @@ App::DocumentObjectExecReturn *Pad::execute()
     }
     catch (Standard_Failure& e) {
         if (std::string(e.GetMessageString()) == "TopoDS::Face")
-            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
-                "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not create face from sketch.\n"
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed."));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }

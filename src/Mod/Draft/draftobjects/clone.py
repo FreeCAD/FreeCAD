@@ -86,7 +86,7 @@ class Clone(DraftObject):
         return Part.makeCompound(shapes)
 
     def execute(self,obj):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only(obj):
             if hasattr(obj,"positionBySupport"):
                 obj.positionBySupport()
             self.props_changed_clear()

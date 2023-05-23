@@ -53,7 +53,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->comboBoxScheme->addItem(QString::fromLatin1("Preference system"), static_cast<int>(-1));
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i=0; i<num; i++) {
-        QString item = qApp->translate("Gui::Dialog::DlgGeneralImp", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
         ui->comboBoxScheme->addItem(item, i);
     }
 

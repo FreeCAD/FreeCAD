@@ -40,7 +40,7 @@ FemMeshObject::FemMeshObject()
 {
     ADD_PROPERTY_TYPE(FemMesh,(), "FEM Mesh",Prop_NoRecompute,"FEM Mesh object");
     // in the regard of recomputes see:
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33329#p279203
+    // https://forum.freecad.org/viewtopic.php?f=18&t=33329#p279203
 }
 
 FemMeshObject::~FemMeshObject()

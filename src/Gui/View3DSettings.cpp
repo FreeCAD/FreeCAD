@@ -438,65 +438,123 @@ NaviCubeSettings::NaviCubeSettings(ParameterGrp::handle hGrp,
     : hGrp(hGrp)
     , _viewer(view)
 {
-    hGrp->Attach(this);
+    connectParameterChanged = hGrp->Manager()->signalParamChanged.connect(
+        [this](ParameterGrp*, ParameterGrp::ParamType, const char *Name, const char *) {
+            parameterChanged(Name);
+    });
+
 }
 
 NaviCubeSettings::~NaviCubeSettings()
 {
-    hGrp->Detach(this);
+    connectParameterChanged.disconnect();
+}
+
+QString NaviCubeSettings::getDefaultSansserifFont()
+{
+    // "FreeCAD NaviCube" family susbtitutions are set in MainWindow::MainWindow
+    QFont font(QStringLiteral("FreeCAD NaviCube"));
+    font.setStyleHint(QFont::SansSerif);
+    // QFontInfo is required to get the actually matched font family
+    return QFontInfo(font).family();
+    // return QStringLiteral("FreeCAD NaviCube");
 }
 
 void NaviCubeSettings::applySettings()
 {
-    OnChange(*hGrp, "CornerNaviCube");
+    parameterChanged("BaseColor");
+    parameterChanged("EmphaseColor");
+    parameterChanged("HiliteColor");
+    parameterChanged("CornerNaviCube");
+    parameterChanged("CubeSize");
+    parameterChanged("ChamferSize");
+    parameterChanged("NaviRotateToNearest");
+    parameterChanged("NaviStepByTurn");
+    parameterChanged("BorderWidth");
+    parameterChanged("FontZoom");
+    parameterChanged("FontString");
+    parameterChanged("FontWeight");
+    parameterChanged("FontStretch");
+    parameterChanged("ShowCS");
+    parameterChanged("TextFront"); // Updates all labels
 }
 
-void NaviCubeSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
+void NaviCubeSettings::parameterChanged(const char* Name)
 {
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason, "CornerNaviCube") == 0) {
-        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube", 1));
+    if (Name == nullptr)
+        return;
+    NaviCube* nc = _viewer->getNaviCube();
+    if (strcmp(Name, "CornerNaviCube") == 0) {
+        nc->setCorner(static_cast<NaviCube::Corner>(hGrp->GetInt("CornerNaviCube", 1)));
     }
-    else if (strcmp(Reason, "CubeSize") == 0) {
-        _viewer->getNavigationCube()->setSize(rGrp.GetInt("CubeSize", 132));
+    else if (strcmp(Name, "OffsetX") == 0 || strcmp(Name, "OffsetY") == 0) {
+        nc->setOffset(hGrp->GetInt("OffsetX", 0), hGrp->GetInt("OffsetY", 0));
     }
-    else if (strcmp(Reason, "NaviRotateToNearest") == 0) {
-        _viewer->getNavigationCube()->setNaviRotateToNearest(
-            rGrp.GetBool("NaviRotateToNearest", true));
+    else if (strcmp(Name, "ChamferSize") == 0) {
+        nc->setChamfer(hGrp->GetFloat("ChamferSize", 0.12f));
     }
-    else if (strcmp(Reason, "NaviStepByTurn") == 0) {
-        _viewer->getNavigationCube()->setNaviStepByTurn(rGrp.GetInt("NaviStepByTurn", 8));
+    else if (strcmp(Name, "CubeSize") == 0) {
+        nc->setSize(hGrp->GetInt("CubeSize", 132));
     }
-    else if (strcmp(Reason, "FontSize") == 0) {
-        _viewer->getNavigationCube()->setFontSize(
-            rGrp.GetInt("FontSize", _viewer->getNavigationCube()->getDefaultFontSize()));
+    else if (strcmp(Name, "NaviRotateToNearest") == 0) {
+        nc->setNaviRotateToNearest(hGrp->GetBool("NaviRotateToNearest", true));
     }
-    else if (strcmp(Reason, "FontString") == 0) {
-        std::string font = rGrp.GetASCII(
-            "FontString", NaviCube::getDefaultSansserifFont().toStdString().c_str());
-        _viewer->getNavigationCube()->setFont(font);
+    else if (strcmp(Name, "NaviStepByTurn") == 0) {
+        nc->setNaviStepByTurn(hGrp->GetInt("NaviStepByTurn", 8));
     }
-    else if (strcmp(Reason, "TextColor") == 0) {
-        unsigned long col = rGrp.GetUnsigned("TextColor", 255);
-        _viewer->getNavigationCube()->setTextColor(App::Color::fromPackedRGBA<QColor>(col));
+    else if (strcmp(Name, "FontZoom") == 0) {
+        nc->setFontZoom(hGrp->GetFloat("FontZoom", 0.3));
     }
-    else if (strcmp(Reason, "FrontColor") == 0) {
-        unsigned long col = rGrp.GetUnsigned("FrontColor", 3806916544);
-        _viewer->getNavigationCube()->setFrontColor(App::Color::fromPackedRGBA<QColor>(col));
+    else if (strcmp(Name, "FontString") == 0) {
+        std::string font =
+            hGrp->GetASCII("FontString", getDefaultSansserifFont().toStdString().c_str());
+        nc->setFont(font);
     }
-    else if (strcmp(Reason, "HiliteColor") == 0) {
-        unsigned long col = rGrp.GetUnsigned("HiliteColor", 2867003391);
-        _viewer->getNavigationCube()->setHiliteColor(App::Color::fromPackedRGBA<QColor>(col));
+    else if (strcmp(Name, "FontWeight") == 0) {
+        nc->setFontWeight(hGrp->GetInt("FontWeight", 0));
     }
-    else if (strcmp(Reason, "ButtonColor") == 0) {
-        unsigned long col = rGrp.GetUnsigned("ButtonColor", 3806916480);
-        _viewer->getNavigationCube()->setButtonColor(App::Color::fromPackedRGBA<QColor>(col));
+    else if (strcmp(Name, "FontStretch") == 0) {
+        nc->setFontStretch(hGrp->GetInt("FontStretch", 0));
     }
-    else if (strcmp(Reason, "BorderWidth") == 0) {
-        _viewer->getNavigationCube()->setBorderWidth(rGrp.GetFloat("BorderWidth", 1.1));
+    else if (strcmp(Name, "BaseColor") == 0) {
+        unsigned long col = hGrp->GetUnsigned("BaseColor", 3806916544);
+        nc->setBaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        // update default contrast colors
+        parameterChanged("EmphaseColor");
     }
-    else if (strcmp(Reason, "BorderColor") == 0) {
-        unsigned long col = rGrp.GetUnsigned("BorderColor", 842150655);
-        _viewer->getNavigationCube()->setBorderColor(App::Color::fromPackedRGBA<QColor>(col));
+    else if (strcmp(Name, "EmphaseColor") == 0) {
+        App::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
+        unsigned long d = bc.r + bc.g + bc.b >= 1.5f ? 255 : 4294967295;
+        unsigned long col = hGrp->GetUnsigned("EmphaseColor", d);
+        nc->setEmphaseColor(App::Color::fromPackedRGBA<QColor>(col));
     }
+    else if (strcmp(Name, "HiliteColor") == 0) {
+        unsigned long col = hGrp->GetUnsigned("HiliteColor", 2867003391);
+        nc->setHiliteColor(App::Color::fromPackedRGBA<QColor>(col));
+    }
+    else if (strcmp(Name, "BorderWidth") == 0) {
+        nc->setBorderWidth(hGrp->GetFloat("BorderWidth", 1.1));
+    }
+    else if (strcmp(Name, "ShowCS") == 0) {
+        nc->setShowCS(hGrp->GetBool("ShowCS", 1));
+    }
+    else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
+             || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
+             || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0) {
+        std::vector<std::string> labels;
+        QByteArray frontByteArray = tr("FRONT").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextFront", frontByteArray.constData()));
+        QByteArray topByteArray = tr("TOP").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextTop", topByteArray.constData()));
+        QByteArray rightByteArray = tr("RIGHT").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextRight", rightByteArray.constData()));
+        QByteArray rearByteArray = tr("REAR").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextRear", rearByteArray.constData()));
+        QByteArray bottomByteArray = tr("BOTTOM").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextBottom", bottomByteArray.constData()));
+        QByteArray leftByteArray = tr("LEFT").toUtf8();
+        labels.push_back(hGrp->GetASCII("TextLeft", leftByteArray.constData()));
+        nc->setNaviCubeLabels(labels);
+    }
+    _viewer->getSoRenderManager()->scheduleRedraw();
 }

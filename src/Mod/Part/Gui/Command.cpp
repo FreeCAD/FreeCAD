@@ -1834,17 +1834,17 @@ void CmdPartCompOffset::languageChange()
     Gui::Command* cmdOffset = rcCmdMgr.getCommandByName("Part_Offset");
     if (cmdOffset) {
         QAction* cmd0 = a[0];
-        cmd0->setText(QApplication::translate("Part_Offset", cmdOffset->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("Part_Offset", cmdOffset->getToolTipText()));
-        cmd0->setStatusTip(QApplication::translate("Part_Offset", cmdOffset->getStatusTip()));
+        cmd0->setText(QApplication::translate(cmdOffset->className(), cmdOffset->getMenuText()));
+        cmd0->setToolTip(QApplication::translate(cmdOffset->className(), cmdOffset->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate(cmdOffset->className(), cmdOffset->getStatusTip()));
     }
 
     Gui::Command* cmdOffset2D = rcCmdMgr.getCommandByName("Part_Offset2D");
     if (cmdOffset2D) {
         QAction* cmd1 = a[1];
-        cmd1->setText(QApplication::translate("Part_Offset", cmdOffset2D->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_Offset", cmdOffset2D->getToolTipText()));
-        cmd1->setStatusTip(QApplication::translate("Part_Offset", cmdOffset2D->getStatusTip()));
+        cmd1->setText(QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getMenuText()));
+        cmd1->setToolTip(QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getStatusTip()));
     }
 }
 

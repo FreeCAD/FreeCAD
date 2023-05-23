@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM sets getter"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -409,7 +409,7 @@ class MeshSetsGetter():
             # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
     # information in the regard of element faces constraints
-    # forum post: https://forum.freecadweb.org/viewtopic.php?f=18&t=42783&p=370286#p366723
+    # forum post: https://forum.freecad.org/viewtopic.php?f=18&t=42783&p=370286#p366723
     # contact: master and slave could be the same face: rubber of a damper
     # tie: master and slave have to be separate faces AFA UR_ K
     # section print: only the element faces of solid elements

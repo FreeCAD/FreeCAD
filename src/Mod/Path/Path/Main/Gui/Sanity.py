@@ -28,11 +28,11 @@ Path projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised
 """
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts
+import Path.Log
 from collections import Counter
 from datetime import datetime
 import os
@@ -42,10 +42,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
 
-
-LOG_MODULE = "PathSanity"
-# Path.Log.setLevel(Path.Log.Level.INFO, LOG_MODULE)
-# Path.Log.trackModule('PathSanity')
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class CommandPathSanity:
@@ -57,32 +58,49 @@ class CommandPathSanity:
         else:
             filepath = Path.Preferences.macroFilePath()
 
-        if "%D" in filepath:
-            D = FreeCAD.ActiveDocument.FileName
-            if D:
-                D = os.path.dirname(D)
-                # in case the document is in the current working directory
-                if not D:
-                    D = "."
-            else:
-                FreeCAD.Console.PrintError(
-                    "Please save document in order to resolve output path!\n"
-                )
-                return None
-            filepath = filepath.replace("%D", D)
+        Path.Log.debug(filepath)
 
-        if "%d" in filepath:
-            d = FreeCAD.ActiveDocument.Label
-            filepath = filepath.replace("%d", d)
+        D = FreeCAD.ActiveDocument.FileName
+        if D:
+            D = os.path.dirname(D)
+            # in case the document is in the current working directory
+            if not D:
+                D = "."
+        else:
+            FreeCAD.Console.PrintError(
+                "Please save document in order to resolve output path!\n"
+            )
+            return None
+        filepath = filepath.replace("%D", D + os.path.sep)
 
-        if "%j" in filepath:
-            j = job.Label
-            filepath = filepath.replace("%j", j)
+        filepath = filepath.replace("%d", FreeCAD.ActiveDocument.Label)
+
+        filepath = filepath.replace("%j", job.Label)
 
         if "%M" in filepath:
             pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
             M = pref.GetString("MacroPath", FreeCAD.getUserAppDataDir())
-            filepath = filepath.replace("%M", M)
+            filepath = filepath.replace("%M", M+ os.path.sep)
+
+        # strip out all substitutions related to output splitting
+        for elem in ["%O", "%W", "%T", "%t", "%S"]:
+            filepath = filepath.replace(elem, "")
+
+        Path.Log.debug("filepath: {}".format(filepath))
+
+        # if there's no basename left, use the activedocument basename
+        fname = os.path.splitext(os.path.basename(filepath))
+        if fname[0] == "":
+            final = os.path.splitext(os.path.basename(FreeCAD.ActiveDocument.FileName))[
+                0
+            ]
+            filepath = os.path.dirname(filepath) + os.path.sep + final + fname[1]
+
+        Path.Log.debug("filepath: {}".format(filepath))
+
+        # Make sure the filepath is fully qualified
+        if os.path.basename(filepath) == filepath:
+            filepath = f"{os.path.dirname(FreeCAD.ActiveDocument.FileName)}/{filepath}"
 
         Path.Log.debug("filepath: {}".format(filepath))
 
@@ -116,6 +134,7 @@ class CommandPathSanity:
 
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
         self.outputpath = self.resolveOutputPath(obj)
+        Path.Log.debug(f"outputstring: {self.outputpath}")
         data = self.__summarize(obj)
         html = self.__report(data)
         if html is not None:
@@ -399,14 +418,14 @@ class CommandPathSanity:
         outTable = ""
         d = data["outputData"]
 
-        gcodeFileLabel = translate("Path_Sanity", "Gcode File")
+        gcodeFileLabel = translate("Path_Sanity", "G-code File")
         lastpostLabel = translate("Path_Sanity", "Last Post Process Date")
         stopsLabel = translate("Path_Sanity", "Stops")
         programmerLabel = translate("Path_Sanity", "Programmer")
         machineLabel = translate("Path_Sanity", "Machine")
         postLabel = translate("Path_Sanity", "Postprocessor")
         flagsLabel = translate("Path_Sanity", "Post Processor Flags")
-        fileSizeLabel = translate("Path_Sanity", "File Size (kbs)")
+        fileSizeLabel = translate("Path_Sanity", "File Size (kb)")
         lineCountLabel = translate("Path_Sanity", "Line Count")
 
         outTable += "|*{}*|{}\n".format(gcodeFileLabel, d["lastgcodefile"])
@@ -507,7 +526,9 @@ class CommandPathSanity:
         data = {"baseimage": "", "bases": ""}
         try:
             bases = {}
-            for name, count in Counter([obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group]).items():
+            for name, count in Counter(
+                [obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group]
+            ).items():
                 bases[name] = str(count)
 
             data["baseimage"] = self.__makePicture(obj.Model, "baseimage")
@@ -772,6 +793,7 @@ class CommandPathSanity:
             FreeCADGui.SendMsgToActiveView("ViewSelection")
             FreeCADGui.Selection.clearSelection()
             obj.ViewObject.Proxy.editObject(obj)
+            Path.Log.debug(imagepath)
             aview.saveImage("{}.png".format(imagepath), 320, 320, "Current")
             aview.saveImage("{}_t.png".format(imagepath), 320, 320, "Transparent")
             obj.ViewObject.Proxy.uneditObject(obj)

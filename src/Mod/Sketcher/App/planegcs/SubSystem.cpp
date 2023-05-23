@@ -30,25 +30,23 @@ namespace GCS
 {
 
 // SubSystem
-SubSystem::SubSystem(std::vector<Constraint *> &clist_, VEC_pD &params)
-: clist(clist_)
+SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params)
+    : clist(clist_)
 {
     MAP_pD_pD dummymap;
     initialize(params, dummymap);
 }
 
-SubSystem::SubSystem(std::vector<Constraint *> &clist_, VEC_pD &params,
-                     MAP_pD_pD &reductionmap)
-: clist(clist_)
+SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD& reductionmap)
+    : clist(clist_)
 {
     initialize(params, reductionmap);
 }
 
 SubSystem::~SubSystem()
-{
-}
+{}
 
-void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
+void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
 {
     csize = static_cast<int>(clist.size());
 
@@ -101,146 +99,141 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
     psize = static_cast<int>(plist.size());
     pvals.resize(psize);
     pmap.clear();
-    for (int j=0; j < psize; j++) {
+    for (int j = 0; j < psize; j++) {
         pmap[plist[j]] = &pvals[j];
         pvals[j] = *plist[j];
     }
-    for (MAP_pD_I::const_iterator itr=rindex.begin(); itr != rindex.end(); ++itr)
+    for (MAP_pD_I::const_iterator itr = rindex.begin(); itr != rindex.end(); ++itr)
         pmap[itr->first] = &pvals[itr->second];
 
     c2p.clear();
     p2c.clear();
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-         constr != clist.end(); ++constr) {
-        (*constr)->revertParams(); // ensure that the constraint points to the original parameters
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
+        (*constr)->revertParams();// ensure that the constraint points to the original parameters
         VEC_pD constr_params_orig = (*constr)->params();
         SET_pD constr_params;
-        for (VEC_pD::const_iterator p=constr_params_orig.begin();
-             p != constr_params_orig.end(); ++p) {
+        for (VEC_pD::const_iterator p = constr_params_orig.begin(); p != constr_params_orig.end();
+             ++p) {
             MAP_pD_pD::const_iterator pmapfind = pmap.find(*p);
             if (pmapfind != pmap.end())
                 constr_params.insert(pmapfind->second);
         }
-        for (SET_pD::const_iterator p=constr_params.begin();
-             p != constr_params.end(); ++p) {
-//            jacobi.set(*constr, *p, 0.);
+        for (SET_pD::const_iterator p = constr_params.begin(); p != constr_params.end(); ++p) {
+            //            jacobi.set(*constr, *p, 0.);
             c2p[*constr].push_back(*p);
             p2c[*p].push_back(*constr);
         }
-//        (*constr)->redirectParams(pmap); // redirect parameters to pvec
+        //        (*constr)->redirectParams(pmap); // redirect parameters to pvec
     }
 }
 
 void SubSystem::redirectParams()
 {
     // copying values to pvals
-    for (MAP_pD_pD::const_iterator p=pmap.begin();
-         p != pmap.end(); ++p)
+    for (MAP_pD_pD::const_iterator p = pmap.begin(); p != pmap.end(); ++p)
         *(p->second) = *(p->first);
 
     // redirect constraints to point to pvals
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-         constr != clist.end(); ++constr) {
-        (*constr)->revertParams();  // this line will normally not be necessary
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
+        (*constr)->revertParams();// this line will normally not be necessary
         (*constr)->redirectParams(pmap);
     }
 }
 
 void SubSystem::revertParams()
 {
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-         constr != clist.end(); ++constr)
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr)
         (*constr)->revertParams();
 }
 
-void SubSystem::getParamMap(MAP_pD_pD &pmapOut)
+void SubSystem::getParamMap(MAP_pD_pD& pmapOut)
 {
     pmapOut = pmap;
 }
 
-void SubSystem::getParamList(VEC_pD &plistOut)
+void SubSystem::getParamList(VEC_pD& plistOut)
 {
     plistOut = plist;
 }
 
-void SubSystem::getParams(VEC_pD &params, Eigen::VectorXd &xOut)
+void SubSystem::getParams(VEC_pD& params, Eigen::VectorXd& xOut)
 {
     if (xOut.size() != int(params.size()))
         xOut.setZero(params.size());
 
-    for (int j=0; j < int(params.size()); j++) {
-        MAP_pD_pD::const_iterator
-          pmapfind = pmap.find(params[j]);
+    for (int j = 0; j < int(params.size()); j++) {
+        MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end())
             xOut[j] = *(pmapfind->second);
     }
 }
 
-void SubSystem::getParams(Eigen::VectorXd &xOut)
+void SubSystem::getParams(Eigen::VectorXd& xOut)
 {
     if (xOut.size() != psize)
         xOut.setZero(psize);
 
-    for (int i=0; i < psize; i++)
+    for (int i = 0; i < psize; i++)
         xOut[i] = pvals[i];
 }
 
-void SubSystem::setParams(VEC_pD &params, Eigen::VectorXd &xIn)
+void SubSystem::setParams(VEC_pD& params, Eigen::VectorXd& xIn)
 {
     assert(xIn.size() == int(params.size()));
-    for (int j=0; j < int(params.size()); j++) {
-        MAP_pD_pD::const_iterator
-          pmapfind = pmap.find(params[j]);
+    for (int j = 0; j < int(params.size()); j++) {
+        MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end())
             *(pmapfind->second) = xIn[j];
     }
 }
 
-void SubSystem::setParams(Eigen::VectorXd &xIn)
+void SubSystem::setParams(Eigen::VectorXd& xIn)
 {
     assert(xIn.size() == psize);
-    for (int i=0; i < psize; i++)
+    for (int i = 0; i < psize; i++)
         pvals[i] = xIn[i];
 }
 
-void SubSystem::getConstraintList(std::vector<Constraint *> &clist_)
+void SubSystem::getConstraintList(std::vector<Constraint*>& clist_)
 {
-    clist_= clist;
+    clist_ = clist;
 }
 
 double SubSystem::error()
 {
     double err = 0.;
-    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-         constr != clist.end(); ++constr) {
+    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
         double tmp = (*constr)->error();
-        err += tmp*tmp;
+        err += tmp * tmp;
     }
     err *= 0.5;
     return err;
 }
 
-void SubSystem::calcResidual(Eigen::VectorXd &r)
+void SubSystem::calcResidual(Eigen::VectorXd& r)
 {
     assert(r.size() == csize);
 
-    int i=0;
-    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-         constr != clist.end(); ++constr, i++) {
+    int i = 0;
+    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+         ++constr, i++) {
         r[i] = (*constr)->error();
     }
 }
 
-void SubSystem::calcResidual(Eigen::VectorXd &r, double &err)
+void SubSystem::calcResidual(Eigen::VectorXd& r, double& err)
 {
     assert(r.size() == csize);
 
-    int i=0;
+    int i = 0;
     err = 0.;
-    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-         constr != clist.end(); ++constr, i++) {
+    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+         ++constr, i++) {
         r[i] = (*constr)->error();
-        err += r[i]*r[i];
+        err += r[i] * r[i];
     }
     err *= 0.5;
 }
@@ -261,74 +254,71 @@ void SubSystem::calcJacobi()
 }
 */
 
-void SubSystem::calcJacobi(VEC_pD &params, Eigen::MatrixXd &jacobi)
+void SubSystem::calcJacobi(VEC_pD& params, Eigen::MatrixXd& jacobi)
 {
     jacobi.setZero(csize, params.size());
-    for (int j=0; j < int(params.size()); j++) {
-        MAP_pD_pD::const_iterator
-          pmapfind = pmap.find(params[j]);
+    for (int j = 0; j < int(params.size()); j++) {
+        MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end())
-            for (int i=0; i < csize; i++)
-                jacobi(i,j) = clist[i]->grad(pmapfind->second);
+            for (int i = 0; i < csize; i++)
+                jacobi(i, j) = clist[i]->grad(pmapfind->second);
     }
 }
 
-void SubSystem::calcJacobi(Eigen::MatrixXd &jacobi)
+void SubSystem::calcJacobi(Eigen::MatrixXd& jacobi)
 {
     calcJacobi(plist, jacobi);
 }
 
-void SubSystem::calcGrad(VEC_pD &params, Eigen::VectorXd &grad)
+void SubSystem::calcGrad(VEC_pD& params, Eigen::VectorXd& grad)
 {
     assert(grad.size() == int(params.size()));
 
     grad.setZero();
-    for (int j=0; j < int(params.size()); j++) {
-        MAP_pD_pD::const_iterator
-          pmapfind = pmap.find(params[j]);
+    for (int j = 0; j < int(params.size()); j++) {
+        MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end()) {
             // assert(p2c.find(pmapfind->second) != p2c.end());
-            std::vector<Constraint *> constrs=p2c[pmapfind->second];
-            for (std::vector<Constraint *>::const_iterator constr = constrs.begin();
-                 constr != constrs.end(); ++constr)
+            std::vector<Constraint*> constrs = p2c[pmapfind->second];
+            for (std::vector<Constraint*>::const_iterator constr = constrs.begin();
+                 constr != constrs.end();
+                 ++constr)
                 grad[j] += (*constr)->error() * (*constr)->grad(pmapfind->second);
         }
     }
 }
 
-void SubSystem::calcGrad(Eigen::VectorXd &grad)
+void SubSystem::calcGrad(Eigen::VectorXd& grad)
 {
     calcGrad(plist, grad);
 }
 
-double SubSystem::maxStep(VEC_pD &params, Eigen::VectorXd &xdir)
+double SubSystem::maxStep(VEC_pD& params, Eigen::VectorXd& xdir)
 {
     assert(xdir.size() == int(params.size()));
 
     MAP_pD_D dir;
-    for (int j=0; j < int(params.size()); j++) {
+    for (int j = 0; j < int(params.size()); j++) {
         MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end())
             dir[pmapfind->second] = xdir[j];
     }
 
-    double alpha=1e10;
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-         constr != clist.end(); ++constr)
+    double alpha = 1e10;
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr)
         alpha = (*constr)->maxStep(dir, alpha);
 
     return alpha;
 }
 
-double SubSystem::maxStep(Eigen::VectorXd &xdir)
+double SubSystem::maxStep(Eigen::VectorXd& xdir)
 {
     return maxStep(plist, xdir);
 }
 
 void SubSystem::applySolution()
 {
-    for (MAP_pD_pD::const_iterator it=pmap.begin();
-         it != pmap.end(); ++it)
+    for (MAP_pD_pD::const_iterator it = pmap.begin(); it != pmap.end(); ++it)
         *(it->first) = *(it->second);
 }
 
@@ -336,18 +326,17 @@ void SubSystem::analyse(Eigen::MatrixXd& /*J*/, Eigen::MatrixXd& /*ker*/, Eigen:
 {}
 
 void SubSystem::report()
-{
-}
+{}
 
 void SubSystem::printResidual()
 {
     Eigen::VectorXd r(csize);
-    int i=0;
+    int i = 0;
     double err = 0.;
-    for (std::vector<Constraint *>::const_iterator constr=clist.begin();
-         constr != clist.end(); ++constr, i++) {
+    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+         ++constr, i++) {
         r[i] = (*constr)->error();
-        err += r[i]*r[i];
+        err += r[i] * r[i];
     }
     err *= 0.5;
     std::cout << "Residual r = " << r.transpose() << std::endl;
@@ -355,4 +344,4 @@ void SubSystem::printResidual()
 }
 
 
-} //namespace GCS
+}// namespace GCS

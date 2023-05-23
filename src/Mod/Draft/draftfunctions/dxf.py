@@ -67,8 +67,7 @@ def get_dxf(obj, direction=None):
     """
     plane = None
     result = ""
-    if (obj.isDerivedFrom("Drawing::View")
-            or obj.isDerivedFrom("TechDraw::DrawView")):
+    if obj.isDerivedFrom("TechDraw::DrawView"):
         if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
             for o in obj.Source.Group:
                 result += get_dxf(o, obj.Direction)

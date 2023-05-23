@@ -23,7 +23,7 @@
 
 __title__ = "Mesh import and export for Fenics mesh file format"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importFenicsMesh
 #  \ingroup FEM

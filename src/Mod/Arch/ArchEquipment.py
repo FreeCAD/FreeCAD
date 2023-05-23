@@ -22,7 +22,7 @@
 
 __title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchComponent
@@ -365,7 +365,7 @@ class _Equipment(ArchComponent.Component):
         try:
             import ArchSketchObject
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
-            # see https://forum.freecadweb.org/viewtopic.php?f=23&t=50802
+            # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
         except:
             pass
@@ -373,7 +373,7 @@ class _Equipment(ArchComponent.Component):
     def appLinkExecute(self, obj, linkObj, index, linkElement):
         '''
             Default Link Execute method() -
-            See https://forum.freecadweb.org/viewtopic.php?f=22&t=42184&start=10#p361124
+            See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
             @realthunder added support to Links to run Linked Scripted Object's methods()
         '''
 

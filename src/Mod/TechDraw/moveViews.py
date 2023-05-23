@@ -34,7 +34,7 @@ import FreeCADGui
 svgHead = (
     "<svg\n"
     + ' xmlns="http://www.w3.org/2000/svg" version="1.1"\n'
-    + '    xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">\n'
+    + '    xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace">\n'
 )
 svgTail = "\n</svg>"
 

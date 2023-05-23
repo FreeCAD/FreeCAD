@@ -27,12 +27,14 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QFile>
+# include <QFileInfo>
 # include <QLocale>
 # include <QMutex>
 # include <QProcessEnvironment>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QScreen>
+# include <QSettings>
 # include <QSysInfo>
 # include <QTextBrowser>
 # include <QTextStream>
@@ -59,6 +61,57 @@ using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
 
 namespace Gui {
+
+QString prettyProductInfoWrapper()
+{
+    auto productName = QSysInfo::prettyProductName();
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#ifdef FC_OS_MACOSX
+    auto macosVersionFile = QString::fromUtf8("/System/Library/CoreServices/.SystemVersionPlatform.plist");
+    auto fi = QFileInfo (macosVersionFile);
+    if (fi.exists() && fi.isReadable()) {
+        auto plistFile = QFile(macosVersionFile);
+        plistFile.open(QIODevice::ReadOnly);
+        while (!plistFile.atEnd()) {
+            auto line = plistFile.readLine();
+            if (line.contains("ProductUserVisibleVersion")) {
+                auto nextLine = plistFile.readLine();
+                if (nextLine.contains("<string>")) {
+                    QRegularExpression re(QString::fromUtf8("\\s*<string>(.*)</string>"));
+                    auto matches = re.match(QString::fromUtf8(nextLine));
+                    if (matches.hasMatch()) {
+                        productName = QString::fromUtf8("macOS ") + matches.captured(1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+#endif
+#endif
+#ifdef FC_OS_WIN64
+    QSettings regKey {QString::fromUtf8("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), QSettings::NativeFormat};
+    if (regKey.contains(QString::fromUtf8("CurrentBuildNumber"))) {
+        auto buildNumber = regKey.value(QString::fromUtf8("CurrentBuildNumber")).toInt();
+        if (buildNumber > 0) {
+            if (buildNumber < 9200) {
+                productName = QString::fromUtf8("Windows 7 build %1").arg(buildNumber);
+            }
+            else if (buildNumber < 10240) {
+                productName = QString::fromUtf8("Windows 8 build %1").arg(buildNumber);
+            }
+            else if (buildNumber < 22000) {
+                productName = QString::fromUtf8("Windows 10 build %1").arg(buildNumber);
+            }
+            else {
+                productName = QString::fromUtf8("Windows 11 build %1").arg(buildNumber);
+            }
+        }
+    }
+#endif
+    return productName;
+}
+
 /** Displays all messages at startup inside the splash screen.
  * \author Werner Mayer
  */
@@ -349,7 +402,7 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromLatin1("Unknown"), QSysInfo::prettyProductName());
+    os.replace(QString::fromLatin1("Unknown"), prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
     QString platform = ui->labelBuildPlatform->text();
@@ -745,7 +798,7 @@ void AboutDialog::copyToClipboard()
     }
 
     str << "[code]\n";
-    str << "OS: " << QSysInfo::prettyProductName() << deskInfo << '\n';
+    str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << point << "." << build;
     char *appimage = getenv("APPIMAGE");

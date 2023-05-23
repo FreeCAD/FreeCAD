@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD Fenics XML mesh writer"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package exportFenicsXML
 #  \ingroup FEM

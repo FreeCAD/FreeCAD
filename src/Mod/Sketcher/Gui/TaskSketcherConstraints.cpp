@@ -60,6 +60,11 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
+// Translation block for context menu: do not remove
+#if 0
+QT_TRANSLATE_NOOP("SketcherGui::ConstraintView", "Select Elements");
+#endif
+
 /// Inserts a QAction into an existing menu
 /// ICONSTR is the string of the icon in the resource file
 /// NAMESTR is the text appearing in the contextual menuAction

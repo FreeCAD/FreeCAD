@@ -39,7 +39,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Camotics Simulator"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Task panel for Camotics Simulation"
 
 if False:

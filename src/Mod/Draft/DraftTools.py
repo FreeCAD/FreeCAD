@@ -63,7 +63,7 @@ True if DraftGui.__name__ else False
 __title__ = "FreeCAD Draft Workbench GUI Tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 if not hasattr(FreeCADGui, "Snapper"):
     FreeCADGui.Snapper = gui_snapper.Snapper()
@@ -187,8 +187,6 @@ from draftguitools.gui_scale import Scale
 from draftguitools.gui_wire2spline import WireToBSpline
 from draftguitools.gui_shape2dview import Shape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch
-from draftguitools.gui_array_simple import Array
-from draftguitools.gui_array_simple import LinkArray
 from draftguitools.gui_patharray import PathArray
 from draftguitools.gui_patharray import PathLinkArray
 from draftguitools.gui_pointarray import PointArray

@@ -52,7 +52,7 @@ else:
 
 __title__  = "FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 def adjust_list_len (lst, newLn, val):

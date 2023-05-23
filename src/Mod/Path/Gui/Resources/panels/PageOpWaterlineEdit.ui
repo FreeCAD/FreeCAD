@@ -26,14 +26,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
         <property name="text">
-         <string>ToolController</string>
+         <string>Tool Controller</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation.</string>
         </property>
        </widget>
       </item>
@@ -63,7 +63,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="algorithmSelect">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</string>
         </property>
        </widget>
       </item>
@@ -76,7 +76,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>BoundBox</string>
+         <string>Bounding Box</string>
         </property>
        </widget>
       </item>
@@ -88,7 +88,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Select the overall boundary for the operation.</string>
         </property>
        </widget>
       </item>
@@ -107,7 +107,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or multiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Complete the operation in a single pass at depth, or multiple passes to final depth.</string>
         </property>
        </widget>
       </item>
@@ -126,7 +126,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Set the geometric clearing pattern to use for the operation.</string>
         </property>
        </widget>
       </item>
@@ -146,7 +146,7 @@
       <item row="4" column="1">
        <widget class="Gui::InputField" name="boundaryAdjustment">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the Z-axis depth offset from the target surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Set the Z-axis depth offset from the target surface.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -169,7 +169,9 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
+
+A step over of 100% results in no overlap between two different cycles.</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -189,7 +191,7 @@
       <item row="6" column="1">
        <widget class="Gui::InputField" name="sampleInterval">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Set the sampling resolution. Smaller values quickly increase processing time.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -199,7 +201,7 @@
       <item row="7" column="1">
        <widget class="QCheckBox" name="optimizeEnabled">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</string>
         </property>
         <property name="text">
          <string>Optimize Linear Paths</string>

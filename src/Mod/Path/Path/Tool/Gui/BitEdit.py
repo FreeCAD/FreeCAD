@@ -103,7 +103,7 @@ class ToolBitEditor(object):
     def setupTool(self, tool):
         Path.Log.track()
         # Can't delete and add fields to the form because of dangling references in case of
-        # a focus change. see https://forum.freecadweb.org/viewtopic.php?f=10&t=52246#p458583
+        # a focus change. see https://forum.freecad.org/viewtopic.php?f=10&t=52246#p458583
         # Instead we keep widgets once created and use them for new properties, and hide all
         # which aren't being needed anymore.
 

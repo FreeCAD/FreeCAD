@@ -47,7 +47,7 @@ True if Draft_rc.__name__ else False
 __title__ = "FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Draft_SelectPlane:
@@ -518,9 +518,9 @@ class Draft_SelectPlane:
         vdir = '('
         vdir += str(_vdir.x)[:4] + ','
         vdir += str(_vdir.y)[:4] + ','
-        vdir += str(_vdir.z)[:4]
-        vdir += ')'
-        vdir = " " + translate("draft", "Dir") + ": " + vdir
+        vdir += str(_vdir.z)[:4] + ')' + ' '
+        vdir += translate("draft", "Dir", "Dir here means Direction, not Directory. Also shorten the translation because of available space in GUI")
+        vdir = ': ' + vdir
         if type(arg).__name__ == 'str':
             self.wpButton.setText(arg + suffix)
             if o != 0:

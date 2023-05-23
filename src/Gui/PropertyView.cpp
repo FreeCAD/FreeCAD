@@ -335,7 +335,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
 
 void PropertyView::onTimer()
 {
-    // See https://forum.freecadweb.org/viewtopic.php?f=8&t=72526
+    // See https://forum.freecad.org/viewtopic.php?f=8&t=72526
     if (this->updating) {
         Base::Console().Log("Ignore recursive call of PropertyView::onTimer()\n");
         return;

@@ -1688,9 +1688,9 @@ public:
     {
         sGroup        = "Edit";
         sMenuText     = QT_TR_NOOP("Expression actions");
-        sToolTipText  = QT_TR_NOOP("Expression actions");
+        sToolTipText  = QT_TR_NOOP("Actions that apply to expressions");
         sWhatsThis    = "Std_Expressions";
-        sStatusTip    = QT_TR_NOOP("Expression actions");
+        sStatusTip    = QT_TR_NOOP("Actions that apply to expressions");
         eType         = ForEdit;
     }
 

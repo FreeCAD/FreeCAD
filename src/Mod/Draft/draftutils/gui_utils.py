@@ -65,7 +65,7 @@ def get_3d_view():
     """
     if App.GuiUp:
         # FIXME The following two imports were added as part of PR4926
-        # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+        # Also see discussion https://forum.freecad.org/viewtopic.php?f=3&t=60251
         import FreeCADGui as Gui
         from pivy import coin
         if Gui.ActiveDocument:

@@ -5,22 +5,30 @@
 files: |
     (?x)^(
         src/Mod/AddonManager|
-        tests/src
+        src/Tools|
+        tests/src|
+        src/Mod/Sketcher/App/planegcs|
+        src/Mod/Sketcher/App
+    )
+exclude: |
+    (?x)^(
+        .*vcproj.*|
+        .*vcxproj.*
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v3.4.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: mixed-line-ending
-        args: [--fix=lf]
 -   repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 22.12.0
     hooks:
         -   id: black
+            args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v15.0.7
     hooks:

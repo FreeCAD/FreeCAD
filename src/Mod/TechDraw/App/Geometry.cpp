@@ -283,6 +283,7 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
     } else {
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+        throw Base::RuntimeError("no OCC edge in Geometry::findEndPoints");
     }
     return result;
 }
@@ -317,7 +318,7 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-    // Midpoint calculation - additional details here: https://forum.freecadweb.org/viewtopic.php?f=35&t=59582
+    // Midpoint calculation - additional details here: https://forum.freecad.org/viewtopic.php?f=35&t=59582
 
     BRepAdaptor_Curve curve(occEdge);
 

@@ -1132,8 +1132,8 @@ SoNode* ManualAlignment::pickedPointsSubGraph(const SbVec3f& p, const SbVec3f& n
     probe->base.setValue(p);
     probe->normal.setValue(n);
     probe->color.setValue(color_table[index][0],color_table[index][1],color_table[index][2]);
-    SbString s;
-    probe->text.setValue(s.sprintf("RegPoint_%d", id));
+    SbString s(tr("Point_%1").arg(id).toStdString().c_str());
+    probe->text.setValue(s);
     return probe;
 }
 
@@ -1259,14 +1259,14 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             else
                 nPoints = self->myFixedGroup.countPoints();
             QMenu menu;
-            QAction* fi = menu.addAction(QLatin1String("&Align"));
-            QAction* rem = menu.addAction(QLatin1String("&Remove last point"));
+            QAction* fi = menu.addAction(tr("&Align"));
+            QAction* rem = menu.addAction(tr("&Remove last point"));
             //QAction* cl = menu.addAction("C&lear");
-            QAction* ca = menu.addAction(QLatin1String("&Cancel"));
+            QAction* ca = menu.addAction(tr("&Cancel"));
             fi->setEnabled(self->canAlign());
             rem->setEnabled(nPoints > 0);
             menu.addSeparator();
-            QAction* sync = menu.addAction(QLatin1String("&Synchronize views"));
+            QAction* sync = menu.addAction(tr("&Synchronize views"));
             sync->setCheckable(true);
             if (self->d->sensorCam1->getAttachedNode())
                 sync->setChecked(true);

@@ -1258,7 +1258,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
                 else {
                     QMessageBox::warning(
                         Gui::getMainWindow(), QObject::tr("Too many curves on point"),
-                        QObject::tr("Exactly two curve should end at the selected point to be able to join them."));
+                        QObject::tr("Exactly two curves should end at the selected point to be able to join them."));
                     return;
                 }
             }
@@ -1266,7 +1266,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         if (j < 2) {
             QMessageBox::warning(
                 Gui::getMainWindow(), QObject::tr("Too few curves on point"),
-                QObject::tr("Exactly two curve should end at the selected point to be able to join them."));
+                QObject::tr("Exactly two curves should end at the selected point to be able to join them."));
             return;
         }
 

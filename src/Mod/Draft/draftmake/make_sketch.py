@@ -191,7 +191,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
     point = shapes_list[0].Vertexes[0].Point
     base = App.Vector(normal)
-    base.Length = point.dot(base.normalize()) # See https://forum.freecadweb.org/viewtopic.php?f=22&t=69304#p601149
+    base.Length = point.dot(base.normalize()) # See https://forum.freecad.org/viewtopic.php?f=22&t=69304#p601149
 
     nobj.Placement = App.Placement(base, rotation)
 

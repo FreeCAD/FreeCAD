@@ -630,23 +630,23 @@ class TaskPanel:
             0, QtGui.QHeaderView.Stretch
         )
         self.form.toolControllerList.horizontalHeaderItem(1).setToolTip(
-            translate("Path", "tool number ")
+            translate("Path", "Tool number") + ' '
         )
         self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(
-            translate("Path", "horizontal feedrate ")+vUnit
+            translate("Path", "Horizontal feedrate")+ ' ' + vUnit
         )
         self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(
-            translate("Path", "vertical feedrate ")+vUnit
+            translate("Path", "Vertical feedrate")+ ' ' + vUnit
         )
         self.form.toolControllerList.horizontalHeaderItem(4).setToolTip(
-            translate("Path", "spindle RPM ")
+            translate("Path", "Spindle RPM")+ ' '
         )
-        
+
         # ensure correct ellisis behaviour on tool controller names.
         self.form.toolControllerList.setWordWrap(False)
-        
+
         self.form.toolControllerList.resizeColumnsToContents()
-        
+
         currentPostProcessor = self.obj.PostProcessor
         postProcessors = Path.Preferences.allEnabledPostProcessors(
             ["", currentPostProcessor]

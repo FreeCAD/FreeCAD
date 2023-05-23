@@ -56,7 +56,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
+https://forum.freecad.org/viewtopic.php?f=18&t=41488&start=90#p412047
 
 Electrostatics equation in FreeCAD FEM-Elmer
 

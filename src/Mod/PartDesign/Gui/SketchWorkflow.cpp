@@ -100,7 +100,7 @@ public:
         // Display Mode Body is set to Tip. But the body face is not allowed
         // to be used as support because otherwise it would cause a cyclic
         // dependency. So, instead we use the tip object as reference.
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=37448
+        // https://forum.freecad.org/viewtopic.php?f=3&t=37448
         if (object == activeBody) {
             App::DocumentObject* tip = activeBody->Tip.getValue();
             if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && elements.size() == 1) {
@@ -709,7 +709,7 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     // The behaviour of this command has changed with respect to a selected sketch:
     // It doesn't try any more to edit a selected sketch but always tries to create
     // a new sketch.
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=44070
+    // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");

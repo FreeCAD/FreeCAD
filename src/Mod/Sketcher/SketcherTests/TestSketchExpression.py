@@ -32,8 +32,8 @@ class TestSketchExpression(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("TestSketchExpr")
 
-    # See https://forum.freecadweb.org/viewtopic.php?f=3&t=64699
-    # and https://forum.freecadweb.org/viewtopic.php?f=10&t=64718
+    # See https://forum.freecad.org/viewtopic.php?f=3&t=64699
+    # and https://forum.freecad.org/viewtopic.php?f=10&t=64718
     def testConstraintWithExpression(self):
         sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
 

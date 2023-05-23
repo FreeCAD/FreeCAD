@@ -745,6 +745,11 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
 
 </translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Proračunska tablica</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1180,7 +1185,7 @@ Zadano: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>

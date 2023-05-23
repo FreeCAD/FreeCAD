@@ -49,7 +49,7 @@ from draftutils.messages import _msg
 
 __title__ = "FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Tracker:

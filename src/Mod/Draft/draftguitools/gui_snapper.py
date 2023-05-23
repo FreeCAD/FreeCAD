@@ -56,7 +56,7 @@ from draftutils.translate import translate
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 UNSNAPPABLES = ('Image::ImagePlane',)
 
@@ -1653,7 +1653,7 @@ class Snapper:
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
 
-        if self.grid and (not self.forceGridOff):
+        if tool and self.grid and (not self.forceGridOff):
             self.grid.set(tool)
 
 

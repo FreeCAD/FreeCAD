@@ -24,7 +24,7 @@
 
 __title__ = "Result import for Calculix dat file format"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importCcxDatResults
 #  \ingroup FEM

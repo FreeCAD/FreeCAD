@@ -52,7 +52,7 @@ else:
 
 __title__  = "FreeCAD Panel"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 #           Description                 l    w    t
 
@@ -1081,6 +1081,11 @@ class ViewProviderPanelCut(Draft.ViewProviderDraft):
             self.onChanged(obj.ViewObject,"Margin")
         Draft.ViewProviderDraft.updateData(self,obj,prop)
 
+    def doubleClicked(self,vobj):
+
+        # See setEdit in ViewProviderDraft.
+        FreeCADGui.runCommand("Std_TransformManip")
+        return True
 
 class PanelSheet(Draft.DraftObject):
 

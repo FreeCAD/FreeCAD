@@ -115,50 +115,6 @@
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
 
-        <!-- translations -->
-        <file>translations/Fem_af.qm</file>
-        <file>translations/Fem_ar.qm</file>
-        <file>translations/Fem_bg.qm</file>
-        <file>translations/Fem_ca.qm</file>
-        <file>translations/Fem_cs.qm</file>
-        <file>translations/Fem_de.qm</file>
-        <file>translations/Fem_el.qm</file>
-        <file>translations/Fem_es-AR.qm</file>
-        <file>translations/Fem_es-ES.qm</file>
-        <file>translations/Fem_eu.qm</file>
-        <file>translations/Fem_fi.qm</file>
-        <file>translations/Fem_fil.qm</file>
-        <file>translations/Fem_fr.qm</file>
-        <file>translations/Fem_gl.qm</file>
-        <file>translations/Fem_hr.qm</file>
-        <file>translations/Fem_hu.qm</file>
-        <file>translations/Fem_id.qm</file>
-        <file>translations/Fem_it.qm</file>
-        <file>translations/Fem_ja.qm</file>
-        <file>translations/Fem_ka.qm</file>
-        <file>translations/Fem_kab.qm</file>
-        <file>translations/Fem_ko.qm</file>
-        <file>translations/Fem_lt.qm</file>
-        <file>translations/Fem_nl.qm</file>
-        <file>translations/Fem_no.qm</file>
-        <file>translations/Fem_pl.qm</file>
-        <file>translations/Fem_pt-BR.qm</file>
-        <file>translations/Fem_pt-PT.qm</file>
-        <file>translations/Fem_ro.qm</file>
-        <file>translations/Fem_ru.qm</file>
-        <file>translations/Fem_sk.qm</file>
-        <file>translations/Fem_sl.qm</file>
-        <file>translations/Fem_sr.qm</file>
-        <file>translations/Fem_sv-SE.qm</file>
-        <file>translations/Fem_tr.qm</file>
-        <file>translations/Fem_uk.qm</file>
-        <file>translations/Fem_val-ES.qm</file>
-        <file>translations/Fem_vi.qm</file>
-        <file>translations/Fem_zh-CN.qm</file>
-        <file>translations/Fem_zh-TW.qm</file>
-        <file>translations/Fem_sr-CS.qm</file>
-        <file>translations/Fem_be.qm</file>
-
         <!-- task panels -->
         <file>ui/BodyHeatSource.ui</file>
         <file>ui/ConstraintCentrif.ui</file>

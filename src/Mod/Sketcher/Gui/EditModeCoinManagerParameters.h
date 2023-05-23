@@ -257,6 +257,7 @@ struct AnalysisResults { // TODO: This needs to be refactored
     double combRepresentationScale = 0;     // used for information overlay (BSpline comb)
     float boundingBoxMagnitudeOrder = 0;    // used for grid extension
     std::vector<int> bsplineGeoIds;         // used for information overlay
+    std::vector<int> arcGeoIds;
 };
 
 /** @brief      Struct adapted to store the parameters necessary to create and update
@@ -273,6 +274,7 @@ struct OverlayParameters {
     bool bSplineCombVisible;
     bool bSplineKnotMultiplicityVisible;
     bool bSplinePoleWeightVisible;
+    bool arcCircleHelperVisible;
 };
 
 /** @brief      Struct adapted to store the parameters necessary to create and update

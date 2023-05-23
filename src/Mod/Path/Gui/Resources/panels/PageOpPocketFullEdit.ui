@@ -33,7 +33,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -47,7 +47,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -67,7 +67,9 @@
      <item row="0" column="1">
        <widget class="QComboBox" name="boundaryShape">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
+
+The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</string>
         </property>
        </widget>
       </item>
@@ -90,7 +92,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="cutMode">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</string>
         </property>
         <item>
          <property name="text">
@@ -114,7 +116,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="offsetPattern">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Pattern the tool bit is moved in to clear the material</string>
         </property>
         <property name="currentText">
          <string notr="true">ZigZag</string>
@@ -166,7 +168,7 @@
       <item row="2" column="1">
        <widget class="Gui::InputField" name="zigZagAngle">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Angle in which the pattern is applied</string>
         </property>
        </widget>
       </item>
@@ -180,7 +182,7 @@
       <item row="3" column="1">
        <widget class="QSpinBox" name="stepOverPercent">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -206,7 +208,7 @@
       <item row="4" column="1">
        <widget class="Gui::InputField" name="extraOffset">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The amount of material that should be left by this operation in relation to the target shape</string>
         </property>
        </widget>
       </item>
@@ -219,7 +221,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="useStartPoint">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Specify if this operation uses a starting point</string>
         </property>
         <property name="text">
          <string>Use Start Point</string>
@@ -229,7 +231,7 @@
       <item row="1" column="1">
        <widget class="QCheckBox" name="useOutline">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If selected the operation uses the outline of the selected base geometry and ignores all holes and islands</string>
         </property>
         <property name="text">
          <string>Use Outline</string>

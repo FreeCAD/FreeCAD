@@ -34,8 +34,8 @@ import PathScripts.PathUtils as PathUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable should be suitable for most Fanuc controllers.
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable should be suitable for most Fanuc controllers.
 It has only been tested on a 21i-MB controller on a 3 axis mill.
 This postprocessor, once placed in the appropriate PathScripts folder,
 can be used directly from inside FreeCAD, via the GUI importer or via

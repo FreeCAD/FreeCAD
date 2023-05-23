@@ -106,6 +106,9 @@
         <file>icons/general/Sketcher_ViewSketch.svg</file>
         <file>icons/general/Sketcher_GridToggle.svg</file>
         <file>icons/general/Sketcher_GridToggle_Deactivated.svg</file>
+        <file>icons/general/Sketcher_RenderingOrder_Construction.svg</file>
+        <file>icons/general/Sketcher_RenderingOrder_External.svg</file>
+        <file>icons/general/Sketcher_RenderingOrder_Normal.svg</file>
         <file>icons/general/Sketcher_Snap.svg</file>
         <file>icons/general/Sketcher_Snap_Deactivated.svg</file>
     </qresource>
@@ -249,49 +252,5 @@
     </qresource>
     <qresource>
         <file>icons/dialogs/Sketcher_Settings.svg</file>
-    </qresource>
-    <qresource>
-        <file>translations/Sketcher_af.qm</file>
-        <file>translations/Sketcher_ar.qm</file>
-        <file>translations/Sketcher_ca.qm</file>
-        <file>translations/Sketcher_cs.qm</file>
-        <file>translations/Sketcher_de.qm</file>
-        <file>translations/Sketcher_el.qm</file>
-        <file>translations/Sketcher_es-ES.qm</file>
-        <file>translations/Sketcher_eu.qm</file>
-        <file>translations/Sketcher_fi.qm</file>
-        <file>translations/Sketcher_fil.qm</file>
-        <file>translations/Sketcher_fr.qm</file>
-        <file>translations/Sketcher_gl.qm</file>
-        <file>translations/Sketcher_hr.qm</file>
-        <file>translations/Sketcher_hu.qm</file>
-        <file>translations/Sketcher_id.qm</file>
-        <file>translations/Sketcher_it.qm</file>
-        <file>translations/Sketcher_ja.qm</file>
-        <file>translations/Sketcher_kab.qm</file>
-        <file>translations/Sketcher_ko.qm</file>
-        <file>translations/Sketcher_lt.qm</file>
-        <file>translations/Sketcher_nl.qm</file>
-        <file>translations/Sketcher_no.qm</file>
-        <file>translations/Sketcher_pl.qm</file>
-        <file>translations/Sketcher_pt-BR.qm</file>
-        <file>translations/Sketcher_pt-PT.qm</file>
-        <file>translations/Sketcher_ro.qm</file>
-        <file>translations/Sketcher_ru.qm</file>
-        <file>translations/Sketcher_sk.qm</file>
-        <file>translations/Sketcher_sl.qm</file>
-        <file>translations/Sketcher_sr.qm</file>
-        <file>translations/Sketcher_sv-SE.qm</file>
-        <file>translations/Sketcher_tr.qm</file>
-        <file>translations/Sketcher_uk.qm</file>
-        <file>translations/Sketcher_val-ES.qm</file>
-        <file>translations/Sketcher_vi.qm</file>
-        <file>translations/Sketcher_zh-CN.qm</file>
-        <file>translations/Sketcher_zh-TW.qm</file>
-        <file>translations/Sketcher_es-AR.qm</file>
-        <file>translations/Sketcher_bg.qm</file>
-        <file>translations/Sketcher_ka.qm</file>
-        <file>translations/Sketcher_sr-CS.qm</file>
-        <file>translations/Sketcher_be.qm</file>
     </qresource>
 </RCC>

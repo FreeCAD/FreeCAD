@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM material ViewProvider for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_material_common
 #  \ingroup FEM

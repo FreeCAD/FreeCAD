@@ -25,6 +25,7 @@
 
 #include <limits>
 #include <locale>
+#include <iomanip>
 
 #include "Writer.h"
 #include "Base64.h"
@@ -34,11 +35,42 @@
 #include "Stream.h"
 #include "Tools.h"
 
+#include <boost/iostreams/filtering_stream.hpp>
 
 using namespace Base;
 using namespace std;
 using namespace zipios;
 
+// boost iostream filter to escape ']]>' in text file saved into CDATA section.
+// It does not check if the character is valid utf8 or not.
+struct cdata_filter {
+
+    typedef char char_type;
+    typedef boost::iostreams::output_filter_tag category;
+
+    template<typename Device>
+    inline bool put(Device& dev, char c) {
+        switch(state) {
+            case 0:
+            case 1:
+                if(c == ']')
+                    ++state;
+                else
+                    state = 0;
+                break;
+            case 2:
+                if(c == '>') {
+                    static const char escape[] = "]]><![CDATA[";
+                    boost::iostreams::write(dev,escape,sizeof(escape)-1);
+                }
+                state = 0;
+                break;
+        }
+        return boost::iostreams::put(dev,c);
+    }
+
+    int state = 0;
+};
 
 // ---------------------------------------------------------------------------
 //  Writer: Constructors and Destructor
@@ -54,6 +86,44 @@ Writer::Writer()
 }
 
 Writer::~Writer() = default;
+
+std::ostream& Writer::beginCharStream()
+{
+    if (CharStream) {
+        throw Base::RuntimeError("Writer::beginCharStream(): invalid state");
+    }
+
+    Stream() << "<![CDATA[";
+    CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
+    auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
+    filteredStream->push(cdata_filter());
+    filteredStream->push(Stream());
+    *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+    return *CharStream;
+}
+
+std::ostream& Writer::endCharStream()
+{
+    if (CharStream) {
+        CharStream.reset();
+        Stream() << "]]>";
+    }
+    return Stream();
+}
+
+std::ostream& Writer::charStream()
+{
+    if (!CharStream) {
+        throw Base::RuntimeError("Writer::endCharStream(): no current character stream");
+    }
+    return *CharStream;
+}
+
+void Writer::insertText(const std::string& s)
+{
+    beginCharStream() << s;
+    endCharStream();
+}
 
 void Writer::insertAsciiFile(const char* FileName)
 {

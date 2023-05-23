@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <QString>
+#include <QCoreApplication>
 #include "UnitsSchema.h"
 #include "Quantity.h"
 
@@ -40,6 +41,7 @@ using UnitsSchemaPtr = std::unique_ptr<UnitsSchema>;
  */
 class BaseExport UnitsApi
 {
+    Q_DECLARE_TR_FUNCTIONS(UnitsApi)
 
 public:
     /** set Schema
@@ -54,7 +56,7 @@ public:
         return currentSystem;
     }
     /// Returns a brief description of a schema
-    static const char* getDescription(UnitSystem);
+    static QString getDescription(UnitSystem);
 
     static QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
     static QString schemaTranslate(const Base::Quantity& quant) { // to satisfy GCC

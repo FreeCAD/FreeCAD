@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
 Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Laskentataulukko</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1164,7 +1169,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Nimetön</translation>
     </message>

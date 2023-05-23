@@ -22,7 +22,7 @@
 
 __title__ = "Tools for the work with Gmsh mesher"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -330,7 +330,7 @@ class GmshTools():
                     raise GmshError(error_message)
                 self.gmsh_bin = gmsh_path
             elif system() == "Darwin":
-                # https://forum.freecadweb.org/viewtopic.php?f=13&t=73041&p=642026#p642022
+                # https://forum.freecad.org/viewtopic.php?f=13&t=73041&p=642026#p642022
                 gmsh_path = "/Applications/Gmsh.app/Contents/MacOS/gmsh"
                 FreeCAD.ParamGet(
                     "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
@@ -450,8 +450,8 @@ class GmshTools():
             # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
-            # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
-            # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
+            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
             if (
                 self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
@@ -545,8 +545,8 @@ class GmshTools():
         else:
             # Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
-                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
-                # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                # see http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
+                # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -854,7 +854,7 @@ class GmshTools():
 
         geo.write("// meshing\n")
         # remove duplicate vertices
-        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
+        # see https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=20#p179443
         if hasattr(self.mesh_obj, "CoherenceMesh") and self.mesh_obj.CoherenceMesh is True:
             geo.write(
                 "Geometry.Tolerance = {}; // set geometrical "
@@ -926,7 +926,7 @@ class GmshTools():
 
         # workaround
         # filter useless gmsh warning in the regard of unknown element MSH type 15
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=33946
+        # https://forum.freecad.org/viewtopic.php?f=18&t=33946
         useless_warning = (
             "Warning : Unknown element type for UNV export "
             "(MSH type 15) - output file might be invalid"

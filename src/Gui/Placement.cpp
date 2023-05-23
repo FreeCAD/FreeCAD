@@ -683,7 +683,7 @@ void Placement::reject()
     // but its content is not fully updated.
     // In order to override again the placement the signalMapper is blocked
     // See related forum thread:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44341#p378659
+    // https://forum.freecad.org/viewtopic.php?f=3&t=44341#p378659
     QSignalBlocker block(signalMapper);
     QDialog::reject();
 }

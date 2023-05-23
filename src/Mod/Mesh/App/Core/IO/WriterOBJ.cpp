@@ -106,7 +106,7 @@ bool WriterOBJ::Save(std::ostream& out)
     }
 
     // Header
-    out << "# Created by FreeCAD <http://www.freecadweb.org>\n";
+    out << "# Created by FreeCAD <http://www.freecad.org>\n";
     if (exportColorPerFace) {
         out << "mtllib " << _material->library << '\n';
     }
@@ -263,7 +263,7 @@ bool WriterOBJ::SaveMaterial(std::ostream& out)
 
             out.precision(6);
             out.setf(std::ios::fixed | std::ios::showpoint);
-            out << "# Created by FreeCAD <http://www.freecadweb.org>: 'None'\n";
+            out << "# Created by FreeCAD <http://www.freecad.org>: 'None'\n";
             out << "# Material Count: " << Kd.size() << '\n';
 
             for (std::size_t i=0; i<Kd.size(); i++) {
