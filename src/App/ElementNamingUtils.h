@@ -30,5 +30,30 @@ const std::string POSTFIX_MODGEN                    = ELEMENT_MAP_PREFIX + ":MG"
 const std::string POSTFIX_DUPLICATE                 = ELEMENT_MAP_PREFIX + "D";
 
 
+/// Check if a subname contains missing element
+bool hasMissingElement(const char *subname);
+
+/** Check if the name starts with elementMapPrefix()
+ *
+ * @param name: input name
+ * @return Returns the name stripped with elementMapPrefix(), or 0 if not
+ * start with the prefix
+ */
+const char *isMappedElement(const char *name);
+
+/// Strip out the trailing element name if there is mapped element name preceeds it.
+std::string newElementName(const char *name);
+
+/// Strip out the mapped element name if there is one.
+std::string oldElementName(const char *name);
+
+/// Strip out the old and new element name if there is one.
+std::string noElementName(const char *name);
+
+/// Find the start of an element name in a subname
+const char *findElementName(const char *subname);
+
+const char *hasMappedElementName(const char *subname);
+
 
 }// namespace Data

@@ -164,33 +164,6 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
-    /** @name Element name mapping */
-    //@{
-    /// Check if a subname contains missing element
-    static bool hasMissingElement(const char *subname);
-    /** Check if the name starts with ELEMENT_MAP_PREFIX
-     *
-     * @param name: input name
-     * @return Returns the name stripped with ELEMENT_MAP_PREFIX, or 0 if not
-     * start with the prefix
-     */
-    static const char *isMappedElement(const char *name);
-
-    /// Strip out the trailing element name if there is mapped element name precedes it.
-    static std::string newElementName(const char *name);
-    /// Strip out the mapped element name if there is one.
-    static std::string oldElementName(const char *name);
-    /// Strip out the old and new element name if there is one.
-    static std::string noElementName(const char *name);
-
-    /// Find the start of an element name in a subname
-    static const char *findElementName(const char *subname);
-
-    static inline const char *hasMappedElementName(const char *subname) {
-        return isMappedElement(findElementName(subname));
-    }
-    //@}
-
 protected:
 
     /// from local to outside
