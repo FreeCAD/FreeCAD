@@ -1,6 +1,6 @@
 
 #include "ElementMap.h"
-#include "PostfixStringReferences.h"
+#include "ElementNamingUtils.h"
 
 #include "App/Application.h"
 #include "Base/Console.h"

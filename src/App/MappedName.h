@@ -38,7 +38,7 @@
 #include "ComplexGeoData.h"
 #include "IndexedName.h"
 #include "StringHasher.h"
-#include "PostfixStringReferences.h"
+#include "ElementNamingUtils.h"
 
 
 namespace Data

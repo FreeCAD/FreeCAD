@@ -34,6 +34,7 @@
 
 #include "App/DocumentObject.h"
 #include <App/FeaturePythonPyImp.h>
+#include <App/ElementNamingUtils.h>
 #include "App/OriginFeature.h"
 #include <Base/Console.h>
 
@@ -237,7 +238,7 @@ Body* Feature::getFeatureBody() const {
 App::DocumentObject *Feature::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
-    if (subname && subname != Data::ComplexGeoData::findElementName(subname)) {
+    if (subname && subname != Data::findElementName(subname)) {
         const char * dot = strchr(subname,'.');
         if (dot) {
             auto body = PartDesign::Body::findBodyOf(this);

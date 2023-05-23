@@ -34,7 +34,7 @@
 #include <Base/Writer.h>
 
 #include "Application.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
@@ -1094,7 +1094,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     // following it. So finding the last dot will give us the end of the last
     // object name.
     const char *dot=nullptr;
-    if(Data::ComplexGeoData::isMappedElement(subname) ||
+    if(Data::isMappedElement(subname) ||
        !(dot=strrchr(subname,'.')) ||
        dot == subname) 
     {
@@ -1117,7 +1117,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
             if(!elementMapChecked) {
                 elementMapChecked = true;
                 const char *sub = dot==subname?dot:dot+1;
-                if(Data::ComplexGeoData::isMappedElement(sub)) {
+                if(Data::isMappedElement(sub)) {
                     lastDot = dot;
                     if(dot==subname) 
                         break;
