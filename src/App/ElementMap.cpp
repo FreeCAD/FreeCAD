@@ -10,6 +10,7 @@
 #include <boost/algorithm/string/split.hpp>
 
 #include <unordered_map>
+#include <random>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);
@@ -264,7 +265,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasher, std::istream& s
         } while (tmp != "EndMap");
         return map;
     }
-    map = shared_from_this();
+    map = shared_from_this(); //FIXME does nothing?
 
     const char* hasherWarn = nullptr;
     const char* hasherIDWarn = nullptr;
@@ -488,8 +489,7 @@ MappedName ElementMap::setElementName(const IndexedName& element,
     if (!element)
         throw Base::ValueError("Invalid input");
     if (!name) {
-        if (this)
-            erase(element);
+        erase(element);
         return MappedName();
     }
 
@@ -503,8 +503,6 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         if (c == '.' || std::isspace((int)c))
             FC_THROWM(Base::RuntimeError, "Illegal character in element name: " << element);
     }
-    if (!this)
-        init();
 
     ElementIDRefs _sid;
     if (!sid)
@@ -650,8 +648,18 @@ MappedName ElementMap::renameDuplicateElement(int index, const IndexedName& elem
                                               const IndexedName& element2, const MappedName& name,
                                               ElementIDRefs& sids, long masterTag)
 {
+    int idx;
+#ifdef FC_DEBUG
+    idx = index;
+#else
+    static std::random_device _RD;
+    static std::mt19937 _RGEN(_RD());
+    static std::uniform_int_distribution<> _RDIST(1,10000);
+    (void)index;
+    idx = _RDIST(_RGEN);
+#endif
     std::ostringstream ss;
-    ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << index;
+    ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
     MappedName renamed(name);
     encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -923,8 +931,7 @@ void ElementMap::collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
     res.first->second = (int)childMaps.size();
 }
 
-void ElementMap::addChildElements(ElementMapPtr& elementMap, long masterTag,
-                                  const std::vector<MappedChildElements>& children)
+void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildElements>& children)
 {
     std::ostringstream ss;
     ss << std::hex;
