@@ -28,11 +28,14 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
+#include <QTextStream>
+#include <QMessageBox>
 #endif
 
 #include <App/DocumentObject.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
@@ -162,6 +165,25 @@ bool ViewProviderBalloon::canDelete(App::DocumentObject *obj) const
     // deletions of a balloon object doesn't destroy anything
     // thus we can pass this action
     Q_UNUSED(obj)
-    Base::Console().Message("VPB::canDelete()\n");
+    return true;
+}
+
+bool ViewProviderBalloon::onDelete(const std::vector<std::string> & parms)
+{
+    Q_UNUSED(parms)
+//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
+    if (Gui::Control().activeDialog())  {
+        // TODO: make this selective so only a dialog involving this vp's
+        // feature is blocked.  As is, this will prevent deletion during any
+        // task dialog.
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("TaskBalloon",
+            "You cannot delete this balloon now because\nthere is an open task dialog.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("TaskBalloon", "Can Not Delete"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
     return true;
 }
