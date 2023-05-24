@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerSplitting_H
 #define SKETCHERGUI_DrawSketchHandlerSplitting_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -137,7 +139,10 @@ public:
                 tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to split edge: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add edge"));
+
                 Gui::Command::abortCommand();
             }
         }

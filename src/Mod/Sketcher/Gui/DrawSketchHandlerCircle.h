@@ -114,7 +114,9 @@ public:
                 Gui::Command::commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add circle: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
                 Gui::Command::abortCommand();
             }
 
@@ -287,7 +289,9 @@ public:
                 Gui::Command::commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add circle: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
                 Gui::Command::abortCommand();
             }
 

@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerTrimming_H
 #define SKETCHERGUI_DrawSketchHandlerTrimming_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -134,7 +136,10 @@ public:
                     tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("Failed to trim edge: %s\n", e.what());
+                    Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge"));
+
                     Gui::Command::abortCommand();
                 }
             }

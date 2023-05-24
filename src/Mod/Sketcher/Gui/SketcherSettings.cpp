@@ -281,7 +281,7 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
             this->ui->checkBoxTVForceOrtho->isChecked()    ? "True": "False",
             this->ui->checkBoxTVSectionView->isChecked()   ? "True": "False");
     } catch (Base::PyException &e){
-        Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
+        Base::Console().DeveloperError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
         e.ReportException();
         errMsg = QString::fromLatin1(e.what());
     } catch (...) {

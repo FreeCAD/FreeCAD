@@ -347,7 +347,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade * geo
                     // terminating here would mean that the other shapes would not be drawn.
                     // Solution: Report the issue and set dummy curvature to 0
                     e.ReportException();
-                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid); // TODO: Fix identification of curve.
+                    Base::Console().DeveloperError("EditModeGeometryCoinConverter","Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid); // TODO: Fix identification of curve.
                     curvaturelist[i] = 0;
                 }
 

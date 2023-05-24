@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerPolygon_H
 #define SKETCHERGUI_DrawSketchHandlerPolygon_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 #include "SketcherRegularPolygonDialog.h"
 
@@ -142,7 +144,10 @@ public:
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add hexagon: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon"));
+
                 Gui::Command::abortCommand();
 
                 tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));

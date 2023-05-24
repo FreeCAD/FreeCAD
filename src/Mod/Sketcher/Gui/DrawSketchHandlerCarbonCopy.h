@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
 #define SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -143,7 +145,9 @@ public:
                         * right button of the mouse */
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("Failed to add carbon copy: %s\n", e.what());
+                    Gui::NotifyError(sketchgui,
+                                     QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                     QT_TRANSLATE_NOOP("Notifications", "Failed to add carbon copy"));
                     Gui::Command::abortCommand();
                 }
                 return true;

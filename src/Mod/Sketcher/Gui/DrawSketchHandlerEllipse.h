@@ -27,6 +27,8 @@
 #include <QDebug>
 #include <GC_MakeEllipse.hxx>
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -746,7 +748,9 @@ private:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Gui::NotifyError(sketchgui,
+                                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                QT_TRANSLATE_NOOP("Notifications", "Failed to add an ellipse"));
             Gui::Command::abortCommand();
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
