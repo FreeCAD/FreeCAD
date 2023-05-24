@@ -7131,7 +7131,7 @@ CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
 {
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Constrain refraction (Snell's law')");
+    sMenuText       = QT_TR_NOOP("Constrain refraction (Snell's law)");
     sToolTipText    = QT_TR_NOOP("Create a refraction law (Snell's law)"
                                  "constraint between two endpoints of rays\n"
                                  "and an edge as an interface.");
