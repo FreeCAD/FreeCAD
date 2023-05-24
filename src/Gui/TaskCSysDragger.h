@@ -40,7 +40,8 @@ namespace Gui
       TaskCSysDragger(ViewProviderDocumentObject *vpObjectIn, SoFCCSysDragger *draggerIn);
       ~TaskCSysDragger() override;
       QDialogButtonBox::StandardButtons getStandardButtons() const override
-        { return QDialogButtonBox::Ok;}
+        { return QDialogButtonBox::Ok |
+                 QDialogButtonBox::Cancel; }
       void open() override;
       bool accept() override;
     private Q_SLOTS:
