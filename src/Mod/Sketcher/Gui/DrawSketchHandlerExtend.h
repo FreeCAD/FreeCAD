@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerExtend_H
 #define SKETCHERGUI_DrawSketchHandlerExtend_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -274,7 +276,9 @@ public:
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to extend edge: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Failed to extend edge"));
                 Gui::Command::abortCommand();
             }
 

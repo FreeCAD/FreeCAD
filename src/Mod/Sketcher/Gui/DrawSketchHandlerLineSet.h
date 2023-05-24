@@ -26,6 +26,8 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Inventor/events/SoKeyboardEvent.h>
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -405,7 +407,9 @@ public:
                 }
                 catch (const Base::Exception& e) {
                     addedGeometry = false;
-                    Base::Console().Error("Failed to add line: %s\n", e.what());
+                    Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add line"));
                     Gui::Command::abortCommand();
                 }
 
@@ -427,7 +431,10 @@ public:
                 }
                 catch (const Base::Exception& e) {
                     addedGeometry = false;
-                    Base::Console().Error("Failed to add arc: %s\n", e.what());
+                    Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));
+
                     Gui::Command::abortCommand();
                 }
 

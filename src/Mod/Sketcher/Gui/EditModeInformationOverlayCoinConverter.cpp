@@ -197,7 +197,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
                         // terminating here would mean that the other shapes would not be drawn.
                         // Solution: Report the issue and set dummy curvature to 0
                         e.ReportException();
-                        Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
+                        Base::Console().DeveloperError("EditModeInformationOverlayCoinConverter","Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
                         curvaturelist.emplace_back(0);
                     }
 

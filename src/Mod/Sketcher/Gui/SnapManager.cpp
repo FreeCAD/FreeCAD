@@ -123,7 +123,7 @@ void SnapManager::ParameterObserver::subscribeToParameters()
         hGrp->Attach(this);
     }
     catch (const Base::ValueError& e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
-        Base::Console().Error("SnapManager: Malformed parameter string: %s\n", e.what());
+        Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
@@ -134,7 +134,7 @@ void SnapManager::ParameterObserver::unsubscribeToParameters()
         hGrp->Detach(this);
     }
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the program is not terminated when calling the noexcept destructor.
-        Base::Console().Error("SnapManager: Malformed parameter string: %s\n", e.what());
+        Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 

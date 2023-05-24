@@ -25,6 +25,7 @@
 
 #include "GeometryCreationMode.h"
 
+#include <Gui/Notifications.h>
 
 namespace SketcherGui {
 
@@ -241,7 +242,9 @@ public:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of parabola"));
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));

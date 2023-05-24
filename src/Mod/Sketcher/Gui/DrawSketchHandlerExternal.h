@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
 #define SKETCHERGUI_DrawSketchHandlerExternal_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -152,7 +154,9 @@ public:
                 * right button of the mouse */
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("Failed to add external geometry: %s\n", e.what());
+                    Gui::NotifyError(sketchgui,
+                                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry"));
                     Gui::Selection().clearSelection();
                     Gui::Command::abortCommand();
                 }

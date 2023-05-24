@@ -26,6 +26,8 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QInputDialog>
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -117,7 +119,9 @@ public:
                 knotGeoIds.push_back(getHighestCurveIndex());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Cannot add knot point"));
                 Gui::Command::abortCommand();
 
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
@@ -185,7 +189,9 @@ public:
                 knotGeoIds.push_back(getHighestCurveIndex());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Cannot add internal alignment points"));
                 Gui::Command::abortCommand();
 
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
@@ -292,7 +298,9 @@ public:
                 drawCursorToPosition(prevCursorPosition);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Error removing knot"));
                 // some commands might have already deleted some constraints/geometries but not
                 // others
                 Gui::Command::abortCommand();
@@ -600,7 +608,9 @@ private:
                     sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Error creating B-Spline"));
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(

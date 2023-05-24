@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerArc_H
 #define SKETCHERGUI_DrawSketchHandlerArc_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -184,7 +186,9 @@ public:
                 Gui::Command::commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add arc: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));
                 Gui::Command::abortCommand();
             }
 
@@ -433,7 +437,9 @@ public:
                 Gui::Command::commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add arc: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));
                 Gui::Command::abortCommand();
             }
 

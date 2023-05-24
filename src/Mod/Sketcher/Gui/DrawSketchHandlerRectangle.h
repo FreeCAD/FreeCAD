@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerRectangle_H
 #define SKETCHERGUI_DrawSketchHandlerRectangle_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -232,7 +234,10 @@ public:
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add box: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add box"));
+
                 Gui::Command::abortCommand();
             }
 
@@ -563,7 +568,10 @@ public:
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add rounded rectangle: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add rounded rectangle"));
+
                 Gui::Command::abortCommand();
 
                 tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));

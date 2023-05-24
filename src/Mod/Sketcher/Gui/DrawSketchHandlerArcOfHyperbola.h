@@ -25,6 +25,8 @@
 
 #include <boost/math/special_functions/fpclassify.hpp>
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -224,7 +226,9 @@ public:
 
             if (boost::math::isnan(startAngle) || boost::math::isnan(endAngle)) {
                 sketchgui->purgeHandler();
-                Base::Console().Error("Cannot create arc of hyperbola from invalid angles, try again!\n");
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of hyperbola from invalid angles, try again!"));
                 return false;
             }
 
@@ -287,7 +291,9 @@ public:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                    QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of hyperbola"));
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));

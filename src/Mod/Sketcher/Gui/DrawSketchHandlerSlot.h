@@ -23,6 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerSlot_H
 #define SKETCHERGUI_DrawSketchHandlerSlot_H
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -258,7 +260,10 @@ public:
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add slot: %s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                        QT_TRANSLATE_NOOP("Notifications", "Error"),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to add slot"));
+
                 Gui::Command::abortCommand();
 
                 tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
