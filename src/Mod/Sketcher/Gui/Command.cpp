@@ -1101,8 +1101,8 @@ CmdSketcherGrid::CmdSketcherGrid()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Activate Grid");
-    sToolTipText = QT_TR_NOOP("Activate grid and grid settings");
+    sMenuText = QT_TR_NOOP("Toggle grid");
+    sToolTipText = QT_TR_NOOP("Toggle the grid in the sketch. In the menu you can change grid settings");
     sWhatsThis = "Sketcher_Grid";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -1243,7 +1243,7 @@ public:
         snapToObjects->setToolTip(tr("New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs."));
         snapToObjects->setStatusTip(snapToObjects->toolTip());
 
-        snapToGrid->setText(tr("Snap to Grid"));
+        snapToGrid->setText(tr("Snap to grid"));
         snapToGrid->setToolTip(tr("New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
         snapToGrid->setStatusTip(snapToGrid->toolTip());
 
@@ -1341,8 +1341,8 @@ CmdSketcherSnap::CmdSketcherSnap()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Toggle Snap");
-    sToolTipText = QT_TR_NOOP("Toggle all snapping functionalities. In the menu you can toggle individually 'Snap to Grid', 'Snap to Objects' and further snap settings");
+    sMenuText = QT_TR_NOOP("Toggle snap");
+    sToolTipText = QT_TR_NOOP("Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings");
     sWhatsThis = "Sketcher_Snap";
     sStatusTip = sToolTipText;
     eType = 0;
