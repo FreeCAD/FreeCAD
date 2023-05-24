@@ -1753,26 +1753,35 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    Q_UNUSED(context);
+    QByteArray output;
+    if (context.category && strcmp(context.category, "default") != 0) {
+        output.append('(');
+        output.append(context.category);
+        output.append(')');
+        output.append(' ');
+    }
+
+    output.append(msg.toUtf8());
+
     switch (type)
     {
     case QtInfoMsg:
     case QtDebugMsg:
 #ifdef FC_DEBUG
-        Base::Console().Message("%s\n", msg.toUtf8().constData());
+        Base::Console().Message("%s\n", output.constData());
 #else
         // do not stress user with Qt internals but write to log file if enabled
-        Base::Console().Log("%s\n", msg.toUtf8().constData());
+        Base::Console().Log("%s\n", output.constData());
 #endif
         break;
     case QtWarningMsg:
-        Base::Console().Warning("%s\n", msg.toUtf8().constData());
+        Base::Console().Warning("%s\n", output.constData());
         break;
     case QtCriticalMsg:
-        Base::Console().Error("%s\n", msg.toUtf8().constData());
+        Base::Console().Error("%s\n", output.constData());
         break;
     case QtFatalMsg:
-        Base::Console().Error("%s\n", msg.toUtf8().constData());
+        Base::Console().Error("%s\n", output.constData());
         abort();                    // deliberately core dump
     }
 #ifdef FC_OS_WIN32
