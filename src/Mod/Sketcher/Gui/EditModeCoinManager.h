@@ -37,25 +37,29 @@ class SoRayPickAction;
 class SoPickedPoint;
 class SbVec3s;
 
-namespace Base {
-    template< typename T >
-    class Vector3;
+namespace Base
+{
+template<typename T>
+class Vector3;
 
-    class Vector2d;
+class Vector2d;
 
-    class Placement;
+class Placement;
+}// namespace Base
+
+namespace Part
+{
+class Geometry;
 }
 
-namespace Part {
-    class Geometry;
-}
+namespace Sketcher
+{
+class Constraint;
+class PropertyConstraintList;
+};// namespace Sketcher
 
-namespace Sketcher {
-    class Constraint;
-    class PropertyConstraintList;
-};
-
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class ViewProviderSketch;
 class EditModeConstraintCoinManager;
@@ -71,7 +75,8 @@ using GeoListFacade = Sketcher::GeoListFacade;
  * further delegates on other specialised helper classes. Some of them share the
  * ViewProviderSketchCoinAttorney, which defines the maximum coupling and minimum encapsulation.
  *
- * The most important such delegates are: EditModeGeometryCoinManager and EditModeConstraintCoinManager.
+ * The most important such delegates are: EditModeGeometryCoinManager and
+ * EditModeConstraintCoinManager.
  *
  * EditModeCoinManager takes over the responsibility of creating the Coin (Inventor) scenograph
  * and modifying it, including all the drawing of geometry, constraints and overlay layer. This
@@ -82,31 +87,35 @@ using GeoListFacade = Sketcher::GeoListFacade;
  * its responsibility, this access is defined by ViewProviderSketchCoinAttorney.
  *
  * EditModeCoinManager is responsible, under the Single Responsibility Principle, to manage the coin
- * EditRoot node. This node is ref-ed on creation and unref-ed on destruction to ensure that its lifetime
- * matches the one of EditModecoinManager.
+ * EditRoot node. This node is ref-ed on creation and unref-ed on destruction to ensure that its
+ * lifetime matches the one of EditModecoinManager.
  *
- * EditRoot is added on request to pcRoot by ViewProviderSketch. The node pcRoot belongs, under the Single
- * Responsibility Principle, to ViewProviderSketch. EditModeCoinManager delegates addition and removal of
- * child notes of EditRoot to specialised helper classes.
+ * EditRoot is added on request to pcRoot by ViewProviderSketch. The node pcRoot belongs, under the
+ * Single Responsibility Principle, to ViewProviderSketch. EditModeCoinManager delegates addition
+ * and removal of child notes of EditRoot to specialised helper classes.
  *
- * EditModeCoinManager is designed to define the span of time in which ViewProviderSketch is in edit mode.
+ * EditModeCoinManager is designed to define the span of time in which ViewProviderSketch is in edit
+ * mode.
  *
- * In addition to the scenograph, EditModeCoinManager is responsible for keeping any necessary mapping between
- * indices used at ViewProviderSketch level, and internal indexing used by EditModeCoinManager and its subclasses.
+ * In addition to the scenograph, EditModeCoinManager is responsible for keeping any necessary
+ * mapping between indices used at ViewProviderSketch level, and internal indexing used by
+ * EditModeCoinManager and its subclasses.
  */
 class SketcherGuiExport EditModeCoinManager
 {
-    /** @brief      Class for monitoring changes in parameters affecting drawing and coin node generation
-    *  @details
-    *
-    * This nested class is a helper responsible for attaching to the parameters relevant for
-    * EditModeCoinManager and its helpers, initialising the EditModeCoinManager to the current configuration
-    * and handle in real time any change to their values.
-    */
-    class ParameterObserver : public ParameterGrp::ObserverType
+    /** @brief      Class for monitoring changes in parameters affecting drawing and coin node
+     * generation
+     *  @details
+     *
+     * This nested class is a helper responsible for attaching to the parameters relevant for
+     * EditModeCoinManager and its helpers, initialising the EditModeCoinManager to the current
+     * configuration and handle in real time any change to their values.
+     */
+    class ParameterObserver: public ParameterGrp::ObserverType
     {
     private:
-        enum class OverlayVisibilityParameter {
+        enum class OverlayVisibilityParameter
+        {
             BSplineDegree,
             BSplineControlPolygonVisible,
             BSplineCombVisible,
@@ -116,7 +125,7 @@ class SketcherGuiExport EditModeCoinManager
         };
 
     public:
-        explicit ParameterObserver(EditModeCoinManager & client);
+        explicit ParameterObserver(EditModeCoinManager& client);
         ~ParameterObserver() override;
 
         void subscribeToParameters();
@@ -124,23 +133,23 @@ class SketcherGuiExport EditModeCoinManager
         void unsubscribeToParameters();
 
         /** Observer for parameter group. */
-        void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+        void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
     private:
         void initParameters();
-        void updateCurvedEdgeCountSegmentsParameter(const std::string & parametername);
-        void updateLineRenderingOrderParameters(const std::string & parametername);
-        void updateConstraintPresentationParameters(const std::string & parametername);
-        void updateElementSizeParameters(const std::string & parametername);
-        void updateColor(SbColor &sbcolor, const std::string &parametername);
-        void updateUnit(const std::string &parametername);
+        void updateCurvedEdgeCountSegmentsParameter(const std::string& parametername);
+        void updateLineRenderingOrderParameters(const std::string& parametername);
+        void updateConstraintPresentationParameters(const std::string& parametername);
+        void updateElementSizeParameters(const std::string& parametername);
+        void updateColor(SbColor& sbcolor, const std::string& parametername);
+        void updateUnit(const std::string& parametername);
 
         template<OverlayVisibilityParameter visibilityparameter>
-        void updateOverlayVisibilityParameter(const std::string & parametername);
+        void updateOverlayVisibilityParameter(const std::string& parametername);
 
     private:
-        std::map<std::string, std::function<void(const std::string &)>> str2updatefunction;
-        EditModeCoinManager &Client;
+        std::map<std::string, std::function<void(const std::string&)>> str2updatefunction;
+        EditModeCoinManager& Client;
     };
 
 public:
@@ -148,22 +157,27 @@ public:
      *
      * @details
      *
-     * PointIndex: Only Positive values corresponding to VertexId (are positive for both normal and external geometry)
-     * GeoIndex: Same values as GeoId of GeoElementId, except for axes which are not included. -1 represents an invalid curve.
+     * PointIndex: Only Positive values corresponding to VertexId (are positive for both normal and
+     * external geometry) GeoIndex: Same values as GeoId of GeoElementId, except for axes which are
+     * not included. -1 represents an invalid curve.
      *
-     * In other words valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
+     * In other words valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external
+     * geometry
      *
      * Cross: Axes and RootPoint values as defined in the enum class.
      *
      */
-    struct PreselectionResult {
-        enum SpecialValues {
+    struct PreselectionResult
+    {
+        enum SpecialValues
+        {
             InvalidPoint = -1,
             InvalidCurve = -1,
             ExternalCurve = -3
         };
 
-        enum class Axes {
+        enum class Axes
+        {
             None = -1,
             RootPoint = 0,
             HorizontalAxis = 1,
@@ -171,11 +185,13 @@ public:
         };
 
         int PointIndex = InvalidPoint;
-        int GeoIndex = InvalidCurve; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
+        int GeoIndex = InvalidCurve;// valid values are 0,1,2,... for normal geometry and
+                                    // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
 
-        inline void clear() {
+        inline void clear()
+        {
             PointIndex = InvalidPoint;
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
@@ -184,29 +200,31 @@ public:
     };
 
 public:
-    explicit EditModeCoinManager(ViewProviderSketch &vp);
+    explicit EditModeCoinManager(ViewProviderSketch& vp);
     ~EditModeCoinManager();
 
-     /** @name Temporary edit curves and markers */
+    /** @name Temporary edit curves and markers */
     //@{
-    void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel);
-    void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
-    void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
-    void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
-    void setPositionText(const Base::Vector2d &Pos);
+    void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
+                         unsigned int augmentationlevel);
+    void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
+    void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
+    void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
     void setAxisPickStyle(bool on);
     //@}
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint * Point, const SbVec2s &cursorPos);
+    PreselectionResult detectPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
 
     /** @name update coin nodes*/
-    void processGeometryConstraintsInformationOverlay(const GeoListFacade & geolistfacade, bool rebuildinformationlayer);
+    void processGeometryConstraintsInformationOverlay(const GeoListFacade& geolistfacade,
+                                                      bool rebuildinformationlayer);
 
     void updateVirtualSpace();
 
@@ -215,7 +233,7 @@ public:
     void drawConstraintIcons();
 
     // This specific overload is to use a specific geometry list, which may be a temporal one
-    void drawConstraintIcons(const GeoListFacade & geolistfacade);
+    void drawConstraintIcons(const GeoListFacade& geolistfacade);
 
     void updateGeometryLayersConfiguration();
     //@}
@@ -227,7 +245,8 @@ public:
     /** @name update coin colors*/
     //@{
     void updateColor();
-    void updateColor(const GeoListFacade & geolistfacade); // overload to be used with temporal geometry.
+    void
+    updateColor(const GeoListFacade& geolistfacade);// overload to be used with temporal geometry.
     //@}
 
     /** @name change constraints selectability*/
@@ -237,11 +256,12 @@ public:
 
 private:
     // This function populates the coin nodes with the information of the current geometry
-    void processGeometry(const GeoListFacade & geolistfacade);
+    void processGeometry(const GeoListFacade& geolistfacade);
 
-    // This function populates the geometry information layer of coin. It requires the analysis information
-    // gathered during the processGeometry step, so it is not possible to run both in parallel.
-    void processGeometryInformationOverlay(const GeoListFacade & geolistfacade);
+    // This function populates the geometry information layer of coin. It requires the analysis
+    // information gathered during the processGeometry step, so it is not possible to run both in
+    // parallel.
+    void processGeometryInformationOverlay(const GeoListFacade& geolistfacade);
 
     // updates the Axes length to extend beyond the calculated bounding box magnitude
     void updateAxesLength();
@@ -249,7 +269,7 @@ private:
     // updates the parameters to be used for the Overlay information layer
     void updateOverlayParameters();
 
-    void updateGeometryColor(const GeoListFacade & geolistfacade, bool issketchinvalid);
+    void updateGeometryColor(const GeoListFacade& geolistfacade, bool issketchinvalid);
 
     // causes the ViewProvider to draw
     void redrawViewProvider();
@@ -268,7 +288,7 @@ private:
 
 private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
-    ViewProviderSketch & viewProvider;
+    ViewProviderSketch& viewProvider;
     /// Observer to track all the needed parameters.
     std::unique_ptr<EditModeCoinManager::ParameterObserver> pObserver;
 
@@ -290,8 +310,7 @@ private:
 };
 
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_EditModeCoinManager_H
-
+#endif// SKETCHERGUI_EditModeCoinManager_H

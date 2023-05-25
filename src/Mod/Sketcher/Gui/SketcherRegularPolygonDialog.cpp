@@ -22,19 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDialog>
+#include <QDialog>
 #endif
 
 #include <Gui/MainWindow.h>
 
-#include "ui_SketcherRegularPolygonDialog.h"
 #include "SketcherRegularPolygonDialog.h"
+#include "ui_SketcherRegularPolygonDialog.h"
 
 
 using namespace SketcherGui;
 
 SketcherRegularPolygonDialog::SketcherRegularPolygonDialog()
-: QDialog(Gui::getMainWindow()), ui(new Ui_SketcherRegularPolygonDialog)
+    : QDialog(Gui::getMainWindow())
+    , ui(new Ui_SketcherRegularPolygonDialog)
 {
     ui->setupUi(this);
 
@@ -44,8 +45,7 @@ SketcherRegularPolygonDialog::SketcherRegularPolygonDialog()
 }
 
 SketcherRegularPolygonDialog::~SketcherRegularPolygonDialog()
-{
-}
+{}
 
 void SketcherRegularPolygonDialog::accept()
 {

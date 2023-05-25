@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QPainter>
-# include <QPixmap>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
 #endif
 
 #include <App/Application.h>
@@ -34,10 +34,9 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
-#include "ui_SketcherSettingsGrid.h"
-#include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsColors.h"
 #include "ui_SketcherSettingsDisplay.h"
+#include "ui_SketcherSettingsGrid.h"
 
 
 using namespace SketcherGui;
@@ -45,7 +44,8 @@ using namespace SketcherGui;
 /* TRANSLATOR SketcherGui::SketcherSettings */
 
 SketcherSettings::SketcherSettings(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettings)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
 }
@@ -81,7 +81,7 @@ void SketcherSettings::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettings::changeEvent(QEvent *e)
+void SketcherSettings::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -94,18 +94,18 @@ void SketcherSettings::changeEvent(QEvent *e)
 /* TRANSLATOR SketcherGui::SketcherSettingsGrid */
 
 SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsGrid)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettingsGrid)
 {
     ui->setupUi(this);
 
-    QList < QPair<Qt::PenStyle, int> > styles;
-    styles << qMakePair(Qt::SolidLine, 0xffff)
-        << qMakePair(Qt::DashLine, 0x0f0f)
-        << qMakePair(Qt::DotLine, 0xaaaa);
+    QList<QPair<Qt::PenStyle, int>> styles;
+    styles << qMakePair(Qt::SolidLine, 0xffff) << qMakePair(Qt::DashLine, 0x0f0f)
+           << qMakePair(Qt::DotLine, 0xaaaa);
 
     ui->gridLinePattern->setIconSize(QSize(80, 12));
     ui->gridDivLinePattern->setIconSize(QSize(80, 12));
-    for (QList < QPair<Qt::PenStyle, int> >::iterator it = styles.begin(); it != styles.end(); ++it) {
+    for (QList<QPair<Qt::PenStyle, int>>::iterator it = styles.begin(); it != styles.end(); ++it) {
         QPixmap px(ui->gridLinePattern->iconSize());
         px.fill(Qt::transparent);
         QBrush brush(Qt::black);
@@ -141,7 +141,8 @@ void SketcherSettingsGrid::saveSettings()
     ui->gridDivLineWidth->onSave();
     ui->gridNumberSubdivision->onSave();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     QVariant data = ui->gridLinePattern->itemData(ui->gridLinePattern->currentIndex());
     int pattern = data.toInt();
     hGrp->SetInt("GridLinePattern", pattern);
@@ -163,14 +164,17 @@ void SketcherSettingsGrid::loadSettings()
     ui->gridDivLineWidth->onRestore();
     ui->gridNumberSubdivision->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
-    if (index < 0) index = 1;
+    if (index < 0)
+        index = 1;
     ui->gridLinePattern->setCurrentIndex(index);
     pattern = hGrp->GetInt("GridDivLinePattern", 0xffff);
     index = ui->gridDivLinePattern->findData(QVariant(pattern));
-    if (index < 0) index = 0;
+    if (index < 0)
+        index = 0;
     ui->gridDivLinePattern->setCurrentIndex(index);
 }
 
@@ -190,11 +194,13 @@ void SketcherSettingsGrid::changeEvent(QEvent* e)
 /* TRANSLATOR SketcherGui::SketcherSettingsDisplay */
 
 SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsDisplay)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettingsDisplay)
 {
     ui->setupUi(this);
 
-    connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
+    connect(
+        ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
 }
 
 /**
@@ -251,7 +257,7 @@ void SketcherSettingsDisplay::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettingsDisplay::changeEvent(QEvent *e)
+void SketcherSettingsDisplay::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -264,40 +270,42 @@ void SketcherSettingsDisplay::changeEvent(QEvent *e)
 void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
 {
     QString errMsg;
-    try{
+    try {
         Gui::Command::doCommand(Gui::Command::Gui,
-            "for name,doc in App.listDocuments().items():\n"
-            "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
-            "        sketch.ViewObject.HideDependent = %s\n"
-            "        sketch.ViewObject.ShowLinks = %s\n"
-            "        sketch.ViewObject.ShowSupport = %s\n"
-            "        sketch.ViewObject.RestoreCamera = %s\n"
-            "        sketch.ViewObject.ForceOrtho = %s\n"
-            "        sketch.ViewObject.SectionView = %s\n",
-            this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
-            this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
-            this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
-            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False",
-            this->ui->checkBoxTVForceOrtho->isChecked()    ? "True": "False",
-            this->ui->checkBoxTVSectionView->isChecked()   ? "True": "False");
-    } catch (Base::PyException &e){
+                                "for name,doc in App.listDocuments().items():\n"
+                                "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
+                                "        sketch.ViewObject.HideDependent = %s\n"
+                                "        sketch.ViewObject.ShowLinks = %s\n"
+                                "        sketch.ViewObject.ShowSupport = %s\n"
+                                "        sketch.ViewObject.RestoreCamera = %s\n"
+                                "        sketch.ViewObject.ForceOrtho = %s\n"
+                                "        sketch.ViewObject.SectionView = %s\n",
+                                this->ui->checkBoxTVHideDependent->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVShowLinks->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVShowSupport->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVRestoreCamera->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVForceOrtho->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False");
+    }
+    catch (Base::PyException& e) {
         Base::Console().DeveloperError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
         e.ReportException();
         errMsg = QString::fromLatin1(e.what());
-    } catch (...) {
+    }
+    catch (...) {
         errMsg = tr("Unexpected C++ exception");
     }
-    if(errMsg.length()>0){
-        QMessageBox::warning(this, tr("Sketcher"),errMsg);
+    if (errMsg.length() > 0) {
+        QMessageBox::warning(this, tr("Sketcher"), errMsg);
     }
 }
-
 
 
 /* TRANSLATOR SketcherGui::SketcherSettingsColors */
 
 SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettingsColors)
 {
     ui->setupUi(this);
 }
@@ -369,7 +377,7 @@ void SketcherSettingsColors::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettingsColors::changeEvent(QEvent *e)
+void SketcherSettingsColors::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -380,4 +388,3 @@ void SketcherSettingsColors::changeEvent(QEvent *e)
 }
 
 #include "moc_SketcherSettings.cpp"
-
