@@ -9,7 +9,8 @@ files: |
         tests/src|
         src/Mod/Sketcher/App/planegcs|
         src/Mod/Sketcher/App|
-        src/Mod/Sketcher/Gui
+        src/Mod/Sketcher/Gui|
+        src/Mod/Sketcher|
     )
 exclude: |
     (?x)^(
