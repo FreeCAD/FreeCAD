@@ -8,7 +8,8 @@ files: |
         src/Tools|
         tests/src|
         src/Mod/Sketcher/App/planegcs|
-        src/Mod/Sketcher/App
+        src/Mod/Sketcher/App|
+        src/Mod/Sketcher/Gui
     )
 exclude: |
     (?x)^(
