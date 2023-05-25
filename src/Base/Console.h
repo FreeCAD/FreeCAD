@@ -471,7 +471,34 @@ enum class LogStyle{
     Log,
     Critical,               // Special message to mark critical notifications
     Notification,           // Special message for notifications to the user (e.g. educational)
-    TranslatedNotification, // Special message for already translated notifications to the user (e.g. educational)
+};
+
+/** Used to indicate the intended recipient of a message (warning, error, ...).
+    While it is possible to create a custom message via Console().Send, console provides convenience
+    functions for most common combinations.
+
+    See documentation of ConsoleSingleton class for more details.
+
+    @see ConsoleSingleton
+    */
+enum class IntendedRecipient {
+    All,                    // All recipients, Developers and Users (One notification covers all)
+    User,                   // User only (notification intended only for a user)
+    Developer,              // Developer only (notification intended only for a developer)
+};
+
+/** Used to indicate the translation state of a message (warning, error, ...).
+    While it is possible to create a custom message via Console().Send, console provides convenience
+    functions for most common combinations.
+
+    See documentation of ConsoleSingleton class for more details.
+
+    @see ConsoleSingleton
+    */
+enum class ContentType {
+    Untranslated,           // Not translated, but translatable
+    Translated,             // Already translated
+    Untranslatable,         // Cannot and should not be translated (Dynamic content, trace,...)
 };
 
 /** The Logger Interface
@@ -485,12 +512,23 @@ class BaseExport ILogger
 {
 public:
     ILogger()
-    :bErr(true), bMsg(true), bLog(true), bWrn(true), bCritical(true), bNotification(false), bTranslatedNotification(false){}
+    :bErr(true), bMsg(true), bLog(true), bWrn(true), bCritical(true), bNotification(false){}
     virtual ~ILogger() = 0;
 
     /** Used to send a Log message at the given level.
+     * @param notifiername A string identifying the entity generating the notification.
+     * It may be the Label of the App::Document or the full label of the App::DocumentObject.
+     * @param msg The message to be notified.
+     * @param level A valid level (Log, Message, Error, Notification, CriticalNotification, ...)
+     * @param recipient A valid intended recipient (All, Developer, User).
+     * Observers may decide to process only notifications when a certain recipient is intended.
+     * @param content A valid content property (Untranslated, Translatable, Untranslatable).
+     * Observers may decide not to process notifications if they are not translated or cannot be
+     * translated (are untranslatable). Or conversely, may decide not to process already translated
+     * notifications. It is up to the intended behaviour of the observer.
      */
-    virtual void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level) = 0;
+    virtual void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
+                         IntendedRecipient recipient, ContentType content) = 0;
 
     /**
      * Returns whether a LogStyle category is active or not
@@ -519,23 +557,20 @@ public:
         if(category == Base::LogStyle::Notification) {
             return bNotification;
         }
-        else
-        if(category == Base::LogStyle::TranslatedNotification) {
-            return bTranslatedNotification;
-        }
+
         return false;
     }
 
     virtual const char *Name(){return nullptr;}
-    bool bErr, bMsg, bLog, bWrn, bCritical, bNotification, bTranslatedNotification;
+    bool bErr, bMsg, bLog, bWrn, bCritical, bNotification;
 };
 
 
 /** The console class
  *  This class manage all the stdio stuff. This includes
- *  Messages, Warnings, Log entries, Errors, Criticals, Notifications and
- *  TranslatedNotifications. The incoming Messages are distributed with the
- *  FCConsoleObserver. The FCConsole class itself makes no IO, it's more like a manager.
+ *  Messages, Warnings, Log entries, Errors, Criticals, Notifications. The incoming Messages are
+ *  distributed with the FCConsoleObserver. The FCConsole class itself makes no IO, it's more like
+ *  a manager.
  *  \par
  *  ConsoleSingleton is a singleton! That means you can access the only
  *  instance of the class from every where in c++ by simply using:
@@ -547,19 +582,93 @@ public:
  *  ConsoleSingleton is able to switch between several modes to, e.g. switch
  *  the logging on or off, or treat Warnings as Errors, and so on...
  *  @see ConsoleObserver
+ *
+ *  When sending error, warnings and notifications, preferably a notifier string should be provided,
+ *  this enables the observer to identify the source. Any string is possible. It is common to use
+ *  the DocumentObject::getFullLabel() or the label of the Document, when available.
+ *  When using the Notification Framework of the Gui (Gui/Notifications.h) and a DocumentObject is
+ *  passed as notifier, getFullLabel() is used. See example below.
+ *
+ *  It is important for the different observers to know whether an error/warning message is intended
+ *  for a user, for a developer, or for both. This enables observers to provide distinctive
+ *  behaviour. Similarly, different observers may treat differently messages if they carry
+ *  translated, untranslated, or untranslatable messages.
+ *
+ *  While it is possible to create a tailored message, ConsoleSingleton provides convenience
+ *  functions for most common messages. A custom message can be created as follows:
+ *  \code
+ *  Send<Base::LogStyle::Error,
+ *       Base::IntendedRecipient::Developer,
+ *       Base::ContentType::Untranslatable>("OCCT", e.what());
+ *  \endcode
+ *
+ *  That code is equivalent to:
+ *  \code
+ *  DeveloperError("OCCT", e.what());
+ *  \endcode
+ *
+ *  These convenience functions cover most common cases:
+ *  - Unqualified convenience functions, such as Error() and Warning(), produce messages intended to
+ *  both User and Developer with an untranslated message.
+ *  - Functions qualified with Developer, such as DeveloperError are intended for a Developer and
+ *  are untranslatable. Functions qualified with User, such as UserError are intended only for the
+ *  User and a untranslated (leaving the responsibility to the observer to find the translation).
+ *  - Functions qualified with Translated, such as TranslatedError, are intended for the User and
+ *  the message is already translated.
+ *
+ *  An observer receiving an Untranslatable or Translated message should not attempt to translate
+ *  it.
+ *
+ *  However, an observer receiving a Translatable message may or may not attempt to translate
+ *  it, e.g. depending on whether it intends to show the message to a Log or on the UI.
+ *
+ *  Observers shall use the QT translation context "Notifications" to attempt to translate an
+ *  Untranslated message, if they need the localized version. Users shall mark Untranslated messages
+ *  for translation.
+ *
+ *  Untranslated messages have the inherent advantage that can be processed in English by observers
+ *  needing the English version, while enabling other observers to retrieve a translated version.
+ *
+ *  However, untranslated messages have the limitation that need to be known to the QT framework, so
+ *  in practice, they need be static strings (as opposed to dynamically generated ones).
+ *
+ *  Example:
+ *  \code
+ *  Base::Console().UserError(this->getFullName(), QT_TRANSLATE_NOOP("Notifications",
+ *                            "Impossible to migrate Parabolas!!\n"));
+ *  \endcode
+ *
+ *  Currently dynamically generated strings can only be properly translated at the source. This is
+ *  often the case in legacy UI code, where localized strings are already available. For these
+ *  cases the solution is to indicate the translated status. For example:
+ *  \code
+ *  Base::Console().TranslatedUserError(
+ *                              this->getFullName(),
+ *                              QObject::tr("The selected edge already has a Block constraint!"));
+ *  \endcode
+ *
+ *  However, many of this legacy UI messages were previously a QMessageBox, and it is more
+ *  convenient to use the Translations Framework provided by Gui/Notifications.h, as it takes the
+ *  same arguments as QMessageBox. Additionally, the Notifications Framework takes into account the
+ *  user preferences to receive intrusive (pop-ups) or non-intrusive (notification
+ *  area) notifications.
+ *
  */
 class BaseExport ConsoleSingleton
 {
 public:
     // exported functions goes here +++++++++++++++++++++++++++++++++++++++
 
-    /** Sends a message of type LogStyle (Message, Warning, Error, Log, Critical, Notification or TranslatedNotification).
-        This function is used by all specific convenience functions (Send(), Message(), Warning(), Error(), Log(), Critical
-        UserNotification and UserTranslatedNotification, without or without notifier id).
+    /** Sends a message of type LogStyle (Message, Warning, Error, Log, Critical or Notification).
+        This function is used by all specific convenience functions (Send(), Message(), Warning(), Error(), Log(), Critical and
+        UserNotification, without or without notifier id).
 
         Notification can be direct or via queue.
     */
-    template <LogStyle, typename... Args>
+    template <Base::LogStyle,
+          Base::IntendedRecipient = Base::IntendedRecipient::All,
+          Base::ContentType = Base::ContentType::Untranslated,
+          typename... Args>
     inline void Send( const std::string & notifiername, const char * pMsg, Args&&... args );
 
     /// Prints a Message
@@ -587,19 +696,31 @@ public:
 
     /// Prints a Message with source indication
     template <typename... Args>
-    inline void Message (const std::string &, const char * pMsg, Args&&... args);
+    inline void Message (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a warning Message with source indication
     template <typename... Args>
-    inline void Warning (const std::string &, const char * pMsg, Args&&... args);
+    inline void Warning (const std::string & notifier, const char * pMsg, Args&&... args);
+    template <typename... Args>
+    inline void DeveloperWarning (const std::string & notifier, const char * pMsg, Args&&... args);
+    template <typename... Args>
+    inline void UserWarning (const std::string & notifier, const char * pMsg, Args&&... args);
+    template <typename... Args>
+    inline void TranslatedUserWarning (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a error Message with source indication
     template <typename... Args>
-    inline void Error   (const std::string &, const char * pMsg, Args&&... args);
+    inline void Error   (const std::string & notifier, const char * pMsg, Args&&... args);
+    template <typename... Args>
+    inline void DeveloperError (const std::string & notifier, const char * pMsg, Args&&... args);
+    template <typename... Args>
+    inline void UserError (const std::string & notifier, const char * pMsg, Args&&... args);
+    template <typename... Args>
+    inline void TranslatedUserError (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a log Message with source indication
     template <typename... Args>
-    inline void Log     (const std::string &, const char * pMsg, Args&&... args);
+    inline void Log     (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Prints a Critical Message with source indication
     template <typename... Args>
-    inline void Critical (const std::string &, const char * pMsg, Args&&... args);
+    inline void Critical (const std::string & notifier, const char * pMsg, Args&&... args);
     /// Sends a User Notification with source indication
     template <typename... Args>
     inline void UserNotification( const std::string & notifier, const char * pMsg, Args&&... args );
@@ -608,7 +729,9 @@ public:
     inline void UserTranslatedNotification( const std::string & notifier, const char * pMsg, Args&&... args );
 
     // Notify a message directly to observers
-    template <LogStyle>
+    template <Base::LogStyle,
+          Base::IntendedRecipient = Base::IntendedRecipient::All,
+          Base::ContentType = Base::ContentType::Untranslated>
     inline void Notify(const std::string & notifiername, const std::string & msg);
 
     /// Attaches an Observer to FCConsole
@@ -632,7 +755,6 @@ public:
         MsgType_Err                     = 8,
         MsgType_Critical                = 16,  // Special message to notify critical information
         MsgType_Notification            = 32, // Special message to for notifications to the user
-        MsgType_TranslatedNotification  = 64, // Special message for already translated notifications to the user
     };
 
     /// Change mode
@@ -674,7 +796,13 @@ protected:
     static PyObject *sPyLog                     (PyObject *self,PyObject *args);
     static PyObject *sPyMessage                 (PyObject *self,PyObject *args);
     static PyObject *sPyWarning                 (PyObject *self,PyObject *args);
+    static PyObject *sPyDeveloperWarning        (PyObject *self,PyObject *args);
+    static PyObject *sPyUserWarning             (PyObject *self,PyObject *args);
+    static PyObject *sPyTranslatedUserWarning   (PyObject *self,PyObject *args);
     static PyObject *sPyError                   (PyObject *self,PyObject *args);
+    static PyObject *sPyDeveloperError          (PyObject *self,PyObject *args);
+    static PyObject *sPyUserError               (PyObject *self,PyObject *args);
+    static PyObject *sPyTranslatedUserError     (PyObject *self,PyObject *args);
     static PyObject *sPyCritical                (PyObject *self,PyObject *args);
     static PyObject *sPyNotification            (PyObject *self,PyObject *args);
     static PyObject *sPyTranslatedNotification  (PyObject *self,PyObject *args);
@@ -691,8 +819,10 @@ protected:
     virtual ~ConsoleSingleton();
 
 private:
-    void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& notifiername, const std::string& msg);
-    void notifyPrivate(LogStyle category, const std::string& notifiername, const std::string& msg);
+    void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, IntendedRecipient recipient,
+                   ContentType content, const std::string& notifiername, const std::string& msg);
+    void notifyPrivate(LogStyle category, IntendedRecipient recipient, ContentType content,
+                       const std::string& notifiername, const std::string& msg);
 
     // singleton
     static void Destruct();
@@ -723,8 +853,7 @@ inline constexpr ConsoleSingleton::FreeCAD_ConsoleMsgType ConsoleSingleton::getC
         FreeCAD_ConsoleMsgType::MsgType_Err,
         FreeCAD_ConsoleMsgType::MsgType_Log,
         FreeCAD_ConsoleMsgType::MsgType_Critical,
-        FreeCAD_ConsoleMsgType::MsgType_Notification,
-        FreeCAD_ConsoleMsgType::MsgType_TranslatedNotification
+        FreeCAD_ConsoleMsgType::MsgType_Notification
     };
 
     return msgTypes.at(static_cast<std::size_t>(style));
@@ -814,6 +943,30 @@ inline void Base::ConsoleSingleton::Warning( const std::string & notifier, const
 }
 
 template <typename... Args>
+inline void Base::ConsoleSingleton::DeveloperWarning( const std::string & notifier, const char * pMsg, Args&&... args )
+{
+    Send<Base::LogStyle::Warning,
+         Base::IntendedRecipient::Developer,
+         Base::ContentType::Untranslatable>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void Base::ConsoleSingleton::UserWarning( const std::string & notifier, const char * pMsg, Args&&... args )
+{
+    Send<Base::LogStyle::Warning,
+         Base::IntendedRecipient::User,
+         Base::ContentType::Untranslated>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void Base::ConsoleSingleton::TranslatedUserWarning( const std::string & notifier, const char * pMsg, Args&&... args )
+{
+    Send<Base::LogStyle::Warning,
+         Base::IntendedRecipient::User,
+         Base::ContentType::Translated>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
 inline void Base::ConsoleSingleton::Error( const char * pMsg, Args&&... args )
 {
     Error(std::string(""), pMsg, std::forward<Args>(args)...);
@@ -823,6 +976,30 @@ template <typename... Args>
 inline void Base::ConsoleSingleton::Error( const std::string & notifier, const char * pMsg, Args&&... args )
 {
     Send<Base::LogStyle::Error>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void Base::ConsoleSingleton::DeveloperError( const std::string & notifier, const char * pMsg, Args&&... args )
+{
+    Send<Base::LogStyle::Error,
+         Base::IntendedRecipient::Developer,
+         Base::ContentType::Untranslatable>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void Base::ConsoleSingleton::UserError( const std::string & notifier, const char * pMsg, Args&&... args )
+{
+    Send<Base::LogStyle::Error,
+         Base::IntendedRecipient::User,
+         Base::ContentType::Untranslated>(notifier, pMsg, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void Base::ConsoleSingleton::TranslatedUserError( const std::string & notifier, const char * pMsg, Args&&... args )
+{
+    Send<Base::LogStyle::Error,
+         Base::IntendedRecipient::User,
+         Base::ContentType::Translated>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
@@ -846,7 +1023,9 @@ inline void Base::ConsoleSingleton::UserNotification( const char * pMsg, Args&&.
 template <typename... Args>
 inline void Base::ConsoleSingleton::UserNotification( const std::string & notifier, const char * pMsg, Args&&... args )
 {
-    Send<Base::LogStyle::Notification>(notifier, pMsg, std::forward<Args>(args)...);
+    Send<Base::LogStyle::Notification,
+         Base::IntendedRecipient::User,
+         Base::ContentType::Untranslated>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
@@ -858,7 +1037,9 @@ inline void Base::ConsoleSingleton::UserTranslatedNotification( const char * pMs
 template <typename... Args>
 inline void Base::ConsoleSingleton::UserTranslatedNotification( const std::string & notifier, const char * pMsg, Args&&... args )
 {
-    Send<Base::LogStyle::TranslatedNotification>(notifier, pMsg, std::forward<Args>(args)...);
+    Send<Base::LogStyle::Notification,
+         Base::IntendedRecipient::User,
+         Base::ContentType::Translated>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
@@ -873,26 +1054,31 @@ inline void Base::ConsoleSingleton::Log( const std::string & notifier, const cha
     Send<Base::LogStyle::Log>(notifier, pMsg, std::forward<Args>(args)...);
 }
 
-template <Base::LogStyle category, typename... Args>
+template <Base::LogStyle category,
+          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
+          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/,
+          typename... Args>
 inline void Base::ConsoleSingleton::Send( const std::string & notifiername, const char * pMsg, Args&&... args )
 {
     std::string format = fmt::sprintf(pMsg, args...);
 
     if (connectionMode == Direct) {
-        Notify<category>(notifiername,format);
+        Notify<category, recipient, contenttype>(notifiername,format);
     }
     else {
 
         auto type = getConsoleMsg(category);
 
-        postEvent(type, notifiername, format);
+        postEvent(type, recipient, contenttype, notifiername, format);
     }
 }
 
-template <Base::LogStyle category>
+template <Base::LogStyle category,
+          Base::IntendedRecipient recipient /*= Base::IntendedRecipient::All*/,
+          Base::ContentType contenttype /*= Base::ContentType::Untranslated*/>
 inline void Base::ConsoleSingleton::Notify(const std::string & notifiername, const std::string & msg)
 {
-    notifyPrivate(category, notifiername, msg);
+    notifyPrivate(category, recipient, contenttype, notifiername, msg);
 }
 
 #if defined(__clang__)

@@ -86,7 +86,7 @@
     <message>
       <location filename="TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>FreeCAD eskuliburua wiki horretan dagoen informazio aurkezteko beste modu bat da. Liburu bat bailitzan irakurtzeko moduan prestatuta dago, eta goiko guneetako beste orri batzuetarako sarrera emango dizu. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Bertsio elektronikoak&lt;/a&gt; ere eskuragarri daude.</translation>
+      <translation>FreeCADen eskuliburua wiki honetan dagoen informazio aurkezteko beste modu bat da. Liburu bat bailitzan irakurtzeko moduan prestatuta dago, eta goiko guneetako beste orri batzuetarako sarrera emango dizu. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Bertsio elektronikoak&lt;/a&gt; ere eskuragarri daude.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="59"/>

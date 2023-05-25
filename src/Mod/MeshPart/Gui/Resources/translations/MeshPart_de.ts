@@ -583,7 +583,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Eine ebene Darstellung eines Netzes finden.</translation>
     </message>
   </context>
   <context>
@@ -596,7 +596,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Eine ebene Darstellung der Fläche finden.</translation>
     </message>
   </context>
 </TS>

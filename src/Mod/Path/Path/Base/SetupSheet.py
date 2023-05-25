@@ -142,7 +142,7 @@ class SetupSheet:
             "OperationHeights",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.",
+                "The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.",
             ),
         )
         obj.addProperty(
@@ -150,7 +150,7 @@ class SetupSheet:
             "SafeHeightExpression",
             "OperationHeights",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression set for the SafeHeight of new operations."
+                "App::Property", "Expression for the safe height of new operations."
             ),
         )
         obj.addProperty(
@@ -159,7 +159,7 @@ class SetupSheet:
             "OperationHeights",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.",
+                "The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.",
             ),
         )
         obj.addProperty(
@@ -168,7 +168,7 @@ class SetupSheet:
             "OperationHeights",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Expression set for the ClearanceHeight of new operations.",
+                "Expression for the clearance height of new operations.",
             ),
         )
         obj.addProperty(
@@ -176,7 +176,7 @@ class SetupSheet:
             "StartDepthExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for StartDepth of new operations."
+                "App::Property", "Expression used for the start depth of new operations."
             ),
         )
         obj.addProperty(
@@ -184,7 +184,7 @@ class SetupSheet:
             "FinalDepthExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for FinalDepth of new operations."
+                "App::Property", "Expression used for the final depth of new operations."
             ),
         )
         obj.addProperty(
@@ -192,7 +192,7 @@ class SetupSheet:
             "StepDownExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for StepDown of new operations."
+                "App::Property", "Expression used for step down of new operations."
             ),
         )
 

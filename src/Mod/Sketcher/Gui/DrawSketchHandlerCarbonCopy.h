@@ -128,7 +128,7 @@ public:
             if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
                                             msg.pObjectName, geometryCreationMode==Construction?"True":"False");
 

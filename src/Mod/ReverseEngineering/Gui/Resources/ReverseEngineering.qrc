@@ -2,47 +2,5 @@
     <qresource>
         <file>icons/actions/FitSurface.svg</file>
         <file>icons/ReverseEngineeringWorkbench.svg</file>
-        <file>translations/ReverseEngineering_af.qm</file>
-        <file>translations/ReverseEngineering_de.qm</file>
-        <file>translations/ReverseEngineering_fi.qm</file>
-        <file>translations/ReverseEngineering_fr.qm</file>
-        <file>translations/ReverseEngineering_hr.qm</file>
-        <file>translations/ReverseEngineering_it.qm</file>
-        <file>translations/ReverseEngineering_nl.qm</file>
-        <file>translations/ReverseEngineering_no.qm</file>
-        <file>translations/ReverseEngineering_pl.qm</file>
-        <file>translations/ReverseEngineering_ru.qm</file>
-        <file>translations/ReverseEngineering_uk.qm</file>
-        <file>translations/ReverseEngineering_tr.qm</file>
-        <file>translations/ReverseEngineering_sv-SE.qm</file>
-        <file>translations/ReverseEngineering_zh-TW.qm</file>
-        <file>translations/ReverseEngineering_pt-BR.qm</file>
-        <file>translations/ReverseEngineering_cs.qm</file>
-        <file>translations/ReverseEngineering_sk.qm</file>
-        <file>translations/ReverseEngineering_es-ES.qm</file>
-        <file>translations/ReverseEngineering_zh-CN.qm</file>
-        <file>translations/ReverseEngineering_ja.qm</file>
-        <file>translations/ReverseEngineering_ro.qm</file>
-        <file>translations/ReverseEngineering_hu.qm</file>
-        <file>translations/ReverseEngineering_pt-PT.qm</file>
-        <file>translations/ReverseEngineering_sr.qm</file>
-        <file>translations/ReverseEngineering_el.qm</file>
-        <file>translations/ReverseEngineering_sl.qm</file>
-        <file>translations/ReverseEngineering_eu.qm</file>
-        <file>translations/ReverseEngineering_ca.qm</file>
-        <file>translations/ReverseEngineering_gl.qm</file>
-        <file>translations/ReverseEngineering_kab.qm</file>
-        <file>translations/ReverseEngineering_ko.qm</file>
-        <file>translations/ReverseEngineering_fil.qm</file>
-        <file>translations/ReverseEngineering_id.qm</file>
-        <file>translations/ReverseEngineering_lt.qm</file>
-        <file>translations/ReverseEngineering_val-ES.qm</file>
-        <file>translations/ReverseEngineering_ar.qm</file>
-        <file>translations/ReverseEngineering_vi.qm</file>
-        <file>translations/ReverseEngineering_es-AR.qm</file>
-        <file>translations/ReverseEngineering_bg.qm</file>
-        <file>translations/ReverseEngineering_ka.qm</file>
-        <file>translations/ReverseEngineering_sr-CS.qm</file>
-        <file>translations/ReverseEngineering_be.qm</file>
     </qresource>
 </RCC>

@@ -40,6 +40,7 @@ void loadStartResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Start);
+    Q_INIT_RESOURCE(Start_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -99,7 +100,7 @@ PyMOD_INIT_FUNC(StartGui)
     Base::Console().Log("Loading GUI of Start module... done\n");
 
     // register preferences pages
-    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> ("Start");
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> (QT_TRANSLATE_NOOP("QObject", "Start"));
 
     // instantiating the commands
     CreateStartCommands();

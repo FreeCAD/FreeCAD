@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <QMessageBox>
 # include <QPainter>
 # include <Precision.hxx>
 #endif
@@ -145,14 +144,14 @@ void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, b
 
 void showNoConstraintBetweenExternal(const App::DocumentObject * obj)
 {
-    Gui::TranslatedNotification(obj,
+    Gui::TranslatedUserWarning(obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Cannot add a constraint between two external geometries."));
 }
 
 void showNoConstraintBetweenFixedGeometry(const App::DocumentObject * obj)
 {
-    Gui::TranslatedNotification(obj,
+    Gui::TranslatedUserWarning(obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Cannot add a constraint between two fixed geometries. "
                                                      "Fixed geometries include external geometry, "
@@ -226,7 +225,9 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
             geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                    e.what());
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -290,7 +291,9 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
             geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -371,7 +374,9 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
                               geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -447,7 +452,10 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
                               geoId1, geoId2 ,GeoIdPoint, static_cast<int>(Sketcher::PointPos::start));
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
+
         Gui::Command::abortCommand();
 
         tryAutoRecompute(Obj);
@@ -497,6 +505,38 @@ void SketcherGui::notifyConstraintSubstitutions(const QString & message)
                                                         QObject::tr("Keep notifying me of constraint substitutions"));
 }
 
+// returns true if successful, false otherwise
+bool addConstraintSafely(SketchObject * obj, std::function<void()> constraintadditionfunction)
+{
+    try {
+        constraintadditionfunction();
+    }
+    catch (const Base::IndexError& e) {
+        // Exceptions originating in Python have already been reported by the Interpreter as
+        // Untranslated developer intended messages (i.e. to the Report View)
+        // Example of exception carrying a static string with a pair in the "Notifications" context
+        Gui::NotifyUserError(obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
+
+        Gui::Command::abortCommand();
+
+        tryAutoRecompute(obj);
+        return false;
+    }
+    catch (const Base::Exception& e) {
+        Gui::TranslatedUserError(obj,
+                                QObject::tr("Error"),
+                                QObject::tr("Unexpected error. More information may be available in the Report View."));
+
+        Gui::Command::abortCommand();
+
+        tryAutoRecompute(obj);
+        return false;
+    }
+
+    return true;
+}
 
 namespace SketcherGui {
 
@@ -913,8 +953,9 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
                     new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select an edge from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                        QObject::tr("Select an edge from the sketch."));
         }
         return;
     }
@@ -939,7 +980,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
         if (isEdge(GeoId,PosId)) {// it is an edge
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge is not a line segment."));
+                Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge is not a line segment."));
                 return;
             }
 
@@ -947,16 +988,16 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::PointPos::none){
-                    Gui::TranslatedNotification(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a horizontal constraint!"));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                    Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a vertical constraint!"));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
                 // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                    Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a Block constraint!"));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a Block constraint!"));
                     return;
                 }
             }
@@ -974,7 +1015,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     }
 
     if (edgegeoids.empty() && pointgeoids.empty()) {
-        Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected item(s) can't accept a horizontal constraint!"));
+        Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected item(s) can't accept a horizontal constraint!"));
         return;
     }
 
@@ -1001,7 +1042,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
         }
     }
     else { // vertex mode, fixedpoints > 1
-        Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("There are more than one fixed points selected. Select a maximum of one fixed point!"));
+        Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("There are more than one fixed points selected. Select a maximum of one fixed point!"));
         return;
     }
     // finish the transaction and update
@@ -1028,7 +1069,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
             if (CrvId != -1) {
                 const Part::Geometry *geo = Obj->getGeometry(CrvId);
                 if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                    Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge is not a line segment."));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge is not a line segment."));
                     return;
                 }
 
@@ -1036,16 +1077,16 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
                 for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                     it != vals.end(); ++it) {
                     if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::PointPos::none){
-                        Gui::TranslatedNotification(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a horizontal constraint!"));
+                        Gui::TranslatedUserWarning(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a horizontal constraint!"));
                         return;
                     }
                     if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                        Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a vertical constraint!"));
+                        Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a vertical constraint!"));
                         return;
                     }
                     // check if the edge already has a Block constraint
                     if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                        Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a Block constraint!"));
+                        Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a Block constraint!"));
                         return;
                     }
                 }
@@ -1141,8 +1182,9 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
                 new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select an edge from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select an edge from the sketch."));
         }
         return;
     }
@@ -1167,7 +1209,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
         if (isEdge(GeoId,PosId)) {// it is an edge
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Impossible constraint"),
                               QObject::tr("The selected edge is not a line segment."));
                 return;
@@ -1177,20 +1219,20 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::PointPos::none){
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Double constraint"),
                                   QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Impossible constraint"),
                                   QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Impossible constraint"),
                                   QObject::tr("The selected edge already has a Block constraint!"));
                     return;
@@ -1209,7 +1251,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     }
 
     if (edgegeoids.empty() && pointgeoids.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Impossible constraint"),
                       QObject::tr("The selected item(s) can't accept a vertical constraint!"));
         return;
@@ -1236,7 +1278,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
         }
     }
     else { // vertex mode, fixedpoints > 1
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Impossible constraint"),
                       QObject::tr("There are more than one fixed points selected. Select a maximum of one fixed point!"));
         return;
@@ -1266,7 +1308,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
         if (CrvId != -1) {
             const Part::Geometry *geo = Obj->getGeometry(CrvId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge is not a line segment."));
+                Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge is not a line segment."));
                 return;
             }
 
@@ -1274,16 +1316,16 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::PointPos::none){
-                    Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a horizontal constraint!"));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                    Gui::TranslatedNotification(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a vertical constraint!"));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
                 // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::PointPos::none) {
-                    Gui::TranslatedNotification(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a Block constraint!"));
+                    Gui::TranslatedUserWarning(Obj, QObject::tr("Impossible constraint"), QObject::tr("The selected edge already has a Block constraint!"));
                     return;
                 }
             }
@@ -1379,8 +1421,9 @@ void CmdSketcherConstrainLock::activated(int iMsg)
                 new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select vertices from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -1402,12 +1445,12 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         if ((it != std::prev(SubNames.end()) && (isEdge(GeoIdt,PosIdt) || (GeoIdt < 0 && GeoIdt >= Sketcher::GeoEnum::VAxis))) ||
             (it == std::prev(SubNames.end()) && isEdge(GeoIdt,PosIdt)) ) {
             if(selection.size() == 1) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select one vertex from the sketch other than the origin."));
             }
             else {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select only vertices from the sketch. The last selected vertex may be the origin."));
             }
@@ -1604,8 +1647,9 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
                             new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                    QObject::tr("Select vertices from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -1616,7 +1660,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
     // Check that the solver does not report redundant/conflicting constraints
     if(Obj->getLastSolverStatus()!=GCS::Success || Obj->getLastHasConflicts() || Obj->getLastHasRedundancies()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong solver status"),
                       QObject::tr("A Block constraint cannot be added "
                                                          "if the sketch is unsolved "
@@ -1635,12 +1679,12 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
         if ( isVertex(GeoIdt,PosIdt) || GeoIdt < 0 ) {
             if(selection.size() == 1) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select one edge from the sketch."));
             }
             else {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select only edges from the sketch."));
             }
@@ -1651,7 +1695,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
         // check if the edge already has a Block constraint
         if ( checkConstraint(vals, Sketcher::Block, GeoIdt, Sketcher::PointPos::none)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Double constraint"),
                           QObject::tr("The selected edge already has a Block constraint!"));
             return;
@@ -1664,23 +1708,16 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
         // undo command open
         openCommand(QT_TRANSLATE_NOOP("Command", "Add 'Block' constraint"));
 
-        try {
-
+        bool safe = addConstraintSafely(Obj, [&](){
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Block',%d))", (*itg));
+        });
 
-        } catch (const Base::Exception& e) {
-            Gui::NotifyError(Obj,
-                        QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        e.what());
-
-            Gui::Command::abortCommand();
-
-            tryAutoRecompute(Obj);
+        if(!safe)
             return;
+        else {
+            commitCommand();
+            tryAutoRecompute(Obj);
         }
-
-        commitCommand();
-        tryAutoRecompute(Obj);
     }
 
     // clear the selection (convenience)
@@ -1701,31 +1738,24 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, 
             const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
             if ( checkConstraint(vals, Sketcher::Block, selSeq.front().GeoId, Sketcher::PointPos::none)) {
-                Gui::TranslatedNotification(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a Block constraint!"));
+                Gui::TranslatedUserWarning(Obj, QObject::tr("Double constraint"), QObject::tr("The selected edge already has a Block constraint!"));
                 return;
             }
 
             // undo command open
             openCommand(QT_TRANSLATE_NOOP("Command", "Add block constraint"));
 
-            try {
-
+            bool safe = addConstraintSafely(Obj, [&](){
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Block',%d))",
                                       selSeq.front().GeoId);
+            });
 
-            } catch (const Base::Exception& e) {
-                Gui::NotifyError(Obj,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            e.what());
-
-                Gui::Command::abortCommand();
-
-                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+            if(!safe)
                 return;
+            else {
+                commitCommand();
+                tryAutoRecompute(Obj);
             }
-
-            commitCommand();
-            tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
         }
         break;
     default:
@@ -1984,8 +2014,9 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two or more points from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two or more points from the sketch."));
         }
         return;
     }
@@ -1995,7 +2026,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select two or more vertices from the sketch."));
         return;
@@ -2016,7 +2047,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
             allConicsEdges = false; //at least one point is selected, so concentric can't be applied.
 
         if (atLeastOneEdge && !allConicsEdges) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
             return;
@@ -2092,7 +2123,7 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
     case 4: // {SelExternalEdge, SelEdge}
         //Concentric for circles, ellipse, arc, arcofEllipse only.
         if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId1)) || !isGeoConcentricCompatible(Obj->getGeometry(GeoId2))) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
             return;
@@ -2180,8 +2211,9 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             getSelection().clearSelection();
         }
         else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select vertices from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -2191,7 +2223,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
         return;
@@ -2376,7 +2408,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     }
     else if (isEdge(GeoId1,PosId1)) { // line length
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a length constraint on an axis!"));
             return;
@@ -2410,7 +2442,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
     }
 
-    Gui::TranslatedNotification(Obj,
+    Gui::TranslatedUserWarning(Obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Select exactly one line or one point and one line or two points or two circles from the sketch."));
     return;
@@ -2505,7 +2537,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             // allow this selection but do nothing as it needs 2 circles or 1 circle and 1 line
         }
         else {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("This constraint does not make sense for non-linear curves."));
         }
@@ -2597,7 +2629,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
 
             return;
         } else {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                 QObject::tr("Wrong selection"),
                 QObject::tr("Select exactly one line or one point and one line or two points or two circles from the sketch."));
 
@@ -2706,8 +2738,9 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -2745,7 +2778,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
                 const Part::Geometry *geom = Obj->getGeometry(curves[iCrv].GeoId);
 
                 if( geom && isBsplinePole(geom)) {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Wrong selection"),
                                   QObject::tr("Select an edge that is not a B-spline weight."));
                     abortCommand();
@@ -2768,7 +2801,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             abortCommand();
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("None of the selected points were constrained "
                                                              "onto the respective curves, "
@@ -2780,7 +2813,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
         return;
     }
 
-    Gui::TranslatedNotification(Obj,
+    Gui::TranslatedUserWarning(Obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Select either one point and several curves, "
                                                      "or one curve and several points."));
@@ -2827,7 +2860,7 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     const Part::Geometry *geom = Obj->getGeometry(GeoIdCrv);
 
     if( geom && isBsplinePole(geom)) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select an edge that is not a B-spline weight."));
         abortCommand();
@@ -2845,7 +2878,7 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     }
     else {
         abortCommand();
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("None of the selected points "
                                                          "were constrained onto the respective curves, "
@@ -2907,8 +2940,9 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         }
         else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -2918,7 +2952,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select exactly one line or up to two points from the sketch."));
         return;
@@ -2948,7 +2982,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     if (isEdge(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef)  {
         // horizontal length of a line
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a horizontal length constraint on an axis!"));
             return;
@@ -2999,7 +3033,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         // point on fixed x-coordinate
 
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a fixed x-coordinate constraint on the origin point!"));
             return;
@@ -3029,7 +3063,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         return;
     }
 
-    Gui::TranslatedNotification(Obj,
+    Gui::TranslatedUserWarning(Obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Select exactly one line or up to two points from the sketch."));
 
@@ -3060,7 +3094,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
 
         const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("This constraint only makes sense on a line segment or a pair of points."));
             return;
@@ -3165,8 +3199,9 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -3176,7 +3211,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select exactly one line or up to two points from the sketch."));
         return;
@@ -3202,7 +3237,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     if (isEdge(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef)  { // vertical length of a line
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a vertical length constraint on an axis!"));
             return;
@@ -3253,7 +3288,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     else if (isVertex(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef) {
         // point on fixed y-coordinate
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a fixed y-coordinate constraint on the origin point!"));
             return;
@@ -3283,7 +3318,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         return;
     }
 
-    Gui::TranslatedNotification(Obj,
+    Gui::TranslatedUserWarning(Obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Select exactly one line or up to two points from the sketch."));
 
@@ -3314,7 +3349,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selS
 
         const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("This constraint only makes sense on a line segment or a pair of points."));
             return;
@@ -3416,8 +3451,9 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two or more lines from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two or more lines from the sketch."));
         }
         return;
     }
@@ -3429,7 +3465,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // go through the selected subelements
 
     if (SubNames.size() < 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select at least two lines from the sketch."));
         return;
@@ -3444,7 +3480,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         getIdsFromName(*it, Obj, GeoId, PosId);
 
         if (!isEdge(GeoId,PosId)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select a valid line."));
             return;
@@ -3461,7 +3497,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         // Check that the curve is a line segment
         const Part::Geometry *geo = Obj->getGeometry(GeoId);
         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("The selected edge is not a valid line."));
 
@@ -3501,7 +3537,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
         // Check that the curves are line segments
         if (    Obj->getGeometry(GeoId1)->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                 Obj->getGeometry(GeoId2)->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("The selected edge is not a valid line."));
             return;
@@ -3589,8 +3625,9 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             QString strError = QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
             strError.append(QString::fromLatin1("\n\n"));
             strError.append(strBasicHelp);
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 std::move(strError));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       std::move(strError));
         }
         return;
     }
@@ -3600,7 +3637,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (!Obj || (SubNames.size() != 2 && SubNames.size() != 3)) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Wrong number of selected objects!"));
         return;
@@ -3631,7 +3668,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
             if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
@@ -3639,7 +3676,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
-            try{
+            bool safe = addConstraintSafely(Obj, [&](){
                 //add missing point-on-object constraints
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
@@ -3658,19 +3695,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
                     GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-            } catch (const Base::Exception& e) {
-                Gui::NotifyError(Obj,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            e.what());
+            });
 
-                Gui::Command::abortCommand();
-
-                tryAutoRecompute(Obj);
+            if(!safe)
                 return;
+            else {
+                commitCommand();
+                tryAutoRecompute(Obj);
             }
-
-            commitCommand();
-            tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
 
@@ -3678,7 +3710,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
         };
 
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("With 3 objects, there must be 2 curves and 1 point."));
 
@@ -3689,7 +3721,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if (isSimpleVertex(Obj, GeoId1, PosId1) ||
                 isSimpleVertex(Obj, GeoId2, PosId2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Cannot add a perpendicularity constraint at an unconnected point!"));
                 return;
@@ -3727,7 +3759,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             }
 
             if (isSimpleVertex(Obj, GeoId1, PosId1)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Cannot add a perpendicularity constraint at an unconnected point!"));
                 return;
@@ -3737,14 +3769,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if( geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
                 // unsupported until normal to B-spline at any point implemented.
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Perpendicular to B-spline edge currently unsupported."));
                 return;
             }
 
             if(isBsplinePole(geom2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
@@ -3769,7 +3801,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
                 geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("One of the selected edges should be a line."));
                 return;
@@ -3779,7 +3811,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
 
                 // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Perpendicular to B-spline edge currently unsupported."));
                 return;
@@ -3789,7 +3821,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 std::swap(GeoId1,GeoId2);
 
             if(isBsplinePole(Obj, GeoId1)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
@@ -3891,7 +3923,9 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
+                    Gui::NotifyUserError(Obj,
+                             QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                             e.what());
                     Gui::Command::abortCommand();
 
                     tryAutoRecompute(Obj);
@@ -3950,7 +3984,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
             geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("One of the selected edges should be a line."));
             return;
@@ -3960,7 +3994,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
 
             // unsupported until tangent to B-spline at any point implemented.
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Perpendicular to B-spline edge currently unsupported."));
 
@@ -3971,7 +4005,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
             std::swap(GeoId1,GeoId2);
 
         if(isBsplinePole(Obj, GeoId1)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select an edge that is not a B-spline weight."));
             return;
@@ -4074,7 +4108,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
                 commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyUserError(Obj,
+                                     QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+                                     e.what());
                 Gui::Command::abortCommand();
             }
 
@@ -4129,7 +4165,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         }
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -4138,7 +4174,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
-        try{
+        bool safe = addConstraintSafely(Obj, [&](){
             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
@@ -4157,19 +4193,14 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
                 GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-        } catch (const Base::Exception& e) {
-            Gui::NotifyError(Obj,
-                        QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        e.what());
+        });
 
-            Gui::Command::abortCommand();
-
-            tryAutoRecompute(Obj);
+        if(!safe)
             return;
+        else {
+            commitCommand();
+            tryAutoRecompute(Obj);
         }
-
-        commitCommand();
-        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
 
@@ -4301,8 +4332,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             QString strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
             strError.append(QString::fromLatin1("\n\n"));
             strError.append(strBasicHelp);
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 std::move(strError));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       std::move(strError));
         }
         return;
     }
@@ -4312,7 +4344,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 2 && SubNames.size() != 3){
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Wrong number of selected objects!"));
 
@@ -4344,7 +4376,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
             if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -4353,7 +4385,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
-            try{
+            bool safe = addConstraintSafely(Obj, [&](){
                 //add missing point-on-object constraints
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
@@ -4372,17 +4404,14 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
                     GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-            } catch (const Base::Exception& e) {
-                Gui::NotifyError(Obj,
-                            QT_TRANSLATE_NOOP("Notifications", "Error"),
-                            e.what());
-                Gui::Command::abortCommand();
-                tryAutoRecompute(Obj);
-                return;
-            }
+            });
 
-            commitCommand();
-            tryAutoRecompute(Obj);
+            if(!safe)
+                return;
+            else {
+                commitCommand();
+                tryAutoRecompute(Obj);
+            }
 
             getSelection().clearSelection();
 
@@ -4390,7 +4419,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
         };
 
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("With 3 objects, there must be 2 curves and 1 point."));
 
@@ -4410,7 +4439,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 if (isBsplineKnot(Obj, GeoId1)) {
                     const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
                     if (!geom2 || geom2->getTypeId() !=Part::GeomLineSegment::getClassTypeId()) {
-                        Gui::TranslatedNotification(Obj,
+                        Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Tangent constraint at B-spline knot is only supported with lines!"));
 
@@ -4418,7 +4447,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     }
                 }
                 else {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
 
@@ -4445,14 +4474,14 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 if (isBsplineKnot(Obj, GeoId1)) {
                     const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
                     if (!geom2 || geom2->getTypeId() !=Part::GeomLineSegment::getClassTypeId()) {
-                        Gui::TranslatedNotification(Obj,
+                        Gui::TranslatedUserWarning(Obj,
                                       QObject::tr("Wrong selection"),
                                       QObject::tr("Tangent constraint at B-spline knot is only supported with lines!"));
                         return;
                     }
                 }
                 else {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Wrong selection"),
                                   QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
 
@@ -4464,7 +4493,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             if( geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
                 // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Tangency to B-spline edge currently unsupported."));
 
@@ -4472,7 +4501,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             if(isBsplinePole(geom2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -4498,7 +4527,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
 
                 // unsupported until tangent to B-spline at any point implemented.
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Tangency to B-spline edge currently unsupported."));
 
@@ -4506,7 +4535,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             if(isBsplinePole(geom1) || isBsplinePole(geom2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -4696,7 +4725,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
             geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
 
             // unsupported until tangent to B-spline at any point implemented.
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Tangency to B-spline edge currently unsupported."));
 
@@ -4704,7 +4733,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
         }
 
         if(isBsplinePole(geom1) || isBsplinePole(geom2)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -4857,7 +4886,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         if (isSimpleVertex(Obj, GeoId1, PosId1) ||
             isSimpleVertex(Obj, GeoId2, PosId2)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
 
@@ -4901,7 +4930,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
         }
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -4910,8 +4939,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
-        try{
-            //add missing point-on-object constraints
+        bool safe = addConstraintSafely(Obj, [&](){
+             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
                 Gui::cmdAppObjectArgs(Obj,"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
                     GeoId3,static_cast<int>(PosId3),GeoId1);
@@ -4929,19 +4958,14 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
                 GeoId1,GeoId2,GeoId3,static_cast<int>(PosId3));
-        } catch (const Base::Exception& e) {
-            Gui::NotifyError(Obj,
-                        QT_TRANSLATE_NOOP("Notifications", "Error"),
-                        e.what());
+        });
 
-            Gui::Command::abortCommand();
-
-            tryAutoRecompute(Obj);
+        if(!safe)
             return;
+        else {
+            commitCommand();
+            tryAutoRecompute(Obj);
         }
-
-        commitCommand();
-        tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
 
@@ -4997,8 +5021,9 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -5008,7 +5033,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or more arcs or circles from the sketch."));
         return;
@@ -5070,7 +5095,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     }
 
     if (geoIdRadiusMap.empty() && externalGeoIdRadiusMap.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or more arcs or circles from the sketch."));
 
@@ -5078,7 +5103,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     }
 
     if(poles && nonpoles) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed."));
 
@@ -5199,7 +5224,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
             radius = circle->getRadius();
         }
         else {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Constraint only applies to arcs or circles."));
 
@@ -5304,8 +5329,9 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -5315,7 +5341,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or more arcs or circles from the sketch."));
 
@@ -5359,7 +5385,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             double radius = circle->getRadius();
 
             if(isBsplinePole(geom)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -5376,7 +5402,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     }
 
     if (geoIdDiameterMap.empty() && externalGeoIdDiameterMap.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or more arcs or circles from the sketch."));
 
@@ -5484,7 +5510,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                 diameter = 2*circle->getRadius();
             }
             else {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Constraint only applies to arcs or circles."));
 
@@ -5492,7 +5518,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             }
 
             if(isBsplinePole(geom)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -5588,8 +5614,9 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -5599,7 +5626,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or more arcs or circles from the sketch."));
 
@@ -5656,7 +5683,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     }
 
     if (geoIdRadiamMap.empty() && externalGeoIdRadiamMap.empty()) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or more arcs or circles from the sketch."));
 
@@ -5664,7 +5691,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     }
 
     if(poles && nonpoles) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed."));
 
@@ -5805,7 +5832,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
                     isPole = true;
             }
             else {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Constraint only applies to arcs or circles."));
 
@@ -6055,8 +6082,9 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select the right things from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select the right things from the sketch."));
         }
         return;
     }
@@ -6066,7 +6094,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 3) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select one or two lines from the sketch. Or select two edges and a point."));
 
@@ -6099,7 +6127,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
             if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
@@ -6162,7 +6190,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         }
 
         if(isBsplinePole(Obj, GeoId1) || (GeoId2 != GeoEnum::GeoUndef && isBsplinePole(Obj, GeoId2))) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -6228,7 +6256,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 if (dir3.Length() < Precision::Intersection()) {
                     Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
                     if (dist.Sqr() > Precision::Intersection()) {
-                        Gui::TranslatedNotification(Obj,
+                        Gui::TranslatedUserWarning(Obj,
                                       QObject::tr("Parallel lines"),
                                       QObject::tr("An angle constraint cannot be set for two parallel lines."));
 
@@ -6262,7 +6290,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             }
         } else if (isEdge(GeoId1,PosId1)) { // line angle
             if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Cannot add an angle constraint on an axis!"));
 
@@ -6320,7 +6348,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         }
     };
 
-    Gui::TranslatedNotification(Obj,
+    Gui::TranslatedUserWarning(Obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Select one or two lines from the sketch. Or select two edges and a point."));
 
@@ -6401,7 +6429,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
             if (dir3.Length() < Precision::Intersection()) {
                 Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
                 if (dist.Sqr() > Precision::Intersection()) {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Parallel lines"),
                                   QObject::tr("An angle constraint cannot be set for two parallel lines."));
 
@@ -6464,7 +6492,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
     if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -6583,8 +6611,9 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
                             new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two edges from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two edges from the sketch."));
         }
         return;
     }
@@ -6596,7 +6625,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     // go through the selected subelements
 
     if (SubNames.size() < 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select at least two lines from the sketch."));
 
@@ -6614,14 +6643,14 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         getIdsFromName(*it, Obj, GeoId, PosId);
 
         if (!isEdge(GeoId,PosId)) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select two or more compatible edges."));
 
             return;
         }
         else if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Sketch axes cannot be used in equality constraints."));
 
@@ -6642,7 +6671,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
         if(geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
             // unsupported as they are generally hereogeneus shapes
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Equality for B-spline edge currently unsupported."));
 
@@ -6674,7 +6703,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             parabSel = true;
         }
         else {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select two or more edges of similar type."));
 
@@ -6691,7 +6720,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
          ( hyperbSel && (parabSel || weightSel)) ||
          ( parabSel && weightSel)) {
 
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select two or more edges of similar type."));
 
@@ -6744,7 +6773,7 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
              ( (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) &&
                !(geo2->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())) ){
 
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select two or more edges of similar type."));
 
@@ -6828,8 +6857,9 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                             new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two points and a symmetry line, "
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select two points and a symmetry line, "
                                              "two points and a symmetry point "
                                              "or a line and a symmetry point from the sketch."));
         }
@@ -6841,7 +6871,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 3 && SubNames.size() != 2) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select two points and a symmetry line, "
                                                          "two points and a symmetry point "
@@ -6868,7 +6898,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
             const Part::Geometry *geom = Obj->getGeometry(GeoId1);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 if (GeoId1 == GeoId2) {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Wrong selection"),
                                   QObject::tr("Cannot add a symmetry constraint "
                                                                      "between a line and its end points."));
@@ -6892,7 +6922,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
             }
         }
 
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                       QObject::tr("Wrong selection"),
                       QObject::tr("Select two points and a symmetry line, "
                                                          "two points and a symmetry point "
@@ -6924,7 +6954,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
             const Part::Geometry *geom = Obj->getGeometry(GeoId3);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
-                    Gui::TranslatedNotification(Obj,
+                    Gui::TranslatedUserWarning(Obj,
                                   QObject::tr("Wrong selection"),
                                   QObject::tr("Cannot add a symmetry constraint "
                                                                      "between a line and its end points!"));
@@ -6964,7 +6994,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         }
     }
 
-    Gui::TranslatedNotification(Obj,
+    Gui::TranslatedUserWarning(Obj,
                   QObject::tr("Wrong selection"),
                   QObject::tr("Select two points and a symmetry line, "
                                                      "two points and a symmetry point "
@@ -6988,7 +7018,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
         PosId1 = Sketcher::PointPos::start; PosId2 = Sketcher::PointPos::end; PosId3 = selSeq.at(1).PosId;
 
         if (GeoId1 == GeoId3) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
 
@@ -7032,7 +7062,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
         const Part::Geometry *geom = Obj->getGeometry(GeoId3);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
-                Gui::TranslatedNotification(Obj,
+                Gui::TranslatedUserWarning(Obj,
                               QObject::tr("Wrong selection"),
                               QObject::tr("Cannot add a symmetry constraint "
                                                                  "between a line and its end points."));
@@ -7050,7 +7080,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
             tryAutoRecompute(Obj);
         }
         else {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select two points and a symmetry line, "
                                                              "two points and a symmetry point "
@@ -7135,8 +7165,9 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
                                 "from one sketch.", dmbg);
 
         strError.append(strHelp);
-        Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                                std::move(strError));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   std::move(strError));
     }
 
     // get the needed lists and objects
@@ -7144,7 +7175,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
     if (SubNames.size() != 3) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                         QObject::tr("Wrong selection"),
                         QObject::tr("Number of selected objects is not 3"));
 
@@ -7169,7 +7200,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
     //a bunch of validity checks
     if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3) ) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                         QObject::tr("Wrong selection"),
                         QObject::tr("Cannot create constraint with external geometry only."));
 
@@ -7180,7 +7211,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             isVertex(GeoId2,PosId2) && !isSimpleVertex(Obj, GeoId2, PosId2) &&
             isEdge(GeoId3,PosId3)   )) {
 
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                         QObject::tr("Wrong selection"),
                         QObject::tr("Incompatible geometry is selected."));
 
@@ -7191,7 +7222,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
     if( geo && geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
         // unsupported until normal to B-spline at any point implemented.
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                         QObject::tr("Wrong selection"),
                         QObject::tr("SnellsLaw on B-spline edge is currently unsupported."));
 
@@ -7199,7 +7230,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     }
 
     if(isBsplinePole(geo)) {
-        Gui::TranslatedNotification(Obj,
+        Gui::TranslatedUserWarning(Obj,
                         QObject::tr("Wrong selection"),
                         QObject::tr("Select an edge that is not a B-spline weight."));
 
@@ -7237,7 +7268,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     //add constraint
     openCommand(QT_TRANSLATE_NOOP("Command", "Add Snell's law constraint"));
 
-    try {
+    bool safe = addConstraintSafely(Obj, [&](){
         if (! IsPointAlreadyOnCurve(GeoId2,GeoId1,PosId1,Obj))
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
@@ -7257,16 +7288,14 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)",
                 ConStr.size()-1,"False");
         }*/
-    } catch (Base::Exception &e) {
-        abortCommand();
-        Gui::NotifyError(Obj,
-                    QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    e.what());
-        return;
-    }
+    });
 
-    commitCommand();
-    tryAutoRecompute(Obj);
+    if(!safe)
+        return;
+    else {
+        commitCommand();
+        tryAutoRecompute(Obj);
+    }
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -7326,8 +7355,9 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
-            Gui::TranslatedNotification("Sketcher", QObject::tr("Wrong selection"),
-                QObject::tr("Select constraints from the sketch."));
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                       QObject::tr("Wrong selection"),
+                                       QObject::tr("Select constraints from the sketch."));
             return;
         }
 
@@ -7336,7 +7366,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select constraints from the sketch."));
 
@@ -7370,7 +7400,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            Gui::TranslatedNotification(Obj,
+            Gui::TranslatedUserWarning(Obj,
                           QObject::tr("Wrong selection"),
                           QObject::tr("Select constraints from the sketch."));
 
@@ -7444,7 +7474,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
-            Gui::TranslatedNotification("Sketcher",
+            Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
                                  QObject::tr("Wrong selection"),
                                  QObject::tr("Select constraints from the sketch."));
             return;
@@ -7455,7 +7485,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            Gui::TranslatedNotification( Obj,
+            Gui::TranslatedUserWarning( Obj,
                                     QObject::tr("Wrong selection"),
                                     QObject::tr("Select constraints from the sketch."));
 

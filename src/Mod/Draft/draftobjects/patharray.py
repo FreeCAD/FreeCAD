@@ -296,7 +296,7 @@ class PathArray(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if self.props_changed_placement_only() \
+        if self.props_changed_placement_only(obj) \
                 or not obj.Base \
                 or not obj.PathObject:
             self.props_changed_clear()

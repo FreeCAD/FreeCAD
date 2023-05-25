@@ -26,7 +26,6 @@
 # include <boost/core/ignore_unused.hpp>
 # include <QContextMenuEvent>
 # include <QMenu>
-# include <QMessageBox>
 # include <QPainter>
 # include <QPixmapCache>
 # include <QRegularExpression>
@@ -44,6 +43,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
@@ -59,6 +59,11 @@
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
+
+// Translation block for context menu: do not remove
+#if 0
+QT_TRANSLATE_NOOP("SketcherGui::ConstraintView", "Select Elements");
+#endif
 
 /// Inserts a QAction into an existing menu
 /// ICONSTR is the string of the icon in the resource file
@@ -609,8 +614,10 @@ void ConstraintView::swapNamedOfSelectedItems()
     //
     // If names are empty then nothing should be done
     if (escapedstr1.empty() || escapedstr2.empty()) {
-        QMessageBox::warning(Gui::MainWindow::getInstance(), tr("Unnamed constraint"),
-                             tr("Only the names of named constraints can be swapped."));
+        Gui::TranslatedUserWarning(item1->sketch,
+                    tr("Unnamed constraint"),
+                    tr("Only the names of named constraints can be swapped."));
+
         return;
     }
 
@@ -1041,8 +1048,9 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
         catch (const Base::Exception& e) {
             Gui::Command::abortCommand();
 
-            QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+            Gui::TranslatedUserError(sketch,
+                                    tr("Error"),
+                                    tr("Impossible to update visibility tracking"));
 
             return;
         }
@@ -1124,8 +1132,9 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
         catch (const Base::Exception& e) {
             Gui::Command::abortCommand();
 
-            QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+            Gui::NotifyUserError(sketch,
+                        QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+                        e.what());
         }
     }
 
@@ -1140,8 +1149,9 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     catch (const Base::Exception& e) {
         Gui::Command::abortCommand();
 
-        QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-            QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+        Gui::NotifyUserError(sketch,
+                    QT_TRANSLATE_NOOP("Notifications", "Value Error"),
+                    e.what());
     }
 
     inEditMode = false;
@@ -1417,8 +1427,9 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
             catch (const Base::Exception & e) {
                 Gui::Command::abortCommand();
 
-                QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                            QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+                Gui::TranslatedUserError(sketch,
+                        tr("Error"),
+                        tr("Impossible to update visibility tracking: "));
 
                 return false;
             }

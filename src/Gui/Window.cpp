@@ -23,11 +23,13 @@
 
 #include "PreCompiled.h"
 
+#include <boost/algorithm/string.hpp>
 #include <qglobal.h>
-#include "Window.h"
 
 #include <App/Application.h>
-#include <Base/Console.h>
+
+#include "Window.h"
+
 
 using namespace Gui;
 
@@ -42,45 +44,56 @@ using namespace Gui;
 
 WindowParameter::WindowParameter(const char *name)
 {
-  // not allowed to use a Window without a name, see the constructor of a DockWindow or a other QT Widget
-  assert(name);
-  //printf("Instanceate:%s\n",name);
+    // not allowed to use a Window without a name, see the constructor
+    // of a DockWindow or a other QT Widget
+    assert(name);
 
-  // if string is empty do not create group
-  if ( strcmp(name, "") != 0 )
-    _handle = getDefaultParameter()->GetGroup( name );
+    // if string is empty do not create group
+    if ( strcmp(name, "") != 0 )
+      _handle = getDefaultParameter()->GetGroup( name );
 }
 
 WindowParameter::~WindowParameter()
 {
+    connParamChanged.disconnect();
 }
 
 /** Sets the group of the window to \a name */
 bool WindowParameter::setGroupName(const char* name)
 {
-  if (_handle.isValid())
-    return false; // cannot change parameter group
+    // cannot change parameter group
+    if (_handle.isValid()) {
+        return false;
+    }
 
-  assert(name);
-  std::string prefGroup = name;
-  if (prefGroup.compare(0,15,"User parameter:") == 0 ||
-      prefGroup.compare(0,17,"System parameter:") == 0)
-    _handle = App::GetApplication().GetParameterGroupByPath( name );
-  else
-    _handle = getDefaultParameter()->GetGroup( name );
-  return true;
+    assert(name);
+
+    std::string prefGroup = name;
+    const auto& list = App::GetApplication().GetParameterSetList();
+
+    auto found = std::find_if(list.begin(), list.end(), [prefGroup](auto item) {
+        return boost::starts_with(prefGroup, item.first);
+    });
+
+    if (found != list.end()) {
+        _handle = App::GetApplication().GetParameterGroupByPath(name);
+    }
+    else {
+        _handle = getDefaultParameter()->GetGroup(name);
+    }
+
+    return true;
 }
 
 void WindowParameter::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
-  Q_UNUSED(rCaller);
-  Q_UNUSED(sReason);
-  Base::Console().Log("Parameter has changed and window (%s) has not overridden this function!",_handle->GetGroupName());
+    Q_UNUSED(rCaller);
+    Q_UNUSED(sReason);
 }
 
 ParameterGrp::handle  WindowParameter::getWindowParameter()
 {
-  return _handle;
+    return _handle;
 }
 
 /**
@@ -89,5 +102,5 @@ ParameterGrp::handle  WindowParameter::getWindowParameter()
  */
 ParameterGrp::handle  WindowParameter::getDefaultParameter()
 {
-  return App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
+    return App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
 }

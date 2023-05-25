@@ -30,7 +30,7 @@ import importDXF
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
+take a pseudo-G-code fragment outputted by a Path object, and output
 a dxf file.
 Operations are output to layers.
 vertical moves are ignore

@@ -30,7 +30,9 @@
       <item row="0" column="1">
        <widget class="Gui::InputField" name="ifWidth">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the default width of holding tags.&lt;/p&gt;&lt;p&gt;If the width is set to 0 the dressup will try to guess a reasonable value based on the path itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Set the default width of holding tags.
+
+If the width is set to 0 the dressup will try to guess a reasonable value based on the path itself.</string>
         </property>
        </widget>
       </item>
@@ -44,7 +46,9 @@
       <item row="1" column="1">
        <widget class="Gui::InputField" name="ifHeight">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default height of holding tags.&lt;/p&gt;&lt;p&gt;If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Default height of holding tags.
+
+If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.</string>
         </property>
        </widget>
       </item>
@@ -58,7 +62,7 @@
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="dsbAngle">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for the holding tags ascent and descent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Plunge angle for ascent and descent of holding tag.</string>
         </property>
         <property name="minimum">
          <double>5.000000000000000</double>
@@ -84,7 +88,9 @@
      <item row="3" column="1">
        <widget class="Gui::InputField" name="ifRadius">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Radius of the fillet on the tag's top edge.
+
+If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</string>
         </property>
        </widget>
       </item>
@@ -107,7 +113,7 @@
       <item row="0" column="1">
        <widget class="QSpinBox" name="sbCount">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the number of tags generated when a new dressup is created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Specify the number of tags generated when a new dressup is created.</string>
         </property>
         <property name="minimum">
          <number>2</number>

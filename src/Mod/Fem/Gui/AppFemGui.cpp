@@ -81,6 +81,7 @@ void loadFemResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Fem);
+    Q_INIT_RESOURCE(Fem_translation);
     Gui::Translator::instance()->refresh();
 }
 

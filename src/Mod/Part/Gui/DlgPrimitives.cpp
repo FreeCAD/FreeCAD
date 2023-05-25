@@ -125,7 +125,7 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(widget, descr, QString::fromLatin1(e.what()));
+        QMessageBox::warning(widget, descr, QCoreApplication::translate("Exception", e.what()));
     }
 }
 
@@ -1935,11 +1935,11 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
     catch (const std::exception& e) {
         QMessageBox::warning(this, tr("Create %1")
-            .arg(ui->PrimitiveTypeCB->currentText()), QString::fromLatin1(e.what()));
+            .arg(ui->PrimitiveTypeCB->currentText()), QCoreApplication::translate("Exception", e.what()));
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create %1")
-            .arg(ui->PrimitiveTypeCB->currentText()), QString::fromLatin1(e.what()));
+            .arg(ui->PrimitiveTypeCB->currentText()), QCoreApplication::translate("Exception", e.what()));
     }
 }
 

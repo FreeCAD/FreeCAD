@@ -737,6 +737,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Consultați celula prin alias, de exemplu
 Spreadsheet.my_alias_name în loc de Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Foaie de calcul</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1171,7 +1176,7 @@ Implicit la: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>

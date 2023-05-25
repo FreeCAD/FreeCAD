@@ -438,6 +438,9 @@ void relinkToBody (PartDesign::Feature *feature) {
 
 bool isFeatureMovable(App::DocumentObject* const feat)
 {
+    if (!feat)
+        return false;
+
     if (feat->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         auto prim = static_cast<PartDesign::Feature*>(feat);
         App::DocumentObject* bf = prim->BaseFeature.getValue();

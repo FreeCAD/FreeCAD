@@ -1819,6 +1819,7 @@ static void init_resources()
     // init resources
     Q_INIT_RESOURCE(resource);
     Q_INIT_RESOURCE(translation);
+    Q_INIT_RESOURCE(FreeCAD_translation);
 }
 
 void Application::initApplication()

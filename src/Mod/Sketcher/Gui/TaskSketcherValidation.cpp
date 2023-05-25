@@ -37,6 +37,7 @@
 
 #include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/Notifications.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -159,14 +160,18 @@ void SketcherValidation::onFindButtonClicked()
 
     hidePoints();
     if (vertexConstraints.empty()) {
-        QMessageBox::information(this, tr("No missing coincidences"),
-            tr("No missing coincidences found"));
+        Gui::TranslatedNotification(*sketch,
+                    tr("No missing coincidences"),
+                    tr("No missing coincidences found"));
+
         ui->fixButton->setEnabled(false);
     }
     else {
         showPoints(points);
-        QMessageBox::warning(this, tr("Missing coincidences"),
-            tr("%1 missing coincidences found").arg(vertexConstraints.size()));
+        Gui::TranslatedUserWarning(*sketch,
+                    tr("Missing coincidences"),
+                    tr("%1 missing coincidences found").arg(vertexConstraints.size()));
+
         ui->fixButton->setEnabled(true);
     }
 }
@@ -211,13 +216,17 @@ void SketcherValidation::onFindConstraintClicked()
         return;
 
     if (sketch->evaluateConstraints()) {
-        QMessageBox::information(this, tr("No invalid constraints"),
-            tr("No invalid constraints found"));
+        Gui::TranslatedNotification(*sketch,
+                    tr("No invalid constraints"),
+                    tr("No invalid constraints found"));
+
         ui->fixConstraint->setEnabled(false);
     }
     else {
-        QMessageBox::warning(this, tr("Invalid constraints"),
-            tr("Invalid constraints found"));
+        Gui::TranslatedUserError(*sketch,
+                    tr("Invalid constraints"),
+                    tr("Invalid constraints found"));
+
         ui->fixConstraint->setEnabled(true);
     }
 }
@@ -254,26 +263,31 @@ void SketcherValidation::onFindReversedClicked()
         int nc = sketch->port_reversedExternalArcs(/*justAnalyze=*/true);
         showPoints(points);
         if(nc>0){
-            QMessageBox::warning(this, tr("Reversed external geometry"),
-                tr("%1 reversed external-geometry arcs were found. Their endpoints are"
+            Gui::TranslatedUserWarning(*sketch,
+                   tr("Reversed external geometry"),
+                   tr("%1 reversed external-geometry arcs were found. Their endpoints are"
                    " encircled in 3d view.\n\n"
                    "%2 constraints are linking to the endpoints. The constraints have"
                    " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
                    " Do this only once to sketches created in FreeCAD older than v0.15"
                    ).arg(points.size()/2).arg(nc)
-                                 );
+            );
+
             ui->swapReversed->setEnabled(true);
         } else {
-            QMessageBox::warning(this, tr("Reversed external geometry"),
-                tr("%1 reversed external-geometry arcs were found. Their endpoints are "
+            Gui::TranslatedUserWarning(*sketch,
+                   tr("Reversed external geometry"),
+                   tr("%1 reversed external-geometry arcs were found. Their endpoints are "
                    "encircled in 3d view.\n\n"
                    "However, no constraints linking to the endpoints were found.").arg(points.size()/2));
+
             ui->swapReversed->setEnabled(false);
         }
     } else {
-        QMessageBox::information(this, tr("Reversed external geometry"),
-            tr("No reversed external-geometry arcs were found."));
+        Gui::TranslatedNotification(*sketch,
+                tr("Reversed external geometry"),
+                tr("No reversed external-geometry arcs were found."));
     }
 }
 
@@ -286,8 +300,10 @@ void SketcherValidation::onSwapReversedClicked()
     doc->openTransaction("Sketch porting");
 
     int n = sketch->port_reversedExternalArcs(/*justAnalyze=*/false);
-    QMessageBox::warning(this, tr("Reversed external geometry"),
-        tr("%1 changes were made to constraints linking to endpoints of reversed arcs.").arg(n));
+    Gui::TranslatedNotification(*sketch,
+            tr("Reversed external geometry"),
+            tr("%1 changes were made to constraints linking to endpoints of reversed arcs.").arg(n));
+
     hidePoints();
     ui->swapReversed->setEnabled(false);
 
@@ -303,8 +319,9 @@ void SketcherValidation::onOrientLockEnableClicked()
     doc->openTransaction("Constraint orientation lock");
 
     int n = sketch->changeConstraintsLocking(/*bLock=*/true);
-    QMessageBox::warning(this, tr("Constraint orientation locking"),
-        tr("Orientation locking was enabled and recomputed for %1 constraints. The"
+    Gui::TranslatedNotification(*sketch,
+            tr("Constraint orientation locking"),
+            tr("Orientation locking was enabled and recomputed for %1 constraints. The"
            " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view).").arg(n));
 
@@ -320,8 +337,9 @@ void SketcherValidation::onOrientLockDisableClicked()
     doc->openTransaction("Constraint orientation unlock");
 
     int n = sketch->changeConstraintsLocking(/*bLock=*/false);
-    QMessageBox::warning(this, tr("Constraint orientation locking"),
-        tr("Orientation locking was disabled for %1 constraints. The"
+    Gui::TranslatedNotification(*sketch,
+            tr("Constraint orientation locking"),
+            tr("Orientation locking was disabled for %1 constraints. The"
            " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view). Note that for all future constraints, the locking still"
            " defaults to ON.").arg(n));
@@ -349,8 +367,10 @@ void SketcherValidation::onDelConstrExtrClicked()
 
     doc->commitTransaction();
 
-    QMessageBox::warning(this, tr("Delete constraints to external geom."),
-                         tr("All constraints that deal with external geometry were deleted."));
+    Gui::TranslatedNotification(*sketch,
+            tr("Delete constraints to external geom."),
+            tr("All constraints that deal with external geometry were deleted."));
+
 }
 
 void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
@@ -414,13 +434,17 @@ void SketcherValidation::onFindDegeneratedClicked()
     int count = sketchAnalyser.detectDegeneratedGeometries(prec);
 
     if (count == 0) {
-        QMessageBox::information(this, tr("No degenerated geometry"),
-            tr("No degenerated geometry found"));
+        Gui::TranslatedNotification(*sketch,
+                tr("No degenerated geometry"),
+                tr("No degenerated geometry found"));
+
         ui->fixDegenerated->setEnabled(false);
     }
     else {
-        QMessageBox::warning(this, tr("Degenerated geometry"),
-            tr("%1 degenerated geometry found").arg(count));
+        Gui::TranslatedUserWarning(*sketch,
+                tr("Degenerated geometry"),
+                tr("%1 degenerated geometry found").arg(count));
+
         ui->fixDegenerated->setEnabled(true);
     }
 }

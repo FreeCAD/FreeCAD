@@ -24,7 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoLightModel.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/Document.h>
@@ -59,6 +60,10 @@ ViewProviderOrigin::ViewProviderOrigin()
 
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();
+
+    auto lm = new SoLightModel();
+    lm->model = SoLightModel::BASE_COLOR;
+    pcRoot->insertChild(lm, 0);
 }
 
 ViewProviderOrigin::~ViewProviderOrigin() {
@@ -182,9 +187,9 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
             if (vpPlaneXY) { vpPlaneXY->Size.setValue ( szXY ); }
             if (vpPlaneXZ) { vpPlaneXZ->Size.setValue ( szXZ ); }
             if (vpPlaneYZ) { vpPlaneYZ->Size.setValue ( szYZ ); }
-            if (vpLineX) { vpLineX->Size.setValue ( szX ); }
-            if (vpLineY) { vpLineY->Size.setValue ( szY ); }
-            if (vpLineZ) { vpLineZ->Size.setValue ( szZ ); }
+            if (vpLineX) { vpLineX->Size.setValue ( szX * axesScaling ); }
+            if (vpLineY) { vpLineY->Size.setValue ( szY * axesScaling ); }
+            if (vpLineZ) { vpLineZ->Size.setValue ( szZ * axesScaling ); }
 
         } catch (const Base::Exception &ex) {
             // While restoring a document don't report errors if one of the lines or planes
