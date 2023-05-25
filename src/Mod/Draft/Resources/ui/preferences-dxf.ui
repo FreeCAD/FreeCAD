@@ -94,7 +94,7 @@ Note: C++ exporter is faster, but is not as featureful yet</string>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
            <string>Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
+You can also do this manually by installing the &quot;dxf_library&quot; workbench
 from the Addon Manager.</string>
           </property>
           <property name="text">
@@ -339,7 +339,7 @@ Example: for files in millimeters: 1, in centimeters: 10,
 Otherwise default colors will be applied. </string>
           </property>
           <property name="text">
-           <string>Get original colors from the DXF file</string>
+           <string>Get original colors from the DXF file (legacy importer only)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfGetOriginalColors</cstring>
@@ -445,7 +445,7 @@ instead of the size they have in the DXF document</string>
            <string>Hatches will be converted into simple wires</string>
           </property>
           <property name="text">
-           <string>Import hatch boundaries as wires</string>
+           <string>Import hatch boundaries as wires (legacy importer only)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>importDxfHatches</cstring>
@@ -466,7 +466,7 @@ instead of the size they have in the DXF document</string>
 as closed wires with correct width</string>
           </property>
           <property name="text">
-           <string>Render polylines with width</string>
+           <string>Render polylines with width (legacy importer only)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>renderPolylineWidth</cstring>
@@ -567,7 +567,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</string>
            <string>All objects containing faces will be exported as 3D polyfaces</string>
           </property>
           <property name="text">
-           <string>Export 3D objects as polyface meshes</string>
+           <string>Export 3D objects as polyface meshes (legacy exporter only)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfmesh</cstring>
@@ -611,7 +611,7 @@ This might fail for post DXF R12 templates.</string>
            <string>Exported objects will be projected to reflect the current view direction</string>
           </property>
           <property name="text">
-           <string>Project exported objects along current view direction</string>
+           <string>Project exported objects along current view direction (legacy exporter only)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfproject</cstring>

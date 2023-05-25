@@ -206,7 +206,7 @@
     <message>
       <location filename="TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation>Notities</translation>
+      <translation>Aantekeningen</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="83"/>
@@ -291,18 +291,18 @@
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>Een optionele aangepaste map, die onderaan de eerste pagina wordt weergegeven.
+Door ";" te gebruiken kan je ook meerdere mappen toevoegen</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
       <source>Show notepad</source>
-      <translation>Toon notitieblok</translation>
+      <translation>Kladblok weergeven</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>Toont een kladblok naast de bestandsminiaturen, om aantekeningen te bewaren tussen sessies</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
@@ -312,7 +312,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Toon help tips op het tabblad Documenten in de Start werkbank</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -342,7 +342,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>Achtergrond kleur gradient</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Als dit aangevinkt is, en een stijlblad is gespecificeerd in de Algemene Voorkeuren, zal het stijlblad gebruikt worden in plaats van de onderstaande kleuren</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -397,7 +397,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="437"/>
       <source>Box background color</source>
-      <translation>Achtergrondkleur van de kader</translation>
+      <translation>Achtergrondkleur van de kaders</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="450"/>
@@ -452,12 +452,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
-      <translation>Gebruik gradiënt voor nieuw bestandspictogram</translation>
+      <translation>Gebruik een kleurgradiënt in het 'Nieuw bestand' pictogram</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>Als dit is geselecteerd, toont het 'Nieuw bestand' pictogram een gradiënt icoon in plaats van het normale icoon</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,17 +467,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>Kies naar welke werkbank moet worden overgeschakeld nadat het programma is gestart</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Indien aangevinkt, wordt de startpagina automatisch gesloten als FreeCAD start</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
-      <translation>Werkbank na het laden overschakelen</translation>
+      <translation>Na opstarten naar deze Werkbank overschakelen</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>

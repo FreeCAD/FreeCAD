@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="postProcessingGroup">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>If enabled include all post processing settings in the template.</string>
      </property>
      <property name="title">
       <string>Post Processing</string>
@@ -35,7 +35,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Hint about the current post processing configuration.</string>
         </property>
        </widget>
       </item>
@@ -45,7 +45,7 @@
    <item>
     <widget class="QGroupBox" name="toolsGroup">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>If enabled tool controller definitions are stored in the template.</string>
      </property>
      <property name="title">
       <string>Tools</string>
@@ -57,7 +57,7 @@
       <item>
        <widget class="QListWidget" name="toolsList">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Check all tool controllers which should be included in the template.</string>
         </property>
        </widget>
       </item>
@@ -67,7 +67,9 @@
    <item>
     <widget class="QGroupBox" name="settingsGroup">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Enable to include values of the SetupSheet in the template.
+
+Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</string>
      </property>
      <property name="title">
       <string>Setup Sheet</string>
@@ -79,7 +81,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="settingOperationHeights">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Enable to include the default heights for operations in the template.</string>
         </property>
         <property name="text">
          <string>Operation Heights</string>
@@ -102,7 +104,7 @@
       <item row="2" column="0">
        <widget class="QCheckBox" name="settingToolRapid">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Enable to include the default rapid tool speeds in the template.</string>
         </property>
         <property name="text">
          <string>Tool Rapid Speeds</string>
@@ -115,7 +117,7 @@
       <item row="2" column="1">
        <widget class="QCheckBox" name="settingCoolant">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Enable to include the default coolant mode in the template.</string>
         </property>
         <property name="text">
          <string>Coolant Mode</string>
@@ -128,7 +130,9 @@
      <item row="3" column="0" colspan="2">
        <widget class="QListWidget" name="settingsOpsList">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Enable all operations for which the configuration values should be exported.
+
+Note that only operations which currently have configuration values set are listed.</string>
         </property>
        </widget>
       </item>
@@ -138,7 +142,11 @@
    <item>
     <widget class="QGroupBox" name="stockGroup">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
+
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</string>
      </property>
      <property name="title">
       <string>Stock</string>
@@ -150,7 +158,11 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="stockExtent">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If enabled the current size settings for the stock object are included in the template.
+
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
+
+For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</string>
         </property>
         <property name="text">
          <string>Extent</string>
@@ -169,14 +181,14 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Hint about the current stock extent setting.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="stockPlacement">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If enabled the current placement of the stock solid is stored in the template.</string>
         </property>
         <property name="text">
          <string>Placement</string>
@@ -195,7 +207,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Hint about the current stock placement.</string>
         </property>
        </widget>
       </item>

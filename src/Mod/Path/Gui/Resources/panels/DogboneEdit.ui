@@ -84,7 +84,7 @@
        <item row="1" column="1">
         <widget class="QComboBox" name="sideCombo">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.</string>
          </property>
          <property name="currentIndex">
           <number>1</number>

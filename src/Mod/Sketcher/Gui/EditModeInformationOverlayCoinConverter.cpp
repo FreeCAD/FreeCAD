@@ -58,22 +58,25 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
 
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry * geometry, int geoid) {
 
-    // at this point all calculations relate to BSplineCurves
-    assert(geometry->getTypeId() == Part::GeomBSplineCurve::getClassTypeId());
+    if (geometry->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+        // at this point all calculations relate to BSplineCurves
+        calculate<CalculationType::BSplineDegree>(geometry, geoid);
+        calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
+        calculate<CalculationType::BSplineCurvatureComb>(geometry, geoid);
+        calculate<CalculationType::BSplineKnotMultiplicity>(geometry, geoid);
+        calculate<CalculationType::BSplinePoleWeight>(geometry, geoid);
 
-    calculate<CalculationType::BSplineDegree>(geometry, geoid);
-    calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
-    calculate<CalculationType::BSplineCurvatureComb>(geometry, geoid);
-    calculate<CalculationType::BSplineKnotMultiplicity>(geometry, geoid);
-    calculate<CalculationType::BSplinePoleWeight>(geometry, geoid);
-
-    addUpdateNode(degree);
-    addUpdateNode(controlPolygon);
-    addUpdateNode(curvatureComb);
-    addUpdateNode(knotMultiplicity);
-    addUpdateNode(poleWeights);
-
-};
+        addUpdateNode(degree);
+        addUpdateNode(controlPolygon);
+        addUpdateNode(curvatureComb);
+        addUpdateNode(knotMultiplicity);
+        addUpdateNode(poleWeights);
+    } else if (geometry->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
+        // at this point all calculations relate to ArcOfCircle
+        calculate<CalculationType::ArcCircleHelper>(geometry, geoid);
+        addUpdateNode(circleHelper);
+    }
+}
 
 void EditModeInformationOverlayCoinConverter::addToInfoGroup(SoSwitch * sw) {
     infoGroup->addChild(sw);
@@ -82,167 +85,188 @@ void EditModeInformationOverlayCoinConverter::addToInfoGroup(SoSwitch * sw) {
 
 template < EditModeInformationOverlayCoinConverter::CalculationType calculation >
 void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * geometry, [[maybe_unused]] int geoid) {
-    const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(geometry);
 
-    if constexpr (calculation == CalculationType::BSplineDegree ) {
-        clearCalculation(degree);
+    if constexpr (calculation == CalculationType::ArcCircleHelper ) {
+    	const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geometry);
+        clearCalculation(circleHelper);
 
-        std::vector<Base::Vector3d> poles = spline->getPoles();
+        Base::Vector3d center = arc->getCenter();
+        double radius = arc->getRadius();
+        Part::GeomCircle circle;
+        circle.setRadius(radius);
+        circle.setCenter(center);
 
-        degree.strings.clear();
-        degree.positions.clear();
+        const int ndiv = drawingParameters.curvedEdgeCountSegments;
 
-        Base::Vector3d midp = Base::Vector3d(0,0,0);
+        circleHelper.coordinates.reserve(ndiv);
+        for (int i = 0; i < ndiv; i++) {
+        	double param = i * std::atan(1) * 8 / ndiv;
+        	circleHelper.coordinates.emplace_back(circle.value(param));
+        }
+    	circleHelper.coordinates.emplace_back(circle.value(0.0));
+        circleHelper.indices.push_back(ndiv + 1);
+    } else {
+        const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(geometry);
 
-        for (auto val : poles)
-            midp += val;
+        if constexpr (calculation == CalculationType::BSplineDegree ) {
+            clearCalculation(degree);
 
-        midp /= poles.size();
+            std::vector<Base::Vector3d> poles = spline->getPoles();
 
-        degree.strings.emplace_back(std::to_string(spline->getDegree()));
-        degree.positions.emplace_back(midp);
-    }
-    else if constexpr (calculation == CalculationType::BSplineControlPolygon ) {
+            degree.strings.clear();
+            degree.positions.clear();
 
-        clearCalculation(controlPolygon);
+            Base::Vector3d midp = Base::Vector3d(0,0,0);
 
-        std::vector<Base::Vector3d> poles = spline->getPoles();
+            for (auto val : poles)
+                midp += val;
 
-        controlPolygon.coordinates.clear();
-        controlPolygon.indices.clear();
+            midp /= poles.size();
 
-        size_t nvertices;
+            degree.strings.emplace_back(std::to_string(spline->getDegree()));
+            degree.positions.emplace_back(midp);
+        }
+        else if constexpr (calculation == CalculationType::BSplineControlPolygon ) {
 
-        if (spline->isPeriodic())
-            nvertices = poles.size()+1;
-        else
-            nvertices = poles.size();
+            clearCalculation(controlPolygon);
 
-        controlPolygon.coordinates.reserve(nvertices);
+            std::vector<Base::Vector3d> poles = spline->getPoles();
 
-        for (auto & v : poles)
-            controlPolygon.coordinates.emplace_back(v);
+            controlPolygon.coordinates.clear();
+            controlPolygon.indices.clear();
 
-        if (spline->isPeriodic())
-            controlPolygon.coordinates.emplace_back(poles[0]);
+            size_t nvertices;
 
-        controlPolygon.indices.push_back(nvertices); // single continuous polygon starting at index 0
-    }
-    else if constexpr (calculation == CalculationType::BSplineCurvatureComb ) {
+            if (spline->isPeriodic())
+                nvertices = poles.size()+1;
+            else
+                nvertices = poles.size();
 
-        clearCalculation(curvatureComb);
-        // curvature graph --------------------------------------------------------
+            controlPolygon.coordinates.reserve(nvertices);
 
-        // based on python source
-        // https://github.com/tomate44/CurvesWB/blob/master/freecad/Curves/ParametricComb.py
-        // by FreeCAD user Chris_G
+            for (auto & v : poles)
+                controlPolygon.coordinates.emplace_back(v);
 
-        std::vector<Base::Vector3d> poles = spline->getPoles();
-        auto knots = spline->getKnots();
-        auto mults = spline->getMultiplicities();
+            if (spline->isPeriodic())
+                controlPolygon.coordinates.emplace_back(poles[0]);
 
-        const int ndivPerPiece = 64; // heuristic of number of division to fill in
-        const int ndiv = ndivPerPiece * (knots.size() - 1);
+            controlPolygon.indices.push_back(nvertices); // single continuous polygon starting at index 0
+        }
+        else if constexpr (calculation == CalculationType::BSplineCurvatureComb ) {
 
-        std::vector<Base::Vector3d> pointatcurvelist;
-        std::vector<double> curvaturelist;
-        std::vector<Base::Vector3d> normallist;
+            clearCalculation(curvatureComb);
+            // curvature graph --------------------------------------------------------
 
-        pointatcurvelist.reserve(ndiv);
-        curvaturelist.reserve(ndiv);
-        normallist.reserve(ndiv);
+            // based on python source
+            // https://github.com/tomate44/CurvesWB/blob/master/freecad/Curves/ParametricComb.py
+            // by FreeCAD user Chris_G
 
-        // go through the polynomial pieces (i.e. from one knot to next)
-        for (size_t k = 0; k < knots.size()-1; ++k) {
-            // first and last params are a little off to account for possible discontinuity at knots
-            double firstparam = knots[k] + Precision::Approximation()*(knots[k + 1] - knots[k]);
-            double lastparam = knots[k + 1] - Precision::Approximation()*(knots[k + 1] - knots[k]);
+            std::vector<Base::Vector3d> poles = spline->getPoles();
+            auto knots = spline->getKnots();
+            auto mults = spline->getMultiplicities();
 
-            // TODO: Maybe this can be improved, specifically adapted for each piece
-            double step = (lastparam - firstparam) / (ndivPerPiece - 1);
+            const int ndivPerPiece = 64; // heuristic of number of division to fill in
+            const int ndiv = ndivPerPiece * (knots.size() - 1);
 
-            for (int i = 0; i < ndivPerPiece; ++i) {
-                double param = firstparam + i * step;
-                pointatcurvelist.emplace_back(spline->value(param));
+            std::vector<Base::Vector3d> pointatcurvelist;
+            std::vector<double> curvaturelist;
+            std::vector<Base::Vector3d> normallist;
 
-                try {
-                    curvaturelist.emplace_back(spline->curvatureAt(param));
-                }
-                catch(Base::CADKernelError &e) {
-                    // it is "just" a visualisation matter OCC could not calculate the curvature
-                    // terminating here would mean that the other shapes would not be drawn.
-                    // Solution: Report the issue and set dummy curvature to 0
-                    e.ReportException();
-                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
-                    curvaturelist.emplace_back(0);
-                }
+            pointatcurvelist.reserve(ndiv);
+            curvaturelist.reserve(ndiv);
+            normallist.reserve(ndiv);
 
-                Base::Vector3d normal;
-                try {
-                    spline->normalAt(param, normal);
-                    normallist.emplace_back(normal);
-                }
-                catch(Base::Exception&) {
-                    normallist.emplace_back(0,0,0);
+            // go through the polynomial pieces (i.e. from one knot to next)
+            for (size_t k = 0; k < knots.size()-1; ++k) {
+                // first and last params are a little off to account for possible discontinuity at knots
+                double firstparam = knots[k] + Precision::Approximation()*(knots[k + 1] - knots[k]);
+                double lastparam = knots[k + 1] - Precision::Approximation()*(knots[k + 1] - knots[k]);
+
+                // TODO: Maybe this can be improved, specifically adapted for each piece
+                double step = (lastparam - firstparam) / (ndivPerPiece - 1);
+
+                for (int i = 0; i < ndivPerPiece; ++i) {
+                    double param = firstparam + i * step;
+                    pointatcurvelist.emplace_back(spline->value(param));
+
+                    try {
+                        curvaturelist.emplace_back(spline->curvatureAt(param));
+                    }
+                    catch(Base::CADKernelError &e) {
+                        // it is "just" a visualisation matter OCC could not calculate the curvature
+                        // terminating here would mean that the other shapes would not be drawn.
+                        // Solution: Report the issue and set dummy curvature to 0
+                        e.ReportException();
+                        Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
+                        curvaturelist.emplace_back(0);
+                    }
+
+                    Base::Vector3d normal;
+                    try {
+                        spline->normalAt(param, normal);
+                        normallist.emplace_back(normal);
+                    }
+                    catch(Base::Exception&) {
+                        normallist.emplace_back(0,0,0);
+                    }
                 }
             }
+
+            std::vector<Base::Vector3d> pointatcomblist;
+            pointatcomblist.reserve(ndiv);
+
+            for (int i = 0; i < ndiv; i++) {
+                pointatcomblist.emplace_back(pointatcurvelist[i] - overlayParameters.currentBSplineCombRepresentationScale * curvaturelist[i] * normallist[i]);
+            }
+
+            curvatureComb.coordinates.reserve(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+            curvatureComb.indices.reserve(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+
+            auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo;
+
+            for (int i = 0; i < ndiv; i++) {
+                // note emplace emplaces on the position BEFORE the iterator given.
+                curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfoH); // radials
+                curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // radials
+
+                curvatureComb.indices.emplace_back(2); // line
+            }
+
+            for (int i = 0; i < ndiv; i++)
+                curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // // comb endpoint closing segment
+
+            curvatureComb.indices.emplace_back(ndiv); // Comb line
         }
+        else if constexpr (calculation == CalculationType::BSplineKnotMultiplicity ) {
 
-        std::vector<Base::Vector3d> pointatcomblist;
-        pointatcomblist.reserve(ndiv);
+            clearCalculation(knotMultiplicity);
+            std::vector<double> knots = spline->getKnots();
+            std::vector<int> mult = spline->getMultiplicities();
 
-        for (int i = 0; i < ndiv; i++) {
-            pointatcomblist.emplace_back(pointatcurvelist[i] - overlayParameters.currentBSplineCombRepresentationScale * curvaturelist[i] * normallist[i]);
+            for (size_t i=0; i<knots.size(); i++) {
+                knotMultiplicity.positions.emplace_back(spline->pointAtParameter(knots[i]));
+
+                std::ostringstream stringStream;
+                stringStream << "(" << mult[i] << ")";
+
+                knotMultiplicity.strings.emplace_back( stringStream.str());
+            }
         }
+        else if constexpr (calculation == CalculationType::BSplinePoleWeight ) {
 
-        curvatureComb.coordinates.reserve(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
-        curvatureComb.indices.reserve(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+            clearCalculation(poleWeights);
+            std::vector<Base::Vector3d> poles = spline->getPoles();
+            auto weights = spline->getWeights();
 
-        auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo;
+            for (size_t i=0; i<poles.size(); i++) {
+                poleWeights.positions.emplace_back(poles[i]);
 
-        for (int i = 0; i < ndiv; i++) {
-            // note emplace emplaces on the position BEFORE the iterator given.
-            curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfoH); // radials
-            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // radials
+                QString WeightString  = QString::fromLatin1("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
 
-            curvatureComb.indices.emplace_back(2); // line
+                poleWeights.strings.emplace_back(WeightString.toStdString());
+            }
         }
-
-        for (int i = 0; i < ndiv; i++)
-            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // // comb endpoint closing segment
-
-        curvatureComb.indices.emplace_back(ndiv); // Comb line
     }
-    else if constexpr (calculation == CalculationType::BSplineKnotMultiplicity ) {
-
-        clearCalculation(knotMultiplicity);
-        std::vector<double> knots = spline->getKnots();
-        std::vector<int> mult = spline->getMultiplicities();
-
-        for (size_t i=0; i<knots.size(); i++) {
-            knotMultiplicity.positions.emplace_back(spline->pointAtParameter(knots[i]));
-
-            std::ostringstream stringStream;
-            stringStream << "(" << mult[i] << ")";
-
-            knotMultiplicity.strings.emplace_back( stringStream.str());
-        }
-    }
-    else if constexpr (calculation == CalculationType::BSplinePoleWeight ) {
-
-        clearCalculation(poleWeights);
-        std::vector<Base::Vector3d> poles = spline->getPoles();
-        auto weights = spline->getWeights();
-
-        for (size_t i=0; i<poles.size(); i++) {
-            poleWeights.positions.emplace_back(poles[i]);
-
-            QString WeightString  = QString::fromLatin1("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
-
-            poleWeights.strings.emplace_back(WeightString.toStdString());
-        }
-    }
-
 }
 
 template <typename Result>
@@ -270,6 +294,9 @@ bool EditModeInformationOverlayCoinConverter::isVisible() {
     }
     else if constexpr ( calculation == CalculationType::BSplinePoleWeight ) {
         return overlayParameters.bSplinePoleWeightVisible;
+    }
+    else if constexpr ( calculation == CalculationType::ArcCircleHelper ) {
+        return overlayParameters.arcCircleHelperVisible;
     }
 }
 

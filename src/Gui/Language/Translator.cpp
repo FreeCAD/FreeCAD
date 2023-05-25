@@ -396,6 +396,10 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
 
 void Translator::enableDecimalPointConversion(bool on)
 {
+    if (!qApp) {
+        return;
+    }
+
     if (!on) {
         decimalPointConverter.reset();
         return;

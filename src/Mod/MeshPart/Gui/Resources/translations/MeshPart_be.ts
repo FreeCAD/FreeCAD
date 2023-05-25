@@ -367,7 +367,7 @@ this feature (e.g. the format OBJ).</source>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
       <translation>Калі гэты лік менш, паліганальная сетка становіцца больш тонкай.
-Найменшае значэнне роўна 0.</translation>
+Найменшае значэнне - нуль.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>

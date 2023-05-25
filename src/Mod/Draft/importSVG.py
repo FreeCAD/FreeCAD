@@ -663,6 +663,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.count = 0
         self.transform = None
         self.grouptransform = []
+        self.groupstyles = []
         self.lastdim = None
         self.viewbox = None
         self.symbols = {}
@@ -710,6 +711,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.count += 1
         _msg('processing element {0}: {1}'.format(self.count, name))
         _msg('existing group transform: {}'.format(self.grouptransform))
+        _msg('existing group style: {}'.format(self.groupstyles))
 
         data = {}
         for (keyword, content) in list(attrs.items()):
@@ -739,32 +741,41 @@ class svgHandler(xml.sax.ContentHandler):
                 else:
                     self.svgdpi = 96.0
             if 'inkscape:version' not in data:
-                _inf = ("This SVG file does not appear to have been produced "
-                        "by Inkscape. If it does not contain absolute units "
-                        "then a DPI setting will be used.")
-                _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
-                        "will use the older standard 90 dpi.")
-                if FreeCAD.GuiUp:
-                    msgBox = QtGui.QMessageBox()
-                    msgBox.setText(translate("ImportSVG", _inf))
-                    msgBox.setInformativeText(translate("ImportSVG", _qst))
-                    msgBox.setStandardButtons(QtGui.QMessageBox.Yes
-                                              | QtGui.QMessageBox.No)
-                    msgBox.setDefaultButton(QtGui.QMessageBox.No)
-                    ret = msgBox.exec_()
-                    if ret == QtGui.QMessageBox.Yes:
-                        self.svgdpi = 96.0
-                    else:
-                        self.svgdpi = 90.0
-                    if ret:
-                        _msg(translate("ImportSVG", _inf))
-                        _msg(translate("ImportSVG", _qst))
-                        _msg("*** User specified {} "
-                             "dpi ***".format(self.svgdpi))
-                else:
+                # exact scaling is calculated later below. Here we just want
+                # to skip the DPI dialog if a unit is specified in the viewbox
+                if "width" in data and "mm" in attrs.getValue('width'):
                     self.svgdpi = 96.0
-                    _msg(_inf)
-                    _msg("*** Assuming {} dpi ***".format(self.svgdpi))
+                elif "width" in data and "in" in attrs.getValue('width'):
+                    self.svgdpi = 96.0
+                elif "width" in data and "cm" in attrs.getValue('width'):
+                    self.svgdpi = 96.0
+                else:
+                    _inf = ("This SVG file does not appear to have been produced "
+                            "by Inkscape. If it does not contain absolute units "
+                            "then a DPI setting will be used.")
+                    _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
+                            "will use the older standard 90 dpi.")
+                    if FreeCAD.GuiUp:
+                        msgBox = QtGui.QMessageBox()
+                        msgBox.setText(translate("ImportSVG", _inf))
+                        msgBox.setInformativeText(translate("ImportSVG", _qst))
+                        msgBox.setStandardButtons(QtGui.QMessageBox.Yes
+                                                  | QtGui.QMessageBox.No)
+                        msgBox.setDefaultButton(QtGui.QMessageBox.No)
+                        ret = msgBox.exec_()
+                        if ret == QtGui.QMessageBox.Yes:
+                            self.svgdpi = 96.0
+                        else:
+                            self.svgdpi = 90.0
+                        if ret:
+                            _msg(translate("ImportSVG", _inf))
+                            _msg(translate("ImportSVG", _qst))
+                            _msg("*** User specified {} "
+                                 "dpi ***".format(self.svgdpi))
+                    else:
+                        self.svgdpi = 96.0
+                        _msg(_inf)
+                        _msg("*** Assuming {} dpi ***".format(self.svgdpi))
             if self.svgdpi == 1.0:
                 _wrn("This SVG file (" + inks_doc_name + ") "
                      "has an unrecognised format which means "
@@ -844,10 +855,10 @@ class svgHandler(xml.sax.ContentHandler):
                     m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
             self.grouptransform.append(m)
         if 'fill' in data:
-            if data['fill'][0] != 'none':
+            if data['fill'] != 'none':
                 self.fill = getcolor(data['fill'])
         if 'stroke' in data:
-            if data['stroke'][0] != 'none':
+            if data['stroke'] != 'none':
                 self.color = getcolor(data['stroke'])
         if 'stroke-width' in data:
             if data['stroke-width'] != 'none':
@@ -866,6 +877,27 @@ class svgHandler(xml.sax.ContentHandler):
         if self.style == 1:
             self.color = self.col
             self.width = self.lw
+
+        # apply group styles
+        if name == "g":
+            self.groupstyles.append([self.fill, self.color, self.width])
+        if self.fill is None:
+            if "fill" not in data or data['fill'] != 'none':
+                # do not override fill if this item has specifically set a none fill
+                for groupstyle in reversed(self.groupstyles):
+                    if groupstyle[0] is not None:
+                        self.fill = groupstyle[0]
+                        break
+        if self.color is None:
+            for groupstyle in reversed(self.groupstyles):
+                if groupstyle[1] is not None:
+                    self.color = groupstyle[1]
+                    break
+        if self.width is None:
+            for groupstyle in reversed(self.groupstyles):
+                if groupstyle[2] is not None:
+                    self.width = groupstyle[2]
+                    break
 
         pathname = None
         if 'id' in data:
@@ -1366,6 +1398,7 @@ class svgHandler(xml.sax.ContentHandler):
                     sh = self.applyTrans(sh)
                     obj = self.doc.addObject("Part::Feature", pathname)
                     obj.Shape = sh
+                    self.format(obj)
                     if self.currentsymbol:
                         self.symbols[self.currentsymbol].append(obj)
 
@@ -1503,6 +1536,8 @@ class svgHandler(xml.sax.ContentHandler):
         if name == "g" or name == "svg":
             _msg("closing group")
             self.grouptransform.pop()
+            if self.groupstyles:
+                self.groupstyles.pop()
         if name == "symbol":
             if self.doc.getObject("svgsymbols"):
                 group = self.doc.getObject("svgsymbols")

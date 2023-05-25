@@ -223,6 +223,8 @@ def getFillForObject(o, defaultFill, source):
                 return material.SectionColor
             elif hasattr(material, 'Color') and material.Color:
                 return material.Color
+        elif hasattr(o,"ViewObject") and hasattr(o.ViewObject,"ShapeColor"):
+            return o.ViewObject.ShapeColor
     return defaultFill
 
 
@@ -368,7 +370,7 @@ def getSVG(source,
     # reading cached version
     svgcache = update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs)
     should_update_svg_cache = False
-    if not svgcache:
+    if showFill or not svgcache:
         should_update_svg_cache = True
 
     # generating SVG

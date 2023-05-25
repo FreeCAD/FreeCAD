@@ -245,7 +245,7 @@ class Proxy(object):
             "Custom",
             "Dressup",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Dressup length if Incision == Incision.Custom"
+                "App::Property", "Dressup length if incision is set to 'custom'"
             ),
         )
         obj.Custom = 0.0

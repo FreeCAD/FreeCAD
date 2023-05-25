@@ -882,7 +882,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {
-        QMessageBox::warning(this, tr("Create primitive"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Create primitive"), QApplication::translate("Exception", e.what()));
         return false;
     }
     return true;

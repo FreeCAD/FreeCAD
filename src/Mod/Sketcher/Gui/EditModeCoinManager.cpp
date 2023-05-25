@@ -91,6 +91,8 @@ void EditModeCoinManager::ParameterObserver::initParameters()
             [this](const std::string & param){updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplineKnotMultiplicityVisible>(param);}},
         {"BSplinePoleWeightVisible",
             [this](const std::string & param){updateOverlayVisibilityParameter<OverlayVisibilityParameter::BSplinePoleWeightVisible>(param);}},
+        {"ArcCircleHelperVisible",
+            [this](const std::string & param){updateOverlayVisibilityParameter<OverlayVisibilityParameter::ArcCircleHelperVisible>(param);}},
         {"TopRenderGeometryId",
             [this](const std::string & param){updateLineRenderingOrderParameters(param);}},
         {"MidRenderGeometryId",
@@ -208,6 +210,8 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(co
         Client.overlayParameters.bSplineKnotMultiplicityVisible = hGrpsk->GetBool(parametername.c_str(), true);
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplinePoleWeightVisible)
         Client.overlayParameters.bSplinePoleWeightVisible = hGrpsk->GetBool(parametername.c_str(), true);
+    else if constexpr (visibilityparameter == OverlayVisibilityParameter::ArcCircleHelperVisible)
+        Client.overlayParameters.arcCircleHelperVisible = hGrpsk->GetBool(parametername.c_str(), false);
 
     Client.overlayParameters.visibleInformationChanged = true;
 }
@@ -611,6 +615,11 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade 
 
         ioconv.convert(geo, geoid);
     }
+    for (auto geoid : analysisResults.arcGeoIds) {
+        const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(geoid);
+        ioconv.convert(geo, geoid);
+    }
+
 
     overlayParameters.visibleInformationChanged = false; // just updated
 }

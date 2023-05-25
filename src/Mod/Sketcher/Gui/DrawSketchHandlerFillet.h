@@ -23,7 +23,7 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerFillet_H
 #define SKETCHERGUI_DrawSketchHandlerFillet_H
 
-#include <QMessageBox>
+#include <Gui/Notifications.h>
 
 #include "GeometryCreationMode.h"
 
@@ -158,7 +158,9 @@ public:
                     Gui::Command::commitCommand();
                 }
                 catch (const Base::Exception& e) {
-                    Base::Console().Error("Failed to create fillet: %s\n", e.what());
+                    Gui::NotifyUserError(sketchgui->getObject(),
+                             QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
+                             e.what());
                     Gui::Command::abortCommand();
                 }
 
@@ -234,17 +236,19 @@ public:
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
-                        e.ReportException();
                         if(e.getTranslatable()) {
-                            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
-                                                QObject::tr(e.getMessage().c_str()));
+                            Gui::TranslatedUserError(sketchgui,
+                                        QObject::tr("CAD Kernel Error"),
+                                        QObject::tr(e.getMessage().c_str()));
                         }
                         Gui::Selection().clearSelection();
                         Gui::Command::abortCommand();
                         Mode = STATUS_SEEK_First;
                     }
                     catch (const Base::ValueError& e) {
-                        e.ReportException();
+                        Gui::TranslatedUserError(sketchgui,
+                                    QObject::tr("Value Error"),
+                                    QObject::tr(e.getMessage().c_str()));
                         Gui::Selection().clearSelection();
                         Gui::Command::abortCommand();
                         Mode = STATUS_SEEK_First;

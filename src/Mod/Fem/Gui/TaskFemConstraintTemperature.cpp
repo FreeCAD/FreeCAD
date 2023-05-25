@@ -279,9 +279,8 @@ std::string TaskFemConstraintTemperature::get_cflux() const
     return ui->if_temperature->value().getSafeUserString().toStdString();
 }
 
-std::string TaskFemConstraintTemperature::get_constraint_type() const {
-    Fem::ConstraintTemperature* pcConstraint =
-        static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
+std::string TaskFemConstraintTemperature::get_constraint_type() const
+{
     std::string type;
 
     if (ui->rb_temperature->isChecked()) {

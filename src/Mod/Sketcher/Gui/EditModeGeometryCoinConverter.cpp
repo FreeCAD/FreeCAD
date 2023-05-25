@@ -51,6 +51,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
 
     // measurements
     bsplineGeoIds.clear();
+    arcGeoIds.clear();
 
     // end information layer
     Coords.clear();
@@ -184,6 +185,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade & geol
                             EditModeGeometryCoinConverter::CurveMode::OpenCurve,
                             EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId);
             setTracking(GeoId, coinLayer, EditModeGeometryCoinConverter::PointsMode::InsertStartEndMid, 1);
+            arcGeoIds.push_back(GeoId);
         }
         else if (type == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline (a bounded curve that is not a conic)
             convert< Part::GeomBSplineCurve,

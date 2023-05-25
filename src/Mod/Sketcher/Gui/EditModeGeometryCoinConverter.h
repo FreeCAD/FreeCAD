@@ -128,6 +128,11 @@ public:
     */
     auto getBSplineGeoIds(){ return std::move(bsplineGeoIds);}
 
+    /**
+    * returns the GeoIds of Arc geometries
+    */
+    auto getArcGeoIds(){ return std::move(arcGeoIds);}
+
 private:
     template < typename GeoType, PointsMode pointmode, CurveMode curvemode, AnalyseMode analysemode >
     void convert(const Sketcher::GeometryFacade * geometryfacade, [[maybe_unused]] int geoId);
@@ -159,6 +164,7 @@ private:
     float boundingBoxMaxMagnitude = 100;
     double combrepscale = 0; // the repscale that would correspond to this comb based only on this calculation.
     std::vector<int> bsplineGeoIds;
+    std::vector<int> arcGeoIds;
 
 };
 

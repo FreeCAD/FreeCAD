@@ -54,11 +54,11 @@ def get_line_style(line_style, scale):
     style = None
 
     if line_style == "Dashed":
-        style = param.GetString("svgDashedLine", "0.09,0.05")
+        style = param.GetString("svgDashedLine", "2,2")
     elif line_style == "Dashdot":
-        style = param.GetString("svgDashdotLine", "0.09,0.05,0.02,0.05")
+        style = param.GetString("svgDashdotLine", "3,2,0.2,2")
     elif line_style == "Dotted":
-        style = param.GetString("svgDottedLine", "0.02,0.02")
+        style = param.GetString("svgDottedLine", "0.2,2")
     elif line_style:
         if "," in line_style:
             style = line_style

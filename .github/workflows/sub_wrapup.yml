@@ -59,7 +59,7 @@ jobs:
           path: ${{ env.artifactsDownloadDir }}
       - name: Save input data to file
         run: |
-          cat > data << EOD
+          cat > data << "EOD"
           ${{ inputs.previousSteps }}
           EOD
       - name: Compute the report

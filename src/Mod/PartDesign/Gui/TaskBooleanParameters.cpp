@@ -361,7 +361,7 @@ bool TaskDlgBooleanParameters::accept()
         Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 

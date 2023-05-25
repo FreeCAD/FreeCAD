@@ -119,7 +119,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
         else:
             Path.Log.warning(
-                translate("PathAreaOp", "no job for op %s found.") % obj.Label
+                translate("PathAreaOp", "no job for operation %s found.") % obj.Label
             )
         return None
 

@@ -156,18 +156,18 @@ QString checkStatusToString(const int &index)
 QVector<QString> buildBOPCheckResultVector()
 {
   QVector<QString> results;
-  results.push_back(QObject::tr("Boolean Op Check Unknown"));               //BOPAlgo_CheckUnknown
-  results.push_back(QObject::tr("Boolean Op Bad Type"));                    //BOPAlgo_BadType
-  results.push_back(QObject::tr("Boolean Op Self Intersect"));              //BOPAlgo_SelfIntersect
-  results.push_back(QObject::tr("Boolean Op Too Small Edge"));               //BOPAlgo_TooSmallEdge
-  results.push_back(QObject::tr("Boolean Op Non-Recoverable Face"));         //BOPAlgo_NonRecoverableFace
-  results.push_back(QObject::tr("Boolean Op Incompatibility Of Vertex"));    //BOPAlgo_IncompatibilityOfVertex
-  results.push_back(QObject::tr("Boolean Op Incompatibility Of Edge"));      //BOPAlgo_IncompatibilityOfEdge
-  results.push_back(QObject::tr("Boolean Op Incompatibility Of Face"));      //BOPAlgo_IncompatibilityOfFace
-  results.push_back(QObject::tr("Boolean Op Operation Aborted"));           //BOPAlgo_OperationAborted
-  results.push_back(QObject::tr("Boolean Op GeomAbs_C0"));                 //BOPAlgo_GeomAbs_C0
-  results.push_back(QObject::tr("Boolean Op Invalid Curve On Surface"));      //BOPAlgo_InvalidCurveOnSurface
-  results.push_back(QObject::tr("Boolean Op Not Valid"));                   //BOPAlgo_NotValid
+  results.push_back(QObject::tr("Boolean operation: Unknown check"));               //BOPAlgo_CheckUnknown
+  results.push_back(QObject::tr("Boolean operation: Bad type"));                    //BOPAlgo_BadType
+  results.push_back(QObject::tr("Boolean operation: Self-intersection found"));     //BOPAlgo_SelfIntersect
+  results.push_back(QObject::tr("Boolean operation: Edge too small"));              //BOPAlgo_TooSmallEdge
+  results.push_back(QObject::tr("Boolean operation: Non-recoverable face"));        //BOPAlgo_NonRecoverableFace
+  results.push_back(QObject::tr("Boolean operation: Incompatibility of vertex"));   //BOPAlgo_IncompatibilityOfVertex
+  results.push_back(QObject::tr("Boolean operation: Incompatibility of edge"));     //BOPAlgo_IncompatibilityOfEdge
+  results.push_back(QObject::tr("Boolean operation: Incompatibility of face"));     //BOPAlgo_IncompatibilityOfFace
+  results.push_back(QObject::tr("Boolean operation: Aborted"));                     //BOPAlgo_OperationAborted
+  results.push_back(QObject::tr("Boolean operation: GeomAbs_C0"));                  //BOPAlgo_GeomAbs_C0
+  results.push_back(QObject::tr("Boolean operation: Invalid curve on surface"));    //BOPAlgo_InvalidCurveOnSurface
+  results.push_back(QObject::tr("Boolean operation: Not valid"));                   //BOPAlgo_NotValid
 
   return results;
 }

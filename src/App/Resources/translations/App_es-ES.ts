@@ -18,4 +18,45 @@ that reference the same configurable object</source>
       <translation>Sin nombre</translation>
     </message>
   </context>
+  <context>
+    <name>App::Origin</name>
+    <message>
+      <location filename="../../Origin.cpp" line="140"/>
+      <source>X-axis</source>
+      <translation>Eje X</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="141"/>
+      <source>Y-axis</source>
+      <translation>Eje Y</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="142"/>
+      <source>Z-axis</source>
+      <translation>Eje Z</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="143"/>
+      <source>XY-plane</source>
+      <translation>Plano XY</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="144"/>
+      <source>XZ-plane</source>
+      <translation>Plano XZ</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="145"/>
+      <source>YZ-plane</source>
+      <translation>Plano YZ</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::OriginGroupExtension</name>
+    <message>
+      <location filename="../../OriginGroupExtension.cpp" line="134"/>
+      <source>Origin</source>
+      <translation>Origen de coordenadas</translation>
+    </message>
+  </context>
 </TS>

@@ -313,7 +313,7 @@ bool TaskAttacher::updatePreview()
     try{
         attached = pcAttach->positionBySupport();
     } catch (Base::Exception &err){
-        errMessage = QString::fromLatin1(err.what());
+        errMessage = QCoreApplication::translate("Exception", err.what());
     } catch (Standard_Failure &err){
         errMessage = tr("OCC error: %1").arg(QString::fromLatin1(err.GetMessageString()));
     } catch (...) {
@@ -414,7 +414,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         catch(Base::Exception& e) {
             //error = true;
-            ui->message->setText(QString::fromLatin1(e.what()));
+            ui->message->setText(QCoreApplication::translate("Exception", e.what()));
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
 
@@ -1115,7 +1115,7 @@ bool TaskDlgAttacher::accept()
         document->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 

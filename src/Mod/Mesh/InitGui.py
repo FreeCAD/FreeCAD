@@ -32,8 +32,8 @@ class MeshWorkbench (Workbench):
     "Mesh workbench object"
     def __init__(self):
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Mesh/Resources/icons/MeshWorkbench.svg"
-        self.__class__.MenuText = "Mesh Design"
-        self.__class__.ToolTip = "Mesh design workbench"
+        self.__class__.MenuText = "Mesh"
+        self.__class__.ToolTip = "Mesh workbench"
 
     def Initialize(self):
         import Mesh

@@ -449,6 +449,7 @@ NaviCubeSettings::~NaviCubeSettings()
 {
     connectParameterChanged.disconnect();
 }
+
 QString NaviCubeSettings::getDefaultSansserifFont()
 {
     // "FreeCAD NaviCube" family susbtitutions are set in MainWindow::MainWindow
@@ -458,6 +459,7 @@ QString NaviCubeSettings::getDefaultSansserifFont()
     return QFontInfo(font).family();
     // return QStringLiteral("FreeCAD NaviCube");
 }
+
 void NaviCubeSettings::applySettings()
 {
     parameterChanged("BaseColor");
@@ -519,7 +521,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setBaseColor(App::Color::fromPackedRGBA<QColor>(col));
         // update default contrast colors
         parameterChanged("EmphaseColor");
-   }
+    }
     else if (strcmp(Name, "EmphaseColor") == 0) {
         App::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
         unsigned long d = bc.r + bc.g + bc.b >= 1.5f ? 255 : 4294967295;

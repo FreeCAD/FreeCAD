@@ -897,6 +897,17 @@ std::vector<std::pair<App::DocumentObject *,std::string>> DocumentObject::getPar
     return ret;
 }
 
+App::DocumentObject* DocumentObject::getFirstParent() const
+{
+    for (auto obj : getInList()) {
+        if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), true)) {
+            return obj;
+        }
+    }
+
+    return nullptr;
+}
+
 DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {

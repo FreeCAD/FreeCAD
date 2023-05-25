@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="202"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Veuillez sélectionner un objet de placement unique pour obtenir l'orientation locale.</translation>
+      <translation>Veuillez sélectionner l'emplacement d'un seul objet pour obtenir l'orientation locale.</translation>
     </message>
   </context>
   <context>

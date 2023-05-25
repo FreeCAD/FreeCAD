@@ -24,14 +24,14 @@
    <item row="0" column="1">
     <widget class="QLineEdit" name="propertyName">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &amp;quot;Mixed Case&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</string>
      </property>
     </widget>
    </item>
    <item row="1" column="1">
     <widget class="QComboBox" name="propertyGroup">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>The category group the property belongs to.</string>
      </property>
      <property name="editable">
       <bool>true</bool>
@@ -48,7 +48,7 @@
    <item row="2" column="1">
     <widget class="QComboBox" name="propertyType">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>The type of the property value.</string>
      </property>
     </widget>
    </item>
@@ -69,7 +69,7 @@
    <item row="4" column="1">
     <widget class="QTextEdit" name="propertyInfo">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ToolTip to be displayed when user hovers mouse over property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>ToolTip to be displayed when user hovers mouse over property.</string>
      </property>
      <property name="tabChangesFocus">
       <bool>true</bool>
@@ -114,7 +114,7 @@
       <item>
        <widget class="QCheckBox" name="createAnother">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want to create several properties in a batch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Check if you want to create several properties in a batch.</string>
         </property>
         <property name="text">
          <string>Create another</string>

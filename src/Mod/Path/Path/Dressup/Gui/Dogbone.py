@@ -460,7 +460,7 @@ class ObjectDressup(object):
             "App::PropertyFloat",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == custom"),
+            QT_TRANSLATE_NOOP("App::Property", "Dressup length if incision is set to 'custom'"),
         )
         obj.Custom = 0.0
         obj.Proxy = self

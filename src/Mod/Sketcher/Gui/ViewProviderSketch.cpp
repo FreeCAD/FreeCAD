@@ -1391,13 +1391,25 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
         } else if (Constr->Second != GeoEnum::GeoUndef) {
             p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
             const Part::Geometry *geo = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
-            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // point to line distance
+            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                // calculate the projection of p1 onto line2
-                p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
-                p2 += p1;
+                if (Constr->FirstPos != Sketcher::PointPos::none) { // point to line distance
+                    // calculate the projection of p1 onto line2
+                    p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
+                    p2 += p1;
+                 } else {
+                     const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
+                     const Part::GeomCircle *circleSeg = static_cast<const Part::GeomCircle*>(geo1);
+                     Base::Vector3d ct = circleSeg->getCenter();
+                     double radius = circleSeg->getRadius();
+                     p1.ProjectToLine(ct-l2p1, l2p2-l2p1); //project on the line translated to origin
+                     Base::Vector3d dir = p1;
+                     dir.Normalize();
+                     p1 += ct;
+                     p2 = ct + dir * radius;
+                 }
             } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
                 const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
                 if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {

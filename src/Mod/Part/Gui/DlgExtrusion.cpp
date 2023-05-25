@@ -495,8 +495,10 @@ void DlgExtrusion::apply()
         throw;
     }
     catch (Base::Exception &err){
-        QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8(err.what())));
+        QMessageBox::critical(this,
+                              windowTitle(),
+                              tr("Creating Extrusion failed.\n%1")
+                                  .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
     catch(...) {
@@ -643,11 +645,11 @@ bool DlgExtrusion::validate()
         Base::Vector3d dir, base;
         hasValidAxisLink = Part::Extrusion::fetchAxisLink(lnk, base, dir);
     } catch(Base::Exception &err) {
-        errmsg = QString::fromUtf8(err.what());
+        errmsg = QCoreApplication::translate("Exception", err.what());
     } catch(Standard_Failure &err) {
         errmsg = QString::fromLocal8Bit(err.GetMessageString());
     } catch(...) {
-        errmsg = QString::fromUtf8("Unknown error");
+        errmsg = tr("Unknown error");
     }
     if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
         if (errmsg.length() > 0)
@@ -669,7 +671,7 @@ bool DlgExtrusion::validate()
             lnk.setValue(&this->getShapeToExtrude()); //simplified - check only for the first shape.
             Part::Extrusion::calculateShapeNormal(lnk);
         } catch(Base::Exception &err) {
-            errmsg = QString::fromUtf8(err.what());
+            errmsg = QCoreApplication::translate("Exception", err.what());
         } catch(Standard_Failure &err) {
             errmsg = QString::fromLocal8Bit(err.GetMessageString());
         } catch(...) {

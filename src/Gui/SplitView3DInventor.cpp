@@ -110,6 +110,12 @@ void AbstractSplitView::setupSettings()
     viewSettings->ignoreRenderCache = true;
     viewSettings->ignoreDimensions = true;
     viewSettings->applySettings();
+
+    for (auto view : _viewer) {
+        NaviCubeSettings naviSettings(App::GetApplication().GetParameterGroupByPath
+                                     ("User parameter:BaseApp/Preferences/NaviCube"), view);
+        naviSettings.applySettings();
+    }
 }
 
 View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const

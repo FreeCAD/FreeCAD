@@ -56,7 +56,7 @@ class CommandJobCreate:
             "Pixmap": "Path_Job",
             "MenuText": QT_TRANSLATE_NOOP("Path_Job", "Job"),
             "Accel": "P, J",
-            "ToolTip": QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object"),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job"),
         }
 
     def IsActive(self):

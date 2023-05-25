@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Odkaz na buňku aliasem, například
 Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Tabulka</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1075,7 +1080,7 @@ Výchozí hodnota: %V = %A
       <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Odstranit sloupce(sloupce)</numerusform>
+        <numerusform>Odstranit sloupec(ce)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
@@ -1181,7 +1186,7 @@ Výchozí hodnota: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>
