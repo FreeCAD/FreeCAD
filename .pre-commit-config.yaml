@@ -7,10 +7,7 @@ files: |
         src/Mod/AddonManager|
         src/Tools|
         tests/src|
-        src/Mod/Sketcher/App/planegcs|
-        src/Mod/Sketcher/App|
-        src/Mod/Sketcher/Gui|
-        src/Mod/Sketcher|
+        src/Mod/Sketcher
     )
 exclude: |
     (?x)^(
