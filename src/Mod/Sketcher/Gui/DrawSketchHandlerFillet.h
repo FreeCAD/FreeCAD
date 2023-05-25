@@ -28,47 +28,50 @@
 #include "GeometryCreationMode.h"
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
-extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
 
-class FilletSelection : public Gui::SelectionFilterGate
+class FilletSelection: public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
+
 public:
     explicit FilletSelection(App::DocumentObject* obj)
-        : Gui::SelectionFilterGate(nullPointer()), object(obj)
+        : Gui::SelectionFilterGate(nullPointer())
+        , object(obj)
     {}
 
-    bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
     {
         if (pObj != this->object)
             return false;
         if (!sSubName || sSubName[0] == '\0')
             return false;
         std::string element(sSubName);
-        if (element.substr(0,4) == "Edge") {
-            int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
-            Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
-            const Part::Geometry *geom = Sketch->getGeometry(GeoId);
+        if (element.substr(0, 4) == "Edge") {
+            int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
+            Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
+            const Part::Geometry* geom = Sketch->getGeometry(GeoId);
             if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId()))
                 return true;
         }
-        if (element.substr(0,6) == "Vertex") {
-            int VtId = std::atoi(element.substr(6,4000).c_str()) - 1;
-            Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
+        if (element.substr(0, 6) == "Vertex") {
+            int VtId = std::atoi(element.substr(6, 4000).c_str()) - 1;
+            Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             std::vector<int> GeoIdList;
             std::vector<Sketcher::PointPos> PosIdList;
             Sketch->getDirectlyCoincidentPoints(VtId, GeoIdList, PosIdList);
-            if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
-                const Part::Geometry *geom1 = Sketch->getGeometry(GeoIdList[0]);
-                const Part::Geometry *geom2 = Sketch->getGeometry(GeoIdList[1]);
-                if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                    geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+            if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
+                const Part::Geometry* geom1 = Sketch->getGeometry(GeoIdList[0]);
+                const Part::Geometry* geom2 = Sketch->getGeometry(GeoIdList[1]);
+                if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                    && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())
                     return true;
             }
         }
-        return  false;
+        return false;
     }
 };
 
@@ -76,18 +79,24 @@ public:
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    enum FilletType {
+    enum FilletType
+    {
         SimpleFillet,
         ConstraintPreservingFillet
     };
 
-    explicit DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
+    explicit DrawSketchHandlerFillet(FilletType filletType)
+        : filletType(filletType)
+        , Mode(STATUS_SEEK_First)
+        , firstCurve(0)
+    {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
     }
 
-    enum SelectMode{
+    enum SelectMode
+    {
         STATUS_SEEK_First,
         STATUS_SEEK_Second
     };
@@ -105,29 +114,35 @@ public:
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        bool construction=false;
+        bool construction = false;
         int VtId = getPreselectPoint();
         if (Mode == STATUS_SEEK_First && VtId != -1) {
             int GeoId;
-            Sketcher::PointPos PosId=Sketcher::PointPos::none;
-            sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId,PosId);
-            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
+            Sketcher::PointPos PosId = Sketcher::PointPos::none;
+            sketchgui->getSketchObject()->getGeoVertexIndex(VtId, GeoId, PosId);
+            const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
 
                 // guess fillet radius
-                double radius=-1;
+                double radius = -1;
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
-                sketchgui->getSketchObject()->getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
-                if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
-                    const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
-                    const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
-                    if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                        geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
-                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geom2);
+                sketchgui->getSketchObject()->getDirectlyCoincidentPoints(
+                    GeoId, PosId, GeoIdList, PosIdList);
+                if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
+                    const Part::Geometry* geom1 =
+                        sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
+                    const Part::Geometry* geom2 =
+                        sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
+                    construction = Sketcher::GeometryFacade::getConstruction(geom1)
+                        && Sketcher::GeometryFacade::getConstruction(geom2);
+                    if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                        && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        const Part::GeomLineSegment* lineSeg1 =
+                            static_cast<const Part::GeomLineSegment*>(geom1);
+                        const Part::GeomLineSegment* lineSeg2 =
+                            static_cast<const Part::GeomLineSegment*>(geom2);
                         Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
                         Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
                         if (PosIdList[0] == Sketcher::PointPos::end)
@@ -137,109 +152,130 @@ public:
                         double l1 = dir1.Length();
                         double l2 = dir2.Length();
                         double angle = dir1.GetAngle(dir2);
-                        radius = (l1 < l2 ? l1 : l2) * 0.2 * sin(angle/2);
+                        radius = (l1 < l2 ? l1 : l2) * 0.2 * sin(angle / 2);
                     }
                 }
                 if (radius < 0)
                     return false;
 
-                int currentgeoid= getHighestCurveIndex();
+                int currentgeoid = getHighestCurveIndex();
                 // create fillet at point
                 try {
                     bool pointFillet = (filletType == 1);
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, static_cast<int>(PosId), radius, "True",
-                        pointFillet ? "True":"False");
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                          "fillet(%d,%d,%f,%s,%s)",
+                                          GeoId,
+                                          static_cast<int>(PosId),
+                                          radius,
+                                          "True",
+                                          pointFillet ? "True" : "False");
 
                     if (construction) {
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
+                        Gui::cmdAppObjectArgs(
+                            sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid + 1);
                     }
 
                     Gui::Command::commitCommand();
                 }
                 catch (const Base::Exception& e) {
-                    Gui::NotifyUserError(sketchgui->getObject(),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
-                             e.what());
+                    Gui::NotifyUserError(
+                        sketchgui->getObject(),
+                        QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
+                        e.what());
                     Gui::Command::abortCommand();
                 }
 
-                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(
+                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
             return true;
         }
 
         int GeoId = getPreselectCurve();
         if (GeoId > -1) {
-            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+            const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
-                if (Mode==STATUS_SEEK_First) {
+                if (Mode == STATUS_SEEK_First) {
                     firstCurve = GeoId;
                     firstPos = onSketchPos;
                     Mode = STATUS_SEEK_Second;
                     // add the line to the selection
                     std::stringstream ss;
                     ss << "Edge" << firstCurve + 1;
-                    Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName()
-                                                 ,sketchgui->getSketchObject()->getNameInDocument()
-                                                 ,ss.str().c_str()
-                                                 ,onSketchPos.x
-                                                 ,onSketchPos.y
-                                                 ,0.f);
+                    Gui::Selection().addSelection(
+                        sketchgui->getSketchObject()->getDocument()->getName(),
+                        sketchgui->getSketchObject()->getNameInDocument(),
+                        ss.str().c_str(),
+                        onSketchPos.x,
+                        onSketchPos.y,
+                        0.f);
                 }
-                else if (Mode==STATUS_SEEK_Second) {
+                else if (Mode == STATUS_SEEK_Second) {
                     int secondCurve = GeoId;
                     Base::Vector2d secondPos = onSketchPos;
 
                     Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
                     Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
 
-                    const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(firstCurve);
+                    const Part::Geometry* geom1 =
+                        sketchgui->getSketchObject()->getGeometry(firstCurve);
 
                     double radius = 0;
 
-                    if( geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                        geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                        && geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         // guess fillet radius
-                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
-                                                                (sketchgui->getSketchObject()->getGeometry(firstCurve));
-                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
-                                                                (sketchgui->getSketchObject()->getGeometry(secondCurve));
+                        const Part::GeomLineSegment* lineSeg1 =
+                            static_cast<const Part::GeomLineSegment*>(
+                                sketchgui->getSketchObject()->getGeometry(firstCurve));
+                        const Part::GeomLineSegment* lineSeg2 =
+                            static_cast<const Part::GeomLineSegment*>(
+                                sketchgui->getSketchObject()->getGeometry(secondCurve));
 
                         radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
                         if (radius < 0)
                             return false;
 
-                        construction=Sketcher::GeometryFacade::getConstruction(lineSeg1) && Sketcher::GeometryFacade::getConstruction(lineSeg2);
+                        construction = Sketcher::GeometryFacade::getConstruction(lineSeg1)
+                            && Sketcher::GeometryFacade::getConstruction(lineSeg2);
                     }
-                    else { // other supported curves
-                        const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
-                                                                (sketchgui->getSketchObject()->getGeometry(firstCurve));
-                        const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
-                                                                (sketchgui->getSketchObject()->getGeometry(secondCurve));
+                    else {// other supported curves
+                        const Part::Geometry* geo1 = static_cast<const Part::Geometry*>(
+                            sketchgui->getSketchObject()->getGeometry(firstCurve));
+                        const Part::Geometry* geo2 = static_cast<const Part::Geometry*>(
+                            sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=Sketcher::GeometryFacade::getConstruction(geo1) && Sketcher::GeometryFacade::getConstruction(geo2);
+                        construction = Sketcher::GeometryFacade::getConstruction(geo1)
+                            && Sketcher::GeometryFacade::getConstruction(geo2);
                     }
 
 
-                    int currentgeoid= getHighestCurveIndex();
+                    int currentgeoid = getHighestCurveIndex();
 
                     // create fillet between lines
                     try {
                         bool pointFillet = (filletType == 1);
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
-                                  firstCurve, secondCurve,
-                                  firstPos.x, firstPos.y,
-                                  secondPos.x, secondPos.y, radius,
-                                  "True", pointFillet ? "True":"False");
+                        Gui::cmdAppObjectArgs(
+                            sketchgui->getObject(),
+                            "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
+                            firstCurve,
+                            secondCurve,
+                            firstPos.x,
+                            firstPos.y,
+                            secondPos.x,
+                            secondPos.y,
+                            radius,
+                            "True",
+                            pointFillet ? "True" : "False");
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
-                        if(e.getTranslatable()) {
+                        if (e.getTranslatable()) {
                             Gui::TranslatedUserError(sketchgui,
-                                        QObject::tr("CAD Kernel Error"),
-                                        QObject::tr(e.getMessage().c_str()));
+                                                     QObject::tr("CAD Kernel Error"),
+                                                     QObject::tr(e.getMessage().c_str()));
                         }
                         Gui::Selection().clearSelection();
                         Gui::Command::abortCommand();
@@ -247,18 +283,18 @@ public:
                     }
                     catch (const Base::ValueError& e) {
                         Gui::TranslatedUserError(sketchgui,
-                                    QObject::tr("Value Error"),
-                                    QObject::tr(e.getMessage().c_str()));
+                                                 QObject::tr("Value Error"),
+                                                 QObject::tr(e.getMessage().c_str()));
                         Gui::Selection().clearSelection();
                         Gui::Command::abortCommand();
                         Mode = STATUS_SEEK_First;
                     }
 
-                    tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                    tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
-                    if(construction) {
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ",
-                            currentgeoid+1);
+                    if (construction) {
+                        Gui::cmdAppObjectArgs(
+                            sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid + 1);
                     }
 
 
@@ -268,8 +304,9 @@ public:
             }
         }
 
-        if (VtId < 0 && GeoId < 0) // exit the fillet tool if the user clicked on empty space
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        if (VtId < 0 && GeoId < 0)// exit the fillet tool if the user clicked on empty space
+            sketchgui
+                ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
 
         return true;
     }
@@ -289,8 +326,7 @@ protected:
     Base::Vector2d firstPos;
 };
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_DrawSketchHandlerFillet_H
-
+#endif// SKETCHERGUI_DrawSketchHandlerFillet_H

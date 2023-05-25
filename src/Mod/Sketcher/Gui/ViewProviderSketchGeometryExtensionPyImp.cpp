@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "ViewProviderSketchGeometryExtensionPy.h"
+
 #include "ViewProviderSketchGeometryExtensionPy.cpp"
 
 
@@ -38,7 +39,8 @@ std::string ViewProviderSketchGeometryExtensionPy::representation() const
     return str.str();
 }
 
-PyObject *ViewProviderSketchGeometryExtensionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ViewProviderSketchGeometryExtensionPy::PyMake(struct _typeobject*, PyObject*,
+                                                        PyObject*)// Python wrapper
 {
     // create a new instance of PointPy and the Twin object
     return new ViewProviderSketchGeometryExtensionPy(new ViewProviderSketchGeometryExtension);
@@ -60,9 +62,10 @@ int ViewProviderSketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kw
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "ViewProviderSketchGeometryExtension constructor accepts:\n"
-        "-- empty parameter list\n"
-        "-- int\n");
+    PyErr_SetString(PyExc_TypeError,
+                    "ViewProviderSketchGeometryExtension constructor accepts:\n"
+                    "-- empty parameter list\n"
+                    "-- int\n");
     return -1;
 }
 
@@ -76,13 +79,13 @@ void ViewProviderSketchGeometryExtensionPy::setVisualLayerId(Py::Long Id)
     this->getViewProviderSketchGeometryExtensionPtr()->setVisualLayerId(Id);
 }
 
-PyObject *ViewProviderSketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderSketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ViewProviderSketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int ViewProviderSketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/,
+                                                               PyObject* /*obj*/)
 {
     return 0;
 }
-
