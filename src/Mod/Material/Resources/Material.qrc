@@ -4,5 +4,6 @@
         <file>icons/preview-vector.svg</file>
         <file>icons/preferences-material.svg</file>
         <file>ui/preferences-material.ui</file>
+        <file>ui/materials.ui</file>
     </qresource>
 </RCC>
