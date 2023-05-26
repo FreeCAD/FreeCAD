@@ -658,12 +658,12 @@ nainstalované doplňky budou zkontrolovány pro dostupné aktualizace
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Cesta k spustitelnému Python (volitelná):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Cesta k spustitelnému souboru git (volitelná):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -1604,12 +1604,12 @@ nainstalované doplňky budou zkontrolovány pro dostupné aktualizace
       <translation>Umístění nového licenčního souboru</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>Obdržen {} kód odpovědi od serveru</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>Nepodařilo se nainstalovat macro {}</translation>
     </message>

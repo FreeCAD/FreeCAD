@@ -1064,7 +1064,7 @@ usando las teclas [ y ] mientras dibuja</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Aplicar el estilo superior a todas las anotaciones (textos, dimensiones y etiquetas)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1149,12 +1149,12 @@ usando las teclas [ y ] mientras dibuja</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Líneas Exteriores</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>La distancia de la línea se extiende más allá de las líneas de extensión</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1179,12 +1179,12 @@ usando las teclas [ y ] mientras dibuja</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Dimensión excedida</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Longitud del segmento de línea auxiliar que sobrepasa a la línea de cota</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1194,7 +1194,7 @@ usando las teclas [ y ] mientras dibuja</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Externa excedida</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -2039,22 +2039,22 @@ De lo contrario se aplicarán los colores predeterminados. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Obtener colores desde el archivo DXF (importador antiguo solamente)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Importar los límites del rayado como hilos (sólo en importador heredado/anterior)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Genera las polilíneas con grosor (sólo en importador heredado)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Exporta objetos 3D como mallas polifacéticas (solo en exportador heredado/antiguo)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
@@ -2156,13 +2156,12 @@ Si se establece en '0' toda la curva se trata como un segmento recto.</translati
       <location filename="../ui/preferences-dxf.ui" line="587"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">TechDraw Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>Las vistas en TechDraw se exportarán como bloques. Esto podría fallar con plantillas posteriores a DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
       <source>Export TechDraw Views as blocks</source>
-      <translation type="unfinished">Export TechDraw Views as blocks</translation>
+      <translation>Exporta vistas TechDraw como bloques</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
@@ -2932,14 +2931,13 @@ Desmarque para usar el sistema de coordenadas del plano de trabajo</translation>
     <message>
       <location filename="../../DraftGui.py" line="638"/>
       <source>Filled</source>
-      <translation type="unfinished">Filled</translation>
+      <translation>Relleno</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="642"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>Marque aquí si el objeto debería aparecer relleno, de lo contrario aparecerá como una estructura de alambre. No disponible si la preferencia "Usar primitivas de Part" está habilitada en Draft</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="644"/>
@@ -2949,17 +2947,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="646"/>
       <source>Finishes the current drawing or editing operation</source>
-      <translation type="unfinished">Finishes the current drawing or editing operation</translation>
+      <translation>Termina la operación actual de dibujo o edición</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="649"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation type="unfinished">If checked, command will not finish until you press the command button again</translation>
+      <translation>Si está marcado, el comando no terminará hasta que presione el botón de comando de nuevo</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="654"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Si está marcado, se realizará un desplazamiento estilo OCC en lugar del desplazamiento clásico</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="655"/>
@@ -2974,17 +2972,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="658"/>
       <source>Undo the last segment</source>
-      <translation type="unfinished">Undo the last segment</translation>
+      <translation>Deshacer el último segmento</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="660"/>
       <source>Finishes and closes the current line</source>
-      <translation type="unfinished">Finishes and closes the current line</translation>
+      <translation>Finaliza y cierra la línea actual</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="662"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
+      <translation>Borra los segmentos existentes de esta línea y comienza de nuevo desde el último punto</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="663"/>
@@ -2994,27 +2992,27 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="664"/>
       <source>Reorients the working plane on the last segment</source>
-      <translation type="unfinished">Reorients the working plane on the last segment</translation>
+      <translation>Reorienta el plano de trabajo sobre el último segmento</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="666"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
+      <translation>Selecciona una arista existente para ser medida por esta cota</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="667"/>
       <source>Sides</source>
-      <translation type="unfinished">Sides</translation>
+      <translation>Lados</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="668"/>
       <source>Number of sides</source>
-      <translation type="unfinished">Number of sides</translation>
+      <translation>Número de lados</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="671"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+      <translation>Si está marcado, los objetos se copiarán en lugar de ser movidos. Preferencias -&gt; Draft -&gt; Modo copia global para mantener este modo en posteriores comandos</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="672"/>
@@ -3024,7 +3022,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="673"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
+      <translation>Si está marcado, se modificarán los subelementos en lugar de los objetos completos</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="674"/>
@@ -3149,32 +3147,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="969"/>
       <source>Local X</source>
-      <translation type="unfinished">Local X</translation>
+      <translation>X local</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="970"/>
       <source>Local Y</source>
-      <translation type="unfinished">Local Y</translation>
+      <translation>Y local</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="971"/>
       <source>Local Z</source>
-      <translation type="unfinished">Local Z</translation>
+      <translation>Z local</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="973"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="974"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Global u0394Y</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="975"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Global u0394Z</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="977"/>
@@ -3194,7 +3192,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="1556"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Autogrupo:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1842"/>
@@ -3214,7 +3212,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="1845"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Elementos Facebinder</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
@@ -3229,14 +3227,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../importDWG.py" line="386"/>
       <location filename="../../importDWG.py" line="397"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Convirtiendo:</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="292"/>
       <location filename="../../importDWG.py" line="311"/>
       <location filename="../../importDWG.py" line="329"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Conversión completada con éxito</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="297"/>
@@ -3263,9 +3261,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>No se ha encontrado un conversor DWG externo adecuado.
+Por favor, establezca uno manualmente en el menú Edit -&gt; Preferencias -&gt; Importar/Exportar -&gt; DWG
+Para más información véase:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -3273,21 +3271,20 @@ https://wiki.freecad.org/Import_Export_Preferences</translation>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion.
-Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.</translation>
+      <translation>Error durante la conversión DWG.
+Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni caracteres no ingleses, o intente guardar a una versión DWG menor.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="721"/>
       <location filename="../../draftmake/make_sketch.py" line="127"/>
       <location filename="../../draftmake/make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Todas las formas deben ser coplanares</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="729"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Las formas seleccionadas deben definir un plano</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="152"/>
@@ -3299,14 +3296,13 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
+      <translation>No se han encontrado en el sistema las librerias para importar/exportar DXF necesarias para que FreeCAD pueda gestionar el formato DXF.
+Por favor habilite FreeCAD a descargar estas librerías: 
+  1 - Abra el entorno de trabajo Draft
+  2 - Menú Editar &gt; Preferencias &gt; Importar-Exportar &gt; DXF &gt; Habilitar descargas
+O bien descargue estas librerías manualmente, como se explica en
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+Para permitir que FreeCAD descargue estas librerías, responda Sí.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
@@ -3320,22 +3316,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>No se puede convertir la entrada en un factor de escala</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="157"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Establecer escala personalizada</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
+      <translation>Establece una escala de anotación personalizada con formato x:x, x=x</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="212"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Establecer la escala utilizada por las herramientas de anotación de "draft"</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/cut.py" line="57"/>
@@ -3356,7 +3352,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftutils/gui_utils.py" line="773"/>
       <location filename="../../draftutils/utils.py" line="1051"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>No hay documento activo. Abortando.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="131"/>
@@ -3374,42 +3370,42 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftutils/groups.py" line="132"/>
       <location filename="../../draftutils/gui_utils.py" line="782"/>
       <source>Wrong input: object not in document.</source>
-      <translation type="unfinished">Wrong input: object not in document.</translation>
+      <translation>Entrada incorrecta: el objeto no se encuentra en el documento.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="81"/>
       <source>No graphical interface</source>
-      <translation type="unfinished">No graphical interface</translation>
+      <translation>Sin interfaz gráfica</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="161"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>Imposible insertar un nuevo objeto en una parte escalada</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="267"/>
       <source>Symbol not implemented. Using a default symbol.</source>
-      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+      <translation>Símbolo no implementado. Usando un símbolo por defecto.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="333"/>
       <source>Visibility off; removed from list: </source>
-      <translation type="unfinished">Visibility off; removed from list: </translation>
+      <translation>Visibilidad desactivada; eliminada de la lista: </translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="656"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>imagen nula</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="662"/>
       <source>filename does not exist on the system or in the resource file</source>
-      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+      <translation>filename no existe en el sistema ni en el archivo de recursos</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="721"/>
       <source>unable to load texture</source>
-      <translation type="unfinished">unable to load texture</translation>
+      <translation>imposible cargar la textura</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="791"/>
@@ -3571,8 +3567,8 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>Crear Cable</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="149"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="150"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
       <location filename="../../draftguitools/gui_lines.py" line="222"/>
       <location filename="../../draftguitools/gui_lines.py" line="230"/>
       <location filename="../../draftguitools/gui_lines.py" line="237"/>
@@ -3721,17 +3717,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>Crear Arco (Parte)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="390"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>Crear Arco</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="467"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>Seleccione ángulo de apertura</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="510"/>
@@ -3747,80 +3743,80 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="108"/>
       <source>Select an object to edit</source>
-      <translation type="unfinished">Select an object to edit</translation>
+      <translation>Seleccione un objeto a editar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="288"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>Seleccione un objeto Draft para editar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="480"/>
       <source>Edit node</source>
-      <translation type="unfinished">Edit node</translation>
+      <translation>Editar nodo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="536"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>No se encontró ningún punto de edición para el objeto seleccionado</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="789"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>Demasiados objetos seleccionados, número máximo establecido en:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="797"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: este objeto no es editable</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>Editor de estilo de anotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="294"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>Abrir archivo de estilos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="296"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>Archivo JSON (*.json)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Guardar archivo de estilos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Seleccione un objeto a proyectar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="134"/>
       <location filename="../../draftguitools/gui_points.py" line="147"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Crear Punto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Seleccione un objeto para rotar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="99"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Seleccione el centro de rotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
       <location filename="../../draftguitools/gui_rotate.py" line="403"/>
       <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
+      <translation>Ángulo base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="194"/>
@@ -4036,8 +4032,8 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Spline ha sido cerrado</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="141"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="142"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="381"/>
       <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
       <translation>El último punto ha sido eliminado</translation>
@@ -4172,20 +4168,20 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="133"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="134"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="345"/>
       <source>Bézier curve has been closed</source>
       <translation type="unfinished">Bézier curve has been closed</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="450"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="212"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="466"/>
       <source>Create BezCurve</source>
       <translation type="unfinished">Create BezCurve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="380"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="393"/>
       <source>Click and drag to define next knot</source>
       <translation type="unfinished">Click and drag to define next knot</translation>
     </message>
@@ -6429,12 +6425,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="64"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
       <source>Bézier curve</source>
       <translation type="unfinished">Bézier curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="67"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="68"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
@@ -6444,12 +6440,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="242"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="251"/>
       <source>Cubic Bézier curve</source>
       <translation type="unfinished">Cubic Bézier curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="245"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="254"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6461,12 +6457,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="474"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="490"/>
       <source>Bézier tools</source>
       <translation type="unfinished">Bézier tools</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="477"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="493"/>
       <source>Create various types of Bézier curves.</source>
       <translation type="unfinished">Create various types of Bézier curves.</translation>
     </message>

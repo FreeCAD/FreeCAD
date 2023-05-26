@@ -2646,7 +2646,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="48"/>
       <source>Material card</source>
-      <translation type="unfinished">Material card</translation>
+      <translation>Materiaalikortti</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="56"/>
@@ -2656,7 +2656,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="64"/>
       <source>Material name</source>
-      <translation type="unfinished">Material name</translation>
+      <translation>Materiaalin nimi</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="71"/>
@@ -2688,7 +2688,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Perusominaisuudet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
@@ -2703,7 +2703,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="213"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Mekaaniset ominaisuudet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="224"/>
@@ -2738,7 +2738,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
       <source>Thermal  Properties</source>
-      <translation type="unfinished">Thermal  Properties</translation>
+      <translation>Lämpöominaisuudet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -6400,7 +6400,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="82"/>
       <source>No color</source>
-      <translation type="unfinished">No color</translation>
+      <translation>Ei väriä</translation>
     </message>
   </context>
   <context>

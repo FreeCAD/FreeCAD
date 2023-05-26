@@ -658,12 +658,12 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Pot do Pythonove izvršljive datoteke (možnostno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Pot do git izvršljive datoteke (možnostno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -1604,12 +1604,12 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Location for new license file</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation type="unfinished">Received {} response code from server</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation type="unfinished">Failed to install macro {}</translation>
     </message>

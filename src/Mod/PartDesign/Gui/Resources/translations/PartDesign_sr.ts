@@ -622,7 +622,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
       <source>Revolution</source>
-      <translation>Кружно извлачење</translation>
+      <translation>Ротација</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1103"/>
@@ -2950,7 +2950,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
       <source>Revolution parameters</source>
-      <translation>Параметри кружног извлачења</translation>
+      <translation>Параметри ротације</translation>
     </message>
   </context>
   <context>
@@ -3930,7 +3930,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="48"/>
       <source>Edit revolution</source>
-      <translation>Уреди кружно извлачење</translation>
+      <translation>Уреди ротацију</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="199"/>
@@ -5068,7 +5068,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <source>Could not revolve the sketch!</source>
-      <translation>Није могуће кружно извлачење скице!</translation>
+      <translation>Није могуће ротирати скицу!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="180"/>

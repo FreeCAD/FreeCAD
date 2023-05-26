@@ -394,41 +394,41 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="76"/>
       <location filename="../../TaskOrthoViews.ui" line="747"/>
       <source>X +ve</source>
-      <translation>X +ve</translation>
+      <translation>Oś X dodatnia</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="81"/>
       <location filename="../../TaskOrthoViews.ui" line="752"/>
       <location filename="../../TaskOrthoViews.ui" line="791"/>
       <source>Y +ve</source>
-      <translation>Y +ve</translation>
+      <translation>Oś Y dodatnia</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="86"/>
       <location filename="../../TaskOrthoViews.ui" line="757"/>
       <location filename="../../TaskOrthoViews.ui" line="796"/>
       <source>Z +ve</source>
-      <translation>Z +ve</translation>
+      <translation>Oś Z dodatnia</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="91"/>
       <location filename="../../TaskOrthoViews.ui" line="762"/>
       <source>X -ve</source>
-      <translation>X -ve</translation>
+      <translation>Oś X ujemna</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="96"/>
       <location filename="../../TaskOrthoViews.ui" line="767"/>
       <location filename="../../TaskOrthoViews.ui" line="801"/>
       <source>Y -ve</source>
-      <translation>Y -ve</translation>
+      <translation>Oś Y ujemna</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="101"/>
       <location filename="../../TaskOrthoViews.ui" line="772"/>
       <location filename="../../TaskOrthoViews.ui" line="806"/>
       <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <translation>Oś Z ujemna</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="109"/>
@@ -755,7 +755,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make orthographic</source>
-      <translation>Rzutuj prostokątnie</translation>
+      <translation>Rzutuj ortogonalnie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="141"/>

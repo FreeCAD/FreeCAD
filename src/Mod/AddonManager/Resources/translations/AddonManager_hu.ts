@@ -658,12 +658,12 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Python végrehajtható fájl elérés (választható):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Git végrehajtható fájl elérés (választható):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -1604,12 +1604,12 @@ telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre
       <translation>Új licencfájl helye</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>{} válaszkód érkezett a szervertől</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>{} makró telepítése sikertelen</translation>
     </message>

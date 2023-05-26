@@ -5732,7 +5732,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="233"/>
       <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
+      <translation>Importer/Exporter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>

@@ -6808,8 +6808,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8427,7 +8427,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s heeft geen eigenschap %s (%s)</translation>
     </message>
   </context>
 </TS>

@@ -2125,7 +2125,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Αντίστροφη κατεύθυνση</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2839,7 +2839,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Αντίστροφη κατεύθυνση</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>

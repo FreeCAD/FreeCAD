@@ -3473,7 +3473,7 @@
       <translation>Editar vista de detalhe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="85"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="120"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
@@ -8597,6 +8597,21 @@ usando o espaçamento X/Y fornecido</translation>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="53"/>
       <source>FrontBottomRight</source>
       <translation type="unfinished">FrontBottomRight</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskBalloon</name>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <source>You cannot delete this balloon now because
+there is an open task dialog.</source>
+      <translation type="unfinished">You cannot delete this balloon now because
+there is an open task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <source>Can Not Delete</source>
+      <translation type="unfinished">Can Not Delete</translation>
     </message>
   </context>
 </TS>

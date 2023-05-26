@@ -4830,7 +4830,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
       <source>You may have to install the Plot add-on</source>
-      <translation type="unfinished">You may have to install the Plot add-on</translation>
+      <translation>Plotアドオンをインストールする必要があるかもしれません。</translation>
     </message>
   </context>
   <context>
@@ -4869,53 +4869,53 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/Body.cpp" line="408"/>
       <source>Tip shape is empty</source>
-      <translation type="unfinished">Tip shape is empty</translation>
+      <translation>最終結果のシェイプが空です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="62"/>
       <source>BaseFeature link is not set</source>
-      <translation type="unfinished">BaseFeature link is not set</translation>
+      <translation>BaseFeatureリンクが設定されていません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="65"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation type="unfinished">BaseFeature must be a Part::Feature</translation>
+      <translation>BaseFeatureはPart::Featureでなければなりません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature has an empty shape</source>
-      <translation type="unfinished">BaseFeature has an empty shape</translation>
+      <translation>BaseFeatureに空のシェイプがあります。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="78"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation type="unfinished">Cannot do boolean cut without BaseFeature</translation>
+      <translation>BaseFeatureなしでブーリアン演算のカットを行うことはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
-      <translation type="unfinished">Cannot do boolean with anything but Part::Feature and its derivatives</translation>
+      <translation>Part::Featureとその派生物以外ではブーリアン演算を行うことはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="99"/>
       <source>Cannot do boolean operation with invalid base shape</source>
-      <translation type="unfinished">Cannot do boolean operation with invalid base shape</translation>
+      <translation>無効なベースシェイプではブーリアン演算を行うことはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="105"/>
       <source>Cannot do boolean on feature which is not in a body</source>
-      <translation type="unfinished">Cannot do boolean on feature which is not in a body</translation>
+      <translation>ボディー内にないフィーチャーではブーリアン演算を行うことはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="119"/>
       <source>Base shape is null</source>
-      <translation type="unfinished">Base shape is null</translation>
+      <translation>ベースシェイプが null です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="122"/>
       <source>Tool shape is null</source>
-      <translation type="unfinished">Tool shape is null</translation>
+      <translation>ツールシェイプが null です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
@@ -4935,17 +4935,17 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Resulting shape is not a solid</source>
-      <translation type="unfinished">Resulting shape is not a solid</translation>
+      <translation>結果シェイプはソリッドではありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="136"/>
       <source>Cut out failed</source>
-      <translation type="unfinished">Cut out failed</translation>
+      <translation>切り抜きに失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
       <source>Common operation failed</source>
-      <translation type="unfinished">Common operation failed</translation>
+      <translation>共通部分演算が失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
@@ -4970,30 +4970,30 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
       <source>Failed to create chamfer</source>
-      <translation type="unfinished">Failed to create chamfer</translation>
+      <translation>面取りを作成できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
       <location filename="../../../App/FeatureFillet.cpp" line="120"/>
       <source>Resulting shape is null</source>
-      <translation type="unfinished">Resulting shape is null</translation>
+      <translation>結果シェイプが null です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
       <location filename="../../../App/FeatureFillet.cpp" line="131"/>
       <source>Resulting shape is invalid</source>
-      <translation type="unfinished">Resulting shape is invalid</translation>
+      <translation>結果シェイプが無効です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
       <source>Size must be greater than zero</source>
-      <translation type="unfinished">Size must be greater than zero</translation>
+      <translation>サイズはゼロより大きくなければなりません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
       <source>Size2 must be greater than zero</source>
-      <translation type="unfinished">Size2 must be greater than zero</translation>
+      <translation>サイズ2はゼロより大きくなければなりません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
@@ -5018,12 +5018,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="78"/>
       <source>Angle of groove too large</source>
-      <translation type="unfinished">Angle of groove too large</translation>
+      <translation>グルーブの角度が大きすぎます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="82"/>
       <source>Angle of groove too small</source>
-      <translation type="unfinished">Angle of groove too small</translation>
+      <translation>グルーブの角度が小さすぎます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -5051,7 +5051,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="156"/>
       <source>Cut out of base feature failed</source>
-      <translation type="unfinished">Cut out of base feature failed</translation>
+      <translation>ベースフィーチャーの切り抜きに失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
@@ -5213,7 +5213,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
       <source>Hole error: Resulting shape is empty</source>
-      <translation type="unfinished">Hole error: Resulting shape is empty</translation>
+      <translation>ホールエラー: 結果シェイプが空です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1880"/>
@@ -5238,12 +5238,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2025"/>
       <source>Thread type out of range</source>
-      <translation type="unfinished">Thread type out of range</translation>
+      <translation>ねじ山の種類が範囲外</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2028"/>
       <source>Thread size out of range</source>
-      <translation type="unfinished">Thread size out of range</translation>
+      <translation>ねじ山のサイズが範囲外</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2120"/>
@@ -5268,7 +5268,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="161"/>
       <source>Loft: All sections need to be part features</source>
-      <translation>ロフト: すべてのセクションがパートのフィーチャーの一部である必要があります。</translation>
+      <translation>ロフト: すべてのセクションがパートフィーチャーである必要があります。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="166"/>
@@ -5348,7 +5348,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="205"/>
       <source>Pad: Resulting shape is empty</source>
-      <translation type="unfinished">Pad: Resulting shape is empty</translation>
+      <translation>パッド: 結果シェイプが空です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="216"/>
@@ -5365,7 +5365,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>パイプ: プロファイル形状を取得できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
@@ -5380,27 +5380,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation type="unfinished">Pipe: Only one isolated point is needed if using a sketch with isolated points for section</translation>
+      <translation>パイプ: セクションに孤立点を持つスケッチを使用する場合、孤立点が1つだけである必要があります。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="217"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation type="unfinished">Pipe: At least one section is needed when using a single point for profile</translation>
+      <translation>パイプ: プロファイルに1点を使用する場合、少なくとも1つのセクションが必要です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="231"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation type="unfinished">Pipe: All sections need to be part features</translation>
+      <translation>パイプ: すべてのセクションがパートフィーチャーである必要があります。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation type="unfinished">Pipe: Could not obtain section shape</translation>
+      <translation>パイプ: セクション形状を取得できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="246"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation type="unfinished">Pipe: Only the profile and last section can be vertices</translation>
+      <translation>パイプ: プロファイルと最後のセクションにだけ頂点を配置できます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
@@ -5410,37 +5410,37 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Path must not be a null shape</source>
-      <translation type="unfinished">Path must not be a null shape</translation>
+      <translation>パスは null シェイプであってはなりません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="317"/>
       <source>Pipe could not be built</source>
-      <translation type="unfinished">Pipe could not be built</translation>
+      <translation>パイプを作成できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="363"/>
       <source>Result is not a solid</source>
-      <translation type="unfinished">Result is not a solid</translation>
+      <translation>結果はソリッドではありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="378"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation type="unfinished">Pipe: There is nothing to subtract from</translation>
+      <translation>パイプ: 次のものから減算する対象がありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="389"/>
       <source>Adding the pipe failed</source>
-      <translation type="unfinished">Adding the pipe failed</translation>
+      <translation>パイプの加算に失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="409"/>
       <source>Subtracting the pipe failed</source>
-      <translation type="unfinished">Subtracting the pipe failed</translation>
+      <translation>パイプの減算に失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation type="unfinished">A fatal error occurred when making the pipe</translation>
+      <translation>パイプ作成中に重大なエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="558"/>
@@ -5470,42 +5470,42 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="82"/>
       <source>Pocket: Length of pocket too small</source>
-      <translation type="unfinished">Pocket: Length of pocket too small</translation>
+      <translation>ポケット: ポケットの長さが小さすぎます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="86"/>
       <source>Pocket: Second length of pocket too small</source>
-      <translation type="unfinished">Pocket: Second length of pocket too small</translation>
+      <translation>ポケット: ポケットの2番目の長さが小さすぎます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="138"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pocket: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>ポケット: 方向とスケッチの法線ベクトルが直交しているため作成に失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="149"/>
       <source>Pocket: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pocket: Creating a face from sketch failed</translation>
+      <translation>ポケット: スケッチから面を作成できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="155"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
-      <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
+      <translation>ポケット: スケッチが面上に配置されている場合にのみ、面まで押し出すことができます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="190"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
+      <translation>ポケット: 面まで: サブシェイプが得られませんでした!</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="214"/>
       <source>Pocket: Resulting shape is empty</source>
-      <translation type="unfinished">Pocket: Resulting shape is empty</translation>
+      <translation>ポケット: 結果シェイプが空です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="223"/>
       <source>Pocket: Cut out of base feature failed</source>
-      <translation type="unfinished">Pocket: Cut out of base feature failed</translation>
+      <translation>ポケット: ベースフィーチャーの切り抜きに失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="90"/>

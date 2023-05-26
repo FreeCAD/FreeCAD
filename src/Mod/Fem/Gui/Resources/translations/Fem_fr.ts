@@ -3661,7 +3661,7 @@ Remarque : pour la 2D, seul le réglage en x est possible,
       <location filename="../../AppFemGui.cpp" line="182"/>
       <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
+      <translation>Importer/Exporter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="466"/>

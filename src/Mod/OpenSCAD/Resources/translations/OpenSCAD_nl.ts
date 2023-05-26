@@ -112,7 +112,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angle (fa)</source>
-      <translation type="unfinished">angle (fa)</translation>
+      <translation>hoek (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>

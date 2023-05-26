@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>Create Job</source>
-      <translation>Créer une opération</translation>
+      <translation>Créer une tâche</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -260,9 +260,9 @@ Notez que cette option est désactivée si un objet brut provenant d'un solide e
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+      <translation>Active toutes les opérations pour lesquelles les valeurs de configuration doivent être exportées.
 
-Note that only operations which currently have configuration values set are listed.</translation>
+Seules les opérations pour lesquelles des valeurs de configuration en cours ont été définies sont répertoriées.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -1897,12 +1897,12 @@ Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin 
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>Décalage supplémentaire de la boîte englobante sélectionnée le long de l'axe X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>Décalage supplémentaire de la boîte englobante sélectionnée le long de l'axe Y.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2051,9 +2051,9 @@ Par défaut : 5 mm</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - peut être utilisé par les expressions pour définir la valeur par défaut ClearanceHeight pour les nouvelles opérations.
 
-Default: 3 mm</translation>
+Par défaut : 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2140,7 +2140,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>Définit le degré d'agressivité avec lequel les segments colinéaires sont filtrés du diagramme de Voronoï. Les valeurs valides sont comprises entre 0 et 90 degrés (les nombres les plus élevés filtrent davantage). Valeur par défaut = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -4081,7 +4081,7 @@ Par défaut : 5 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>Si plusieurs systèmes de coordonnées sont utilisés, mettre à VRAI ce paramètre entraînera l'écriture du G-code dans plusieurs fichiers de sortie contrôlés par la propriété "ordre par".  Par exemple, si l'ordre est basé sur la fixation, le premier fichier de sortie sera pour la première fixation et un fichier séparé pour le second.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4140,9 +4140,9 @@ Par défaut : OpToolDiameter</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - peut être utilisé par les expressions pour définir la valeur par défaut ClearanceHeight pour les nouvelles opérations.
 
-Default: 3 mm</translation>
+Par défaut : 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
@@ -4237,7 +4237,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../InitGui.py" line="143"/>
       <source>Engraving Operations</source>
-      <translation>Opérations de gravure</translation>
+      <translation>Opération de gravure</translation>
     </message>
   </context>
   <context>
@@ -4286,7 +4286,7 @@ Default: 3 mm</translation>
       <location filename="../../../InitGui.py" line="246"/>
       <location filename="../../../InitGui.py" line="249"/>
       <source>&amp;Path</source>
-      <translation>&amp;Parcours</translation>
+      <translation>&amp;Path</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="217"/>
@@ -6566,7 +6566,7 @@ préférences. Par exemple :
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="272"/>
       <source>Inspects the contents of a Path object</source>
-      <translation>Inspecte le contenu d'un objet Path</translation>
+      <translation>Inspecter le contenu d'un objet Path</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="285"/>
@@ -6802,8 +6802,8 @@ préférences. Par exemple :
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8146,7 +8146,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="79"/>
       <source>Create a Facing Operation from a model or face</source>
-      <translation>Crée une opération de surfaçage à partir d’un modèle ou d'une face</translation>
+      <translation>Créer une opération de surfaçage à partir d’un modèle ou d'une face</translation>
     </message>
   </context>
   <context>
@@ -8172,7 +8172,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
       <source>Creates a Path Pocket object from a face or faces</source>
-      <translation>Crée une poche à partir d'une face ou de plusieurs faces</translation>
+      <translation>Créer une poche à partir d'une face ou de plusieurs faces</translation>
     </message>
   </context>
   <context>
@@ -8420,7 +8420,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s n'a pas de propriété %s (%s)</translation>
     </message>
   </context>
 </TS>

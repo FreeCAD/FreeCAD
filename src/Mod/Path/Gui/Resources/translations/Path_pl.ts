@@ -261,9 +261,7 @@ Należy pamiętać, że opcja ta jest wyłączona, jeśli w zadaniu używany jes
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
-
-Note that only operations which currently have configuration values set are listed.</translation>
+      <translation>Włącz wszystkie operacje, dla których wartości konfiguracyjne powinny być wyeksportowane. Zauważ, że wymienione są tylko operacje, które mają obecnie konfigurację wartości.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -301,7 +299,7 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation>Post-procesor</translation>
+      <translation>Postprocesor</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -933,7 +931,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
       <source>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</source>
-      <translation>Wysokość, w której ruch poprzeczny narzędzia nie jest utrudniony przez żadne uchwyty lub samą część / nadmiar materiału.</translation>
+      <translation>Wysokość, w której ruch poprzeczny narzędzia nie jest utrudniony przez żadne oprawki lub samą część / nadmiar materiału.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
@@ -1899,12 +1897,12 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>Dodatkowe przesunięcie względem wybranej ramki otaczającej wzdłuż osi X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>Dodatkowe przesunięcie względem wybranej ramki otaczającej wzdłuż osi Y.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2053,9 +2051,9 @@ Domyślnie:  5mm</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>Odsunięcie wysokości prześwitu - może być wykorzystywane przez wyrażenia do ustawienia domyślnej wysokości prześwitu dla nowych operacji.
 
-Default: 3 mm</translation>
+Domyślnie: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2142,7 +2140,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>Ustawia, jak agresywnie segmenty współliniowe są filtrowane z diagramu Woronoja. Prawidłowe wartości to 0 - 90 stopni (większe liczby filtrują więcej). Domyślna wartość = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -2336,7 +2334,7 @@ Jeśli promień jest większy niż ten, który utrzymuje sam kształt podpory, w
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="84"/>
       <source>Default Radius</source>
-      <translation>Domyślny promień</translation>
+      <translation>Promień domyślny</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="103"/>
@@ -2400,7 +2398,7 @@ Jeśli promień jest większy niż ten, który utrzymuje sam kształt podpory, w
       <location filename="../preferences/PathJob.ui" line="154"/>
       <location filename="../preferences/PathJob.ui" line="279"/>
       <source>Post Processor</source>
-      <translation>Post-procesor</translation>
+      <translation>Postprocesor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="166"/>
@@ -2440,12 +2438,12 @@ Jeśli promień jest większy niż ten, który utrzymuje sam kształt podpory, w
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
       <source>Post Processors Selection </source>
-      <translation>Wybór Postprocesorów </translation>
+      <translation>Wybór postprocesorów </translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="305"/>
       <source>Default Post Processor</source>
-      <translation>Domyślny Postprocesor</translation>
+      <translation>Domyślny postprocesor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="315"/>
@@ -4083,7 +4081,7 @@ Domyślnie:  5mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>Jeśli używane są różne układy współrzędnych, ustawienie tej opcji na wartość PRAWDA spowoduje, że G-code zostanie zapisany do wielu plików wyjściowych, zgodnie z właściwością "Sortuj według".  Na przykład, jeśli chcesz uporządkować według oprzyrządowania, pierwszy plik wyjściowy będzie dla pierwszego oprzyrządowania i oddzielny plik dla drugiego.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4142,9 +4140,9 @@ Domyślnie: OpToolDiameter</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>Odsunięcie wysokości prześwitu - może być wykorzystywane przez wyrażenia do ustawienia domyślnej wysokości prześwitu dla nowych operacji.
 
-Default: 3 mm</translation>
+Domyślnie: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
@@ -4583,7 +4581,7 @@ Na przykład:
       <location filename="../../../PathCommands.py" line="194"/>
       <location filename="../../../PathCommands.py" line="197"/>
       <source>Copy the operation in the job</source>
-      <translation>Kopiuje operację w zadaniu</translation>
+      <translation>Kopiuj operację w zadaniu</translation>
     </message>
   </context>
   <context>
@@ -6807,8 +6805,8 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8426,7 +8424,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s nie ma właściwości %s (%s)</translation>
     </message>
   </context>
 </TS>

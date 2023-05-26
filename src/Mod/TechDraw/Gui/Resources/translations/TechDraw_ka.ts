@@ -3473,7 +3473,7 @@
       <translation>ნაწილის ხედის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="85"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="120"/>
       <source>Edit %1</source>
       <translation>ჩასწორება %1</translation>
@@ -3529,7 +3529,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
       <source>No subelements selected</source>
-      <translation type="unfinished">No subelements selected</translation>
+      <translation>ქვეელემენტები არჩეული არაა</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
@@ -8597,6 +8597,21 @@ using the given X/Y Spacing</source>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="53"/>
       <source>FrontBottomRight</source>
       <translation>წინაქვედამარჯვენა</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskBalloon</name>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <source>You cannot delete this balloon now because
+there is an open task dialog.</source>
+      <translation type="unfinished">You cannot delete this balloon now because
+there is an open task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <source>Can Not Delete</source>
+      <translation type="unfinished">Can Not Delete</translation>
     </message>
   </context>
 </TS>

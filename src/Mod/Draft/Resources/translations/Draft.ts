@@ -3504,8 +3504,8 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="149"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="150"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="153"/>
         <location filename="../../draftguitools/gui_lines.py" line="222"/>
         <location filename="../../draftguitools/gui_lines.py" line="230"/>
         <location filename="../../draftguitools/gui_lines.py" line="237"/>
@@ -3968,8 +3968,8 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="141"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="142"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="381"/>
         <location filename="../../draftguitools/gui_splines.py" line="131"/>
         <source>Last point has been removed</source>
         <translation type="unfinished"></translation>
@@ -4104,20 +4104,20 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="133"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="134"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="345"/>
         <source>Bézier curve has been closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="211"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="450"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="212"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="466"/>
         <source>Create BezCurve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="380"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="389"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="393"/>
         <source>Click and drag to define next knot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4380,16 +4380,6 @@ The final angle will be the base angle plus this amount.</source>
     <message>
         <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
         <source>Downgrade</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-        <source>Select an object to array</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-        <source>Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5360,23 +5350,6 @@ The final angle will be the base angle plus this amount.</source>
 </context>
 <context>
     <name>Draft</name>
-    <message>
-        <location filename="../../InitGui.py" line="135"/>
-        <location filename="../../InitGui.py" line="136"/>
-        <location filename="../../InitGui.py" line="137"/>
-        <location filename="../../InitGui.py" line="138"/>
-        <location filename="../../InitGui.py" line="139"/>
-        <source>Draft</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../InitGui.py" line="181"/>
-        <location filename="../../InitGui.py" line="182"/>
-        <location filename="../../InitGui.py" line="183"/>
-        <location filename="../../InitGui.py" line="184"/>
-        <source>Import-Export</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../../importDXF.py" line="135"/>
         <source>Download of dxf libraries failed.
@@ -6350,12 +6323,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</sour
 <context>
     <name>Draft_BezCurve</name>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="64"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="65"/>
         <source>Bézier curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="67"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="68"/>
         <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
         <translation type="unfinished"></translation>
@@ -6364,12 +6337,12 @@ CTRL to snap, SHIFT to constrain.</source>
 <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="242"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="251"/>
         <source>Cubic Bézier curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="245"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="254"/>
         <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6379,12 +6352,12 @@ CTRL to snap, SHIFT to constrain.</source>
 <context>
     <name>Draft_BezierTools</name>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="474"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="490"/>
         <source>Bézier tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="477"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="493"/>
         <source>Create various types of Bézier curves.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6787,36 +6760,6 @@ otherwise it will try to heal all objects in the active document.</source>
         <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Draft_Array</name>
-    <message>
-        <location filename="../../draftguitools/gui_array_simple.py" line="68"/>
-        <source>Array</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
-        <source>Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Draft_LinkArray</name>
-    <message>
-        <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
-        <source>LinkArray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
-        <source>Like the Array tool, but creates a &apos;Link array&apos; instead.
-A &apos;Link array&apos; is more efficient when handling many copies but the &apos;Fuse&apos; option cannot be used.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7893,6 +7836,26 @@ beyond the dimension line</source>
     <message>
         <location filename="../../draftguitools/gui_layers.py" line="94"/>
         <source>Set/modify the different layers of this document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../InitGui.py" line="135"/>
+        <location filename="../../InitGui.py" line="136"/>
+        <location filename="../../InitGui.py" line="137"/>
+        <location filename="../../InitGui.py" line="138"/>
+        <location filename="../../InitGui.py" line="139"/>
+        <source>Draft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../InitGui.py" line="181"/>
+        <location filename="../../InitGui.py" line="182"/>
+        <location filename="../../InitGui.py" line="183"/>
+        <location filename="../../InitGui.py" line="184"/>
+        <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

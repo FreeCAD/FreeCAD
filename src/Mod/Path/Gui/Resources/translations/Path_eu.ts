@@ -260,9 +260,9 @@ Kontuan izan aukera hau desgaituta dagoela lehendik dagoen solido bateko pieza-o
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+      <translation>Gaitu konfigurazio-balioak esportatu beharko liratekeen eragiketa guztiak.
 
-Note that only operations which currently have configuration values set are listed.</translation>
+Kontuan izan konfigurazio-balioak dituzten eragiketak soilik zerrendatuko direla.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -1897,12 +1897,12 @@ Azken aukera pieza gordinaren area osoaren aurpegirako erabili daiteke, hurrengo
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>Desplazamendu gehigarria hautatutako muga-kutxaraino X ardatzean zehar.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>Desplazamendu gehigarria hautatutako muga-kutxaraino Y ardatzean zehar.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2051,9 +2051,9 @@ Balio lehenetsia: "5mm"</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - adierazpenek hau erabili dezakete eragiketa berrien altuera librearen desplazamendu lehenetsia ezartzeko.
 
-Default: 3 mm</translation>
+Balio lehenetsia: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2140,7 +2140,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>Segmentu lerrokideak Voronoi diagramatik zein indarrarekin iragazten diren ezartzen du. Baliozko balioak: 0 - 90 gradu (zenbaki handiagoarekin gehiago iragaziko da). Balio lehenetsia = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -4085,7 +4085,7 @@ Balio lehenetsia: "5mm"</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>Koordenatu-sistema anitz erabiltzen ari badira, hemen TRUE (egia) ezartzen bada, gcode kodea irteerako fitxategi anitzetan idatziko da, 'ordena honen arabera' propietateak kontrolatutako moduan. Adibidez, finkapenaren arabera ordenatzen bada, irteerako lehen fitxategia lehen finkapenerako izango da, eta fitxategi bereizi bat sortuko da bigarrenerako.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4144,9 +4144,9 @@ Balio lehenetsia: OpToolDiameter</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - adierazpenek hau erabili dezakete eragiketa berrien altuera librearen desplazamendu lehenetsia ezartzeko.
 
-Default: 3 mm</translation>
+Balio lehenetsia: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
@@ -6806,8 +6806,8 @@ Adibidez:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8424,7 +8424,7 @@ Sortu?</translation>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s-(e)k ez dauka %s propietatea (%s)</translation>
     </message>
   </context>
 </TS>

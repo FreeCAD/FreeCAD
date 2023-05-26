@@ -3474,7 +3474,7 @@
       <translation>Editer la vue détaillée</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="85"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="120"/>
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
@@ -3530,7 +3530,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
       <source>No subelements selected</source>
-      <translation type="unfinished">No subelements selected</translation>
+      <translation>Aucun sous-élément sélectionné</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
@@ -8591,6 +8591,21 @@ en utilisant l'espacement X/Y donné</translation>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="53"/>
       <source>FrontBottomRight</source>
       <translation>Avant en bas à droite</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskBalloon</name>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <source>You cannot delete this balloon now because
+there is an open task dialog.</source>
+      <translation type="unfinished">You cannot delete this balloon now because
+there is an open task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <source>Can Not Delete</source>
+      <translation type="unfinished">Can Not Delete</translation>
     </message>
   </context>
 </TS>

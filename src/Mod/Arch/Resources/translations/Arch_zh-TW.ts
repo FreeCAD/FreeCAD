@@ -2430,7 +2430,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchAxis.py" line="805"/>
       <location filename="../../ArchAxisSystem.py" line="372"/>
       <location filename="../../ArchComponent.py" line="1945"/>
-      <location filename="../../ArchSectionPlane.py" line="1368"/>
+      <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="798"/>
       <location filename="../../ArchWindow.py" line="1789"/>
       <source>Remove</source>
@@ -2455,7 +2455,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="787"/>
       <location filename="../../ArchReference.py" line="487"/>
       <location filename="../../ArchSchedule.py" line="451"/>
-      <location filename="../../ArchSectionPlane.py" line="1182"/>
+      <location filename="../../ArchSectionPlane.py" line="1184"/>
       <location filename="../../ArchSite.py" line="935"/>
       <location filename="../../ArchWindow.py" line="1791"/>
       <source>Edit</source>
@@ -3341,93 +3341,93 @@ Floor creation aborted.</translation>
       <translation>Please select a base face on a structural object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="839"/>
       <source>Create Section Plane</source>
       <translation>建立剖面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1192"/>
       <source>Toggle Cutview</source>
       <translation type="unfinished">Toggle Cutview</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1367"/>
+      <location filename="../../ArchSectionPlane.py" line="1369"/>
       <source>Section plane settings</source>
       <translation>Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1369"/>
+      <location filename="../../ArchSectionPlane.py" line="1371"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1370"/>
+      <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
       <translation>Add selected</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1371"/>
+      <location filename="../../ArchSectionPlane.py" line="1373"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1372"/>
+      <location filename="../../ArchSectionPlane.py" line="1374"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1373"/>
+      <location filename="../../ArchSectionPlane.py" line="1375"/>
       <source>Section plane placement:</source>
       <translation>Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1374"/>
+      <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Rotate X</source>
       <translation>旋轉 X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1375"/>
+      <location filename="../../ArchSectionPlane.py" line="1377"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1376"/>
+      <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Rotate Y</source>
       <translation>旋轉 Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1377"/>
+      <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1378"/>
+      <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate Z</source>
       <translation>旋轉 Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1379"/>
+      <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1380"/>
+      <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Resize</source>
       <translation>尺寸調整</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1381"/>
+      <location filename="../../ArchSectionPlane.py" line="1383"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1382"/>
+      <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1383"/>
+      <location filename="../../ArchSectionPlane.py" line="1385"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centers the plane on the objects in the list above</translation>
     </message>
@@ -3961,7 +3961,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="343"/>
-      <location filename="../../ArchSectionPlane.py" line="858"/>
+      <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The shape of this object</source>
       <translation>此物件的形狀</translation>
     </message>
@@ -3982,7 +3982,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="550"/>
-      <location filename="../../ArchSectionPlane.py" line="947"/>
+      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The line width of this object</source>
       <translation>此物件的線寬</translation>
     </message>
@@ -5386,7 +5386,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="213"/>
-      <location filename="../../ArchSectionPlane.py" line="856"/>
+      <location filename="../../ArchSectionPlane.py" line="858"/>
       <source>The placement of this object</source>
       <translation>這個物件的位置</translation>
     </message>
@@ -5606,79 +5606,79 @@ Building creation aborted.</translation>
       <translation>鋼筋形狀</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="860"/>
+      <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>必須被此剖面所參考之物件，空白表示全部物件.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="862"/>
+      <location filename="../../ArchSectionPlane.py" line="864"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>如果是假的，非固態的也會被剪切，可能會有錯誤的結果。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="865"/>
+      <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>If True, resulting views will be clipped to the section plane area.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="867"/>
+      <location filename="../../ArchSectionPlane.py" line="869"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>若為 true，則物件材質的顏色將用於填充剪切區域。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="870"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="929"/>
+      <location filename="../../ArchSectionPlane.py" line="931"/>
       <source>The display length of this section plane</source>
       <translation>此剖面的顯示長度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="935"/>
+      <location filename="../../ArchSectionPlane.py" line="937"/>
       <source>The display height of this section plane</source>
       <translation>此剖面的顯示高度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="941"/>
+      <location filename="../../ArchSectionPlane.py" line="943"/>
       <source>The size of the arrows of this section plane</source>
       <translation>此剖面箭頭的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="944"/>
+      <location filename="../../ArchSectionPlane.py" line="946"/>
       <source>The transparency of this object</source>
       <translation>此物件的透明度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="950"/>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>Show the cut in the 3D view</source>
       <translation>在 3D 視圖中顯示修剪</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The color of this object</source>
       <translation>此物件的顏色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="957"/>
+      <location filename="../../ArchSectionPlane.py" line="959"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>Show the label in the 3D view</source>
       <translation>在 3D 視圖中顯示標籤</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchSectionPlane.py" line="964"/>
       <location filename="../../ArchSpace.py" line="514"/>
       <source>The name of the font</source>
       <translation>字型名稱</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="967"/>
       <location filename="../../ArchSpace.py" line="520"/>
       <source>The size of the text font</source>
       <translation>字體大小</translation>
@@ -6504,12 +6504,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="821"/>
+      <location filename="../../ArchSectionPlane.py" line="823"/>
       <source>Section Plane</source>
       <translation>剖面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="824"/>
+      <location filename="../../ArchSectionPlane.py" line="826"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>建立剖面物件,包含選擇的物件</translation>
     </message>

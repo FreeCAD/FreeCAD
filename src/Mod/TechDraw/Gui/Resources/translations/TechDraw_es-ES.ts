@@ -1501,7 +1501,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="258"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <translation>Archivos de imagen (*.jpg *.jpeg *.png *.bmp);;Todos los archivos (*)</translation>
     </message>
   </context>
   <context>
@@ -3473,7 +3473,7 @@
       <translation>Editar vista de detalles</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="85"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="120"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
@@ -3529,7 +3529,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
       <source>No subelements selected</source>
-      <translation type="unfinished">No subelements selected</translation>
+      <translation>No hay subelementos seleccionados</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
@@ -8596,6 +8596,21 @@ usando el Espaciado X/Y dado</translation>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="53"/>
       <source>FrontBottomRight</source>
       <translation>Frontal inferior derecho</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskBalloon</name>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <source>You cannot delete this balloon now because
+there is an open task dialog.</source>
+      <translation type="unfinished">You cannot delete this balloon now because
+there is an open task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <source>Can Not Delete</source>
+      <translation type="unfinished">Can Not Delete</translation>
     </message>
   </context>
 </TS>

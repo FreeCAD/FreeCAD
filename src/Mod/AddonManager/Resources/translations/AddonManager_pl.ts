@@ -372,7 +372,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../first_run.ui" line="80"/>
       <source>User-defined proxy:</source>
-      <translation>Serwer proxy użytkownika:</translation>
+      <translation>Serwer pośredniczący użytkownika:</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="93"/>
@@ -588,7 +588,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation>Automatycznie sprawdzaj aktualizacje podczas uruchomienia (wymaga git)</translation>
+      <translation>Automatycznie sprawdzaj aktualizacje podczas uruchomienia (wymaga Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -648,22 +648,22 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="226"/>
       <source>User system proxy</source>
-      <translation>Użyj ustawień proxy użytkownika</translation>
+      <translation>Użyj ustawień serwera pośredniczącego z systemu</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="239"/>
       <source>User-defined proxy:</source>
-      <translation>Serwer proxy użytkownika:</translation>
+      <translation>Serwer pośredniczący użytkownika:</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Ścieżka do pliku wykonywalnego Python (opcjonalnie):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Ścieżka do pliku wykonywalnego Git (opcjonalnie):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -688,7 +688,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation>Wyłącz git (wróć do pobierania tylko ZIP)</translation>
+      <translation>Wyłącz Git (powróć do pobierania tylko w formacie ZIP)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
@@ -1603,12 +1603,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Lokalizacja nowego pliku licencji</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>Otrzymano {} kod odpowiedzi z serwera</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>Nie udało się zainstalować makrodefinicji {}</translation>
     </message>
@@ -2299,7 +2299,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="272"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation>Git jest wyłączony, pominięto Git makrodefinicji</translation>
+      <translation>Git jest wyłączony, pominięto repozytorium Git makrodefinicji</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="320"/>

@@ -2458,7 +2458,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchAxis.py" line="805"/>
       <location filename="../../ArchAxisSystem.py" line="372"/>
       <location filename="../../ArchComponent.py" line="1945"/>
-      <location filename="../../ArchSectionPlane.py" line="1368"/>
+      <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="798"/>
       <location filename="../../ArchWindow.py" line="1789"/>
       <source>Remove</source>
@@ -2483,7 +2483,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchMaterial.py" line="787"/>
       <location filename="../../ArchReference.py" line="487"/>
       <location filename="../../ArchSchedule.py" line="451"/>
-      <location filename="../../ArchSectionPlane.py" line="1182"/>
+      <location filename="../../ArchSectionPlane.py" line="1184"/>
       <location filename="../../ArchSite.py" line="935"/>
       <location filename="../../ArchWindow.py" line="1791"/>
       <source>Edit</source>
@@ -3373,93 +3373,93 @@ Stvaranje etaže prekinuto.</translation>
       <translation>Odaberite osnovno lice na strukturni objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="839"/>
       <source>Create Section Plane</source>
       <translation>Napravi ravninu presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1192"/>
       <source>Toggle Cutview</source>
       <translation>Uključi/isključi pogled prereza</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1367"/>
+      <location filename="../../ArchSectionPlane.py" line="1369"/>
       <source>Section plane settings</source>
       <translation>Postavke presjeka ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1369"/>
+      <location filename="../../ArchSectionPlane.py" line="1371"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Ukloni istaknute objekte sa liste iznad</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1370"/>
+      <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
       <translation>Dodaj odabrano</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1371"/>
+      <location filename="../../ArchSectionPlane.py" line="1373"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Dodajte odabrane objekte u područje ovog presjeka ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1372"/>
+      <location filename="../../ArchSectionPlane.py" line="1374"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objekti viđeni sa ovog presjeka ravni:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1373"/>
+      <location filename="../../ArchSectionPlane.py" line="1375"/>
       <source>Section plane placement:</source>
       <translation>Položaj presjeka ravni:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1374"/>
+      <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Rotate X</source>
       <translation>Rotiraj X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1375"/>
+      <location filename="../../ArchSectionPlane.py" line="1377"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotiraj ravninu uzduž X osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1376"/>
+      <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Rotate Y</source>
       <translation>Rotiraj Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1377"/>
+      <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotiraj ravninu uzduž Y osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1378"/>
+      <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate Z</source>
       <translation>Rotiraj Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1379"/>
+      <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotiraj ravninu uzduž Z osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1380"/>
+      <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Resize</source>
       <translation>Promjena veličine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1381"/>
+      <location filename="../../ArchSectionPlane.py" line="1383"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Promijeni veličinu ravnine radi postavljanja objekata na gornji popis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1382"/>
+      <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
       <translation>Središte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1383"/>
+      <location filename="../../ArchSectionPlane.py" line="1385"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrira ravninu na objekte na gornjem popisu</translation>
     </message>
@@ -3997,7 +3997,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="343"/>
-      <location filename="../../ArchSectionPlane.py" line="858"/>
+      <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The shape of this object</source>
       <translation>Oblik ovog objekta</translation>
     </message>
@@ -4019,7 +4019,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="550"/>
-      <location filename="../../ArchSectionPlane.py" line="947"/>
+      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The line width of this object</source>
       <translation>Širina linije ovog objekta</translation>
     </message>
@@ -5446,7 +5446,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="213"/>
-      <location filename="../../ArchSectionPlane.py" line="856"/>
+      <location filename="../../ArchSectionPlane.py" line="858"/>
       <source>The placement of this object</source>
       <translation>polozaj ovih objekta</translation>
     </message>
@@ -5666,81 +5666,81 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Oblik čelične armature</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="860"/>
+      <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Objekti koji se razmatraju po ravnini rezanja. Prazno znači čitav dokument. </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="862"/>
+      <location filename="../../ArchSectionPlane.py" line="864"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Ako je netočno, ne krute tvari će se rezati također, s moguće lošim rezultatom.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="865"/>
+      <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Ako je istinito, rezultirajući pogledi bit će izrezani na područje ravnine presjeka.
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="867"/>
+      <location filename="../../ArchSectionPlane.py" line="869"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Ako je istinito, boja predmeta materijala upotrijebit će se za popunjavanje izreznih područja.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="870"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Geometrija koja je veća od ove vrijednosti bit će odrezana. Zadržite nulu za neograničeno. </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="929"/>
+      <location filename="../../ArchSectionPlane.py" line="931"/>
       <source>The display length of this section plane</source>
       <translation>Dužina prikaza ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="935"/>
+      <location filename="../../ArchSectionPlane.py" line="937"/>
       <source>The display height of this section plane</source>
       <translation>Visina prikaza ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="941"/>
+      <location filename="../../ArchSectionPlane.py" line="943"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Veličina strelica  ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="944"/>
+      <location filename="../../ArchSectionPlane.py" line="946"/>
       <source>The transparency of this object</source>
       <translation>Prozirnost ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="950"/>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>Show the cut in the 3D view</source>
       <translation>Prikaži rez u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The color of this object</source>
       <translation>Boja ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="957"/>
+      <location filename="../../ArchSectionPlane.py" line="959"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Udaljenost između ravnine rezanja i aktualnog pogleda rezanja (mala vrijednost ali ne nula)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>Show the label in the 3D view</source>
       <translation>Prikaži oznaku u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchSectionPlane.py" line="964"/>
       <location filename="../../ArchSpace.py" line="514"/>
       <source>The name of the font</source>
       <translation>Ime pisma</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="967"/>
       <location filename="../../ArchSpace.py" line="520"/>
       <source>The size of the text font</source>
       <translation>Veličina pisma teksta</translation>
@@ -6570,12 +6570,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="821"/>
+      <location filename="../../ArchSectionPlane.py" line="823"/>
       <source>Section Plane</source>
       <translation>Ravnina presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="824"/>
+      <location filename="../../ArchSectionPlane.py" line="826"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Stvori objekt ravnina presjeka sa odabranim objektima</translation>
     </message>

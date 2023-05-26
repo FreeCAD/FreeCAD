@@ -1398,7 +1398,7 @@ Beachten Sie, dass dies nicht vollständig unterstützt wird und viele Objekte m
     <message>
       <location filename="../ui/preferences-draft.ui" line="372"/>
       <source>Construction Geometry</source>
-      <translation>Konstruktionsgeometrie</translation>
+      <translation>Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="380"/>
@@ -2038,17 +2038,17 @@ Andernfalls werden Standardfarben angewendet. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Originalfarben aus DXF übernehmen (nur Legacy-Importer)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Schraffurgrenzen als Drähte importieren (nur Legacy-Importer)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Polylinien mit Strichstärke zeigen (nur Legacy-Importer)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
@@ -2058,7 +2058,7 @@ Andernfalls werden Standardfarben angewendet. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Projiziere exportierte Objekte entlang der aktuellen Blickrichtung (nur Legacy-Exporter)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -3260,9 +3260,9 @@ Nicht verfügbar, wenn die Option "Primitive Teile verwenden" aktiviert ist</tra
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Kein geeigneter externer DWG-Konverter gefunden.
+Bitte manuell einen einstellen mit Bearbeiten -&gt; Einstellungen -&gt; Import/Export -&gt; DWG
+Für weitere Informationen siehe:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -3566,8 +3566,8 @@ Um FreeCAD zu erlauben, diese Bibliotheken herunterzuladen, wählen Sie "Ja".</t
       <translation>Erzeuge Kante</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="149"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="150"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
       <location filename="../../draftguitools/gui_lines.py" line="222"/>
       <location filename="../../draftguitools/gui_lines.py" line="230"/>
       <location filename="../../draftguitools/gui_lines.py" line="237"/>
@@ -3887,7 +3887,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="304"/>
       <source>Add to construction group</source>
-      <translation>Zur Konstruktionsgruppe hinzufügen</translation>
+      <translation>Zur Hilfsgeometriegruppe hinzufügen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="355"/>
@@ -4031,8 +4031,8 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>Spline wurde geschlossen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="141"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="142"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="381"/>
       <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
       <translation>Der letzte Punkt wurde entfernt</translation>
@@ -4168,20 +4168,20 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>Endpunkt einer Bézierkurve kann nicht geglättet werden</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="133"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="134"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="345"/>
       <source>Bézier curve has been closed</source>
       <translation>Bézierkurve wurde geschlossen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="450"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="212"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="466"/>
       <source>Create BezCurve</source>
       <translation>Bézierkurve erstellen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="380"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="393"/>
       <source>Click and drag to define next knot</source>
       <translation>Klicken und ziehen, um den nächsten Knoten zu definieren</translation>
     </message>
@@ -4394,12 +4394,12 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
       <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
+      <translation>Objekt zum Upgrade auswählen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Aktualisieren</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="79"/>
@@ -4674,7 +4674,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>ShapeString: Flächenerstellung für ein Zeichen fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -5013,12 +5013,12 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../draftmake/make_dimension.py" line="327"/>
       <location filename="../../draftmake/make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>Falsche Eingabe: Objekt hat keine 'Form' um zu messen.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="331"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>Falsche Eingabe: Das Objekt verfügt nicht über mindestens einen 'Scheitelpunkt', der zum Messen verwendet werden kann.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="338"/>
@@ -5133,7 +5133,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="555"/>
       <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
+      <translation>Ebenenbezeichnung ändern:</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="559"/>
@@ -5157,22 +5157,22 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../draftfunctions/downgrade.py" line="230"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>Upgrade: Unbekannte Zwangs-Methode:</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>1 Block gefunden: Wird aufgelöst</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>Ein Verbund mehrerer Volumenkörper gefunden: wird zerlegt</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>1 parametrisches Objekt gefunden: Entferne seine Abhängigkeiten</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="261"/>
@@ -5182,27 +5182,27 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Mehrere Flächen gefunden: Werden getrennt</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="273"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>Mehrere Objekte gefunden: Subtrahiere sie vom ersten Objekt</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="278"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>1 Fläche gefunden: Extrahiere die Kanten</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="284"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Nur Drähte gefunden: Kanten extrahieren</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Kein weiteres Downgrade möglich</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="90"/>
@@ -5212,7 +5212,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="94"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>Die beiden Punkte sind gleich</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="113"/>
@@ -5227,17 +5227,17 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>Kein Volumenkörper erstellt</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>Flächen müssen koplanar sein, um verfeinert zu werden</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="453"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>Gruppen gefunden: Schließe jedes geöffnete Objekt innerhalb</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="459"/>
@@ -5773,8 +5773,8 @@ STRG zum Fangen, SHIFT zum Festlegen.</translation>
       <location filename="../../draftguitools/gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Verbindet die ausgewählten Linien oder Polylinien zu einem einzigen Objekt.
+Die Linien müssen einen gemeinsamen Punkt am Anfang oder Ende haben, damit dies funktioniert.</translation>
     </message>
   </context>
   <context>
@@ -5830,7 +5830,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="83"/>
       <source>Snaps to the midpoint of edges.</source>
-      <translation type="unfinished">Snaps to the midpoint of edges.</translation>
+      <translation>Einrasten an den Mittelpunkten der Kanten.</translation>
     </message>
   </context>
   <context>
@@ -5843,7 +5843,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="97"/>
       <source>Snaps to the perpendicular points on faces and edges.</source>
-      <translation type="unfinished">Snaps to the perpendicular points on faces and edges.</translation>
+      <translation>Rastet an Punkten senkrecht zu Flächen und Kanten ein.</translation>
     </message>
   </context>
   <context>
@@ -5869,7 +5869,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="125"/>
       <source>Snaps to the intersection of two edges.</source>
-      <translation type="unfinished">Snaps to the intersection of two edges.</translation>
+      <translation>Einrasten am Schnittpunkt von zwei Kanten.</translation>
     </message>
   </context>
   <context>
@@ -5882,7 +5882,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="139"/>
       <source>Snaps to an imaginary line parallel to straight edges.</source>
-      <translation type="unfinished">Snaps to an imaginary line parallel to straight edges.</translation>
+      <translation>Einrasten an einer imaginären Linie parallel zu geraden Kanten.</translation>
     </message>
   </context>
   <context>
@@ -5895,7 +5895,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="153"/>
       <source>Snaps to the endpoints of edges.</source>
-      <translation type="unfinished">Snaps to the endpoints of edges.</translation>
+      <translation>Einrasten an den Endpunkten von Kanten.</translation>
     </message>
   </context>
   <context>
@@ -5908,7 +5908,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</source>
-      <translation type="unfinished">Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</translation>
+      <translation>Einrasten an speziellen Punkten von kreisförmigen Kanten bei einem Vielfachen von 30° und 45°.</translation>
     </message>
   </context>
   <context>
@@ -5921,7 +5921,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="181"/>
       <source>Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts.</source>
-      <translation type="unfinished">Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts.</translation>
+      <translation>Einrasten an der Mitte von Flächen und kreisförmigen Kanten sowie an Platzierungspunkten von Bauteilen und Arbeitsebenen Proxies.</translation>
     </message>
   </context>
   <context>
@@ -5929,12 +5929,12 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="194"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Einrast-Erweiterung</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="195"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges.</source>
-      <translation type="unfinished">Snaps to an imaginary line that extends beyond the endpoints of straight edges.</translation>
+      <translation>Einrasten an einer imaginären Verlängerung einer geraden Kante.</translation>
     </message>
   </context>
   <context>
@@ -5947,7 +5947,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="209"/>
       <source>Snaps to the nearest point on faces and edges.</source>
-      <translation type="unfinished">Snaps to the nearest point on faces and edges.</translation>
+      <translation>Einrasten an dem nächstgelegenen Punkt auf Flächen und Kanten.</translation>
     </message>
   </context>
   <context>
@@ -5960,7 +5960,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="223"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°.</source>
-      <translation type="unfinished">Snaps to imaginary lines that cross the previous point at multiples of 45°.</translation>
+      <translation>Einrasten an imaginären Linien, die den vorherigen Punkt bei Vielfachen von 45° schneiden.</translation>
     </message>
   </context>
   <context>
@@ -5968,12 +5968,12 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="236"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Spezielles Einrasten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="237"/>
       <source>Snaps to special points defined by the object.</source>
-      <translation type="unfinished">Snaps to special points defined by the object.</translation>
+      <translation>Einrasten an speziellen Punkten, die vom Objekt definiert werden.</translation>
     </message>
   </context>
   <context>
@@ -5999,7 +5999,7 @@ Eine einzelne Skizze mit nicht verbundenen Linien wird jedoch in mehrere einzeln
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="265"/>
       <source>Projects snap points onto the current working plane.</source>
-      <translation type="unfinished">Projects snap points onto the current working plane.</translation>
+      <translation>Projiziert Einrastpunkte auf die aktuelle Arbeitsebene.</translation>
     </message>
   </context>
   <context>
@@ -6215,8 +6215,8 @@ STRG zum Fangen, SHIFT zum Festlegen. ALT gedrückt halten beim Klicken, um mit 
       <location filename="../../draftguitools/gui_groups.py" line="76"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Verschiebt die ausgewählten Objekte in eine bestehende Gruppe oder entfernt sie aus jeder Gruppe.
+Erstellen Sie zuerst eine Gruppe, um dieses Werkzeug zu verwenden.</translation>
     </message>
   </context>
   <context>
@@ -6229,7 +6229,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>Wählt den Inhalt der ausgewählten Gruppen aus. Für bereits ausgewählte Objekte außerhalb der Gruppe wird die enthaltene Gruppe ausgewählt.</translation>
     </message>
   </context>
   <context>
@@ -6242,7 +6242,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="211"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>Wählen Sie eine Gruppe aus, um automatisch alle Draft- und Arch-Objekte hinzuzufügen.</translation>
     </message>
   </context>
   <context>
@@ -6250,16 +6250,16 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="309"/>
       <source>Add to Construction group</source>
-      <translation>Zur Konstruktionsgruppe hinzufügen</translation>
+      <translation>Zur Hilfsgeometriegruppe hinzufügen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="312"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation>Fügt die ausgewählten Objekte zur Konstruktionsgruppe hinzu
+      <translation>Fügt die ausgewählten Objekte zur Hilfsgeometriegruppe hinzu
  und ändert ihre Darstellung dem Konstruktionsstil entsprechend.
-Es wird eine Konstruktionsgruppe erstellt, wenn noch keine vorhanden ist.</translation>
+Es wird eine Hilfsgeometriegruppe erstellt, wenn noch keine vorhanden ist.</translation>
     </message>
   </context>
   <context>
@@ -6280,7 +6280,7 @@ Es wird eine Konstruktionsgruppe erstellt, wenn noch keine vorhanden ist.</trans
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="50"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>Arbeitsebenen Proxy erstellen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="52"/>
@@ -6297,12 +6297,12 @@ Danach können damit jederzeit andere Kamerapositionen und Objektzustände gespe
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Linienzug zu B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>Konvertiert eine ausgewählte Polyline in eine B-Spline oder eine B-Spline in eine Polyline.</translation>
     </message>
   </context>
   <context>
@@ -6316,8 +6316,8 @@ Danach können damit jederzeit andere Kamerapositionen und Objektzustände gespe
       <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Die Richtung der Normalen der gewählten Bemaßung (Linear, Radial, Winkel) umkehren.
+Wenn andere Objekte ausgewählt sind, werden diese ignoriert.</translation>
     </message>
   </context>
   <context>
@@ -6422,12 +6422,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="64"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
       <source>Bézier curve</source>
       <translation>Bézierkurve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="67"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="68"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Erstellt eine Bézierkurve n-ten Grades. Je mehr Punkte auswählt werden, desto höher ist der Grad.
@@ -6437,12 +6437,12 @@ STRG zum Fangen, SHIFT zum Festlegen von Randbedingungen.</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="242"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="251"/>
       <source>Cubic Bézier curve</source>
       <translation>Kubische Bézierkurve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="245"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="254"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6454,12 +6454,12 @@ STRG zum Einrasten, SHIFT zum Setzen von Randbedingungen.</translation>
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="474"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="490"/>
       <source>Bézier tools</source>
       <translation>Bézierwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="477"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="493"/>
       <source>Create various types of Bézier curves.</source>
       <translation>Erstellt verschiedene Arten von Bézierkurven.</translation>
     </message>
@@ -6609,7 +6609,7 @@ Eine 'Punkt-Verknüpfungsanordnung' ist effizienter, wenn viele Kopien verarbeit
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
       <translation>Schaltet den Konstruktionsmodus um.
-Wenn dieser aktiv ist, werden die folgenden Objekte in die Konstruktionsgruppe aufgenommen und werden mit den festgelegten Farben und Eigenschaften gezeichnet.</translation>
+Wenn dieser aktiv ist, werden die folgenden Objekte in die Hilfsgeometriegruppe aufgenommen und mit den festgelegten Farben und Eigenschaften dargestellt.</translation>
     </message>
   </context>
   <context>
@@ -6634,7 +6634,7 @@ Dies kann verwendet werden, um mehrere Objekte nacheinander zu zeichnen.</transl
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Normal/Wireframe-Anzeige umschalten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="168"/>
@@ -6815,7 +6815,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Aktualisieren</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="61"/>

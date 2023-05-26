@@ -480,7 +480,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; niż ściany</translation>
+      <translation>ścian mniejsze niż</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
