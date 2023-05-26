@@ -1082,7 +1082,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sheet.set('A3', '')
         sheet.set('A3', 'A1')
-        self.assertEqual(sheet.getContents('A3'), 'A1')
+        self.assertEqual(sheet.getContents('A3'), '\'A1')
 
     def testInsertRowsAlias(self):
         """ Regression test for issue 4429; insert rows to sheet with aliases"""
@@ -1447,6 +1447,21 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.getContents('A1'), '=1 == 1 ? 1 : 0')
         self.assertEqual(sheet.A1, 1)
+
+    def testIssue6395(self):
+        """ Testing strings are correctly saved and restored"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '\'36C') # Use a string that may be parsed as a quantity
+        self.doc.recompute()
+
+        self.doc.saveAs(self.TempPath + os.sep + 'string.fcstd')
+        FreeCAD.closeDocument(self.doc.Name)
+
+        self.doc = FreeCAD.openDocument(self.TempPath + os.sep + 'string.fcstd')
+
+        sheet = self.doc.getObject('Spreadsheet')
+        self.assertEqual(sheet.getContents('A1'), '\'36C')
+        self.assertEqual(sheet.get('A1'), '36C')
 
     def tearDown(self):
         #closing doc
