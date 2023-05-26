@@ -64,7 +64,7 @@
          <string>Suppress warning whenever a Path selection mode is activated</string>
         </property>
         <property name="text">
-         <string>Suppress Velocity warning</string>
+         <string>Suppress feed rate warning</string>
         </property>
         <property name="checked">
          <bool>false</bool>

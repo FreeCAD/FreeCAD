@@ -62,7 +62,7 @@
         <item row="2" column="1">
           <widget class="QCheckBox" name="extendCorners">
            <property name="toolTip">
-            <string>Extend the corner between two edges of a pocket. If selected adjacent edges are combined</string>
+            <string>Extend the corner between two edges of a pocket. Selected adjacent edges are combined.</string>
            </property>
            <property name="text">
             <string>Extend Corners</string>
