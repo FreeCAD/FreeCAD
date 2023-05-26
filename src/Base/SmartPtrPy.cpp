@@ -46,8 +46,7 @@ namespace Py {
         p = nullptr;
     }
 
-    SmartPtr::SmartPtr()
-        : p( Py::_None() )
+    SmartPtr::SmartPtr(): p( Py::_None() )
     {
         Py::_XINCREF( p );
     }
@@ -61,8 +60,7 @@ namespace Py {
         }
     }
 
-    SmartPtr::SmartPtr( const SmartPtr &ob )
-    : p( ob.p )
+    SmartPtr::SmartPtr( const SmartPtr &ob ): p( ob.p )
     {
         Py::_XINCREF( p );
     }

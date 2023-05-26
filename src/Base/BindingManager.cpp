@@ -69,8 +69,7 @@ BindingManager& BindingManager::instance()
     return singleton;
 }
 
-BindingManager::BindingManager()
-    : p(new BindingManagerPrivate)
+BindingManager::BindingManager(): p(new BindingManagerPrivate)
 {
 }
 

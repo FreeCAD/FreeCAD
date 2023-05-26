@@ -954,7 +954,7 @@ void  MatrixPy::setA44(Py::Float arg)
     (*this->getMatrixPtr())[3][3] = static_cast<double>(arg);
 }
 
-Py::Sequence MatrixPy::getA() const
+Py::Tuple MatrixPy::getA() const
 {
     double mat[16];
     this->getMatrixPtr()->getMatrix(mat);
@@ -962,7 +962,7 @@ Py::Sequence MatrixPy::getA() const
     for (int i=0; i<16; i++) {
         tuple[i] = Py::Float(mat[i]);
     }
-    return std::move(tuple);
+    return tuple;
 }
 
 void MatrixPy::setA(Py::Sequence arg)

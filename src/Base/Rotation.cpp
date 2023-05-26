@@ -702,11 +702,6 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double c3 = cos(r/2.0);
     double s3 = sin(r/2.0);
 
-    // quat[0] = c1*c2*s3 - s1*s2*c3;
-    // quat[1] = c1*s2*c3 + s1*c2*s3;
-    // quat[2] = s1*c2*c3 - c1*s2*s3;
-    // quat[3] = c1*c2*c3 + s1*s2*s3;
-
     this->setValue (
       c1*c2*s3 - s1*s2*c3,
       c1*s2*c3 + s1*c2*s3,

@@ -83,7 +83,6 @@ std::string Base::base64_encode(unsigned char const* bytes_to_encode, unsigned i
   }
 
   return ret;
-
 }
 
 std::string Base::base64_decode(std::string const& encoded_string) {

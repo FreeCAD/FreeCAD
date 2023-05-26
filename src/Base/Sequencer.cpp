@@ -163,9 +163,8 @@ bool SequencerBase::isBlocking() const
 bool SequencerBase::setLocked(bool bLocked)
 {
     QMutexLocker locker(&SequencerP::mutex);
-    bool old = this->_bLocked;
     this->_bLocked = bLocked;
-    return old;
+    return this->_bLocked;
 }
 
 bool SequencerBase::isLocked() const
