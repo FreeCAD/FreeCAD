@@ -54,7 +54,7 @@ typedef unsigned long SIZE_T, *PSIZE_T;
 #endif // _MSC_VER < 1300
 
 class StackWalkerInternal; // forward
-class StackWalker
+class BaseExport StackWalker
 {
 public:
   typedef enum ExceptType
