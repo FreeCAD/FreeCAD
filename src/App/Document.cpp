@@ -1928,7 +1928,7 @@ bool Document::saveToFile(const char* filename) const
             count_bak = -1;
         }
         bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",false);
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",true);
         std::string saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
 

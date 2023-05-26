@@ -511,6 +511,9 @@ Common sizes are 128, 256 and 512</string>
            <string>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Use date and FCBak extension</string>
           </property>
