@@ -658,12 +658,12 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Staza ka izvršnoj Python datoteci (Neobavezno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Staza ka izvršnoj git datoteci (Neobavezno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -1604,12 +1604,12 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
       <translation>Lokacija za novu licencnu datoteku</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>Primljen {} kod odgovora sa servera</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>Instaliranje makro-a {} nije uspelo</translation>
     </message>

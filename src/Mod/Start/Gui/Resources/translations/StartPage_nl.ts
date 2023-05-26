@@ -56,17 +56,17 @@
     <message>
       <location filename="TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Deze sectie bevat documentatie die nuttig is voor FreeCAD-gebruikers in het algemeen: een lijst van alle werkbanken, gedetailleerde instructies over het installeren en gebruiken van de FreeCAD applicatie, tutorials, en alles wat je nodig hebt om te beginnen.</translation>
+      <translation>Deze sectie bevat nuttige algemene documentatie voor FreeCAD-gebruikers: een lijst van alle werkbanken, gedetailleerde instructies over het installeren en gebruiken van FreeCAD, tutorials, en alles wat je nodig hebt om te beginnen.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation>Vergevorderden gebruikers hub</translation>
+      <translation>Hub voor gevorderde gebruikers</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>Deze sectie verzamelt documentatie voor ervaren gebruikers en mensen die geïnteresseerd zijn in het schrijven van python scripts. U vindt er ook een opslagplaats van macro's, instructies over hoe te installeren en gebruik ervan, en meer informatie over het aanpassen van FreeCAD aan uw specifieke behoeften.</translation>
+      <translation>Deze sectie verzamelt documentatie voor ervaren gebruikers en mensen die geïnteresseerd zijn in het schrijven van Python scripts. U vindt hier ook een bibliotheek van macro's, instructies over hoe deze te installeren en gebruiken, en meer informatie over het aanpassen van FreeCAD aan uw specifieke behoeften.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="55"/>
@@ -76,17 +76,17 @@
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Deze sectie bevat materiaal voor ontwikkelaars: Hoe zelf FreeCAD te compileren, hoe de broncode van FreeCAD is gestructureerd en hoe daarin te navigeren, hoe nieuwe werkbanken te ontwikkelen of FreeCAD in uw eigen toepassing in te voegen.</translation>
+      <translation>Deze sectie bevat materiaal voor ontwikkelaars: Hoe zelf FreeCAD te compileren, hoe de broncode van FreeCAD gestructureerd is en hoe erin te navigeren, hoe nieuwe werkbanken te ontwikkelen en/of FreeCAD in uw eigen toepassing in te voegen.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation>Handmatig</translation>
+      <translation>Handleiding</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>De handleiding van FreeCAD is een andere, meer lineaire manier om de informatie te presenteren in deze wiki. Het is gemaakt om te worden gelezen als een boek en zal U zachtjes kennis laten maken met de vele andere pagina's van de bovenstaande hubs. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-boek versies&lt;/a&gt; zijn ook beschikbaar.</translation>
+      <translation>De FreeCAD handleiding is een andere, meer lineaire manier om de informatie uit deze wiki te presenteren. Het is gemaakt om als een boek te worden gelezen en zal u rustig kennis laten maken met de vele andere pagina's van de bovenstaande hubs. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;E-boek versies&lt;/a&gt; zijn ook beschikbaar.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="59"/>

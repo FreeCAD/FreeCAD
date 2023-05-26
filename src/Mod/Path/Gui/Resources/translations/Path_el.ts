@@ -1412,9 +1412,9 @@ Reset deletes all current items from the list and fills the list with all circul
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation type="unfinished">Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
+      <translation>Καθορίστε εάν η όψη πρέπει να περιορίζεται από το πραγματικό σχήμα της επιλεγμένης όψης (ή το τμήμα εάν δεν έχει επιλεγεί όψη) ή εάν το πλαίσιο οριοθέτησης πρέπει να είναι στραμμένο προς τα έξω.
 
-The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</translation>
+Το τελευταίο μπορεί να χρησιμοποιηθεί για να καλύψει ολόκληρη την περιοχή του αποθέματος για να εξασφαλίσει ομοιόμορφα ύψη για τις ακόλουθες λειτουργίες</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
@@ -6808,8 +6808,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>

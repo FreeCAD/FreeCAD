@@ -3337,7 +3337,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <source>formula</source>
-      <translation type="unfinished">formula</translation>
+      <translation>formula</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="42"/>

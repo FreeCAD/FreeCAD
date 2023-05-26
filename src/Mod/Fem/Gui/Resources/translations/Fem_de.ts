@@ -1294,8 +1294,8 @@ besteht aus zwei Netzgruppen, Flächen und Knoten, auf die die Beschränkung ode
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
-      <translation type="unfinished">Existing result objects will be kept
-otherwise overwritten by new solver run</translation>
+      <translation>Vorhandene Ergebnisobjekte werden beibehalten
+bis diese durch einen neuen Rechnungslauf überschrieben werden</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="315"/>
@@ -1306,8 +1306,7 @@ otherwise overwritten by new solver run</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation type="unfinished">The results dialog will be opened
-with the last used dialog settings</translation>
+      <translation>Der Ergebnisdialog wird mit den zuletzt verwendeten Dialogeinstellungen geöffnet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="335"/>
@@ -1318,8 +1317,7 @@ with the last used dialog settings</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All constraints are hidden in the model view
 when the results dialog is opened</source>
-      <translation type="unfinished">All constraints are hidden in the model view
-when the results dialog is opened</translation>
+      <translation>Alle Randbedingungen/Einschränkungen sind in der Modellansicht verborgen, wenn der Ergebnisdialog geöffnet ist</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
@@ -1340,8 +1338,7 @@ when the results dialog is opened</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation type="unfinished">Default solver to be added when
-adding an analysis container</translation>
+      <translation>Hinzufügen des Standardlösers, wenn ein Analysebehälter hinzugefügt wird</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
@@ -1619,12 +1616,12 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
       <source>Iteration solver with SOR preconditioning (-sorcg)</source>
-      <translation type="unfinished">Iteration solver with SOR preconditioning (-sorcg)</translation>
+      <translation>Iterationslöser mit SOR Voreinstellung (-sorcg)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="183"/>
       <source>Iteration solver with SIC preconditioning (-siccg)</source>
-      <translation type="unfinished">Iteration solver with SIC preconditioning (-siccg)</translation>
+      <translation>Interationslöser mit SIC Voreinstellung (-siccg)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="188"/>
@@ -3103,7 +3100,7 @@ Bitte eine andere Datei angeben.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="88"/>
       <source>To define a vector field</source>
-      <translation type="unfinished">To define a vector field</translation>
+      <translation>Definiert einen Vektor</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="91"/>
@@ -3157,15 +3154,15 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Realer Anteil einer potentialen x-Komponente
+Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Imaginärer Anteil einer potentialen x-Komponente
+Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="154"/>
@@ -3178,15 +3175,15 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Realer Anteil einer potentialen y-Komponente
+Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Imaginärer Anteil einer potentialen y-Komponente
+Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
@@ -3199,15 +3196,15 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Realer Anteil einer potentialen z-Komponente
+Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Imaginärer Anteil einer potentialen z-Komponente
+Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
@@ -5491,7 +5488,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="58"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Analysebehälter</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="63"/>
@@ -5749,12 +5746,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="539"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Flussgleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="543"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Erzeugt eine FEM-Gleichung für den Fluss</translation>
     </message>
   </context>
   <context>
@@ -5767,7 +5764,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="492"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Erzeugt eine FEM-Gleichung für elektrische Kräfte</translation>
     </message>
   </context>
   <context>
@@ -5780,7 +5777,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="560"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Erzeugt eine FEM-Gleichung für Wärme</translation>
     </message>
   </context>
   <context>
@@ -5823,12 +5820,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Nichtlineares mechanisches Material</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="670"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Erzeugt ein nichtlineares mechanisches Material</translation>
     </message>
   </context>
   <context>
@@ -5902,7 +5899,7 @@ für den Löser Elmer verwendet werden</translation>
       <location filename="../../../femcommands/commands.py" line="863"/>
       <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Informationen zum FEM-Netz anzeigen</translation>
     </message>
   </context>
   <context>
@@ -5910,12 +5907,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="893"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>FEM-Netz aus der Gestalt mittels GMSH</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="897"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Erstelle ein FEM-Netz aus einer Gestalt mittels Gmsh Mesher</translation>
     </message>
   </context>
   <context>
@@ -5928,7 +5925,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="943"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>Erstellt eine FEM-Netzgruppe</translation>
     </message>
   </context>
   <context>
@@ -5936,7 +5933,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="956"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>FEM-Netz aus der Gestalt durch Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="960"/>
@@ -5949,12 +5946,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>FEM-Netz Region</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1006"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Erzeugt eine FEM-Netz Region</translation>
     </message>
   </context>
   <context>
@@ -5967,7 +5964,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Zeigen und sichtbar machen der ausgewählten Ergebnisse</translation>
     </message>
   </context>
   <context>
@@ -6014,12 +6011,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1140"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Löser Elmer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1145"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Erzeugt den FEM-Löser Elmer</translation>
     </message>
   </context>
   <context>
@@ -6027,12 +6024,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1156"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Löser Mystran</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1158"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>Erzeugt den FEM-Löser Mystran</translation>
     </message>
   </context>
   <context>
@@ -6040,12 +6037,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1168"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Berechnungen des Lösers starten</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1173"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Starten der Berechnungen für den ausgewählten Löser</translation>
     </message>
   </context>
   <context>
@@ -6066,7 +6063,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Lösersteuerung</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
@@ -6133,12 +6130,12 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Wählt Flächen/Kanten/Punkte aus</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="134"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Um Referenzen hinzuzufügen: Wählen Sie diese in der 3D-Ansicht aus und klicken Sie auf "Hinzufügen".</translation>
     </message>
   </context>
   <context>
@@ -6151,7 +6148,7 @@ für den Löser Elmer verwendet werden</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="153"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Wählen Sie Elemente aus dem Festkörper aus, der der Liste hinzugefügt werden sollen. Um den Festkörper hinzuzufügen, auf "Hinzufügen" klicken.</translation>
     </message>
   </context>
   <context>

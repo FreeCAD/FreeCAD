@@ -658,22 +658,24 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Шлях да двайковага файла Python (неабавязкова):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Шлях да двайковага файла git (неабавязкова):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
-      <translation>Шлях да двайковага файла Python для ўстаноўкі пакета з дапамогай pip. Аўтаматычна вызначаецца, калі гэта неабходна і не пазначана.</translation>
+      <translation>Шлях да двайковага файла Python для ўстаноўкі пакета з дапамогай pip.
+Аўтаматычна вызначаецца, калі гэта неабходна і не пазначана.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation>Шлях да двайкована файла git. Аўтаматычна вызначаецца, калі гэта неабходна і не пазначана.</translation>
+      <translation>Шлях да двайковага файла git.
+Аўтаматычна вызначаецца, калі гэта неабходна і не пазначана.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
@@ -1605,12 +1607,12 @@ installed addons will be checked for available updates
       <translation>Месцазнаходжанне новага файла ліцэнзіі</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>Атрыманы {} код адказу сервера</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>Не атрымалася ўсталяваць макрас {}</translation>
     </message>

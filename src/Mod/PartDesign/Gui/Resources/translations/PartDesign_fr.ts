@@ -1022,7 +1022,7 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Paramètres de la développante</translation>
+      <translation>Paramètres de l'engrenage à développante</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -1064,22 +1064,22 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
       <source>Addendum Coefficient</source>
-      <translation>Coefficient addendum</translation>
+      <translation>Coefficient addendum :</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="199"/>
       <source>Dedendum Coefficient</source>
-      <translation>Coefficient dedendum</translation>
+      <translation>Coefficient dedendum :</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="219"/>
       <source>Root Fillet Coefficient</source>
-      <translation>Coefficient du congé à la base</translation>
+      <translation>Coefficient du congé à la base :</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation>Coefficient de décalage du profil</translation>
+      <translation>Coefficient de décalage du profil :</translation>
     </message>
   </context>
   <context>
@@ -4037,7 +4037,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation>Paramètre du pignon</translation>
+      <translation>Paramètres du pignon</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -4047,7 +4047,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation>Référence du pignon</translation>
+      <translation>Référence du pignon :</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
@@ -4724,7 +4724,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation>Crée ou modifie la définition de l'engrenage à développante.</translation>
+      <translation>Créer ou modifier la définition de l'engrenage à développante.</translation>
     </message>
   </context>
   <context>
@@ -4737,7 +4737,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation>Crée ou modifie la définition du pignon.</translation>
+      <translation>Créer ou modifier la définition du pignon.</translation>
     </message>
   </context>
   <context>

@@ -1604,12 +1604,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <translation>Posizione per il nuovo file di licenza</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>Ricevuto {} codice di risposta dal server</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>Impossibile installare la macro {}</translation>
     </message>

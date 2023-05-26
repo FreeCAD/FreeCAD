@@ -263,9 +263,8 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
-
-Note that only operations which currently have configuration values set are listed.</translation>
+      <translation>Уключыць усе аперацыі, для якіх варта экспартаваць значэнні налад.
+Звярніце ўвагу, што ў спісе пазначаныя толькі аперацыі, для якіх у бягучы час зададзены значэнні налады.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -1918,7 +1917,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="274"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected face(s)</source>
-      <translation>Калі птушка, разец застанецца ўнутры мяжы мадэлі ці абраных граняў</translation>
+      <translation>Калі True, разец застанецца ўнутры мяжы мадэлі ці абраных граняў</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="287"/>
@@ -1933,12 +1932,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>Дадатковае зрушэнне да абраных габарытаў наўздоўж восі X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>Дадатковае зрушэнне да абраных габарытаў наўздоўж восі Y.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2080,9 +2079,8 @@ Default: "5mm"</source>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: 3 mm</translation>
+      <translation>ClearanceHeightOffset - можа ўжывацца ў выразах для ўстаноўкі першапачатковай вышыні зазору для новых аперацый.
+Першапачаткова: 3 мм</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2171,7 +2169,9 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>Задае, наколькі агрэсіўна калінеарныя адрэзкі фільтруюцца з дыяграмы Варанога.
+Дапушчальныя значэннямі знаходзяцца ў дыяпазоне 0 - 90 градусаў (вялікія значэнні павялічваюць фільтрацыю).
+Першапачаткова = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -4124,7 +4124,8 @@ Default: "5mm"</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>Калі ўжываецца некалькі сістэм каардынат, усталяванне для гэтага значэння True прывядзе да таго, што G-код будзе запісвацца ў некалькі выходных файлаў, якія кантралююцца ўласцівасцю 'парадкаваць па'.
+Напрыклад, пры замове па прыстасаванню першы файл вываду будзе для першага прыстасавання, а асобны файл - для другога.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4180,9 +4181,8 @@ Default: OpToolDiameter</source>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
-
-Default: 3 mm</translation>
+      <translation>ClearanceHeightOffset - можа ўжывацца ў выразах для ўстаноўкі першапачатковай вышыні зазору для новых аперацый.
+Першапачаткова: 3 мм</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
@@ -5754,7 +5754,7 @@ For example:
       <location filename="../../../Path/Op/Surface.py" line="238"/>
       <location filename="../../../Path/Op/Waterline.py" line="258"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected face(s).</source>
-      <translation>Калі true, разец застанецца ўнутры мяжы мадэлі ці выбраных граняў.</translation>
+      <translation>Калі True, разец застанецца ўнутры мяжы мадэлі ці выбраных граняў.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="256"/>
@@ -6846,8 +6846,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8465,7 +8465,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s не мае ўласцівасці %s (%s)</translation>
     </message>
   </context>
 </TS>

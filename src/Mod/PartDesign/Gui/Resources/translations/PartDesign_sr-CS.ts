@@ -622,7 +622,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
       <source>Revolution</source>
-      <translation>Kružno izvlačenje</translation>
+      <translation>Rotacija</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1103"/>
@@ -2950,7 +2950,7 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
       <source>Revolution parameters</source>
-      <translation>Parametri kružnog izvlačenja</translation>
+      <translation>Parametri rotacije</translation>
     </message>
   </context>
   <context>
@@ -3930,7 +3930,7 @@ Ovaj tipski oblik je pokvaren i ne može se uređivati.</translation>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="48"/>
       <source>Edit revolution</source>
-      <translation>Uredi kružno izvlačenje</translation>
+      <translation>Uredi rotaciju</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="199"/>
@@ -5068,7 +5068,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <source>Could not revolve the sketch!</source>
-      <translation>Nije moguće kružno izvlačenje skice!</translation>
+      <translation>Nije moguće rotirati skicu!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="180"/>

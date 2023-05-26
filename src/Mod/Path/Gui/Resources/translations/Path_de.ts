@@ -259,9 +259,9 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+      <translation>Aktivieren Sie alle Operationen, für die die Konfigurationswerte exportiert werden sollen.
 
-Note that only operations which currently have configuration values set are listed.</translation>
+Beachten Sie, dass nur Operationen, die derzeit Konfigurationswerte haben, aufgelistet sind.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -662,17 +662,17 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>Length of the Box</source>
-      <translation type="unfinished">Length of the Box</translation>
+      <translation>Länge des Rohteils</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>Width of the Box</source>
-      <translation type="unfinished">Width of the Box</translation>
+      <translation>Breite des Rohteils</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>Height of the Box</source>
-      <translation type="unfinished">Height of the Box</translation>
+      <translation>Höhe des Rohteils</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
@@ -1896,12 +1896,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>Zusätzlicher Versatz zur ausgewählten Begrenzungsbox entlang der X-Achse.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>Zusätzlicher Versatz zur ausgewählten Begrenzungsbox entlang der Y-Achse.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2050,9 +2050,9 @@ Default: "5mm"</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset (Sicherheitsabstand Werkzeug über Werkstück) - kann von Ausdrücken verwendet werden, um die Standard-ClearanceHeight für neue Operationen festzulegen.
 
-Default: 3 mm</translation>
+Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten immer mindestens einen Abstand von 3mm über dem Werkstück haben</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2139,7 +2139,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>Legt fest, wie aggressiv kollineare Segmente aus dem Voronoi-Diagramm gefiltert werden. Gültige Werte sind 0 - 90 Grad (größere Zahlen filtern mehr). Standard = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -4086,7 +4086,7 @@ Default: "5mm"</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>Wenn mehrere Koordinatensysteme verwendet werden, wird bei TRUE der Gcode in mehrere Ausgabedateien geschrieben, die durch die Eigenschaft 'sortieren nach' gesteuert werden. Wenn zum Beispiel nach Fixture sortiert wird, wird die erste Ausgabedatei für die erste Fixture und eine separate Datei für die zweite erstellt.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4145,9 +4145,9 @@ Default: OpToolDiameter</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset (Sicherheitsabstand Werkzeug über Werkstück) - kann von Ausdrücken verwendet werden, um die Standard-ClearanceHeight für neue Operationen festzulegen.
 
-Default: 3 mm</translation>
+Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten immer mindestens einen Abstand von 3mm über dem Werkstück haben</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
@@ -4407,7 +4407,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="642"/>
       <source>Spindle RPM</source>
-      <translation type="unfinished">Spindle RPM</translation>
+      <translation>Spindel-Drehzahl</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="635"/>
@@ -6807,8 +6807,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8426,7 +8426,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s hat keine Eigenschaft %s (%s)</translation>
     </message>
   </context>
 </TS>

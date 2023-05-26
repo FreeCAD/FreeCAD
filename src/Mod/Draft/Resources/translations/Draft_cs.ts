@@ -62,12 +62,12 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation type="unfinished">Toggle on/off</translation>
+      <translation>Zapnout/vypnout</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Izolovat</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -109,29 +109,29 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
       <source>The font size in system units</source>
-      <translation type="unfinished">The font size in system units</translation>
+      <translation>Velikost písma v systémových jednotkách</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing (relative to the font size)</source>
-      <translation type="unfinished">The line spacing (relative to the font size)</translation>
+      <translation>Řádkování (vzhledem k velikosti písma)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
       <source>Lines and arrows</source>
-      <translation type="unfinished">Lines and arrows</translation>
+      <translation>Čáry a šipky</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="348"/>
       <source>Show line</source>
-      <translation type="unfinished">Show line</translation>
+      <translation>Zobrazit řádek</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="371"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="381"/>
       <source>The width of the lines</source>
-      <translation type="unfinished">The width of the lines</translation>
+      <translation>Šířka čar</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="384"/>
@@ -142,36 +142,36 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="391"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
       <source>The type of arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of arrows or markers to use for dimensions and labels</translation>
+      <translation>Typ šipek nebo značek, které se mají použít pro rozměry a štítky</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="445"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
       <source>The size of the arrows or markers in system units</source>
-      <translation type="unfinished">The size of the arrows or markers in system units</translation>
+      <translation>Velikost šipek nebo značek v systémových jednotkách</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
       <source>The color of lines and arrows</source>
-      <translation type="unfinished">The color of lines and arrows</translation>
+      <translation>Barva čar a šipek</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
       <source>Line and arrow color</source>
-      <translation type="unfinished">Line and arrow color</translation>
+      <translation>Barva čáry a šipky</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="482"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance the dimension line is additionally extended</translation>
+      <translation>Vzdálenost, o kterou se kótovací čára dodatečně prodlouží</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="522"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Vzdálenost, o kterou jsou vynášecí čáry navíc prodlouženy za kótovací čáru</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -187,7 +187,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
       <source>The color of texts, dimension texts and label texts</source>
-      <translation type="unfinished">The color of texts, dimension texts and label texts</translation>
+      <translation>Barva textů, textů rozměrů a textů štítků</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
@@ -928,22 +928,22 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
       <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+      <translation>Vyplní níže uvedené hodnoty uloženou předvolbou stylu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Nahrát preset</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Uložit aktuální styl jako přednastavený...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="56"/>
       <source>Lines and faces</source>
-      <translation type="unfinished">Lines and faces</translation>
+      <translation>Čáry a tváře</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="65"/>
@@ -953,7 +953,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="72"/>
       <source>The color of lines</source>
-      <translation type="unfinished">The color of lines</translation>
+      <translation>Barva čar</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="79"/>
@@ -973,7 +973,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="100"/>
       <source>The line style</source>
-      <translation type="unfinished">The line style</translation>
+      <translation>Styl čáry</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="104"/>
@@ -1003,12 +1003,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="134"/>
       <source>The display mode for faces</source>
-      <translation type="unfinished">The display mode for faces</translation>
+      <translation>Režim zobrazení pro tváře</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="138"/>
       <source>Flat Lines</source>
-      <translation type="unfinished">Flat Lines</translation>
+      <translation>Rovné čáry</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="143"/>
@@ -1033,7 +1033,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="168"/>
       <source>The color of faces</source>
-      <translation type="unfinished">The color of faces</translation>
+      <translation>Barva tváří</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="175"/>
@@ -1043,7 +1043,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="182"/>
       <source>The transparency of faces</source>
-      <translation type="unfinished">The transparency of faces</translation>
+      <translation>Průhlednost tváří</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="198"/>
@@ -1064,7 +1064,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Použít výše uvedený styl na všechny anotace (texty, rozměry a štítky)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1074,7 +1074,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="204"/>
       <source>The size of texts and dimension texts</source>
-      <translation type="unfinished">The size of texts and dimension texts</translation>
+      <translation>Velikost textů a kótovacích textů</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
@@ -1084,7 +1084,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Prostor mezi textem a kótovací čarou</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="242"/>
@@ -1094,7 +1094,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
       <source>The color of texts and dimension texts</source>
-      <translation type="unfinished">The color of texts and dimension texts</translation>
+      <translation>Barva textů a kótovacích textů</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="235"/>
@@ -1104,7 +1104,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="262"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Mezery mezi různými řádky textu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="272"/>
@@ -1149,12 +1149,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Externí řádky</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>Vzdálenost, ve které je kótovací čára prodloužena za vynášecí čáry</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1164,7 +1164,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
       <source>The size of dimension arrows</source>
-      <translation type="unfinished">The size of dimension arrows</translation>
+      <translation>Velikost šipek rozměrů</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
@@ -1174,27 +1174,27 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="344"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>Jestli je přípona jednotky uvedena v textech rozměrů nebo ne</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Dim přestřelit</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Délka vynášecích čar za kótovací čárou</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>Délka prodlužovacích čar</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Překročit</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1204,12 +1204,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="429"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
+      <translation>Jednotka, která se má použít pro rozměry. Chcete-li použít aktuální jednotku FreeCAD, nechte prázdné</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="441"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>Použít výše uvedený styl na vybrané objekty</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
@@ -1224,22 +1224,22 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>PAT soubor:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>soubory vzorů (*.pat)</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Vzor:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Stupnice:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -1482,32 +1482,32 @@ Všimněte si, že toto není plně podporováno a mnoho objektů nebude možno 
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="160"/>
       <source>Alternate SVG patterns location</source>
-      <translation type="unfinished">Alternate SVG patterns location</translation>
+      <translation>Alternativní umístění vzorů SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="186"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
-      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+      <translation>Zde můžete zadat adresář obsahující vlastní soubory SVG&lt;pattern&gt; definice, které mají být přidány do standardních vzorů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="203"/>
       <source>SVG pattern resolution</source>
-      <translation type="unfinished">SVG pattern resolution</translation>
+      <translation>Rozlišení vzoru SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="223"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>Rozlišení pro kreslení vzorů. Výchozí hodnota je 128. Vyšší hodnoty poskytují lepší rozlišení, nižší hodnoty zrychlují kreslení</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="246"/>
       <source>SVG pattern default size</source>
-      <translation type="unfinished">SVG pattern default size</translation>
+      <translation>Výchozí velikost vzoru SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="266"/>
       <source>The default size for SVG patterns</source>
-      <translation type="unfinished">The default size for SVG patterns</translation>
+      <translation>Výchozí velikost pro vzory SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="292"/>
@@ -1624,7 +1624,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source>Screen</source>
-      <translation type="unfinished">Screen</translation>
+      <translation>Obrazovka</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -1739,7 +1739,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="475"/>
       <source>Override unit</source>
-      <translation type="unfinished">Override unit</translation>
+      <translation>Přepsat jednotku</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
@@ -1811,7 +1811,7 @@ Jedna jednotka v souboru SVG se přeloží jako jeden milimetr. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>Styl souboru SVG pro zápis při exportu skici</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
@@ -1843,9 +1843,9 @@ Jedna jednotka v souboru SVG se přeloží jako jeden milimetr. </translation>
       <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </source>
-      <translation type="unfinished">Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </translation>
+      <translation>Verze Open CASCADE starší než verze 6.8 nepodporují obloukovou projekci.
+V tomto případě budou oblouky diskretizovány na malé úsečky.
+Tato hodnota je maximální délka segmentu.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
@@ -1870,7 +1870,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>Tento dialog předvoleb se zobrazí při importu/exportu souborů DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="38"/>
@@ -1881,8 +1881,8 @@ This value is the maximum segment length. </translation>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</translation>
+      <translation>Používá se importér Pythonu, jinak se používá novější C++.
+Poznámka: Importér C++ je rychlejší, ale zatím není tak funkční</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
@@ -1893,8 +1893,8 @@ Note: C++ importer is faster, but is not as featureful yet</translation>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Používá se exportér Pythonu, jinak se používá novější C++.
+Poznámka: C++ exportér je rychlejší, ale zatím není tak funkční</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
@@ -1911,9 +1911,9 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation type="unfinished">Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</translation>
+      <translation>Povolte FreeCADu stáhnout Python konvertor pro import a export DXF.
+Můžete to také provést ručně instalací pracovní plochy "dxf_library".
+ze Správce doplňků.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
@@ -1940,7 +1940,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>Pokud není zaškrtnuto, texty a mtexty nebudou importovány</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="159"/>
@@ -1960,7 +1960,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>Je-li zaškrtnuto, budou importovány také objekty papírového prostoru</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="191"/>
@@ -1970,7 +1970,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Pokud chcete, aby byly importovány i nepojmenované bloky (začínající znakem *).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="207"/>
@@ -1985,7 +1985,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Budou vytvořeny pouze standardní objekty Part (nejrychlejší)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="234"/>
@@ -1995,7 +1995,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>Objekty Parametric Draft budou vytvořeny, kdykoli to bude možné</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="253"/>
@@ -2005,7 +2005,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
-      <translation type="unfinished">Sketches will be created whenever possible</translation>
+      <translation>Náčrty budou vytvořeny, kdykoli to bude možné</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="269"/>
@@ -2023,49 +2023,49 @@ from the Addon Manager.</translation>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Měřítko pro použití na soubory DXF při importu.
+Faktorem je převod mezi jednotkou vašeho souboru DXF a milimetry.
+Příklad: pro soubory v milimetrech: 1, v centimetrech: 10,
+                             v metrech: 1000, v palcích: 25,4, ve stopách: 304,8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </translation>
+      <translation>Barvy budou načteny z objektů DXF, kdykoli to bude možné.
+Jinak budou použity výchozí barvy.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Získejte originální barvy ze souboru DXF (pouze starší importér)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Importovat hranice šraf jako dráty (pouze starší importér)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Vykreslit křivky se šířkou (pouze starší importér)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Export 3D objektů jako polyface sítě (pouze starší exportér)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Promítněte exportované objekty podél aktuálního směru pohledu (pouze starší exportér)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD se pokusí spojit shodné objekty do drátů.
+Upozorňujeme, že to může chvíli trvat!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
@@ -2076,8 +2076,8 @@ Note that this can take a while!</translation>
       <location filename="../ui/preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </translation>
+      <translation>Objekty ze stejných vrstev budou spojeny do bloků výkresů,
+rychlejší otáčení displeje, ale hůře upravitelné</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
@@ -2088,8 +2088,8 @@ turning the display faster, but making them less easily editable </translation>
       <location filename="../ui/preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>Importované texty získají standardní velikost textu konceptu,
+místo velikosti, kterou mají v dokumentu DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
@@ -2099,7 +2099,7 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Pokud je toto zaškrtnuto, vrstvy DXF budou importovány jako vrstvy konceptu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="425"/>
@@ -2109,14 +2109,14 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Poklopy budou převedeny na jednoduché dráty</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>Pokud mají křivky definovanou šířku, budou vykresleny
+jako uzavřené dráty se správnou šířkou</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
@@ -2137,8 +2137,8 @@ as closed wires with correct width</translation>
       <location filename="../ui/preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>Maximální délka každého ze segmentů křivky.
+Pokud je nastavena na '0', celý spline se považuje za přímý segment.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
@@ -2149,24 +2149,24 @@ If it is set to '0' the whole spline is treated as a straight segment.</translat
     <message>
       <location filename="../ui/preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
+      <translation>Všechny objekty obsahující plochy budou exportovány jako 3D polyfaces</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="587"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">TechDraw Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>Pohledy TechDraw budou exportovány jako bloky.
+To může selhat u šablon post DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
       <source>Export TechDraw Views as blocks</source>
-      <translation type="unfinished">Export TechDraw Views as blocks</translation>
+      <translation>Exportujte pohledy TechDraw jako bloky</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation type="unfinished">Exported objects will be projected to reflect the current view direction</translation>
+      <translation>Exportované objekty budou promítnuty tak, aby odrážely aktuální směr pohledu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
@@ -2282,27 +2282,27 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="319"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>Pokud je zaškrtnuto, zobrazí se kolem mřížky další ohraničení, které ukazuje velikost hlavního čtverce v levém dolním okraji</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="322"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Zobrazit ohraničení mřížky</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pokud je zaškrtnuto, v levém dolním rohu mřížky se zobrazí obrys lidské postavy. Tato možnost je účinná pouze v případě, že je nainstalován pracovní stůl BIM a pokud je povolena možnost „Zobrazit ohraničení mřížky“.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
       <source>Show human figure</source>
-      <translation type="unfinished">Show human figure</translation>
+      <translation>Ukaž lidskou postavu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="357"/>
       <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+      <translation>Je-li nastaveno, bude mít mřížka své dvě hlavní osy zbarvené červeně, zeleně nebo modře, když se shodují s globálními osami</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="360"/>
@@ -2347,7 +2347,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="534"/>
       <source>Grid color and transparency</source>
-      <translation type="unfinished">Grid color and transparency</translation>
+      <translation>Barva mřížky a průhlednost</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="554"/>
@@ -2402,12 +2402,12 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Conversion method:</source>
-      <translation type="unfinished">Conversion method:</translation>
+      <translation>Metoda konverze:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation type="unfinished">This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</translation>
+      <translation>Toto je metoda, kterou FreeCAD použije k převodu souborů DWG do DXF. Pokud je zvoleno "Automaticky", FreeCAD se pokusí najít jeden z následujících převodníků ve stejném pořadí, v jakém jsou uvedeny zde. Pokud FreeCAD nemůže žádný najít, možná budete muset vybrat konkrétní převodník a uvést jeho cestu zde pod. Vyberte nástroj "dwg2dxf", pokud používáte LibreDWG, "ODAFileConverter", pokud používáte konvertor souborů ODA, nebo nástroj "dwg2dwg", pokud používáte profesionální verzi QCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
@@ -2417,27 +2417,27 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>LibreDWG</source>
-      <translation type="unfinished">LibreDWG</translation>
+      <translation>LibreDWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="61"/>
       <source>ODA Converter</source>
-      <translation type="unfinished">ODA Converter</translation>
+      <translation>Převodník ODA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="66"/>
       <source>QCAD pro</source>
-      <translation type="unfinished">QCAD pro</translation>
+      <translation>QCAD pro</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation type="unfinished">Path to file converter</translation>
+      <translation>Převaděč cesty k souboru</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation type="unfinished">The path to your DWG file converter executable</translation>
+      <translation>Cesta ke spustitelnému souboru převodníku souborů DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
@@ -2587,7 +2587,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="652"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
@@ -2711,7 +2711,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../../DraftGui.py" line="80"/>
       <source>Subelement mode</source>
-      <translation type="unfinished">Subelement mode</translation>
+      <translation>Režim dílčího prvku</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="85"/>
@@ -2726,17 +2726,17 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../../DraftGui.py" line="95"/>
       <source>Snap On/Off</source>
-      <translation type="unfinished">Snap On/Off</translation>
+      <translation>Uchopení zapnuto/vypnuto</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="100"/>
       <source>Increase snap radius</source>
-      <translation type="unfinished">Increase snap radius</translation>
+      <translation>Zvětšete poloměr uchopení</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="105"/>
       <source>Decrease snap radius</source>
-      <translation type="unfinished">Decrease snap radius</translation>
+      <translation>Zmenšete poloměr uchopení</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="110"/>
@@ -2757,17 +2757,17 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../../DraftGui.py" line="125"/>
       <location filename="../../DraftGui.py" line="665"/>
       <source>Select edge</source>
-      <translation type="unfinished">Select edge</translation>
+      <translation>Vyberte hranu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="130"/>
       <source>Add custom snap point</source>
-      <translation type="unfinished">Add custom snap point</translation>
+      <translation>Přidat vlastní uchopovací bod</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="135"/>
       <source>Length mode</source>
-      <translation type="unfinished">Length mode</translation>
+      <translation>Režim délky</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="140"/>
@@ -2783,12 +2783,12 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../../DraftGui.py" line="150"/>
       <source>Cycle snap object</source>
-      <translation type="unfinished">Cycle snap object</translation>
+      <translation>Cyklovat objekt uchopení</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="155"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Vrátit zpět poslední segment</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="557"/>
@@ -2829,17 +2829,17 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../../DraftGui.py" line="605"/>
       <source>active command:</source>
-      <translation type="unfinished">active command:</translation>
+      <translation>aktivní příkaz:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="607"/>
       <source>Active Draft command</source>
-      <translation type="unfinished">Active Draft command</translation>
+      <translation>Příkaz Aktivní návrh</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="608"/>
       <source>X coordinate of next point</source>
-      <translation type="unfinished">X coordinate of next point</translation>
+      <translation>X souřadnice dalšího bodu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="609"/>
@@ -2859,22 +2859,22 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../../DraftGui.py" line="612"/>
       <source>Y coordinate of next point</source>
-      <translation type="unfinished">Y coordinate of next point</translation>
+      <translation>Y souřadnice dalšího bodu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="613"/>
       <source>Z coordinate of next point</source>
-      <translation type="unfinished">Z coordinate of next point</translation>
+      <translation>Z souřadnice dalšího bodu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="614"/>
       <source>Enter point</source>
-      <translation type="unfinished">Enter point</translation>
+      <translation>Zadejte bod</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="616"/>
       <source>Enter a new point with the given coordinates</source>
-      <translation type="unfinished">Enter a new point with the given coordinates</translation>
+      <translation>Zadejte nový bod s danými souřadnicemi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="617"/>
@@ -2890,17 +2890,17 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../../DraftGui.py" line="619"/>
       <source>Length of current segment</source>
-      <translation type="unfinished">Length of current segment</translation>
+      <translation>Délka aktuálního segmentu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="620"/>
       <source>Angle of current segment</source>
-      <translation type="unfinished">Angle of current segment</translation>
+      <translation>Úhel aktuálního segmentu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="624"/>
       <source>Check this to lock the current angle</source>
-      <translation type="unfinished">Check this to lock the current angle</translation>
+      <translation>Zaškrtnutím této možnosti uzamknete aktuální úhel</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="625"/>
@@ -2912,33 +2912,33 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../../DraftGui.py" line="626"/>
       <location filename="../../DraftGui.py" line="897"/>
       <source>Radius of Circle</source>
-      <translation type="unfinished">Radius of Circle</translation>
+      <translation>Poloměr kruhu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="631"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Souřadnice vzhledem k poslednímu bodu nebo k počátku souřadnicového systému
+pokud je první bod k nastavení</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="636"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Souřadnice vzhledem ke globálnímu souřadnicovému systému.
+Zrušte zaškrtnutí pro použití souřadnicového systému pracovní roviny</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="638"/>
       <source>Filled</source>
-      <translation type="unfinished">Filled</translation>
+      <translation>Vyplněné</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="642"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>Toto zaškrtněte, pokud se má objekt jevit jako vyplněný, jinak se bude jevit jako drátěný model.
+Není k dispozici, pokud je povolena možnost předvolby návrhu „Použít základní prvky součásti“.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="644"/>
@@ -2948,22 +2948,22 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="646"/>
       <source>Finishes the current drawing or editing operation</source>
-      <translation type="unfinished">Finishes the current drawing or editing operation</translation>
+      <translation>Dokončí aktuální kreslení nebo operaci úprav</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="649"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation type="unfinished">If checked, command will not finish until you press the command button again</translation>
+      <translation>Pokud je zaškrtnuto, příkaz se nedokončí, dokud znovu nestisknete příkazové tlačítko</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="654"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Pokud je zaškrtnuto, místo klasického offsetu se provede offset ve stylu OCC</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="655"/>
       <source>&amp;OCC-style offset</source>
-      <translation type="unfinished">&amp;OCC-style offset</translation>
+      <translation>&amp;Odsazení ve stylu OCC</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="657"/>
@@ -2973,17 +2973,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="658"/>
       <source>Undo the last segment</source>
-      <translation type="unfinished">Undo the last segment</translation>
+      <translation>Vrátit zpět poslední segment</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="660"/>
       <source>Finishes and closes the current line</source>
-      <translation type="unfinished">Finishes and closes the current line</translation>
+      <translation>Dokončí a uzavře aktuální řádek</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="662"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
+      <translation>Vymaže stávající segmenty této čáry a začne znovu od posledního bodu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="663"/>
@@ -2993,47 +2993,47 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="664"/>
       <source>Reorients the working plane on the last segment</source>
-      <translation type="unfinished">Reorients the working plane on the last segment</translation>
+      <translation>Změní orientaci pracovní roviny na posledním segmentu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="666"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
+      <translation>Vybere existující hranu, která má být měřena touto kótou</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="667"/>
       <source>Sides</source>
-      <translation type="unfinished">Sides</translation>
+      <translation>Strany</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="668"/>
       <source>Number of sides</source>
-      <translation type="unfinished">Number of sides</translation>
+      <translation>Počet stran</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="671"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+      <translation>Je-li zaškrtnuto, objekty budou zkopírovány místo přesunu. Předvolby -&gt; Koncept -&gt; Globální režim kopírování pro zachování tohoto režimu v dalších příkazech</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="672"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Upravte dílčí prvky</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="673"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
+      <translation>Pokud je zaškrtnuto, budou upraveny dílčí prvky namísto celých objektů</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="674"/>
       <source>Create text</source>
-      <translation type="unfinished">Create text</translation>
+      <translation>Vytvořte text</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="675"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>Stisknutím tohoto tlačítka vytvoříte textový objekt nebo dokončíte text dvěma prázdnými řádky</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="697"/>
@@ -3042,24 +3042,24 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../draftguitools/gui_selectplane.py" line="530"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="541"/>
       <source>Current working plane</source>
-      <translation type="unfinished">Current working plane</translation>
+      <translation>Aktuální pracovní rovina</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="698"/>
       <source>Change default style for new objects</source>
-      <translation type="unfinished">Change default style for new objects</translation>
+      <translation>Změnit výchozí styl pro nové objekty</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="699"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Přepnout konstrukční režim</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="700"/>
       <location filename="../../DraftGui.py" line="1548"/>
       <location filename="../../DraftGui.py" line="1563"/>
       <source>Autogroup off</source>
-      <translation type="unfinished">Autogroup off</translation>
+      <translation>Automatické seskupování vypnuto</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="778"/>
@@ -3100,7 +3100,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="848"/>
       <source>Label type</source>
-      <translation type="unfinished">Label type</translation>
+      <translation>Typ štítku</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="864"/>
@@ -3123,7 +3123,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="889"/>
       <location filename="../../draftguitools/gui_trimex.py" line="217"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>Offsetová vzdálenost</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="885"/>
@@ -3133,47 +3133,47 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="965"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Místní u0394X</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="966"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Místní u0394Y</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="967"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Místní u0394Z</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="969"/>
       <source>Local X</source>
-      <translation type="unfinished">Local X</translation>
+      <translation>Místní X</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="970"/>
       <source>Local Y</source>
-      <translation type="unfinished">Local Y</translation>
+      <translation>Místní Y</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="971"/>
       <source>Local Z</source>
-      <translation type="unfinished">Local Z</translation>
+      <translation>Místní Z</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="973"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Globální u0394X</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="974"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Globální u0394Y</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="975"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Globální u0394Z</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="977"/>
@@ -3193,7 +3193,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="1556"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Automatická skupina:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1842"/>
@@ -3213,7 +3213,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="1845"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Facebinder prvky</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
@@ -3228,32 +3228,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../importDWG.py" line="386"/>
       <location filename="../../importDWG.py" line="397"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Konverze:</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="292"/>
       <location filename="../../importDWG.py" line="311"/>
       <location filename="../../importDWG.py" line="329"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Konverze úspěšná</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="377"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>Převaděč LibreDWG nebyl nalezen</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="391"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>Převodník ODA nebyl nalezen</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="402"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>Převaděč QCAD nebyl nalezen</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3262,9 +3262,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Nebyl nalezen žádný vhodný externí DWG převodník.
+Nastavte jeden ručně v nabídce Upravit -&gt; Předvolby -&gt; Import/Export -&gt; DWG
+Další informace viz:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -3272,21 +3272,21 @@ https://wiki.freecad.org/Import_Export_Preferences</translation>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion.
-Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.</translation>
+      <translation>Chyba při převodu DWG.
+Zkuste přesunout soubor DWG do cesty k adresáři bez mezer a neanglických znaků,
+nebo zkuste uložit do nižší verze DWG.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="721"/>
       <location filename="../../draftmake/make_sketch.py" line="127"/>
       <location filename="../../draftmake/make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Všechny tvary musí být koplanární</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="729"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Vybrané tvary musí definovat rovinu</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="152"/>
@@ -3298,14 +3298,14 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
+      <translation>Knihovny pro import/export DXF, které FreeCAD potřebuje ke zpracování
+formát DXF nebyl v tomto systému nalezen.
+Povolte prosím FreeCAD ke stažení těchto knihoven:
+  1 - Načtěte pracovní stůl Návrh
+  2 - Nabídka Úpravy &gt; Předvolby &gt; Import-Export &gt; DXF &gt; Povolit stahování
+Nebo si tyto knihovny stáhněte ručně, jak je vysvětleno dále
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
@@ -3319,22 +3319,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>Vstup nelze převést na faktor měřítka</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="157"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Nastavit vlastní měřítko</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
+      <translation>Nastavte vlastní měřítko anotace ve formátu x:x, x=x</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="212"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Nastavte měřítko používané nástroji pro poznámky konceptu</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/cut.py" line="57"/>
@@ -3355,7 +3355,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftutils/gui_utils.py" line="773"/>
       <location filename="../../draftutils/utils.py" line="1051"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>Žádný aktivní dokument. Přerušení.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="131"/>
@@ -3373,52 +3373,52 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftutils/groups.py" line="132"/>
       <location filename="../../draftutils/gui_utils.py" line="782"/>
       <source>Wrong input: object not in document.</source>
-      <translation type="unfinished">Wrong input: object not in document.</translation>
+      <translation>Chybný vstup: objekt není v dokumentu.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="81"/>
       <source>No graphical interface</source>
-      <translation type="unfinished">No graphical interface</translation>
+      <translation>Žádné grafické rozhraní</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="161"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>Nelze vložit nový objekt do upravené součásti</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="267"/>
       <source>Symbol not implemented. Using a default symbol.</source>
-      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+      <translation>Symbol není implementován. Použití výchozího symbolu.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="333"/>
       <source>Visibility off; removed from list: </source>
-      <translation type="unfinished">Visibility off; removed from list: </translation>
+      <translation>Viditelnost vypnuta; odstraněno ze seznamu:</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="656"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>obrázek je Null</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="662"/>
       <source>filename does not exist on the system or in the resource file</source>
-      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+      <translation>název_souboru neexistuje v systému ani v souboru prostředků</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="721"/>
       <source>unable to load texture</source>
-      <translation type="unfinished">unable to load texture</translation>
+      <translation>nelze načíst texturu</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="791"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
+      <translation>Nemá 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="652"/>
       <source>Solids:</source>
-      <translation type="unfinished">Solids:</translation>
+      <translation>Pevné látky:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="653"/>
@@ -3428,17 +3428,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="654"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>dráty:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="655"/>
       <source>Edges:</source>
-      <translation type="unfinished">Edges:</translation>
+      <translation>Hrany:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="656"/>
       <source>Vertices:</source>
-      <translation type="unfinished">Vertices:</translation>
+      <translation>Vrcholy:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="660"/>
@@ -3454,102 +3454,102 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftutils/utils.py" line="697"/>
       <location filename="../../draftutils/utils.py" line="701"/>
       <source>different types</source>
-      <translation type="unfinished">different types</translation>
+      <translation>odlišné typy</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="711"/>
       <source>Objects have different placements. Distance between the two base points: </source>
-      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
+      <translation>Objekty mají různá umístění. Vzdálenost mezi dvěma základními body:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="714"/>
       <source>has a different value</source>
-      <translation type="unfinished">has a different value</translation>
+      <translation>má jinou hodnotu</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="717"/>
       <source>doesn't exist in one of the objects</source>
-      <translation type="unfinished">doesn't exist in one of the objects</translation>
+      <translation>v jednom z objektů neexistuje</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="864"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+      <translation>%s sdílí základnu s %d dalšími objekty. Zaškrtněte, pokud to chcete změnit.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="870"/>
       <source>%s cannot be modified because its placement is readonly.</source>
-      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
+      <translation>%s nelze upravit, protože jeho umístění je pouze pro čtení.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1014"/>
       <source>Wrong input: unknown document.</source>
-      <translation type="unfinished">Wrong input: unknown document.</translation>
+      <translation>Chybné zadání: neznámý dokument.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1092"/>
       <source>This function will be deprecated in </source>
-      <translation type="unfinished">This function will be deprecated in </translation>
+      <translation>Tato funkce bude v</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1093"/>
       <location filename="../../draftutils/utils.py" line="1096"/>
       <source>Please use </source>
-      <translation type="unfinished">Please use </translation>
+      <translation>Prosím, použijte</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1096"/>
       <source>This function will be deprecated. </source>
-      <translation type="unfinished">This function will be deprecated. </translation>
+      <translation>Tato funkce bude zastaralá.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="150"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
+      <translation>Vyberte plochu, 3 vrcholy nebo WP Proxy pro definování kreslicí roviny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="274"/>
       <source>Working plane aligned to global placement of</source>
-      <translation type="unfinished">Working plane aligned to global placement of</translation>
+      <translation>Pracovní rovina zarovnána s globálním umístěním</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
       <source>Dir</source>
       <comment>Dir here means Direction, not Directory. Also shorten the translation because of available space in GUI</comment>
-      <translation type="unfinished">Dir</translation>
+      <translation>Složka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="102"/>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the path object, before calling this command.</translation>
+      <translation>Před voláním tohoto příkazu vyberte přesně dva objekty, základní objekt a objekt cesty.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="147"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Pole cest</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="80"/>
       <source>Pick target point</source>
-      <translation type="unfinished">Pick target point</translation>
+      <translation>Vyberte cílový bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation type="unfinished">Create Label</translation>
+      <translation>Vytvořit štítek</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="191"/>
       <location filename="../../draftguitools/gui_labels.py" line="218"/>
       <source>Pick endpoint of leader line</source>
-      <translation type="unfinished">Pick endpoint of leader line</translation>
+      <translation>Vyberte koncový bod odkazové čáry</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="201"/>
       <location filename="../../draftguitools/gui_labels.py" line="228"/>
       <source>Pick text position</source>
-      <translation type="unfinished">Pick text position</translation>
+      <translation>Vyberte pozici textu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="123"/>
@@ -3557,21 +3557,21 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_lines.py" line="83"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
-      <translation type="unfinished">Pick first point</translation>
+      <translation>Vyberte první bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>Vytvořit čáru</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Vytvořit drát</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="149"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="150"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
       <location filename="../../draftguitools/gui_lines.py" line="222"/>
       <location filename="../../draftguitools/gui_lines.py" line="230"/>
       <location filename="../../draftguitools/gui_lines.py" line="237"/>
@@ -3580,27 +3580,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_splines.py" line="140"/>
       <location filename="../../draftguitools/gui_splines.py" line="145"/>
       <source>Pick next point</source>
-      <translation type="unfinished">Pick next point</translation>
+      <translation>Vybrat další bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>Nelze vytvořit drát z vybraných objektů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Převést na drát</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="76"/>
       <source>Select an object to join</source>
-      <translation type="unfinished">Select an object to join</translation>
+      <translation>Vyberte objekt, který chcete připojit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="99"/>
       <source>Join lines</source>
-      <translation type="unfinished">Join lines</translation>
+      <translation>Spojit linky</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="110"/>
@@ -3610,48 +3610,48 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="76"/>
       <source>Pick location point</source>
-      <translation type="unfinished">Pick location point</translation>
+      <translation>Vyberte bod umístění</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="124"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>Vytvořit text</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
-      <translation type="unfinished">Select an object to convert.</translation>
+      <translation>Vyberte objekt, který chcete převést.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>Převést na Sketch</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convert to Draft</translation>
+      <translation>Převést na koncept</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
       <source>Convert Draft/Sketch</source>
-      <translation type="unfinished">Convert Draft/Sketch</translation>
+      <translation>Převést koncept/náčrt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="81"/>
       <source>Select an object to move</source>
-      <translation type="unfinished">Select an object to move</translation>
+      <translation>Vyberte objekt, který chcete přesunout</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="103"/>
       <source>Pick start point</source>
-      <translation type="unfinished">Pick start point</translation>
+      <translation>Vyberte počáteční bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="168"/>
       <location filename="../../draftguitools/gui_move.py" line="315"/>
       <source>Pick end point</source>
-      <translation type="unfinished">Pick end point</translation>
+      <translation>Vyberte koncový bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="217"/>
@@ -3662,13 +3662,13 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_move.py" line="220"/>
       <location filename="../../draftguitools/gui_rotate.py" line="296"/>
       <source>Some subelements could not be moved.</source>
-      <translation type="unfinished">Some subelements could not be moved.</translation>
+      <translation>Některé dílčí prvky nebylo možné přesunout.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="88"/>
       <location filename="../../draftguitools/gui_polygons.py" line="78"/>
       <source>Pick center point</source>
-      <translation type="unfinished">Pick center point</translation>
+      <translation>Vyberte středový bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="255"/>
@@ -3678,7 +3678,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="267"/>
       <source>Pick radius</source>
-      <translation type="unfinished">Pick radius</translation>
+      <translation>Vyberte poloměr</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="278"/>
@@ -3686,13 +3686,13 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <location filename="../../draftguitools/gui_arcs.py" line="448"/>
       <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
+      <translation>Počáteční úhel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="284"/>
       <location filename="../../draftguitools/gui_arcs.py" line="453"/>
       <source>Pick start angle</source>
-      <translation type="unfinished">Pick start angle</translation>
+      <translation>Vyberte počáteční úhel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
@@ -3700,138 +3700,138 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="455"/>
       <location filename="../../draftguitools/gui_arcs.py" line="456"/>
       <source>Aperture angle</source>
-      <translation type="unfinished">Aperture angle</translation>
+      <translation>Úhel clony</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="292"/>
       <source>Pick aperture</source>
-      <translation type="unfinished">Pick aperture</translation>
+      <translation>Vyberte clonu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="318"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>Vytvořit kruh (část)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="336"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>Vytvořte kruh</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>Vytvořit oblouk (část)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="390"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>Vytvořit oblouk</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="467"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>Vyberte úhel clony</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="510"/>
       <location filename="../../draftguitools/gui_arcs.py" line="552"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Oblouk o 3 body</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="51"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Přepnout mřížku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="108"/>
       <source>Select an object to edit</source>
-      <translation type="unfinished">Select an object to edit</translation>
+      <translation>Vyberte objekt, který chcete upravit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="288"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>Vyberte objekt konceptu, který chcete upravit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="480"/>
       <source>Edit node</source>
-      <translation type="unfinished">Edit node</translation>
+      <translation>Upravit uzel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="536"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>Pro vybraný objekt nebyl nalezen žádný editační bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="789"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>Je vybráno příliš mnoho objektů, maximální počet nastaven na:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="797"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: Tento objekt nelze upravovat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>Editor stylu anotace</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="294"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>Otevřete soubor stylů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="296"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>soubor JSON (*.json)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Uložit soubor stylů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Vyberte objekt, který chcete promítnout</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="134"/>
       <location filename="../../draftguitools/gui_points.py" line="147"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Vytvořit bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Vyberte objekt, který chcete otočit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="99"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Vyberte střed otáčení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
       <location filename="../../draftguitools/gui_rotate.py" line="403"/>
       <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
+      <translation>Základní úhel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="194"/>
       <location filename="../../draftguitools/gui_rotate.py" line="404"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>Základní úhel, ze kterého chcete začít otáčení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="199"/>
       <location filename="../../draftguitools/gui_rotate.py" line="407"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Vyberte úhel základny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="205"/>
@@ -3844,39 +3844,39 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="417"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>Míra rotace, kterou chcete provést.
+Konečný úhel bude základní úhel plus tato hodnota.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="213"/>
       <location filename="../../draftguitools/gui_rotate.py" line="425"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>Vyberte úhel natočení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="65"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Přidat do skupiny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="68"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>Zrušit seskupení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Přidat novou skupinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Vyberte skupinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="193"/>
       <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
+      <translation>Žádný nový výběr. Musíte vybrat neprázdné skupiny nebo objekty uvnitř skupin.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="203"/>
@@ -3886,27 +3886,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="250"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Přidat novou vrstvu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="304"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Přidat do stavební skupiny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="355"/>
       <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
+      <translation>Přidejte novou skupinu s daným názvem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Vytvořit skupinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Název skupiny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="392"/>
@@ -3916,57 +3916,57 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Převrátit rozměr</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
+      <translation>Skica je příliš složitá na úpravu: doporučujeme použít výchozí editor skicáře</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="76"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Poloměr zaoblení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="79"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Poloměr zaoblení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="107"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Zadejte poloměr.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="126"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Smazat původní objekty:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="131"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>Režim zkosení:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="148"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
+      <translation>Jsou potřeba dva prvky.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="155"/>
       <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
+      <translation>Testovací objekt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="156"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>Testovací objekt byl odstraněn</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="158"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>Filet nelze vytvořit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="188"/>
@@ -3976,70 +3976,70 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="231"/>
       <source>Create Polygon (Part)</source>
-      <translation type="unfinished">Create Polygon (Part)</translation>
+      <translation>Vytvořit mnohoúhelník (část)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="250"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Create Polygon</translation>
+      <translation>Vytvořte mnohoúhelník</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Klepnutím kamkoli na řádek jej rozdělíte.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>Dělená čára</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>Vyberte objekty, které chcete oříznout nebo prodloužit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="146"/>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>Vyberte vzdálenost</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="222"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Úhel odsazení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>Tyto objekty nelze oříznout, jsou podporovány pouze dráty a oblouky.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>Tyto předměty nelze oříznout, příliš mnoho drátů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Tyto objekty se nekříží.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Příliš mnoho průsečíků.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>Spline byl uzavřen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="141"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="142"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="381"/>
       <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>Poslední bod byl odstraněn</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="182"/>
@@ -4049,30 +4049,30 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>Změnit styl</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="92"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="601"/>
       <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
+      <translation>Tento objekt nepodporuje možné shodné body, zkuste to prosím znovu.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="109"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="618"/>
       <source>Delete point</source>
-      <translation type="unfinished">Delete point</translation>
+      <translation>Smazat bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="114"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="626"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Přidat bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="124"/>
       <source>Open wire</source>
-      <translation type="unfinished">Open wire</translation>
+      <translation>Otevřený drát</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="127"/>
@@ -4082,143 +4082,143 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="132"/>
       <source>Reverse wire</source>
-      <translation type="unfinished">Reverse wire</translation>
+      <translation>Reverzní drát</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="177"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="840"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>Aktivní objekt musí mít více než dva body/uzly</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="200"/>
       <source>Open spline</source>
-      <translation type="unfinished">Open spline</translation>
+      <translation>Otevřete spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="203"/>
       <source>Close spline</source>
-      <translation type="unfinished">Close spline</translation>
+      <translation>Zavřít spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="206"/>
       <source>Reverse spline</source>
-      <translation type="unfinished">Reverse spline</translation>
+      <translation>Reverzní spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="371"/>
       <source>Move arc</source>
-      <translation type="unfinished">Move arc</translation>
+      <translation>Přesuňte oblouk</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="375"/>
       <source>Set first angle</source>
-      <translation type="unfinished">Set first angle</translation>
+      <translation>Nastavte první úhel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="379"/>
       <source>Set last angle</source>
-      <translation type="unfinished">Set last angle</translation>
+      <translation>Nastavte poslední úhel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="383"/>
       <source>Set radius</source>
-      <translation type="unfinished">Set radius</translation>
+      <translation>Nastavit poloměr</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="408"/>
       <source>Invert arc</source>
-      <translation type="unfinished">Invert arc</translation>
+      <translation>Obrácený oblouk</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="619"/>
       <source>Make sharp</source>
-      <translation type="unfinished">Make sharp</translation>
+      <translation>Udělejte ostré</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="620"/>
       <source>Make tangent</source>
-      <translation type="unfinished">Make tangent</translation>
+      <translation>Vytvořte tečnu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="621"/>
       <source>Make symmetric</source>
-      <translation type="unfinished">Make symmetric</translation>
+      <translation>Udělejte symetrický</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="628"/>
       <source>Reverse curve</source>
-      <translation type="unfinished">Reverse curve</translation>
+      <translation>Reverzní křivka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="634"/>
       <source>Open curve</source>
-      <translation type="unfinished">Open curve</translation>
+      <translation>Otevřená křivka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="637"/>
       <source>Close curve</source>
-      <translation type="unfinished">Close curve</translation>
+      <translation>Zavřete křivku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="751"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>Výběr není uzel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <translation>Koncový bod BezCurve nelze vyhlazovat</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="133"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="134"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="345"/>
       <source>Bézier curve has been closed</source>
-      <translation type="unfinished">Bézier curve has been closed</translation>
+      <translation>Bézierova křivka byla uzavřena</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="450"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="212"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="466"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>Vytvořte BezCurve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="380"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="393"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>Kliknutím a tažením definujte další uzel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="128"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="145"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>Vytvořte Elipsu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="206"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="208"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>Vyberte opačný bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
       <source>Select faces from existing objects</source>
-      <translation type="unfinished">Select faces from existing objects</translation>
+      <translation>Vyberte plochy z existujících objektů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="87"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>Vyberte objekt, který chcete změnit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="108"/>
       <source>Pick base point</source>
-      <translation type="unfinished">Pick base point</translation>
+      <translation>Vyberte základní bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="136"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>Vyberte referenční vzdálenost od základního bodu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="207"/>
@@ -4230,49 +4230,49 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="210"/>
       <source>Some subelements could not be scaled.</source>
-      <translation type="unfinished">Some subelements could not be scaled.</translation>
+      <translation>Některé dílčí prvky nebylo možné škálovat.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="340"/>
       <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
+      <translation>Nelze změnit měřítko objektu:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="344"/>
       <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
+      <translation>Nelze změnit měřítko objektů:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="347"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
+      <translation>Tento typ objektu nelze změnit přímo. Použijte prosím metodu klonování.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="408"/>
       <source>Pick new distance from base point</source>
-      <translation type="unfinished">Pick new distance from base point</translation>
+      <translation>Vyberte novou vzdálenost od základního bodu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="62"/>
       <location filename="../../draftmake/make_layer.py" line="145"/>
       <location filename="../../draftmake/make_layer.py" line="162"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Vrstva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
+      <translation>Před voláním tohoto příkazu vyberte přesně dva objekty, základní objekt a bodový objekt.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="113"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Pole bodů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation type="unfinished">No active Draft Toolbar.</translation>
+      <translation>Žádný aktivní panel nástrojů Koncept.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
@@ -4282,12 +4282,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="125"/>
       <source>Continue mode</source>
-      <translation type="unfinished">Continue mode</translation>
+      <translation>Pokračovat v režimu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="159"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Toggle display mode</translation>
+      <translation>Přepnout režim zobrazení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="223"/>
@@ -4300,161 +4300,161 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="308"/>
       <source>Create Dimension (radial)</source>
-      <translation type="unfinished">Create Dimension (radial)</translation>
+      <translation>Vytvořit kótu (radiální)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Hrana je příliš krátká!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="528"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
+      <translation>Hrany se neprotínají!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
-      <translation type="unfinished">Select an object to stretch</translation>
+      <translation>Vyberte objekt, který chcete roztáhnout</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="127"/>
       <source>Pick first point of selection rectangle</source>
-      <translation type="unfinished">Pick first point of selection rectangle</translation>
+      <translation>Vyberte první bod obdélníku výběru</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="164"/>
       <source>Pick opposite point of selection rectangle</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle</translation>
+      <translation>Vyberte opačný bod výběrového obdélníku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="173"/>
       <source>Pick start point of displacement</source>
-      <translation type="unfinished">Pick start point of displacement</translation>
+      <translation>Vyberte počáteční bod posunu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="236"/>
       <source>Pick end point of displacement</source>
-      <translation type="unfinished">Pick end point of displacement</translation>
+      <translation>Vyberte koncový bod posunutí</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="448"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation type="unfinished">Turning one Rectangle into a Wire</translation>
+      <translation>Proměna jednoho obdélníku na drát</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="477"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Roztažení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="129"/>
       <source>Create Plane</source>
-      <translation type="unfinished">Create Plane</translation>
+      <translation>Vytvořit rovinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="146"/>
       <source>Create Rectangle</source>
-      <translation type="unfinished">Create Rectangle</translation>
+      <translation>Vytvořte obdélník</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="73"/>
       <source>Select an object to mirror</source>
-      <translation type="unfinished">Select an object to mirror</translation>
+      <translation>Vyberte objekt, který chcete zrcadlit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="92"/>
       <source>Pick start point of mirror line</source>
-      <translation type="unfinished">Pick start point of mirror line</translation>
+      <translation>Vyberte počáteční bod zrcadlové čáry</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="118"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Zrcadlo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="173"/>
       <location filename="../../draftguitools/gui_mirror.py" line="199"/>
       <source>Pick end point of mirror line</source>
-      <translation type="unfinished">Pick end point of mirror line</translation>
+      <translation>Vyberte koncový bod přímky zrcadlení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Zkrocená cesta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="79"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>Vyberte objekt, který chcete klonovat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
       <source>Change slope</source>
-      <translation type="unfinished">Change slope</translation>
+      <translation>Změnit sklon</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
       <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
+      <translation>Vyberte objekt, který chcete upgradovat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Aktualizovat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="79"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Vyberte objekt, který chcete odsadit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="85"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>Offset funguje vždy pouze na jednom objektu.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="95"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>Tento typ objektu nelze odsadit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="126"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>Offset Bézierových křivek není aktuálně podporován</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Vytvořte 2D pohled</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="77"/>
       <source>Pick ShapeString location point</source>
-      <translation type="unfinished">Pick ShapeString location point</translation>
+      <translation>Vyberte bod umístění ShapeString</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="176"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>Vytvořte ShapeString</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="51"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>Vyléčit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Přejít na nižší verzi</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
       <source>Task panel:</source>
-      <translation type="unfinished">Task panel:</translation>
+      <translation>Panel úkolů:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_polararray.py" line="94"/>
@@ -4469,14 +4469,14 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
       <source>At least one element must be selected.</source>
-      <translation type="unfinished">At least one element must be selected.</translation>
+      <translation>Musí být vybrán alespoň jeden prvek.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>Výběr není vhodný pro pole.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
@@ -4486,65 +4486,65 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Objekt:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="199"/>
       <source>Number of elements must be at least 2.</source>
-      <translation type="unfinished">Number of elements must be at least 2.</translation>
+      <translation>Počet prvků musí být alespoň 2.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
+      <translation>Úhel je nad 360 stupňů. Pro pokračování je nastavena na tuto hodnotu.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="206"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
+      <translation>Úhel je pod -360 stupňů. Pro pokračování je nastavena na tuto hodnotu.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
       <source>Center reset:</source>
-      <translation type="unfinished">Center reset:</translation>
+      <translation>Obnovení středu:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Pojistka:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Vytvořit pole odkazů:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Počet prvků:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="329"/>
       <source>Polar angle:</source>
-      <translation type="unfinished">Polar angle:</translation>
+      <translation>Polární úhel:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Střed otáčení:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Přerušeno:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="275"/>
@@ -4558,52 +4558,52 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
       <source>Number of elements must be at least 1.</source>
-      <translation type="unfinished">Number of elements must be at least 1.</translation>
+      <translation>Počet prvků musí být alespoň 1.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
       <source>Interval X reset:</source>
-      <translation type="unfinished">Interval X reset:</translation>
+      <translation>Reset intervalu X:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="325"/>
       <source>Interval Y reset:</source>
-      <translation type="unfinished">Interval Y reset:</translation>
+      <translation>Reset intervalu Y:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="334"/>
       <source>Interval Z reset:</source>
-      <translation type="unfinished">Interval Z reset:</translation>
+      <translation>Reset intervalu Z:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
       <source>Number of X elements:</source>
-      <translation type="unfinished">Number of X elements:</translation>
+      <translation>Počet X prvků:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="378"/>
       <source>Interval X:</source>
-      <translation type="unfinished">Interval X:</translation>
+      <translation>Interval:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="381"/>
       <source>Number of Y elements:</source>
-      <translation type="unfinished">Number of Y elements:</translation>
+      <translation>Počet prvků Y:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="383"/>
       <source>Interval Y:</source>
-      <translation type="unfinished">Interval Y:</translation>
+      <translation>Interval:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="386"/>
       <source>Number of Z elements:</source>
-      <translation type="unfinished">Number of Z elements:</translation>
+      <translation>Počet prvků Z:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="388"/>
       <source>Interval Z:</source>
-      <translation type="unfinished">Interval Z:</translation>
+      <translation>Interval:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
@@ -4627,132 +4627,132 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>Počet vrstev musí být alespoň 2.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>Radiální vzdálenost je nulová. Výsledné pole nemusí vypadat správně.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>Radiální vzdálenost je záporná. Pokračovat je pozitivní.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="230"/>
       <source>Tangential distance cannot be zero.</source>
-      <translation type="unfinished">Tangential distance cannot be zero.</translation>
+      <translation>Tangenciální vzdálenost nemůže být nulová.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="233"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
+      <translation>Tangenciální vzdálenost je záporná. Pokračovat je pozitivní.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="373"/>
       <source>Radial distance:</source>
-      <translation type="unfinished">Radial distance:</translation>
+      <translation>Radiální vzdálenost:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="374"/>
       <source>Tangential distance:</source>
-      <translation type="unfinished">Tangential distance:</translation>
+      <translation>Tangenciální vzdálenost:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="375"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>Počet kruhových vrstev:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="376"/>
       <source>Symmetry parameter:</source>
-      <translation type="unfinished">Symmetry parameter:</translation>
+      <translation>Parametr symetrie:</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>ShapeString: řetězec nemá žádné dráty</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>ShapeString: vytvoření obličeje se nezdařilo pro jeden znak</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
+      <translation>přidána vlastnost zobrazení 'ScaleMultiplier'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="80"/>
       <source>added view property 'AnnotationStyle'</source>
-      <translation type="unfinished">added view property 'AnnotationStyle'</translation>
+      <translation>přidána vlastnost zobrazení 'AnnotationStyle'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="311"/>
       <source>, path object doesn't have 'Edges'.</source>
-      <translation type="unfinished">, path object doesn't have 'Edges'.</translation>
+      <translation>, objekt cesty nemá 'Edges'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="418"/>
       <location filename="../../draftobjects/patharray.py" line="424"/>
       <location filename="../../draftobjects/patharray.py" line="430"/>
       <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation type="unfinished">'PathObj' property will be migrated to 'PathObject'</translation>
+      <translation>Vlastnost 'PathObj' bude migrována do 'PathObject'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="465"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>Počáteční offset je příliš velký pro délku cesty. Místo toho použijte nulu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="471"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>Koncový posun je příliš velký pro délku dráhy mínus Počáteční posun. Místo toho použijte nulu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="533"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
-      <translation type="unfinished">Length of tangent vector is zero. Copy not aligned.</translation>
+      <translation>Délka tečného vektoru je nula. Kopie není zarovnána.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="547"/>
       <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
-      <translation type="unfinished">Length of normal vector is zero. Using a default axis instead.</translation>
+      <translation>Délka normálního vektoru je nula. Místo toho použijte výchozí osu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="553"/>
       <location filename="../../draftobjects/patharray.py" line="575"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
-      <translation type="unfinished">Tangent and normal vectors are parallel. Normal replaced by a default axis.</translation>
+      <translation>Tečné a normálové vektory jsou rovnoběžné. Normální nahrazeno výchozí osou.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="565"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
-      <translation type="unfinished">Cannot calculate normal vector. Using the default normal instead.</translation>
+      <translation>Nelze vypočítat normální vektor. Místo toho použijte výchozí normální.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>AlignMode {} is not implemented</source>
-      <translation type="unfinished">AlignMode {} is not implemented</translation>
+      <translation>AlignMode {} není implementován</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="140"/>
       <location filename="../../draftobjects/pointarray.py" line="156"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation type="unfinished">added property 'ExtraPlacement'</translation>
+      <translation>přidána vlastnost 'ExtraPlacement'</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Nebyl nalezen žádný tvar</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Všechny tvary musí být rovinné</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="58"/>
@@ -4760,17 +4760,17 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_fillet.py" line="144"/>
       <location filename="../../draftmake/make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>délka:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="132"/>
       <source>Two elements are needed.</source>
-      <translation type="unfinished">Two elements are needed.</translation>
+      <translation>Jsou potřeba dva prvky.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>Poloměr je příliš velký</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="143"/>
@@ -4782,39 +4782,39 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>Původní předměty byly odstraněny.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="125"/>
       <location filename="../../draftmake/make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Body:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="126"/>
       <location filename="../../draftmake/make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
-      <translation type="unfinished">Wrong input: must be list or tuple of three points exactly.</translation>
+      <translation>Špatné zadání: musí to být přesně seznam nebo n-tice tří bodů.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Umístění:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="139"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation type="unfinished">Wrong input: incorrect type of placement.</translation>
+      <translation>Špatné zadání: nesprávný typ umístění.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
-      <translation type="unfinished">Wrong input: incorrect type of points.</translation>
+      <translation>Špatné zadání: nesprávný typ bodů.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
+      <translation>Nelze vygenerovat tvar:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="166"/>
@@ -4829,28 +4829,28 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="170"/>
       <source>Create primitive object</source>
-      <translation type="unfinished">Create primitive object</translation>
+      <translation>Vytvořte primitivní objekt</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="193"/>
       <location filename="../../draftmake/make_arc_3points.py" line="204"/>
       <source>Final placement:</source>
-      <translation type="unfinished">Final placement:</translation>
+      <translation>Konečné umístění:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="195"/>
       <source>Face: True</source>
-      <translation type="unfinished">Face: True</translation>
+      <translation>Obličej: Pravda</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>Podpěra, podpora:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation type="unfinished">Map mode:</translation>
+      <translation>Režim mapy:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="313"/>
@@ -4862,7 +4862,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_patharray.py" line="388"/>
       <location filename="../../draftmake/make_polararray.py" line="119"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>Chybné zadání: musí to být číslo.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="164"/>
@@ -4881,54 +4881,54 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_patharray.py" line="275"/>
       <location filename="../../draftmake/make_polararray.py" line="126"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>Chybný vstup: musí to být vektor.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="251"/>
       <location filename="../../draftmake/make_patharray.py" line="223"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Chybný vstup: musí to být seznam nebo n-tice řetězců nebo jeden řetězec.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="256"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>Nesprávný vstup: musí být „Original“, „Frenet“ nebo „Tangent“.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="60"/>
       <source>Internal orthogonal array</source>
-      <translation type="unfinished">Internal orthogonal array</translation>
+      <translation>Vnitřní ortogonální pole</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="87"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>Chybný vstup: musí to být číslo nebo vektor.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="92"/>
       <location filename="../../draftmake/make_orthoarray.py" line="95"/>
       <location filename="../../draftmake/make_orthoarray.py" line="98"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>Vstup: jedna hodnota rozšířena na vektor.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="154"/>
       <location filename="../../draftmake/make_orthoarray.py" line="119"/>
       <location filename="../../draftmake/make_polararray.py" line="112"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>Chybný vstup: musí to být celé číslo.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="123"/>
       <location filename="../../draftmake/make_orthoarray.py" line="126"/>
       <location filename="../../draftmake/make_orthoarray.py" line="129"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Vstup: počet prvků musí být alespoň 1. Je nastaven na 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>Ortogonální pole 2D</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="424"/>
@@ -4938,35 +4938,35 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation type="unfinished">Rectangular array 2D</translation>
+      <translation>Obdélníkové pole 2D</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="215"/>
       <location filename="../../draftmake/make_pointarray.py" line="130"/>
       <location filename="../../draftmake/make_text.py" line="107"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
+      <translation>Chybný vstup: musí to být umístění, vektor nebo otočení.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="316"/>
       <location filename="../../draftmake/make_label.py" line="230"/>
       <source>Wrong input: object must not be a list.</source>
-      <translation type="unfinished">Wrong input: object must not be a list.</translation>
+      <translation>Chybný vstup: objekt nesmí být seznam.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="263"/>
       <source>Wrong input: subelement not in object.</source>
-      <translation type="unfinished">Wrong input: subelement not in object.</translation>
+      <translation>Chybný vstup: dílčí prvek není v objektu.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="272"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+      <translation>Nesprávný vstup: label_type musí být řetězec.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="277"/>
       <source>Wrong input: label_type must be one of the following: </source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+      <translation>Nesprávný vstup: label_type musí být jeden z následujících:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="286"/>
@@ -4974,123 +4974,123 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_text.py" line="91"/>
       <location filename="../../draftmake/make_text.py" line="96"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
+      <translation>Chybný vstup: musí to být seznam řetězců nebo jeden řetězec.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="300"/>
       <location filename="../../draftmake/make_label.py" line="304"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>Nesprávný vstup: musí to být řetězec, „Horizontální“, „Vertikální“ nebo „Vlastní“.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="320"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
+      <translation>Chybný vstup: musí jít o seznam alespoň dvou vektorů.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="353"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>Směr není 'Vlastní'; body nebudou použity.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="380"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>Chybný vstup: musí jít o seznam dvou prvků. Například [objekt, 'Edge1'].</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="118"/>
       <source>Wrong input: object has the wrong type.</source>
-      <translation type="unfinished">Wrong input: object has the wrong type.</translation>
+      <translation>Špatný vstup: objekt má nesprávný typ.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="173"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>Tato funkce je zastaralá. Nepoužívejte tuto funkci přímo.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="174"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
+      <translation>Použijte jeden z 'make_linear_dimension' nebo 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="327"/>
       <location filename="../../draftmake/make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>Špatný vstup: objekt nemá „tvar“ k měření.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="331"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>Špatný vstup: objekt nemá alespoň jeden prvek v 'Vertexech' k použití pro měření.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="338"/>
       <location filename="../../draftmake/make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>Chybný vstup: musí to být celé číslo.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="343"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">i1: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>i1: hodnoty pod 1 nejsou povoleny; bude nastavena na 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="347"/>
       <location filename="../../draftmake/make_dimension.py" line="363"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation type="unfinished">Wrong input: vertex not in object.</translation>
+      <translation>Chybný vstup: vrchol není v objektu.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="359"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: hodnoty pod 1 nejsou povoleny; bude nastaven na poslední vrchol v objektu.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="456"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</translation>
+      <translation>Špatný vstup: objekt nemá alespoň jeden prvek v 'Edges' k použití pro měření.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="468"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">index: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>index: hodnoty pod 1 nejsou povoleny; bude nastavena na 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="472"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to an edge in the object.</translation>
+      <translation>Chybný vstup: index neodpovídá hraně v objektu.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="476"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to a circular edge.</translation>
+      <translation>Chybný vstup: index neodpovídá kruhové hraně.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="483"/>
       <location filename="../../draftmake/make_dimension.py" line="487"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'radius' or 'diameter'.</translation>
+      <translation>Chybný vstup: musí to být řetězec, 'poloměr' nebo 'průměr'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="579"/>
       <location filename="../../draftmake/make_dimension.py" line="586"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation type="unfinished">Wrong input: must be a list with two angles.</translation>
+      <translation>Chybný vstup: musí jít o seznam se dvěma úhly.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="144"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation type="unfinished">Wrong input: must be a number or quantity.</translation>
+      <translation>Chybné zadání: musí to být číslo nebo množství.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>Vrstvy</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="157"/>
       <source>Wrong input: it must be a string.</source>
-      <translation type="unfinished">Wrong input: it must be a string.</translation>
+      <translation>Chybný vstup: musí to být řetězec.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="167"/>
@@ -5098,50 +5098,50 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_layer.py" line="184"/>
       <location filename="../../draftmake/make_layer.py" line="188"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation type="unfinished">Wrong input: must be a tuple of three floats 0.0 to 1.0.</translation>
+      <translation>Chybný vstup: musí to být n-tice tří plováků 0,0 až 1,0.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="208"/>
       <location filename="../../draftmake/make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>Nesprávné zadání: musí být „plné“, „přerušované“, „tečkované“ nebo „čárkované“.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Chybný vstup: musí to být číslo mezi 0 a 100.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="464"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Aktivujte tuto vrstvu</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="470"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>Vyberte obsah vrstvy</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="508"/>
       <location filename="../../draftviewproviders/view_layer.py" line="522"/>
       <source>Merge layer duplicates</source>
-      <translation type="unfinished">Merge layer duplicates</translation>
+      <translation>Sloučit duplikáty vrstev</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="514"/>
       <location filename="../../draftviewproviders/view_layer.py" line="570"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Přidat novou vrstvu</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="555"/>
       <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
+      <translation>Přelepovací vrstva:</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="559"/>
       <source>Merging layer:</source>
-      <translation type="unfinished">Merging layer:</translation>
+      <translation>Slučovací vrstva:</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="436"/>
@@ -5154,164 +5154,164 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftviewproviders/view_base.py" line="444"/>
       <location filename="../../draftviewproviders/view_wire.py" line="171"/>
       <source>Flatten</source>
-      <translation type="unfinished">Flatten</translation>
+      <translation>Zploštit</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="230"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>Upgrade: Neznámá metoda síly:</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>Nalezen 1 blok: exploduje</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>Nalezena 1 sloučenina s více pevnými látkami: exploduje</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>Nalezen 1 parametrický objekt: prolomení jeho závislostí</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="261"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>Nalezeny 2 objekty: jejich odečtení</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Bylo nalezeno několik tváří: rozdělit je</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="273"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>Našel několik objektů: odečtem je od prvního</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="278"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>Nalezen 1 obličej: vytahování jeho drátů</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="284"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Nalezeny pouze dráty: vytahování jejich okrajů</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Již není možný downgrade</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="90"/>
       <source>No object given</source>
-      <translation type="unfinished">No object given</translation>
+      <translation>Žádný předmět není uveden</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="94"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>Tyto dva body jsou shodné</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>zrcadlené</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="151"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>Objekt musí mít uzavřený tvar</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>Nebyl vytvořen žádný pevný objekt</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>Obličeje musí být koplanární, aby mohly být zpřesněny</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="453"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>Nalezené skupiny: uzavření každého otevřeného objektu uvnitř</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="459"/>
       <source>Found meshes: turning into Part shapes</source>
-      <translation type="unfinished">Found meshes: turning into Part shapes</translation>
+      <translation>Nalezené sítě: přeměna na tvary dílů</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="467"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
+      <translation>Nalezen 1 zpevnitelný předmět: zpevnění</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="472"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>Nalezeny 2 předměty: jejich fúze</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="483"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
+      <translation>Nalezený objekt s několika koplanárními plochami: upřesněte je</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="490"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>Nalezeno 1 neparametrických objektů: návrh</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="501"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>Nalezen 1 uzavřený objekt skici: vytvoření plochy z něj</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="506"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>Nalezené uzavřené dráty: vytváření tváří</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="511"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation type="unfinished">Found several wires or edges: wiring them</translation>
+      <translation>Nalezeno několik drátů nebo hran: zapojte je</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="513"/>
       <location filename="../../draftfunctions/upgrade.py" line="548"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>Bylo nalezeno několik neošetřených objektů: vytvoření směsi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="518"/>
       <source>trying: closing it</source>
-      <translation type="unfinished">trying: closing it</translation>
+      <translation>snaží: zavřít to</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="520"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>Nalezen 1 otevřený vodič: zavírání</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="538"/>
       <source>Found 1 object: draftifying it</source>
-      <translation type="unfinished">Found 1 object: draftifying it</translation>
+      <translation>Nalezen 1 objekt: jeho vypracování</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Found points: creating compound</source>
-      <translation type="unfinished">Found points: creating compound</translation>
+      <translation>Nalezené body: vytvoření směsi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="551"/>
       <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
+      <translation>Tyto objekty nelze upgradovat.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_text.py" line="186"/>
@@ -5321,34 +5321,34 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/dimension.py" line="212"/>
       <source>added view property 'TextColor'</source>
-      <translation type="unfinished">added view property 'TextColor'</translation>
+      <translation>přidána vlastnost zobrazení 'TextColor'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="214"/>
       <location filename="../../draftobjects/label.py" line="258"/>
       <location filename="../../draftobjects/text.py" line="94"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
-      <translation type="unfinished">renamed 'DisplayMode' options to 'World/Screen'</translation>
+      <translation>přejmenoval možnosti 'DisplayMode' na 'World/Screen'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="254"/>
       <source>renamed view property 'TextFont' to 'FontName'</source>
-      <translation type="unfinished">renamed view property 'TextFont' to 'FontName'</translation>
+      <translation>přejmenována vlastnost zobrazení 'TextFont' na 'FontName'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="256"/>
       <source>renamed view property 'TextSize' to 'FontSize'</source>
-      <translation type="unfinished">renamed view property 'TextSize' to 'FontSize'</translation>
+      <translation>přejmenována vlastnost zobrazení 'TextSize' na 'FontSize'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="81"/>
       <source>added missing view properties</source>
-      <translation type="unfinished">added missing view properties</translation>
+      <translation>přidány chybějící vlastnosti zobrazení</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
-      <translation type="unfinished">added property 'Count'</translation>
+      <translation>přidána vlastnost 'Počet'</translation>
     </message>
   </context>
   <context>
@@ -5356,33 +5356,33 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>Nástroje pro vytváření návrhů</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>Nástroje pro anotaci návrhů</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Nástroje pro úpravu návrhu</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Návrh nástrojů</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <location filename="../../draftguitools/gui_snapper.py" line="1500"/>
       <source>Draft snap</source>
-      <translation type="unfinished">Draft snap</translation>
+      <translation>Snímek konceptu</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation type="unfinished">&amp;Drafting</translation>
+      <translation>&amp;Draftování</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -5392,27 +5392,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>&amp;Modifikace</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>&amp;Utility</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Obloukové nástroje</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
       <source>Bézier tools</source>
-      <translation type="unfinished">Bézier tools</translation>
+      <translation>Bézierovy nástroje</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="89"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>Array nástroje</translation>
     </message>
   </context>
   <context>
@@ -5422,34 +5422,34 @@ The final angle will be the base angle plus this amount.</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>Stažení knihoven dxf se nezdařilo.
+Nainstalujte prosím doplněk dxf Library ručně
+z nabídky Nástroje -&gt; Správce doplňků</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="49"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Před použitím tohoto příkazu musíte vybrat základní objekt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="89"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Odstraňte původní objekty</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="95"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Vytvořte zkosení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="284"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Uložit styl</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="285"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Název tohoto nového stylu:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="292"/>
@@ -5459,17 +5459,17 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="293"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Jméno existuje. Přepsat?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Chyba: modul json nebyl nalezen. Styl nelze načíst</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Chyba: modul json nebyl nalezen. Styl nelze uložit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="91"/>
@@ -5485,7 +5485,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="332"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>Směr odsazení není definován. Nejprve pohybujte myší na obě strany objektu, abyste označili směr</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
@@ -5509,27 +5509,27 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="152"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>X Factor</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="153"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Y faktor</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="154"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Z faktor</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="155"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Jednotné škálování</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="156"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Orientace pracovní roviny</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="157"/>
@@ -5539,12 +5539,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="158"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Upravte dílčí prvky</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="159"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Vybírejte z/do bodů</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
@@ -5554,12 +5554,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="219"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>Bodový objekt nemá diskrétní bod, nelze jej použít pro pole.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="111"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: Uzavřeno se stejným prvním/posledním bodem. Geometrie není aktualizována.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
@@ -5569,12 +5569,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Zápis objektů zobrazený/skrytý stav</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="277"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>Zapnuto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="278"/>
@@ -5599,7 +5599,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Barva obličeje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5609,12 +5609,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="284"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>Barva čárového tisku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Nová vrstva</translation>
     </message>
   </context>
   <context>
@@ -5622,12 +5622,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importOCA.py" line="416"/>
       <source>OCA: found no data to export</source>
-      <translation type="unfinished">OCA: found no data to export</translation>
+      <translation>OCA: nenalezena žádná data k exportu</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="461"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>úspěšně exportováno</translation>
     </message>
   </context>
   <context>
@@ -5635,7 +5635,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importAirfoilDAT.py" line="164"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Nebyl nalezen dostatek souřadnic</translation>
     </message>
   </context>
   <context>
@@ -5643,12 +5643,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importSVG.py" line="1815"/>
       <source>Unknown SVG export style, switching to Translated</source>
-      <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+      <translation>Neznámý styl exportu SVG, přepnutí na Přeloženo</translation>
     </message>
     <message>
       <location filename="../../importSVG.py" line="1835"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>Exportovaný seznam neobsahuje žádný objekt s platným ohraničovacím rámečkem</translation>
     </message>
   </context>
   <context>
@@ -5656,14 +5656,14 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="65"/>
       <source>Select Plane</source>
-      <translation type="unfinished">Select Plane</translation>
+      <translation>Vyberte Rovina</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
-      <translation type="unfinished">Select the face of solid body to create a working plane on which to sketch Draft objects.
-You may also select a three vertices or a Working Plane Proxy.</translation>
+      <translation>Vyberte plochu objemového těla a vytvořte pracovní rovinu, na které se budou skicovat objekty výkresu.
+Můžete také vybrat tři vrcholy nebo zástupce pracovní roviny.</translation>
     </message>
   </context>
   <context>
@@ -5671,16 +5671,16 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Pole cest</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Vytvoří kopie vybraného objektu podél vybrané cesty.
+Nejprve vyberte objekt a poté vyberte cestu.
+Cesta může být křivka, B-spline, Bézierova křivka nebo dokonce hrany z jiných objektů.</translation>
     </message>
   </context>
   <context>
@@ -5688,14 +5688,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="167"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>Pole odkazu cesty</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="170"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Stejně jako nástroj PathArray, ale místo toho vytvoří 'Link array'.
+'Link array' je efektivnější při manipulaci s mnoha kopiemi, ale možnost 'Fuse' nelze použít.</translation>
     </message>
   </context>
   <context>
@@ -5716,15 +5716,15 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>Vytvoří popisek, volitelně připojený k vybranému objektu nebo dílčímu prvku.
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+Nejprve vyberte vrchol, hranu nebo plochu objektu a poté zavolejte tento příkaz,
+a poté nastavte polohu odkazové čáry a textového štítku.
+Štítek bude moci zobrazit informace o tomto objektu a o vybraném dílčím prvku,
+jestli nějaký.
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+Pokud je vybráno mnoho objektů nebo mnoho dílčích prvků, vždy pouze první
+budou použity k poskytování informací na štítku.</translation>
     </message>
   </context>
   <context>
@@ -5737,7 +5737,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří 2-bodovou čáru. CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
@@ -5745,12 +5745,12 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <source>Polyline</source>
-      <translation type="unfinished">Polyline</translation>
+      <translation>Lomená čára</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří čáru s více body (křivku). CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
@@ -5763,7 +5763,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Vytvoří šrafy na plochách vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -5777,8 +5777,8 @@ will be used to provide information to the label.</translation>
       <location filename="../../draftguitools/gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Spojí vybrané čáry nebo křivky do jednoho objektu.
+Aby byla operace úspěšná, musí čáry sdílet společný bod na začátku nebo na konci.</translation>
     </message>
   </context>
   <context>
@@ -5791,7 +5791,7 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>Vytvoří víceřádkovou anotaci. CTRL pro přichycení.</translation>
     </message>
   </context>
   <context>
@@ -5799,16 +5799,16 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Návrh na skicu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Převeďte obousměrně mezi objekty konceptu a skici.
+Mnoho objektů konceptu bude převedeno na jedinou skicu bez omezení.
+Jedna skica s odpojenými stopami však bude převedena na několik samostatných objektů výkresu.</translation>
     </message>
   </context>
   <context>
@@ -5816,12 +5816,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="66"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Uchopit zámek</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="67"/>
       <source>Enables or disables snapping globally.</source>
-      <translation type="unfinished">Enables or disables snapping globally.</translation>
+      <translation>Globálně povolí nebo zakáže přichytávání.</translation>
     </message>
   </context>
   <context>
@@ -5829,12 +5829,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="82"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Přichytit Midpoint</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="83"/>
       <source>Snaps to the midpoint of edges.</source>
-      <translation type="unfinished">Snaps to the midpoint of edges.</translation>
+      <translation>Přichytí se ke středu hran.</translation>
     </message>
   </context>
   <context>
@@ -5842,12 +5842,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="96"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Přichytit kolmo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="97"/>
       <source>Snaps to the perpendicular points on faces and edges.</source>
-      <translation type="unfinished">Snaps to the perpendicular points on faces and edges.</translation>
+      <translation>Přichytí se ke kolmým bodům na plochách a hranách.</translation>
     </message>
   </context>
   <context>
@@ -5855,12 +5855,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="110"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Přichytit do mřížky</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="111"/>
       <source>Snaps to the intersections of grid lines.</source>
-      <translation type="unfinished">Snaps to the intersections of grid lines.</translation>
+      <translation>Přichytí se k průsečíkům čar mřížky.</translation>
     </message>
   </context>
   <context>
@@ -5868,12 +5868,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="124"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Přichytit průsečík</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="125"/>
       <source>Snaps to the intersection of two edges.</source>
-      <translation type="unfinished">Snaps to the intersection of two edges.</translation>
+      <translation>Přichytí se k průsečíku dvou hran.</translation>
     </message>
   </context>
   <context>
@@ -5881,12 +5881,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="138"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Přichytit rovnoběžně</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="139"/>
       <source>Snaps to an imaginary line parallel to straight edges.</source>
-      <translation type="unfinished">Snaps to an imaginary line parallel to straight edges.</translation>
+      <translation>Přichytí se k pomyslné čáře rovnoběžné s rovnými hranami.</translation>
     </message>
   </context>
   <context>
@@ -5894,12 +5894,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="152"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Přichytit koncový bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="153"/>
       <source>Snaps to the endpoints of edges.</source>
-      <translation type="unfinished">Snaps to the endpoints of edges.</translation>
+      <translation>Přichytí se ke koncovým bodům hran.</translation>
     </message>
   </context>
   <context>
@@ -5907,12 +5907,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Úhel záběru</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</source>
-      <translation type="unfinished">Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</translation>
+      <translation>Přichytí se ke speciálním světovým stranám na kruhových hranách v násobcích 30° a 45°.</translation>
     </message>
   </context>
   <context>
@@ -5920,12 +5920,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="180"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Uchopit střed</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="181"/>
       <source>Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts.</source>
-      <translation type="unfinished">Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts.</translation>
+      <translation>Přichytí se ke středu ploch a kruhových hran a k bodu umístění zástupných prvků pracovní roviny a stavebních dílů.</translation>
     </message>
   </context>
   <context>
@@ -5933,12 +5933,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="194"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Snap rozšíření</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="195"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges.</source>
-      <translation type="unfinished">Snaps to an imaginary line that extends beyond the endpoints of straight edges.</translation>
+      <translation>Přichytí se k pomyslné čáře, která přesahuje koncové body rovných hran.</translation>
     </message>
   </context>
   <context>
@@ -5946,12 +5946,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="208"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Přiblížit se</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="209"/>
       <source>Snaps to the nearest point on faces and edges.</source>
-      <translation type="unfinished">Snaps to the nearest point on faces and edges.</translation>
+      <translation>Přichytí se k nejbližšímu bodu na plochách a hranách.</translation>
     </message>
   </context>
   <context>
@@ -5959,12 +5959,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="222"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Uchopit Ortho</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="223"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°.</source>
-      <translation type="unfinished">Snaps to imaginary lines that cross the previous point at multiples of 45°.</translation>
+      <translation>Přichytí se k pomyslným čarám, které protínají předchozí bod v násobcích 45°.</translation>
     </message>
   </context>
   <context>
@@ -5972,12 +5972,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="236"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Přichytit speciální</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="237"/>
       <source>Snaps to special points defined by the object.</source>
-      <translation type="unfinished">Snaps to special points defined by the object.</translation>
+      <translation>Přichytí se ke speciálním bodům definovaným objektem.</translation>
     </message>
   </context>
   <context>
@@ -5985,12 +5985,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="250"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Přichytávací rozměry</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="251"/>
       <source>Shows temporary X and Y dimensions.</source>
-      <translation type="unfinished">Shows temporary X and Y dimensions.</translation>
+      <translation>Zobrazuje dočasné rozměry X a Y.</translation>
     </message>
   </context>
   <context>
@@ -5998,12 +5998,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="264"/>
       <source>Snap Working Plane</source>
-      <translation type="unfinished">Snap Working Plane</translation>
+      <translation>Snap pracovní rovinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="265"/>
       <source>Projects snap points onto the current working plane.</source>
-      <translation type="unfinished">Projects snap points onto the current working plane.</translation>
+      <translation>Promítne body přichycení do aktuální pracovní roviny.</translation>
     </message>
   </context>
   <context>
@@ -6011,12 +6011,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="278"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Zobrazit panel nástrojů uchopení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="279"/>
       <source>Shows the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Shows the snap toolbar if it is hidden.</translation>
+      <translation>Zobrazí panel nástrojů uchopení, pokud je skrytý.</translation>
     </message>
   </context>
   <context>
@@ -6031,9 +6031,9 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Přesune vybrané objekty z jednoho základního bodu do jiného.
+Pokud je aktivní volba "kopírovat", vytvoří se posunuté kopie.
+CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
@@ -6047,8 +6047,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="69"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří kruhový oblouk pomocí středu a poloměru.
+CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
@@ -6056,14 +6056,14 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="488"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Oblouk o 3 body</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="491"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří kruhový oblouk výběrem 3 bodů.
+CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
@@ -6071,12 +6071,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="615"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Obloukové nástroje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="618"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Vytvářejte různé typy kruhových oblouků.</translation>
     </message>
   </context>
   <context>
@@ -6084,12 +6084,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="58"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Přepnout mřížku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Zapíná a vypíná mřížku konceptu.</translation>
     </message>
   </context>
   <context>
@@ -6097,12 +6097,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>Zvýraznění dílčího prvku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>Zvýrazněte dílčí prvky vybraných objektů, aby je pak bylo možné upravovat pomocí nástrojů pro přesun, otočení a změnu velikosti.</translation>
     </message>
   </context>
   <context>
@@ -6117,9 +6117,9 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Upraví aktivní objekt.
+Stisknutím E nebo ALT+levým kliknutím zobrazíte kontextovou nabídku
+na podporovaných uzlech a na podporovaných objektech.</translation>
     </message>
   </context>
   <context>
@@ -6127,12 +6127,12 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Přidat bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline.</translation>
+      <translation>Přidá bod k existujícímu drátu nebo B-spline.</translation>
     </message>
   </context>
   <context>
@@ -6140,12 +6140,12 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="89"/>
       <source>Remove point</source>
-      <translation type="unfinished">Remove point</translation>
+      <translation>Odstraňte bod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline.</translation>
+      <translation>Odebere bod z existujícího drátu nebo B-spline.</translation>
     </message>
   </context>
   <context>
@@ -6161,10 +6161,10 @@ on supported nodes and on supported objects.</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Vytvoří kopie vybraného objektu a umístí kopie do radiálního vzoru
+vytváření různých kruhových vrstev.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+Pole může být změněno na ortogonální nebo polární pole změnou jeho typu.</translation>
     </message>
   </context>
   <context>
@@ -6172,12 +6172,12 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="79"/>
       <source>Annotation styles...</source>
-      <translation type="unfinished">Annotation styles...</translation>
+      <translation>Styly poznámek...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="83"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Spravujte nebo vytvářejte styly poznámek</translation>
     </message>
   </context>
   <context>
@@ -6190,7 +6190,7 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Vytvoří bodový objekt. Klikněte kamkoli do 3D zobrazení.</translation>
     </message>
   </context>
   <context>
@@ -6205,9 +6205,9 @@ The array can be turned into an orthogonal or a polar array by changing its type
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
-If the "copy" option is active, it will create rotated copies.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Otočí vybrané objekty. Vyberte střed otáčení, poté počáteční úhel a poté konečný úhel.
+Pokud je aktivní volba "kopírovat", vytvoří se otočené kopie.
+CTRL pro přichycení, SHIFT pro omezení. Podržte ALT a kliknutím vytvořte kopii s každým kliknutím.</translation>
     </message>
   </context>
   <context>
@@ -6215,14 +6215,14 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="73"/>
       <source>Move to group...</source>
-      <translation type="unfinished">Move to group...</translation>
+      <translation>Přesunout do skupiny...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="76"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Přesune vybrané objekty do existující skupiny nebo je odstraní z jakékoli skupiny.
+Nejprve vytvořte skupinu, abyste mohli tento nástroj používat.</translation>
     </message>
   </context>
   <context>
@@ -6230,12 +6230,12 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="164"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Vyberte skupinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>Vybírá obsah vybraných skupin. U vybraných neskupinových objektů se vybere obsah skupiny, ve které se nacházejí.</translation>
     </message>
   </context>
   <context>
@@ -6248,7 +6248,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="211"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>Vyberte skupinu, do které chcete přidat všechny objekty Draft a Arch.</translation>
     </message>
   </context>
   <context>
@@ -6256,16 +6256,16 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="309"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Přidat do skupiny Konstrukce</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="312"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-It creates a construction group if it doesn't exist.</translation>
+      <translation>Přidá vybrané objekty do konstrukční skupiny,
+a mění jejich vzhled na stavební styl.
+Vytvoří konstrukční skupinu, pokud neexistuje.</translation>
     </message>
   </context>
   <context>
@@ -6273,12 +6273,12 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="361"/>
       <source>Add a new named group</source>
-      <translation type="unfinished">Add a new named group</translation>
+      <translation>Přidejte novou pojmenovanou skupinu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="365"/>
       <source>Add a new group with a given name.</source>
-      <translation type="unfinished">Add a new group with a given name.</translation>
+      <translation>Přidejte novou skupinu s daným názvem.</translation>
     </message>
   </context>
   <context>
@@ -6286,16 +6286,16 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="50"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>Vytvořte proxy pracovní roviny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="52"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>Vytvoří proxy objekt z aktuální pracovní roviny.
+Jakmile je objekt vytvořen, dvakrát na něj klikněte ve stromovém zobrazení, abyste obnovili polohu kamery a viditelnost objektů.
+Poté jej můžete kdykoli použít k uložení jiné polohy kamery a stavu objektů.</translation>
     </message>
   </context>
   <context>
@@ -6303,12 +6303,12 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Kabel k B-spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>Převede vybranou křivku na B-spline nebo B-spline na křivku.</translation>
     </message>
   </context>
   <context>
@@ -6316,14 +6316,14 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Převrátit rozměr</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Překlopte normální směr vybraných kót (lineární, radiální, úhlový).
+Pokud jsou vybrány jiné objekty, jsou ignorovány.</translation>
     </message>
   </context>
   <context>
@@ -6336,7 +6336,7 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="67"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>Vytvoří zaoblení mezi dvěma vybranými dráty nebo hranami.</translation>
     </message>
   </context>
   <context>
@@ -6344,12 +6344,12 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>Nastavit styl</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="59"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>Nastaví výchozí styly</translation>
     </message>
   </context>
   <context>
@@ -6363,8 +6363,8 @@ If other objects are selected they are ignored.</translation>
       <location filename="../../draftguitools/gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
-CTRL to snap, SHIFT to constrain</translation>
+      <translation>Vytvoří pravidelný mnohoúhelník (trojúhelník, čtverec, pětiúhelník, ...), definováním počtu stran a opsaného poloměru.
+CTRL pro přichycení, SHIFT pro omezení</translation>
     </message>
   </context>
   <context>
@@ -6379,9 +6379,9 @@ CTRL to snap, SHIFT to constrain</translation>
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
-      <translation type="unfinished">Splits the selected line or polyline into two independent lines
-or polylines by clicking anywhere along the original object.
-It works best when choosing a point on a straight segment and not a corner vertex.</translation>
+      <translation>Rozdělí vybranou čáru nebo křivku na dvě nezávislé čáry
+nebo křivky kliknutím kamkoli podél původního objektu.
+Nejlépe to funguje při výběru bodu na přímém segmentu a ne na vrcholu rohu.</translation>
     </message>
   </context>
   <context>
@@ -6395,8 +6395,8 @@ It works best when choosing a point on a straight segment and not a corner verte
       <location filename="../../draftguitools/gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
-CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</translation>
+      <translation>Ořízne nebo prodlouží vybraný objekt nebo vysune jednotlivé plochy.
+CTRL přichytí, SHIFT omezí na aktuální segment nebo na normální, ALT invertuje.</translation>
     </message>
   </context>
   <context>
@@ -6409,7 +6409,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří vícebodový B-spline. CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
@@ -6417,57 +6417,57 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Použít aktuální styl</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Použije aktuální styl definovaný v panelu nástrojů (šířka čáry a barvy) na vybrané objekty a skupiny.</translation>
     </message>
   </context>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="64"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
       <source>Bézier curve</source>
-      <translation type="unfinished">Bézier curve</translation>
+      <translation>Bézierova křivka</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="67"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="68"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří N-stupňovou Bézierovu křivku. Čím více bodů vyberete, tím vyšší bude stupeň.
+CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="242"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="251"/>
       <source>Cubic Bézier curve</source>
-      <translation type="unfinished">Cubic Bézier curve</translation>
+      <translation>Kubická Bézierova křivka</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="245"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="254"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Vytvoří Bézierovu křivku vytvořenou ze segmentů 2. stupně (kvadratický) a 3. stupně (kubický). Kliknutím a tažením definujte každý segment.
+Po vytvoření křivky se můžete vrátit a upravit každý kontrolní bod a nastavit vlastnosti každého uzlu.
+CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
   </context>
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="474"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="490"/>
       <source>Bézier tools</source>
-      <translation type="unfinished">Bézier tools</translation>
+      <translation>Bézierovy nástroje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="477"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="493"/>
       <source>Create various types of Bézier curves.</source>
-      <translation type="unfinished">Create various types of Bézier curves.</translation>
+      <translation>Vytvářejte různé typy Bézierových křivek.</translation>
     </message>
   </context>
   <context>
@@ -6481,8 +6481,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="../../draftguitools/gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>Vytvoří kruh (plný kruhový oblouk).
+CTRL pro přichycení, ALT pro výběr tečných objektů.</translation>
     </message>
   </context>
   <context>
@@ -6495,7 +6495,7 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>Vytvoří elipsu. CTRL pro přichycení.</translation>
     </message>
   </context>
   <context>
@@ -6508,7 +6508,7 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation type="unfinished">Creates a facebinder object from selected faces.</translation>
+      <translation>Vytvoří objekt facebinder z vybraných ploch.</translation>
     </message>
   </context>
   <context>
@@ -6516,7 +6516,7 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="65"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Pole</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="68"/>
@@ -6524,10 +6524,10 @@ CTRL to snap, ALT to select tangent objects.</translation>
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Vytvoří kopie vybraného objektu a umístí kopie do ortogonálního vzoru,
+což znamená, že kopie sledují určený směr v osách X, Y, Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Pole může být změněno na polární nebo kruhové pole změnou jeho typu.</translation>
     </message>
   </context>
   <context>
@@ -6541,8 +6541,8 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation type="unfinished">Scales the selected objects from a base point.
-CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
+      <translation>Změní měřítko vybraných objektů od základního bodu.
+CTRL pro přichycení, SHIFT pro omezení, ALT pro kopírování.</translation>
     </message>
   </context>
   <context>
@@ -6550,14 +6550,14 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="67"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Vrstva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="70"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>Přidá do dokumentu vrstvu.
+Objekty přidané do této vrstvy mohou sdílet stejné vizuální vlastnosti, jako je barva čáry, šířka čáry a barva tvaru.</translation>
     </message>
   </context>
   <context>
@@ -6565,14 +6565,14 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="67"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Pole bodů</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
       <source>Creates copies of the selected base object at the points of a point object.
 First select the base object, and then select the point object.</source>
-      <translation type="unfinished">Creates copies of the selected base object at the points of a point object.
-First select the base object, and then select the point object.</translation>
+      <translation>Vytvoří kopie vybraného základního objektu v bodech bodového objektu.
+Nejprve vyberte základní objekt a poté vyberte bodový objekt.</translation>
     </message>
   </context>
   <context>
@@ -6580,14 +6580,14 @@ First select the base object, and then select the point object.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="132"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>PointLinkArray</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="135"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
-      <translation type="unfinished">Like the PointArray tool, but creates a 'Point link array' instead.
-A 'Point link array' is more efficient when handling many copies.</translation>
+      <translation>Jako nástroj PointArray, ale místo toho vytvoří „Point link array“.
+'Point link array' je efektivnější při manipulaci s mnoha kopiemi.</translation>
     </message>
   </context>
   <context>
@@ -6595,12 +6595,12 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>Array nástroje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Vytvářejte různé typy polí, včetně obdélníkových, polárních, kruhových, dráhových a bodových</translation>
     </message>
   </context>
   <context>
@@ -6608,14 +6608,14 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="99"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Přepnout konstrukční režim</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>Přepíná režim Konstrukce.
+Když je toto aktivní, následující vytvořené objekty budou zahrnuty do konstrukční skupiny a budou nakresleny se zadanou barvou a vlastnostmi.</translation>
     </message>
   </context>
   <context>
@@ -6623,16 +6623,16 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="131"/>
       <source>Toggle continue mode</source>
-      <translation type="unfinished">Toggle continue mode</translation>
+      <translation>Přepnout režim pokračování</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="133"/>
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
-      <translation type="unfinished">Toggles the Continue mode.
-When this is active, any drawing tool that is terminated will automatically start again.
-This can be used to draw several objects one after the other in succession.</translation>
+      <translation>Přepíná režim Pokračovat.
+Když je toto aktivní, každý kreslicí nástroj, který je ukončen, se automaticky znovu spustí.
+Toho lze použít k nakreslení několika objektů za sebou.</translation>
     </message>
   </context>
   <context>
@@ -6640,16 +6640,16 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Přepínání normálního/drátového zobrazení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Přepne režim zobrazení vybraných objektů z plochých čar na drátový model a zpět.
+To je užitečné pro rychlou vizualizaci objektů, které jsou skryté jinými objekty.
+Toto je určeno pro použití s uzavřenými tvary a pevnými látkami a neovlivňuje otevřené vodiče.</translation>
     </message>
   </context>
   <context>
@@ -6673,18 +6673,18 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Vytvoří dimenzi.
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Vyberte tři body a vytvořte jednoduchou lineární kótu.
+- Výběrem přímky vytvoříte lineární kótu spojenou s touto čárou.
+- Vyberte oblouk nebo kružnici a vytvořte kótu poloměru nebo průměru spojenou s tímto obloukem.
+- Vyberte dvě rovné čáry a vytvořte mezi nimi úhlovou kótu.
+CTRL pro přichycení, SHIFT pro omezení, ALT pro výběr hrany nebo oblouku.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+Před spuštěním tohoto příkazu můžete vybrat jednu čáru nebo jeden kruhový oblouk
+k vytvoření odpovídající propojené dimenze.
+Před spuštěním tohoto příkazu můžete také vybrat objekt 'App::MeasureDistance'
+přeměnit jej na objekt 'Draft Dimension'.</translation>
     </message>
   </context>
   <context>
@@ -6692,16 +6692,16 @@ to turn it into a 'Draft Dimension' object.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Roztažení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="67"/>
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>Roztáhne vybrané objekty.
+Vyberte objekt a poté nakreslete obdélník pro výběr vrcholů, které budou nataženy,
+pak nakreslete čáru pro určení vzdálenosti a směru natahování.</translation>
     </message>
   </context>
   <context>
@@ -6714,7 +6714,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
-      <translation type="unfinished">Creates a 2-point rectangle. CTRL to snap.</translation>
+      <translation>Vytvoří 2bodový obdélník. CTRL pro přichycení.</translation>
     </message>
   </context>
   <context>
@@ -6722,12 +6722,12 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Zrcadlo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Zrcadlí vybrané objekty podél čáry definované dvěma body.</translation>
     </message>
   </context>
   <context>
@@ -6735,16 +6735,16 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Zkrocená cesta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Vytvoří kopie vybraného objektu podél vybrané cesty a zkroutí kopie.
+Nejprve vyberte objekt a poté vyberte cestu.
+Cesta může být křivka, B-spline, Bézierova křivka nebo dokonce hrany z jiných objektů.</translation>
     </message>
   </context>
   <context>
@@ -6752,14 +6752,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted Link array</source>
-      <translation type="unfinished">Path twisted Link array</translation>
+      <translation>Pole zborcené cesty</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Stejně jako nástroj PathTwistedArray, ale místo toho vytvoří 'Link array'.
+'Link array' je efektivnější při manipulaci s mnoha kopiemi, ale možnost 'Fuse' nelze použít.</translation>
     </message>
   </context>
   <context>
@@ -6773,8 +6773,8 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <location filename="../../draftguitools/gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Vytvoří klon vybraných objektů.
+Výsledný klon lze škálovat v každém z jeho tří směrů.</translation>
     </message>
   </context>
   <context>
@@ -6790,10 +6790,10 @@ The resulting clone can be scaled in each of its three directions.</translation>
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>Vytvoří kopie vybraného objektu a umístí kopie do polárního vzoru
+definovaný středem otáčení a jeho úhlem.
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+Pole lze změnit na ortogonální nebo kruhové pole změnou jeho typu.</translation>
     </message>
   </context>
   <context>
@@ -6801,7 +6801,7 @@ The array can be turned into an orthogonal or a circular array by changing its t
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="70"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>Nastavte sklon</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="73"/>
@@ -6810,11 +6810,11 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Nastaví sklon vybrané čáry změnou hodnoty Z jednoho z jejích bodů.
+Pokud je vybrána křivka, použije transformaci sklonu na každý její segment.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</translation>
+Sklon vždy změní hodnotu Z, proto tento příkaz funguje dobře pouze pro
+rovné Úkosové čáry, které jsou nakresleny v rovině XY. Vybrané objekty, které nejsou samostatnými čarami, budou ignorovány.</translation>
     </message>
   </context>
   <context>
@@ -6822,7 +6822,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Aktualizovat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="61"/>
@@ -6830,10 +6830,10 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Upgraduje vybrané objekty do složitějších tvarů.
+Výsledek operace závisí na typech objektů, které může být možné upgradovat několikrát za sebou.
+Může například spojit vybrané objekty do jednoho, převést jednoduché hrany na parametrické křivky,
+převést uzavřené hrany na vyplněné plochy a parametrické polygony a sloučit plochy do jedné plochy.</translation>
     </message>
   </context>
   <context>
@@ -6848,9 +6848,9 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Odsazení vybraného objektu.
+Může také vytvořit ofsetovou kopii původního objektu.
+CTRL pro přichycení, SHIFT pro omezení. Podržte ALT a kliknutím vytvořte kopii s každým kliknutím.</translation>
     </message>
   </context>
   <context>
@@ -6866,10 +6866,10 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>Vytvoří 2D projekci vybraných objektů v rovině XY.
+Počáteční směr promítání je záporný bod aktuálního aktivního směru pohledu.
+Můžete vybrat jednotlivé plochy k promítnutí nebo celé těleso a také zahrnout skryté čáry.
+Tyto projekce lze použít k vytváření technických výkresů pomocí TechDraw Workbench.</translation>
     </message>
   </context>
   <context>
@@ -6883,8 +6883,8 @@ These projections can be used to create technical drawings with the TechDraw Wor
       <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>Vytvoří tvar z textového řetězce výběrem konkrétního písma a umístění.
+Uzavřené tvary lze použít pro vytlačování a booleovské operace.</translation>
     </message>
   </context>
   <context>
@@ -6892,16 +6892,16 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="58"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>Vyléčit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="61"/>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Vyléčit vadné objekty konceptu uložené ve starší verzi programu.
+Pokud je vybrán objekt, pokusí se vyléčit zejména tento objekt,
+jinak se pokusí vyléčit všechny objekty v aktivním dokumentu.</translation>
     </message>
   </context>
   <context>
@@ -6909,16 +6909,16 @@ otherwise it will try to heal all objects in the active document.</translation>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Přejít na nižší verzi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Sníží vybrané objekty na jednodušší tvary.
+Výsledek operace závisí na typech objektů, které mohou být downgradovány několikrát za sebou.
+Například rozloží vybrané křivky na jednodušší plochy, dráty a poté hrany. Může také odečítat obličeje.</translation>
     </message>
   </context>
   <context>
@@ -6926,14 +6926,14 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Umístění základního bodu prvního řádku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/text.py" line="69"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>Text zobrazený tímto objektem.
+Je to seznam řetězců; každý prvek v seznamu se zobrazí na vlastním řádku.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="46"/>
@@ -6943,86 +6943,86 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="49"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Název souboru písma</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="52"/>
       <source>Height of text</source>
-      <translation type="unfinished">Height of text</translation>
+      <translation>Výška textu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="55"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Meziznakové mezery</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="58"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Vyplňte písmena tvářemi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="47"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Základní objekt používaný tímto objektem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="50"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Soubor PAT používaný tímto objektem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="53"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Název vzoru používaný tímto objektem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="56"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>Měřítko vzoru používané tímto objektem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="59"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>Rotace vzoru používaná tímto objektem</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="62"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Pokud je nastaveno na False, použije se šrafování tak, jak je, bez překladu (to by mohlo dát špatné výsledky pro jiné než XY plochy)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Objekty obsažené v tomto klonu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>Měřítko tohoto klonu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Pokud Clones obsahuje několik objektů,
+nastavte True pro fúzi nebo False pro sloučeninu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="45"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Počáteční úhel oblouku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Koncový úhel oblouku (pro celý kruh,
+                dát stejnou hodnotu jako první úhel)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Poloměr kruhu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="58"/>
@@ -7030,7 +7030,7 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/polygon.py" line="68"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Vytvořte obličej</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="70"/>
@@ -7040,62 +7040,62 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/rectangle.py" line="67"/>
       <location filename="../../draftobjects/wire.py" line="93"/>
       <source>The area of this object</source>
-      <translation type="unfinished">The area of this object</translation>
+      <translation>Rozloha tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="55"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Objekty, které jsou součástí této vrstvy</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Počet tváří</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Poloměr řídicí kružnice</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Jak musí být polygon nakreslen z řídicího kruhu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="60"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
       <location filename="../../draftobjects/wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Poloměr, který se má použít k zaoblení rohů</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Velikost zkosení dát do rohů</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>Základní objekt, který bude duplikován.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="185"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>Objekt, podél kterého budou kopie distribuovány. Musí obsahovat 'Edges'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Počet kopií k vytvoření.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Rotační faktor krouceného pole.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="335"/>
@@ -7103,14 +7103,14 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
       <location filename="../../draftobjects/pointarray.py" line="100"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Zobrazit jednotlivé prvky pole (pouze pro pole Link)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="68"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>Poloha špičky vodící čáry.
+Tento bod může být ozdoben šipkou nebo jiným symbolem.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="82"/>
@@ -7118,10 +7118,10 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>Objekt a volitelně dílčí prvek, jehož vlastnosti se zobrazí
+jako „Text“ v závislosti na „Typu štítku“.
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+„Cíl“ nebude použit, pokud je „Typ štítku“ nastaven na „Vlastní“.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="112"/>
@@ -7134,15 +7134,15 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>Seznam bodů definujících odkazovou čáru; obvykle seznam tří bodů.
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+Prvním bodem by měla být pozice textu, tedy „Umístění“,
+a poslední bod by měl být špičkou úsečky, tedy „cílovým bodem“.
+Středový bod se vypočítá automaticky v závislosti na zvoleném
+Hodnota a znaménko 'Přímý směr' a 'Přímá vzdálenost'.
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+Pokud je 'Přímý směr' nastaveno na 'Vlastní', vlastnost 'Points'
+lze nastavit jako seznam libovolných bodů.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="127"/>
@@ -7150,10 +7150,10 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>Směr přímého segmentu odkazové čáry.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+Pokud je vybrána možnost 'Vlastní', body odkazu lze určit pomocí
+přiřazení vlastního seznamu k atributu 'Body'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="145"/>
@@ -7162,21 +7162,21 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>Délka přímého segmentu odkazové čáry.
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+Toto je orientovaná vzdálenost; pokud je záporná, čára se nakreslí
+vlevo nebo pod „Textem“, jinak vpravo nebo nad ním,
+v závislosti na hodnotě 'Přímý směr'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="159"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>Umístění prvku 'Text' ve 3D prostoru</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="169"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>Text, který se zobrazí, když je „Typ štítku“ nastaven na „Vlastní“</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="184"/>
@@ -7185,11 +7185,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>Text zobrazený tímto štítkem.
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+Tato vlastnost je pouze pro čtení, protože konečný text závisí na 'Label Type',
+a objekt definovaný v 'Cíl'.
+„Vlastní text“ se zobrazí pouze v případě, že je „Typ štítku“ nastaven na „Vlastní“.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="219"/>
@@ -7201,74 +7201,74 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>Typ informací zobrazených tímto štítkem.
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like Arch objects.
+Pokud je vybrána možnost „Vlastní“, použije se obsah položky „Vlastní text“.
+U ostatních typů bude řetězec vypočítán automaticky z objektu definovaného v 'Target'.
+'Tag' a 'Material' fungují pouze pro objekty, které mají tyto vlastnosti, jako jsou objekty Arch.
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+Pro 'Position', 'Length' a 'Area' budou tyto vlastnosti extrahovány z hlavního objektu v 'Target',
+nebo z dílčího prvku 'VertexN', 'EdgeN' nebo 'FaceN', pokud je zadán.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="89"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation type="unfinished">General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</translation>
+      <translation>Obecný faktor měřítka, který konzistentně ovlivňuje anotaci
+protože mění měřítko textu a případně zdobení řádků,
+ve stejném poměru.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="107"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation type="unfinished">Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</translation>
+      <translation>Styl poznámky, který se má použít na tento objekt.
+Při použití uloženého stylu se některé vlastnosti pohledu stanou pouze pro čtení;
+budou upravitelné pouze změnou stylu pomocí nástroje 'Editor stylu anotací'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="97"/>
       <location filename="../../draftobjects/patharray.py" line="177"/>
       <source>The base object that will be duplicated</source>
-      <translation type="unfinished">The base object that will be duplicated</translation>
+      <translation>Základní objekt, který bude duplikován</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="200"/>
       <source>List of connected edges in the 'Path Object'.
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
-      <translation type="unfinished">List of connected edges in the 'Path Object'.
-If these are present, the copies will be created along these subelements only.
-Leave this property empty to create copies along the entire 'Path Object'.</translation>
+      <translation>Seznam připojených hran v 'Objektu cesty'.
+Pokud jsou přítomny, budou kopie vytvořeny pouze podél těchto dílčích prvků.
+Ponechte tuto vlastnost prázdnou, chcete-li vytvořit kopie podél celého 'Objektu cesty'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="208"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Počet kopií k vytvoření</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="227"/>
       <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
-      <translation type="unfinished">Additional translation that will be applied to each copy.
-This is useful to adjust for the difference between shape centre and shape reference point.</translation>
+      <translation>Další překlad, který bude aplikován na každou kopii.
+To je užitečné pro úpravu rozdílu mezi středem tvaru a referenčním bodem tvaru.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="235"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>Vektor zarovnání pro režim 'Tečna'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="243"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Vynutit použití „Vertikálního vektoru“ jako místního směru Z při použití režimu zarovnání „Originál“ nebo „Tečna“</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="251"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>Směr lokální osy Z, když platí 'Force Vertical'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="259"/>
@@ -7278,29 +7278,29 @@ This is useful to adjust for the difference between shape centre and shape refer
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+      <translation>Metoda orientace kopií podél cesty.
+- Originál: X je tečna křivky, Y je normální a Z je křížový součin.
+- Frenet: zarovná objekt podle místního souřadnicového systému podél cesty.
+- Tangenta: podobná 'Original', ale lokální osa X je předem zarovnána na 'Tangent Vector'.
 
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+Chcete-li získat lepší výsledky s 'Original' nebo 'Tangent', možná budete muset nastavit 'Force Vertical' na true.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="268"/>
       <source>Length from the start of the path to the first copy.</source>
-      <translation type="unfinished">Length from the start of the path to the first copy.</translation>
+      <translation>Délka od začátku cesty k první kopii.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="276"/>
       <source>Length from the end of the path to the last copy.</source>
-      <translation type="unfinished">Length from the end of the path to the last copy.</translation>
+      <translation>Délka od konce cesty k poslední kopii.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="286"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Orientujte kopie podél cesty v závislosti na „Režimu zarovnání“.
+Jinak budou mít kopie stejnou orientaci jako původní objekt Base.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="113"/>
@@ -7308,151 +7308,151 @@ Otherwise the copies will have the same orientation as the original Base object.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>Typ pole, které se má vytvořit.
+- Orto: umístí kopie ve směru globálních os X, Y, Z.
+- Polární: umístí kopie podél kruhového oblouku až do určeného úhlu as určitou orientací definovanou středem a osou.
+- Kruhové: umístí kopie do soustředných kruhových vrstev kolem základního objektu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="124"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>Určuje, zda se mají kopie spojit dohromady, pokud se vzájemně dotýkají (pomalejší)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="151"/>
       <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <translation>Počet kopií ve směru X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="160"/>
       <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <translation>Počet kopií ve směru Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="169"/>
       <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <translation>Počet kopií ve směru Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="179"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>Vzdálenost a orientace intervalů ve směru X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="189"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Vzdálenost a orientace intervalů ve směru Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="199"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Vzdálenost a orientace intervalů ve směru Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="214"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
+      <translation>Směr osy, kolem které budou vytvořeny prvky v polárním nebo kruhovém poli</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="225"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation type="unfinished">Center point for polar and circular arrays.
-The 'Axis' passes through this point.</translation>
+      <translation>Středový bod pro polární a kruhová pole.
+„Osa“ prochází tímto bodem.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="244"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>Objekt osy, který přepíše hodnotu 'Axis' a 'Center', například pomocnou čáru.
+Jeho umístění, poloha a rotace budou použity při vytváření polárních a kruhových polí.
+Nechte tuto vlastnost prázdnou, abyste mohli ručně nastavit 'Axis' a 'Center'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="257"/>
       <source>Number of copies in the polar direction</source>
-      <translation type="unfinished">Number of copies in the polar direction</translation>
+      <translation>Počet kopií v polárním směru</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="267"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>Vzdálenost a orientace intervalů ve směru 'Osy'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="276"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>Úhel pokrytí kopiemi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="289"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>Vzdálenost mezi kruhovými vrstvami</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="299"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>Vzdálenost mezi kopiemi ve stejné kruhové vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="309"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation type="unfinished">Number of circular layers. The 'Base' object counts as one layer.</translation>
+      <translation>Počet kruhových vrstev. Objekt 'Základní' se počítá jako jedna vrstva.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="320"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Parametr, který určuje, kolik rovin symetrie bude mít kruhové pole.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="137"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>Celkový počet prvků v poli.
+Tato vlastnost je pouze pro čtení, protože číslo závisí na parametrech pole.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="67"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Základní objekt, který bude duplikován</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="75"/>
       <source>Object containing points used to distribute the copies.</source>
-      <translation type="unfinished">Object containing points used to distribute the copies.</translation>
+      <translation>Objekt obsahující body používané k distribuci kopií.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="83"/>
       <source>Number of copies in the array.
 This property is read-only, as the number depends on the points in 'Point Object'.</source>
-      <translation type="unfinished">Number of copies in the array.
-This property is read-only, as the number depends on the points in 'Point Object'.</translation>
+      <translation>Počet kopií v poli.
+Tato vlastnost je pouze pro čtení, protože počet závisí na bodech v 'Point Object'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="92"/>
       <location filename="../../draftobjects/pointarray.py" line="135"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation type="unfinished">Additional placement, shift and rotation, that will be applied to each copy</translation>
+      <translation>Další umístění, posun a otočení, které bude použito na každou kopii</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Základní objekt, který musí tento 2D pohled představovat</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>Vektor promítání tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Způsob, jakým musí být prohlížený objekt promítán</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Indexy tváří, které se mají promítnout v režimu Individuální tváře</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="80"/>
@@ -7462,66 +7462,66 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
+      <translation>Pojistkové stěnové a konstrukční objekty stejného typu a materiálu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Tessellate elipsy a B-splines do čárových segmentů</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Pro režimy Cutlines a Cutfaces
+                    tím zůstanou plochy v místě řezu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Délka segmentů čáry při mozaikování elips nebo B-spline
+                    do liniových segmentů</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Pokud je tato hodnota True, bude tento objekt obsahovat pouze viditelné objekty</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Seznam vyloučených bodů. Žádná hrana dotýkající se kteréhokoli z těchto bodů nebude vykreslena.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="122"/>
       <source>A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</translation>
+      <translation>Seznam názvů objektů vyloučení. Žádný prohlížený objekt, který odpovídá názvu ze seznamu, nebude vykreslen.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="127"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Pokud je tato hodnota True, zpracuje se pouze geometrie tělesa. Tím se přepíše vlastnost Pouze tělesa základního objektu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="132"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Pokud je to True, obsah se ořízne k okrajům roviny řezu, pokud je to možné. Tím se přepíše vlastnost Clip základního objektu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="137"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Tento objekt bude přepočítán pouze v případě, že je to True.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Body Bezierovy křivky</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Stupeň Bézierovy funkce</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="54"/>
@@ -7531,17 +7531,17 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Jestli má být Bézierova křivka uzavřena nebo ne</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Pokud je tato křivka uzavřená, vytvořte plochu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Délka tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
@@ -7551,76 +7551,76 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>X Umístění</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Y Umístění</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Umístění Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>Počáteční úhel eliptického oblouku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="49"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
+      <translation>Koncový úhel eliptického oblouku
 
-                (for a full circle, give it same value as First Angle)</translation>
+                (pro celý kruh zadejte stejnou hodnotu jako první úhel)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Malý poloměr elipsy</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Hlavní poloměr elipsy</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>Plocha tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="47"/>
       <source>The start point of this line.</source>
-      <translation type="unfinished">The start point of this line.</translation>
+      <translation>Počáteční bod této linie.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="55"/>
       <source>The end point of this line.</source>
-      <translation type="unfinished">The end point of this line.</translation>
+      <translation>Koncový bod této čáry.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="63"/>
       <source>The length of this line.</source>
-      <translation type="unfinished">The length of this line.</translation>
+      <translation>Délka tohoto řádku.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>Poloměr pro zaoblení rohu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="135"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>Normální směr textu kóty</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="148"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>Objekt měřený tímto objektem dimenze</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="165"/>
@@ -7631,13 +7631,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Objekt a jeho konkrétní dílčí prvky,
+že tento objekt dimenze měří.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Existují různé možnosti:
+- Předmět a jedna z jeho hran.
+- Objekt a dva jeho vrcholy.
+- Obloukový objekt a jeho okraj.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="188"/>
@@ -7649,14 +7649,14 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Bod, kterým bude procházet kótovací čára nebo její extrapolace.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- U lineárních kót tato vlastnost řídí, jak blízko je kótovací čára
+je k měřenému objektu.
+- U radiálních kót toto řídí směr kótovací čáry
+který zobrazuje naměřený poloměr nebo průměr.
+- U úhlových kót toto řídí poloměr kótovacího oblouku
+který zobrazuje naměřený úhel.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="247"/>
@@ -7664,10 +7664,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Počáteční bod kótovací čáry.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Pokud je to poloměr, bude to střed oblouku.
+Pokud se jedná o kótu průměru, bude to bod, který leží na oblouku.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="261"/>
@@ -7675,17 +7675,17 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>Koncový bod kótovací čáry.
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+Pokud se jedná o rozměr poloměru nebo průměru
+bude to bod, který leží na oblouku.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="273"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>Směr kótovací čáry.
+Pokud zůstane '(0,0,0)', směr se vypočítá automaticky.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="290"/>
@@ -7696,34 +7696,34 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Hodnota měření.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Tato vlastnost je pouze pro čtení, protože se počítá hodnota
+z vlastností 'Start' a 'End'.
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Pokud je „Propojená geometrie“ oblouk nebo kruh, tato „Vzdálenost“
+je poloměr nebo průměr v závislosti na vlastnosti 'Diameter'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="301"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Při měření kruhových oblouků určuje, zda se má zobrazit
+hodnotu poloměru nebo průměru</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="516"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Počáteční úhel kótovací čáry (kruhový oblouk).
+Oblouk je nakreslen proti směru hodinových ručiček.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="527"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Koncový úhel kótovací čáry (kruhový oblouk).
+Oblouk je nakreslen proti směru hodinových ručiček.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="542"/>
@@ -7731,10 +7731,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>Střed kótovací čáry, což je kruhový oblouk.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+To je obvykle bod, kde jsou dva úsečky nebo jejich prodloužení
+protínají, což vede k naměřenému „úhlu“ mezi nimi.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="556"/>
@@ -7742,140 +7742,140 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Hodnota měření.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Tato vlastnost je pouze pro čtení, protože hodnota se počítá z
+vlastnosti 'První úhel' a 'Poslední úhel'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Délka obdélníku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Výška obdélníku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Horizontální dělení tohoto obdélníku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>Vertikální dělení tohoto obdélníku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="43"/>
       <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
+      <translation>Propojené tváře</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="46"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Určuje, zda musí být odstraněny dělicí čáry</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Volitelná hodnota vysunutí, která se použije na všechny plochy</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Volitelná hodnota odsazení, která se použije na všechny plochy</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>To určuje, zda se tvary šijí</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="58"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>Oblast tváří tohoto Facebinderu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Komponenty tohoto bloku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Vrcholy drátu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Jestli je drát uzavřený nebo ne</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>Základním předmětem je drát, je tvořen 2 předměty</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>Předmětem nástroje je drát, je tvořen 2 předměty</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>Počáteční bod této linie</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>Koncový bod této čáry</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="73"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>Délka tohoto řádku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Pokud je tento objekt uzavřen, vytvořte plochu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>Počet dělení každé hrany</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <translation>Body B-spline</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Jestli je B-spline uzavřen nebo ne</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Pokud je tento spline uzavřen, vytvořte plochu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Parametrizační faktor</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Vynutit umístění vzoru synchronizace i při rozbalení prvků pole</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="112"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Ukažte jednotlivé prvky pole</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="141"/>
@@ -7886,33 +7886,33 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <location filename="../../draftviewproviders/view_label.py" line="89"/>
       <location filename="../../draftviewproviders/view_text.py" line="65"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Řádkování (vzhledem k velikosti písma)</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="61"/>
       <source>Vertical alignment</source>
-      <translation type="unfinished">Vertical alignment</translation>
+      <translation>Vertikální zarovnání</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <source>Maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
+      <translation>Maximální počet znaků na každém řádku textového pole</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="80"/>
       <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <source>Horizontal alignment</source>
-      <translation type="unfinished">Horizontal alignment</translation>
+      <translation>Horizontální zarovnání</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="122"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Typ rámečku kolem textu tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="131"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>Zobrazit odkazovou čáru nebo ne</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
@@ -7927,57 +7927,57 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="108"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Definuje vzor SVG.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="118"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Definuje velikost vzoru SVG.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="68"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Pokud je to pravda, objekty obsažené v této vrstvě převezmou barvu čáry vrstvy</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="79"/>
       <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
+      <translation>Pokud je to pravda, objekty obsažené v této vrstvě převezmou barvu tvaru vrstvy</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="90"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>Pokud je to pravda, tisková barva se použije, když jsou objekty v této vrstvě umístěny na stránku TechDraw</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="104"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>Barva čáry objektů obsažených v této vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="118"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>Barva tvaru objektů obsažených v této vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="132"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>Šířka čáry objektů obsažených v této vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="144"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>Styl kreslení objektů obsažených v této vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="155"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>Průhlednost objektů obsažených v této vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="166"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>Barva čáry objektů obsažených v této vrstvě při použití na stránce TechDraw</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="123"/>
@@ -7992,31 +7992,31 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="125"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>Mezera mezi textem a kótovací čárou</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="134"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>Otočte text kóty o 180 stupňů</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="144"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation type="unfinished">Text Position.
-Leave '(0,0,0)' for automatic position</translation>
+      <translation>Pozice textu.
+Ponechejte '(0,0,0)' pro automatickou polohu</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="155"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>Přepsání textu.
+Napište '$dim' tak, aby bylo nahrazeno délkou kóty.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="168"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>Počet zobrazených desetinných míst</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="177"/>
@@ -8028,9 +8028,9 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Jednotka k vyjádření měření.
+Pro výchozí nastavení systému ponechte prázdné.
+Použijte 'oblouk' k vynucení americké obloukové notace</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="201"/>
@@ -8047,31 +8047,31 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="220"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Otočte šipky kóty o 180 stupňů</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Vzdálenost, o kterou je kótovací čára prodloužena
+za prodlužovací čáry</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>Délka prodlužovacích čar</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>Délka prodlužovací čáry
+za kótovací čárou</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="259"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>Zobrazuje kótovací čáru a šipky</translation>
     </message>
   </context>
   <context>
@@ -8088,12 +8088,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Spravovat vrstvy...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
-      <translation type="unfinished">Set/modify the different layers of this document</translation>
+      <translation>Nastavte/upravte různé vrstvy tohoto dokumentu</translation>
     </message>
   </context>
   <context>

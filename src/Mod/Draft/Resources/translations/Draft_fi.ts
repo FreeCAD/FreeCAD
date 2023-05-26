@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Tasohallinta</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -3574,8 +3574,8 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Create Wire</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="149"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="150"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
       <location filename="../../draftguitools/gui_lines.py" line="222"/>
       <location filename="../../draftguitools/gui_lines.py" line="230"/>
       <location filename="../../draftguitools/gui_lines.py" line="237"/>
@@ -3649,13 +3649,13 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="103"/>
       <source>Pick start point</source>
-      <translation type="unfinished">Pick start point</translation>
+      <translation>Valitse aloituspiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="168"/>
       <location filename="../../draftguitools/gui_move.py" line="315"/>
       <source>Pick end point</source>
-      <translation type="unfinished">Pick end point</translation>
+      <translation>Valitse lopetuspiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="217"/>
@@ -3791,7 +3791,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="296"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>JSON-tiedosto (*.json)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
@@ -3870,12 +3870,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Lisää uusi ryhmä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Valitse ryhmä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="193"/>
@@ -3890,7 +3890,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="250"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Lisää uusi taso</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="304"/>
@@ -3905,12 +3905,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Lisää ryhmä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Ryhmän nimi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="392"/>
@@ -4039,8 +4039,8 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Spline has been closed</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="141"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="142"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="381"/>
       <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
       <translation type="unfinished">Last point has been removed</translation>
@@ -4071,7 +4071,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="114"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="626"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Lisää piste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="124"/>
@@ -4175,20 +4175,20 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="133"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="134"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="345"/>
       <source>Bézier curve has been closed</source>
       <translation type="unfinished">Bézier curve has been closed</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="450"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="212"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="466"/>
       <source>Create BezCurve</source>
       <translation type="unfinished">Create BezCurve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="380"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="393"/>
       <source>Click and drag to define next knot</source>
       <translation type="unfinished">Click and drag to define next knot</translation>
     </message>
@@ -4261,7 +4261,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_layer.py" line="145"/>
       <location filename="../../draftmake/make_layer.py" line="162"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Taso</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
@@ -5089,7 +5089,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>Tasot</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="157"/>
@@ -5118,12 +5118,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="464"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Aktivoi tämä taso</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="470"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>Valitse tason sisältö</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="508"/>
@@ -5135,7 +5135,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftviewproviders/view_layer.py" line="514"/>
       <location filename="../../draftviewproviders/view_layer.py" line="570"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Lisää uusi taso</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="555"/>
@@ -5448,12 +5448,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="284"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Tallenna tyyli</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="285"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Tämän uuden tyylin nimi:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="292"/>
@@ -5463,7 +5463,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="293"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Nimi on jo olemassa. Korvataanko?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
@@ -5618,7 +5618,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Uusi taso</translation>
     </message>
   </context>
   <context>
@@ -6131,7 +6131,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Lisää piste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="60"/>
@@ -6144,7 +6144,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="89"/>
       <source>Remove point</source>
-      <translation type="unfinished">Remove point</translation>
+      <translation>Poista piste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="92"/>
@@ -6219,7 +6219,7 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="73"/>
       <source>Move to group...</source>
-      <translation type="unfinished">Move to group...</translation>
+      <translation>Siirrä ryhmään...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="76"/>
@@ -6234,7 +6234,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="164"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Valitse ryhmä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="167"/>
@@ -6348,7 +6348,7 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>Aseta tyyli</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="59"/>
@@ -6421,7 +6421,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Toteuta nykyinen tyyli</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="50"/>
@@ -6432,12 +6432,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="64"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
       <source>Bézier curve</source>
       <translation type="unfinished">Bézier curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="67"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="68"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
@@ -6447,12 +6447,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="242"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="251"/>
       <source>Cubic Bézier curve</source>
       <translation type="unfinished">Cubic Bézier curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="245"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="254"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6464,12 +6464,12 @@ CTRL to snap, SHIFT to constrain.</translation>
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="474"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="490"/>
       <source>Bézier tools</source>
       <translation type="unfinished">Bézier tools</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="477"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="493"/>
       <source>Create various types of Bézier curves.</source>
       <translation type="unfinished">Create various types of Bézier curves.</translation>
     </message>
@@ -6554,7 +6554,7 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="67"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Taso</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="70"/>
@@ -8092,7 +8092,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Hallitse tasoja...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>

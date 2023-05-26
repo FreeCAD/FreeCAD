@@ -500,4 +500,12 @@ By using &quot;;;&quot; to separate paths, you can add several folders here</sou
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../AppStartGui.cpp" line="103"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

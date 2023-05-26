@@ -112,7 +112,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angle (fa)</source>
-      <translation type="unfinished">angle (fa)</translation>
+      <translation>Winkel (font awesome? Bracket?)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="92"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>%s kann nicht explodiert werden</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
@@ -276,7 +276,7 @@
       <location filename="../../OpenSCADCommands.py" line="482"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Boolsche Operation am Netz-Element</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Gruppe explodieren</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>

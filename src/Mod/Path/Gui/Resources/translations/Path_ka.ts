@@ -260,9 +260,9 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
+      <translation>ყველა ოპერაციის, რომლისთვის კონფიგურაციის მნიშვნელობები გატანილი უნდა იყოს, ჩართვა.
 
-Note that only operations which currently have configuration values set are listed.</translation>
+დაიმახსოვრეთ, რომ ამ წამს ჩამოთვლილია მხოლოდ ის ოპერაციები, რომლების კონფიგურციის მნიშვნელობებიც დაყენებულია.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -1892,17 +1892,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
       <source>Drop Cutter Direction</source>
-      <translation type="unfinished">Drop Cutter Direction</translation>
+      <translation>ამოჭრის მიმართულება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>მონიშნული შემომსაზღვრელი ჩარჩოს დამატებითი წანაცვლება X ღერძის გასწვრივ.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>მონიშნული შემომსაზღვრელი ჩარჩოს დამატებითი წანაცვლება Y ღერძის გასწვრივ.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2051,9 +2051,9 @@ Default: "5mm"</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - შეიძლება გამოყენებული იქნეს გამოსახულების მიერ ახალი ოპერაციებისთვის ნაგულისხმები ClearanceHeight-ის დასაყენებლად.
 
-Default: 3 mm</translation>
+ნაგულისხმები: 3მმ</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -4146,9 +4146,9 @@ Default: OpToolDiameter</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - შეიძლება გამოყენებული იქნეს გამოსახულების მიერ ახალი ოპერაციებისთვის ნაგულისხმები ClearanceHeight-ის დასაყენებლად.
 
-Default: 3 mm</translation>
+ნაგულისხმები: 3მმ</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
@@ -6808,8 +6808,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
-      <source>File Size (kb)</source>
-      <translation type="unfinished">File Size (kb)</translation>
+      <source>File Size (kB)</source>
+      <translation type="unfinished">File Size (kB)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
@@ -8427,7 +8427,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
-      <translation type="unfinished">%s has no property %s (%s)</translation>
+      <translation>%s-ს არ გააჩნია თვისება %s (%s)</translation>
     </message>
   </context>
 </TS>
