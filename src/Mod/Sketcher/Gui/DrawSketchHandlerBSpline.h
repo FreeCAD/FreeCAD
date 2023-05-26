@@ -200,9 +200,10 @@ public:
                                       poleGeoIds.back());
             }
             catch (const Base::Exception& e) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Error creating BSpline pole"));
+                Gui::NotifyError(
+                    sketchgui,
+                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                    QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline pole"));
                 Gui::Command::abortCommand();
 
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
@@ -514,7 +515,7 @@ private:
             catch (const Base::Exception& e) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-Spline"));
+                                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(
