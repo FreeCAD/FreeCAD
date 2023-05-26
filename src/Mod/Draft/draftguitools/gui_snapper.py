@@ -1414,12 +1414,16 @@ class Snapper:
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
 
-        def getcoords(point, relative=False):
+        def getcoords(point, global_mode=True, relative_mode=False):
             """Get the global coordinates from a point."""
-            self.pt = point
-            if relative and last and hasattr(App, "DraftWorkingPlane"):
-                v = App.DraftWorkingPlane.getGlobalCoords(point)
-                self.pt = last.add(v)
+            # Same algorithm as in validatePoint in DraftGui.py.
+            ref = App.Vector(0, 0, 0)
+            if global_mode is False and hasattr(App, "DraftWorkingPlane"):
+                point = App.DraftWorkingPlane.getGlobalRot(point)
+                ref = App.DraftWorkingPlane.getGlobalCoords(ref)
+            if relative_mode is True and last is not None:
+                ref = last
+            self.pt = point + ref
             accept()
 
         def click(event_cb):
