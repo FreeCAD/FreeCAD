@@ -143,17 +143,25 @@ Restart:
         auto geom = geolistfacade.getGeometryFromGeoId(geoid);
         auto curve = dynamic_cast<const Part::GeomCurve*>(geom);
 
-        Base::Vector3d normal;
-        try {
-            if (!(curve && curve->normalAt(pointoncurve, normal))) {
+        auto line = dynamic_cast<const Part::GeomLineSegment*>(curve);
+
+        if (line) {
+            Base::Vector3d linedir = line->getEndPoint() - line->getStartPoint();
+            return Base::Vector3d(-linedir.y, linedir.x, 0);
+        }
+        else {
+            Base::Vector3d normal;
+            try {
+                if (!(curve && curve->normalAt(pointoncurve, normal))) {
+                    normal = Base::Vector3d(1, 0, 0);
+                }
+            }
+            catch (const Base::CADKernelError&) {
                 normal = Base::Vector3d(1, 0, 0);
             }
-        }
-        catch (const Base::CADKernelError&) {
-            normal = Base::Vector3d(1, 0, 0);
-        }
 
-        return normal;
+            return normal;
+        }
     };
 
     // go through the constraints and update the position
