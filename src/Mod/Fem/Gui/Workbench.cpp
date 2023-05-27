@@ -48,6 +48,8 @@ using namespace FemGui;
     qApp->translate("Workbench", "&Element Geometry");
     qApp->translate("Workbench", "Electrostatic Constraints");
     qApp->translate("Workbench", "&Electrostatic Constraints");
+    qApp->translate("Workbench", "Electromagnetic Constraints");
+    qApp->translate("Workbench", "&Electromagnetic Constraints");
     qApp->translate("Workbench", "Fluid Constraints");
     qApp->translate("Workbench", "&Fluid Constraints");
     qApp->translate("Workbench", "Geometrical Constraints");
