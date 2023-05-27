@@ -1202,39 +1202,37 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     if (svgTemplate) {
         DrawSVGTemplate* drawTemplate = svgTemplate->getSVGTemplate();
         if (drawTemplate) {
-            QFile templateResultFile(QString::fromUtf8(drawTemplate->PageResult.getValue()));
-            if (templateResultFile.open(QIODevice::ReadOnly)) {
-                QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
-                if (templateResultDoc.setContent(&templateResultFile)) {
-                    QDomElement templateDocElem = templateResultDoc.documentElement();
+            QString templateSvg = drawTemplate->processTemplate();
+            QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
+            if (templateResultDoc.setContent(templateSvg)) {
+                QDomElement templateDocElem = templateResultDoc.documentElement();
 
-                    // Insert the template into a new group with id set to template name
-                    QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
-                    Base::FileInfo fi(drawTemplate->Template.getValue());
-                    templateGroup.setAttribute(QString::fromUtf8("id"),
-                                               QString::fromUtf8(fi.fileName().c_str()));
-                    templateGroup.setAttribute(QString::fromUtf8("style"),
-                                               QString::fromUtf8("stroke: none;"));
+                // Insert the template into a new group with id set to template name
+                QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
+                Base::FileInfo fi(drawTemplate->PageResult.getValue());
+                templateGroup.setAttribute(QString::fromUtf8("id"),
+                                           QString::fromUtf8(fi.fileName().c_str()));
+                templateGroup.setAttribute(QString::fromUtf8("style"),
+                                           QString::fromUtf8("stroke: none;"));
 
-                    // Scale the template group correctly
+                // Scale the template group correctly
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                    templateGroup.setAttribute(
-                        QString::fromUtf8("transform"),
-                        QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
+                templateGroup.setAttribute(
+                    QString::fromUtf8("transform"),
+                    QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
 #else
-                    templateGroup.setAttribute(QString::fromUtf8("transform"),
-                                               QString::fromLatin1("scale(%1, %2)")
-                                                   .arg(Rez::guiX(1.0), 0, 'f')
-                                                   .arg(Rez::guiX(1.0), 0, 'f'));
+                templateGroup.setAttribute(QString::fromUtf8("transform"),
+                                           QString::fromLatin1("scale(%1, %2)")
+                                               .arg(Rez::guiX(1.0), 0, 'f')
+                                               .arg(Rez::guiX(1.0), 0, 'f'));
 #endif
 
-                    // Finally, transfer all template document child nodes under the template group
-                    while (!templateDocElem.firstChild().isNull()) {
-                        templateGroup.appendChild(templateDocElem.firstChild());
-                    }
-
-                    rootGroup.appendChild(templateGroup);
+                // Finally, transfer all template document child nodes under the template group
+                while (!templateDocElem.firstChild().isNull()) {
+                    templateGroup.appendChild(templateDocElem.firstChild());
                 }
+
+                rootGroup.appendChild(templateGroup);
             }
         }
     }
