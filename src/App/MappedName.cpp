@@ -72,12 +72,12 @@ int MappedName::findTagInElementName(long* tag, int* len, const char* postfix,
     //                                    pos
 
     if(pos < 0) {
-        pos = this->rfind(POSTFIX_DECIMAL_TAG); //FIXME inconsistent
+        pos = this->rfind(POSTFIX_DECIMAL_TAG); 
         if (pos < 0)
             return -1;
         hex = false;
     }
-    int offset = pos + (int)POSTFIX_TAG.size();
+    int offset = pos + (int)POSTFIX_TAG_SIZE;
     long _tag = 0;
     int _len = 0;
     char sep = 0;

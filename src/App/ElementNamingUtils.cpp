@@ -5,7 +5,7 @@
 
 const char *Data::isMappedElement(const char *name) {
     if(name && boost::starts_with(name, ELEMENT_MAP_PREFIX))
-        return name + ELEMENT_MAP_PREFIX.size();
+        return name + ELEMENT_MAP_PREFIX_SIZE;
     return nullptr;
 }
 

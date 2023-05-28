@@ -67,7 +67,7 @@ public:
             return;
         }
         if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
-            name += ELEMENT_MAP_PREFIX.size();
+            name += ELEMENT_MAP_PREFIX_SIZE;
         }
 
         data = size < 0 ? QByteArray(name) : QByteArray(name, size);
@@ -83,8 +83,8 @@ public:
         auto size = nameString.size();
         const char* name = nameString.c_str();
         if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
-            name += ELEMENT_MAP_PREFIX.size();
-            size -= ELEMENT_MAP_PREFIX.size();
+            name += ELEMENT_MAP_PREFIX_SIZE;
+            size -= ELEMENT_MAP_PREFIX_SIZE;
         }
         data = QByteArray(name, static_cast<int>(size));
     }

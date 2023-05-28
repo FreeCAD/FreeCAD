@@ -999,9 +999,9 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             entry->sids += grandchild.sids;
             if (grandchild.postfix.size()) {
                 if (entry->postfix.size()
-                    && !entry->postfix.startsWith(ELEMENT_MAP_PREFIX.c_str())) {
+                    && !entry->postfix.startsWith(ELEMENT_MAP_PREFIX)) {
                     entry->postfix =
-                        grandchild.postfix + ELEMENT_MAP_PREFIX.c_str() + entry->postfix;
+                        grandchild.postfix + ELEMENT_MAP_PREFIX + entry->postfix;
                 }
                 else
                     entry->postfix = grandchild.postfix + entry->postfix;

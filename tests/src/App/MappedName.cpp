@@ -51,7 +51,7 @@ TEST(MappedName, namedConstructionWithMaxSize)
 TEST(MappedName, namedConstructionDiscardPrefix)
 {
     // Arrange
-    std::string name = Data::ELEMENT_MAP_PREFIX + "TEST";
+    std::string name = std::string(Data::ELEMENT_MAP_PREFIX) + "TEST";
 
     // Act
     Data::MappedName mappedName(name.c_str());
@@ -80,7 +80,7 @@ TEST(MappedName, stringNamedConstruction)
 TEST(MappedName, stringNamedConstructionDiscardPrefix)
 {
     // Arrange
-    std::string name = Data::ELEMENT_MAP_PREFIX + "TEST";
+    std::string name = std::string(Data::ELEMENT_MAP_PREFIX) + "TEST";
 
     // Act
     Data::MappedName mappedName(name);
