@@ -159,6 +159,7 @@ class ArchReference:
                             f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
+                            shapedata = shapedata.decode("utf8")
                             shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
                             obj.Shape = shape
                             if not pl.isIdentity():
@@ -260,6 +261,7 @@ class ArchReference:
             materials = {}
             writemode = False
             for line in docf:
+                line = line.decode("utf8")
                 if "<Object name=" in line:
                     n = re.findall('name=\"(.*?)\"',line)
                     if n:
@@ -315,6 +317,7 @@ class ArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
+                line = line.decode("utf8")
                 if ("<ViewProvider name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
@@ -619,6 +622,7 @@ class ViewProviderArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
+                line = line.decode("utf8")
                 if ("<Object name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"SavedInventor\"" in line):
@@ -635,6 +639,7 @@ class ViewProviderArchReference:
             return None
         f = zdoc.open(ivfile)
         buf = f.read()
+        buf = buf.decode("utf8")
         f.close()
         buf = buf.replace("lineWidth 2","lineWidth "+str(int(obj.ViewObject.LineWidth)))
         return buf
