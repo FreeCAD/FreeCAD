@@ -24,6 +24,8 @@
 #ifndef SKETCHER_PythonConverter_H
 #define SKETCHER_PythonConverter_H
 
+#include <Mod/Sketcher/SketcherGlobal.h>
+
 namespace Part
 {
 class Geometry;
@@ -63,6 +65,8 @@ public:
 
     static std::string convert(const std::string& doc,
                                const std::vector<Sketcher::Constraint*>& constraints);
+
+    static std::vector<std::string> multiLine(std::string&& singlestring);
 
 private:
     static SingleGeometry process(const Part::Geometry* geo);

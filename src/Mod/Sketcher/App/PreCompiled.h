@@ -39,6 +39,7 @@
 #include <QDateTime>
 
 // Boost
+#include <boost/algorithm/string/regex.hpp>
 #include <boost/format.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
