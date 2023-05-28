@@ -25,6 +25,7 @@ __url__ = "http://www.freecad.org"
 
 import os
 from os.path import join
+from pathlib import Path
 
 import FreeCAD
 
@@ -191,6 +192,62 @@ def get_material_resources(category='Solid'):
 
     return resources
 
+def get_material_libraries():
+
+    resources = {}  # { resource_path: icon_path, ... }
+
+    mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
+    use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
+    use_mat_from_modules = mat_prefs.GetBool("UseMaterialsFromWorkbenches", True)
+    use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
+    use_mat_from_custom_dir = mat_prefs.GetBool("UseMaterialsFromCustomDir", True)
+
+    if use_built_in_materials:
+        builtin_mat_dir = join(
+            FreeCAD.getResourceDir(), "Mod", "Material"
+        )
+        resources["System"] = (builtin_mat_dir, ":/icons/freecad.svg")
+
+    if use_mat_from_modules:
+        module_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules")
+        module_groups = module_prefs.GetGroups()
+        for group in module_groups:
+            print("\tGroup - {0}".format(group))
+            module = module_prefs.GetGroup(group)
+            module_mat_dir = module.GetString("ModuleDir", "")
+            module_icon = module.GetString("ModuleIcon", "")
+            if len(module_mat_dir) > 0:
+                resources[group] = (module_mat_dir, module_icon)
+
+    if use_mat_from_config_dir:
+        config_mat_dir = join(
+            FreeCAD.ConfigGet("UserAppData"), "Material"
+        )
+        if os.path.exists(config_mat_dir):
+            resources["User"] = (config_mat_dir, ":/icons/preferences-general.svg")
+
+    if use_mat_from_custom_dir:
+        custom_mat_dir = mat_prefs.GetString("CustomMaterialsDir", "")
+        if os.path.exists(custom_mat_dir):
+            resources["Custom"] = (custom_mat_dir, ":/icons/user.svg")
+
+    return resources
+
+
+def list_cards(mat_dir, icon):
+    import glob
+    a_path = mat_dir + '/**/*.FCMat'
+    print("path = '{0}'".format(a_path))
+    dir_path_list = glob.glob(a_path, recursive=True)
+    # Need to handle duplicates
+
+    cards = []
+    for a_path in dir_path_list:
+        p = Path(a_path)
+        relative = p.relative_to(mat_dir)
+        cards.append(relative)
+
+    return cards
 
 def output_resources(resources):
     FreeCAD.Console.PrintMessage('Directories in which we will look for material cards:\n')
