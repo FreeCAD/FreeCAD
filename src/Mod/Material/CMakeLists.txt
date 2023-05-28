@@ -1,3 +1,7 @@
+if(BUILD_GUI)
+    add_subdirectory(Gui)
+endif(BUILD_GUI)
+
 IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
 ENDIF (BUILD_GUI)
