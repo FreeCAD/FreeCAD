@@ -7,12 +7,17 @@
 
 using namespace MbD;
 
+std::shared_ptr<EndFrameqc> MbD::EndFrameqc::Create(const char* name)
+{
+	auto item = std::make_shared<EndFrameqc>(name);
+	item->initialize();
+	return item;
+}
+
 EndFrameqc::EndFrameqc() {
-	initialize();
 }
 
 EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
-	initialize();
 }
 
 void EndFrameqc::initialize()
@@ -41,17 +46,35 @@ void EndFrameqc::initializeGlobally()
 	}
 }
 
-void MbD::EndFrameqc::EndFrameqctFrom(EndFrmcptr& frm)
+void EndFrameqc::initEndFrameqct()
 {
-	endFrameqct = std::make_shared<EndFrameqct>();
+	endFrameqct = EndFrameqct::Create(this->getName().data());
 }
 
-void MbD::EndFrameqc::setrmemBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzBlks)
+void EndFrameqc::setrmemBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzBlks)
 {
 	std::static_pointer_cast<EndFrameqct>(endFrameqct)->rmemBlks = xyzBlks;
 }
 
-void MbD::EndFrameqc::setphiThePsiBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzRotBlks)
+void EndFrameqc::setphiThePsiBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzRotBlks)
 {
 	std::static_pointer_cast<EndFrameqct>(endFrameqct)->phiThePsiBlks = xyzRotBlks;
+}
+
+FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)
+{
+	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
+	for (int i = 0; i < 4; i++) {
+		auto answeri = answer->at(i);
+		auto ppAOepEipE = ppAOepEpE->at(i);
+		for (int j = i; j < 4; j++) {
+			answeri->at(j) = ppAOepEipE->at(j)->column(jj);
+		}
+	}
+	answer->symLowerWithUpper();
+	return answer;
+}
+
+void MbD::EndFrameqc::calcPostDynCorrectorIteration()
+{
 }

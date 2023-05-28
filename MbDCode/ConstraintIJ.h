@@ -1,8 +1,7 @@
 #pragma once
 
-//#include "typedef.h"
 #include "Constraint.h"
-#include "EndFramec.h"
+#include "EndFramec.h"  //EndFrmcptr is defined
 
 namespace MbD {
     class ConstraintIJ : public Constraint
@@ -10,6 +9,7 @@ namespace MbD {
         //frmI frmJ aConstant 
     public:
         ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        void initialize();
 
         EndFrmcptr frmI, frmJ;
         double aConstant;

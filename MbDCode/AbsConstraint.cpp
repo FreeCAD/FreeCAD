@@ -2,17 +2,18 @@
 
 using namespace MbD;
 
-AbsConstraint::AbsConstraint()
+std::shared_ptr<AbsConstraint> MbD::AbsConstraint::Create(const char* name)
 {
-    initialize();
+	auto item = std::make_shared<AbsConstraint>(name);
+	item->initialize();
+	return item;
 }
 
-AbsConstraint::AbsConstraint(const char* str) : Constraint(str)
-{
-    initialize();
-}
+AbsConstraint::AbsConstraint() {}
 
-MbD::AbsConstraint::AbsConstraint(int i)
+AbsConstraint::AbsConstraint(const char* str) : Constraint(str) {}
+
+AbsConstraint::AbsConstraint(int i)
 {
     axis = i;
 }
@@ -21,4 +22,8 @@ void AbsConstraint::initialize()
 {
     axis = 0;
     iqXminusOnePlusAxis = 0;
+}
+
+void MbD::AbsConstraint::calcPostDynCorrectorIteration()
+{
 }

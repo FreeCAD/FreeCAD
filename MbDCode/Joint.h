@@ -2,15 +2,11 @@
 #include <memory>
 #include <vector>
 
-//#include "typedef.h"
 #include "Item.h"
 #include "EndFramec.h"
-#include "Constraint.h"
 
 namespace MbD {
-    //class EndFramec;
     class Constraint;
-    //using EndFrmcptr = std::shared_ptr<EndFramec>;
 
     class Joint : public Item
     {
@@ -22,6 +18,8 @@ namespace MbD {
         virtual void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ);
         void initializeLocally() override;
         void initializeGlobally() override;
+        void postInput() override;
+        void addConstraint(std::shared_ptr<Constraint> con);
 
         EndFrmcptr frmI;
         EndFrmcptr frmJ;

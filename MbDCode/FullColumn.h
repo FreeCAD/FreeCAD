@@ -3,9 +3,9 @@
 #include <sstream> 
 
 #include "Vector.h"
-#include "FullMatrix.h"
 
 namespace MbD {
+
 	template <typename T>
 	class FullColumn : public Vector<T>
 	{
@@ -26,6 +26,5 @@ namespace MbD {
 		}
 	};
 	using FColDsptr = std::shared_ptr<FullColumn<double>>;
-	//using FColFMatDsptr = std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>>;
 }
 

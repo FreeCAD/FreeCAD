@@ -2,16 +2,19 @@
 #include <memory>
 
 #include "KinematicIeJe.h"
-//#include "EndFramec.h"
-#include "FullColumn.h"
 
 namespace MbD {
+    template<typename T>
+    class FullColumn;
+
     class DirectionCosineIecJec : public KinematicIeJe
     {
         //aAijIeJe axisI axisJ aAjOIe aAjOJe 
     public:
         DirectionCosineIecJec();
-        DirectionCosineIecJec(EndFrmcptr frmI, EndFrmcptr frmJ, int axisI, int axisJ);
+        DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        void initialize();
+        void calcPostDynCorrectorIteration() override;
 
         int axisI, axisJ;
         double aAijIeJe;

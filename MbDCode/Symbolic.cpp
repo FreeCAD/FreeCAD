@@ -9,19 +9,19 @@ using namespace MbD;
 
 Symbolic::Symbolic()
 {
-	initialize();
 }
 
 void Symbolic::initialize()
 {
 }
 
-std::shared_ptr<Symbolic> MbD::Symbolic::differentiateWRT(std::shared_ptr<Symbolic> var)
+std::shared_ptr<Symbolic> Symbolic::differentiateWRT(std::shared_ptr<Symbolic> var)
 {
+	assert(false);
 	return std::shared_ptr<Symbolic>();
 }
 
-std::shared_ptr<Symbolic> MbD::Symbolic::simplified()
+std::shared_ptr<Symbolic> Symbolic::simplified()
 {
 	//Debug 
 	auto set = nullptr;
@@ -31,12 +31,20 @@ std::shared_ptr<Symbolic> MbD::Symbolic::simplified()
 	return answer->simplifyUntil(set1);
 }
 
-std::shared_ptr<Symbolic> MbD::Symbolic::expandUntil(std::shared_ptr<std::unordered_set<Symbolic>> set)
+std::shared_ptr<Symbolic> Symbolic::expandUntil(std::shared_ptr<std::unordered_set<Symbolic>> set)
 {
+	assert(false);
 	return std::make_shared<Constant>(0.0);
 }
 
-std::shared_ptr<Symbolic> MbD::Symbolic::simplifyUntil(std::shared_ptr<std::unordered_set<Symbolic>> set)
+std::shared_ptr<Symbolic> Symbolic::simplifyUntil(std::shared_ptr<std::unordered_set<Symbolic>> set)
 {
+	assert(false);
 	return std::make_shared<Constant>(0.0);
+}
+
+double MbD::Symbolic::getValue()
+{
+	assert(false);
+	return 0.0;
 }

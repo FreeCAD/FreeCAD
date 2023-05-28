@@ -1,11 +1,13 @@
 #pragma once
 #include <memory>
 
-#include "FullColumn.h"
 #include "RowTypeMatrix.h"
-#include "FullRow.h"
 
 namespace MbD {
+	template <typename T>
+	class FullColumn;
+	template <typename T>
+	class FullRow;
 
 	template <typename T>
 	class FullMatrix : public RowTypeMatrix<std::shared_ptr<FullRow<T>>>
@@ -32,6 +34,9 @@ namespace MbD {
 			}
 		}
 		void identity();
+		std::shared_ptr<FullColumn<T>> column(int j);
+		std::shared_ptr<FullMatrix<T>> times(double a);
+		void symLowerWithUpper();
 	};
 	template <>
 	inline void FullMatrix<double>::identity() {
@@ -40,9 +45,39 @@ namespace MbD {
 			this->at(i)->at(i) = 1.0;
 		}
 	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::column(int j) {
+		size_t n = this->size();
+		auto answer = std::make_shared<FullColumn<T>>(n);
+		for (int i = 0; i < n; i++) {
+			answer->at(i) = this->at(i)->at(j);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::times(double a)
+	{
+		int m = this->nRow();
+		auto answer = std::make_shared<FullMatrix<T>>(m);
+		for (int i = 0; i < m; i++) {
+			answer->at(i) = this->at(i)->times(a);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline void FullMatrix<T>::symLowerWithUpper()
+	{
+		size_t n = this->size();
+		for (int i = 0; i < n; i++) {
+			for (int j = i+1; j < n; j++) {
+				this->at(j)->at(i) = this->at(i)->at(j);
+			}
+		}
+	}
 	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
 	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
-	//using FMatFColDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>>;
+	using FMatFColDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>>;
 	using FMatFMatDsptr = std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>>;
+	using FColFMatDsptr = std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>>;
 }
 

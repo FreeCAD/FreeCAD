@@ -3,12 +3,15 @@
 #include <memory>
 
 #include "CartesianFrame.h"
-//#include "MarkerFrame.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
+#include "FullColumn.h"     //FColDsptr is defined
+#include "FullMatrix.h"     //FMatDsptr is defined
 
 namespace MbD {
     class MarkerFrame;
+    //template <typename T>
+    //class FullColumn;
+    //template <typename T>
+    //class FullMatrix;
 
     class EndFramec : public CartesianFrame
     {
@@ -21,7 +24,8 @@ namespace MbD {
         MarkerFrame* getMarkerFrame();
         void initializeLocally() override;
         void initializeGlobally() override;
-        virtual void EndFrameqctFrom(std::shared_ptr<EndFramec>& frm);
+        virtual void initEndFrameqct();
+        void calcPostDynCorrectorIteration() override;
 
         MarkerFrame* markerFrame;
         FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);

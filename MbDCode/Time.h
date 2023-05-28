@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IndependentVariable.h"
 
 namespace MbD {

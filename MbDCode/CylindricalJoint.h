@@ -6,9 +6,10 @@ namespace MbD {
     {
         //frmI frmJ constraints friction 
     public:
+        static std::shared_ptr<CylindricalJoint> Create(const char* name);
         CylindricalJoint();
         CylindricalJoint(const char* str);
-        void initialize();
+        void initializeGlobally();
     };
 }
 

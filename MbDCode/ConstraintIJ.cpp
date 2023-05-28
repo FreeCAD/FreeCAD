@@ -3,7 +3,12 @@
 
 using namespace MbD;
 
-MbD::ConstraintIJ::ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
+ConstraintIJ::ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
+{
+	aConstant = 0.0;
+}
+
+void ConstraintIJ::initialize()
 {
 	aConstant = 0.0;
 }

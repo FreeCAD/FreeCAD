@@ -2,20 +2,21 @@
 #include <memory>
 
 #include "CartesianFrame.h"
-#include "PartFrame.h"
+//#include "PartFrame.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "EndFramec.h"
 
 namespace MbD {
 	class PartFrame;
-	class EndFramec;
-	using EndFrmcptr = std::shared_ptr<EndFramec>;
+	//class EndFramec;
+	//using EndFrmcptr = std::shared_ptr<EndFramec>;
 
 	class MarkerFrame : public CartesianFrame
 	{
 		//partFrame rpmp aApm rOmO aAOm prOmOpE pAOmpE pprOmOpEpE ppAOmpEpE endFrames 
 	public:
+		static std::shared_ptr<MarkerFrame> Create(const char* name);
 		MarkerFrame();
         MarkerFrame(const char* str);
         void initialize();
@@ -26,6 +27,8 @@ namespace MbD {
 		void addEndFrame(EndFrmcptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
+		void postInput() override;
+		void calcPostDynCorrectorIteration() override;
 
 		PartFrame* partFrame;
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);

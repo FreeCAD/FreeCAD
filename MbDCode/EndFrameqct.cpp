@@ -1,14 +1,23 @@
 #include "EndFrameqct.h"
 #include "System.h"
+#include "Symbolic.h"
+#include "Time.h"
 
 using namespace MbD;
 
+//class Symbolic;
+
+std::shared_ptr<EndFrameqct> MbD::EndFrameqct::Create(const char* name)
+{
+	auto item = std::make_shared<EndFrameqct>(name);
+	item->initialize();
+	return item;
+}
+
 EndFrameqct::EndFrameqct() {
-	initialize();
 }
 
 EndFrameqct::EndFrameqct(const char* str) : EndFrameqc(str) {
-	initialize();
 }
 
 void EndFrameqct::initialize()
@@ -41,19 +50,19 @@ void EndFrameqct::initializeLocally()
 
 void EndFrameqct::initializeGlobally()
 {
-	if (!rmemBlks) {
+	if (rmemBlks) {
 		initprmemptBlks();
 		initpprmemptptBlks();
 	}
-	if (!phiThePsiBlks) {
+	if (phiThePsiBlks) {
 		initpPhiThePsiptBlks();
 		initppPhiThePsiptptBlks();
 	}
 }
 
-void MbD::EndFrameqct::initprmemptBlks()
+void EndFrameqct::initprmemptBlks()
 {
-	auto time = System::getInstance().time;
+	time = System::getInstance().time;
 	prmemptBlks = std::make_shared< FullColumn<std::shared_ptr<Symbolic>>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto disp = rmemBlks->at(i);
@@ -62,14 +71,22 @@ void MbD::EndFrameqct::initprmemptBlks()
 	}
 }
 
-void MbD::EndFrameqct::initpprmemptptBlks()
+void EndFrameqct::initpprmemptptBlks()
 {
 }
 
-void MbD::EndFrameqct::initpPhiThePsiptBlks()
+void EndFrameqct::initpPhiThePsiptBlks()
 {
 }
 
-void MbD::EndFrameqct::initppPhiThePsiptptBlks()
+void EndFrameqct::initppPhiThePsiptptBlks()
+{
+}
+
+void MbD::EndFrameqct::postInput()
+{
+}
+
+void MbD::EndFrameqct::calcPostDynCorrectorIteration()
 {
 }

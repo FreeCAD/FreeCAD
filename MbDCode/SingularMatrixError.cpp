@@ -1,0 +1,1 @@
+#include "SingularMatrixError.h"

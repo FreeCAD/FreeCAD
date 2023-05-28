@@ -1,15 +1,16 @@
 #include<algorithm>
 
 #include "Joint.h"
+#include "Constraint.h"
 
 using namespace MbD;
 
 Joint::Joint() {
-	initialize();
+
 }
 
 Joint::Joint(const char* str) : Item(str) {
-	initialize();
+
 }
 
 void Joint::initialize()
@@ -31,4 +32,14 @@ void Joint::initializeLocally()
 void Joint::initializeGlobally()
 {
 	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->initializeGlobally(); });
+}
+
+void MbD::Joint::postInput()
+{
+}
+
+void MbD::Joint::addConstraint(std::shared_ptr<Constraint> con)
+{
+	con->setOwner(this);
+	constraints->push_back(con);
 }

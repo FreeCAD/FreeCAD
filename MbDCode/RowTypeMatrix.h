@@ -13,6 +13,12 @@ namespace MbD {
 		RowTypeMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void copy(std::shared_ptr<RowTypeMatrix<T>> x);
 		void zeroSelf();
+		int nRow() {
+			return this->size();
+		}
+		int nCol() {
+			return this->at(0)->size();
+		}
 	};
 
 	template<typename T>
