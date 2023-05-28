@@ -419,7 +419,13 @@ If there is no such constraint an exception is raised.
             </UserDocu>
         </Documentation>
     </Methode>
-
+    <Methode Name="toPythonCommands">
+        <Documentation>
+            <UserDocu>
+                Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry).
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>

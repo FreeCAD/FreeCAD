@@ -36,6 +36,8 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/LinePy.h>
 
+#include "PythonConverter.h"
+
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectPy.h"
 
@@ -1765,6 +1767,40 @@ PyObject* SketchObjectPy::autoRemoveRedundants(PyObject* args)
 
     Py_Return;
 }
+
+PyObject* SketchObjectPy::toPythonCommands(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    auto sketch = this->getSketchObjectPtr();
+
+    std::string geometry = PythonConverter::convert("ActiveSketch", sketch->Geometry.getValues());
+    std::string constraints =
+        PythonConverter::convert("ActiveSketch", sketch->Constraints.getValues());
+
+    auto geometrymulti = PythonConverter::multiLine(std::move(geometry));
+    auto constraintmulti = PythonConverter::multiLine(std::move(constraints));
+
+    size_t numelements = geometrymulti.size() + constraintmulti.size();
+
+    Py::Tuple tuple(numelements);
+
+    std::size_t i = 0;
+
+    for (const auto& str : geometrymulti) {
+        tuple.setItem(i, Py::String(str));
+        i++;
+    }
+
+    for (const auto& str : constraintmulti) {
+        tuple.setItem(i, Py::String(str));
+        i++;
+    }
+
+    return Py::new_reference_to(tuple);
+}
+
 
 Py::List SketchObjectPy::getMissingPointOnPointConstraints() const
 {
