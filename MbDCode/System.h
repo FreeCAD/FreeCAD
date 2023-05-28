@@ -29,10 +29,6 @@ namespace MbD {
 			static System singleInstance; // Block-scoped static Singleton instance
 			return singleInstance;
 		};
-		static System& getInstance(const char* str) {
-			static System singleInstance(str); // Block-scoped static Singleton instance
-			return singleInstance;
-		};
 
 		void initialize() override;
 		void initializeLocally() override;
@@ -43,6 +39,8 @@ namespace MbD {
 		void outputTimeSeries();
 		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void logString(std::string& str);
+		double mbdTimeValue();
 
 
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;

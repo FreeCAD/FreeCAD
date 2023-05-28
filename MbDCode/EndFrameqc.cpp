@@ -4,15 +4,9 @@
 #include "EndFrameqct.h"
 #include "Variable.h"
 #include "MarkerFrame.h"
+#include "CREATE.h"
 
 using namespace MbD;
-
-std::shared_ptr<EndFrameqc> MbD::EndFrameqc::Create(const char* name)
-{
-	auto item = std::make_shared<EndFrameqc>(name);
-	item->initialize();
-	return item;
-}
 
 EndFrameqc::EndFrameqc() {
 }
@@ -28,46 +22,28 @@ void EndFrameqc::initialize()
 	ppAOepEpE = std::make_shared<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
 }
 
-void EndFrameqc::initializeLocally()
-{
-	if (endFrameqct) {
-		endFrameqct->initializeLocally();
-	}
-}
-
 void EndFrameqc::initializeGlobally()
 {
-	if (endFrameqct) {
-		endFrameqct->initializeGlobally();
-	}
-	else {
-		pprOeOpEpE = markerFrame->pprOmOpEpE;
-		ppAOepEpE = markerFrame->ppAOmpEpE;
-	}
+	pprOeOpEpE = markerFrame->pprOmOpEpE;
+	ppAOepEpE = markerFrame->ppAOmpEpE;
 }
 
 void EndFrameqc::initEndFrameqct()
 {
-	endFrameqct = EndFrameqct::Create(this->getName().data());
-}
-
-void EndFrameqc::setrmemBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzBlks)
-{
-	std::static_pointer_cast<EndFrameqct>(endFrameqct)->rmemBlks = xyzBlks;
-}
-
-void EndFrameqc::setphiThePsiBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzRotBlks)
-{
-	std::static_pointer_cast<EndFrameqct>(endFrameqct)->phiThePsiBlks = xyzRotBlks;
+	endFrameqct = CREATE<EndFrameqct>::With(this->getName().data());
+	endFrameqct->prOeOpE = prOeOpE;
+	endFrameqct->pprOeOpEpE = pprOeOpEpE;
+	endFrameqct->pAOepE = pAOepE;
+	endFrameqct->ppAOepEpE = ppAOepEpE;
 }
 
 FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)
 {
 	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
-	for (int i = 0; i < 4; i++) {
-		auto answeri = answer->at(i);
-		auto ppAOepEipE = ppAOepEpE->at(i);
-		for (int j = i; j < 4; j++) {
+	for (size_t i = 0; i < 4; i++) {
+		auto& answeri = answer->at(i);
+		auto& ppAOepEipE = ppAOepEpE->at(i);
+		for (size_t j = i; j < 4; j++) {
 			answeri->at(j) = ppAOepEipE->at(j)->column(jj);
 		}
 	}
@@ -77,4 +53,50 @@ FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)
 
 void MbD::EndFrameqc::calcPostDynCorrectorIteration()
 {
+	EndFramec::calcPostDynCorrectorIteration();
+	prOeOpE = markerFrame->prOmOpE;
+	pAOepE = markerFrame->pAOmpE;
+}
+
+FMatDsptr MbD::EndFrameqc::pAjOepET(int axis)
+{
+	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
+	for (size_t i = 0; i < 4; i++) {
+		auto& answeri = answer->at(i);
+		auto& pAOepEi = pAOepE->at(i);
+		for (size_t j = 0; j < 3; j++) {
+			auto& answerij = pAOepEi->at(j)->at(axis);
+			answeri->at(j) = answerij;
+		}
+	}
+	return answer;
+}
+
+FMatDsptr MbD::EndFrameqc::ppriOeOpEpE(int ii)
+{
+	auto answer = std::make_shared<FullMatrix<double>>(4, 4);
+	for (size_t i = 0; i < 4; i++) {
+		auto& answeri = answer->at(i);
+		auto& pprOeOpEipE = pprOeOpEpE->at(i);
+		for (size_t j = 0; j < 4; j++) {
+			auto& answerij = pprOeOpEipE->at(j)->at(ii);
+			answeri->at(j) = answerij;
+		}
+	}
+	return answer;
+}
+
+int MbD::EndFrameqc::iqX()
+{
+	return markerFrame->iqX();
+}
+
+int MbD::EndFrameqc::iqE()
+{
+	return markerFrame->iqE();
+}
+
+FRowDsptr MbD::EndFrameqc::priOeOpE(int i)
+{
+	return prOeOpE->at(i);
 }

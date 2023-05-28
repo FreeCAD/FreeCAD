@@ -6,11 +6,19 @@ namespace MbD {
     class Sum : public FunctionWithManyArgs
     {
     public:
-        Sum(std::shared_ptr<Symbolic> term) : FunctionWithManyArgs(term) {}
-        Sum(std::shared_ptr<Symbolic> term, std::shared_ptr<Symbolic> term1) : FunctionWithManyArgs(term, term1) {}
-        Sum(std::shared_ptr<Symbolic> term, std::shared_ptr<Symbolic> term1, std::shared_ptr<Symbolic> term2) : FunctionWithManyArgs(term, term1, term2) {}
-        Sum(std::shared_ptr<std::vector<std::shared_ptr<Symbolic>>> _terms) : FunctionWithManyArgs(_terms) {}
+        Sum() : FunctionWithManyArgs() {}
+        Sum(Symsptr term) : FunctionWithManyArgs(term) {}
+        Sum(Symsptr term, Symsptr term1) : FunctionWithManyArgs(term, term1) {}
+        Sum(Symsptr term, Symsptr term1, Symsptr term2) : FunctionWithManyArgs(term, term1, term2) {}
+        Sum(std::shared_ptr<std::vector<Symsptr>> _terms) : FunctionWithManyArgs(_terms) {}
+        Symsptr timesSum(Symsptr sptr, Symsptr sum) override;
+        Symsptr timesProduct(Symsptr sptr, Symsptr product) override;
+        Symsptr timesFunction(Symsptr sptr, Symsptr function) override;
+        Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+        Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+        bool isSum() override;
         double getValue() override;
+        std::ostream& printOn(std::ostream& s) const override;
     };
 }
 

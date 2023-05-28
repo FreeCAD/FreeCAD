@@ -10,6 +10,8 @@ namespace MbD {
         PosICNewtonRaphson(){}
 
         void run() override;
+        void preRun() override;
+        void assignEquationNumbers() override;
 
         std::shared_ptr<std::vector<int>> pivotRowLimits;
     };

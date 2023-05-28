@@ -15,7 +15,6 @@ namespace MbD {
 	{
 		//ToDo: ipX ipE m aJ partFrame pX pXdot pE pEdot mX mE mEdot pTpE ppTpEpE ppTpEpEdot 
 	public:
-		static std::shared_ptr<Part> Create(const char* name);
 		Part();
 		Part(const char* str);
 		void initialize();
@@ -33,6 +32,10 @@ namespace MbD {
 		void asFixed();
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
+
+		void prePosIC() override;
+		void iqX(int eqnNo);
+		void iqE(int eqnNo);
 
 		int ipX = -1; 
 		int ipE = -1; 

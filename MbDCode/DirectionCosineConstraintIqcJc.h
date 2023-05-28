@@ -8,9 +8,9 @@ namespace MbD {
         //pGpEI ppGpEIpEI iqEI 
     public:
         DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
-        void initialize();
         void initaAijIeJe() override;
         void calcPostDynCorrectorIteration() override;
+        void useEquationNumbers() override;
 
         FRowDsptr pGpEI;
         FMatDsptr ppGpEIpEI;

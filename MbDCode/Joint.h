@@ -20,6 +20,7 @@ namespace MbD {
         void initializeGlobally() override;
         void postInput() override;
         void addConstraint(std::shared_ptr<Constraint> con);
+        void prePosIC() override;
 
         EndFrmcptr frmI;
         EndFrmcptr frmJ;

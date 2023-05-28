@@ -21,3 +21,23 @@ void MbD::Solver::run()
 {
 	assert(false);
 }
+
+void MbD::Solver::preRun()
+{
+	assert(false);
+}
+
+void MbD::Solver::finalize()
+{
+	assert(false);
+}
+
+void MbD::Solver::reportStats()
+{
+	assert(false);
+}
+
+void MbD::Solver::postRun()
+{
+	assert(false);
+}

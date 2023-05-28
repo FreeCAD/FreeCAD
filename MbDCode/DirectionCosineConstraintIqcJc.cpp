@@ -1,5 +1,7 @@
 #include "DirectionCosineConstraintIqcJc.h"
 #include "DirectionCosineIeqcJec.h"
+#include "EndFrameqc.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -8,15 +10,20 @@ DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmcptr frmi, 
 {
 }
 
-void DirectionCosineConstraintIqcJc::initialize()
-{
-}
-
 void DirectionCosineConstraintIqcJc::initaAijIeJe()
 {
-	aAijIeJe = std::make_shared<DirectionCosineIeqcJec>();
+	aAijIeJe = CREATE<DirectionCosineIeqcJec>::With(frmI, frmJ, axisI, axisJ);
 }
 
 void MbD::DirectionCosineConstraintIqcJc::calcPostDynCorrectorIteration()
 {
+	DirectionCosineConstraintIJ::calcPostDynCorrectorIteration();
+	auto aAijIeqJe = std::static_pointer_cast<DirectionCosineIeqcJec>(aAijIeJe);
+	pGpEI = aAijIeqJe->pAijIeJepEI;
+	ppGpEIpEI = aAijIeqJe->ppAijIeJepEIpEI;
+}
+
+void MbD::DirectionCosineConstraintIqcJc::useEquationNumbers()
+{
+	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
 }

@@ -2,6 +2,7 @@
 #include "System.h"
 #include "DirectionCosineConstraintIJ.h"
 #include "TranslationConstraintIJ.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -13,12 +14,12 @@ CylindricalJoint::CylindricalJoint(const char* str) : Joint(str) {
 
 void MbD::CylindricalJoint::initializeGlobally()
 {
-	if (!constraints)
+	if (constraints->empty())
 	{
-		addConstraint(std::make_shared <TranslationConstraintIJ>(frmI, frmJ, 1));
-		addConstraint(std::make_shared <TranslationConstraintIJ>(frmI, frmJ, 2));
-		addConstraint(std::make_shared<DirectionCosineConstraintIJ>(frmI, frmJ, 3, 1));
-		addConstraint(std::make_shared<DirectionCosineConstraintIJ>(frmI, frmJ, 3, 2));
+		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 0));
+		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 1));
+		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
+		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
 		System::getInstance().hasChanged = true;
 	}
 	else {

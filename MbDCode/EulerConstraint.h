@@ -10,7 +10,6 @@ namespace MbD {
 	{
 		//pGpE iqE 
 	public:
-		static std::shared_ptr<EulerConstraint> Create();
 		EulerConstraint();
 		EulerConstraint(const char* str);
 		void initialize();

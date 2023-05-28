@@ -26,6 +26,8 @@ namespace MbD {
         void initializeGlobally() override;
         virtual void initEndFrameqct();
         void calcPostDynCorrectorIteration() override;
+        FColDsptr aAjOe(int j);
+        double riOeO(int i);
 
         MarkerFrame* markerFrame;
         FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);

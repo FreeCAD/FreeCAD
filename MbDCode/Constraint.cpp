@@ -31,3 +31,10 @@ Item* Constraint::getOwner()
 {
 	return owner;
 }
+
+void MbD::Constraint::prePosIC()
+{
+	lam = 0.0;
+	iG = -1;
+	Item::prePosIC();
+}

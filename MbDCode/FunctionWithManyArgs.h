@@ -1,20 +1,22 @@
 #pragma once
 
 #include "Function.h"
+#include "Symbolic.h"
 
 namespace MbD {
-    class Symbolic;
 
     class FunctionWithManyArgs : public Function
     {
         //terms
     public:
-        FunctionWithManyArgs(std::shared_ptr<Symbolic> term);
-        FunctionWithManyArgs(std::shared_ptr<Symbolic> term, std::shared_ptr<Symbolic> term1);
-        FunctionWithManyArgs(std::shared_ptr<Symbolic> term, std::shared_ptr<Symbolic> term1, std::shared_ptr<Symbolic> term2);
-        FunctionWithManyArgs(std::shared_ptr<std::vector<std::shared_ptr<Symbolic>>> _terms);
+        FunctionWithManyArgs();
+        FunctionWithManyArgs(Symsptr term);
+        FunctionWithManyArgs(Symsptr term, Symsptr term1);
+        FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr term2);
+        FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms);
+        std::shared_ptr<std::vector<Symsptr>> getTerms() override;
 
-        std::shared_ptr<std::vector<std::shared_ptr<Symbolic>>> terms;
+        std::shared_ptr<std::vector<Symsptr>> terms;
     };
 }
 

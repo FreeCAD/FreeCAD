@@ -318,6 +318,18 @@
     <ClCompile Include="SingularMatrixError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EulerAngleszxz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GEFullMat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GEFullMatFullPv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GEFullMatParPv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -624,6 +636,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SingularMatrixError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngleszxz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GEFullMat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GEFullMatFullPv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GEFullMatParPv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "EndFramec.h"
+#include "MarkerFrame.h"
 
 using namespace MbD;
 
@@ -40,4 +41,16 @@ void EndFramec::initEndFrameqct()
 
 void MbD::EndFramec::calcPostDynCorrectorIteration()
 {
+	rOeO = markerFrame->rOmO;
+	aAOe = markerFrame->aAOm;
+}
+
+FColDsptr MbD::EndFramec::aAjOe(int j)
+{
+	return aAOe->column(j);
+}
+
+double MbD::EndFramec::riOeO(int i)
+{
+	return rOeO->at(i);
 }

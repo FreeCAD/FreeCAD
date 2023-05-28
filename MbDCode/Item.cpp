@@ -15,7 +15,6 @@ Item::Item(const char* str) : name(str)
 
 void Item::initialize()
 {
-	assert(false);
 }
 
 void Item::setName(std::string& str)
@@ -30,12 +29,10 @@ const std::string& Item::getName() const
 
 void Item::initializeLocally()
 {
-	//DebugBreak();
 }
 
 void Item::initializeGlobally()
 {
-	//DebugBreak();
 }
 
 void MbD::Item::postInput()
@@ -46,10 +43,17 @@ void MbD::Item::postInput()
 
 void MbD::Item::calcPostDynCorrectorIteration()
 {
-	//DebugBreak();
 }
 
 void MbD::Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
+{
+}
+
+void MbD::Item::fillPosKineError(FColDsptr col)
+{
+}
+
+void MbD::Item::fillPosKineJacob(FMatDsptr mat)
 {
 }
 
@@ -58,5 +62,38 @@ void MbD::Item::constraintsReport()
 }
 
 void MbD::Item::setqsu(std::shared_ptr<FullColumn<double>> qsuOld)
+{
+}
+
+void MbD::Item::useEquationNumbers()
+{
+}
+
+void MbD::Item::prePosIC()
+{
+	//"Called once before solving for position initial conditions."
+	//"Update all variable dependent instance variables needed for posIC."
+	//"This is a subset of update."
+
+	calcPostDynCorrectorIteration();
+}
+
+void MbD::Item::prePostIC()
+{
+}
+
+void MbD::Item::prePostICIteration()
+{
+}
+
+void MbD::Item::prePostICRestart()
+{
+}
+
+void MbD::Item::fillPosICError(FColDsptr col)
+{
+}
+
+void MbD::Item::fillPosICJacob(FMatDsptr mat)
 {
 }

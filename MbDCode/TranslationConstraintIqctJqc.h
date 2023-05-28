@@ -7,8 +7,7 @@ namespace MbD {
     {
         //pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
     public:
-        TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisk);
-        void initialize();
+        TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initriIeJeIe() override;
 
         double pGpt;

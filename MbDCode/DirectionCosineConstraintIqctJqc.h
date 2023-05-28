@@ -8,9 +8,7 @@ namespace MbD {
 		//pGpt ppGpEIpt ppGpEJpt ppGptpt 
 	public:
 		DirectionCosineConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
-		void initialize();
 		void initaAijIeJe() override;
-		void calcPostDynCorrectorIteration() override;
 
 		double pGpt;
 		FRowDsptr ppGpEIpt;

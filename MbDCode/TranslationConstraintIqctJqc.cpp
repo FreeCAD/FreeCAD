@@ -1,18 +1,15 @@
 #include "TranslationConstraintIqctJqc.h"
 #include "DispCompIeqctJeqcKeqct.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
-TranslationConstraintIqctJqc::TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisk) :
-	TranslationConstraintIqcJqc(frmi, frmj, axisk)
-{
-}
-
-void TranslationConstraintIqctJqc::initialize()
+TranslationConstraintIqctJqc::TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+	TranslationConstraintIqcJqc(frmi, frmj, axisi)
 {
 }
 
 void MbD::TranslationConstraintIqctJqc::initriIeJeIe()
 {
-	riIeJeIe = std::make_shared<DispCompIeqctJeqcKeqct>();
+	riIeJeIe = CREATE<DispCompIeqctJeqcKeqct>::With(frmI, frmJ, frmI, axisI);
 }

@@ -1,13 +1,7 @@
 #include "AbsConstraint.h"
+#include "PartFrame.h"
 
 using namespace MbD;
-
-std::shared_ptr<AbsConstraint> MbD::AbsConstraint::Create(const char* name)
-{
-	auto item = std::make_shared<AbsConstraint>(name);
-	item->initialize();
-	return item;
-}
 
 AbsConstraint::AbsConstraint() {}
 
@@ -26,4 +20,10 @@ void AbsConstraint::initialize()
 
 void MbD::AbsConstraint::calcPostDynCorrectorIteration()
 {
+    if (axis < 3) {
+        aG = static_cast<PartFrame*>(owner)->qX->at(axis);
+    }
+    else {
+        aG = static_cast<PartFrame*>(owner)->qE->at(axis - 3);
+    }
 }

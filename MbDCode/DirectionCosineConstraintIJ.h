@@ -9,7 +9,6 @@ namespace MbD {
     {
         //axisI axisJ aAijIeJe 
     public:
-        static std::shared_ptr<DirectionCosineConstraintIJ> Create(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
         DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
         void initialize();
         void initializeLocally() override;
@@ -17,6 +16,7 @@ namespace MbD {
         virtual void initaAijIeJe();
         void postInput() override;
         void calcPostDynCorrectorIteration() override;
+        void prePosIC() override;
 
         int axisI, axisJ;
         std::shared_ptr<DirectionCosineIecJec> aAijIeJe;

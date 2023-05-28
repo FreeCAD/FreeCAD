@@ -165,6 +165,7 @@
     <ClCompile Include="EndFramec.cpp" />
     <ClCompile Include="EndFrameqc.cpp" />
     <ClCompile Include="EndFrameqct.cpp" />
+    <ClCompile Include="EulerAngleszxz.cpp" />
     <ClCompile Include="EulerArray.cpp" />
     <ClCompile Include="EulerConstraint.cpp" />
     <ClCompile Include="EulerParameters.cpp" />
@@ -176,6 +177,9 @@
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="FunctionWithManyArgs.cpp" />
     <ClCompile Include="FunctionX.cpp" />
+    <ClCompile Include="GEFullMat.cpp" />
+    <ClCompile Include="GEFullMatFullPv.cpp" />
+    <ClCompile Include="GEFullMatParPv.cpp" />
     <ClCompile Include="GESpMat3.cpp" />
     <ClCompile Include="GESpMatFullPv.cpp" />
     <ClCompile Include="GESpMatFullPvPosIC.cpp" />
@@ -268,6 +272,7 @@
     <ClInclude Include="EndFramec.h" />
     <ClInclude Include="EndFrameqc.h" />
     <ClInclude Include="EndFrameqct.h" />
+    <ClInclude Include="EulerAngleszxz.h" />
     <ClInclude Include="EulerArray.h" />
     <ClInclude Include="EulerConstraint.h" />
     <ClInclude Include="EulerParameters.h" />
@@ -279,6 +284,9 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="FunctionWithManyArgs.h" />
     <ClInclude Include="FunctionX.h" />
+    <ClInclude Include="GEFullMat.h" />
+    <ClInclude Include="GEFullMatFullPv.h" />
+    <ClInclude Include="GEFullMatParPv.h" />
     <ClInclude Include="GESpMat3.h" />
     <ClInclude Include="GESpMatFullPv.h" />
     <ClInclude Include="GESpMatFullPvPosIC.h" />

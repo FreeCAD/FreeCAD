@@ -14,6 +14,7 @@ DirectionCosineIeqcJec::DirectionCosineIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj,
 
 void DirectionCosineIeqcJec::initialize()
 {
+	DirectionCosineIecJec::initialize();
 	pAijIeJepEI = std::make_shared<FullRow<double>>(4);
 	ppAijIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
@@ -25,4 +26,20 @@ void MbD::DirectionCosineIeqcJec::initializeGlobally()
 
 void MbD::DirectionCosineIeqcJec::calcPostDynCorrectorIteration()
 {
+	DirectionCosineIecJec::calcPostDynCorrectorIteration();
+	pAjOIepEIT = std::static_pointer_cast<EndFrameqc>(frmI)->pAjOepET(axisI);
+	for (size_t i = 0; i < 4; i++)
+	{
+		pAijIeJepEI->at(i) = pAjOIepEIT->at(i)->dot(aAjOJe);
+	}
+	for (size_t i = 0; i < 4; i++)
+	{
+		auto& ppAijIeJepEIipEI = ppAijIeJepEIpEI->at(i);
+		auto& ppAjOIepEIipEI = ppAjOIepEIpEI->at(i);
+		for (size_t j = 0; j < 4; j++)
+		{
+			ppAijIeJepEIipEI->at(j) = ppAjOIepEIipEI->at(j)->dot(aAjOJe);
+		}
+	}	
+	ppAijIeJepEIpEI->symLowerWithUpper();
 }

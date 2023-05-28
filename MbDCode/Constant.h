@@ -8,7 +8,9 @@ namespace MbD {
     public:
         Constant();
         Constant(double val);
-        std::shared_ptr<Symbolic> differentiateWRT(std::shared_ptr<Symbolic> var) override;
+        Symsptr differentiateWRT(Symsptr sptr, Symsptr var) override;
+        bool isConstant() override;
+        std::ostream& printOn(std::ostream& s) const override;
     };
 }
 

@@ -7,6 +7,8 @@ namespace MbD {
     {
         //nqsu qsuOld qsuWeights nSingularMatrixError 
     public:
+        void initialize() override;
+
         int nqsu;
         std::shared_ptr<FullColumn<double>> qsuOld, qsuWeights;
         int nSingularMatrixError;

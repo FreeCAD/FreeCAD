@@ -7,6 +7,8 @@ namespace MbD {
     {
         //
     public:
+        DispCompIeqctJeqcKeqct();
+        DispCompIeqctJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
 
     };
 }

@@ -16,7 +16,6 @@ namespace MbD {
 	{
 		//partFrame rpmp aApm rOmO aAOm prOmOpE pAOmpE pprOmOpEpE ppAOmpEpE endFrames 
 	public:
-		static std::shared_ptr<MarkerFrame> Create(const char* name);
 		MarkerFrame();
         MarkerFrame(const char* str);
         void initialize();
@@ -29,6 +28,9 @@ namespace MbD {
 		void initializeGlobally() override;
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
+		void prePosIC() override;
+		int iqX();
+		int iqE();
 
 		PartFrame* partFrame;
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);

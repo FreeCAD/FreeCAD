@@ -1,31 +1,33 @@
 #pragma once
 
 #include "EndFramec.h"
+#include "Symbolic.h"
 
 namespace MbD {
-    class Symbolic;
+    class EndFrameqct;
 
     class EndFrameqc : public EndFramec
     {
         //prOeOpE pprOeOpEpE pAOepE ppAOepEpE
     public:
-        static std::shared_ptr<EndFrameqc> Create(const char* name);
         EndFrameqc();
         EndFrameqc(const char* str);
         void initialize();
-        void initializeLocally() override;
         void initializeGlobally() override;
         void initEndFrameqct() override;
-        void setrmemBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzBlks);
-        void setphiThePsiBlks(std::shared_ptr<FullColumn<std::shared_ptr<Symbolic>>> xyzRotBlks);
-        FMatFColDsptr ppAjOepEpE(int axis);
+        FMatFColDsptr ppAjOepEpE(int j);
         void calcPostDynCorrectorIteration() override;
+        FMatDsptr pAjOepET(int j);
+        FMatDsptr ppriOeOpEpE(int i);
+        int iqX();
+        int iqE();
+        FRowDsptr priOeOpE(int i);
 
         FMatDsptr prOeOpE;
         std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;
         std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOepE;
         FMatFMatDsptr ppAOepEpE;
-        std::shared_ptr<EndFramec> endFrameqct;
+        std::shared_ptr<EndFrameqct> endFrameqct;
     };
 }
 

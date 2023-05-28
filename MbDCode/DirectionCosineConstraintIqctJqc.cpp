@@ -1,5 +1,6 @@
 #include "DirectionCosineConstraintIqctJqc.h"
 #include "DirectionCosineIeqctJeqc.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -8,15 +9,7 @@ DirectionCosineConstraintIqctJqc::DirectionCosineConstraintIqctJqc(EndFrmcptr fr
 {
 }
 
-void DirectionCosineConstraintIqctJqc::initialize()
-{
-}
-
 void DirectionCosineConstraintIqctJqc::initaAijIeJe()
 {
-	aAijIeJe = std::make_shared<DirectionCosineIeqctJeqc>();
-}
-
-void MbD::DirectionCosineConstraintIqctJqc::calcPostDynCorrectorIteration()
-{
+	aAijIeJe = CREATE<DirectionCosineIeqctJeqc>::With(frmI, frmJ, axisI, axisJ);
 }

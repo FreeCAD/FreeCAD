@@ -8,15 +8,16 @@ namespace MbD {
     {
         //riIeJeIe
     public:
-        static std::shared_ptr<TranslationConstraintIJ> Create(EndFrmcptr frmi, EndFrmcptr frmj, int axisk);
-        TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisk);
+        TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initialize();
         void initializeLocally() override;
         void initializeGlobally() override;
         virtual void initriIeJeIe();
         void postInput() override;
+        void calcPostDynCorrectorIteration() override;
+        void prePosIC()override;
 
-        int axisK;
+        int axisI;
         std::shared_ptr<DispCompIecJecKec> riIeJeIe;
     };
 }

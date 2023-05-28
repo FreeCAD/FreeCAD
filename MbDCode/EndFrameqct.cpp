@@ -1,18 +1,13 @@
 #include "EndFrameqct.h"
+#include "MarkerFrame.h"
 #include "System.h"
 #include "Symbolic.h"
 #include "Time.h"
+#include "EulerParameters.h"
+#include "CREATE.h"
+#include "EulerAngleszxz.h"
 
 using namespace MbD;
-
-//class Symbolic;
-
-std::shared_ptr<EndFrameqct> MbD::EndFrameqct::Create(const char* name)
-{
-	auto item = std::make_shared<EndFrameqct>(name);
-	item->initialize();
-	return item;
-}
 
 EndFrameqct::EndFrameqct() {
 }
@@ -22,14 +17,15 @@ EndFrameqct::EndFrameqct(const char* str) : EndFrameqc(str) {
 
 void EndFrameqct::initialize()
 {
-	rmem = std::make_shared<FullColumn<double>>(3);	
-	prmempt = std::make_shared<FullColumn<double>>(3);	
-	pprmemptpt = std::make_shared<FullColumn<double>>(3);	
+	EndFrameqc::initialize();
+	rmem = std::make_shared<FullColumn<double>>(3);
+	prmempt = std::make_shared<FullColumn<double>>(3);
+	pprmemptpt = std::make_shared<FullColumn<double>>(3);
 	aAme = std::make_shared<FullMatrix<double>>(3, 3);
 	pAmept = std::make_shared<FullMatrix<double>>(3, 3);
 	ppAmeptpt = std::make_shared<FullMatrix<double>>(3, 3);
 	pprOeOpEpt = std::make_shared<FullMatrix<double>>(3, 4);
-	pprOeOptpt = std::make_shared<FullColumn<double>>(3);	
+	pprOeOptpt = std::make_shared<FullColumn<double>>(3);
 	ppAOepEpt = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
 	ppAOeptpt = std::make_shared<FullMatrix<double>>(3, 3);
 }
@@ -62,11 +58,12 @@ void EndFrameqct::initializeGlobally()
 
 void EndFrameqct::initprmemptBlks()
 {
-	time = System::getInstance().time;
-	prmemptBlks = std::make_shared< FullColumn<std::shared_ptr<Symbolic>>>(3);
-	for (int i = 0; i < 3; i++) {
-		auto disp = rmemBlks->at(i);
-		auto vel = (disp->differentiateWRT(time))->simplified();
+	auto& mbdTime = System::getInstance().time;
+	prmemptBlks = std::make_shared< FullColumn<Symsptr>>(3);
+	for (size_t i = 0; i < 3; i++) {
+		auto& disp = rmemBlks->at(i);
+		auto var = disp->differentiateWRT(disp, mbdTime);
+		auto vel = var->simplified(var);
 		prmemptBlks->at(i) = vel;
 	}
 }
@@ -77,9 +74,19 @@ void EndFrameqct::initpprmemptptBlks()
 
 void EndFrameqct::initpPhiThePsiptBlks()
 {
+	auto& mbdTime = System::getInstance().time;
+	pPhiThePsiptBlks = std::make_shared< FullColumn<Symsptr>>(3);
+	for (size_t i = 0; i < 3; i++) {
+		auto& angle = phiThePsiBlks->at(i);
+		auto var = angle->differentiateWRT(angle, mbdTime);
+		std::cout << "var " << *var << std::endl;
+		auto vel = var->simplified(var);
+		std::cout << "vel " << *vel << std::endl;
+		pPhiThePsiptBlks->at(i) = vel;
+	}
 }
 
-void EndFrameqct::initppPhiThePsiptptBlks()
+void MbD::EndFrameqct::initppPhiThePsiptptBlks()
 {
 }
 
@@ -89,4 +96,63 @@ void MbD::EndFrameqct::postInput()
 
 void MbD::EndFrameqct::calcPostDynCorrectorIteration()
 {
+	auto& rOmO = markerFrame->rOmO;
+	auto& aAOm = markerFrame->aAOm;
+	rOeO = rOmO->plusFullColumn(aAOm->timesFullColumn(rmem));
+	auto& prOmOpE = markerFrame->prOmOpE;
+	auto& pAOmpE = markerFrame->pAOmpE;
+	for (size_t i = 0; i < 3; i++)
+	{
+		auto& prOmOpEi = prOmOpE->at(i);
+		auto& prOeOpEi = prOeOpE->at(i);
+		for (size_t j = 0; j < 4; j++)
+		{
+			auto prOeOpEij = prOmOpEi->at(j) + pAOmpE->at(j)->at(i)->timesFullColumn(rmem);
+			prOeOpEi->at(j) = prOeOpEij;
+		}
+	}
+	auto rpep = markerFrame->rpmp->plusFullColumn(markerFrame->aApm->timesFullColumn(rmem));
+	pprOeOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpep);
+	aAOe = aAOm->timesFullMatrix(aAme);
+	for (size_t i = 0; i < 4; i++)
+	{
+		pAOepE->at(i) = pAOmpE->at(i)->timesFullMatrix(aAme);
+	}
+	auto aApe = markerFrame->aApm->timesFullMatrix(aAme);
+	ppAOepEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApe);
+}
+
+void MbD::EndFrameqct::prePosIC()
+{
+	time = System::getInstance().mbdTimeValue();
+	this->evalrmem();
+	this->evalAme();
+	EndFrameqc::prePosIC();
+}
+
+void MbD::EndFrameqct::evalrmem()
+{
+	if (rmemBlks) {
+		for (size_t i = 0; i < 3; i++)
+		{
+			auto& expression = rmemBlks->at(i);
+			double value = expression->getValue();
+			rmem->at(i) = value;
+		}
+	}
+}
+
+void MbD::EndFrameqct::evalAme()
+{
+	if (phiThePsiBlks) {
+		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
+		for (size_t i = 0; i < 3; i++)
+		{
+			auto& expression = phiThePsiBlks->at(i);
+			auto value = expression->getValue();
+			phiThePsi->at(i) = value;
+		}
+		phiThePsi->calc();
+		aAme = phiThePsi->aA;
+	}
 }

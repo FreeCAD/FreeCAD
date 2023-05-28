@@ -14,6 +14,8 @@ namespace MbD {
 		void postInput() override;
 		void setOwner(Item* x);
 		Item* getOwner();
+		void prePosIC() override;
+
 		
 		int iG;
 		double aG;		//Constraint function

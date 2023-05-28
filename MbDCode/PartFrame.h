@@ -7,6 +7,7 @@
 #include "FullColumn.h"
 #include "EulerParameters.h"
 #include "EulerParametersDot.h"
+#include "CREATE.h"
 
 namespace MbD {
 	class Part;
@@ -20,7 +21,6 @@ namespace MbD {
 	{
 		//ToDo: part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
 	public:
-		static std::shared_ptr<PartFrame> Create();
 		PartFrame();
 		PartFrame(const char* str);
 		void initialize();
@@ -43,15 +43,20 @@ namespace MbD {
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmcptr endFrame(std::string name);
 
+		void prePosIC() override;
+		FColDsptr rOpO();
+		FMatDsptr aAOp();
+		FColFMatDsptr pAOppE();
+
 		Part* part = nullptr;
 		int iqX = -1;
 		int iqE = -1;	//Position index of frame variables qX and qE in system list of variables
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
-		std::shared_ptr<EulerParameters<double>> qE = std::make_shared<EulerParameters<double>>(4);
-		FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
-		std::shared_ptr<EulerParametersDot<double>> qEdot = std::make_shared<EulerParametersDot<double>>(4);
-		FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
-		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
+		std::shared_ptr<EulerParameters<double>> qE = CREATE<EulerParameters<double>>::With(4);
+		//FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
+		//std::shared_ptr<EulerParametersDot<double>> qEdot = std::make_shared<EulerParametersDot<double>>(4);
+		//FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
+		//FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<EulerConstraint> aGeu;
 		std::shared_ptr<std::vector<std::shared_ptr<AbsConstraint>>> aGabs;
 		std::shared_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;

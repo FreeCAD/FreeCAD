@@ -10,7 +10,17 @@ Constant::Constant(double val) : Variable(val)
 {
 }
 
-std::shared_ptr<Symbolic> Constant::differentiateWRT(std::shared_ptr<Symbolic> var)
+Symsptr Constant::differentiateWRT(Symsptr sptr, Symsptr var)
 {
 	return std::make_shared<Constant>(0.0);
+}
+
+bool MbD::Constant::isConstant()
+{
+	return true;
+}
+
+std::ostream& MbD::Constant::printOn(std::ostream& s) const
+{
+	return s << this->value;
 }

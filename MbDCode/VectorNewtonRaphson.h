@@ -9,7 +9,7 @@ namespace MbD {
         //matrixSolver n
     public:
         void run() override;
-
+        virtual std::shared_ptr<MatrixSolver> matrixSolverClassNew();
         std::shared_ptr<MatrixSolver> matrixSolver;
         int n;
     };

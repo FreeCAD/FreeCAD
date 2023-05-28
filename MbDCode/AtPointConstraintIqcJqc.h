@@ -8,9 +8,10 @@ namespace MbD {
         //pGpEJ ppGpEJpEJ iqXJminusOnePlusAxis iqEJ 
     public:
         AtPointConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
-        void initialize();
+        void initializeGlobally() override;
         void initriIeJeO() override;
         void calcPostDynCorrectorIteration() override;
+        void useEquationNumbers() override;
 
         FRowDsptr pGpEJ;
         FMatDsptr ppGpEJpEJ;

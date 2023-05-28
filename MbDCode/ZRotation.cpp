@@ -4,6 +4,7 @@
 #include "DirectionCosineConstraintIJ.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -17,15 +18,9 @@ ZRotation::ZRotation(const char* str) : PrescribedMotion(str) {
 
 void ZRotation::initializeGlobally()
 {
-	//constraints isEmpty
-	//	ifTrue :
-	//[self initMotions.
-	//	self owns : (MbDDirectionCosineConstraintIJ withFrmI : frmI frmJ : frmJ axisI : 2 axisJ : 1).
-	//	TheMbDSystem hasChanged : true]
-	//ifFalse : [super initializeGlobally]
 	if (constraints->empty()) {
 		initMotions();
-		auto dirCosCon = std::make_shared<DirectionCosineConstraintIJ>(frmI, frmJ, 2, 1);
+		auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0);
 		addConstraint(dirCosCon);
 		System::getInstance().hasChanged = true;
 	}
@@ -36,12 +31,8 @@ void ZRotation::initializeGlobally()
 
 void ZRotation::initMotions()
 {
-	auto xyzBlks = std::initializer_list<std::shared_ptr<Symbolic>>{ xBlk, yBlk, zBlk };
-	std::static_pointer_cast<EndFrameqc>(frmI)->setrmemBlks(std::make_shared<FullColumn<std::shared_ptr<Symbolic>>>(xyzBlks));
-	auto xyzRotBlks = std::initializer_list<std::shared_ptr<Symbolic>>{ phiBlk, theBlk, psiBlk };
-	std::static_pointer_cast<EndFrameqc>(frmI)->setphiThePsiBlks(std::make_shared<FullColumn<std::shared_ptr<Symbolic>>>(xyzRotBlks));
-}
-
-void ZRotation::addConstraint(std::shared_ptr<Constraint> con)
-{
+	auto xyzBlkList = std::initializer_list<Symsptr>{ xBlk, yBlk, zBlk };
+	std::static_pointer_cast<EndFrameqct>(frmI)->rmemBlks = (std::make_shared<FullColumn<Symsptr>>(xyzBlkList));
+	auto xyzRotBlkList = std::initializer_list<Symsptr>{ phiBlk, theBlk, psiBlk };
+	std::static_pointer_cast<EndFrameqct>(frmI)->phiThePsiBlks = (std::make_shared<FullColumn<Symsptr>>(xyzRotBlkList));
 }

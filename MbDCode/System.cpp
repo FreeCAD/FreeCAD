@@ -5,6 +5,7 @@
 #include "Joint.h"
 #include "SystemSolver.h"
 #include "Time.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -18,7 +19,7 @@ System::System(const char* str) : Item(str) {
 
 void MbD::System::initialize()
 {
-	time = std::make_shared<Time>();
+	time = CREATE<Time>::With();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
 	systemSolver = std::make_shared<SystemSolver>(this);
@@ -83,4 +84,14 @@ void MbD::System::partsJointsMotionsDo(const std::function<void(std::shared_ptr<
 {
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+}
+
+void MbD::System::logString(std::string& str)
+{
+	std::cout << str << std::endl;
+}
+
+double MbD::System::mbdTimeValue()
+{
+	return time->getValue();
 }

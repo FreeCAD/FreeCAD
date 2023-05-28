@@ -1,8 +1,8 @@
 #pragma once
 #include "Joint.h"
+#include "Symbolic.h"
 
 namespace MbD {
-    class Symbolic;
 
     class PrescribedMotion : public Joint
     {
@@ -13,12 +13,12 @@ namespace MbD {
         void initialize();
         void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ) override;
 
-        std::shared_ptr<Symbolic> xBlk;
-        std::shared_ptr<Symbolic> yBlk;
-        std::shared_ptr<Symbolic> zBlk;
-        std::shared_ptr<Symbolic> phiBlk;
-        std::shared_ptr<Symbolic> theBlk;
-        std::shared_ptr<Symbolic> psiBlk;
+        Symsptr xBlk;
+        Symsptr yBlk;
+        Symsptr zBlk;
+        Symsptr phiBlk;
+        Symsptr theBlk;
+        Symsptr psiBlk;
     };
 }
 

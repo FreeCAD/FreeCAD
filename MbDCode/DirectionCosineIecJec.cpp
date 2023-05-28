@@ -15,13 +15,9 @@ DirectionCosineIecJec::DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, i
 
 }
 
-void MbD::DirectionCosineIecJec::initialize()
-{
-	aAijIeJe = 0.0;
-	aAjOIe = std::make_shared<FullColumn<double>>(3);
-	aAjOJe = std::make_shared<FullColumn<double>>(3);
-}
-
 void MbD::DirectionCosineIecJec::calcPostDynCorrectorIteration()
 {
+	aAjOIe = frmI->aAjOe(axisI);
+	aAjOJe = frmJ->aAjOe(axisJ);
+	aAijIeJe = aAjOIe->dot(aAjOJe);
 }

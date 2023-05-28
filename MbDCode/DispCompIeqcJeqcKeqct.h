@@ -7,6 +7,10 @@ namespace MbD {
     {
         //priIeJeKept ppriIeJeKepXIpt ppriIeJeKepEIpt ppriIeJeKepXJpt ppriIeJeKepEJpt ppriIeJeKepEKpt ppriIeJeKeptpt 
     public:
+        DispCompIeqcJeqcKeqct();
+        DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
+        void initialize() override;
+        void calcPostDynCorrectorIteration() override;
 
         double priIeJeKept;
         FRowDsptr ppriIeJeKepXIpt;

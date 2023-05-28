@@ -2,6 +2,8 @@
 
 #include "Joint.h"
 #include "Constraint.h"
+#include "EndFrameqc.h"
+#include "EndFrameqct.h"
 
 using namespace MbD;
 
@@ -26,6 +28,12 @@ void Joint::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
 
 void Joint::initializeLocally()
 {
+	auto frmIqc = std::dynamic_pointer_cast<EndFrameqc>(frmI);
+	if (frmIqc) {
+		if (frmIqc->endFrameqct) {
+			frmI = frmIqc->endFrameqct;
+		}
+	}
 	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->initializeLocally(); });
 }
 
@@ -42,4 +50,9 @@ void MbD::Joint::addConstraint(std::shared_ptr<Constraint> con)
 {
 	con->setOwner(this);
 	constraints->push_back(con);
+}
+
+void MbD::Joint::prePosIC()
+{
+	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->prePosIC(); });
 }

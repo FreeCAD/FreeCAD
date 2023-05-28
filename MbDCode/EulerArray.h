@@ -11,7 +11,11 @@ namespace MbD {
         EulerArray(size_t count) : FullColumn<T>(count) {}
         EulerArray(size_t count, const T& value) : FullColumn<T>(count, value) {}
         EulerArray(std::initializer_list<T> list) : FullColumn<T>{ list } {}
-
+        virtual void initialize();
     };
+    template<typename T>
+    inline void EulerArray<T>::initialize()
+    {
+    }
 }
 

@@ -7,6 +7,7 @@ namespace MbD {
     {
     public:
         Time();
+        void initialize() override;
     };
 }
 

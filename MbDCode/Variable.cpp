@@ -34,3 +34,8 @@ double Variable::getValue()
 {
 	return value;
 }
+
+std::ostream& MbD::Variable::printOn(std::ostream& s) const
+{
+	return s << this->name;
+}

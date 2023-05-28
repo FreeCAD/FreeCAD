@@ -7,9 +7,10 @@ namespace MbD {
     {
         //pGpXI pGpEI ppGpXIpEI ppGpEIpEI iqXI iqEI 
     public:
-        TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisk);
-        void initialize();
+        TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initriIeJeIe() override;
+        void calcPostDynCorrectorIteration() override;
+        void useEquationNumbers() override;
 
         FRowDsptr pGpXI;
         FRowDsptr pGpEI;

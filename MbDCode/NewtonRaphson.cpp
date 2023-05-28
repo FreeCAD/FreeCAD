@@ -40,3 +40,26 @@ void MbD::NewtonRaphson::setSystem(SystemSolver* sys)
 {
 	system = sys;
 }
+
+void MbD::NewtonRaphson::iterate()
+{
+	//"
+	//	Do not skip matrix solution even when yNorm is very small.
+	//	This avoids unexpected behaviors when convergence is still
+	//	possible.
+
+	//	Do not skip redundant constraint removal even when yNorm is
+	//	zero.
+	//	"
+
+	//	iterNo : = 0.
+	//	self fillY.
+	//	self calcyNorm.
+	//	yNorms add : yNorm.
+
+	//	[self incrementIterNo.
+	//	self fillPyPx.
+	//	self solveEquations.
+	//	self calcDXNormImproveRootCalcYNorm.
+	//	self isConverged] whileFalse
+}

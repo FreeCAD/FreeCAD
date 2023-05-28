@@ -1,15 +1,9 @@
 #include "DirectionCosineConstraintIJ.h"
 #include "DirectionCosineIecJec.h"
 #include "EndFramec.h"
+#include "CREATE.h"
 
 using namespace MbD;
-
-std::shared_ptr<DirectionCosineConstraintIJ> MbD::DirectionCosineConstraintIJ::Create(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj)
-{
-	auto item = std::make_shared<DirectionCosineConstraintIJ>(frmi, frmj, axisi, axisj);
-	item->initialize();
-	return item;
-}
 
 DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
 	ConstraintIJ(frmi, frmj), axisI(axisi), axisJ(axisj)
@@ -18,6 +12,7 @@ DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrm
 
 void DirectionCosineConstraintIJ::initialize()
 {
+	initaAijIeJe();
 }
 
 void MbD::DirectionCosineConstraintIJ::initializeLocally()
@@ -32,7 +27,7 @@ void MbD::DirectionCosineConstraintIJ::initializeGlobally()
 
 void DirectionCosineConstraintIJ::initaAijIeJe()
 {
-	aAijIeJe = std::make_shared<DirectionCosineIecJec>();
+	aAijIeJe = CREATE<DirectionCosineIecJec>::With(frmI, frmJ, axisI, axisJ);
 }
 
 void MbD::DirectionCosineConstraintIJ::postInput()
@@ -41,4 +36,11 @@ void MbD::DirectionCosineConstraintIJ::postInput()
 
 void MbD::DirectionCosineConstraintIJ::calcPostDynCorrectorIteration()
 {
+	aG = aAijIeJe->aAijIeJe - aConstant;
+}
+
+void MbD::DirectionCosineConstraintIJ::prePosIC()
+{
+	aAijIeJe->prePosIC();
+	Constraint::prePosIC();
 }

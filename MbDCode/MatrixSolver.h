@@ -7,7 +7,7 @@ namespace MbD {
     {
         //
     public:
-
+        MatrixSolver(){}
     };
 }
 

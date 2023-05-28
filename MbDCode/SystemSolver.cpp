@@ -3,17 +3,11 @@
 #include "SystemSolver.h"
 #include "NewtonRaphson.h"
 #include "PosICNewtonRaphson.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
 //class PosICNewtonRaphson;
-
-std::shared_ptr<SystemSolver> MbD::SystemSolver::Create(System* x)
-{
-	auto item = std::make_shared<SystemSolver>(x);
-	item->initialize();
-	return item;
-}
 
 void MbD::SystemSolver::initialize()
 {
@@ -57,7 +51,7 @@ void SystemSolver::runAllIC()
 
 void MbD::SystemSolver::runPosIC()
 {
-	icTypeSolver = std::make_shared<PosICNewtonRaphson>();
+	icTypeSolver = CREATE<PosICNewtonRaphson>::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
@@ -94,4 +88,29 @@ void SystemSolver::runBasicKinematic()
 void MbD::SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	system->partsJointsMotionsDo(f);
+}
+
+void MbD::SystemSolver::logString(std::string& str)
+{
+	system->logString(str);
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Part>>> MbD::SystemSolver::parts()
+{
+	return std::shared_ptr<std::vector<std::shared_ptr<Part>>>();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::essentialConstraints2()
+{
+	return std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::displacementConstraints()
+{
+	return std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::perpendicularConstraints2()
+{
+	return std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>();
 }

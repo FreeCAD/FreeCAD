@@ -1,21 +1,17 @@
 #include "TranslationConstraintIJ.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
-std::shared_ptr<TranslationConstraintIJ> MbD::TranslationConstraintIJ::Create(EndFrmcptr frmi, EndFrmcptr frmj, int axisk)
-{
-    auto item = std::make_shared<TranslationConstraintIJ>(frmi, frmj, axisk);
-    item->initialize();
-    return item;
-}
-
-TranslationConstraintIJ::TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisk) :
-    ConstraintIJ(frmi, frmj), axisK(axisk)
+TranslationConstraintIJ::TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+    ConstraintIJ(frmi, frmj), axisI(axisi)
 {
 }
 
 void TranslationConstraintIJ::initialize()
 {
+    ConstraintIJ::initialize();
+    initriIeJeIe();
 }
 
 void MbD::TranslationConstraintIJ::initializeLocally()
@@ -30,9 +26,20 @@ void MbD::TranslationConstraintIJ::initializeGlobally()
 
 void MbD::TranslationConstraintIJ::initriIeJeIe()
 {
-    riIeJeIe = std::make_shared<DispCompIecJecKec>();
+    riIeJeIe = CREATE<DispCompIecJecKec>::With(frmI, frmJ, frmI, axisI);
 }
 
 void MbD::TranslationConstraintIJ::postInput()
 {
+}
+
+void MbD::TranslationConstraintIJ::calcPostDynCorrectorIteration()
+{
+    aG = riIeJeIe->value() - aConstant;
+}
+
+void MbD::TranslationConstraintIJ::prePosIC()
+{
+    riIeJeIe->prePosIC();
+    Constraint::prePosIC();
 }

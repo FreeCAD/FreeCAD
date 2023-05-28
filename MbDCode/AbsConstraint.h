@@ -5,7 +5,6 @@ namespace MbD {
     {
         //axis iqXminusOnePlusAxis 
     public:
-        static std::shared_ptr<AbsConstraint> Create(const char* name);
         AbsConstraint();
         AbsConstraint(const char* str);
         AbsConstraint(int axis);

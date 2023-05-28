@@ -1,18 +1,26 @@
 #include "TranslationConstraintIqcJqc.h"
 #include "DispCompIeqcJeqcKeqc.h"
+#include "EndFrameqc.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
-TranslationConstraintIqcJqc::TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisk) :
-	TranslationConstraintIqcJc(frmi, frmj, axisk)
-{
-}
-
-void TranslationConstraintIqcJqc::initialize()
+TranslationConstraintIqcJqc::TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+	TranslationConstraintIqcJc(frmi, frmj, axisi)
 {
 }
 
 void MbD::TranslationConstraintIqcJqc::initriIeJeIe()
 {
-	riIeJeIe = std::make_shared<DispCompIeqcJeqcKeqc>();
+	riIeJeIe = CREATE<DispCompIeqcJeqcKeqc>::With(frmI, frmJ, frmI, axisI);
+}
+
+void MbD::TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
+{
+}
+
+void MbD::TranslationConstraintIqcJqc::useEquationNumbers()
+{
+	TranslationConstraintIqcJc::useEquationNumbers();
+	iqEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->iqE();
 }

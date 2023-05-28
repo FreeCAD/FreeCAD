@@ -19,8 +19,8 @@ namespace MbD {
 		//iterMaxPosKine iterMaxAccKine basicIntegrator tstartPasts tstart hmin hmax tend toutFirst hout direction corAbsTol corRelTol 
 		//intAbsTol intRelTol iterMaxDyn orderMax translationLimit rotationLimit 
 	public:
-		static std::shared_ptr<SystemSolver> Create(System* x);
 		SystemSolver(System* x) : system(x) {
+			initialize();
 		}
 		void initialize() override;
 		void initializeLocally() override;
@@ -35,6 +35,13 @@ namespace MbD {
 		void runBasicCollision();
 		void runBasicKinematic();
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void logString(std::string& str);
+		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
+		//std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();
+		//std::shared_ptr<std::vector<UHolder>> uHolders();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints2();
 
 		System* system;
 		std::shared_ptr<NewtonRaphson> icTypeSolver;

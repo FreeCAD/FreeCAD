@@ -9,7 +9,8 @@ namespace MbD {
 	class SparseRow : public SparseVector<T>
 	{
 	public:
-		SparseRow() {}
+		SparseRow(){}
+		SparseRow(int n) : SparseVector<T>(n) {}
 		SparseRow(std::initializer_list<std::pair<const int, T>> list) : SparseVector<T>{ list } {}
 		SparseRow(std::initializer_list<std::initializer_list<T>> list) : SparseVector<T>{ list } {}
 	};
