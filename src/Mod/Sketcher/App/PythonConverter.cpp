@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/algorithm/string/regex.hpp>
 #include <boost/format.hpp>
 #endif// #ifndef _PreComp_
 
@@ -61,44 +62,75 @@ std::string PythonConverter::convert(const Sketcher::Constraint* constraint)
 std::string PythonConverter::convert(const std::string& doc,
                                      const std::vector<Part::Geometry*>& geos)
 {
-    std::string geolist = "geoList = []\n";
-    std::string constrgeolist = "constrGeoList = []\n";
+    if (geos.empty())
+        return std::string();
 
-    int ngeo = 0, nconstr = 0;
+    // Generates a list for consecutive geometries of construction type, or of normal type
+    auto printGeoList = [&doc](const std::string& geolist, int ngeos, bool construction) {
+        std::string command;
+
+        if (ngeos > 0) {
+            if (construction) {
+                command = boost::str(
+                    boost::format("constrGeoList = []\n%s\n%s.addGeometry(constrGeoList,%s)\ndel "
+                                  "constrGeoList")
+                    % geolist % doc % "True");
+            }
+            else {
+                command = boost::str(
+                    boost::format("geoList = []\n%s\n%s.addGeometry(geoList,%s)\ndel geoList")
+                    % geolist % doc % "False");
+            }
+        }
+
+        return command;
+    };
+
+    std::string command;
+
+    // Adds a list of consecutive geometries of a same construction type to the generating command
+    auto addToCommands = [&command,
+                          &printGeoList](const std::string& geolist, int ngeos, bool construction) {
+        auto newcommand = printGeoList(geolist, ngeos, construction);
+
+        if (command.empty()) {
+            command = std::move(newcommand);
+        }
+        else {
+            command += "\n";
+            command += newcommand;
+        }
+    };
+
+    std::string geolist;
+    int ngeos = 0;
+    bool currentconstruction = Sketcher::GeometryFacade::getConstruction(geos[0]);
 
     for (auto geo : geos) {
         auto sg = process(geo);
 
+        if (sg.construction != currentconstruction) {
+            // if it switches from construction to normal or vice versa, flush elements so far in
+            // order to keep order of creation
+            addToCommands(geolist, ngeos, currentconstruction);
+
+            geolist.clear();
+            ngeos = 0;
+            currentconstruction = sg.construction;
+        }
+
         if (sg.construction) {
-            constrgeolist = boost::str(boost::format("%s\nconstrGeoList.append(%s)\n")
-                                       % constrgeolist % sg.creation);
-            nconstr++;
+            geolist =
+                boost::str(boost::format("%s\nconstrGeoList.append(%s)\n") % geolist % sg.creation);
         }
         else {
             geolist = boost::str(boost::format("%s\ngeoList.append(%s)\n") % geolist % sg.creation);
-            ngeo++;
         }
+
+        ngeos++;
     }
 
-    if (ngeo > 0) {
-        geolist = boost::str(boost::format("%s\n%s.addGeometry(geoList,%s)\ndel geoList\n")
-                             % geolist % doc % "False");
-    }
-
-    if (nconstr > 0) {
-        constrgeolist =
-            boost::str(boost::format("%s\n%s.addGeometry(constrGeoList,%s)\ndel constrGeoList")
-                       % constrgeolist % doc % "True");
-    }
-
-    std::string command;
-
-    if (ngeo > 0 && nconstr > 0)
-        command = geolist + constrgeolist;
-    else if (ngeo > 0)
-        command = std::move(geolist);
-    else if (nconstr > 0)
-        command = std::move(constrgeolist);
+    addToCommands(geolist, ngeos, currentconstruction);
 
     return command;
 }
@@ -458,4 +490,11 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint)
     auto creator = result->second;
 
     return creator(constraint);
+}
+
+std::vector<std::string> PythonConverter::multiLine(std::string&& singlestring)
+{
+    std::vector<std::string> tokens;
+    split_regex(tokens, singlestring, boost::regex("(\n)+"));
+    return tokens;
 }
