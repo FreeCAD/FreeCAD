@@ -61,9 +61,9 @@ for pre in Presets:
         Categories.append(pre[1])
 
 
-def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structure"):
+def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
 
-    '''makeStructure([obj],[length],[width],[height],[swap]): creates a
+    '''makeStructure([baseobj],[length],[width],[height],[name]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
@@ -73,7 +73,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
-    obj.Label = translate("Arch","Structure")
     _Structure(obj)
     if FreeCAD.GuiUp:
         _ViewProviderStructure(obj.ViewObject)
@@ -119,17 +118,18 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
 
     if not height and not length:
         obj.IfcType = "Undefined"
+        obj.Label = name if name else translate("Arch","Structure")
     elif obj.Length > obj.Height:
         obj.IfcType = "Beam"
-        obj.Label = translate("Arch","Beam")
+        obj.Label = name if name else translate("Arch","Beam")
     elif obj.Height > obj.Length:
         obj.IfcType = "Column"
-        obj.Label = translate("Arch","Column")
+        obj.Label = name if name else translate("Arch","Column")
     return obj
 
-def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
+def makeStructuralSystem(objects=[],axes=[],name=None):
 
-    '''makeStructuralSystem(objects,axes): makes a structural system
+    '''makeStructuralSystem([objects],[axes],[name]): makes a structural system
     based on the given objects and axes'''
 
     if not FreeCAD.ActiveDocument:
@@ -145,8 +145,8 @@ def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
     else:
         objects = [None]
     for o in objects:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-        obj.Label = translate("Arch",name)
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","StructuralSystem")
+        obj.Label = name if name else translate("Arch","StructuralSystem")
         _StructuralSystem(obj)
         if FreeCAD.GuiUp:
             _ViewProviderStructuralSystem(obj.ViewObject)

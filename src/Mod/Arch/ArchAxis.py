@@ -55,16 +55,16 @@ __url__    = "https://www.freecad.org"
 #  An axis is a collection of planar axes with a number/tag
 
 
-def makeAxis(num=5,size=1000,name="Axes"):
+def makeAxis(num=5,size=1000,name=None):
 
-    '''makeAxis(num,size): makes an Axis set
+    '''makeAxis([num],[size],[name]): makes an Axis set
     based on the given number of axes and interval distances'''
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Axis")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Axes")
     _Axis(obj)
     if FreeCAD.GuiUp:
         _ViewProviderAxis(obj.ViewObject)

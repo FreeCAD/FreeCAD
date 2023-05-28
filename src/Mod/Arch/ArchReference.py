@@ -51,16 +51,16 @@ else:
 
 
 
-def makeReference(filepath=None,partname=None,name="External Reference"):
+def makeReference(filepath=None,partname=None,name=None):
 
 
-    "makeReference([filepath,partname]): Creates an Arch Reference object"
+    "makeReference([filepath],[partname],[name]): Creates an Arch Reference object"
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ArchReference")
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","External Reference")
     ArchReference(obj)
     if FreeCAD.GuiUp:
         ViewProviderArchReference(obj.ViewObject)
