@@ -155,7 +155,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
 {
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
     const vtkIdType nCells = dataset->GetNumberOfCells();
-    Base::Console().Log("%d nodes/points and %d cells/elements found!\n", nPoints, nCells);
+    Base::Console().Log("{} nodes/points and {} cells/elements found!\n", nPoints, nCells);
     Base::Console().Log("Build SMESH mesh out of the vtk mesh data.\n", nPoints, nCells);
 
     // Now fill the SMESH datastructure
@@ -312,7 +312,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     if (f.hasExtension("vtu")) {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().Error("Failed to load file %s\n", filename);
+            Base::Console().Error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -320,7 +320,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     else if (f.hasExtension("pvtu")) {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLPUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().Error("Failed to load file %s\n", filename);
+            Base::Console().Error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -328,7 +328,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     else if (f.hasExtension("vtk")) {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkDataSetReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().Error("Failed to load file %s\n", filename);
+            Base::Console().Error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -339,7 +339,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     }
     // Mesh should link to the part feature, in order to set up FemConstraint
 
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     return mesh;
 }
@@ -472,9 +472,9 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
     grid->SetPoints(points);
     // nodes debugging
     const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
-    Base::Console().Log("    Size of nodes in SMESH grid: %i.\n", info.NbNodes());
+    Base::Console().Log("    Size of nodes in SMESH grid: {}.\n", info.NbNodes());
     const vtkIdType nNodes = grid->GetNumberOfPoints();
-    Base::Console().Log("    Size of nodes in VTK grid: %i.\n", nNodes);
+    Base::Console().Log("    Size of nodes in VTK grid: {}.\n", nNodes);
     Base::Console().Log("  End: VTK mesh builder nodes.\n");
 
     vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
@@ -535,7 +535,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool h
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
@@ -642,7 +642,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     }
 
     pcDoc->recompute();
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     Base::Console().Log("End: read FemResult with FemMesh from VTK file ======================\n");
 
@@ -677,7 +677,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->getValue();
     FemVTKTools::exportVTKMesh(&fmesh, grid);
 
-    Base::Console().Log("    %f: vtk mesh builder finished\n",
+    Base::Console().Log("    {}: vtk mesh builder finished\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // result
@@ -693,7 +693,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().Log("    %f: writing result object to vtk finished\n",
+    Base::Console().Log("    {}: writing result object to vtk finished\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     Base::Console().Log("End: write FemResult to VTK unstructuredGrid dataset =======\n");
 }
@@ -822,18 +822,18 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                 }
                 // PropertyVectorList will not show up in PropertyEditor
                 vector_list->setValues(vec);
-                Base::Console().Log("    A PropertyVectorList has been filled with values: %s\n",
+                Base::Console().Log("    A PropertyVectorList has been filled with values: {}\n",
                                     it.first.c_str());
             }
             else {
                 Base::Console().Error("static_cast<App::PropertyVectorList*>((result->"
-                                      "getPropertyByName(\"%s\")) failed.\n",
+                                      "getPropertyByName(\"{}\")) failed.\n",
                                       it.first.c_str());
                 continue;
             }
         }
         else {
-            Base::Console().Message("    PropertyVectorList NOT found in vkt file data: %s\n",
+            Base::Console().Message("    PropertyVectorList NOT found in vkt file data: {}\n",
                                     it.first.c_str());
         }
     }
@@ -846,7 +846,7 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                 result->getPropertyByName(scalar.first.c_str()));
             if (!field) {
                 Base::Console().Error("static_cast<App::PropertyFloatList*>((result->"
-                                      "getPropertyByName(\"%s\")) failed.\n",
+                                      "getPropertyByName(\"{}\")) failed.\n",
                                       scalar.first.c_str());
                 continue;
             }
@@ -864,11 +864,11 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset,
                 }
             }
             field->setValues(values);
-            Base::Console().Log("    A PropertyFloatList has been filled with vales: %s\n",
+            Base::Console().Log("    A PropertyFloatList has been filled with vales: {}\n",
                                 scalar.first.c_str());
         }
         else {
-            Base::Console().Message("    PropertyFloatList NOT found in vkt file data %s\n",
+            Base::Console().Message("    PropertyFloatList NOT found in vkt file data {}\n",
                                     scalar.first.c_str());
         }
     }
@@ -916,7 +916,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it.first.c_str()));
         }
         else {
-            Base::Console().Error("    PropertyVectorList not found: %s\n", it.first.c_str());
+            Base::Console().Error("    PropertyVectorList not found: {}\n", it.first.c_str());
         }
 
         if (field && field->getSize() > 0) {
@@ -951,12 +951,12 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
             }
             grid->GetPointData()->AddArray(data);
             Base::Console().Log(
-                "    The PropertyVectorList %s was exported to VTK vector list: %s\n",
+                "    The PropertyVectorList {} was exported to VTK vector list: {}\n",
                 it.first.c_str(),
                 it.second.c_str());
         }
         else if (field) {
-            Base::Console().Log("    PropertyVectorList NOT exported to vtk: %s size is: %i\n",
+            Base::Console().Log("    PropertyVectorList NOT exported to vtk: {} size is: {}\n",
                                 it.first.c_str(),
                                 field->getSize());
         }
@@ -970,7 +970,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
                 static_cast<App::PropertyFloatList*>(res->getPropertyByName(scalar.first.c_str()));
         }
         else {
-            Base::Console().Error("PropertyFloatList %s not found \n", scalar.first.c_str());
+            Base::Console().Error("PropertyFloatList {} not found \n", scalar.first.c_str());
         }
 
         if (field && field->getSize() > 0) {
@@ -1020,12 +1020,12 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
 
             grid->GetPointData()->AddArray(data);
             Base::Console().Log(
-                "    The PropertyFloatList %s was exported to VTK scalar list: %s\n",
+                "    The PropertyFloatList {} was exported to VTK scalar list: {}\n",
                 scalar.first.c_str(),
                 scalar.second.c_str());
         }
         else if (field) {
-            Base::Console().Log("    PropertyFloatList NOT exported to vtk: %s size is: %i\n",
+            Base::Console().Log("    PropertyFloatList NOT exported to vtk: {} size is: {}\n",
                                 scalar.first.c_str(),
                                 field->getSize());
         }

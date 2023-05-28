@@ -212,7 +212,7 @@ CmdTechDrawCosmeticVertexGroup::CmdTechDrawCosmeticVertexGroup()
 
 void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CosmeticVertexGroup - activated(%d)\n", iMsg);
+//    Base::Console().Message("CMD::CosmeticVertexGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -233,7 +233,7 @@ void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
             execQuadrants(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().Message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
     updateActive();
     Gui::Selection().clearSelection();
@@ -588,7 +588,7 @@ CmdTechDrawCenterLineGroup::CmdTechDrawCenterLineGroup()
 
 void CmdTechDrawCenterLineGroup::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CenterLineGroup - activated(%d)\n", iMsg);
+//    Base::Console().Message("CMD::CenterLineGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -609,7 +609,7 @@ void CmdTechDrawCenterLineGroup::activated(int iMsg)
             exec2PointCenterLine(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().Message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1349,17 +1349,17 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                         cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
-                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, static_cast<int>(source));
+                            "CMD::CosmeticEraser - edge: {} is confused - source: {}\n", idx, static_cast<int>(source));
                     }
                 }
             } else if (geomType == "Vertex") {
                 TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
                 if (!tdv)
-                    Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
+                    Base::Console().Message("CMD::eraser - geom: {} not found!\n", idx);
 
                 std::string delTag = tdv->getCosmeticTag();
                 if (delTag.empty())
-                    Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
+                    Base::Console().Warning("Vertex{} is not cosmetic! Can not erase.\n", idx);
                 cv2Delete.push_back(delTag);
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

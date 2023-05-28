@@ -78,7 +78,7 @@ void DrawTileWeld::onChanged(const App::Property* prop)
 
 void DrawTileWeld::replaceFileIncluded(std::string newSymbolFile)
 {
-//    Base::Console().Message("DTW::replaceFileIncluded(%s)\n", newSymbolFile.c_str());
+//    Base::Console().Message("DTW::replaceFileIncluded({})\n", newSymbolFile.c_str());
     if (newSymbolFile.empty()) {
         return;
     }

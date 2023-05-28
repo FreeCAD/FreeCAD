@@ -197,7 +197,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
                 else if (Alg.NbPoints() > 1) {
                     PointOnEdge[i] = Base::Vector3f(FLOAT_MAX, 0, 0);
                     Base::Console().Log("MeshAlgos::projectCurve(): More then one intersection in "
-                                        "Facet %lu, Edge %d\n",
+                                        "Facet {}, Edge {}\n",
                                         uCurFacetIdx,
                                         i);
                 }
@@ -217,7 +217,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
             GoOn = true;
         }
         else {
-            Base::Console().Log("MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n",
+            Base::Console().Log("MeshAlgos::projectCurve(): Possible reentry in Facet {}\n",
                                 uCurFacetIdx);
         }
 
@@ -339,7 +339,7 @@ void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
                 FaceProjctMap[It.Position()].push_back(TempResultPoint);
                 str << TempResultPoint.x << " " << TempResultPoint.y << " " << TempResultPoint.z
                     << std::endl;
-                Base::Console().Log("IDX %d\n", It.Position());
+                Base::Console().Log("IDX {}\n", It.Position());
 
                 if (bFirst) {
                     bFirst = false;
@@ -351,7 +351,7 @@ void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
     }
 
     str.close();
-    Base::Console().Log("Projection map [%d facets with %d points]\n",
+    Base::Console().Log("Projection map [{} facets with {} points]\n",
                         FaceProjctMap.size(),
                         PointCount);
 }
@@ -459,7 +459,7 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
         LineSegs.push_back(s);
     }
 
-    Base::Console().Log("Projection map [%d facets with %d points]\n",
+    Base::Console().Log("Projection map [{} facets with {} points]\n",
                         FaceProjctMap.size(),
                         PointCount);
 

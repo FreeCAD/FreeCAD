@@ -137,12 +137,12 @@ private:
                 coords->point.set1Value(1, (float)m2.x,(float)m2.y,(float)m2.z);
                 coords->point.set1Value(2, (float)s2.x,(float)s2.y,(float)s2.z);
 
-                Base::Console().Message("M1=<%.4f,%.4f>\n", m1.x,m1.y);
-                Base::Console().Message("M2=<%.4f,%.4f>\n", m2.x,m2.y);
-                Base::Console().Message("S1=<%.4f,%.4f>\n", s1.x,s1.y);
-                Base::Console().Message("S2=<%.4f,%.4f>\n", s2.x,s2.y);
-                Base::Console().Message("P=<%.4f,%.4f>\n", a3.x,a3.y);
-                Base::Console().Message("Q=<%.4f,%.4f>\n", l2.x,l2.y);
+                Base::Console().Message("M1=<{:.4f},{:.4f}>\n", m1.x,m1.y);
+                Base::Console().Message("M2=<{:.4f},{:.4f}>\n", m2.x,m2.y);
+                Base::Console().Message("S1=<{:.4f},{:.4f}>\n", s1.x,s1.y);
+                Base::Console().Message("S2=<{:.4f},{:.4f}>\n", s2.x,s2.y);
+                Base::Console().Message("P=<{:.4f},{:.4f}>\n", a3.x,a3.y);
+                Base::Console().Message("Q=<{:.4f},{:.4f}>\n", l2.x,l2.y);
                 Base::Console().Message("\n");
 #else
                 Py::Module pd("PartDesign");
@@ -168,18 +168,18 @@ private:
                 coords->point.set1Value(1, (float)m2.x,(float)m2.y,(float)m2.z);
                 coords->point.set1Value(2, (float)s2.x,(float)s2.y,(float)s2.z);
 
-                Base::Console().Message("M1=<%.4f,%.4f>\n", m1.x,m1.y);
-                Base::Console().Message("M2=<%.4f,%.4f>\n", m2.x,m2.y);
-                Base::Console().Message("S1=<%.4f,%.4f>\n", s1.x,s1.y);
-                Base::Console().Message("S2=<%.4f,%.4f>\n", s2.x,s2.y);
-                Base::Console().Message("P=<%.4f,%.4f>\n", a3.x,a3.y);
-                Base::Console().Message("Q=<%.4f,%.4f>\n", l2.x,l2.y);
+                Base::Console().Message("M1=<{:.4f},{:.4f}>\n", m1.x,m1.y);
+                Base::Console().Message("M2=<{:.4f},{:.4f}>\n", m2.x,m2.y);
+                Base::Console().Message("S1=<{:.4f},{:.4f}>\n", s1.x,s1.y);
+                Base::Console().Message("S2=<{:.4f},{:.4f}>\n", s2.x,s2.y);
+                Base::Console().Message("P=<{:.4f},{:.4f}>\n", a3.x,a3.y);
+                Base::Console().Message("Q=<{:.4f},{:.4f}>\n", l2.x,l2.y);
                 Base::Console().Message("\n");
 #endif
             }
             catch (Py::Exception&) {
                 Base::PyException e; // extract the Python error text
-                Base::Console().Error("%s\n", e.what());
+                Base::Console().Error("{}\n", e.what());
             }
         }
 #else

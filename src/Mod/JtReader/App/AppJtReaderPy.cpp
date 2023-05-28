@@ -89,7 +89,7 @@ private:
         PyMem_Free(Name);
 
 
-        // Base::Console().Log("Open in Mesh with %s",Name);
+        // Base::Console().Log("Open in Mesh with {}",Name);
         Base::FileInfo file(EncodedName);
         if (file.hasExtension("jt")) {
             TestJtReader reader;

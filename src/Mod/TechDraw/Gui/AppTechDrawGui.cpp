@@ -94,7 +94,7 @@ void loadTechDrawResource()
         int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
             Base::Console().Warning(
-                "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
+                "TechDraw failed to load font file: {} from: {}\n", rc, qPrintable(fontFile));
         }
     }
 }

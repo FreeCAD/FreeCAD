@@ -86,7 +86,7 @@ void GeometryFacade::initExtension()
 
         getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());  // Create getExtension
 
-        // Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n",
+        // Base::Console().Warning("{}\nSketcher Geometry without Extension: {} \n",
         // boost::uuids::to_string(Geo->getTag()).c_str());
     }
 

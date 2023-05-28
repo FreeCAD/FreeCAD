@@ -568,7 +568,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().Log("The limit if a node is in or out: %.12lf in scientific: %.4e \n",
+    Base::Console().Log("The limit if a node is in or out: {:.12f} in scientific: {:.4e} \n",
                         limit,
                         limit);
 
@@ -967,7 +967,7 @@ public:
             meshds->AddFaceWithID(n0, n1, n2, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+            Base::Console().Warning("NASTRAN: Failed to add face {} from nodes: ({}, {}, {},)\n",
                                     element_id,
                                     elements[0],
                                     elements[1],
@@ -1034,8 +1034,8 @@ public:
             meshds->AddVolumeWithID(n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
-                                    "%d, %d, %d, %d, %d, %d)\n",
+            Base::Console().Warning("NASTRAN: Failed to add volume {} from nodes: ({}, {}, {}, {}, {}, {}, "
+                                    "{}, {}, {}, {})\n",
                                     element_id,
                                     elements[1],
                                     elements[0],
@@ -1371,7 +1371,7 @@ void FemMesh::readNastran(const std::string& Filename)
     } while (inputfile.good());
     inputfile.close();
 
-    Base::Console().Log("    %f: File read, start building mesh\n",
+    Base::Console().Log("    {}: File read, start building mesh\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
@@ -1382,7 +1382,7 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
@@ -1498,7 +1498,7 @@ void FemMesh::readNastran95(const std::string& Filename)
     } while (inputfile.good());
     inputfile.close();
 
-    Base::Console().Log("    %f: File read, start building mesh\n",
+    Base::Console().Log("    {}: File read, start building mesh\n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
@@ -1513,7 +1513,7 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
@@ -1553,7 +1553,7 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
@@ -1593,7 +1593,7 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n",
+    Base::Console().Log("    {}: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 

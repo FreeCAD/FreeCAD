@@ -162,7 +162,7 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    //    Base::Console().Message("QGIV::itemChange(%d)\n", change);
+    //    Base::Console().Message("QGIV::itemChange({})\n", change);
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
 
@@ -474,7 +474,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //sets position in /Gui(graphics), not /App
 void QGIView::setPosition(qreal xPos, qreal yPos)
 {
-    //    Base::Console().Message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
+    //    Base::Console().Message("QGIV::setPosition({:.3f}, {:.3f}) (gui)\n", x, y);
     double newX = xPos;
     double newY = -yPos;
     double oldX = pos().x();
@@ -503,7 +503,7 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-    //    Base::Console().Message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
+    //    Base::Console().Message("QGIV::updateView() - {}\n", getViewObject()->getNameInDocument());
 
             //allow/prevent dragging
     if (getViewObject()->isLocked()) {
@@ -629,7 +629,7 @@ void QGIView::drawCaption()
 
 void QGIView::drawBorder()
 {
-    //    Base::Console().Message("QGIV::drawBorder() - %s\n", getViewName());
+    //    Base::Console().Message("QGIV::drawBorder() - {}\n", getViewName());
     auto feat = getViewObject();
     if (!feat)
         return;
@@ -824,7 +824,7 @@ void QGIView::removeChild(QGIView* child)
 
 bool QGIView::getFrameState()
 {
-    //    Base::Console().Message("QGIV::getFrameState() - %s\n", getViewName());
+    //    Base::Console().Message("QGIV::getFrameState() - {}\n", getViewName());
     TechDraw::DrawView* dv = getViewObject();
     if (!dv) return true;
 
@@ -932,7 +932,7 @@ int QGIView::calculateFontPixelWidth(const QFont &font)
 const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(const char* text, QRectF rect) {
-    Base::Console().Message("DUMP - %s - rect: (%.3f, %.3f) x (%.3f, %.3f)\n", text,
+    Base::Console().Message("DUMP - {} - rect: ({:.3f}, {:.3f}) x ({:.3f}, {:.3f})\n", text,
                             rect.left(), rect.top(), rect.right(), rect.bottom());
 }
 

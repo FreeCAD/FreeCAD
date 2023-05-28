@@ -102,7 +102,7 @@ EdgeWalker::~EdgeWalker()
 //loads a list of unique edges into the traversal mechanism
 bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge>& edges)
 {
-//    Base::Console().Message("EW::loadEdges(we) - WEdgesIn: %d\n", edges.size());
+//    Base::Console().Message("EW::loadEdges(we) - WEdgesIn: {}\n", edges.size());
     int idx = 0;
     for (auto& e: edges) {
         std::pair<edge_t, bool> p;
@@ -118,7 +118,7 @@ bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge>& edges)
 
 bool EdgeWalker::loadEdges(std::vector<TopoDS_Edge> edges)
 {
-//    Base::Console().Message("EW::loadEdges(TopoDS) - edges: %d\n", edges.size());
+//    Base::Console().Message("EW::loadEdges(TopoDS) - edges: {}\n", edges.size());
     if (edges.empty()) {
         throw Base::ValueError("EdgeWalker has no edges to load\n");
     }
@@ -268,7 +268,7 @@ TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol
 
 std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge> edges)
 {
-//    Base::Console().Message("TRACE - EW::makeUniqueVList() - edgesIn: %d\n", edges.size());
+//    Base::Console().Message("TRACE - EW::makeUniqueVList() - edgesIn: {}\n", edges.size());
     std::vector<TopoDS_Vertex> uniqueVert;
     for(auto& e:edges) {
         Base::Vector3d v1 = DrawUtil::vertex2Vector(TopExp::FirstVertex(e));
@@ -292,7 +292,7 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
             uniqueVert.push_back(TopExp::LastVertex(e));
         }
     }
-//    Base::Console().Message("EW::makeUniqueVList - verts out: %d\n", uniqueVert.size());
+//    Base::Console().Message("EW::makeUniqueVList - verts out: {}\n", uniqueVert.size());
     return uniqueVert;
 }
 
@@ -300,7 +300,7 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
 std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                       std::vector<TopoDS_Vertex> verts)
 {
-//    Base::Console().Message("TRACE - EW::makeWalkerEdges() - edges: %d  verts: %d\n", edges.size(), verts.size());
+//    Base::Console().Message("TRACE - EW::makeWalkerEdges() - edges: {}  verts: {}\n", edges.size(), verts.size());
     m_saveInEdges = edges;
     std::vector<WalkerEdge> walkerEdges;
     for (const auto& e:edges) {
@@ -322,7 +322,7 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
         walkerEdges.push_back(we);
     }
 
-    //Base::Console().Message("TRACE - EW::makeWalkerEdges - returns we: %d\n", walkerEdges.size());
+    //Base::Console().Message("TRACE - EW::makeWalkerEdges - returns we: {}\n", walkerEdges.size());
     return walkerEdges;
 }
 
@@ -385,7 +385,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w
 std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> edges,
                                                  const std::vector<TopoDS_Vertex> uniqueVList)
 {
-//    Base::Console().Message("TRACE - EW::makeEmbedding(edges: %d, verts: %d)\n",
+//    Base::Console().Message("TRACE - EW::makeEmbedding(edges: {}, verts: {})\n",
 //                            edges.size(), uniqueVList.size());
     std::vector<embedItem> result;
 
@@ -424,7 +424,7 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
 //! get incidence row as edge indices for v'th vertex
 std::vector<int> EdgeWalker::getEmbeddingRowIx(int v)
 {
-//    //Base::Console().Message("TRACE - EW::getEmbeddingRowIx(%d)\n", v);
+//    //Base::Console().Message("TRACE - EW::getEmbeddingRowIx({})\n", v);
     std::vector<int> result;
     embedItem ei = m_embedding[v];
     for (auto& ii: ei.incidenceList) {
@@ -436,7 +436,7 @@ std::vector<int> EdgeWalker::getEmbeddingRowIx(int v)
 //! get incidence row as edgeDescriptors for v'th vertex
 std::vector<edge_t> EdgeWalker::getEmbeddingRow(int v)
 {
-//    //Base::Console().Message("TRACE - EW::getEmbeddingRow(%d)\n", v);
+//    //Base::Console().Message("TRACE - EW::getEmbeddingRow({})\n", v);
       std::vector<edge_t> result;
       embedItem ei = m_embedding[v];
       for (auto& ii: ei.incidenceList) {

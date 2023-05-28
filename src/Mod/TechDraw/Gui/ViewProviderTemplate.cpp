@@ -69,7 +69,7 @@ ViewProviderTemplate::ViewProviderTemplate() : m_myName(std::string())
 
 void ViewProviderTemplate::attach(App::DocumentObject* pcFeat)
 {
-    //    Base::Console().Message("VPT::attach(%s)\n", pcFeat->getNameInDocument());
+    //    Base::Console().Message("VPT::attach({})\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     auto feature = getTemplate();
@@ -164,7 +164,7 @@ QGITemplate* ViewProviderTemplate::getQTemplate()
 
 void ViewProviderTemplate::setMarkers(bool state)
 {
-    //    Base::Console().Message("VPT::setMarkers(%d)\n", state);
+    //    Base::Console().Message("VPT::setMarkers({})\n", state);
     QGITemplate* qTemplate = getQTemplate();
     QGISVGTemplate* qSvgTemplate = dynamic_cast<QGISVGTemplate*>(qTemplate);
     if (qSvgTemplate) {

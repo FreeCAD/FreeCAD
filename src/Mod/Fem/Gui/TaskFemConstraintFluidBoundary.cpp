@@ -415,7 +415,7 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
         pcConstraint->Reversed.setValue(false);  // outlet must point outward
     }
     else {
-        Base::Console().Error("Error: Fluid boundary type `%s` is not defined\n",
+        Base::Console().Error("Error: Fluid boundary type `{}` is not defined\n",
                               boundaryType.c_str());
     }
     // std::string subtypeLabel = boundaryType + std::string(" type");
@@ -493,7 +493,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
         ui->tabBasicBoundary->setEnabled(true);
     }
     else {
-        Base::Console().Error("Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
+        Base::Console().Error("Fluid boundary type `{}` is not defined\n", boundaryType.c_str());
     }
 }
 
@@ -517,7 +517,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         ui->labelTurbulentLengthValue->setText(tr("Hydraulic Diameter [m]"));
     }
     else {
-        Base::Console().Error("turbulence Spec type `%s` is not defined\n", turbulenceSpec.c_str());
+        Base::Console().Error("turbulence Spec type `{}` is not defined\n", turbulenceSpec.c_str());
     }
 }
 
@@ -558,7 +558,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
         ui->spinTemperatureValue->setEnabled(true);
     }
     else {
-        Base::Console().Error("Thermal boundary type `%s` is not defined\n",
+        Base::Console().Error("Thermal boundary type `{}` is not defined\n",
                               thermalBoundaryType.c_str());
     }
 }
@@ -579,7 +579,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
     bool ret = pcConstraint->recomputeFeature();
     if (!ret) {
         std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
-        Base::Console().Error("Fluid boundary recomputationg failed for boundaryType `%s` \n",
+        Base::Console().Error("Fluid boundary recomputationg failed for boundaryType `{}` \n",
                               boundaryType.c_str());
     }
 }

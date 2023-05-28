@@ -144,12 +144,12 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
-                                "Instead, the linked object(s) reside within '%s'.\n",
+        Base::Console().Warning("{}: Link(s) to object(s) '{}' go out of the allowed scope '{}'. "
+                                "Instead, the linked object(s) reside within '{}'.\n",
                                 getTypeId().getName(),
-                                objnames.c_str(),
+                                objnames,
                                 getNameInDocument(),
-                                scopenames.c_str());
+                                scopenames);
     }
     catch (const Base::Exception& e) {
         e.ReportException();

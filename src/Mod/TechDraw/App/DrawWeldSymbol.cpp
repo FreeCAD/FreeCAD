@@ -62,7 +62,7 @@ DrawWeldSymbol::DrawWeldSymbol()
 //but if this is a restore of an existing DWS, the tiles will loaded elsewhere
 void DrawWeldSymbol::onSettingDocument()
 {
-//    Base::Console().Message("DWS::onSettingDocument() - doc: %s\n", getDocument()->getName());
+//    Base::Console().Message("DWS::onSettingDocument() - doc: {}\n", getDocument()->getName());
     App::Document* doc = getDocument();
 
     if (doc->testStatus(App::Document::Status::Restoring)) {

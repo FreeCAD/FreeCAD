@@ -439,8 +439,8 @@ bool SphereFit::computeResiduals(const Eigen::VectorXd& x,
     }
 
     // rmsVv = sqrt(rmsVv / (double)nPtsUsed);
-    // Base::Console().Message("X: %0.3e %0.3e %0.3e %0.3e , Max dV: %0.4f %0.4f %0.4f , RMS Vv:
-    // %0.4f\n", x(0), x(1), x(2), x(3), maxdVx, maxdVy, maxdVz, rmsVv);
+    // Base::Console().Message("X: {:.3e} {:.3e} {:.3e} {:.3e} , Max dV: {:.4f} {:.4f} {:.4f} , RMS Vv:
+    // {:.4f}\n", x(0), x(1), x(2), x(3), maxdVx, maxdVy, maxdVz, rmsVv);
 
     return true;
 }

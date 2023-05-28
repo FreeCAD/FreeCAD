@@ -1973,7 +1973,7 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 
 void CmdTechDrawExtentGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
+    //    Base::Console().Message("CMD::ExtentGrp - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -1992,7 +1992,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
             execExtent(this, "DistanceY");
             break;
         default:
-            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().Message("CMD::ExtGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 

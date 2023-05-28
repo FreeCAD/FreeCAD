@@ -565,7 +565,7 @@ bool DrawViewDimension::okToProceed()
     // is this check still relevant or is it replaced by the autocorrect and
     // validate methods?
     if (References3D.getValues().empty() && !checkReferences2D()) {
-        // Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
+        // Base::Console().Warning("{} has invalid 2D References\n", getNameInDocument());
         return false;
     }
     return validateReferenceForm();
@@ -664,7 +664,7 @@ double DrawViewDimension::getDimValue()
     if (MeasureType.isValue("True")) {
         // True Values
         if (!measurement->has3DReferences()) {
-            Base::Console().Warning("%s - True dimension has no 3D References\n",
+            Base::Console().Warning("{} - True dimension has no 3D References\n",
                                     getNameInDocument());
             return result;
         }
@@ -1091,7 +1091,7 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
         else {
             // fubar - can't have non-circular spline as target of Diameter dimension, but this is
             // already checked, so something has gone badly wrong.
-            Base::Console().Error("%s: can not make a Circle from this B-spline edge\n",
+            Base::Console().Error("{}: can not make a Circle from this B-spline edge\n",
                                   getNameInDocument());
             throw Base::RuntimeError("Bad B-spline geometry for arc dimension");
         }
@@ -1532,7 +1532,7 @@ int DrawViewDimension::getRefType() const
 
     if (subNames.empty()) {
         // something went wrong, there were no subNames.
-        Base::Console().Message("DVD::getRefType - %s - there are no subNames.\n",
+        Base::Console().Message("DVD::getRefType - {} - there are no subNames.\n",
                                 getNameInDocument());
         return 0;
     }
@@ -1924,14 +1924,14 @@ void DrawViewDimension::clear3DMeasurements()
 
 void DrawViewDimension::dumpRefs2D(const char* text) const
 {
-    Base::Console().Message("DUMP - %s\n", text);
+    Base::Console().Message("DUMP - {}\n", text);
     const std::vector<App::DocumentObject*>& objects = References2D.getValues();
     const std::vector<std::string>& subElements = References2D.getSubValues();
     auto objIt = objects.begin();
     auto subIt = subElements.begin();
     int i = 0;
     for (; objIt != objects.end(); objIt++, subIt++, i++) {
-        Base::Console().Message("DUMP - ref: %d object: %s subElement: %s\n",
+        Base::Console().Message("DUMP - ref: {} object: {} subElement: {}\n",
                                 i,
                                 (*objIt)->getNameInDocument(),
                                 (*subIt).c_str());

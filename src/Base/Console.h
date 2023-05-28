@@ -622,7 +622,7 @@ public:
  *  instance of the class from every where in c++ by simply using:
  *  \code
  *  #include <Base/Console.h>
- *  Base::Console().Log("Stage: %d",i);
+ *  Base::Console().Log("Stage: {}",i);
  *  \endcode
  *  \par
  *  ConsoleSingleton is able to switch between several modes to, e.g. switch
@@ -994,7 +994,7 @@ public:
  *  \par
  *  You can use a printf like interface like:
  *  \code
- *  Console().Message("Doing something important %d times\n",i);
+ *  Console().Message("Doing something important {} times\n",i);
  *  \endcode
  *  @see Warning
  *  @see Error
@@ -1169,7 +1169,7 @@ template<Base::LogStyle category,
 inline void
 Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, Args&&... args)
 {
-    std::string format = fmt::sprintf(pMsg, args...);
+    std::string format = fmt::format(pMsg, args...);
 
     if (connectionMode == Direct) {
         Notify<category, recipient, contenttype>(notifiername, format);

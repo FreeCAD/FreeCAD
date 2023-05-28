@@ -119,7 +119,7 @@ void NetworkRetriever::testFailure()
     {
         d->fail = false;
         QString msg = tr("Download started...");
-        Base::Console().Message("%s\n", msg.toUtf8().constData());
+        Base::Console().Message("{}\n", msg.toUtf8().constData());
     }
 }
 
@@ -265,7 +265,7 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         {
             if (!dir.mkdir(d->dir))
             {
-                Base::Console().Error("Directory '%s' could not be created.", (const char*)d->dir.toLatin1());
+                Base::Console().Error("Directory '{}' could not be created.", (const char*)d->dir.toLatin1());
                 return true; // please, no error message
             }
         }

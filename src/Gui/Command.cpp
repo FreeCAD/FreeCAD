@@ -402,7 +402,7 @@ void Command::invoke(int i, TriggerSource trigger)
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdG: %s\n",sName);
+    Base::Console().Log("CmdG: {}\n",sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -488,14 +488,14 @@ void Command::_invoke(int id, bool disablelog)
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
     catch (std::exception &e) {
-        Base::Console().Error("C++ exception thrown (%s)\n", e.what());
+        Base::Console().Error("C++ exception thrown ({})\n", e.what());
     }
     catch (const char* e) {
-        Base::Console().Error("%s\n", e);
+        Base::Console().Error("{}\n", e);
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
+        Base::Console().Error("Gui::Command::activated({}): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -671,7 +671,7 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n", format.constData());
+    Base::Console().Log("CmdC: {}\n", format.constData());
 #endif
 
     _runCommand(file,line,eType,format.constData());
@@ -975,7 +975,7 @@ void Command::printConflictingAccelerators() const
 {
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
     if (cmd)
-        Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+        Base::Console().Warning("Accelerator conflict between {} ({}) and {} ({})\n", sName, sAccel, cmd->sName, cmd->sAccel);
 }
 
 Action * Command::createAction()
@@ -1342,11 +1342,11 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+            Base::Console().Error("Running the Python command '{}' failed:\n{}\n{}",
                                   sName, e.getStackTrace().c_str(), e.what());
         }
         catch (const Base::Exception&) {
-            Base::Console().Error("Running the Python command '%s' failed, try to resume",sName);
+            Base::Console().Error("Running the Python command '{}' failed, try to resume",sName);
         }
     }
     else {
@@ -1415,7 +1415,7 @@ Action * PythonCommand::createAction()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().Error("{}\n", e.what());
     }
 
     return pcAction;
@@ -1579,7 +1579,7 @@ void PythonGroupCommand::activated(int iMsg)
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+        Base::Console().Error("Running the Python command '{}' failed:\n{}\n{}",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 }
@@ -1665,7 +1665,7 @@ Action * PythonGroupCommand::createAction()
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("createAction() of the Python command '%s' failed:\n%s\n%s",
+        Base::Console().Error("createAction() of the Python command '{}' failed:\n{}\n{}",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 
@@ -1898,9 +1898,9 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
     if (_sCommands.find(Name) == _sCommands.end()) {
         // Print in release mode only a log message instead of an error message to avoid to annoy the user
 #ifdef FC_DEBUG
-        Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
+        Base::Console().Error("CommandManager::addTo() try to add an unknown command ({}) to a widget!\n",Name);
 #else
-        Base::Console().Warning("Unknown command '%s'\n",Name);
+        Base::Console().Warning("Unknown command '{}'\n",Name);
 #endif
         return false;
     }

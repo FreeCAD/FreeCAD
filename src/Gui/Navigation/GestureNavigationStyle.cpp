@@ -110,7 +110,7 @@ public:
         if (isRelease(3))
             Base::Console().Log("button3 release ");
         if (isMouseButtonEvent())
-            Base::Console().Log("%x", modifiers);
+            Base::Console().Log("{}", modifiers);
         if (isGestureEvent()){
             Base::Console().Log("Gesture ");
             switch(asGestureEvent()->state){
@@ -130,7 +130,7 @@ public:
             Base::Console().Log(inventor_event->getTypeId().getName().getString());
         }
         if (isMouseButtonEvent() || isGestureEvent()){
-            Base::Console().Log("(%i,%i)\n", inventor_event->getPosition()[0],inventor_event->getPosition()[1]);
+            Base::Console().Log("({},{})\n", inventor_event->getPosition()[0],inventor_event->getPosition()[1]);
         }
     }
 
@@ -1005,7 +1005,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
     } catch (Base::PyException& exc) {
         exc.ReportException();
     } catch (...) {
-        Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
+        Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command {}\n", cmd.c_str());
    }
 
 }

@@ -54,12 +54,12 @@ void QGVNavStyleBlender::handleKeyReleaseEvent(QKeyEvent *event)
 void QGVNavStyleBlender::handleMousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
-//    Base::Console().Message("QGVNSBlender::handleMousePressEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
+//    Base::Console().Message("QGVNSBlender::handleMousePressEvent() - button: {} buttons: {}\n", event->button(), event->buttons());
 }
 
 void QGVNavStyleBlender::handleMouseMoveEvent(QMouseEvent *event)
 {
-//    Base::Console().Message("QGVNSBlender::handleMouseMoveEvent() - buttons: %d modifiers: %X\n",
+//    Base::Console().Message("QGVNSBlender::handleMouseMoveEvent() - buttons: {} modifiers: {}\n",
 //                            QGuiApplication::mouseButtons() & Qt::MiddleButton,
 //                            QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier));
 
@@ -91,7 +91,7 @@ void QGVNavStyleBlender::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleBlender::handleMouseReleaseEvent(QMouseEvent *event)
 {
-//    Base::Console().Message("QGVNSBlender::handleMouseReleaseEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
+//    Base::Console().Message("QGVNSBlender::handleMouseReleaseEvent() - button: {} buttons: {}\n", event->button(), event->buttons());
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }

@@ -658,7 +658,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().Error("{}\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -674,7 +674,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().Error("{}\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -691,7 +691,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().Error("{}\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -707,7 +707,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().Error("{}\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -720,7 +720,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        //Base::Console().Log("Open in Part with %s",Name);
+        //Base::Console().Log("Open in Part with {}",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
@@ -763,7 +763,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        //Base::Console().Log("Insert in Part with %s",Name);
+        //Base::Console().Log("Insert in Part with {}",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
@@ -822,7 +822,7 @@ private:
                         builder.Add(comp, shape);
                 }
                 else {
-                    Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
+                    Base::Console().Message("'{}' is not a shape, export will be ignored.\n", obj->Label.getValue());
                 }
             }
         }

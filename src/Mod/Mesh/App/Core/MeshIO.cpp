@@ -246,7 +246,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else if (fi.hasExtension("iv")) {
         ok = LoadInventor(str);
         if (ok && _rclMesh.CountFacets() == 0) {
-            Base::Console().Warning("No usable mesh found in file '%s'", FileName);
+            Base::Console().Warning("No usable mesh found in file '{}'", FileName);
         }
     }
     else if (fi.hasExtension({"nas", "bdf"})) {

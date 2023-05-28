@@ -325,7 +325,7 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
         }
     }
     catch (...) {
-        Base::Console().Error("Cannot compute Inventor representation for the rejected transformations of shape of %s.\n",
+        Base::Console().Error("Cannot compute Inventor representation for the rejected transformations of shape of {}.\n",
                               getObject()->getNameInDocument());
     }
 }

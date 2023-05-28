@@ -324,7 +324,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().Error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().Error("Application unexpectedly terminated: {}\n", e.what());
         exit(1);
     }
     catch (...) {
@@ -337,13 +337,13 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().Log("%s terminating...\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().Log("{} terminating...\n", App::Application::Config()["ExeName"]);
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().Log("%s completely terminated\n",
-                        App::Application::Config()["ExeName"].c_str());
+    Base::Console().Log("{} completely terminated\n",
+                        App::Application::Config()["ExeName"]);
 
     return 0;
 }
@@ -382,7 +382,7 @@ public:
     {}
     virtual void OnOutput(LPCSTR szText)
     {
-        Base::Console().Log("Id: %ld: %s", threadId, szText);
+        Base::Console().Log("Id: {}: {}", threadId, szText);
         // StackWalker::OnOutput(szText);
     }
 };
@@ -404,9 +404,9 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     MyStackWalker sw;
     sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
     Base::Console().Log("*** Unhandled Exception!\n");
-    Base::Console().Log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
-    Base::Console().Log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
-    Base::Console().Log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
+    Base::Console().Log("   ExpCode: {:#08X}\n", pEx->ExceptionRecord->ExceptionCode);
+    Base::Console().Log("   ExpFlags: {}\n", pEx->ExceptionRecord->ExceptionFlags);
+    Base::Console().Log("   ExpAddress: {:#08X}\n", pEx->ExceptionRecord->ExceptionAddress);
 
     bool bFailed = true;
     HANDLE hFile;

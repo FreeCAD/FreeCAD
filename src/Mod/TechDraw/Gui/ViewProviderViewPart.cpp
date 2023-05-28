@@ -290,7 +290,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
         if (!dvd->BaseView.getValue()) {
-            Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
+            Base::Console().Error("DrawViewDetail - {} - has no BaseView!\n", dvd->getNameInDocument());
             return false;
         }
         Gui::Control().showDialog(new TaskDlgDetail(dvd));

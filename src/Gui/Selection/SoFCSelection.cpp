@@ -830,7 +830,7 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 void
 SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 {
-    //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
+    //Base::Console().Log("SoFCSelection::redrawHighlighted() ({}) doHigh={} \n",this,doHighlight?1:0);
 
 #ifdef NO_FRONTBUFFER
     Q_UNUSED(action);
@@ -953,7 +953,7 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
         return false;
     }
 
-    //Base::Console().Log("SoFCSelection::setOverride() (%p)\n",this);
+    //Base::Console().Log("SoFCSelection::setOverride() ({})\n",this);
     SoState * state = action->getState();
     state->push();
 

@@ -124,7 +124,7 @@ void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant& value)
 {
-    //    Base::Console().Message("QGILL::itemChange(%d)\n", change);
+    //    Base::Console().Message("QGILL::itemChange({})\n", change);
     if (change == ItemSelectedHasChanged && scene()) {
         if (isSelected()) {
             setPrettySel();
@@ -168,7 +168,7 @@ void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
 void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
-    //    Base::Console().Message("QGILL::hoverEnter() - selected; %d\n", isSelected());
+    //    Base::Console().Message("QGILL::hoverEnter() - selected; {}\n", isSelected());
     m_hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
@@ -178,7 +178,7 @@ void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 
 void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
-    //    Base::Console().Message("QGILL::hoverLeave() - selected; %d\n", isSelected());
+    //    Base::Console().Message("QGILL::hoverLeave() - selected; {}\n", isSelected());
     m_hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
@@ -188,7 +188,7 @@ void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 
 void QGILeaderLine::setNormalColorAll()
 {
-    //    Base::Console().Message("QGILL::setNormalColorAll - normal color: %s\n", qPrintable(getNormalColor().name()));
+    //    Base::Console().Message("QGILL::setNormalColorAll - normal color: {}\n", qPrintable(getNormalColor().name()));
     QColor qc = prefNormalColor();
     m_line->setNormalColor(qc);
     m_editPath->setNormalColor(qc);
@@ -236,10 +236,9 @@ void QGILeaderLine::closeEdit()
 //! signaled from QEPath
 void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> scenePoints)
 {
-    // Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n",
+    // Base::Console().Message("QGILL::onLineEditFinished({}, {})\n",
     //                        TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
     //                        scenePoints.size());
-
     m_blockDraw = true;
     auto featLeader = getLeaderFeature();
     if (!featLeader) {

@@ -443,7 +443,7 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
         // If the enum is empty at this stage do not print a warning
         if (_enum.hasEnums()) {
             Base::Console().DeveloperWarning(std::string("PropertyEnumeration"),
-                                             "Enumeration index %d is out of range, ignore it\n",
+                                             "Enumeration index {} is out of range, ignore it\n",
                                              val);
         }
         val = getValue();

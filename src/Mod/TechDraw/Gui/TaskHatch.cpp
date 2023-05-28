@@ -175,7 +175,7 @@ void TaskHatch::onOffsetChanged()
 void TaskHatch::apply(bool forceUpdate)
 {
     Q_UNUSED(forceUpdate)
-//    Base::Console().Message("TH::apply() - m_hatch: %X\n", m_hatch);
+//    Base::Console().Message("TH::apply() - m_hatch: {}\n", m_hatch);
     if (!m_hatch) {
         createHatch();
     }

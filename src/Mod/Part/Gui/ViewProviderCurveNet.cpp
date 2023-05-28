@@ -207,7 +207,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                     else if(Viewer.pickPoint(pos,point,norm))
                     {
                         Node n;
-                        Base::Console().Log("Picked(%f,%f,%f)\n",point[0],point[1],point[2]);
+                        Base::Console().Log("Picked({},{},{})\n",point[0],point[1],point[2]);
 
                         SoSeparator *TransRoot = new SoSeparator();
                         n.pcTransform          = new SoTransform();

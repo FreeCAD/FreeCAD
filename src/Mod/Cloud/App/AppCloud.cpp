@@ -1509,7 +1509,7 @@ bool Cloud::Module::cloudRestore(const char* BucketName)
         doc->Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().Error("Invalid Document.xml: {}\n", e.what());
     }
 
     // Special handling for Gui document, the view representations must already

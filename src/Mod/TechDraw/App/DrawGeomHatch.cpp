@@ -142,7 +142,7 @@ void DrawGeomHatch::onDocumentRestored()
 
 void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
 {
-//    Base::Console().Message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+//    Base::Console().Message("DGH::replaceFileIncluded({})\n", newHatchFileName.c_str());
     if (newHatchFileName.empty()) {
         return;
     }
@@ -163,7 +163,7 @@ void DrawGeomHatch::setupObject()
 
 void DrawGeomHatch::unsetupObject()
 {
-//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+//    Base::Console().Message("DGH::unsetupObject() - status: {}  removing: {} \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = dynamic_cast<DrawView*>(source);
     if (dv) {
@@ -226,7 +226,7 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
 {
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
+        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open {}!\n", fileSpec.c_str());
         return std::vector<PATLineSpec>();
     }
     return PATLineSpec::getSpecsForPattern(fileSpec, myPattern);
@@ -304,7 +304,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
                                                     double hatchRotation,
                                                     Base::Vector3d hatchOffset)
 {
-//    Base::Console().Message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
+//    Base::Console().Message("DGH::getTrimmedLines() - rotation: {:.3f} hatchOffset: {}\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
     (void)source;
     std::vector<LineSet> result;
 
@@ -507,7 +507,7 @@ TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
 //! these will be clipped to shape on the gui side
 std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 {
-//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n", iFace);
+//    Base::Console().Message("TRACE - DGH::getFaceOverlay({})\n", iFace);
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||

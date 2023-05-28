@@ -104,7 +104,7 @@ DrawViewDetail::~DrawViewDetail()
 {
     //don't delete this object while it still has dependent tasks running
     if (m_detailFuture.isRunning()) {
-        Base::Console().Message("%s is waiting for detail cut to finish\n", Label.getValue());
+        Base::Console().Message("{} is waiting for detail cut to finish\n", Label.getValue());
         m_detailFuture.waitForFinished();
     }
 }
@@ -139,7 +139,7 @@ void DrawViewDetail::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* DrawViewDetail::execute()
 {
-    //    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
+    //    Base::Console().Message("DVD::execute() - {}\n", getNameInDocument());
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -262,13 +262,13 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
         extrusionFace = mkFace.Face();
         if (extrusionFace.IsNull()) {
-            Base::Console().Warning("DVD::makeDetailShape - %s - failed to create tool base face\n",
+            Base::Console().Warning("DVD::makeDetailShape - {} - failed to create tool base face\n",
                                     getNameInDocument());
             return;
         }
         tool = BRepPrimAPI_MakePrism(extrusionFace, extrudeDir, false, true).Shape();
         if (tool.IsNull()) {
-            Base::Console().Warning("DVD::makeDetailShape - %s - failed to create tool (prism)\n",
+            Base::Console().Warning("DVD::makeDetailShape - {} - failed to create tool (prism)\n",
                                     getNameInDocument());
             return;
         }
@@ -279,7 +279,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         BRepPrimAPI_MakeCylinder mkTool(cs, radius, extrudeLength);
         tool = mkTool.Shape();
         if (tool.IsNull()) {
-            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (cylinder)\n",
+            Base::Console().Warning("DVD::detailExec - {} - failed to create tool (cylinder)\n",
                                     getNameInDocument());
             return;
         }

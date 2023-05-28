@@ -319,13 +319,13 @@ void PropertyContainer::Save (Base::Writer &writer) const
             it.second->Save(writer);
         }
         catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().Error("{}\n", e.what());
         }
         catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().Error("{}\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            Base::Console().Error("{}\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
@@ -402,7 +402,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             }
 
             if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
-                Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+                Base::Console().Error("Property {} of type {} was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
                 reader.clearPartialRestoreProperty();
             }
         }
@@ -412,16 +412,16 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         catch (const Base::RestoreError &) {
             reader.setPartialRestore(true);
             reader.clearPartialRestoreProperty();
-            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+            Base::Console().Error("Property {} of type {} was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
         }
         catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().Error("{}\n", e.what());
         }
         catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().Error("{}\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            Base::Console().Error("{}\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {

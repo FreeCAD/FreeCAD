@@ -588,7 +588,7 @@ public:
         }
 
         this->deleteLater();
-        Base::Console().Message("Thread with %d steps finished\n",this->steps);
+        Base::Console().Message("Thread with {} steps finished\n",this->steps);
     }
 
 private:

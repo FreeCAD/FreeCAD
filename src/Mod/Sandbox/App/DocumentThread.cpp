@@ -188,13 +188,13 @@ App::DocumentObjectExecReturn *SandboxObject::execute(void)
 void SandboxObject::onChanged(const App::Property* prop)
 {
     if (prop == &Integer)
-        Base::Console().Message("SandboxObject::onChanged(%d)\n", Integer.getValue());
+        Base::Console().Message("SandboxObject::onChanged({})\n", Integer.getValue());
     App::DocumentObject::onChanged(prop);
 }
 
 void SandboxObject::setIntValue(int v)
 {
-    Base::Console().Message("SandboxObject::setIntValue(%d)\n", v);
+    Base::Console().Message("SandboxObject::setIntValue({})\n", v);
     Integer.setValue(v);
 }
 

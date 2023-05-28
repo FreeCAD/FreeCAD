@@ -758,7 +758,7 @@ public:
             kernel = myMesh->getKernel();
             for (std::vector<Mesh::MeshObjectConstRef>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
                 if (*it != myMesh) {
-                    Base::Console().Message("MeshTestJob::run() in thread: %p\n", QThread::currentThreadId());
+                    Base::Console().Message("MeshTestJob::run() in thread: {}\n", QThread::currentThreadId());
                 }
             }
 
@@ -822,7 +822,7 @@ void CmdSandboxMeshTestJob::activated(int)
         }
 
         // run the actual multi-threaded mesh test
-        Base::Console().Message("Mesh test (step %d)...\n",iteration++);
+        Base::Console().Message("Mesh test (step {})...\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
             (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));
@@ -907,7 +907,7 @@ void CmdSandboxMeshTestRef::activated(int)
     if (!ptr)
         Base::Console().Error("Object deleted\n");
     if (num != mesh.getRefCount())
-        Base::Console().Error("Reference count is %d\n",mesh.getRefCount());
+        Base::Console().Error("Reference count is {}\n",mesh.getRefCount());
 }
 
 bool CmdSandboxMeshTestRef::isActive(void)

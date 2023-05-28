@@ -87,7 +87,7 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 
 DrawView* DrawTile::getParent() const
 {
-//    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
+//    Base::Console().Message("DT::getParent() - {}\n", getNameInDocument());
     return dynamic_cast<DrawView*>(TileParent.getValue());
 }
 

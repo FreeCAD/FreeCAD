@@ -114,7 +114,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute()
 {
-//    Base::Console().Message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
+//    Base::Console().Message("DV::execute() - {} touched: {}\n", getNameInDocument(), isTouched());
     if (!findParentPage()) {
         return App::DocumentObject::execute();
     }
@@ -469,7 +469,7 @@ double DrawView::autoScale() const
 //compare 1:1 rect of view to pagesize(pw, h)
 double DrawView::autoScale(double pw, double ph) const
 {
-//    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
+//    Base::Console().Message("DV::autoScale(Page: {:.3f}, {:.3f}) - {}\n", pw, ph, getNameInDocument());
     QRectF viewBox = getRect();           //getRect is scaled (ie current actual size)
     if (!viewBox.isValid()) {
         return 1.0;
@@ -486,7 +486,7 @@ double DrawView::autoScale(double pw, double ph) const
 
 bool DrawView::checkFit() const
 {
-//    Base::Console().Message("DV::checkFit() - %s\n", getNameInDocument());
+//    Base::Console().Message("DV::checkFit() - {}\n", getNameInDocument());
     auto page = findParentPage();
     return checkFit(page);
 }
@@ -494,7 +494,7 @@ bool DrawView::checkFit() const
 //!check if View is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
-//    Base::Console().Message("DV::checkFit(page) - %s\n", getNameInDocument());
+//    Base::Console().Message("DV::checkFit(page) - {}\n", getNameInDocument());
     bool result = true;
 
     double width = 0.0;
@@ -515,7 +515,7 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
 void DrawView::setPosition(double x, double y, bool force)
 {
-//    Base::Console().Message("DV::setPosition(%.3f, %.3f) - \n", x,y, getNameInDocument());
+//    Base::Console().Message("DV::setPosition({:.3f}, {:.3f}) - \n", x,y, getNameInDocument());
     if ( (!isLocked()) ||
          (force) ) {
         double currX = X.getValue();
@@ -632,7 +632,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
 
 bool DrawView::keepUpdated()
 {
-//    Base::Console().Message("DV::keepUpdated() - %s\n", getNameInDocument());
+//    Base::Console().Message("DV::keepUpdated() - {}\n", getNameInDocument());
     if (overrideKeepUpdated()) {
         return true;
     }
@@ -687,7 +687,7 @@ double DrawView::prefScale()
 
 void DrawView::requestPaint()
 {
-//    Base::Console().Message("DV::requestPaint() - %s\n", getNameInDocument());
+//    Base::Console().Message("DV::requestPaint() - {}\n", getNameInDocument());
     signalGuiPaint(this);
 }
 

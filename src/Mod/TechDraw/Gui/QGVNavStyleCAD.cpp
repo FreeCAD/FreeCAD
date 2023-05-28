@@ -62,7 +62,7 @@ void QGVNavStyleCAD::handleKeyReleaseEvent(QKeyEvent *event)
 
 void QGVNavStyleCAD::handleMousePressEvent(QMouseEvent *event)
 {
-//    Base::Console().Message("QGVNSCAD::handleMousePressEvent() - button: %d\n", event->button());
+//    Base::Console().Message("QGVNSCAD::handleMousePressEvent() - button: {}\n", event->button());
     if (event->button() == Qt::MiddleButton) {
         startClick(Qt::MiddleButton);   //for MMB center view
     }
@@ -131,7 +131,7 @@ void QGVNavStyleCAD::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleCAD::handleMouseReleaseEvent(QMouseEvent *event)
 {
-//    Base::Console().Message("QGVNSCAD::handleMouseReleaseEvent() - button: %d\n", event->button());
+//    Base::Console().Message("QGVNSCAD::handleMouseReleaseEvent() - button: {}\n", event->button());
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }

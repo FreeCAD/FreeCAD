@@ -5124,7 +5124,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
-        Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().Log("\nDenseQR - Lapsed Time: {} seconds\n", SolveTime);
 #endif
     }
 
@@ -5199,7 +5199,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
-        Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().Log("\nSparseQR - Lapsed Time: {} seconds\n", SolveTime);
 #endif
     }
 #endif
@@ -5729,7 +5729,7 @@ void System::identifyConflictingRedundantConstraints(
                 break;
         }
 
-        Base::Console().Log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
+        Base::Console().Log("Sketcher::RedundantSolving-{}-\n", solvername.c_str());
     }
 
     if (res == Success) {
@@ -5744,7 +5744,7 @@ void System::identifyConflictingRedundantConstraints(
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
-            Base::Console().Log("Sketcher Redundant solving: %d redundants\n", redundant.size());
+            Base::Console().Log("Sketcher Redundant solving: {} redundants\n", redundant.size());
         }
 
         // TODO: Figure out why we need to iterate in reverse order and add explanation here.
@@ -5763,7 +5763,7 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             if (debugMode == IterationLevel) {
-                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                Base::Console().Log("(Partially) Redundant, Group {}, index {}, Tag: {}\n",
                                     i,
                                     iterRedundantEntry - conflictGroupsOrig[i].begin(),
                                     (*iterRedundantEntry)->getTag());

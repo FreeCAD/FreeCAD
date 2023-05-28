@@ -299,7 +299,7 @@ void TaskComplexSection::onSectionObjectsUseSelectionClicked()
 //the VectorEditWidget reports a change in direction
 void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 {
-    //    Base::Console().Message("TCS::slotViewDirectionChanged(%s)\n",
+    //    Base::Console().Message("TCS::slotViewDirectionChanged({})\n",
     //                            DrawUtil::formatVector(newDirection).c_str());
     Base::Vector3d projectedViewDirection = newDirection;
     if (m_baseView) {
@@ -316,7 +316,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 //SectionNormal
 void TaskComplexSection::slotChangeAngle(double newAngle)
 {
-    //    Base::Console().Message("TCS::slotAngleChanged(%.3f)\n", newAngle);
+    //    Base::Console().Message("TCS::slotAngleChanged({:.3f})\n", newAngle);
     double angleRadians = newAngle * M_PI / 180.0;
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
@@ -478,7 +478,7 @@ QString TaskComplexSection::sourcesToString()
 //******************************************************************************
 bool TaskComplexSection::apply(bool forceUpdate)
 {
-    //    Base::Console().Message("TCS::apply() - liveUpdate: %d force: %d\n",
+    //    Base::Console().Message("TCS::apply() - liveUpdate: {} force: {}\n",
     //                            ui->cbLiveUpdate->isChecked(), forceUpdate);
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do

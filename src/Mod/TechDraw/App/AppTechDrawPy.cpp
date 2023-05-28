@@ -211,7 +211,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().Error("{}\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -227,7 +227,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().Error("{}\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -1005,7 +1005,7 @@ private:
         }
         Base::FileInfo fi(patFile);
         if (!fi.isReadable()) {
-            Base::Console().Error(".pat File: %s is not readable\n", patFile.c_str());
+            Base::Console().Error(".pat File: {} is not readable\n", patFile.c_str());
             return Py::None();
         }
         std::vector<TechDraw::PATLineSpec> specs = TechDraw::DrawGeomHatch::getDecodedSpecsFromFile(patFile, patName);

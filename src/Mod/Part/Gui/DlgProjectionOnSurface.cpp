@@ -182,7 +182,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
             higlight_object(it.partFeature, it.partName, false, 0);
         }
         catch (Standard_NoSuchObject& e) {
-            Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s",
+            Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: {}",
                                     e.GetMessageString());
         }
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
@@ -197,7 +197,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
             higlight_object(it.partFeature, it.partName, false, 0);
         }
         catch (Standard_NoSuchObject& e) {
-            Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s",
+            Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: {}",
                                     e.GetMessageString());
         }
     }

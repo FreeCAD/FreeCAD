@@ -194,7 +194,7 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
-//    Base::Console().Message("QGIPP::setWidth(%.3f)\n", w);
+//    Base::Console().Message("QGIPP::setWidth({:.3f})\n", w);
     m_width = w;
     m_pen.setWidthF(m_width);
 }
@@ -202,7 +202,7 @@ void QGIPrimPath::setWidth(double w)
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
 // TODO: edge lines for faces are drawn with setStyle(Qt::NoPen) and trigger this message.
-//    Base::Console().Warning("QGIPP::setStyle(Qt: %d) is deprecated. Use setLinePen instead\n", s);
+//    Base::Console().Warning("QGIPP::setStyle(Qt: {}) is deprecated. Use setLinePen instead\n", s);
     m_styleNormal = s;
     m_styleCurrent = s;
 }
@@ -210,7 +210,7 @@ void QGIPrimPath::setStyle(Qt::PenStyle s)
 void QGIPrimPath::setStyle(int s)
 {
 // TODO: edge lines for faces are drawn with setStyle(Qt::NoPen) and trigger this message.
-//    Base::Console().Warning("QGIPP::setStyle(int: %d) is deprecated. Use setLinePen instead\n", s);
+//    Base::Console().Warning("QGIPP::setStyle(int: {}) is deprecated. Use setLinePen instead\n", s);
     m_styleCurrent = static_cast<Qt::PenStyle>(s);
     m_styleNormal = static_cast<Qt::PenStyle>(s);
 }
