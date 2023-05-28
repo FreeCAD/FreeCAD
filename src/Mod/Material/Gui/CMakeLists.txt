@@ -43,7 +43,7 @@ qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
 qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 
 set(MatGui_UIC_SRCS
-    Materials.ui
+    MaterialsEditor.ui
 )
 
 SET(MatGui_SRCS
@@ -51,9 +51,9 @@ SET(MatGui_SRCS
     ${MatGui_UIC_HDRS}
     AppMatGui.cpp
     Command.cpp
-    Materials.cpp
-    Materials.h
-    Materials.ui
+    MaterialsEditor.cpp
+    MaterialsEditor.h
+    MaterialsEditor.ui
     PreCompiled.cpp
     PreCompiled.h
 )

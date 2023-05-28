@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,58 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #endif
 
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-
 #include "MaterialsEditor.h"
+#include "ui_MaterialsEditor.h"
 
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+using namespace MatGui;
 
-//===========================================================================
-// Material_Edit
-//===========================================================================
-DEF_STD_CMD_A(CmdMaterialsEdit)
+/* TRANSLATOR MatGui::MaterialsEditor */
 
-CmdMaterialsEdit::CmdMaterialsEdit()
-  :Command("Materials_Edit")
+MaterialsEditor::MaterialsEditor(QWidget* parent)
+  : QDialog(parent), ui(new Ui_MaterialsEditor)
 {
-    sAppModule    = "Material";
-    sGroup        = QT_TR_NOOP("Material");
-    sMenuText     = QT_TR_NOOP("Edit...");
-    sToolTipText  = QT_TR_NOOP("Edit material properties");
-    sWhatsThis    = "Materials_Edit";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Materials_Edit";
+    ui->setupUi(this);
+    connect(ui->standardButtons, &QDialogButtonBox::accepted,
+            this, &MaterialsEditor::accept);
+    connect(ui->standardButtons, &QDialogButtonBox::rejected,
+            this, &MaterialsEditor::reject);
 }
 
-void CmdMaterialsEdit::activated(int iMsg)
+/*
+ *  Destroys the object and frees any allocated resources
+ */
+MaterialsEditor::~MaterialsEditor()
 {
-    Q_UNUSED(iMsg);
-
-    static QPointer<QDialog> dlg = nullptr;
-    if (!dlg)
-        dlg = new MatGui::MaterialsEditor(Gui::getMainWindow());
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
+    // no need to delete child widgets, Qt does it all for us
 }
 
-bool CmdMaterialsEdit::isActive()
+void MaterialsEditor::accept()
 {
-    // return (hasActiveDocument() && !Gui::Control().activeDialog());
-    return true;
+    reject();
 }
 
-//---------------------------------------------------------------
-
-void CreateMaterialCommands()
+void MaterialsEditor::reject()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-
-    rcCmdMgr.addCommand(new CmdMaterialsEdit());
+    QDialog::reject();
+    auto dw = qobject_cast<QDockWidget*>(parent());
+    if (dw) {
+        dw->deleteLater();
+    }
 }
+
+#include "moc_MaterialsEditor.cpp"

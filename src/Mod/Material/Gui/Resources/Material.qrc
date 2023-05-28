@@ -1,6 +1,6 @@
 <RCC>
     <qresource>
         <file>icons/MaterialWorkbench.svg</file>
-        <file>icons/Material_Edit.svg</file>
+        <file>icons/Materials_Edit.svg</file>
     </qresource>
 </RCC>
