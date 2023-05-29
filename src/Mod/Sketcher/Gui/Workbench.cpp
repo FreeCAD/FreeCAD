@@ -24,8 +24,10 @@
 
 #include "Utils.h"
 #include "Workbench.h"
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/WorkbenchManager.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 using namespace SketcherGui;
@@ -106,34 +108,37 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     addSketcherWorkbenchSketchActions(*sketcher);
 
     Gui::ToolBarItem* sketcherEditMode =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     sketcherEditMode->setCommand("Sketcher Edit Mode");
     addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
-    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+    Gui::ToolBarItem* geom =
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     geom->setCommand("Sketcher geometries");
     addSketcherWorkbenchGeometries(*geom);
 
-    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+    Gui::ToolBarItem* cons =
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     cons->setCommand("Sketcher constraints");
     addSketcherWorkbenchConstraints(*cons);
 
     Gui::ToolBarItem* consaccel =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools(*consaccel);
 
-    Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+    Gui::ToolBarItem* bspline =
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bspline);
 
     Gui::ToolBarItem* virtualspace =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     Gui::ToolBarItem* edittools =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     edittools->setCommand("Sketcher edit tools");
     addSketcherWorkbenchEditTools(*edittools);
 
@@ -147,13 +152,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     return root;
 }
 
-void Workbench::activated()
-{
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (isSketchInEdit(doc)) {
-        enterEditMode();
-    }
-}
 
 namespace
 {
@@ -174,28 +172,64 @@ inline const QStringList nonEditModeToolbarNames()
 }
 }// namespace
 
+void Workbench::activated()
+{
+    /* When the workbench is activated, it may happen that we are in edit mode or not.
+     * If we are not in edit mode, the function enterEditMode (called by the ViewProvider) takes
+     * care to save the state of toolbars outside of edit mode. We cannot do it here, as we are
+     * coming from another WB.
+     *
+     * If we moved to another WB from edit mode, the new WB was activated before deactivating this.
+     * Therefore we had no chance to tidy up the save state. We assume a loss of any CHANGE to
+     * toolbar configuration since last entering edit mode in this case (for any change in
+     * configuration to be stored, the edit mode must be left while the selected Workbench is the
+     * sketcher WB).
+     *
+     * However, now that we are back (from another WB), we need to make the toolbars available.
+     * These correspond to the last saved state.
+     */
+    Base::Console().Log("Sketch WB: Activated\n");
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (isSketchInEdit(doc)) {
+        Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
+                                                     Gui::ToolBarManager::State::ForceAvailable);
+    }
+}
+
 void Workbench::enterEditMode()
 {
-    /*Modify toolbars dynamically.
-    First save state of toolbars in case user changed visibility of a toolbar but he's not changing
-    the wb. This happens in someone works directly from sketcher, changing from edit mode to
-    not-edit-mode*/
-    Gui::ToolBarManager::getInstance()->saveState();
+    /* Ensure the state left by the non-edit mode toolbars is saved (in case of changing to edit
+     * mode) without changing workbench
+     */
+    Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
+                                                 Gui::ToolBarManager::State::SaveState);
 
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
+                                                 Gui::ToolBarManager::State::ForceAvailable);
+    Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
+                                                 Gui::ToolBarManager::State::ForceHidden);
 }
 
 void Workbench::leaveEditMode()
 {
-    /*Modify toolbars dynamically.
-    First save state of toolbars in case user changed visibility of a toolbar but he's not changing
-    the wb. This happens in someone works directly from sketcher, changing from edit mode to
-    not-edit-mode*/
-    Gui::ToolBarManager::getInstance()->saveState();
+    /* Ensure the state left by the edit mode toolbars is saved (in case of changing to edit mode)
+     * without changing workbench.
+     *
+     * However, do not save state if the current workbench is not the Sketcher WB, because otherwise
+     * we would be saving the state of the currently activated workbench, and the toolbars would
+     * disappear (as the toolbars of that other WB are only visible).
+     */
+    auto* workbench = Gui::WorkbenchManager::instance()->active();
 
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
-    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+    if (workbench->name() == "SketcherWorkbench") {
+        Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
+                                                     Gui::ToolBarManager::State::SaveState);
+    }
+
+    Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
+                                                 Gui::ToolBarManager::State::RestoreDefault);
+    Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
+                                                 Gui::ToolBarManager::State::RestoreDefault);
 }
 
 namespace SketcherGui
