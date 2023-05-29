@@ -257,16 +257,16 @@ def read2(filename):
             # ; is a Comment
             # [ is a Section
             if line[0] == '[':
-                print("parse section '{0}'".format(line))
+                # print("parse section '{0}'".format(line))
                 line = line[1:]
-                print("\tline '{0}'".format(line))
+                # print("\tline '{0}'".format(line))
                 k = line.split("]", 1)
                 if len(k) >= 2:
                     v = k[0].strip()
                     if hasattr(v, "decode"):
                         v = v.decode('utf-8')
                     section = v
-                    print("Section '{0}'".format(section))
+                    # print("Section '{0}'".format(section))
             elif line[0] not in ";":
                 # split once on first occurrence
                 # a link could contain a '=' and thus would be split
@@ -275,7 +275,7 @@ def read2(filename):
                     v = k[1].strip()
                     if hasattr(v, "decode"):
                         v = v.decode('utf-8')
-                    print("key '{0}', value '{1}'".format(k[0].strip(), v))
+                    # print("key '{0}', value '{1}'".format(k[0].strip(), v))
                     d[section][k[0].strip()] = v
     return d
 
