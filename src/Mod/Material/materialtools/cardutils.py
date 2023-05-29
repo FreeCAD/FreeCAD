@@ -74,12 +74,12 @@ def get_material_preferred_directory(category=None):
     if use_built_in_materials:
         if category == 'Fluid':
             preferred = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "FluidMaterial"
+                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "FluidMaterial"
             )
 
         elif category == 'Solid':
             preferred = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "StandardMaterial"
+                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "StandardMaterial"
             )
 
         else:
@@ -153,12 +153,12 @@ def get_material_resources(category='Solid'):
     if use_built_in_materials:
         if category == 'Fluid':
             builtin_mat_dir = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "FluidMaterial"
+                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "FluidMaterial"
             )
 
         else:
             builtin_mat_dir = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "StandardMaterial"
+                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "StandardMaterial"
             )
         resources[builtin_mat_dir] = ":/icons/freecad.svg"
 
@@ -204,7 +204,7 @@ def get_material_libraries():
 
     if use_built_in_materials:
         builtin_mat_dir = join(
-            FreeCAD.getResourceDir(), "Mod", "Material"
+            FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials"
         )
         resources["System"] = (builtin_mat_dir, ":/icons/freecad.svg")
 

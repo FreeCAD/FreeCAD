@@ -195,6 +195,7 @@
 #  - Default:
     ModelName:
       Type: 'String'
+      Units: ''
       URL: ''
       Description: "Name of the model"
     RelativePermittivity:
@@ -380,5 +381,6 @@
 - UserDefined:
     None:  # Python needs something to iterate over
       Type: ''
+      Units: ''
       URL: ''
       Description: " "
