@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QPointer>
 #endif
 
 #include <Gui/Command.h>
@@ -56,7 +57,7 @@ void CmdMaterialEdit::activated(int iMsg)
 
     Base::Console().Log("CmdMaterialEdit::activated()\n");
 
-    static QPointer<QDialog> dlg = nullptr;
+    static QPointer<MatGui::Material> dlg = nullptr;
     if (!dlg)
         dlg = new MatGui::Material(Gui::getMainWindow());
     dlg->setAttribute(Qt::WA_DeleteOnClose);

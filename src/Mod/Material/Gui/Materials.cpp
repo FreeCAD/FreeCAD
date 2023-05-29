@@ -499,10 +499,10 @@ void Material::accept()
 void Material::reject()
 {
     QDialog::reject();
-    auto dw = qobject_cast<QDockWidget*>(parent());
-    if (dw) {
-        dw->deleteLater();
-    }
+    // auto dw = qobject_cast<QDockWidget*>(parent());
+    // if (dw) {
+    //     dw->deleteLater();
+    // }
 }
 
 // ---------------------------------------
