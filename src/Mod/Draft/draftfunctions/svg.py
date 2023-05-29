@@ -859,6 +859,7 @@ def get_svg(obj,
                                     pathname='%s_w%04d' % (obj.Name, i))
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
+                fill = 'none' # Required if obj has a face. Edges processed here have no face.
                 for i, e in enumerate(obj.Shape.Edges):
                     if DraftGeomUtils.findEdge(e, wiredEdges) is None:
                         svg += get_path(obj, plane,
