@@ -24,6 +24,7 @@
 #define MATGUI_MATERIALSEDITOR_H
 
 #include <QDialog>
+#include <memory>
 
 class QTreeWidgetItem;
 
