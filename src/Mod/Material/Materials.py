@@ -364,7 +364,7 @@ class Materials:
 
         widget = self.widget
     
-        self.updateTab(widget.treePhysicalProperties, data, ["Mechanical", "Thermal", "Electromagnetic"])
+        self.updateTab(widget.treePhysicalProperties, data, ["Mechanical", "Fluidic", "Thermal", "Electromagnetic"])
         self.updateTab(widget.treeArchitectural, data, ["Architectural"])
         self.updateTab(widget.treeAppearance, data, ["Rendering", "VectorRendering"])
         self.updateTab(widget.treeCosts, data, ["Cost"])
@@ -466,7 +466,7 @@ class Materials:
         template_data = get_material_template(True)
         # print(template_data)
 
-        self.implementSectionModel(template_data, p, widget.treePhysicalProperties, ["Mechanical", "Thermal", "Electromagnetic"])
+        self.implementSectionModel(template_data, p, widget.treePhysicalProperties, ["Mechanical", "Fluidic", "Thermal", "Electromagnetic"])
         self.implementSectionModel(template_data, p, widget.treeArchitectural, ["Architectural"])
         self.implementSectionModel(template_data, p, widget.treeAppearance, ["Rendering", "VectorRendering"])
         self.implementSectionModel(template_data, p, widget.treeCosts, ["Cost"])
