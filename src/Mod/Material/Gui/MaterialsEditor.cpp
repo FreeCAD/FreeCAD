@@ -58,10 +58,10 @@ void MaterialsEditor::accept()
 void MaterialsEditor::reject()
 {
     QDialog::reject();
-    auto dw = qobject_cast<QDockWidget*>(parent());
-    if (dw) {
-        dw->deleteLater();
-    }
+    // auto dw = qobject_cast<QDockWidget*>(parent());
+    // if (dw) {
+    //     dw->deleteLater();
+    // }
 }
 
 #include "moc_MaterialsEditor.cpp"
