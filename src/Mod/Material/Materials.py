@@ -93,14 +93,14 @@ class Materials:
         materialTree = widget.treeMaterials
 
         # # create preview svg slots
-        # self.widget.PreviewRender = QtSvg.QSvgWidget(self.iconPath + "preview-rendered.svg")
-        # self.widget.PreviewRender.setMaximumWidth(64)
-        # self.widget.PreviewRender.setMinimumHeight(64)
-        # self.widget.topLayout.addWidget(self.widget.PreviewRender)
-        # self.widget.PreviewVector = QtSvg.QSvgWidget(self.iconPath + "preview-vector.svg")
-        # self.widget.PreviewVector.setMaximumWidth(64)
-        # self.widget.PreviewVector.setMinimumHeight(64)
-        # self.widget.topLayout.addWidget(self.widget.PreviewVector)
+        self.widget.PreviewRender = QtSvg.QSvgWidget(self.iconPath + "preview-rendered.svg")
+        self.widget.PreviewRender.setMaximumWidth(64)
+        self.widget.PreviewRender.setMinimumHeight(64)
+        self.widget.layoutAppearance.addWidget(self.widget.PreviewRender)
+        self.widget.PreviewVector = QtSvg.QSvgWidget(self.iconPath + "preview-vector.svg")
+        self.widget.PreviewVector.setMaximumWidth(64)
+        self.widget.PreviewVector.setMinimumHeight(64)
+        self.widget.layoutAppearance.addWidget(self.widget.PreviewVector)
         # self.updatePreviews(mat=material)
 
         # buttonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
@@ -129,10 +129,39 @@ class Materials:
         # materialTree.setItemDelegate(MaterialsDelegate())
         # model.itemChanged.connect(self.modelChange)
 
-        # model = QtGui.QStandardItemModel()
-        # treeView.setModel(model)
-        # treeView.setUniformRowHeights(True)
-        # treeView.setItemDelegate(MaterialsDelegate())
+        model = QtGui.QStandardItemModel()
+        treeView = widget.treePhysicalProperties
+        treeView.setModel(model)
+        treeView.setUniformRowHeights(True)
+        treeView.setItemDelegate(MaterialsDelegate())
+        # model.itemChanged.connect(self.modelChange)
+
+        model = QtGui.QStandardItemModel()
+        treeView = widget.treeArchitectural
+        treeView.setModel(model)
+        treeView.setUniformRowHeights(True)
+        treeView.setItemDelegate(MaterialsDelegate())
+        # model.itemChanged.connect(self.modelChange)
+
+        model = QtGui.QStandardItemModel()
+        treeView = widget.treeAppearance
+        treeView.setModel(model)
+        treeView.setUniformRowHeights(True)
+        treeView.setItemDelegate(MaterialsDelegate())
+        # model.itemChanged.connect(self.modelChange)
+
+        model = QtGui.QStandardItemModel()
+        treeView = widget.treeCosts
+        treeView.setModel(model)
+        treeView.setUniformRowHeights(True)
+        treeView.setItemDelegate(MaterialsDelegate())
+        # model.itemChanged.connect(self.modelChange)
+
+        model = QtGui.QStandardItemModel()
+        treeView = widget.treeUserDefinedProperties
+        treeView.setModel(model)
+        treeView.setUniformRowHeights(True)
+        treeView.setItemDelegate(MaterialsDelegate())
         # model.itemChanged.connect(self.modelChange)
 
         # init model
@@ -217,7 +246,7 @@ class Materials:
                     userData = {}
                     userData["library"] = library
                     userData["path"] = child.relative_to(library)
-                    print("User data: [{0}, {1}]".format(userData["library"], userData["path"]))
+                    # print("User data: [{0}, {1}]".format(userData["library"], userData["path"]))
                     item.setData(0, QtCore.Qt.UserRole, userData)
                     # widget_item.data(0, Qt.UserRole).toPyObject()    
 
@@ -228,12 +257,11 @@ class Materials:
 
         userData = current.data(0, QtCore.Qt.UserRole) #.toPyObject()
         if userData is not None:
-            print("User data: [{0}, {1}]".format(userData["library"], userData["path"]))
+            # print("User data: [{0}, {1}]".format(userData["library"], userData["path"]))
             self.chooseMaterial(Path(userData["library"]) / userData["path"])
         else:
-            print("User data: None")
-            # print("flags({0})".format(int(current.flags())))
-
+            # print("User data: None")
+            pass
 
         # widget = self.widget
         # buttonDeleteProperty = widget.ButtonDeleteProperty
@@ -265,10 +293,10 @@ class Materials:
         # self.updatePreviews()
 
     def chooseMaterial(self, card_path):
-        FreeCAD.Console.PrintMessage(
-            "choose_material in material editor:\n"
-            "    {}\n".format(card_path)
-        )
+        # FreeCAD.Console.PrintMessage(
+        #     "choose_material in material editor:\n"
+        #     "    {}\n".format(card_path)
+        # )
 
         if os.path.isfile(card_path):
             from importFCMat import read2
@@ -279,13 +307,69 @@ class Materials:
         else:
             FreeCAD.Console.PrintError("Material card not found: {}\n".format(card_path))
 
+    def setOrClear(self, widget, data, name):
+        if name in data:
+            widget.setText(data[name])
+        else:
+            widget.clear()
+
+    def updateGeneral(self, data):
+
+        widget = self.widget
+    
+        self.setOrClear(widget.editName, data, "Name")
+        self.setOrClear(widget.editAuthorLicense, data, "AuthorAndLicense")
+        self.setOrClear(widget.editParent, data, "Parent")
+        self.setOrClear(widget.editMaterialNumber, data, "MaterialNumber")
+        self.setOrClear(widget.editStandardCode, data, "StandardCode")
+        self.setOrClear(widget.editSourceURL, data, "SourceURL")
+        self.setOrClear(widget.editSourceReference, data, "ReferenceSource")
+        self.setOrClear(widget.editTags, data, "Tags")
+        self.setOrClear(widget.editDescription, data, "Description")
+
+    def updateTab(self, widget, data, dataGroups):
+        model = widget.model()
+        root = model.invisibleRootItem()
+        for gg in range(root.rowCount()):
+            group = root.child(gg, 0)
+            # print("Group {0}".format(group.text()))
+            for pp in range(group.rowCount()):
+                item = group.child(pp, 0)
+                it = group.child(pp, 1)
+                kk = self.collapseKey(item.text()) # Remove spaces from key name
+
+                set = False
+                for dataGroup in dataGroups:
+                    if kk in data[dataGroup]:
+                        value = data[dataGroup][kk]
+                        it.setText(value)
+                        # del data[dataGroup][kk]
+                        set = True
+                        break
+
+                if not set:
+                    it.setText('')
+
     def updateCard(self, data):
 
         """updates the contents of the editor with the given dictionary
            the material property keys where added to the editor already
            unknown material property keys will be added to the user defined group"""
 
-        print(data)
+        # print(data)
+        if "General" in data:
+            self.updateGeneral(data['General'])
+        else:
+            self.updateGeneral(None)
+
+        widget = self.widget
+    
+        self.updateTab(widget.treePhysicalProperties, data, ["Mechanical", "Thermal", "Electromagnetic"])
+        self.updateTab(widget.treeArchitectural, data, ["Architectural"])
+        self.updateTab(widget.treeAppearance, data, ["Rendering", "VectorRendering"])
+        self.updateTab(widget.treeCosts, data, ["Cost"])
+        self.updateTab(widget.treeUserDefinedProperties, data, ["UserDefined"])
+
         # model = self.widget.treeView.model()
         # root = model.invisibleRootItem()
         # for gg in range(root.rowCount() - 1):
@@ -321,12 +405,55 @@ class Materials:
         #     self.customprops.append(k)
         # self.edited = False
 
+    def implementSectionModel(self, template, param, treeView, groups):
+
+        """implements the model with the material attribute structure."""
+
+        model = treeView.model()
+        model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
+
+        treeView.setColumnWidth(0, 250)
+        treeView.setColumnWidth(1, 250)
+        treeView.setColumnWidth(2, 250)
+        treeView.setColumnHidden(3, True)
+
+        for group in template:
+            gg = list(group.keys())[0]  # group dict has only one key
+            # print("Group {0}".format(gg))
+            if gg in groups:
+                top = QtGui.QStandardItem(gg)
+                model.appendRow([top])
+                # self.groups.append(gg)
+
+                for propertyName in group[gg]:
+                    item = QtGui.QStandardItem(propertyName)
+                    item.setToolTip(group[gg][propertyName]["Description"])
+                    # self.internalprops.append(propertyName)
+
+                    value = QtGui.QStandardItem()
+                    value.setToolTip(group[gg][propertyName]["Description"])
+
+                    # print("Units '{0}'".format(group[gg][propertyName]["Units"]))
+                    units = QtGui.QStandardItem(group[gg][propertyName]["Units"])
+                    units.setToolTip(group[gg][propertyName]["Description"])
+
+                    tt = group[gg][propertyName]["Type"]
+                    itemType = QtGui.QStandardItem(tt)
+
+                    top.appendRow([item, value, units, itemType])
+                    treeView.setExpanded(top.index(), param.GetBool("TreeExpand"+gg, True))
+                # top.sortChildren(0)
+
+        # treeView.expandAll()
+        self.edited = False
+
     def implementModel(self):
 
         """implements the model with the material attribute structure."""
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
-        # widget = self.widget
+        treeView = self.widget.treePhysicalProperties
+        widget = self.widget
         # treeView = widget.treeView
         # model = treeView.model()
         # model.setHorizontalHeaderLabels(["Property", "Value", "Type"])
@@ -339,9 +466,15 @@ class Materials:
         template_data = get_material_template(True)
         # print(template_data)
 
-        for group in template_data:
-            gg = list(group.keys())[0]  # group dict has only one key
-            print("Group {0}".format(gg))
+        self.implementSectionModel(template_data, p, widget.treePhysicalProperties, ["Mechanical", "Thermal", "Electromagnetic"])
+        self.implementSectionModel(template_data, p, widget.treeArchitectural, ["Architectural"])
+        self.implementSectionModel(template_data, p, widget.treeAppearance, ["Rendering", "VectorRendering"])
+        self.implementSectionModel(template_data, p, widget.treeCosts, ["Cost"])
+        self.implementSectionModel(template_data, p, widget.treeUserDefinedProperties, ["UserDefined"])
+
+        # for group in template_data:
+        #     gg = list(group.keys())[0]  # group dict has only one key
+        #     print("Group {0}".format(gg))
         #     top = QtGui.QStandardItem(gg)
         #     # model.appendRow([top])
         #     # self.groups.append(gg)

@@ -250,7 +250,7 @@ def read2(filename):
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
-            d["Meta"]["AuthorAndLicense"] = v
+            d["General"]["AuthorAndLicense"] = v # Move the field to the general group
 
         # rest
         else:
