@@ -12,6 +12,8 @@ SET(Material_SRCS
     Material.py
     importFCMat.py
     MaterialEditor.py
+    Materials.py
+    Resources/ui/materials.ui
     materials-editor.ui
     Templatematerial.yml
 )

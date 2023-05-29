@@ -20,79 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATGUI_MATERIALS_H
-#define MATGUI_MATERIALS_H
+#ifndef MATGUI_MATERIALSEDITOR_H
+#define MATGUI_MATERIALSEDITOR_H
 
 #include <QDialog>
 
-// #include <Gui/TaskView/TaskDialog.h>
-// #include <Gui/TaskView/TaskView.h>
-
-
 class QTreeWidgetItem;
 
-// namespace App {
-// class DocumentObject;
-// class Property;
-// }
 namespace MatGui {
 
 // using Connection = boost::signals2::connection;
-class Ui_Materials;
-class Material : public QDialog
+class Ui_MaterialsEditor;
+class MaterialsEditor : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Material(QWidget* parent = nullptr);
-    ~Material() override;
-    void accept();
-    void reject();
-
-// private:
-//     void findShapes();
-//     bool indexOfCurrentItem(QTreeWidgetItem*, int&, int&) const;
-//     void slotCreatedObject(const App::DocumentObject&);
-//     void slotChangedObject(const App::DocumentObject&, const App::Property&);
-//     bool hasSolids(const App::DocumentObject*) const;
-
-// protected:
-//     void changeEvent(QEvent *e) override;
-
-// private:
-//     void onSwapButtonClicked();
-//     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
+    explicit MaterialsEditor(QWidget* parent = nullptr);
+    ~MaterialsEditor() override;
+    void accept() override;
+    void reject() override;
 
 private:
-    std::unique_ptr<Ui_Materials> ui;
-    // Connection connectNewObject;
-    // Connection connectModObject;
-    // std::list<const App::DocumentObject*> observe;
+    std::unique_ptr<Ui_MaterialsEditor> ui;
 };
-
-// class TaskMaterial : public Gui::TaskView::TaskDialog
-// {
-//     Q_OBJECT
-
-// public:
-//     TaskMaterial();
-//     ~TaskMaterial() override;
-
-// public:
-//     void clicked(int) override;
-
-//     QDialogButtonBox::StandardButtons getStandardButtons() const override
-//     { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
-//     bool isAllowedAlterDocument() const override
-//     { return true; }
-//     bool needsFullSpace() const override
-//     { return true; }
-
-// private:
-//     Material* widget;
-//     Gui::TaskView::TaskBox* taskbox;
-// };
 
 } // namespace MatGui
 
-#endif // MATGUI_MATERIALS_H
+#endif // MATGUI_MATERIALSEDITOR_H
