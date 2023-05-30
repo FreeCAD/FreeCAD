@@ -85,17 +85,6 @@ public:
     */
     ElementMapPtr restore(::App::StringHasherRef hasher, std::istream& s);
 
-    /** Associate the MappedName \c name with the IndexedName \c idx.
-     * @param name: the name to add
-     * @param idx: the indexed name that \c name will be bound to
-     * @param sids: where StringIDs that make up the name are stored
-     * @param overwrite: if true, all the names associated with \c idx will be discarded
-     * @param existing: out variable: if not overwriting, and \c name is already 
-     * associated with another indexedName, set \c existing to that indexedname
-     * @return the name just added, or an empty name if it wasn't added.
-     */
-    MappedName addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
-                       bool overwrite, IndexedName* existing);
 
     /** Add a sub-element name mapping.
      *
@@ -137,23 +126,10 @@ public:
                            long tag = 0,
                            bool forceTag = false) const;
 
-    /** Convenience method to hash the main element name
-     *
-     * @param name: main element name
-     * @param sid: store any output string ID references
-     * @return the hashed element name;
-     */
-    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
-
-    /// Reverse hashElementName()
-    MappedName dehashElementName(const MappedName& name) const;
-
-    /** Remove \c name from the map
-    */
+    /// Remove \c name from the map
     bool erase(const MappedName& name);
 
-    /** Remove \c idx and all the MappedNames associated with it
-    */
+    /// Remove \c idx and all the MappedNames associated with it
     bool erase(const IndexedName& idx);
 
     unsigned long size() const;
@@ -224,6 +200,18 @@ private:
                           std::vector<ElementMapPtr>& childMaps,
                           const std::vector<std::string>& postfixes);
 
+    /** Associate the MappedName \c name with the IndexedName \c idx.
+     * @param name: the name to add
+     * @param idx: the indexed name that \c name will be bound to
+     * @param sids: where StringIDs that make up the name are stored
+     * @param overwrite: if true, all the names associated with \c idx will be discarded
+     * @param existing: out variable: if not overwriting, and \c name is already 
+     * associated with another indexedName, set \c existing to that indexedname
+     * @return the name just added, or an empty name if it wasn't added.
+     */
+    MappedName addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
+                       bool overwrite, IndexedName* existing);
+
     /** Utility function that adds \c postfix to \c postfixMap, and to \c postfixes
      * if it was not present in the map. 
     */
@@ -235,6 +223,17 @@ private:
     virtual MappedName renameDuplicateElement(int index, const IndexedName& element,
                                               const IndexedName& element2, const MappedName& name,
                                               ElementIDRefs& sids, long masterTag);
+
+    /** Convenience method to hash the main element name
+     *
+     * @param name: main element name
+     * @param sid: store any output string ID references
+     * @return the hashed element name;
+     */
+    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
+
+    /// Reverse hashElementName()
+    MappedName dehashElementName(const MappedName& name) const;
 
     //FIXME duplicate code? as in copy/paste
     const MappedNameRef* findMappedRef(const IndexedName& idx) const;
