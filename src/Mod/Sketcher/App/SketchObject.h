@@ -24,6 +24,7 @@
 #define SKETCHER_SKETCHOBJECT_H
 
 #include <App/FeaturePython.h>
+#include <App/IndexedName.h>
 #include <App/PropertyFile.h>
 #include <Base/Axis.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -272,6 +273,7 @@ public:
     int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative = false,
                   bool updateGeoBeforeMoving = false);
     /// retrieves the coordinates of a point
+    static Base::Vector3d getPoint(const Part::Geometry *geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
 
     /// toggle geometry to draft line
@@ -597,6 +599,35 @@ public:
     bool isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv, bool& yinv,
                              eReasonList* rsn = nullptr) const;
 
+    Part::TopoShape getEdge(const Part::Geometry *geo, const char *name) const;
+
+    Data::IndexedName checkSubName(const char *sub) const;
+
+    bool geoIdFromShapeType(const Data::IndexedName &, int &geoId, PointPos &posId) const;
+
+    bool geoIdFromShapeType(const char *shapetype, int &geoId, PointPos &posId) const
+    {
+        return geoIdFromShapeType(checkSubName(shapetype), geoId, posId);
+    }
+
+    bool geoIdFromShapeType(const char *shapetype, int &geoId) const
+    {
+        PointPos posId;
+        return geoIdFromShapeType(shapetype,geoId,posId);
+    }
+
+    std::string convertSubName(const char *subname, bool postfix=true) const
+    {
+        return convertSubName(checkSubName(subname), postfix);
+    }
+
+    std::string convertSubName(const std::string & subname, bool postfix=true) const
+    {
+        return convertSubName(subname.c_str(), postfix);
+    }
+
+    std::string convertSubName(const Data::IndexedName &, bool postfix=true) const;
+
     bool isPerformingInternalTransaction() const
     {
         return internaltransaction;
@@ -653,6 +684,8 @@ protected:
     void onChanged(const App::Property* /*prop*/) override;
     void onDocumentRestored() override;
     void restoreFinished() override;
+
+    void buildShape();
 
     void setExpression(const App::ObjectIdentifier& path,
                        std::shared_ptr<App::Expression> expr) override;
