@@ -72,7 +72,13 @@ namespace MbD {
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
 	{
-		return std::shared_ptr<FullRow<T>>();
+		//"a*bT = a(1,j)b(k,j)"
+		size_t ncol = fullMat->nRow();
+		auto answer = std::make_shared<FullRow<T>>(ncol);
+		for (size_t k = 0; k < ncol; k++) {
+			answer->at(k) = this->dot(fullMat->at(k));
+		}
+		return answer;
 	}
 	template<typename T>
 	inline void FullRow<T>::equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor)

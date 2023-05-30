@@ -32,6 +32,8 @@ void DirectionCosineConstraintIJ::initaAijIeJe()
 
 void MbD::DirectionCosineConstraintIJ::postInput()
 {
+	aAijIeJe->postInput();
+	Constraint::postInput();
 }
 
 void MbD::DirectionCosineConstraintIJ::calcPostDynCorrectorIteration()
@@ -43,4 +45,9 @@ void MbD::DirectionCosineConstraintIJ::prePosIC()
 {
 	aAijIeJe->prePosIC();
 	Constraint::prePosIC();
+}
+
+MbD::ConstraintType MbD::DirectionCosineConstraintIJ::type()
+{
+	return MbD::perpendicular;
 }

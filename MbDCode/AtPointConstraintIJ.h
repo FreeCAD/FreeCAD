@@ -17,6 +17,7 @@ namespace MbD {
         void postInput() override;
         void calcPostDynCorrectorIteration() override;
         void prePosIC() override;
+        MbD::ConstraintType type() override;
 
         int axis;
         std::shared_ptr<DispCompIecJecO> riIeJeO;

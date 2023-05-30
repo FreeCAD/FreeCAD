@@ -92,6 +92,9 @@ void MbD::EndFrameqct::initppPhiThePsiptptBlks()
 
 void MbD::EndFrameqct::postInput()
 {
+	this->evalrmem();
+	this->evalAme();
+	Item::postInput();
 }
 
 void MbD::EndFrameqct::calcPostDynCorrectorIteration()

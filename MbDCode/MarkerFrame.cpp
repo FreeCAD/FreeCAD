@@ -48,6 +48,8 @@ void MarkerFrame::initializeGlobally()
 
 void MbD::MarkerFrame::postInput()
 {
+	Item::postInput();
+	std::for_each(endFrames->begin(), endFrames->end(), [](const auto& endFrame) { endFrame->postInput(); });
 }
 
 void MbD::MarkerFrame::calcPostDynCorrectorIteration()

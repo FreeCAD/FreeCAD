@@ -70,7 +70,7 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 		con->iG = eqnNo;
 		eqnNo = eqnNo + 1;
 	}
-	auto n = eqnNo;
+	n = eqnNo;
 	auto limits = { lastEssenConEqnNo, lastDispConEqnNo, n };
 	pivotRowLimits = std::make_shared<Array<int>>(limits);
 }

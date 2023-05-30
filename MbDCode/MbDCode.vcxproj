@@ -171,6 +171,7 @@
     <ClCompile Include="EulerParameters.cpp" />
     <ClCompile Include="EulerParametersDot.cpp" />
     <ClCompile Include="ExpressionX.cpp" />
+    <ClCompile Include="ForceTorqueItem.cpp" />
     <ClCompile Include="FullColumn.cpp" />
     <ClCompile Include="FullMatrix.cpp" />
     <ClCompile Include="FullRow.cpp" />
@@ -208,6 +209,7 @@
     <ClCompile Include="PrescribedMotion.cpp" />
     <ClCompile Include="Product.cpp" />
     <ClCompile Include="QuasiIntegrator.cpp" />
+    <ClCompile Include="RedundantConstraint.cpp" />
     <ClCompile Include="RevoluteJoint.cpp" />
     <ClCompile Include="RowTypeMatrix.cpp" />
     <ClCompile Include="ScalarNewtonRaphson.cpp" />
@@ -272,12 +274,14 @@
     <ClInclude Include="EndFramec.h" />
     <ClInclude Include="EndFrameqc.h" />
     <ClInclude Include="EndFrameqct.h" />
+    <ClInclude Include="enum.h" />
     <ClInclude Include="EulerAngleszxz.h" />
     <ClInclude Include="EulerArray.h" />
     <ClInclude Include="EulerConstraint.h" />
     <ClInclude Include="EulerParameters.h" />
     <ClInclude Include="EulerParametersDot.h" />
     <ClInclude Include="ExpressionX.h" />
+    <ClInclude Include="ForceTorqueItem.h" />
     <ClInclude Include="FullColumn.h" />
     <ClInclude Include="FullMatrix.h" />
     <ClInclude Include="FullRow.h" />
@@ -315,6 +319,8 @@
     <ClInclude Include="PrescribedMotion.h" />
     <ClInclude Include="Product.h" />
     <ClInclude Include="QuasiIntegrator.h" />
+    <ClInclude Include="RedundantConstraint.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RevoluteJoint.h" />
     <ClInclude Include="RowTypeMatrix.h" />
     <ClInclude Include="ScalarNewtonRaphson.h" />
@@ -340,6 +346,9 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VectorNewtonRaphson.h" />
     <ClInclude Include="ZRotation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MbDCode.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

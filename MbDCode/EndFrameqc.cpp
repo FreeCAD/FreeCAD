@@ -35,6 +35,7 @@ void EndFrameqc::initEndFrameqct()
 	endFrameqct->pprOeOpEpE = pprOeOpEpE;
 	endFrameqct->pAOepE = pAOepE;
 	endFrameqct->ppAOepEpE = ppAOepEpE;
+	endFrameqct->setMarkerFrame(markerFrame);
 }
 
 FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)

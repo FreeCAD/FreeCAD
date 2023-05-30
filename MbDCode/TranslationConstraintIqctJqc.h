@@ -9,6 +9,7 @@ namespace MbD {
     public:
         TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initriIeJeIe() override;
+        MbD::ConstraintType type() override;
 
         double pGpt;
         FRowDsptr ppGpXIpt;

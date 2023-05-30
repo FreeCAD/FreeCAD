@@ -7,9 +7,9 @@ using namespace MbD;
 
 void NewtonRaphson::initialize()
 {
-	dxNorms = std::shared_ptr<std::vector<double>>();
+	dxNorms = std::make_shared<std::vector<double>>();
 	dxTol = 4 * std::numeric_limits<double>::epsilon();
-	yNorms = std::shared_ptr<std::vector<double>>();
+	yNorms = std::make_shared<std::vector<double>>();
 	yNormTol = 1.0e-30;
 	iterMax = 100;
 	twoAlp = 2.0e-4;

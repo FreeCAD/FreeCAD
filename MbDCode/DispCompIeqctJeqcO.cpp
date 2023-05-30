@@ -12,12 +12,12 @@ MbD::DispCompIeqctJeqcO::DispCompIeqctJeqcO(EndFrmcptr frmi, EndFrmcptr frmj, in
 void MbD::DispCompIeqctJeqcO::initializeGlobally()
 {
 	//ToDo: Check why not using super classes.
-	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppriOeOpEpE(axis);
+	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqct>(frmJ)->ppriOeOpEpE(axis);
 }
 
 void MbD::DispCompIeqctJeqcO::calcPostDynCorrectorIteration()
 {
 	//"ppriIeJeOpEIpEI is not a constant now."
 	DispCompIeqcJeqcO::calcPostDynCorrectorIteration();
-	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppriOeOpEpE(axis)->negated();
+	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpE(axis)->negated();
 }

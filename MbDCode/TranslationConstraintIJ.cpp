@@ -31,6 +31,8 @@ void MbD::TranslationConstraintIJ::initriIeJeIe()
 
 void MbD::TranslationConstraintIJ::postInput()
 {
+    riIeJeIe->postInput();
+    Constraint::postInput();
 }
 
 void MbD::TranslationConstraintIJ::calcPostDynCorrectorIteration()
@@ -42,4 +44,9 @@ void MbD::TranslationConstraintIJ::prePosIC()
 {
     riIeJeIe->prePosIC();
     Constraint::prePosIC();
+}
+
+MbD::ConstraintType MbD::TranslationConstraintIJ::type()
+{
+    return MbD::displacement;
 }

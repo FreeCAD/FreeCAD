@@ -97,20 +97,20 @@ void MbD::SystemSolver::logString(std::string& str)
 
 std::shared_ptr<std::vector<std::shared_ptr<Part>>> MbD::SystemSolver::parts()
 {
-	return std::shared_ptr<std::vector<std::shared_ptr<Part>>>();
+	return system->parts;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::essentialConstraints2()
 {
-	return std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>();
+	return system->essentialConstraints2();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::displacementConstraints()
 {
-	return std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>();
+	return system->displacementConstraints();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::perpendicularConstraints2()
 {
-	return std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>();
+	return system->perpendicularConstraints2();
 }

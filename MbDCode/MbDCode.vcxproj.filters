@@ -330,6 +330,12 @@
     <ClCompile Include="GEFullMatParPv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ForceTorqueItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RedundantConstraint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -650,5 +656,22 @@
     <ClInclude Include="GEFullMatParPv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ForceTorqueItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RedundantConstraint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MbDCode.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

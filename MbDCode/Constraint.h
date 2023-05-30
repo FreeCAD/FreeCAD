@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 
+#include "enum.h"
 #include "Item.h"
 
 namespace MbD {
@@ -15,6 +16,10 @@ namespace MbD {
 		void setOwner(Item* x);
 		Item* getOwner();
 		void prePosIC() override;
+		virtual void fillEssenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
+		virtual void fillDispConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
+		virtual void fillPerpenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
+		virtual MbD::ConstraintType type();
 
 		
 		int iG;

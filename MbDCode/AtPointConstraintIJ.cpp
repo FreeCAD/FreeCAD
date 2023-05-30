@@ -31,6 +31,8 @@ void AtPointConstraintIJ::initriIeJeO()
 
 void MbD::AtPointConstraintIJ::postInput()
 {
+	riIeJeO->postInput();
+	Constraint::postInput();
 }
 
 void MbD::AtPointConstraintIJ::calcPostDynCorrectorIteration()
@@ -42,4 +44,9 @@ void MbD::AtPointConstraintIJ::prePosIC()
 {
 	riIeJeO->prePosIC();
 	Constraint::prePosIC();
+}
+
+MbD::ConstraintType MbD::AtPointConstraintIJ::type()
+{
+	return MbD::displacement;
 }

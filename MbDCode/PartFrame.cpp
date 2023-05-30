@@ -29,14 +29,14 @@ void PartFrame::initializeLocally()
 {
 	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->initializeLocally(); });
 	aGeu->initializeLocally();
-	std::for_each(aGabs->begin(), aGabs->end(), [](const auto& aGab) { aGab->initializeLocally(); });
+	aGabsDo([](const auto& aGab) { aGab->initializeLocally(); });
 }
 
 void PartFrame::initializeGlobally()
 {
 	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->initializeGlobally(); });
 	aGeu->initializeGlobally();
-	std::for_each(aGabs->begin(), aGabs->end(), [](const auto& aGab) { aGab->initializeGlobally(); });
+	aGabsDo([](const auto& aGab) { aGab->initializeGlobally(); });
 }
 void PartFrame::setqX(FColDsptr x) {
 	qX->copyFrom(x);
@@ -90,6 +90,11 @@ EndFrmcptr PartFrame::endFrame(std::string name)
 	return (*match)->endFrames->at(0);
 }
 
+void MbD::PartFrame::aGabsDo(const std::function<void(std::shared_ptr<AbsConstraint>)>& f)
+{
+	std::for_each(aGabs->begin(), aGabs->end(), f);
+}
+
 void MbD::PartFrame::prePosIC()
 {
 //iqX = -1;
@@ -115,6 +120,12 @@ FColFMatDsptr MbD::PartFrame::pAOppE()
 	return qE->pApE;
 }
 
+void MbD::PartFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+	aGeu->fillEssenConstraints(aGeu, essenConstraints);
+	aGabsDo([&](const auto& con) { con->fillEssenConstraints(con, essenConstraints); });
+}
+
 void PartFrame::asFixed()
 {
 	for (size_t i = 0; i < 6; i++) {
@@ -126,6 +137,12 @@ void PartFrame::asFixed()
 
 void MbD::PartFrame::postInput()
 {
+	//qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
+	//qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
+	Item::postInput();
+	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->postInput(); });
+	aGeu->postInput();
+	aGabsDo([](const auto& aGab) { aGab->postInput(); });
 }
 
 void MbD::PartFrame::calcPostDynCorrectorIteration()

@@ -3,6 +3,7 @@
 #include "System.h"
 #include "Part.h"
 #include "Joint.h"
+#include "ForceTorqueItem.h"
 #include "SystemSolver.h"
 #include "Time.h"
 #include "CREATE.h"
@@ -22,6 +23,7 @@ void MbD::System::initialize()
 	time = CREATE<Time>::With();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
+	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueItem>>>();
 	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
@@ -39,7 +41,7 @@ void System::runKINEMATICS()
 		initializeGlobally();
 		if (!hasChanged) break;
 	}
-	postInput();
+	partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postInput(); });
 	outputInput();
 	systemSolver->runAllIC();
 	outputInitialConditions();
@@ -63,15 +65,13 @@ void System::initializeLocally()
 {
 	hasChanged = false;
 	time->value = systemSolver->tstart;
-	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeLocally(); });
-	std::for_each(jointsMotions->begin(), jointsMotions->end(), [](const auto& joint) { joint->initializeLocally();	});
+	partsJointsMotionsDo([](const auto& item) { item->initializeLocally(); });
 	systemSolver->initializeLocally();
 }
 
 void System::initializeGlobally()
 {
-	std::for_each(parts->begin(), parts->end(), [](const auto& part) { part->initializeGlobally(); });
-	std::for_each(jointsMotions->begin(), jointsMotions->end(), [](const auto& joint) { joint->initializeGlobally();	});
+	partsJointsMotionsDo([](const auto& item) { item->initializeGlobally(); });
 	systemSolver->initializeGlobally();
 }
 
@@ -80,10 +80,22 @@ std::shared_ptr<std::vector<std::string>> MbD::System::discontinuitiesAtIC()
 	return std::shared_ptr<std::vector<std::string>>();
 }
 
+void MbD::System::jointsMotionsDo(const std::function<void(std::shared_ptr<Joint>)>& f)
+{
+	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+}
+
 void MbD::System::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+}
+
+void MbD::System::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	std::for_each(parts->begin(), parts->end(), f);
+	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);
 }
 
 void MbD::System::logString(std::string& str)
@@ -94,4 +106,25 @@ void MbD::System::logString(std::string& str)
 double MbD::System::mbdTimeValue()
 {
 	return time->getValue();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::essentialConstraints2()
+{
+	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	this->partsJointsMotionsDo([&](const auto& item) { item->fillEssenConstraints(essenConstraints); });
+	return essenConstraints;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::displacementConstraints()
+{
+	auto dispConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	this->jointsMotionsDo([&](const auto& joint) { joint->fillDispConstraints(dispConstraints); });
+	return dispConstraints;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::perpendicularConstraints2()
+{
+	auto perpenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	this->jointsMotionsDo([&](const auto& joint) { joint->fillPerpenConstraints(perpenConstraints); });
+	return perpenConstraints;
 }

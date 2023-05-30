@@ -7,6 +7,8 @@
 
 namespace MbD {
 
+	class Constraint;
+
 	class Item
 	{
 		//name
@@ -31,6 +33,7 @@ namespace MbD {
 		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos);
 		virtual void fillPosKineError(FColDsptr col);
 		virtual void fillPosKineJacob(FMatDsptr mat);
+		virtual void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
 
 		void setName(std::string& str);
 		const std::string& getName() const;

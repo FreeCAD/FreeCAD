@@ -19,6 +19,8 @@ namespace MbD {
 	class Joint;
 	class SystemSolver;
 	class Time;
+	class Constraint;
+	class ForceTorqueItem;
 
 	class System : public Item
 	{
@@ -38,13 +40,19 @@ namespace MbD {
 		void outputInitialConditions();
 		void outputTimeSeries();
 		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
+		void jointsMotionsDo(const std::function <void(std::shared_ptr<Joint>)>& f);
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void logString(std::string& str);
 		double mbdTimeValue();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints2();
 
 
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
+		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueItem>>> forcesTorques;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
 		void addPart(std::shared_ptr<Part> part);

@@ -34,16 +34,23 @@ void Joint::initializeLocally()
 			frmI = frmIqc->endFrameqct;
 		}
 	}
-	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->initializeLocally(); });
+	constraintsDo([](const auto& constraint) { constraint->initializeLocally(); });
 }
 
 void Joint::initializeGlobally()
 {
-	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->initializeGlobally(); });
+	constraintsDo([](const auto& constraint) { constraint->initializeGlobally(); });
+}
+
+void MbD::Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
+{
+	std::for_each(constraints->begin(), constraints->end(), f);
 }
 
 void MbD::Joint::postInput()
 {
+	constraintsDo([](const auto& constraint) { constraint->postInput(); });
+
 }
 
 void MbD::Joint::addConstraint(std::shared_ptr<Constraint> con)
@@ -54,5 +61,20 @@ void MbD::Joint::addConstraint(std::shared_ptr<Constraint> con)
 
 void MbD::Joint::prePosIC()
 {
-	std::for_each(constraints->begin(), constraints->end(), [](const auto& constraint) { constraint->prePosIC(); });
+	constraintsDo([](const auto& constraint) { constraint->prePosIC(); });
+}
+
+void MbD::Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+	constraintsDo([&](const auto& con) { con->fillEssenConstraints(con, essenConstraints); });
+}
+
+void MbD::Joint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
+{
+	constraintsDo([&](const auto& con) { con->fillDispConstraints(con, dispConstraints); });
+}
+
+void MbD::Joint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
+{
+	constraintsDo([&](const auto& con) { con->fillPerpenConstraints(con, perpenConstraints); });
 }

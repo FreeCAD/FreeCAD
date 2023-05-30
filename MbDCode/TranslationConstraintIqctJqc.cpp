@@ -13,3 +13,8 @@ void MbD::TranslationConstraintIqctJqc::initriIeJeIe()
 {
 	riIeJeIe = CREATE<DispCompIeqctJeqcKeqct>::With(frmI, frmJ, frmI, axisI);
 }
+
+MbD::ConstraintType MbD::TranslationConstraintIqctJqc::type()
+{
+	return MbD::essential;
+}

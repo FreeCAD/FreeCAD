@@ -76,6 +76,8 @@ void Part::asFixed()
 
 void MbD::Part::postInput()
 {
+	partFrame->postInput();
+	Item::postInput();
 }
 
 void MbD::Part::calcPostDynCorrectorIteration()
@@ -96,4 +98,9 @@ void MbD::Part::iqE(int eqnNo)
 {
 	partFrame->iqE = eqnNo;
 
+}
+
+void MbD::Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+	partFrame->fillEssenConstraints(essenConstraints);
 }

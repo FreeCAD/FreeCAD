@@ -36,6 +36,7 @@ namespace MbD {
 		void prePosIC() override;
 		void iqX(int eqnNo);
 		void iqE(int eqnNo);
+		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 
 		int ipX = -1; 
 		int ipE = -1; 

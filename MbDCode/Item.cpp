@@ -57,6 +57,10 @@ void MbD::Item::fillPosKineJacob(FMatDsptr mat)
 {
 }
 
+void MbD::Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+}
+
 void MbD::Item::constraintsReport()
 {
 }

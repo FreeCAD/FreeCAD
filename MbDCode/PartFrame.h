@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <functional>
 
 #include "CartesianFrame.h"
 #include "EndFramec.h"
@@ -42,11 +43,13 @@ namespace MbD {
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmcptr endFrame(std::string name);
+		void aGabsDo(const std::function <void(std::shared_ptr<AbsConstraint>)>& f);
 
 		void prePosIC() override;
 		FColDsptr rOpO();
 		FMatDsptr aAOp();
 		FColFMatDsptr pAOppE();
+		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 
 		Part* part = nullptr;
 		int iqX = -1;

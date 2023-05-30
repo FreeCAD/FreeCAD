@@ -27,3 +27,8 @@ void MbD::AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
 	ppGpEIpEI = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOpEIpEI;
 	AtPointConstraintIqcJqc::calcPostDynCorrectorIteration();
 }
+
+MbD::ConstraintType MbD::AtPointConstraintIqctJqc::type()
+{
+	return MbD::essential;
+}
