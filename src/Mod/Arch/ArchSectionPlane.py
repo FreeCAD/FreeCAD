@@ -55,16 +55,16 @@ else:
 
 ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
 
-def makeSectionPlane(objectslist=None,name="Section"):
+def makeSectionPlane(objectslist=None,name=None):
 
-    """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
+    """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the
     given objects. If no object is given, the whole document will be considered."""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
-    obj.Label = translate("Arch",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Section")
+    obj.Label = name if name else translate("Arch","Section")
     _SectionPlane(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSectionPlane(obj.ViewObject)

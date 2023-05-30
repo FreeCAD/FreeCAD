@@ -195,14 +195,14 @@ BuildingTypes = ['Undefined',
 ]
 
 
-def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
+def makeBuildingPart(objectslist=None,baseobj=None,name=None):
 
-    '''makeBuildingPart(objectslist): creates a buildingPart including the
+    '''makeBuildingPart([objectslist],[name]): creates a buildingPart including the
     objects from the given list.'''
 
     obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython","BuildingPart")
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
-    obj.Label = translate("Arch","BuildingPart")
+    obj.Label = name if name else translate("Arch","BuildingPart")
     BuildingPart(obj)
     obj.IfcType = "Building Element Part"
     if FreeCAD.GuiUp:
@@ -212,22 +212,22 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
     return obj
 
 
-def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+def makeFloor(objectslist=None,baseobj=None,name=None):
 
     """overwrites ArchFloor.makeFloor"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","Floor")
     obj.IfcType = "Building Storey"
     return obj
 
 
-def makeBuilding(objectslist=None,baseobj=None,name="Building"):
+def makeBuilding(objectslist=None,baseobj=None,name=None):
 
     """overwrites ArchBuilding.makeBuilding"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","Building")
     obj.IfcType = "Building"
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
     obj.BuildingType = BuildingTypes

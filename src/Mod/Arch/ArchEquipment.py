@@ -49,20 +49,20 @@ else:
 #  or hydraulic appliances in a building
 
 
-def makeEquipment(baseobj=None,placement=None,name="Equipment"):
+def makeEquipment(baseobj=None,placement=None,name=None):
 
-    "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object."
+    "makeEquipment([baseobj],[placement],[name]): creates an equipment object from the given base object."
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Equipment")
+    obj.Label = name if name else translate("Arch","Equipment")
     _Equipment(obj)
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Mesh = baseobj
         else:
             obj.Base = baseobj
-    obj.Label = translate("Arch",name)
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
