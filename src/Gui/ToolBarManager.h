@@ -44,7 +44,8 @@ public:
         Hidden,      // toolbar hidden by default, visibility toggle action is enabled
         Unavailable, // toolbar visibility is managed independently by client code and defaults to
                      // hidden, visibility toggle action is disabled by default (it is unavailable
-                     // to the UI).
+                     // to the UI). Upon being forced to be available, these toolbars default to
+                     // visible.
     };
 
     ToolBarItem();

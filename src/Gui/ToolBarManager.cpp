@@ -536,7 +536,16 @@ void ToolBarManager::setState(const QString& name, State state)
 
             tb->toggleViewAction()->setVisible(true);
 
-            showhide(tb, policy);
+            // Unavailable policy defaults to a Visible toolbars when made available
+            auto show = visibility( policy == ToolBarItem::DefaultVisibility::Visible ||
+                                    policy == ToolBarItem::DefaultVisibility::Unavailable);
+
+            if(show) {
+                tb->show();
+            }
+            else {
+                tb->hide();
+            }
         }
         else if (state == State::ForceHidden) {
             tb->toggleViewAction()->setVisible(false); // not visible in context menus
