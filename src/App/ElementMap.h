@@ -278,9 +278,11 @@ private:
 
     mutable unsigned _id = 0;
 
+    void init();
+
+public:
     /// String hasher for element name shortening
     App::StringHasherRef hasher;
-    void init();
 };
 
 

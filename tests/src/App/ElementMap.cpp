@@ -2,8 +2,8 @@
 
 #include "gtest/gtest.h"
 
-#include "App/ElementMap.h"
 #include <App/Application.h>
+#include <App/ElementMap.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -12,7 +12,7 @@
 class LessComplexPart
 {
 public:
-    LessComplexPart(long tag, const std::string& nameStr)
+    LessComplexPart(long tag, const std::string& nameStr, App::StringHasherRef hasher)
         : elementMapPtr(std::make_shared<Data::ElementMap>())
         , Tag(tag)
         , name(nameStr)
@@ -20,12 +20,13 @@ public:
         // object also have Vertexes etc and the face count varies; but that is not important
         // here since we are not testing a real model
         // the "MappedName" is left blank for now
-        auto face1 = Data::IndexedName("Face", 1);
-        auto face2 = Data::IndexedName("Face", 2);
-        auto face3 = Data::IndexedName("Face", 3);
-        auto face4 = Data::IndexedName("Face", 4);
-        auto face5 = Data::IndexedName("Face", 5);
-        auto face6 = Data::IndexedName("Face", 6);
+        Data::IndexedName face1("Face", 1);
+        Data::IndexedName face2("Face", 2);
+        Data::IndexedName face3("Face", 3);
+        Data::IndexedName face4("Face", 4);
+        Data::IndexedName face5("Face", 5);
+        Data::IndexedName face6("Face", 6);
+        elementMapPtr->hasher = hasher;
         elementMapPtr->setElementName(face1, Data::MappedName(face1), Tag);
         elementMapPtr->setElementName(face2, Data::MappedName(face2), Tag);
         elementMapPtr->setElementName(face3, Data::MappedName(face3), Tag);
@@ -53,13 +54,15 @@ protected:
     void SetUp() override
     {
         App::GetApplication().newDocument("test", "testUser");
-        sids = &_sid;
+        _sids = &_sid;
+        _hasher = Base::Reference<App::StringHasher>(new App::StringHasher);
     }
 
     // void TearDown() override {}
 
     Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* sids;
+    QVector<App::StringIDRef>* _sids;
+    App::StringHasherRef _hasher;
 };
 
 TEST_F(ElementMapTest, defaultConstruction)
@@ -79,7 +82,7 @@ TEST_F(ElementMapTest, setElementNameDefaults)
     Data::MappedName mappedName("TEST");
 
     // Act
-    auto resultName = elementMap.setElementName(element, mappedName, 0, sids);
+    auto resultName = elementMap.setElementName(element, mappedName, 0, _sids);
     auto mappedToElement = elementMap.find(element);
 
     // Assert
@@ -99,7 +102,7 @@ TEST_F(ElementMapTest, setElementNameWithHashing)
     // Act
     elementMap.encodeElementName(
         element.getType()[0], elementNameHolder, ss, nullptr, 0, nullptr, 0);
-    auto resultName = elementMap.setElementName(element, elementNameHolder, 0, sids);
+    auto resultName = elementMap.setElementName(element, elementNameHolder, 0, _sids);
     auto mappedToElement = elementMap.find(element);
 
     // Assert
@@ -114,7 +117,7 @@ TEST_F(ElementMapTest, mimicOnePart)
     //   for a single part, there is no "naming algo" to speak of
     std::ostringstream ss;
     auto docName = "Unnamed";
-    LessComplexPart cube(1L, "Box");
+    LessComplexPart cube(1L, "Box", _hasher);
 
     // Act
     auto children = cube.elementMapPtr->getAll();
@@ -146,9 +149,9 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
     std::ostringstream finalSs;
     char* docName = "Unnamed";
 
-    LessComplexPart cube(1L, "Box");
-    LessComplexPart cylinder(2L, "Cylinder");
-    LessComplexPart unionPart(3L, "Fusion");// Union (Fusion) operation via the Part Workbench
+    LessComplexPart cube(1L, "Box", _hasher);
+    LessComplexPart cylinder(2L, "Cylinder", _hasher);
+    LessComplexPart unionPart(3L, "Fusion", _hasher);// Union (Fusion) operation via the Part Workbench
 
     // we are only going to simulate one face for testing purpose
     Data::IndexedName uface3("Face", 3);
@@ -195,6 +198,131 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
     // ",F" means are of type "F" which is short for "Face" of Face3 of Fusion.
     // "." we are done with the second part
     // "Face3" is the localized name
+}
+
+TEST_F(ElementMapTest, mimicOperationAgainstSelf)
+{
+    // Arrange
+    //   pattern: new doc, create Cube, Mystery Op with self as target
+    std::ostringstream ss;
+    LessComplexPart finalPart(99L, "MysteryOp", _hasher);
+    // we are only going to simulate one face for testing purpose
+    Data::IndexedName uface3("Face", 3);
+    auto PartOp = "MYS";
+    auto ownFace6 = finalPart.elementMapPtr->getAll()[5];
+    Data::MappedName uface3Holder(ownFace6.index);
+    auto workbenchId = std::string(Data::POSTFIX_MOD) + "9999";
+
+    // Act
+    //   act: with the mystery op, name against its own Face6 for some reason
+    Data::MappedName postfixHolder(workbenchId);
+    finalPart.elementMapPtr->encodeElementName(
+        postfixHolder[0], postfixHolder, ss, nullptr, finalPart.Tag, nullptr, finalPart.Tag);
+    auto postfixStr = postfixHolder.toString() + Data::ELEMENT_MAP_PREFIX + PartOp;
+    // we will invoke the encoder for face 3
+    finalPart.elementMapPtr->encodeElementName(
+        uface3Holder[0], uface3Holder, ss, nullptr, finalPart.Tag, postfixStr.c_str(), finalPart.Tag);
+    finalPart.elementMapPtr->setElementName(uface3, uface3Holder, finalPart.Tag, nullptr, false); // override not forced
+
+    // Assert
+    EXPECT_EQ(postfixStr, ":M9999;MYS");
+    EXPECT_EQ(finalPart.elementMapPtr->find(uface3).toString(), "Face3"); // the override was not forced
+    EXPECT_EQ(uface3Holder.toString(), "Face6;:M9999;MYS;:H63:b,F");
+    // explaining ";Face6;:M2;MYS;:H2:3,F" name:
+    //
+    // ";Face6" means default inheritance comes from face 6 of the ownFace6 (which is itself)
+    // ";:M9999" means that a Workbench op has happened. "M" is the "Mod" directory in the source tree?
+    // ";MYS" means that a "Mystery" operation has happened. Notice the lack of a colon.
+    // ";:H63" means the subtending object (cylinder) has a tag of 99 (63 in hex)
+    // ":b" means the writing position is b (hex); literally how far into the current postfix we are
+    // ",F" means are of type "F" which is short for "Face" of Face3 of Fusion.
+}
+
+TEST_F(ElementMapTest, hasChildElementMapTest)
+{
+    // Arrange
+    auto child = (Data::ElementMap::MappedChildElements) {
+        Data::IndexedName("face", 1),
+        2,
+        7,
+        4L,
+        Data::ElementMapPtr(),
+        QByteArray("")
+    };
+    std::vector<Data::ElementMap::MappedChildElements> children = { child };
+    LessComplexPart cubeFull(3L, "FullBox", _hasher);
+    cubeFull.elementMapPtr->addChildElements(cubeFull.Tag, children);
+    //
+    LessComplexPart cubeWithoutChildren(2L, "EmptyBox", _hasher);
+
+    // Act
+    bool resultFull = cubeFull.elementMapPtr->hasChildElementMap();
+    bool resultWhenEmpty = cubeWithoutChildren.elementMapPtr->hasChildElementMap();
+
+    // Assert
+    EXPECT_TRUE(resultFull);
+    EXPECT_FALSE(resultWhenEmpty);
+}
+
+TEST_F(ElementMapTest, hashChildMapsTest)
+{
+    // Arrange
+    LessComplexPart cube(1L, "Box", _hasher);
+    auto childOneName = Data::IndexedName("Ping", 1);
+    auto childOne = (Data::ElementMap::MappedChildElements) {
+        childOneName,
+        2,
+        7,
+        3L,
+        Data::ElementMapPtr(),
+        QByteArray("abcdefghij"), // postfix must be 10 or more bytes to invoke hasher
+        _sid
+    };
+    std::vector<Data::ElementMap::MappedChildElements> children = { childOne };
+    cube.elementMapPtr->addChildElements(cube.Tag, children);
+    auto before = _hasher->getIDMap();
+
+    // Act
+    cube.elementMapPtr->hashChildMaps(cube.Tag);
+
+    // Assert
+    auto after = _hasher->getIDMap();
+    EXPECT_EQ(before.size(), 0);
+    EXPECT_EQ(after.size(), 1);
+}
+
+TEST_F(ElementMapTest, addAndGetChildElementsTest)
+{
+    // Arrange
+    LessComplexPart cube(1L, "Box", _hasher);
+    auto childOne = (Data::ElementMap::MappedChildElements) {
+        Data::IndexedName("Ping", 1),
+        2,
+        7,
+        3L,
+        Data::ElementMapPtr(),
+        QByteArray("abcdefghij"), // postfix must be 10 or more bytes to invoke hasher
+        _sid
+    };
+    auto childTwo = (Data::ElementMap::MappedChildElements) {
+        Data::IndexedName("Pong", 2),
+        2,
+        7,
+        4L,
+        Data::ElementMapPtr(),
+        QByteArray("abc"),
+        _sid
+    };
+    std::vector<Data::ElementMap::MappedChildElements> children = { childOne, childTwo };
+
+    // Act
+    cube.elementMapPtr->addChildElements(cube.Tag, children);
+    auto result = cube.elementMapPtr->getChildElements();
+
+    // Assert
+    EXPECT_EQ(result.size(), 2);
+    EXPECT_TRUE(std::any_of(result.begin(), result.end(), [](Data::ElementMap::MappedChildElements e){return e.indexedName.toString()=="Ping1";}));
+    EXPECT_TRUE(std::any_of(result.begin(), result.end(), [](Data::ElementMap::MappedChildElements e){return e.indexedName.toString()=="Pong2";}));
 }
 
 // NOLINTEND(readability-magic-numbers)
