@@ -400,7 +400,6 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setAcceptDrops(true);
     this->setDropIndicatorShown(false);
     this->setDragDropMode(QTreeWidget::InternalMove);
-    this->setRootIsDecorated(false);
     this->setColumnCount(2);
     this->setItemDelegate(new TreeWidgetEditDelegate(this));
 
@@ -487,8 +486,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     });
 
     // Add the first main label
-    this->rootItem = new QTreeWidgetItem(this);
-    this->rootItem->setFlags(Qt::ItemIsEnabled);
+    this->rootItem = invisibleRootItem();
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -2769,7 +2767,6 @@ void TreeWidget::setupText()
 {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->headerItem()->setText(1, tr("Description"));
-    this->rootItem->setText(0, tr("Application"));
 
     this->showHiddenAction->setText(tr("Show items hidden in tree view"));
     this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
