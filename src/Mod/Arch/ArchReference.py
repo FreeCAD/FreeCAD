@@ -664,7 +664,7 @@ class ArchReferenceTaskPanel:
         self.openButton.setText("Open")
         if not self.obj.File:
             self.openButton.setEnabled(False)
-        l2 = QtGui.QHBoxLayout(self.form)
+        l2 = QtGui.QHBoxLayout()
         layout.addLayout(l2)
         l2.addWidget(self.fileButton)
         l2.addWidget(self.openButton)
