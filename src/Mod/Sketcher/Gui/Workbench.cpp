@@ -517,8 +517,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
 template<>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
 {
-    bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-            << "Sketcher_BSplineConvertToNURBS"
+    bspline << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_CompModifyKnotMultiplicity"
@@ -532,13 +531,17 @@ inline void SketcherAddWorkbenchVirtualSpace(T& virtualspace);
 template<>
 inline void SketcherAddWorkbenchVirtualSpace<Gui::MenuItem>(Gui::MenuItem& virtualspace)
 {
-    virtualspace << "Sketcher_SwitchVirtualSpace";
+    virtualspace << "Sketcher_SwitchVirtualSpace"
+                 << "Sketcher_CompBSplineShowHideGeometryInformation"
+                 << "Sketcher_ArcOverlay";
 }
 
 template<>
 inline void SketcherAddWorkbenchVirtualSpace<Gui::ToolBarItem>(Gui::ToolBarItem& virtualspace)
 {
-    virtualspace << "Sketcher_SwitchVirtualSpace";
+    virtualspace << "Sketcher_SwitchVirtualSpace"
+                 << "Sketcher_CompBSplineShowHideGeometryInformation"
+                 << "Sketcher_ArcOverlay";
 }
 
 template<typename T>

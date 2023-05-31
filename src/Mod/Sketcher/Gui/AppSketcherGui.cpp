@@ -47,6 +47,7 @@ void CreateSketcherCommandsConstraints();
 void CreateSketcherCommandsConstraintAccel();
 void CreateSketcherCommandsAlterGeo();
 void CreateSketcherCommandsBSpline();
+void CreateSketcherCommandsOverlay();
 void CreateSketcherCommandsVirtualSpace();
 
 void loadSketcherResource()
@@ -116,6 +117,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     CreateSketcherCommandsAlterGeo();
     CreateSketcherCommandsConstraintAccel();
     CreateSketcherCommandsBSpline();
+    CreateSketcherCommandsOverlay();
     CreateSketcherCommandsVirtualSpace();
 
     SketcherGui::Workbench::init();
