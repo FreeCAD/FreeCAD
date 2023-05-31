@@ -30,11 +30,13 @@
 
 #include <App/Document.h>
 #include <Base/AxisPy.h>
+#include <Base/EnhancedPythonExceptions.h>
 #include <Base/QuantityPy.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/LinePy.h>
+
 
 #include "PythonConverter.h"
 
@@ -49,6 +51,8 @@
 
 
 using namespace Sketcher;
+
+using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
 std::string SketchObjectPy::representation() const
@@ -101,9 +105,10 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                 ret = this->getSketchObjectPtr()->addGeometry(&aoe, isConstruction);
             }
             else {
-                std::stringstream str;
-                str << "Unsupported geometry type: " << geo->getTypeId().getName();
-                PyErr_SetString(PyExc_TypeError, str.str().c_str());
+                PyError_SetEnhancedString(
+                    PyExc_TypeError,
+                    QT_TRANSLATE_NOOP("Notifications", "Unsupported geometry type: {}"),
+                    geo->getTypeId().getName());
                 return nullptr;
             }
         }
@@ -119,9 +124,10 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
             ret = this->getSketchObjectPtr()->addGeometry(geo, isConstruction);
         }
         else {
-            std::stringstream str;
-            str << "Unsupported geometry type: " << geo->getTypeId().getName();
-            PyErr_SetString(PyExc_TypeError, str.str().c_str());
+            PyError_SetEnhancedString(
+                PyExc_TypeError,
+                QT_TRANSLATE_NOOP("Notifications", "Unsupported geometry type: {}"),
+                geo->getTypeId().getName());
             return nullptr;
         }
         return Py::new_reference_to(Py::Long(ret));
@@ -157,9 +163,10 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                         tmpList.push_back(aoe);
                     }
                     else {
-                        std::stringstream str;
-                        str << "Unsupported geometry type: " << geo->getTypeId().getName();
-                        PyErr_SetString(PyExc_TypeError, str.str().c_str());
+                        PyError_SetEnhancedString(
+                            PyExc_TypeError,
+                            QT_TRANSLATE_NOOP("Notifications", "Unsupported geometry type: {}"),
+                            geo->getTypeId().getName());
                         return nullptr;
                     }
                 }
@@ -175,9 +182,10 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                     geoList.push_back(geo);
                 }
                 else {
-                    std::stringstream str;
-                    str << "Unsupported geometry type: " << geo->getTypeId().getName();
-                    PyErr_SetString(PyExc_TypeError, str.str().c_str());
+                    PyError_SetEnhancedString(
+                        PyExc_TypeError,
+                        QT_TRANSLATE_NOOP("Notifications", "Unsupported geometry type: {}"),
+                        geo->getTypeId().getName());
                     return nullptr;
                 }
             }
@@ -206,9 +214,11 @@ PyObject* SketchObjectPy::delGeometry(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->delGeometry(Index)) {
-        std::stringstream str;
-        str << "Not able to delete a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to delete a geometry with the given index: {}"),
+            Index);
         return nullptr;
     }
 
@@ -232,9 +242,9 @@ PyObject* SketchObjectPy::delGeometries(PyObject* args)
         }
 
         if (this->getSketchObjectPtr()->delGeometries(geoIdList)) {
-            std::stringstream str;
-            str << "Not able to delete geometries";
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications", "Not able to delete geometries"));
             return nullptr;
         }
 
@@ -252,9 +262,8 @@ PyObject* SketchObjectPy::deleteAllGeometry(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->deleteAllGeometry()) {
-        std::stringstream str;
-        str << "Unable to delete Geometry";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError, QT_TRANSLATE_NOOP("Notifications", "Not able to delete geometries"));
         return nullptr;
     }
 
@@ -267,9 +276,8 @@ PyObject* SketchObjectPy::deleteAllConstraints(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->deleteAllConstraints()) {
-        std::stringstream str;
-        str << "Unable to delete Constraints";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError, QT_TRANSLATE_NOOP("Notifications", "Unable to delete Constraints"));
         return nullptr;
     }
 
@@ -284,9 +292,11 @@ PyObject* SketchObjectPy::toggleConstruction(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->toggleConstruction(Index)) {
-        std::stringstream str;
-        str << "Not able to toggle a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to toggle a geometry with the given index: {}"),
+            Index);
         return nullptr;
     }
 
@@ -301,9 +311,12 @@ PyObject* SketchObjectPy::setConstruction(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->setConstruction(Index, Base::asBoolean(Mode))) {
-        std::stringstream str;
-        str << "Not able to set construction mode of a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP(
+                "Notifications",
+                "Not able to set construction mode of a geometry with the given index: {}"),
+            Index);
         return nullptr;
     }
 
@@ -321,9 +334,12 @@ PyObject* SketchObjectPy::getConstruction(PyObject* args)
     if (gf)
         return Py::new_reference_to(Py::Boolean(gf->getConstruction()));
 
-    std::stringstream str;
-    str << "Not able to retrieve construction mode of a geometry with the given index: " << Index;
-    PyErr_SetString(PyExc_ValueError, str.str().c_str());
+    PyError_SetEnhancedString(
+        PyExc_ValueError,
+        QT_TRANSLATE_NOOP(
+            "Notifications",
+            "Not able to retrieve construction mode of a geometry with the given index: {}"),
+        Index);
     return nullptr;
 }
 
@@ -337,7 +353,9 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
         Sketcher::Constraint* constr =
             static_cast<Sketcher::ConstraintPy*>(pcObj)->getConstraintPtr();
         if (!this->getSketchObjectPtr()->evaluateConstraint(constr)) {
-            PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
+            PyError_SetEnhancedString(
+                PyExc_IndexError,
+                QT_TRANSLATE_NOOP("Notifications", "Constraint has invalid indexes"));
             return nullptr;
         }
         int ret = this->getSketchObjectPtr()->addConstraint(constr);
@@ -379,7 +397,7 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
 
         for (std::vector<Constraint*>::iterator it = values.begin(); it != values.end(); ++it) {
             if (!this->getSketchObjectPtr()->evaluateConstraint(*it)) {
-                PyErr_SetString(
+                PyError_SetEnhancedString(
                     PyExc_IndexError,
                     QT_TRANSLATE_NOOP(
                         "Notifications",
@@ -397,9 +415,13 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
         return Py::new_reference_to(tuple);
     }
 
-    std::string error = std::string("type must be 'Constraint' or list of 'Constraint', not ");
-    error += pcObj->ob_type->tp_name;
-    throw Py::TypeError(error);
+    PyError_SetEnhancedString(
+        PyExc_TypeError,
+        QT_TRANSLATE_NOOP("Notifications",
+                          "type must be 'Constraint' or list of 'Constraint', not {}"),
+        pcObj->ob_type->tp_name);
+
+    return nullptr;
 }
 
 PyObject* SketchObjectPy::delConstraint(PyObject* args)
@@ -409,9 +431,11 @@ PyObject* SketchObjectPy::delConstraint(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->delConstraint(Index)) {
-        std::stringstream str;
-        str << "Not able to delete a constraint with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to delete a constraint with the given index: {}"),
+            Index);
         return nullptr;
     }
 
@@ -429,18 +453,22 @@ PyObject* SketchObjectPy::renameConstraint(PyObject* args)
     PyMem_Free(utf8Name);
 
     if (this->getSketchObjectPtr()->Constraints.getSize() <= Index) {
-        std::stringstream str;
-        str << "Not able to rename a constraint with the given index: " << Index;
-        PyErr_SetString(PyExc_IndexError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_IndexError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to rename a constraint with the given index: {}"),
+            Index);
         return nullptr;
     }
 
     if (!Name.empty()) {
 
         if (!Sketcher::PropertyConstraintList::validConstraintName(Name)) {
-            std::stringstream str;
-            str << "Invalid constraint name with the given index: " << Index;
-            PyErr_SetString(PyExc_IndexError, str.str().c_str());
+            PyError_SetEnhancedString(
+                PyExc_IndexError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Invalid constraint name with the given index: {}"),
+                Index);
             return nullptr;
         }
 
@@ -448,7 +476,9 @@ PyObject* SketchObjectPy::renameConstraint(PyObject* args)
             getSketchObjectPtr()->Constraints.getValues();
         for (std::size_t i = 0; i < vals.size(); ++i) {
             if (static_cast<int>(i) != Index && Name == vals[i]->Name) {
-                PyErr_SetString(PyExc_ValueError, "Duplicate constraint not allowed");
+                PyError_SetEnhancedString(
+                    PyExc_ValueError,
+                    QT_TRANSLATE_NOOP("Notifications", "Duplicate constraint not allowed"));
                 return nullptr;
             }
         }
@@ -469,7 +499,8 @@ PyObject* SketchObjectPy::getIndexByName(PyObject* args)
     PyMem_Free(utf8Name);
 
     if (Name.empty()) {
-        PyErr_SetString(PyExc_ValueError, "Passed string is empty");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Passed string is empty"));
         return nullptr;
     }
 
@@ -480,7 +511,9 @@ PyObject* SketchObjectPy::getIndexByName(PyObject* args)
         }
     }
 
-    PyErr_SetString(PyExc_LookupError, "No such constraint found");
+    PyError_SetEnhancedString(PyExc_LookupError,
+                              QT_TRANSLATE_NOOP("Notifications", "No such constraint found"));
+
     return nullptr;
 }
 
@@ -495,25 +528,29 @@ PyObject* SketchObjectPy::carbonCopy(PyObject* args)
     App::DocumentObject* Obj = skObj->getDocument()->getObject(ObjectName);
 
     if (!Obj) {
-        std::stringstream str;
-        str << ObjectName << " does not exist in the document";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "{} does not exist in the document"),
+            ObjectName);
         return nullptr;
     }
     // check if this type of external geometry is allowed
     if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)
         && (Obj->getTypeId() != Sketcher::SketchObject::getClassTypeId())) {
-        std::stringstream str;
-        str << ObjectName << " is not allowed for a carbon copy operation in this sketch";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "{} is not allowed for a carbon copy operation in this sketch"),
+            ObjectName);
         return nullptr;
     }
 
     // add the external
     if (skObj->carbonCopy(Obj, Base::asBoolean(construction)) < 0) {
-        std::stringstream str;
-        str << "Not able to add the requested geometry";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Not able to add the requested geometry"));
         return nullptr;
     }
 
@@ -531,24 +568,27 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
     Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
     App::DocumentObject* Obj = skObj->getDocument()->getObject(ObjectName);
     if (!Obj) {
-        std::stringstream str;
-        str << ObjectName << " does not exist in the document";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "{} does not exist in the document"),
+            ObjectName);
         return nullptr;
     }
     // check if this type of external geometry is allowed
     if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)) {
-        std::stringstream str;
-        str << ObjectName << " is not allowed as external geometry of this sketch";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "{} is not allowed as external geometry of this sketch"),
+            ObjectName);
         return nullptr;
     }
 
     // add the external
     if (skObj->addExternal(Obj, SubName) < 0) {
-        std::stringstream str;
-        str << "Not able to add external shape element";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Not able to add external shape element"));
         return nullptr;
     }
 
@@ -562,9 +602,11 @@ PyObject* SketchObjectPy::delExternal(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->delExternal(Index)) {
-        std::stringstream str;
-        str << "Not able to delete an external geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to delete an external geometry with the given index: {}"),
+            Index);
         return nullptr;
     }
 
@@ -582,23 +624,31 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject* args)
         // This is the whole range of valid positions
         if (this->getSketchObjectPtr()->delConstraintOnPoint(
                 Index, static_cast<Sketcher::PointPos>(pos))) {
-            std::stringstream str;
-            str << "Not able to delete a constraint on point with the given index: " << Index
-                << " and position: " << pos;
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Not able to delete a constraint on point with the given index: "
+                                  "{}  and position: {}"),
+                Index,
+                pos);
             return nullptr;
         }
     }
     else if (pos == -1) {
         if (this->getSketchObjectPtr()->delConstraintOnPoint(Index)) {
-            std::stringstream str;
-            str << "Not able to delete a constraint on point with the given index: " << Index;
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Not able to delete a constraint on point with the given index: {}"),
+                Index);
             return nullptr;
         }
     }
     else {
-        PyErr_SetString(PyExc_ValueError, "Wrong PointPos argument");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Wrong PointPos argument"));
         return nullptr;
     }
 
@@ -661,9 +711,10 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
                 break;
             }
             else {
-                std::stringstream str;
-                str << "Invalid constraint name: '" << constrName << "'";
-                PyErr_SetString(PyExc_ValueError, str.str().c_str());
+                PyError_SetEnhancedString(
+                    PyExc_ValueError,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid constraint name: '{}'"),
+                    constrName);
                 return nullptr;
             }
         }
@@ -688,39 +739,75 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
                 break;
             }
             else {
-                std::stringstream str;
-                str << "Invalid constraint name: '" << constrName << "'";
-                PyErr_SetString(PyExc_ValueError, str.str().c_str());
+                PyError_SetEnhancedString(
+                    PyExc_ValueError,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid constraint name: '{}'"),
+                    constrName);
                 return nullptr;
             }
         }
 
         // error handling
-        PyErr_SetString(PyExc_TypeError, "Wrong arguments");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Wrong arguments"));
+
         return nullptr;
     } while (false);
 
     int err = this->getSketchObjectPtr()->setDatum(Index, Datum);
     if (err) {
-        std::stringstream str;
-        if (err == -1)
-            str << "Invalid constraint index: " << Index;
-        else if (err == -3)
-            str << "Cannot set the datum because the sketch contains conflicting constraints";
-        else if (err == -2)
-            str << "Datum " << (const char*)Quantity.getUserString().toUtf8()
-                << " for the constraint with index " << Index << " is invalid";
-        else if (err == -4)
-            str << "Negative datum values are not valid for the constraint with index " << Index;
-        else if (err == -5)
-            str << "Zero is not a valid datum for the constraint with index " << Index;
-        else if (err == -6)
-            str << "Cannot set the datum because of invalid geometry";
-        else
-            str << "Unexpected problem at setting datum "
-                << (const char*)Quantity.getUserString().toUtf8()
-                << " for the constraint with index " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        if (err == -1) {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications", "Invalid constraint index:  {}"),
+                Index);
+        }
+        else if (err == -3) {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Cannot set the datum because the sketch contains conflicting constraints"));
+        }
+        else if (err == -2) {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Datum {} for the constraint with index {}  is invalid"),
+                (const char*)Quantity.getUserString().toUtf8(),
+                Index);
+        }
+        else if (err == -4) {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Negative datum values are not valid for the constraint with index {}"),
+                Index);
+        }
+        else if (err == -5) {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Zero is not a valid datum for the constraint with index {}"),
+                Index);
+        }
+        else if (err == -6) {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Cannot set the datum because of invalid geometry"));
+        }
+        else {
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Unexpected problem at setting datum {} for the constraint with index {}"),
+                (const char*)Quantity.getUserString().toUtf8(),
+                Index);
+        }
+
         return nullptr;
     }
 
@@ -736,7 +823,8 @@ PyObject* SketchObjectPy::getDatum(PyObject* args)
         int index = 0;
         if (PyArg_ParseTuple(args, "i", &index)) {
             if (index < 0 || index >= static_cast<int>(vals.size())) {
-                PyErr_SetString(PyExc_IndexError, "index out of range");
+                PyError_SetEnhancedString(PyExc_IndexError,
+                                          QT_TRANSLATE_NOOP("Notifications", "Index out of range"));
                 return nullptr;
             }
 
@@ -757,9 +845,10 @@ PyObject* SketchObjectPy::getDatum(PyObject* args)
             }
 
             if (!constr) {
-                std::stringstream str;
-                str << "Invalid constraint name: '" << name << "'";
-                PyErr_SetString(PyExc_NameError, str.str().c_str());
+                PyError_SetEnhancedString(
+                    PyExc_NameError,
+                    QT_TRANSLATE_NOOP("Notifications", "Invalid constraint name: '{}'"),
+                    name);
                 return nullptr;
             }
             else {
@@ -768,14 +857,16 @@ PyObject* SketchObjectPy::getDatum(PyObject* args)
         }
 
         // error handling
-        PyErr_SetString(PyExc_TypeError, "Wrong arguments");
+        PyError_SetEnhancedString(PyExc_TypeError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Wrong arguments"));
         return nullptr;
     } while (false);
 
     ConstraintType type = constr->Type;
     if (type != Distance && type != DistanceX && type != DistanceY && type != Radius
         && type != Diameter && type != Angle) {
-        PyErr_SetString(PyExc_TypeError, "Constraint is not a datum");
+        PyError_SetEnhancedString(PyExc_TypeError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Constraint is not a datum"));
         return nullptr;
     }
 
@@ -801,9 +892,12 @@ PyObject* SketchObjectPy::setDriving(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->setDriving(constrid, Base::asBoolean(driving))) {
-        std::stringstream str;
-        str << "Not able set Driving/reference for constraint with the given index: " << constrid;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_IndexError,
+            QT_TRANSLATE_NOOP(
+                "Notifications",
+                "Not able set Driving/reference for constraint with the given index: {}"),
+            constrid);
         return nullptr;
     }
 
@@ -818,9 +912,10 @@ PyObject* SketchObjectPy::setDatumsDriving(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->setDatumsDriving(Base::asBoolean(driving))) {
-        std::stringstream str;
-        str << "Not able set all dimensionals driving/reference";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able set all datum constraints driving/reference"));
         return nullptr;
     }
 
@@ -833,9 +928,9 @@ PyObject* SketchObjectPy::moveDatumsToEnd(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->moveDatumsToEnd()) {
-        std::stringstream str;
-        str << "Not able move all dimensionals to end";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Not able move all dimensionals to end"));
         return nullptr;
     }
 
@@ -852,7 +947,9 @@ PyObject* SketchObjectPy::getDriving(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->getDriving(constrid, driving)) {
-        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Invalid constraint id: {}"),
+                                  constrid);
         return nullptr;
     }
 
@@ -867,9 +964,11 @@ PyObject* SketchObjectPy::toggleDriving(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->toggleDriving(constrid)) {
-        std::stringstream str;
-        str << "Not able toggle Driving for constraint with the given index: " << constrid;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able toggle driving for constraint with the given index: {}"),
+            constrid);
         return nullptr;
     }
 
@@ -898,8 +997,11 @@ PyObject* SketchObjectPy::setVirtualSpace(PyObject* args)
             int ret = this->getSketchObjectPtr()->setVirtualSpace(constrIds,
                                                                   Base::asBoolean(invirtualspace));
 
-            if (ret == -1)
-                throw Py::TypeError("Impossible to set virtual space!");
+            if (ret == -1) {
+                PyError_SetEnhancedString(
+                    PyExc_TypeError,
+                    QT_TRANSLATE_NOOP("Notifications", "Impossible to set virtual space"));
+            }
         }
         catch (const Base::ValueError& e) {
             throw Py::ValueError(e.getMessage());
@@ -910,10 +1012,13 @@ PyObject* SketchObjectPy::setVirtualSpace(PyObject* args)
     else if (PyLong_Check(id_or_ids)) {
         if (this->getSketchObjectPtr()->setVirtualSpace(PyLong_AsLong(id_or_ids),
                                                         Base::asBoolean(invirtualspace))) {
-            std::stringstream str;
-            str << "Not able set virtual space for constraint with the given index: "
-                << PyLong_AsLong(id_or_ids);
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Not able set virtual space for constraint with the given index: {}"),
+                PyLong_AsLong(id_or_ids));
             return nullptr;
         }
 
@@ -934,7 +1039,9 @@ PyObject* SketchObjectPy::getVirtualSpace(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->getVirtualSpace(constrid, invirtualspace)) {
-        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Invalid constraint id: {}"),
+                                  constrid);
         return nullptr;
     }
 
@@ -949,9 +1056,12 @@ PyObject* SketchObjectPy::toggleVirtualSpace(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->toggleVirtualSpace(constrid)) {
-        std::stringstream str;
-        str << "Not able toggle virtual space for constraint with the given index: " << constrid;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP(
+                "Notifications",
+                "Not able toggle virtual space for constraint with the given index: {}"),
+            constrid);
         return nullptr;
     }
 
@@ -967,10 +1077,12 @@ PyObject* SketchObjectPy::setActive(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->setActive(constrid, Base::asBoolean(isactive))) {
-        std::stringstream str;
-        str << "Not able set active/disabled status for constraint with the given index: "
-            << constrid;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP(
+                "Notifications",
+                "Not able set active/disabled status for constraint with the given index: {}"),
+            constrid);
         return nullptr;
     }
 
@@ -986,7 +1098,9 @@ PyObject* SketchObjectPy::getActive(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->getActive(constrid, isactive)) {
-        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Invalid constraint id: {}"),
+                                  constrid);
         return nullptr;
     }
 
@@ -1001,9 +1115,11 @@ PyObject* SketchObjectPy::toggleActive(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->toggleActive(constrid)) {
-        std::stringstream str;
-        str << "Not able toggle on/off constraint with the given index: " << constrid;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able toggle on/off constraint with the given index: {}"),
+            constrid);
         return nullptr;
     }
 
@@ -1024,10 +1140,12 @@ PyObject* SketchObjectPy::movePoint(PyObject* args)
 
     if (this->getSketchObjectPtr()->movePoint(
             GeoId, static_cast<Sketcher::PointPos>(PointType), v1, (relative > 0))) {
-        std::stringstream str;
-        str << "Not able to move point with the id and type: (" << GeoId << ", " << PointType
-            << ")";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to move point with the id and type: ({},{})"),
+            GeoId,
+            PointType);
         return nullptr;
     }
 
@@ -1057,13 +1175,16 @@ PyObject* SketchObjectPy::getPoint(PyObject* args)
         return nullptr;
 
     if (PointType < 0 || PointType > 3) {
-        PyErr_SetString(PyExc_ValueError, "Invalid point type");
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Invalid point type: {}"),
+                                  PointType);
         return nullptr;
     }
 
     SketchObject* obj = this->getSketchObjectPtr();
     if (GeoId > obj->getHighestCurveIndex() || -GeoId > obj->getExternalGeometryCount()) {
-        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        PyError_SetEnhancedString(
+            PyExc_ValueError, QT_TRANSLATE_NOOP("Notifications", "Invalid geometry Id: {}"), GeoId);
         return nullptr;
     }
 
@@ -1128,10 +1249,13 @@ PyObject* SketchObjectPy::fillet(PyObject* args)
                                                radius,
                                                trim,
                                                Base::asBoolean(createCorner))) {
-            std::stringstream str;
-            str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1
-                << " )";
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Not able to fillet point with (geoId: {}, PointPos: {})"),
+                geoId1,
+                posId1);
             return nullptr;
         }
         Py_Return;
@@ -1155,9 +1279,10 @@ PyObject* SketchObjectPy::trim(PyObject* args)
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
     if (this->getSketchObjectPtr()->trim(GeoId, v1)) {
-        std::stringstream str;
-        str << "Not able to trim curve with the given index: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Not able to trim curve with the given index: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1173,10 +1298,14 @@ PyObject* SketchObjectPy::extend(PyObject* args)
     if (PyArg_ParseTuple(args, "idi", &GeoId, &increment, &endPoint)) {
         if (this->getSketchObjectPtr()->extend(
                 GeoId, increment, static_cast<Sketcher::PointPos>(endPoint))) {
-            std::stringstream str;
-            str << "Not able to extend geometry with id : (" << GeoId << ") for increment ("
-                << increment << ") and point position (" << endPoint << ")";
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+
+            PyError_SetEnhancedString(PyExc_ValueError,
+                                      QT_TRANSLATE_NOOP("Notifications",
+                                                        "Not able to extend geometry with id: {} "
+                                                        "for increment: {} and point position: {}"),
+                                      GeoId,
+                                      increment,
+                                      endPoint);
             return nullptr;
         }
         Py_Return;
@@ -1199,9 +1328,11 @@ PyObject* SketchObjectPy::split(PyObject* args)
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
     try {
         if (this->getSketchObjectPtr()->split(GeoId, v1)) {
-            std::stringstream str;
-            str << "Not able to split curve with the given index: " << GeoId;
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            PyError_SetEnhancedString(
+                PyExc_ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Not able to split curve with the given index: {}"),
+                GeoId);
             return nullptr;
         }
     }
@@ -1223,10 +1354,15 @@ PyObject* SketchObjectPy::join(PyObject* args)
 
     if (this->getSketchObjectPtr()->join(
             GeoId1, (Sketcher::PointPos)PosId1, GeoId2, (Sketcher::PointPos)PosId2)) {
-        std::stringstream str;
-        str << "Not able to join the curves with end points: (" << GeoId1 << ", " << PosId1
-            << "), (" << GeoId2 << ", " << PosId2 << ")";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to join the curves with end points: ({},{}), ({},{})"),
+            GeoId1,
+            PosId1,
+            GeoId2,
+            PosId2);
         return 0;
     }
 
@@ -1441,7 +1577,11 @@ PyObject* SketchObjectPy::calculateAngleViaPoint(PyObject* args)
     SketchObject* obj = this->getSketchObjectPtr();
     if (GeoId1 > obj->getHighestCurveIndex() || -GeoId1 > obj->getExternalGeometryCount()
         || GeoId2 > obj->getHighestCurveIndex() || -GeoId2 > obj->getExternalGeometryCount()) {
-        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Invalid geometry Id: {} or {}"),
+            GeoId1,
+            GeoId2);
         return nullptr;
     }
     double ang = obj->calculateAngleViaPoint(GeoId1, GeoId2, px, py);
@@ -1458,7 +1598,8 @@ PyObject* SketchObjectPy::isPointOnCurve(PyObject* args)
 
     SketchObject* obj = this->getSketchObjectPtr();
     if (GeoId > obj->getHighestCurveIndex() || -GeoId > obj->getExternalGeometryCount()) {
-        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        PyError_SetEnhancedString(
+            PyExc_ValueError, QT_TRANSLATE_NOOP("Notifications", "Invalid geometry Id: {}"), GeoId);
         return nullptr;
     }
 
@@ -1473,7 +1614,8 @@ PyObject* SketchObjectPy::calculateConstraintError(PyObject* args)
 
     SketchObject* obj = this->getSketchObjectPtr();
     if (ic >= obj->Constraints.getSize() || ic < 0) {
-        PyErr_SetString(PyExc_ValueError, "Invalid constraint Id");
+        PyError_SetEnhancedString(
+            PyExc_ValueError, QT_TRANSLATE_NOOP("Notifications", "Invalid constraint Id: {}"), ic);
         return nullptr;
     }
     double err = obj->calculateConstraintError(ic);
@@ -1503,9 +1645,10 @@ PyObject* SketchObjectPy::ExposeInternalGeometry(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->exposeInternalGeometry(GeoId) == -1) {
-        std::stringstream str;
-        str << "Object does not support internal geometry: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Object does not support internal geometry: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1521,9 +1664,10 @@ PyObject* SketchObjectPy::DeleteUnusedInternalGeometry(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->deleteUnusedInternalGeometry(GeoId) == -1) {
-        std::stringstream str;
-        str << "Object does not support internal geometry: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Object does not support internal geometry: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1538,9 +1682,10 @@ PyObject* SketchObjectPy::exposeInternalGeometry(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->exposeInternalGeometry(GeoId) == -1) {
-        std::stringstream str;
-        str << "Object does not support internal geometry: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Object does not support internal geometry: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1555,9 +1700,10 @@ PyObject* SketchObjectPy::deleteUnusedInternalGeometry(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->deleteUnusedInternalGeometry(GeoId) == -1) {
-        std::stringstream str;
-        str << "Object does not support internal geometry: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Object does not support internal geometry: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1572,9 +1718,10 @@ PyObject* SketchObjectPy::convertToNURBS(PyObject* args)
         return nullptr;
 
     if (!this->getSketchObjectPtr()->convertToNURBS(GeoId)) {
-        std::stringstream str;
-        str << "Object does not support NURBS conversion: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Object does not support NURBS conversion: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1590,9 +1737,10 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject* args)
         return nullptr;
 
     if (!this->getSketchObjectPtr()->increaseBSplineDegree(GeoId, incr)) {
-        std::stringstream str;
-        str << "Degree increase failed for: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Degree increase failed for: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1622,9 +1770,10 @@ PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject* args)
 
     if (!this->getSketchObjectPtr()->modifyBSplineKnotMultiplicity(
             GeoId, knotIndex, multiplicity)) {
-        std::stringstream str;
-        str << "Multiplicity modification failed for: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Multiplicity modification failed for: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1641,9 +1790,10 @@ PyObject* SketchObjectPy::insertBSplineKnot(PyObject* args)
         return nullptr;
 
     if (!this->getSketchObjectPtr()->insertBSplineKnot(GeoId, knotParam, multiplicity)) {
-        std::stringstream str;
-        str << "Knot insertion failed for: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_ValueError,
+            QT_TRANSLATE_NOOP("Notifications", "Knot insertion failed for: {}"),
+            GeoId);
         return nullptr;
     }
 
@@ -1663,9 +1813,8 @@ PyObject* SketchObjectPy::autoconstraint(PyObject* args)
 
     if (this->getSketchObjectPtr()->autoConstraint(
             precision, angleprecision, Base::asBoolean(includeconstruction))) {
-        std::stringstream str;
-        str << "Unable to autoconstraint";
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(PyExc_ValueError,
+                                  QT_TRANSLATE_NOOP("Notifications", "Unable to autoconstraint"));
         return nullptr;
     }
 
@@ -2126,9 +2275,11 @@ PyObject* SketchObjectPy::getGeometryId(PyObject* args)
     long Id;
 
     if (this->getSketchObjectPtr()->getGeometryId(Index, Id)) {
-        std::stringstream str;
-        str << "Not able to get geometry Id of a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_IndexError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to get geometry Id of a geometry with the given index: {}"),
+            Index);
         Py_Return;
     }
 
@@ -2143,9 +2294,11 @@ PyObject* SketchObjectPy::setGeometryId(PyObject* args)
         return nullptr;
 
     if (this->getSketchObjectPtr()->setGeometryId(Index, Id)) {
-        std::stringstream str;
-        str << "Not able to set geometry Id of a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        PyError_SetEnhancedString(
+            PyExc_IndexError,
+            QT_TRANSLATE_NOOP("Notifications",
+                              "Not able to set geometry Id of a geometry with the given index: {}"),
+            Index);
         return nullptr;
     }
 

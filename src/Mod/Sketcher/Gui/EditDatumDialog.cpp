@@ -235,8 +235,7 @@ void EditDatumDialog::accepted()
             tryAutoRecompute(sketch);
         }
         catch (const Base::Exception& e) {
-            Gui::NotifyUserError(
-                sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
+            Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e);
 
             Gui::Command::abortCommand();
 
