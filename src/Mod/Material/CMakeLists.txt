@@ -174,10 +174,13 @@ SET (MaterialModel_Files
     Resources/Models/Architectural/default.yml
     Resources/Models/Costs/default.yml
     Resources/Models/Electromagnetic/default.yml
-    Resources/Models/Fluidic/default.yml
+    Resources/Models/Fluid/default.yml
+    Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/HypotheticalExample.yml
+    Resources/Models/Mechanical/IsotropicLinearElastic.yml
     Resources/Models/Mechanical/LinearElastic.yml
     Resources/Models/Mechanical/OgdenYld2004p18.yml
+    Resources/Models/Mechanical/OrthotropicLinearElastic.yml
     Resources/Models/Rendering/Rendering.yml
     Resources/Models/Rendering/VectorRendering.yml
     Resources/Models/Thermal/default.yml
