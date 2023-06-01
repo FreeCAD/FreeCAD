@@ -21,22 +21,24 @@
 # ***************************************************************************
 
 - Model:
-  ModelName: "default"
+  Description:
+    Name: "Thermal"
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     URL: ''
-    Description: "default cost model"
+    Description: "default thermal model"
     DOI: ""
-  ProductURL:
-    Type:  'URL'
+  SpecificHeat:
+    Type: 'Quantity'
     Units: ''
-    URL: 'https://de.wikipedia.org/wiki/Hyperlink'
-    Description: "Product URL, recommended are wikipedia links"
-  SpecificPrice:
-    Type: 'Float'
+    URL: 'https://en.wikipedia.org/wiki/Heat_capacity'
+    Description: "Specific capacity in [FreeCAD SpecificHeat unit]"
+  ThermalConductivity:
+    Type: 'Quantity'
     Units: ''
-    URL: ''
-    Description: "Specific price in currency / mass. A currency is not supported by FreeCAD unit system. Will be empty in all FreeCAD cards. Means the user needs to put in himself."
-  Vendor:
-    Type: 'String'
+    URL: 'https://en.wikipedia.org/wiki/Thermal_conductivity'
+    Description: "Thermal conductivity in [FreeCAD ThermalConductivity unit]"
+  ThermalExpansionCoefficient:
+    Type: 'Quantity'
     Units: ''
-    URL: ''
-    Description: "Vendor of the material"
+    URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
+    Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"

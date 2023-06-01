@@ -19,28 +19,53 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 - Model:
-  ModelName: "default"
+  Description:
+    Name: "Architectural"
+    UUID: '32439c3b-262f-4b7b-99a8-f7f44e5894c8'
     URL: ''
-    Description: "default fluidic model"
+    Description: "default architectural model"
     DOI: ""
-  Density:
-    Type: 'Quantity'
+  Color:
+    Type:  'String'
     Units: ''
-    URL: 'https://en.wikipedia.org/wiki/Density'
-    Description: "Density in [FreeCAD Density unit]"
-  DynamicViscosity:
-    Type: 'Quantity'
+    URL: ''
+    Description: " "
+  EnvironmentalEfficiencyClass:
+    Type: 'String'
     Units: ''
-    URL: 'https://en.wikipedia.org/wiki/Viscosity'
-    Description: "Dynamic viscosity is defined as the ability of a material to resist to flow and deform during mechanical oscillation as a function of temperature, frequency, time, or both"
-  KinematicViscosity:
-    Type: 'Quantity'
+    URL: ''
+    Description: " "
+  ExecutionInstructions:
+    Type: 'String'
     Units: ''
-    URL: 'https://en.wikipedia.org/wiki/Viscosity'
-    Description: "Kinematic Viscosity = Dynamic Viscosity / Density"
-  PrandtlNumber:
-    Type: 'Quantity'
+    URL: ''
+    Description: " "
+  Finish:
+    Type: 'String'
     Units: ''
-    URL: 'https://en.wikipedia.org/wiki/Prandtl_number'
-    Description: "The Prandtl number is a dimensionless number defined as the ratio of momentum diffusivity to thermal diffusivity"
+    URL: ''
+    Description: " "
+  FireResistanceClass:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Model:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  SoundTransmissionClass:
+    URL: ''
+    Description: " "
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  UnitsPerQuantity:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
