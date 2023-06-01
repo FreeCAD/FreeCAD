@@ -362,6 +362,8 @@ def get_material_template(withSpaces=False):
     # https://www.freecad.org/wiki/Material_data_model
     # https://www.freecad.org/wiki/Material
 
+    print("Call to get_material_template() successful")
+
     import yaml
     template_data = yaml.safe_load(
         open(join(FreeCAD.ConfigGet('AppHomePath'), 'Mod/Material/Templatematerial.yml'))

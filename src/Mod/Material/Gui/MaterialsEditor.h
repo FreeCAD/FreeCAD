@@ -23,15 +23,19 @@
 #ifndef MATGUI_MATERIALSEDITOR_H
 #define MATGUI_MATERIALSEDITOR_H
 
+#include <boost/filesystem.hpp>
+
 #include <QDialog>
 #include <memory>
 
 class QTreeWidgetItem;
+namespace fs = boost::filesystem;
 
 namespace MatGui {
 
 // using Connection = boost::signals2::connection;
 class Ui_MaterialsEditor;
+class LibraryData;
 class MaterialsEditor : public QDialog
 {
     Q_OBJECT
@@ -44,6 +48,38 @@ public:
 
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
+
+    void tryPython();
+    void createMaterialTree();
+    void addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
+    bool isCard(const fs::path &p) const;
+    std::list<LibraryData *> *getMaterialLibraries();
+};
+
+class LibraryData
+{
+public:
+    explicit LibraryData(const std::string &libraryName, QDir *dir, const std::string &icon);
+    virtual ~LibraryData();
+
+    const std::string &getName() const
+    {
+        return name;
+    }
+    QDir& getDirectory() const
+    {
+        return *directory;
+    }
+    const std::string &getIconPath() const
+    {
+        return iconPath;
+    }
+
+private:
+    explicit LibraryData();
+    std::string name;
+    QDir* directory;
+    std::string iconPath;
 };
 
 } // namespace MatGui

@@ -13,8 +13,10 @@ SET(Material_SRCS
     importFCMat.py
     MaterialEditor.py
     Materials.py
+    ValueEditor.py
     Resources/ui/materials.ui
     materials-editor.ui
+    ValueEditor.ui
     Templatematerial.yml
 )
 SOURCE_GROUP("Module" FILES ${Material_SRCS})
