@@ -37,13 +37,15 @@ using PyObject = struct _object;
 
 /// the macros do NOT mark any message for translation
 /// If you want to mark text for translation, use the QT_TRANSLATE_NOOP macro
-/// with the context "Exceptions" and the right throwing macro from below (the one ending in T)
+/// with the context "Notifications" and the right throwing macro from below (the one ending in T)
 /// example:
-/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the B-Spline."));
+/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Notifications","The multiplicity cannot be increased beyond the degree of the B-Spline."));
 ///
 /// N.B.: The QT_TRANSLATE_NOOP macro won't translate your string. It will just allow lupdate to identify that string for translation so that
 /// if you ask for a translation (and the translator have provided one) at that time it gets translated (e.g. in the UI before showing the message
 /// of the exception).
+
+//TODO: Move these macros to std::source_location as soon as we move to c++20
 
 #ifdef _MSC_VER
 
@@ -120,6 +122,30 @@ public:
 
   inline void setReported(bool reported) { _isReported = reported; }
 
+  /** A function providing a translated exception message.
+   * @param translator a function or lambda allowing to translate exception strings
+   *
+   * This function will attempt to translate formatter and arguments with the provided translator
+   * function, if formatter exists (if it originates from an enhanced python exception). If not,
+   * it will try to translate the exception message. The former is intended for dynamically
+   * generated streams, whereas the latter works fine for static strings.
+   *
+   * The only requirement on the translator is that it is able to translate the exception strings
+   * it is fed with. Any translation framework and context is technically possible.
+   *
+   * In practice, the QT translation framework is used in FreeCAD, and translations of exceptions
+   * generally end up in the console interface, either in original English when intended for
+   * developers, or translated when intended for the user. Thus, when translated, the exceptions
+   * are, in essence, notifications. Because the console interface uses the "Notifications" context
+   * it is best, for coherence, to use QT_TRANSLATE_NOOP with the "Notifications" context for
+   * exception messages, and then use a translator function that uses the "Notifications" context
+   * to provide the translations.
+   *
+   * Notification's framework (Gui/Notifications.h) provides one such translator. The framework also
+   * allows to notify directly exceptions by passing the exception object.
+   */
+  std::string translateMessage(std::function<std::string(const std::string &)> translator) const;
+
   /// returns a Python dictionary containing the exception data
   PyObject * getPyObject() override;
   /// returns sets the exception data from a Python dictionary
@@ -148,6 +174,9 @@ protected:
   std::string _function;
   bool _isTranslatable;
   mutable bool _isReported;
+
+  std::string _sformatter;
+  std::vector<std::string> _sformatterArguments;
 };
 
 

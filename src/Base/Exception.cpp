@@ -24,10 +24,11 @@
 
 #include "PreCompiled.h"
 
+#include <fmt/args.h>
+
 #include "Exception.h"
 #include "Console.h"
 #include "PyObjectBase.h"
-
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
 
@@ -53,6 +54,8 @@ Exception::Exception(const Exception &inst)
   , _function(inst._function)
   , _isTranslatable(inst._isTranslatable)
   , _isReported(inst._isReported)
+  , _sformatter(inst._sformatter)
+  , _sformatterArguments(inst._sformatterArguments)
 {
 }
 
@@ -138,6 +141,17 @@ void Exception::setPyObject( PyObject * pydict)
                 _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
             if (edict.hasKey("breported"))
                 _isReported = static_cast<bool>(Py::Boolean(edict.getItem("breported")));
+
+            if(edict.hasKey("sformatter"))
+                _sformatter = static_cast<std::string>(Py::String(edict.getItem("sformatter")));
+
+            if(edict.hasKey("sformatterArguments")) {
+                Py::Tuple tuple(edict.getItem("sformatterArguments"));
+
+                for(auto i = 0; i < tuple.size(); i++) {
+                    _sformatterArguments.push_back(Py::String(tuple[i]));
+                }
+            }
         }
     }
     catch (Py::Exception& e) {
@@ -158,6 +172,31 @@ void Exception::setPyException() const
     }
 
     PyErr_SetString(exc, what());
+}
+
+
+std::string Exception::translateMessage(std::function<std::string(const std::string &)> translator) const
+{
+    if(_sformatter.empty()) {
+        return translator(_sErrMsg);
+    }
+    else { //
+        std::string translatedFormatter = translator(_sformatter);
+
+        std::vector<std::string> translatedArguments;
+
+        std::transform(_sformatterArguments.cbegin(), _sformatterArguments.cend(),
+                    std::back_inserter(translatedArguments),
+                    translator);
+
+        auto dynamicstore = fmt::dynamic_format_arg_store<fmt::format_context>();
+
+        for (auto translatedArgument : translatedArguments) {
+            dynamicstore.push_back(translatedArgument);
+        }
+
+        return fmt::vformat(translatedFormatter, dynamicstore);
+    }
 }
 
 // ---------------------------------------------------------
