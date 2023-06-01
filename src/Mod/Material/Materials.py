@@ -164,6 +164,9 @@ class Materials:
         treeView.setItemDelegate(MaterialsDelegate())
         # model.itemChanged.connect(self.modelChange)
 
+        buttonAdd = widget.buttonPhysicalAdd
+        buttonAdd.clicked.connect(self.onClickPhysicalAdd)
+
         # init model
         self.implementModel()
 
@@ -725,6 +728,12 @@ class Materials:
                 self.edited = True
 
         buttonDeleteProperty.setEnabled(False)
+
+    def onClickPhysicalAdd(self, index):
+
+        from ModelSelect import ModelSelect
+        select = ModelSelect()
+        select.exec_()
 
     def onClickTree(self, index):
 

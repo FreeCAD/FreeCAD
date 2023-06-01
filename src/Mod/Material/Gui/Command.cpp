@@ -97,10 +97,45 @@ void CmdMaterialsValueEdit::activated(int iMsg)
     addModule(Doc,"ValueEditor");
     doCommand(Doc,"ValueEditor.openEditor()");
     commitCommand();
-    updateActive();
+    // updateActive();
 }
 
 bool CmdMaterialsValueEdit::isActive()
+{
+    return true;
+}
+
+//===========================================================================
+// Materials_ModelSelect
+//===========================================================================
+DEF_STD_CMD_A(CmdMaterialModelSelect)
+
+CmdMaterialModelSelect::CmdMaterialModelSelect()
+  :Command("Materials_ModelSelect")
+{
+    sAppModule    = "Material";
+    sGroup        = QT_TR_NOOP("Material");
+    sMenuText     = QT_TR_NOOP("Material model selection...");
+    sToolTipText  = QT_TR_NOOP("Material model selection");
+    sWhatsThis    = "Materials_ModelSelect";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Materials_Edit";
+}
+
+void CmdMaterialModelSelect::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Base::Console().Log("Materials_ModelSelect\n");
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Material model selection"));
+    addModule(Doc,"ModelSelect");
+    doCommand(Doc,"ModelSelect.openEditor()");
+    commitCommand();
+    // updateActive();
+}
+
+bool CmdMaterialModelSelect::isActive()
 {
     return true;
 }
@@ -113,4 +148,5 @@ void CreateMaterialCommands()
 
     rcCmdMgr.addCommand(new CmdMaterialsEdit());
     rcCmdMgr.addCommand(new CmdMaterialsValueEdit());
+    rcCmdMgr.addCommand(new CmdMaterialModelSelect());
 }

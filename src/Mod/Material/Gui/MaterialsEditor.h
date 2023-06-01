@@ -26,6 +26,8 @@
 #include <boost/filesystem.hpp>
 
 #include <QDialog>
+#include <QDir>
+#include <QStandardItem>
 #include <memory>
 
 class QTreeWidgetItem;

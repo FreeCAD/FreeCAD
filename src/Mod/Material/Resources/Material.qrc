@@ -6,6 +6,7 @@
         <file>ui/preferences-material.ui</file>
         <file>ui/materials-editor.ui</file>
         <file>ui/materials.ui</file>
+        <file>ui/ModelSelect.ui</file>
         <file>ui/ValueEditor.ui</file>
     </qresource>
 </RCC>

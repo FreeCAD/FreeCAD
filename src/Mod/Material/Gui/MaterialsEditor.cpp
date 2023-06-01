@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <QDir>
 #include <QString>
 
 #include <App/Application.h>
@@ -206,7 +205,7 @@ std::list<LibraryData *> *MaterialsEditor::getMaterialLibraries()
         libraries->push_back(libData);
     }
 
-    if (useBuiltInMaterials)
+    if (useMatFromModules)
     {
         auto moduleParam = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");

@@ -14,10 +14,12 @@ SET(MaterialScripts_Files
     importFCMat.py
     MaterialEditor.py
     Materials.py
+    ModelSelect.py
     ValueEditor.py
     Resources/ui/materials.ui
     Resources/ui/materials-editor.ui
     Resources/ui/ValueEditor.ui
+    Resources/ui/ModelSelect.ui
     Templatematerial.yml
 )
 # SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
@@ -25,6 +27,7 @@ SET(MaterialScripts_Files
 SET (MaterialTools_Files
     materialtools/__init__.py
     materialtools/cardutils.py
+    materialtools/MaterialModels.py
 )
 SET (Material_Icon_Files
     Resources/icons/preview-rendered.svg
