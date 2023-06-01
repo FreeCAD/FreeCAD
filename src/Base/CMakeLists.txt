@@ -288,6 +288,7 @@ SET(FreeCADBase_HPP_SRCS
     Debugger.h
     DualNumber.h
     DualQuaternion.h
+    EnhancedPythonExceptions.h
     Exception.h
     ExceptionFactory.h
     Factory.h
