@@ -62,10 +62,10 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+// // Qt Toolkit
+// #ifndef __QtAll__
+// # include <Gui/QtAll.h>
+// #endif
 
 // Inventor includes OpenGL
 #ifndef __InventorAll__

@@ -171,9 +171,9 @@
        <attribute name="title">
         <string>Physical Properties</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout_43">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_23">
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
@@ -216,7 +216,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_21">
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="horizontalSpacer2">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -253,7 +253,7 @@
        <attribute name="title">
         <string>Appearance</string>
        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_42">
          <item>
           <layout class="QHBoxLayout" name="layoutAppearance">
           </layout>
@@ -267,11 +267,11 @@
        <attribute name="title">
         <string>Costs</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout_44">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="horizontalSpacer3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -310,9 +310,9 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_22">
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="horizontalSpacer4">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -365,7 +365,7 @@
   <connection>
    <sender>standardButtons</sender>
    <signal>accepted()</signal>
-   <receiver>matgui::materials</receiver>
+   <receiver>MatGui::Materials</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -381,7 +381,7 @@
   <connection>
    <sender>standardButtons</sender>
    <signal>rejected()</signal>
-   <receiver>matgui::materials</receiver>
+   <receiver>MatGui::Materials</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

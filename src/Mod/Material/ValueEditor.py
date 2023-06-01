@@ -187,7 +187,7 @@ class ValueEditor:
     def __init__(self):
         # load the UI file from the same directory as this script
         filePath = os.path.dirname(__file__) + os.sep
-        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "ValueEditor.ui")
+        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "Resources" + os.sep + "ui" + os.sep + "ValueEditor.ui")
 
         # remove unused Help button
         self.widget.setWindowFlags(self.widget.windowFlags()

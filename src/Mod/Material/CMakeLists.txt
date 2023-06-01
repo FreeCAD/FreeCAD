@@ -7,7 +7,7 @@ IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
 ENDIF (BUILD_GUI)
 
-SET(MaterialScripts_SRCS
+SET(MaterialScripts_Files
     Init.py
     InitGui.py
     Material.py
@@ -16,11 +16,11 @@ SET(MaterialScripts_SRCS
     Materials.py
     ValueEditor.py
     Resources/ui/materials.ui
-    materials-editor.ui
-    ValueEditor.ui
+    Resources/ui/materials-editor.ui
+    Resources/ui/ValueEditor.ui
     Templatematerial.yml
 )
-SOURCE_GROUP("ModuleScripts" FILES ${MaterialScripts_SRCS})
+# SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
 
 SET (MaterialTools_Files
     materialtools/__init__.py
@@ -157,7 +157,7 @@ SET (MaterialLib_Files
     Resources/Materials/StandardMaterial/Thermoplast/PVC-Generic.FCMat
     Resources/Materials/StandardMaterial/Wood/Wood-Generic.FCMat
 )
-SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})
+# SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})
 
 SET (FluidMaterial_Files
     Resources/Materials/FluidMaterial/None.FCMat
@@ -168,16 +168,18 @@ SET (FluidMaterial_Files
     Resources/Materials/FluidMaterial/Water.FCMat
     Resources/Materials/FluidMaterial/Readme.md
 )
-SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
+# SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
 
-# ADD_CUSTOM_TARGET(Material ALL
-#     SOURCES ${Material_SRCS} ${Material_QRC_SRCS}
-# )
+ADD_CUSTOM_TARGET(MaterialScripts ALL
+    SOURCES ${MaterialScripts_Files} ${Material_QRC_SRCS}
+)
 
-# fc_target_copy_resource(Material
-#     ${CMAKE_CURRENT_SOURCE_DIR}
-#     ${CMAKE_BINARY_DIR}/Mod/Material
-#     ${Material_SRCS})
+fc_target_copy_resource(MaterialScripts
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialScripts_Files})
+
+INSTALL(FILES ${MaterialScripts_Files} DESTINATION Mod/Material)
 
 
 ADD_CUSTOM_TARGET(MaterialToolsLib ALL
@@ -241,7 +243,14 @@ INSTALL(
     FILES_MATCHING PATTERN "*.FCMat*"
 )
 
-ADD_CUSTOM_TARGET(MaterialScriptsTarget ALL
-    SOURCES ${ModuleScripts}
-)
-fc_copy_sources(MaterialScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Material" ${ModuleScripts})
+# ADD_CUSTOM_TARGET(MaterialScriptsTarget ALL
+#     SOURCES ${MaterialScripts}
+# )
+# fc_copy_sources(MaterialScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Material" ${MaterialScripts})
+
+# INSTALL(
+#     FILES
+#         ${MaterialScripts}
+#     DESTINATION
+#         ${CMAKE_INSTALL_DATADIR}/Mod/Material
+# )

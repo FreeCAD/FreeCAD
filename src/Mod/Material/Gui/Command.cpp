@@ -93,16 +93,9 @@ void CmdMaterialsValueEdit::activated(int iMsg)
 
     Base::Console().Log("Materials_ValueEdit\n");
 
-    static QPointer<QDialog> dlg = nullptr;
-    if (!dlg)
-        dlg = new MatGui::MaterialsEditor(Gui::getMainWindow());
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
-
     openCommand(QT_TRANSLATE_NOOP("Command", "Material value edit"));
-    doCommand(Doc,"from Material.MatGui.ValueEditor import ValueEditor");
-    doCommand(Doc,"form = ValueEditor()");
-    doCommand(Doc,"form.exec_()");
+    addModule(Doc,"ValueEditor");
+    doCommand(Doc,"ValueEditor.openEditor()");
     commitCommand();
     updateActive();
 }
