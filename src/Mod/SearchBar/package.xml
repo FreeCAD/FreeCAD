@@ -2,8 +2,8 @@
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>SearchBar</name>
   <description>Adds a search bar widget for tools, document objects, and preferences</description>
-  <version>1.0.1</version>
-  <date>2022-03-12</date>
+  <version>1.0.2</version>
+  <date>2022-06-01</date>
   <author email="searchbar@suzanne.soy">Suzanne Soy</author>
   <maintainer email="searchbar@suzanne.soy">Suzanne Soy</maintainer>
   <license file="LICENSE">CCOv1</license>
