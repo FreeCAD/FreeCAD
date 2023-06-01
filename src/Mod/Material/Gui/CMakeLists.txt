@@ -18,8 +18,12 @@ include_directories(
 )
 link_directories(${OCC_LIBRARY_DIR})
 
+# set(MatGui_Scripts
+#     ValueEditor.py
+# )
+
 set(MatGui_LIBS
-    Part
+    # Material
     FreeCADGui
 )
 
@@ -50,6 +54,7 @@ SET(MatGui_SRCS
     MaterialsEditor.ui
     PreCompiled.cpp
     PreCompiled.h
+    ValueEditor.ui
 )
 
 if(FREECAD_USE_PCH)
@@ -73,3 +78,18 @@ fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Materia
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
+
+
+# fc_target_copy_resource(MatGuiScripts
+#     ${CMAKE_CURRENT_SOURCE_DIR}
+#     ${CMAKE_BINARY_DIR}/Mod/Material/MatGui
+#     ${MatGui_Scripts}
+# )
+
+
+# INSTALL(
+#     FILES
+#         ${MatGui_Scripts}
+#     DESTINATION
+#     Mod/Material/MatGui
+# )

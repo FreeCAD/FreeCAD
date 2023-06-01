@@ -210,6 +210,7 @@ def read2(filename):
     d["Meta"] = {}
     d["General"] = {}
     d["Mechanical"] = {}
+    d["Fluidic"] = {}
     d["Thermal"] = {}
     d["Electromagnetic"] = {}
     d["Architectural"] = {}
