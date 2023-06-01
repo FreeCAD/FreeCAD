@@ -170,6 +170,19 @@ SET (FluidMaterial_Files
 )
 # SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
 
+SET (MaterialModel_Files
+    Resources/Models/Architectural/default.yml
+    Resources/Models/Costs/default.yml
+    Resources/Models/Electromagnetic/default.yml
+    Resources/Models/Fluidic/default.yml
+    Resources/Models/Mechanical/HypotheticalExample.yml
+    Resources/Models/Mechanical/LinearElastic.yml
+    Resources/Models/Mechanical/OgdenYld2004p18.yml
+    Resources/Models/Rendering/Rendering.yml
+    Resources/Models/Rendering/VectorRendering.yml
+    Resources/Models/Thermal/default.yml
+)
+
 ADD_CUSTOM_TARGET(MaterialScripts ALL
     SOURCES ${MaterialScripts_Files} ${Material_QRC_SRCS}
 )
@@ -216,6 +229,9 @@ ADD_CUSTOM_TARGET(MaterialLib ALL
 ADD_CUSTOM_TARGET(FluidMaterialLib ALL
     SOURCES ${FluidMaterial_Files}
 )
+ADD_CUSTOM_TARGET(MaterialModelLib ALL
+    SOURCES ${MaterialModel_Files}
+)
 
 # When a target copies files to different output directories then apparently it always builds the project
 # which is very annoying. So, the trick is to split this into two targets to avoid this behaviour.
@@ -227,6 +243,10 @@ fc_target_copy_resource(FluidMaterialLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
     ${FluidMaterial_Files})
+fc_target_copy_resource(MaterialModelLib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
+    ${MaterialModel_Files})
 
 INSTALL(
     FILES ${Material_SRCS} ${Material_QRC_SRCS}
