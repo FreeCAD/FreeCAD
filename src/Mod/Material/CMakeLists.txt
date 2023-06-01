@@ -171,10 +171,10 @@ SET (FluidMaterial_Files
 # SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
 
 SET (MaterialModel_Files
-    Resources/Models/Architectural/default.yml
-    Resources/Models/Costs/default.yml
-    Resources/Models/Electromagnetic/default.yml
-    Resources/Models/Fluid/default.yml
+    Resources/Models/Architectural/Architectural.yml
+    Resources/Models/Costs/Costs.yml
+    Resources/Models/Electromagnetic/Electromagnetic.yml
+    Resources/Models/Fluid/Fluid.yml
     Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/HypotheticalExample.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
@@ -183,7 +183,7 @@ SET (MaterialModel_Files
     Resources/Models/Mechanical/OrthotropicLinearElastic.yml
     Resources/Models/Rendering/Rendering.yml
     Resources/Models/Rendering/VectorRendering.yml
-    Resources/Models/Thermal/default.yml
+    Resources/Models/Thermal/Thermal.yml
 )
 
 ADD_CUSTOM_TARGET(MaterialScripts ALL

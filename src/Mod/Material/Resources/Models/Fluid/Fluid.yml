@@ -19,51 +19,29 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
 - Model:
-  ModelName: "default"
+  ModelName: "Fluid"
+    UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
     URL: ''
-    Description: "default architectural model"
+    Description: "default fluid model"
     DOI: ""
-  Color:
-    Type:  'String'
+  Density:
+    Type: 'Quantity'
     Units: ''
-    URL: ''
-    Description: " "
-  EnvironmentalEfficiencyClass:
-    Type: 'String'
+    URL: 'https://en.wikipedia.org/wiki/Density'
+    Description: "Density in [FreeCAD Density unit]"
+  DynamicViscosity:
+    Type: 'Quantity'
     Units: ''
-    URL: ''
-    Description: " "
-  ExecutionInstructions:
-    Type: 'String'
+    URL: 'https://en.wikipedia.org/wiki/Viscosity'
+    Description: "Dynamic viscosity is defined as the ability of a material to resist to flow and deform during mechanical oscillation as a function of temperature, frequency, time, or both"
+  KinematicViscosity:
+    Type: 'Quantity'
     Units: ''
-    URL: ''
-    Description: " "
-  Finish:
-    Type: 'String'
+    URL: 'https://en.wikipedia.org/wiki/Viscosity'
+    Description: "Kinematic Viscosity = Dynamic Viscosity / Density"
+  PrandtlNumber:
+    Type: 'Quantity'
     Units: ''
-    URL: ''
-    Description: " "
-  FireResistanceClass:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  Model:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  SoundTransmissionClass:
-    URL: ''
-    Description: " "
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  UnitsPerQuantity:
-    Type: 'Float'
-    Units: ''
-    URL: ''
-    Description: " "
+    URL: 'https://en.wikipedia.org/wiki/Prandtl_number'
+    Description: "The Prandtl number is a dimensionless number defined as the ratio of momentum diffusivity to thermal diffusivity"

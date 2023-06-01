@@ -22,6 +22,7 @@
 
 - Model:
   ModelName: 'Isotropic Linear Elastic'
+    UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
     URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
     Description: "Materials that are linearly elastic obey Hooke's law i.e. the stress and strain relationship is linear"
     DOI: "10.1016/j.ijplas.2004.06.004"
