@@ -23,12 +23,6 @@ set(MatGui_LIBS
     FreeCADGui
 )
 
-# if(MSVC)
-#     include_directories(
-#         ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
-#     )
-# endif(MSVC)
-
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
 )

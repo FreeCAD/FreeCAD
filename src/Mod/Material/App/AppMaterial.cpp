@@ -33,23 +33,23 @@
 #include <Gui/Language/Translator.h>
 
 // use a different name to CreateCommand()
-void CreateMaterialCommands();
+// void CreateMaterialCommands();
 
 void loadMaterialResource()
 {
     // add resources and reloads the translators
-    Q_INIT_RESOURCE(Material);
-    Q_INIT_RESOURCE(Material_translation);
-    Gui::Translator::instance()->refresh();
+    // Q_INIT_RESOURCE(Material);
+    // Q_INIT_RESOURCE(Material_translation);
+    // Gui::Translator::instance()->refresh();
 }
 
-namespace MatGui {
+namespace Material {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("MatGui")
+    Module() : Py::ExtensionModule<Module>("Material")
     {
-        initialize("This module is the MatGui module."); // register with Python
+        initialize("This module is the Material module."); // register with Python
     }
 
     ~Module() override {}
@@ -64,31 +64,26 @@ PyObject* initModule()
 
 } // namespace MatGui
 
-PyMOD_INIT_FUNC(MatGui)
+PyMOD_INIT_FUNC(Material)
 {
-    if (!Gui::Application::Instance) {
-        PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(nullptr);
-    }
-
     // load needed modules
-    try {
-        Base::Interpreter().runString("import Material");
-    }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    // try {
+    //     Base::Interpreter().runString("import Material");
+    // }
+    // catch(const Base::Exception& e) {
+    //     PyErr_SetString(PyExc_ImportError, e.what());
+    //     PyMOD_Return(nullptr);
+    // }
 
-    PyObject* matGuiModule = MatGui::initModule();
+    PyObject* module = Material::initModule();
 
-    Base::Console().Log("Loading GUI of Material module... done\n");
+    Base::Console().Log("Loading Material module... done\n");
 
     // instantiating the commands
-    CreateMaterialCommands();
+    // CreateMaterialCommands();
 
     // add resources and reloads the translators
     loadMaterialResource();
 
-    PyMOD_Return(matGuiModule);
+    PyMOD_Return(module);
 }

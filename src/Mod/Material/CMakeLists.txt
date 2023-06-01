@@ -1,3 +1,4 @@
+add_subdirectory(App)
 if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
@@ -6,7 +7,7 @@ IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
 ENDIF (BUILD_GUI)
 
-SET(Material_SRCS
+SET(MaterialScripts_SRCS
     Init.py
     InitGui.py
     Material.py
@@ -17,7 +18,7 @@ SET(Material_SRCS
     materials-editor.ui
     Templatematerial.yml
 )
-SOURCE_GROUP("Module" FILES ${Material_SRCS})
+SOURCE_GROUP("ModuleScripts" FILES ${MaterialScripts_SRCS})
 
 SET (MaterialTools_Files
     materialtools/__init__.py
@@ -166,14 +167,14 @@ SET (FluidMaterial_Files
 )
 SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
 
-ADD_CUSTOM_TARGET(Material ALL
-    SOURCES ${Material_SRCS} ${Material_QRC_SRCS}
-)
+# ADD_CUSTOM_TARGET(Material ALL
+#     SOURCES ${Material_SRCS} ${Material_QRC_SRCS}
+# )
 
-fc_target_copy_resource(Material
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Material
-    ${Material_SRCS})
+# fc_target_copy_resource(Material
+#     ${CMAKE_CURRENT_SOURCE_DIR}
+#     ${CMAKE_BINARY_DIR}/Mod/Material
+#     ${Material_SRCS})
 
 
 ADD_CUSTOM_TARGET(MaterialToolsLib ALL
@@ -197,12 +198,12 @@ fc_target_copy_resource(MaterialIconsLib
 INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
 INSTALL(FILES ${Material_Icon_Files} DESTINATION Mod/Material/Resources/icons)
 
-IF (BUILD_GUI)
-    fc_target_copy_resource(Material
-        ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/Mod/Material
-        Material_rc.py)
-ENDIF (BUILD_GUI)
+# IF (BUILD_GUI)
+#     fc_target_copy_resource(Material
+#         ${CMAKE_CURRENT_BINARY_DIR}
+#         ${CMAKE_BINARY_DIR}/Mod/Material
+#         Material_rc.py)
+# ENDIF (BUILD_GUI)
 
 ADD_CUSTOM_TARGET(MaterialLib ALL
     SOURCES ${MaterialLib_Files}
@@ -236,3 +237,8 @@ INSTALL(
         ${CMAKE_INSTALL_DATADIR}/Mod/Material
     FILES_MATCHING PATTERN "*.FCMat*"
 )
+
+ADD_CUSTOM_TARGET(MaterialScriptsTarget ALL
+    SOURCES ${ModuleScripts}
+)
+fc_copy_sources(MaterialScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Material" ${ModuleScripts})
