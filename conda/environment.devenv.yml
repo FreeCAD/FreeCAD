@@ -75,7 +75,7 @@ dependencies:
 - ninja
 - numpy
 - occt==7.6.3
-- openssl==3.0.9
+- openssl==3.0.*
 - pcl
 - pip
 - pivy
