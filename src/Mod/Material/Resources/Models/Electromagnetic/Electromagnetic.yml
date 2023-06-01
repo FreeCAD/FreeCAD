@@ -21,7 +21,8 @@
 # ***************************************************************************
 
 - Model:
-  ModelName: "Electromagnetic"
+  Description:
+    Name: "Electromagnetic"
     UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
     URL: ''
     Description: "default electromagnetic model"

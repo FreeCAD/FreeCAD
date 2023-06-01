@@ -20,7 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 - Model:
-  ModelName: "Fluid"
+  Description:
+    Name: "Fluid"
     UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
     URL: ''
     Description: "default fluid model"

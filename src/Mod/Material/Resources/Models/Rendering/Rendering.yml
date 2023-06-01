@@ -21,7 +21,8 @@
 # ***************************************************************************
 
 - Model:
-  ModelName: "Rendering"
+  Description:
+    Name: "Rendering"
     UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
     URL: ''
     Description: "default model"

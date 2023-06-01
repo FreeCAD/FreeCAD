@@ -21,7 +21,8 @@
 # ***************************************************************************
 
 - Model:
-  ModelName: 'OgdenYld2004p18'
+  Description:
+    Name: 'OgdenYld2004p18'
     UUID: '3ef9e427-cc25-43f7-817f-79ff0d49625f'
     URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
     Description: "Materials that are linearly elastic obey Hooke's law i.e. the stress and strain relationship is linear"

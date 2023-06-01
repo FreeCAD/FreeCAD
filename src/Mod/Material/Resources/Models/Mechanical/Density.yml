@@ -21,7 +21,8 @@
 # ***************************************************************************
 
 - Model:
-  ModelName: 'Density'
+  Description:
+    Name: 'Density'
     UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
     URL: ''
     Description: 'Density is the most basic physical model'
