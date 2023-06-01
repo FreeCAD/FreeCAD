@@ -150,19 +150,19 @@ class ValueEditor:
     __distributions = {
         "Arcsine" : ("X min", True, "X max" , True),
         "Bernoulli" : ("p", True, "Value 2" , False),
-        "Beta" : ("alpha", True, "beta" , True),
+        "Beta" : ("α", True, "β" , True),
         "Binomial" : ("n", True, "p" , True),
         "Cauchy-Lorentz" : ("location", True, "scale" , True),
-        "Chi Squared" : ("v", True, "Value 2" , False),
-        "Exponential" : ("lambda", True, "Value 2" , False),
+        "Chi Squared" : ("ν", True, "Value 2" , False),
+        "Exponential" : ("λ", True, "Value 2" , False),
         "Extreme Value" : ("location", True, "scale" , True),
         "F" : ("m", True, "n" , True),
         "Gamma" : ("shape", True, "scale" , True),
         "Geometric" : ("p", True, "Value 2" , False),
         # "Hyperexponential" : ("Value 1", True, "Value 2" , True), # Up to 4 params
         # "Hypergeometric" : ("Value 1", True, "Value 2" , True), # Up to 3 params
-        "Inverse Chi Squared" : ("v", True, "chi" , True),
-        "Inverse Gamma" : ("alpha", True, "beta" , True),
+        "Inverse Chi Squared" : ("ν", True, "χ" , True),
+        "Inverse Gamma" : ("α", True, "β" , True),
         "Inverse Gaussian" : ("mean", True, "scale" , True),
         "Kolmogorov-Smirnov" : ("n", True, "Value 2" , False),
         "Laplace" : ("location", True, "scale" , True),
@@ -170,15 +170,15 @@ class ValueEditor:
         "Log Normal" : ("location", True, "scale" , True),
         "Negative Binomial" : ("n", True, "p" , True),
         # "Noncentral Beta" : ("Value 1", True, "Value 2" , True), # Up to 3 params
-        "Noncentral Chi Squared" : ("v", True, "lambda" , True),
+        "Noncentral Chi Squared" : ("ν", True, "λ" , True),
         # "Noncentral F" : ("Value 1", True, "Value 2" , True),
-        "Noncentral T" : ("v", True, "delta" , True),
-        "Normal (Gaussian)" : ("Mean", True, "Deviation" , True),
+        "Noncentral T" : ("v", True, "δ" , True),
+        "Normal (Gaussian)" : ("Mean", True, "σ" , True),
         "Pareto" : ("shape", True, "scale" , True),
         "Poisson" : ("mean", True, "Value 2" , False),
-        "Rayleigh" : ("sigma", True, "Value 2" , False),
+        "Rayleigh" : ("σ", True, "Value 2" , False),
         # "Skew Normal" : ("Value 1", True, "Value 2" , True),
-        "Students t" : ("v", True, "Value 2" , False),
+        "Students t" : ("ν", True, "Value 2" , False),
         # "Triangular" : ("Value 1", True, "Value 2" , True),
         "Uniform" : ("lower", True, "upper" , True),
         "Weibull" : ("shape", True, "scale" , True),
@@ -373,10 +373,11 @@ class ValueEditor:
                 [7.28],
                 [1.414],
                 [2.718],
+                []
             ]
             columns = ['A', 'B', 'C']
-            rows=['1', '2', '3', '4', '5']
-            model = ListModel(data, 5, 1, rows, None)
+            rows=['1', '2', '3', '4', '5', '*']
+            model = ListModel(data, 6, 1, rows, None)
             self.widget.tableView.setModel(model)
 
         elif type == "Array":
@@ -389,8 +390,8 @@ class ValueEditor:
                 [3, 3, 2],
                 [5, 8, 9],
             ]
-            columns = ['A', 'B', 'C']
-            rows=['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5']
+            columns = ['α', 'β', 'γ']
+            rows=['1', '2', '3', '4', '5']
             model = ListModel(data, 5, 3, rows, columns)
             self.widget.tableView.setModel(model)
 
@@ -406,7 +407,7 @@ class ValueEditor:
                 [50, 150],
             ]
             columns = ['Temperature', 'Value']
-            rows=['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5']
+            rows=['1', '2', '3', '4', '5']
             model = ListModel(data, 5, 2, rows, columns)
             self.widget.tableView.setModel(model)
 
@@ -421,7 +422,7 @@ class ValueEditor:
                 [50, 150],
             ]
             columns = ['Pressure', 'Value']
-            rows=['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5']
+            rows=['1', '2', '3', '4', '5']
             model = ListModel(data, 5, 2, rows, columns)
             self.widget.tableView.setModel(model)
 
