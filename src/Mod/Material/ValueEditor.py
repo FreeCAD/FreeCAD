@@ -308,7 +308,7 @@ class ValueEditor:
             self.widget.labelX.setHidden(True)
 
         if type in ["Temperature Series", "Pressure Series"]:
-            self.chartView.setHidden(False)
+            # self.chartView.setHidden(False)
             self.widget.labelDefaultMeasure.setHidden(False)
             self.widget.editDefaultMeasure.setHidden(False)
             self.widget.comboDefaultMeasure.setHidden(False)
@@ -317,7 +317,7 @@ class ValueEditor:
             else:
                 self.widget.labelDefaultMeasure.setText("Default Pressure")
         else:
-            self.chartView.setHidden(True)
+            # self.chartView.setHidden(True)
             self.widget.labelDefaultMeasure.setHidden(True)
             self.widget.editDefaultMeasure.setHidden(True)
             self.widget.comboDefaultMeasure.setHidden(True)
