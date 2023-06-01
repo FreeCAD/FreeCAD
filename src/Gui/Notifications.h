@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 
+#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -135,7 +136,14 @@ inline void TranslatedNotification(TNotifier && notifier, TCaption && caption, T
  */
 template <typename TNotifier, typename TCaption, typename TMessage>
 inline void Notification(TNotifier && notifier, TCaption && caption, TMessage && message);
+
+inline std::string TranslateNotification(const std::string & message);
 } //namespace Gui
+
+inline std::string Gui::TranslateNotification(const std::string & message)
+{
+    return QCoreApplication::translate("Notifications", message.c_str()).toStdString();
+}
 
 
 template <Base::LogStyle type, Base::IntendedRecipient recipient, Base::ContentType content, typename TNotifier, typename TCaption, typename TMessage>
@@ -158,8 +166,15 @@ inline void Gui::Notify(TNotifier && notifier, TCaption && caption, TMessage && 
 
         // If Developers are also an intended recipient, notify before creating the blocking pop-up
         if constexpr(recipient == Base::IntendedRecipient::All) {
-            // Send also to log for developer only
-            auto msg = std::string(message).append("\n"); // use untranslated message
+
+            std::string msg;
+
+            if constexpr( std::is_base_of_v<Base::Exception, std::remove_reference_t<typename std::decay<TMessage>::type>> ) {
+                msg = message.what().append("\n"); // use untranslated message for developer
+            }
+            else {
+                msg = std::string(message).append("\n"); // use untranslated message for developer
+            }
 
             if constexpr( std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
                 Base::Console().Send<type,
@@ -189,21 +204,43 @@ inline void Gui::Notify(TNotifier && notifier, TCaption && caption, TMessage && 
         }
 
         if constexpr(content == Base::ContentType::Untranslated) {
-            if constexpr( type == Base::LogStyle::Warning) {
-                QMessageBox::warning(Gui::getMainWindow(),
-                                    QCoreApplication::translate("Notifications", caption),
-                                    QCoreApplication::translate("Notifications", message));
-            }
-            else
-            if constexpr( type == Base::LogStyle::Error) {
-                QMessageBox::critical(Gui::getMainWindow(),
-                                    QCoreApplication::translate("Notifications", caption),
-                                    QCoreApplication::translate("Notifications", message));
+            if constexpr( std::is_base_of_v<Base::Exception, std::remove_reference_t<typename std::decay<TMessage>::type>> ) {
+                auto msg = QString::fromStdString(message.translateMessage(TranslateNotification));
+
+                if constexpr( type == Base::LogStyle::Warning) {
+                    QMessageBox::warning(Gui::getMainWindow(),
+                                        QCoreApplication::translate("Notifications", caption),
+                                        msg);
+                }
+                else
+                if constexpr( type == Base::LogStyle::Error) {
+                    QMessageBox::critical(Gui::getMainWindow(),
+                                        QCoreApplication::translate("Notifications", caption),
+                                        msg);
+                }
+                else {
+                    QMessageBox::information(Gui::getMainWindow(),
+                                        QCoreApplication::translate("Notifications", caption),
+                                        msg);
+                }
             }
             else {
-                QMessageBox::information(Gui::getMainWindow(),
-                                    QCoreApplication::translate("Notifications", caption),
-                                    QCoreApplication::translate("Notifications", message));
+                if constexpr( type == Base::LogStyle::Warning) {
+                    QMessageBox::warning(Gui::getMainWindow(),
+                                        QCoreApplication::translate("Notifications", caption),
+                                        QCoreApplication::translate("Notifications", message));
+                }
+                else
+                if constexpr( type == Base::LogStyle::Error) {
+                    QMessageBox::critical(Gui::getMainWindow(),
+                                        QCoreApplication::translate("Notifications", caption),
+                                        QCoreApplication::translate("Notifications", message));
+                }
+                else {
+                    QMessageBox::information(Gui::getMainWindow(),
+                                        QCoreApplication::translate("Notifications", caption),
+                                        QCoreApplication::translate("Notifications", message));
+                }
             }
         }
         else {
@@ -247,25 +284,70 @@ inline void Gui::Notify(TNotifier && notifier, TCaption && caption, TMessage && 
                 Base::Console().Send<type, recipient, content>(notifier, msg.toUtf8());
             }
         }
-        else {
-            // trailing newline is necessary as this may be shown too in a console requiring them (depending on the configuration).
-            auto msg = std::string(message).append("\n");
+        else { // Untranslated
 
-            if constexpr( std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
-                Base::Console().Send<type, recipient, content>(notifier->getFullLabel(), msg.c_str());
+            // Exceptions may have dynamic strings, so we need to perform two individual notifications here
+            if constexpr(recipient == Base::IntendedRecipient::All || recipient == Base::IntendedRecipient::Developer) {
+                std::string msg;
+
+                // trailing newline is necessary as this may be shown too in a console requiring them (depending on the configuration).
+                if constexpr( std::is_base_of_v<Base::Exception, std::remove_reference_t<typename std::decay<TMessage>::type>> ) {
+                    // Exceptions may have dynamic strings, so we need to perform two individual notifications here
+                    msg = message.what().append("\n");
+                }
+                else {
+                    // Send also to log for developer only
+                    msg = std::string(message).append("\n"); // use untranslated message
+                }
+
+                if constexpr( std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::Developer, content>(notifier->getFullLabel(), msg.c_str());
+                }
+                else if constexpr( std::is_base_of_v<Gui::ViewProviderDocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::Developer, content>(notifier->getObject()->getFullLabel(), msg.c_str());
+                }
+                else if constexpr( std::is_base_of_v<Gui::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::Developer, content>(notifier->getDocument()->Label.getStrValue(), msg.c_str());
+                }
+                else if constexpr( std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::Developer, content>(notifier->Label.getStrValue(), msg.c_str());
+                }
+                else {
+                    Base::Console().Send<type, Base::IntendedRecipient::Developer, content>(notifier, msg.c_str());
+                }
             }
-            else if constexpr( std::is_base_of_v<Gui::ViewProviderDocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
-                Base::Console().Send<type, recipient, content>(notifier->getObject()->getFullLabel(), msg.c_str());
+
+            if constexpr(recipient == Base::IntendedRecipient::All || recipient == Base::IntendedRecipient::User) {
+                std::string msg;
+
+                // trailing newline is necessary as this may be shown too in a console requiring them (depending on the configuration).
+                if constexpr( std::is_base_of_v<Base::Exception, std::remove_reference_t<typename std::decay<TMessage>::type>> ) {
+                    // Exceptions may have dynamic strings, so we need to perform two individual notifications here
+                    msg = message.translateMessage(TranslateNotification);
+                }
+                else {
+                    // Send also to log for developer only
+                    msg = std::string(message); // use untranslated message
+                }
+
+                if constexpr( std::is_base_of_v<App::DocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::User, content>(notifier->getFullLabel(), msg.c_str());
+                }
+                else if constexpr( std::is_base_of_v<Gui::ViewProviderDocumentObject, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::User, content>(notifier->getObject()->getFullLabel(), msg.c_str());
+                }
+                else if constexpr( std::is_base_of_v<Gui::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::User, content>(notifier->getDocument()->Label.getStrValue(), msg.c_str());
+                }
+                else if constexpr( std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
+                    Base::Console().Send<type, Base::IntendedRecipient::User, content>(notifier->Label.getStrValue(), msg.c_str());
+                }
+                else {
+                    Base::Console().Send<type, Base::IntendedRecipient::User, content>(notifier, msg.c_str());
+                }
             }
-            else if constexpr( std::is_base_of_v<Gui::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
-                Base::Console().Send<type, recipient, content>(notifier->getDocument()->Label.getStrValue(), msg.c_str());
-            }
-            else if constexpr( std::is_base_of_v<App::Document, std::remove_pointer_t<typename std::decay<TNotifier>::type>> ) {
-                Base::Console().Send<type, recipient, content>(notifier->Label.getStrValue(), msg.c_str());
-            }
-            else {
-                Base::Console().Send<type, recipient, content>(notifier, msg.c_str());
-            }
+
+
         }
     }
 }
