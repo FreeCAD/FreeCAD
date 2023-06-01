@@ -46,7 +46,12 @@ def getParamGroups(nameInConfig, nameInPath):
     return recur(True, nameInPath, nameInPath, root)
 
 def getAllParams():
-  return [getParamGroups('UserParameter', 'User parameter')]
+  try:
+    from lxml import etree
+    return [getParamGroups('UserParameter', 'User parameter')]
+  except:
+    print('Could not load the list of all parameters. Please install the LXML python library with:\npython -m pip install --upgrade lxml')
+    return []
 
 def paramGroupAction(nfo):
   FreeCADGui.runCommand('Std_DlgParameter',0)

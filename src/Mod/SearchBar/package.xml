@@ -11,6 +11,7 @@
   <url type="bugtracker">https://github.com/SuzanneSoy/SearchBar/issues</url>
   <url type="documentation">https://github.com/SuzanneSoy/SearchBar</url>
   <icon>Tango-System-search.svg</icon>
+  <depend type="python">lxml</depend>
   <content>
     <workbench>
       <name>SearchBar</name>
