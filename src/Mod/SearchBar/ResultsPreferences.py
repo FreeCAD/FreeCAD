@@ -55,10 +55,12 @@ def getAllParams():
 
 def paramGroupAction(nfo):
   FreeCADGui.runCommand('Std_DlgParameter',0)
+  print('Open Parameter Editor (parameter group)')
   # TODO: find a way to select the desired group in the parameter dialog once it opens
 
 def paramAction(nfo):
   FreeCADGui.runCommand('Std_DlgParameter',0)
+  print('Open Parameter Editor (single parameter)')
   # TODO: find a way to select the desired parameter in the parameter dialog once it opens
 
 getters = {
