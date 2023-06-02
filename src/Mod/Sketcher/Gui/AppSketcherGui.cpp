@@ -109,6 +109,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/pointers"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/splines"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/overlay"));
 
     // instantiating the commands
     CreateSketcherCommands();
