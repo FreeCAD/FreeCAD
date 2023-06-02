@@ -35,9 +35,39 @@ import FreeCAD
 unicode = str
 
 __models = {}
+__modelsByPath = {}
 
-class MaterialModel:
-    pass
+def _dereference(parent, child):
+    # Add the child parameters to the parent
+    parentModel = parent["model"]
+    childModel = child["model"]
+    for name, value in childModel["Model"].items():
+        if name not in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"]:
+            parentModel["Model"][name] = value
+
+    print("dereferenced:")
+    print(parentModel)
+
+def _dereferenceInheritance(data):
+    if not data["dereferenced"]:
+        data["dereferenced"] = True # Prevent recursion loops
+
+        model = data["model"]
+        if "Inherits" in model["Model"]:
+            print("Model '{0}' inherits from:".format(data["name"]))
+            for parent in model["Model"]["Inherits"]:
+                print("\t'{0}'".format(parent))
+                print("\t\t'{0}'".format(parent.keys()))
+                print("\t\t'{0}'".format(parent["UUID"]))
+
+                # This requires that all models have already been loaded undereferenced
+                child = __models[parent["UUID"]]
+                if child is not None:
+                    _dereference(data, child)
+
+def _dereferenceAll():
+    for data in __models.values():
+        _dereferenceInheritance(data)
 
 def _scanFolder(folder):
     print("Scanning folder '{0}'".format(folder.absolute()))
@@ -45,22 +75,26 @@ def _scanFolder(folder):
         if child.is_dir():
             _scanFolder(child)
         else:
-            try:
-                if child.suffix.lower() == ".yml":
-                    stream = open(child.absolute(), "r")
-                    model = yaml.safe_load(stream)
-                    print(model)
-                else:
-                    print("Extension '{0}'".format(child.suffix.lower()))
-            except Exception as ex:
-                print("Unable to load '{0}'".format(child.absolute()))
+            if child.suffix.lower() == ".yml":
+                data = getModelFromPath(child)
+
+                if data is not None:
+                    __models[data["uuid"]] = data
+                    __modelsByPath[data["path"]] = data
+                    # print(data["model"])
+            else:
+                print("Extension '{0}'".format(child.suffix.lower()))
 
 def _scanModels(libraries):
     __models = {} # Clear the current library
+    __modelsByPath = {}
     print("_scanModels")
     print(libraries)
     for library in libraries:
         _scanFolder(Path(library))
+
+    # Satisfy aany inheritances
+    _dereferenceAll()
 
 def getPreferredSaveDirectory():
     pass
@@ -77,33 +111,38 @@ def getModelLibraries():
 
     return libraries
 
-def getModel(name, UUID):
+def getModel(uuid):
     """
-        Retrieve the specified model. Where UUID is None, the last loaded match will be returned
+        Retrieve the specified model.
     """
-    pass
+    return __models[uuid]
 
-def getModelFromPath(path):
-    """
-        Retrieve the model at the specified path
-    """
-    pass
-
-def getConsolidatedModel(name, UUID):
-    """
-        Retrieve the specified model. Where UUID is None, the last loaded match will be returned.
-
-        The consolidated model dereferences any inherited models returning a final model.
-    """
-    pass
-
-def getConsolidaatedModelFromPath(path):
+def getModelFromPath(filePath):
     """
         Retrieve the model at the specified path.
 
-        The consolidated model dereferences any inherited models returning a final model.
+        This may not need public exposure?
     """
-    pass
+    try:
+        path = Path(filePath)
+        stream = open(path.absolute(), "r")
+        model = yaml.safe_load(stream)
+
+        uuid = model["Model"]["UUID"]
+        name = model["Model"]["Name"]
+
+        data = {}
+        data["name"] = name
+        data["path"] = path.absolute()
+        data["uuid"] = uuid
+        data["model"] = model
+        data["dereferenced"] = False
+        return data
+    except Exception as ex:
+        print("Unable to load '{0}'".format(path.absolute()))
+        print(ex)
+
+    return None
 
 def saveModel(model, path):
     """
