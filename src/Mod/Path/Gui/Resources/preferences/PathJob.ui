@@ -185,8 +185,8 @@ If left empty no template will be preselected.</string>
             <item>
              <widget class="QLineEdit" name="leOutputFile">
               <property name="toolTip">
-               <string>Enter a path and optionally file name (see below) to be used as the default for the post-processor export.
-The following substitutions are performed before the name is resolved at the time of the post-processing:
+               <string>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
 Substitution allows the following:
 %D ... directory of the active document
 %d ... name of the active document (with extension)
