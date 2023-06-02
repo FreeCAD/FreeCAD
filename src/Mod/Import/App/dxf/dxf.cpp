@@ -3342,8 +3342,11 @@ bool CDxfRead::ResolveEncoding()
     else {
         // Codepage names may be of the form "ansi_1252" which we map to "cp1252" but we don't map "ansi_x3xxxx" (which happens to mean "ascii")
         std::string* p = new std::string(*m_CodePage);
-        if (strncmp(p->c_str(), "ansi_", 5) == 0
-            && strncmp(p->c_str(), "ansi_x3", 7) != 0)
+        std::string p_lower;
+        for (std::string::const_iterator i = p->begin(); i != p->end(); ++i)
+            p_lower += tolower(*i);
+        if (p_lower.substr(0, 5) == "ansi_"
+            && p_lower.substr(0, 7) != "ansi_x3")
             p->replace(0, 5, "cp");
         m_encoding = p;
         // At this point we want to recognize synonyms for "utf_8" and use the custom decoder function.
