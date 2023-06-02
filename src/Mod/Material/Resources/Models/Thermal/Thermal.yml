@@ -20,13 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-- Model:
-  Description:
-    Name: "Thermal"
-    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
-    URL: ''
-    Description: "default thermal model"
-    DOI: ""
+Model:
+  Name: "Thermal"
+  UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+  URL: ''
+  Description: "default thermal model"
+  DOI: ""
   SpecificHeat:
     Type: 'Quantity'
     Units: ''

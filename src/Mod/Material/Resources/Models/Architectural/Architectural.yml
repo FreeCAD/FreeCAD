@@ -20,13 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-- Model:
-  Description:
-    Name: "Architectural"
-    UUID: '32439c3b-262f-4b7b-99a8-f7f44e5894c8'
-    URL: ''
-    Description: "default architectural model"
-    DOI: ""
+Model:
+  Name: "Architectural"
+  UUID: '32439c3b-262f-4b7b-99a8-f7f44e5894c8'
+  URL: ''
+  Description: "default architectural model"
+  DOI: ""
   Color:
     Type:  'String'
     Units: ''

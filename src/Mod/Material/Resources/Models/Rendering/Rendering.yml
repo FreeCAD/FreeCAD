@@ -20,13 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-- Model:
-  Description:
-    Name: "Rendering"
-    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
-    URL: ''
-    Description: "default model"
-    DOI: ""
+Model:
+  Name: "Rendering"
+  UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+  URL: ''
+  Description: "default model"
+  DOI: ""
   AmbientColor:
     Type: 'Color'
     Units: ''

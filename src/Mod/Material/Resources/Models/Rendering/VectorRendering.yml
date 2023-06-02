@@ -20,13 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-- Model:
-  Description:
-    Name: "default"
-    UUID: 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e'
-    URL: 'Vector Rendering'
-    Description: "default model"
-    DOI: ""
+Model:
+  Name: "default"
+  UUID: 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e'
+  URL: 'Vector Rendering'
+  Description: "default model"
+  DOI: ""
   SectionFillPattern:
     Type: 'File'
     Units: ''

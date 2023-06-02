@@ -20,13 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-- Model:
-  Description:
-    Name: "Costs"
-    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
-    URL: ''
-    Description: "default cost model"
-    DOI: ""
+Model:
+  Name: "Costs"
+  UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+  URL: ''
+  Description: "default cost model"
+  DOI: ""
   ProductURL:
     Type:  'URL'
     Units: ''
