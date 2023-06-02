@@ -901,6 +901,27 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         subMenu.addActions(subMenuGroup.actions());
     }
 
+    // add a submenu to present the settings of the tree.
+    QMenu settingsMenu;
+    settingsMenu.setTitle(tr("Tree settings"));
+    contextMenu.addSeparator();
+    contextMenu.addMenu(&settingsMenu);
+
+    QAction* action = new QAction(tr("Show description column"), this);
+    action->setStatusTip(tr("Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
+    action->setCheckable(true);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    action->setChecked(!hGrp->GetBool("HideColumn", true));
+
+    settingsMenu.addAction(action);
+    QObject::connect(action, &QAction::triggered, this, [this, action, hGrp]() {
+        bool show = action->isChecked();
+        hGrp->SetBool("HideColumn", !show);
+        setColumnHidden(1, !show);
+        header()->setVisible(show);
+    });
+
     if (contextMenu.actions().count() > 0) {
         try {
             contextMenu.exec(QCursor::pos());
