@@ -24,7 +24,6 @@ __author__ = "David Carter"
 __url__ = "http://www.freecad.org"
 
 import os
-from os.path import join
 import io
 from pathlib import Path
 import yaml
@@ -40,11 +39,13 @@ __modelsByPath = {}
 def _dereference(parent, child):
     # Add the child parameters to the parent
     parentModel = parent["model"]
+    parentBase = parent["base"]
     childModel = child["model"]
-    for name, value in childModel["Model"].items():
+    childBase = child["base"]
+    for name, value in childModel[childBase].items():
         if name not in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"] and \
-            name not in parentModel["Model"]: # Don't add if it's already there
-            parentModel["Model"][name] = value
+            name not in parentModel[parentBase]: # Don't add if it's already there
+            parentModel[parentBase][name] = value
 
     print("dereferenced:")
     print(parentModel)
@@ -54,9 +55,10 @@ def _dereferenceInheritance(data):
         data["dereferenced"] = True # Prevent recursion loops
 
         model = data["model"]
-        if "Inherits" in model["Model"]:
+        base = data["base"]
+        if "Inherits" in model[base]:
             print("Model '{0}' inherits from:".format(data["name"]))
-            for parent in model["Model"]["Inherits"]:
+            for parent in model[base]["Inherits"]:
                 print("\t'{0}'".format(parent))
                 print("\t\t'{0}'".format(parent.keys()))
                 print("\t\t'{0}'".format(parent["UUID"]))
@@ -129,10 +131,15 @@ def getModelFromPath(filePath):
         stream = open(path.absolute(), "r")
         model = yaml.safe_load(stream)
 
-        uuid = model["Model"]["UUID"]
-        name = model["Model"]["Name"]
+        base = "Model"
+        if "AppearanceModel" in model:
+            base = "AppearanceModel"
+
+        uuid = model[base]["UUID"]
+        name = model[base]["Name"]
 
         data = {}
+        data["base"] = base
         data["name"] = name
         data["path"] = path.absolute()
         data["uuid"] = uuid

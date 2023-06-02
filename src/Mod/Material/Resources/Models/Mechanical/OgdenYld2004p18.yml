@@ -27,8 +27,8 @@ Model:
   Description: "Materials that are linearly elastic obey Hooke's law i.e. the stress and strain relationship is linear"
   DOI: "10.1016/j.ijplas.2004.06.004"
   OgdenModuli:
-    Type: 'Quantity'
-    Units: ''
+    Type: 'List'
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Ogden_hyperelastic_model'
     Description: "Elastic moduli μ for Ogden [FreeCAD Pressure unit]"
   OgdenExponent:
@@ -38,12 +38,12 @@ Model:
     Description: "Exponent ɑ for Ogden [unitless]"
   InitialYieldStress:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: ''
     Description: "Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]"
   VoceSaturationStress:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: ''
     Description: "Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]"
   VoceStrainScale:
@@ -52,7 +52,7 @@ Model:
     URL: ''
     Description: "Strain scale in Voce isotropic hardening [unitless]"
   Yld2004p18Coefficients:
-    Type: 'Quantity'
+    Type: 'List'
     Units: ''
     URL: ''
     Description: "Coefficients (c_12, c_13, c_21, c_23, c_31, c_32, c_44, c_55, c_66) in Yld2004-18p yield surface [unitless]"

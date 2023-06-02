@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-Model:
+AppearanceModel:
   Name: "default"
   UUID: 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e'
   URL: 'Vector Rendering'

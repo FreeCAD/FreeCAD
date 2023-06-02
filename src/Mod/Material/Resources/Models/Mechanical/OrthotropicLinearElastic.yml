@@ -38,36 +38,36 @@ Model:
     Description: "Poisson's ratio [unitless]"
   PoissonRatioYZ:
     Type: 'Float'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
     Description: "Poisson's ratio [unitless]"
   ShearModulusXY:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   ShearModulusXZ:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   ShearModulusYZ:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   YoungsModulusX:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
     Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
   YoungsModulusY:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
     Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
   YoungsModulusZ:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
     Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"

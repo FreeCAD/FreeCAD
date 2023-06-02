@@ -27,7 +27,7 @@ Model:
   DOI: ""
   Density:
     Type: 'Quantity'
-    Units: ''
+    Units: 'Density'
     URL: 'https://en.wikipedia.org/wiki/Density'
     Description: "Density in [FreeCAD Density unit]"
   DynamicViscosity:

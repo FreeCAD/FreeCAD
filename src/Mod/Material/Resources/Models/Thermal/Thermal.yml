@@ -28,16 +28,16 @@ Model:
   DOI: ""
   SpecificHeat:
     Type: 'Quantity'
-    Units: ''
+    Units: 'SpecificHeat'
     URL: 'https://en.wikipedia.org/wiki/Heat_capacity'
     Description: "Specific capacity in [FreeCAD SpecificHeat unit]"
   ThermalConductivity:
     Type: 'Quantity'
-    Units: ''
+    Units: 'ThermalConductivity'
     URL: 'https://en.wikipedia.org/wiki/Thermal_conductivity'
     Description: "Thermal conductivity in [FreeCAD ThermalConductivity unit]"
   ThermalExpansionCoefficient:
     Type: 'Quantity'
-    Units: ''
+    Units: 'ThermalExpansionCoefficient'
     URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
     Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"
