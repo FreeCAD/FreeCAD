@@ -42,7 +42,8 @@ def _dereference(parent, child):
     parentModel = parent["model"]
     childModel = child["model"]
     for name, value in childModel["Model"].items():
-        if name not in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"]:
+        if name not in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"] and \
+            name not in parentModel["Model"]: # Don't add if it's already there
             parentModel["Model"][name] = value
 
     print("dereferenced:")
