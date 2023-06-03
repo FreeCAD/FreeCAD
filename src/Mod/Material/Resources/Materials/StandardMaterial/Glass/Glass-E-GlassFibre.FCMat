@@ -5,11 +5,11 @@ General:
   Description: "Glass Fibre"
   Father: "Glass"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     CompressiveStrength: "1080 MPa"
     Density: "2580 kg/m^3"
     UltimateTensileStrength: "3445 MPa"
-  - Costs:
+  Costs:
     UUID: '881df808-8726-4c2e-be38-688bb6cce466'
     ProductURL: "https://en.wikipedia.org/wiki/Glass_fiber"

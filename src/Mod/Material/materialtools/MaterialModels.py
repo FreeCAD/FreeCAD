@@ -118,6 +118,11 @@ def getModel(uuid):
     """
         Retrieve the specified model.
     """
+    if len(__models) < 1:
+        getModelLibraries()
+
+    if uuid not in __models:
+        return None
     return __models[uuid]
 
 def getModelFromPath(filePath):

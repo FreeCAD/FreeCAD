@@ -6,7 +6,7 @@ General:
   KindOfMaterial: "Titanium"
   MaterialNumber: "3.7165"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "4430 kg/m^3"
     PoissonRatio: "0.330"
@@ -15,12 +15,12 @@ Models:
     YieldStrength: "910 MPa"
     YoungsModulus: "114 GPa"
     Hardness: "35 HRC"
-  - Thermal:
+  Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     SpecificHeat: "553.0 J/kg/K"
     ThermalConductivity: "6.7 W/m/K"
     ThermalExpansionCoefficient: "8.6 µm/m/K"
-  - Electromagnetic:
+  Electromagnetic:
     UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
     ElectricalConductivity: "580012.8 S/m"
     RelativePermeability: "1.00005"

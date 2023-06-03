@@ -127,7 +127,7 @@ def yamGeneral(card):
 
 def yamSection(card, header, uuid):
     if len(card) > 0:
-        yam = "  - {0}:\n".format(header)
+        yam = "  {0}:\n".format(header)
         yam += "    UUID: '{0}'\n".format(uuid)
         for param in card:
             yam += '    {0}: "{1}"\n'.format(param, card[param])
@@ -175,10 +175,12 @@ def saveYaml(card, output):
         yam += yamArchitectural(card["Architectural"])
     if "Cost" in card:
         yam += yamCost(card["Cost"])
-    if "Rendering" in card:
-        yam += yamRendering(card["Rendering"])
-    if "VectorRendering" in card:
-        yam += yamVectorRendering(card["VectorRendering"])
+    if len(card["Rendering"]) > 0 or len(card["VectorRendering"]) > 0:
+        yam += "AppearanceModels:\n"
+        if "Rendering" in card:
+            yam += yamRendering(card["Rendering"])
+        if "VectorRendering" in card:
+            yam += yamVectorRendering(card["VectorRendering"])
 
     file = open(output, "w", encoding="utf-8")
     file.write(yam)

@@ -6,18 +6,18 @@ General:
   Father: "Thermoplast"
   SourceURL: "https://www.sd3d.com/wp-content/uploads/2017/06/MaterialTDS-PLA_01.pdf"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "1240 kg/m^3"
     PoissonRatio: "0.36"
     UltimateTensileStrength: "26.4 MPa"
     YieldStrength: "35.9 MPa"
     YoungsModulus: "3640 MPa"
-  - Thermal:
+  Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     SpecificHeat: "1800 J/kg/K"
     ThermalConductivity: "0.130 W/m/K"
     ThermalExpansionCoefficient: "0.000041 m/m/K"
-  - Costs:
+  Costs:
     UUID: '881df808-8726-4c2e-be38-688bb6cce466'
     ProductURL: "https://en.wikipedia.org/wiki/Polylactic_acid"

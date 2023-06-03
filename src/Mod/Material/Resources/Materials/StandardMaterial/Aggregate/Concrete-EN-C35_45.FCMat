@@ -5,13 +5,13 @@ General:
   Description: "Concrete matrix for reinforcement material examples, 0.6 x 0.75 x 35 MPa = 15.75 MPa (https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=200#p311075)"
   Father: "Aggregate"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     AngleOfFriction: "30 deg"
     CompressiveStrength: "15.75 MPa"
     Density: "2500 kg/m^3"
     PoissonRatio: "0.17"
     YoungsModulus: "32000 MPa"
-  - Costs:
+  Costs:
     UUID: '881df808-8726-4c2e-be38-688bb6cce466'
     ProductURL: "https://en.wikipedia.org/wiki/Concrete"

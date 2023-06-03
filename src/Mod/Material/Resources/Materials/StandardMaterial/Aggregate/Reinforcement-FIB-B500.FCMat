@@ -4,7 +4,7 @@ General:
   Name: "Reinforcement-Harry"
   Description: "Reinforcement inside concrete for reinforcement material examples, from fib examples, 0.84 x 0.75 x 500 MPa = 315 MPa (https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=200#p311705)"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "7850 kg/m^3"
     PoissonRatio: "0.3"

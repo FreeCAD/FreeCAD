@@ -12,7 +12,7 @@ General:
   MaterialNumber: "1.0402"
   Norm: "EN 10083-1"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "7800 kg/m^3"
     PoissonRatio: "0.3"
@@ -21,6 +21,6 @@ Models:
     UltimateTensileStrength: "400 MPa"
     YieldStrength: "230 MPa"
     YoungsModulus: "210000 MPa"
-  - Thermal:
+  Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     ThermalExpansionCoefficient: "0.000011 m/m/K"

@@ -26,12 +26,14 @@ __url__ = "http://www.freecad.org"
 import os
 from pathlib import PurePath, Path
 import sys
+import yaml
 from PySide import QtCore, QtGui, QtSvg
 
 import FreeCAD
 import FreeCADGui
 # import Material_rc
 from materialtools.cardutils import get_material_preferred_directory, get_material_preferred_save_directory
+from materialtools import MaterialModels
 
 
 # is this still needed after the move to card utils???
@@ -175,11 +177,15 @@ class Materials:
 
     def chooseMaterial(self, card_path):
         if os.path.isfile(card_path):
-            from importFCMat import read2
-            d = read2(card_path)
-            self.updateCard(d)
-            # be careful with reading from materials dict
-            # the card could be updated the dict not
+            # from importFCMat import read2
+            # d = read2(card_path)
+            # self.updateCard(d)
+            # # be careful with reading from materials dict
+            # # the card could be updated the dict not
+            path = Path(card_path)
+            stream = open(path.absolute(), "r")
+            model = yaml.safe_load(stream)
+            self.updateCard(model)
         else:
             FreeCAD.Console.PrintError("Material card not found: {}\n".format(card_path))
 
@@ -206,25 +212,67 @@ class Materials:
     def updateTab(self, widget, data, dataGroups):
         model = widget.model()
         root = model.invisibleRootItem()
-        for gg in range(root.rowCount()):
-            group = root.child(gg, 0)
-            # print("Group {0}".format(group.text()))
-            for pp in range(group.rowCount()):
-                item = group.child(pp, 0)
-                it = group.child(pp, 1)
-                kk = self.collapseKey(item.text()) # Remove spaces from key name
 
-                set = False
-                for dataGroup in dataGroups:
-                    if kk in data[dataGroup]:
-                        value = data[dataGroup][kk]
-                        it.setText(value)
-                        # del data[dataGroup][kk]
-                        set = True
-                        break
+        # print(data["Models"])
+        for dataModel in data["Models"]:
+            print(dataModel)
+            top = QtGui.QStandardItem(dataModel)
+            model.appendRow([top])
+            uuid = data["Models"][dataModel]["UUID"]
+            mm = MaterialModels.getModel(uuid)
+            mmModel = mm["model"]["Model"]
+            # print(mm)
 
-                if not set:
-                    it.setText('')
+            for propertyName in mmModel:
+                if propertyName in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"]:
+                    continue
+
+                item = QtGui.QStandardItem(propertyName)
+                print("***")
+                print(propertyName)
+                print(mmModel[propertyName])
+                print("---")
+                # print(mmModel[propertyName]["Description"])
+                item.setToolTip(mmModel[propertyName]["Description"])
+                # self.internalprops.append(propertyName)
+
+                value = QtGui.QStandardItem()
+                if propertyName in data["Models"][dataModel]:
+                    value.setText(data["Models"][dataModel][propertyName])
+                # else:
+                #     value = QtGui.QStandardItem(data["Models"][dataModel][propertyName])
+                value.setToolTip(mmModel[propertyName]["Description"])
+
+                # print("Units '{0}'".format(group[gg][propertyName]["Units"]))
+                units = QtGui.QStandardItem(mmModel[propertyName]["Units"])
+                units.setToolTip(mmModel[propertyName]["Description"])
+
+                tt = mmModel[propertyName]["Type"]
+                itemType = QtGui.QStandardItem(tt)
+
+                top.appendRow([item, value, units, itemType])
+                widget.setExpanded(top.index(), True)
+            # for name in data["Models"][dataModel]:
+            #     print("\t{0}".format(name))
+        # for gg in range(root.rowCount()):
+        #     group = root.child(gg, 0)
+        #     # print("Group {0}".format(group.text()))
+        #     for pp in range(group.rowCount()):
+        #         item = group.child(pp, 0)
+        #         it = group.child(pp, 1)
+        #         kk = self.collapseKey(item.text()) # Remove spaces from key name
+
+        #         set = False
+        #         for dataGroup in dataGroups:
+        #             if kk in data[dataGroup]:
+        #                 value = data[dataGroup][kk]
+        #                 it.setText(value)
+        #                 # del data[dataGroup][kk]
+        #                 set = True
+        #                 break
+
+        #         if not set:
+        #             it.setText('')
 
     def updateCard(self, data):
 
@@ -232,13 +280,21 @@ class Materials:
            the material property keys where added to the editor already
            unknown material property keys will be added to the user defined group"""
 
-        # print(data)
+        print(data)
         if "General" in data:
             self.updateGeneral(data['General'])
         else:
             self.updateGeneral(None)
 
         widget = self.widget
+        widget.treeProperties.model().clear()
+        model = widget.treeProperties.model()
+        model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
+
+        widget.treeProperties.setColumnWidth(0, 250)
+        widget.treeProperties.setColumnWidth(1, 250)
+        widget.treeProperties.setColumnWidth(2, 250)
+        widget.treeProperties.setColumnHidden(3, True)
     
         self.updateTab(widget.treeProperties, data, ["Mechanical", "Fluidic", "Thermal", "Electromagnetic", "Architectural", "Cost"])
         self.updateTab(widget.treeAppearance, data, ["Rendering", "VectorRendering"])

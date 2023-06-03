@@ -5,11 +5,11 @@ General:
   Description: "A standard construction wood"
   Father: "Aggregate"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "700 kg/m^3"
     PoissonRatio: "0.05"
     YoungsModulus: "12000 MPa"
-  - Costs:
+  Costs:
     UUID: '881df808-8726-4c2e-be38-688bb6cce466'
     ProductURL: "https://en.wikipedia.org/wiki/Wood"

@@ -5,7 +5,7 @@ General:
   Description: "This is a not defined material"
   Father: "None"
 Models:
-  - LinearElastic:
+  LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "0 kg/m^3"
     PoissonRatio: "0"
