@@ -167,9 +167,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabPhysicalProperties">
+      <widget class="QWidget" name="tabProperties">
        <attribute name="title">
-        <string>Physical Properties</string>
+        <string>Properties</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -204,48 +204,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QTreeView" name="treePhysicalProperties"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tabArchitectural">
-       <attribute name="title">
-        <string>Architectural</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_41">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_21">
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonArchitecturalAdd">
-            <property name="text">
-             <string>+</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonArchitecturalRemove">
-            <property name="text">
-             <string>-</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTreeView" name="treeArchitectural"/>
+         <widget class="QTreeView" name="treeProperties"/>
         </item>
        </layout>
       </widget>
@@ -253,95 +212,12 @@
        <attribute name="title">
         <string>Appearance</string>
        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <layout class="QHBoxLayout" name="layoutAppearance">
-          </layout>
-         </item>
-         <item>
-          <widget class="QTreeView" name="treeAppearance"/>
-         </item>
-        </layout>
-      </widget>
-      <widget class="QWidget" name="tabCosts">
-       <attribute name="title">
-        <string>Costs</string>
-       </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonCostsAdd">
-            <property name="text">
-             <string>+</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonCostsRemove">
-            <property name="text">
-             <string>-</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <layout class="QHBoxLayout" name="layoutAppearance"/>
         </item>
         <item>
-         <widget class="QTreeView" name="treeCosts"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tabUserDefined">
-       <attribute name="title">
-        <string>User Defined</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonUserDefinedAdd">
-            <property name="text">
-             <string>+</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonUserDefinedRemove">
-            <property name="text">
-             <string>-</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTreeView" name="treeUserDefinedProperties"/>
+         <widget class="QTreeView" name="treeAppearance"/>
         </item>
        </layout>
       </widget>
