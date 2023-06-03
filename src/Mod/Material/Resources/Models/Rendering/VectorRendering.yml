@@ -21,10 +21,10 @@
 # ***************************************************************************
 
 AppearanceModel:
-  Name: "default"
+  Name: "Vector Rendering"
   UUID: 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e'
-  URL: 'Vector Rendering'
-  Description: "default model"
+  URL: ''
+  Description: "default vector rendering model"
   DOI: ""
   SectionFillPattern:
     Type: 'File'

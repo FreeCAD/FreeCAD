@@ -1,27 +1,24 @@
-; Copper Generic
-; Uwe Stöhr
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD 0.21.30044 (Git)
-
-[General]
-Name = Copper Generic
-Father = Metal
-KindOfMaterial = Copper
-
-[Mechanical]
-Density = 8960 kg/m^3
-PoissonRatio = 0.343
-ShearModulus = 46.0 GPa
-UltimateTensileStrength = 210 MPa
-YieldStrength = 33.3 MPa
-YoungsModulus = 119 GPa
-
-[Thermal]
-SpecificHeat = 385.0 J/kg/K
-ThermalConductivity = 398.0 W/m/K
-ThermalExpansionCoefficient = 16.5 µm/m/K
-
-[Electromagnetic]
-ElectricalConductivity = 59.59 MS/m
-RelativePermeability = 0.999994
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "Uwe Stöhr"
+  Name: "Copper Generic"
+  Father: "Metal"
+  KindOfMaterial: "Copper"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8960 kg/m^3"
+    PoissonRatio: "0.343"
+    ShearModulus: "46.0 GPa"
+    UltimateTensileStrength: "210 MPa"
+    YieldStrength: "33.3 MPa"
+    YoungsModulus: "119 GPa"
+  - Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "385.0 J/kg/K"
+    ThermalConductivity: "398.0 W/m/K"
+    ThermalExpansionCoefficient: "16.5 µm/m/K"
+  - Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "59.59 MS/m"
+    RelativePermeability: "0.999994"

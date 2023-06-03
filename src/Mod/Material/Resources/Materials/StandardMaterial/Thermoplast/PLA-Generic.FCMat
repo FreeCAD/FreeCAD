@@ -1,26 +1,23 @@
-; PLA-Generic
-; (c) 2019 Uwe Stöhr (CC-BY 3.0)
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD0.18.16022 (Git)
-
-[General]
-Name = PLA
-Description = Polylactic acid or polylactide (PLA, Poly) is a biodegradable thermoplastic aliphatic polyester derived from renewable resources, such as corn starch, tapioca roots, chips, starch or sugarcane.
-Father = Thermoplast
-SourceURL = https://www.sd3d.com/wp-content/uploads/2017/06/MaterialTDS-PLA_01.pdf
-
-[Mechanical]
-Density = 1240 kg/m^3
-PoissonRatio = 0.36
-UltimateTensileStrength = 26.4 MPa
-YieldStrength = 35.9 MPa
-YoungsModulus = 3640 MPa
-
-[Thermal]
-SpecificHeat = 1800 J/kg/K
-ThermalConductivity = 0.130 W/m/K
-ThermalExpansionCoefficient = 0.000041 m/m/K
-
-[Cost]
-ProductURL = https://en.wikipedia.org/wiki/Polylactic_acid
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Name: "PLA"
+  Description: "Polylactic acid or polylactide (PLA, Poly) is a biodegradable thermoplastic aliphatic polyester derived from renewable resources, such as corn starch, tapioca roots, chips, starch or sugarcane."
+  Father: "Thermoplast"
+  SourceURL: "https://www.sd3d.com/wp-content/uploads/2017/06/MaterialTDS-PLA_01.pdf"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "1240 kg/m^3"
+    PoissonRatio: "0.36"
+    UltimateTensileStrength: "26.4 MPa"
+    YieldStrength: "35.9 MPa"
+    YoungsModulus: "3640 MPa"
+  - Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "1800 J/kg/K"
+    ThermalConductivity: "0.130 W/m/K"
+    ThermalExpansionCoefficient: "0.000041 m/m/K"
+  - Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Polylactic_acid"

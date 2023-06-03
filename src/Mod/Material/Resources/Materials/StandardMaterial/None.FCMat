@@ -1,16 +1,13 @@
-; None
-; (c) 2015 Przemo Firszt (CC-BY 3.0)
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD0.18.16022 (Git)
-
-[General]
-Name = None
-Description = This is a not defined material
-Father = None
-
-[Mechanical]
-Density = 0 kg/m^3
-PoissonRatio = 0
-UltimateTensileStrength = 0 MPa
-YoungsModulus = 0 MPa
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "(c) 2015 Przemo Firszt (CC-BY 3.0)"
+  Name: "None"
+  Description: "This is a not defined material"
+  Father: "None"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "0 kg/m^3"
+    PoissonRatio: "0"
+    UltimateTensileStrength: "0 MPa"
+    YoungsModulus: "0 MPa"

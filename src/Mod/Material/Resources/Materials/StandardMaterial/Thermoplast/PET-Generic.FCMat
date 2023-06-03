@@ -1,26 +1,23 @@
-; PET-Generic
-; (c) 2019 Uwe Stöhr (CC-BY 3.0)
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD0.18.16022 (Git)
-
-[General]
-Name = PET
-SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=a696bdcdff6f41dd98f8eec3599eaa20
-
-[Mechanical]
-CompressiveStrength = 38.0 MPa
-Density = 1380 kg/m^3
-PoissonRatio = 0.36
-ShearModulus = 0.0385 GPa
-UltimateTensileStrength = 38.8 MPa
-YieldStrength = 62.8 MPa
-YoungsModulus = 3150 MPa
-
-[Thermal]
-SpecificHeat = 1140 J/kg/K
-ThermalConductivity = 0.181 W/m/K
-ThermalExpansionCoefficient = 0.000072 m/m/K
-
-[Cost]
-ProductURL = https://en.wikipedia.org/wiki/Polyethylene_terephthalate
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Name: "PET"
+  SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=a696bdcdff6f41dd98f8eec3599eaa20"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "38.0 MPa"
+    Density: "1380 kg/m^3"
+    PoissonRatio: "0.36"
+    ShearModulus: "0.0385 GPa"
+    UltimateTensileStrength: "38.8 MPa"
+    YieldStrength: "62.8 MPa"
+    YoungsModulus: "3150 MPa"
+  - Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "1140 J/kg/K"
+    ThermalConductivity: "0.181 W/m/K"
+    ThermalExpansionCoefficient: "0.000072 m/m/K"
+  - Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Polyethylene_terephthalate"

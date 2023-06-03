@@ -1,20 +1,17 @@
-; Concrete-Generic
-; (c) 2013 Yorik van Havre (CC-BY 3.0)
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD0.18.16022 (Git)
-
-[General]
-Name = Concrete
-Description = A standard C-25 construction concrete
-Father = Aggregate
-StandardCode = Masterformat 03 33 13
-
-[Mechanical]
-CompressiveStrength = 25 MPa
-Density = 2400 kg/m^3
-PoissonRatio = 0.17
-YoungsModulus = 32000 MPa
-
-[Cost]
-ProductURL = https://en.wikipedia.org/wiki/Concrete
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "(c) 2013 Yorik van Havre (CC-BY 3.0)"
+  Name: "Concrete"
+  Description: "A standard C-25 construction concrete"
+  Father: "Aggregate"
+  StandardCode: "Masterformat 03 33 13"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "25 MPa"
+    Density: "2400 kg/m^3"
+    PoissonRatio: "0.17"
+    YoungsModulus: "32000 MPa"
+  - Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Concrete"

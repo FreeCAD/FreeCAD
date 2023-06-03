@@ -1,27 +1,24 @@
-; Steel-EN-GJS-700-2
-; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD0.18.16022 (Git)
-
-[General]
-Name = EN-GJS-700-2
-NameDE = GGG-70
-DescriptionDE = Kurbelwellen, Zahnräder, Turbinenschaufeln
-Father = Metal
-KindOfMaterial = Cast iron
-KindOfMaterialDE = Guss
-MaterialNumber = 0.707
-Norm = EN 1563
-
-[Mechanical]
-Density = 7200 kg/m^3
-PoissonRatio = 0.3
-ShearModulus = 67000 MPa
-UltimateStrain = 2
-UltimateTensileStrength = 700 MPa
-YieldStrength = 420 MPa
-YoungsModulus = 180000 MPa
-
-[Thermal]
-ThermalExpansionCoefficient = 0.000011 m/m/K
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Name: "EN-GJS-700-2"
+  NameDE: "GGG-70"
+  DescriptionDE: "Kurbelwellen, Zahnräder, Turbinenschaufeln"
+  Father: "Metal"
+  KindOfMaterial: "Cast iron"
+  KindOfMaterialDE: "Guss"
+  MaterialNumber: "0.707"
+  Norm: "EN 1563"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7200 kg/m^3"
+    PoissonRatio: "0.3"
+    ShearModulus: "67000 MPa"
+    UltimateStrain: "2"
+    UltimateTensileStrength: "700 MPa"
+    YieldStrength: "420 MPa"
+    YoungsModulus: "180000 MPa"
+  - Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    ThermalExpansionCoefficient: "0.000011 m/m/K"

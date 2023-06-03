@@ -1,27 +1,24 @@
-; Steel-36NiCrMo16
-; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD0.18.16022 (Git)
-
-[General]
-Name = 36NiCrMo16
-NameDE = 36NiCrMo16
-DescriptionDE = höchste Beanspruchung, Wellen, Zahnräder
-Father = Metal
-KindOfMaterial = Heat-treatable steel
-KindOfMaterialDE = Vergütungsstahl
-MaterialNumber = 1.6773
-Norm = EN 10083-1
-
-[Mechanical]
-Density = 7800 kg/m^3
-PoissonRatio = 0.3
-ShearModulus = 81000 MPa
-UltimateStrain = 9
-UltimateTensileStrength = 1250 MPa
-YieldStrength = 1050 MPa
-YoungsModulus = 210000 MPa
-
-[Thermal]
-ThermalExpansionCoefficient = 0.000011 m/m/K
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Name: "36NiCrMo16"
+  NameDE: "36NiCrMo16"
+  DescriptionDE: "höchste Beanspruchung, Wellen, Zahnräder"
+  Father: "Metal"
+  KindOfMaterial: "Heat-treatable steel"
+  KindOfMaterialDE: "Vergütungsstahl"
+  MaterialNumber: "1.6773"
+  Norm: "EN 10083-1"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7800 kg/m^3"
+    PoissonRatio: "0.3"
+    ShearModulus: "81000 MPa"
+    UltimateStrain: "9"
+    UltimateTensileStrength: "1250 MPa"
+    YieldStrength: "1050 MPa"
+    YoungsModulus: "210000 MPa"
+  - Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    ThermalExpansionCoefficient: "0.000011 m/m/K"

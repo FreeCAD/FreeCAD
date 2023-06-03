@@ -1,25 +1,22 @@
-; Invar Generic
-; Uwe Stöhr
-; information about the content of such cards can be found on the wiki:
-; https://www.freecad.org/wiki/Material
-; file created by FreeCAD 0.21.30044 (Git)
-
-[General]
-Name = Invar Generic
-Father = Metal
-KindOfMaterial = Nickel Iron Alloy
-
-[Mechanical]
-Density = 8150 kg/m^3
-PoissonRatio = 0.29
-ShearModulus = 56.0 GPa
-UltimateTensileStrength = 600 MPa
-YoungsModulus = 140.0 GPa
-
-[Thermal]
-SpecificHeat = 515.0 J/kg/K
-ThermalConductivity = 13.5 W/m/K
-ThermalExpansionCoefficient = 1.25 µm/m/K
-
-[Electromagnetic]
-ElectricalConductivity = 1250000 S/m
+# File greated by ConvertFCMat.py
+General:
+  AuthorAndLicense: "Uwe Stöhr"
+  Name: "Invar Generic"
+  Father: "Metal"
+  KindOfMaterial: "Nickel Iron Alloy"
+Models:
+  - LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8150 kg/m^3"
+    PoissonRatio: "0.29"
+    ShearModulus: "56.0 GPa"
+    UltimateTensileStrength: "600 MPa"
+    YoungsModulus: "140.0 GPa"
+  - Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "515.0 J/kg/K"
+    ThermalConductivity: "13.5 W/m/K"
+    ThermalExpansionCoefficient: "1.25 µm/m/K"
+  - Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "1250000 S/m"

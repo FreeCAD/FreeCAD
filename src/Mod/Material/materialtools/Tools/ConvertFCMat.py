@@ -48,14 +48,10 @@ def read(filename):
     # the reader returns a dictionary in any case even if the file  has problems
     # an empty dict is returned in such case
 
-    # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
     f = open(filename, encoding="utf8")
     try:
         content = f.readlines()
-        # print(len(content))
-        # print(type(content))
-        # print(content)
     except Exception:
         # https://forum.freecad.org/viewtopic.php?f=18&t=56912#p489721
         # older FreeCAD do not write utf-8 for special character on windows
@@ -80,9 +76,6 @@ def read(filename):
     d["Meta"]["CardName"] = card_name_file  # CardName is the MatCard file name
     section = ''
     for ln, line in enumerate(content):
-        # print(line)
-        # enumerate starts with 0
-
         # line numbers are used for CardName and AuthorAndLicense
         # the use of line number is not smart for a data model
         # a wrong user edit could break the file
@@ -93,16 +86,10 @@ def read(filename):
             continue
         # CardName
         if line.startswith(';') and ln == 0:
-            # print("Line CardName: {}".format(line))
-            # v = line.split(";")[1].strip()  # Line 1
-            # if hasattr(v, "decode"):
-            #     v = v.decode('utf-8')
-            # card_name_content = v
             pass
 
         # AuthorAndLicense
         elif line.startswith(';') and ln == 1:
-            # print("Line AuthorAndLicense: {}".format(line))
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
                 v = v.decode('utf-8')
@@ -113,16 +100,13 @@ def read(filename):
             # ; is a Comment
             # [ is a Section
             if line[0] == '[':
-                # print("parse section '{0}'".format(line))
                 line = line[1:]
-                # print("\tline '{0}'".format(line))
                 k = line.split("]", 1)
                 if len(k) >= 2:
                     v = k[0].strip()
                     if hasattr(v, "decode"):
                         v = v.decode('utf-8')
                     section = v
-                    # print("Section '{0}'".format(section))
             elif line[0] not in ";":
                 # split once on first occurrence
                 # a link could contain a '=' and thus would be split
@@ -131,45 +115,77 @@ def read(filename):
                     v = k[1].strip()
                     if hasattr(v, "decode"):
                         v = v.decode('utf-8')
-                    # print("key '{0}', value '{1}'".format(k[0].strip(), v))
                     d[section][k[0].strip()] = v
     return d
 
-def saveXML(card, output):
-    root = ET.Element("FCMat")
-    for group in card:
-        print(group)
-        groupNode = ET.SubElement(root, group)
-        if group in ["Mechanical"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default mechanical model")
-        elif group in ["Fluidic"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default fluidic model")
-        elif group in ["Thermal"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default thermal model")
-        elif group in ["Electromagnetic"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default electromagnetic model")
-        elif group in ["Architectural"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default architecturaal model")
-        elif group in ["Cost"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default cost model")
-        elif group in ["Rendering"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default rendering model")
-        elif group in ["VectorRendering"]:
-            parentNode = ET.SubElement(groupNode, "Model", name="default", description="Default vector rendering model")
-        else:
-            parentNode = groupNode
-        for parameter, value in card[group].items():
-            print(parameter)
-            paramNode = ET.SubElement(parentNode, parameter)
-            paramNode.text = value
+def yamGeneral(card):
+    yam = "# File greated by ConvertFCMat.py\n"
+    yam += "General:\n"
+    for param in card:
+        yam += '  {0}: "{1}"\n'.format(param, card[param])
+    return yam
 
-    # Write the XML
-    tree = ET.ElementTree(root)
-    tree.write(output, encoding="unicode", method="xml")
+def yamSection(card, header, uuid):
+    if len(card) > 0:
+        yam = "  - {0}:\n".format(header)
+        yam += "    UUID: '{0}'\n".format(uuid)
+        for param in card:
+            yam += '    {0}: "{1}"\n'.format(param, card[param])
+    else:
+        yam = ""
+
+    return yam
+
+def yamMechanical(card):
+    return yamSection(card, 'LinearElastic', '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
+
+def yamFluid(card):
+    return yamSection(card, 'Fluid', '1ae66d8c-1ba1-4211-ad12-b9917573b202')
+
+def yamThermal(card):
+    return yamSection(card, 'Thermal', '9959d007-a970-4ea7-bae4-3eb1b8b883c7')
+
+def yamElectromagnetic(card):
+    return yamSection(card, 'Electromagnetic', 'b2eb5f48-74b3-4193-9fbb-948674f427f3')
+
+def yamArchitectural(card):
+    return yamSection(card, 'Architectural', '32439c3b-262f-4b7b-99a8-f7f44e5894c8')
+
+def yamCost(card):
+    return yamSection(card, 'Costs', '881df808-8726-4c2e-be38-688bb6cce466')
+
+def yamRendering(card):
+    return yamSection(card, 'Rendering', 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e')
+
+def yamVectorRendering(card):
+    return yamSection(card, 'VectorRendering', 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e')
+
+def saveYaml(card, output):
+    yam = yamGeneral(card["General"])
+    yam += "Models:\n"
+    if "Mechanical" in card:
+        yam += yamMechanical(card["Mechanical"])
+    if "Fluidic" in card:
+        yam += yamFluid(card["Fluidic"])
+    if "Thermal" in card:
+        yam += yamThermal(card["Thermal"])
+    if "Electromagnetic" in card:
+        yam += yamElectromagnetic(card["Electromagnetic"])
+    if "Architectural" in card:
+        yam += yamArchitectural(card["Architectural"])
+    if "Cost" in card:
+        yam += yamCost(card["Cost"])
+    if "Rendering" in card:
+        yam += yamRendering(card["Rendering"])
+    if "VectorRendering" in card:
+        yam += yamVectorRendering(card["VectorRendering"])
+
+    file = open(output, "w", encoding="utf-8")
+    file.write(yam)
+    file.close()
 
 def convert(infolder, outfolder):
     a_path = infolder + '/**/*.FCMat'
-    # print("path = '{0}'".format(a_path))
     dir_path_list = glob.glob(a_path, recursive=True)
 
     for a_path in dir_path_list:
@@ -180,13 +196,12 @@ def convert(infolder, outfolder):
 
         try:
             card = read(p)
-            print(card)
         except Exception:
             print("Error converting card '{0}'. Skipped.")
             continue
 
         out.parent.mkdir(parents=True, exist_ok=True)
-        saveXML(card, out)
+        saveYaml(card, out)
 
 import argparse
 parser = argparse.ArgumentParser()
