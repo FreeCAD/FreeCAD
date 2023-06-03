@@ -274,35 +274,32 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
 
         // Process into string. Start with negative sign if quantity is less
         // than zero
+        char plusOrMinus;
         if( quant.getValue() < 0 )
+        {
             output << "-";
+            plusOrMinus = '-';
+        }
+        else plusOrMinus = '+';
 
+        bool trailingNumber = false;
         // Print feet if we have any
         if( feet!=0 )
         {
             output << feet << "'";
-
-            // if there is to be trailing numbers, add space
-            if( inches!=0 || num!=0 )
-            {
-                output << " ";
-            }
+            trailingNumber = true;
         }
-
-        // Three cases:
-        //   1. Whole inches, no fraction
-        //   2. Whole inches, fraction
-        //   3. Fraction only
-        if( inches>0 && num==0 ) // case 1.
+        // Print whole inches if we have any
+        if( inches!=0 )
         {
+            if (trailingNumber) output << " ";
             output << inches << "\"";
+            trailingNumber = true;
         }
-        else if( inches>0 && num!=0 ) // case 2
+        // Print fractional inches if we have any
+        if( num!=0 )
         {
-            output << inches << "+" << num << "/" << den << "\"";
-        }
-        else if( inches==0 && num!=0 ) // case 3
-        {
+            if (trailingNumber) output << " " << plusOrMinus << " ";
             output << num << "/" << den << "\"";
         }
 

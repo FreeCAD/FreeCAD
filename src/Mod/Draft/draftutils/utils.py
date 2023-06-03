@@ -60,22 +60,23 @@ param_draft = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 param_view  = App.ParamGet("User parameter:BaseApp/Preferences/View")
 
 ANNOTATION_STYLE = {
-    "FontName":        ("font",  param_draft.GetString("textfont", "Sans")),
-    "FontSize":        ("float", param_draft.GetFloat("textheight", 100)),
-    "LineSpacing":     ("float", param_draft.GetFloat("LineSpacing", 1)),
-    "TextColor":       ("color", param_draft.GetUnsigned("DefaultTextColor", 255)),
-    "ScaleMultiplier": ("float", 1),
-    "ShowUnit":        ("bool",  param_draft.GetBool("showUnit", True)),
-    "UnitOverride":    ("str",   param_draft.GetString("overrideUnit", "")),
-    "Decimals":        ("int",   param_draft.GetInt("dimPrecision", 2)),
-    "ShowLine":        ("bool",  True),
-    "LineWidth":       ("int",   param_view.GetInt("DefaultShapeLineWidth", 1)),
-    "ArrowType":       ("index", param_draft.GetInt("dimsymbol", 0)),
     "ArrowSize":       ("float", param_draft.GetFloat("arrowsize", 20)),
-    "LineColor":       ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
+    "ArrowType":       ("index", param_draft.GetInt("dimsymbol", 0)),
+    "Decimals":        ("int",   param_draft.GetInt("dimPrecision", 2)),
     "DimOvershoot":    ("float", param_draft.GetFloat("dimovershoot", 20)),
     "ExtLines":        ("float", param_draft.GetFloat("extlines", 300)),
     "ExtOvershoot":    ("float", param_draft.GetFloat("extovershoot", 20)),
+    "FontName":        ("font",  param_draft.GetString("textfont", "Sans")),
+    "FontSize":        ("float", param_draft.GetFloat("textheight", 100)),
+    "LineColor":       ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
+    "LineSpacing":     ("float", param_draft.GetFloat("LineSpacing", 1)),
+    "LineWidth":       ("int",   param_view.GetInt("DefaultShapeLineWidth", 1)),
+    "ScaleMultiplier": ("float", 1),
+    "ShowLine":        ("bool",  True),
+    "ShowUnit":        ("bool",  param_draft.GetBool("showUnit", True)),
+    "TextColor":       ("color", param_draft.GetUnsigned("DefaultTextColor", 255)),
+    "TextSpacing":     ("float", param_draft.GetFloat("dimspacing", 20)),
+    "UnitOverride":    ("str",   param_draft.GetString("overrideUnit", "")),
 }
 
 
