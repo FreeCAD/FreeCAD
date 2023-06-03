@@ -39,7 +39,6 @@ SET (Material_Icon_Files
 
 SET (MaterialLib_Files
     Resources/Materials/StandardMaterial/None.FCMat
-    Resources/Materials/StandardMaterial/TEMPLATE.FCMat
     Resources/Materials/StandardMaterial/Readme.txt
     Resources/Materials/StandardMaterial/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Concrete-Generic.FCMat
