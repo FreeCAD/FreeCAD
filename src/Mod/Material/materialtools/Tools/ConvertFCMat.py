@@ -137,7 +137,28 @@ def yamSection(card, header, uuid):
     return yam
 
 def yamMechanical(card):
-    return yamSection(card, 'LinearElastic', '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
+    # Check which model we need
+    useDensity = False
+    useIso = False
+    useLinearElastic = False
+    for param in card:
+        if param in ["Density"]:
+            useDensity = True
+        elif param in ["BulkModulus", "PoissonRatio", "ShearModulus", "YoungsModulus"]:
+            useIso = True
+        elif param in ["AngleOfFriction", "CompressiveStrength", "FractureToughness", 
+                       "UltimateStrain", "UltimateTensileStrength", "YieldStrength", "Stiffness"]:
+            useLinearElastic = True
+
+    if useLinearElastic:
+        return yamSection(card, 'LinearElastic', '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
+    if useIso:
+        return yamSection(card, 'IsotropicLinearElastic', 'f6f9e48c-b116-4e82-ad7f-3659a9219c50')
+    if useDensity:
+        return yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
+
+    # default mechanical model
+    return ""
 
 def yamFluid(card):
     return yamSection(card, 'Fluid', '1ae66d8c-1ba1-4211-ad12-b9917573b202')
@@ -155,26 +176,47 @@ def yamCost(card):
     return yamSection(card, 'Costs', '881df808-8726-4c2e-be38-688bb6cce466')
 
 def yamRendering(card):
-    return yamSection(card, 'Rendering', 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e')
+    # Check which model we need
+    useTexture = False
+    useAdvanced = False
+    for param in card:
+        if param in ["TexturePath", "TextureScaling"]:
+            useTexture = True
+        elif param in ["FragmentShader", "VertexShader"]:
+            useAdvanced = True
+
+    if useAdvanced:
+        return yamSection(card, 'AdvancedRendering', 'c880f092-cdae-43d6-a24b-55e884aacbbf')
+    if useTexture:
+        return yamSection(card, 'TextureRendering', 'bbdcc65b-67ca-489c-bd5c-a36e33d1c160')
+
+    # default rendering model
+    return yamSection(card, 'BasicRendering', 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e')
 
 def yamVectorRendering(card):
     return yamSection(card, 'VectorRendering', 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e')
 
 def saveYaml(card, output):
     yam = yamGeneral(card["General"])
-    yam += "Models:\n"
-    if "Mechanical" in card:
-        yam += yamMechanical(card["Mechanical"])
-    if "Fluidic" in card:
-        yam += yamFluid(card["Fluidic"])
-    if "Thermal" in card:
-        yam += yamThermal(card["Thermal"])
-    if "Electromagnetic" in card:
-        yam += yamElectromagnetic(card["Electromagnetic"])
-    if "Architectural" in card:
-        yam += yamArchitectural(card["Architectural"])
-    if "Cost" in card:
-        yam += yamCost(card["Cost"])
+    if len(card["Mechanical"]) > 0 or \
+        len(card["Fluidic"]) > 0 or \
+        len(card["Thermal"]) > 0 or \
+        len(card["Electromagnetic"]) > 0 or \
+        len(card["Architectural"]) > 0 or \
+        len(card["Cost"]) > 0:
+        yam += "Models:\n"
+        if "Mechanical" in card:
+            yam += yamMechanical(card["Mechanical"])
+        if "Fluidic" in card:
+            yam += yamFluid(card["Fluidic"])
+        if "Thermal" in card:
+            yam += yamThermal(card["Thermal"])
+        if "Electromagnetic" in card:
+            yam += yamElectromagnetic(card["Electromagnetic"])
+        if "Architectural" in card:
+            yam += yamArchitectural(card["Architectural"])
+        if "Cost" in card:
+            yam += yamCost(card["Cost"])
     if len(card["Rendering"]) > 0 or len(card["VectorRendering"]) > 0:
         yam += "AppearanceModels:\n"
         if "Rendering" in card:

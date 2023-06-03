@@ -21,53 +21,16 @@
 # ***************************************************************************
 
 AppearanceModel:
-  Name: "Rendering"
-  UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+  Name: "Advanced Rendering"
+  UUID: 'c880f092-cdae-43d6-a24b-55e884aacbbf'
   URL: ''
   Description: "default rendering model"
   DOI: ""
-  AmbientColor:
-    Type: 'Color'
-    Units: ''
-    URL: ''
-    Description: " "
-  DiffuseColor:
-    Type: 'Color'
-    Units: ''
-    URL: ''
-    Description: " "
-  EmissiveColor:
-    Type: 'Color'
-    Units: ''
-    URL: ''
-    Description: " "
+  Inherits:
+    - BasicRendering:
+      UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
   FragmentShader:
     Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  Shininess:
-    Type: 'Float'
-    Units: ''
-    URL: ''
-    Description: " "
-  SpecularColor:
-    Type: 'Color'
-    Units: ''
-    URL: ''
-    Description: " "
-  TexturePath:
-    Type: 'File'
-    Units: ''
-    URL: ''
-    Description: " "
-  TextureScaling:
-    Type: 'Float'
-    Units: ''
-    URL: ''
-    Description: " "
-  Transparency:
-    Type: 'Float'
     Units: ''
     URL: ''
     Description: " "

@@ -7,8 +7,8 @@ General:
   DescriptionPL: "Szkło sodowe"
   Father: "Glass"
 Models:
-  LinearElastic:
-    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+  IsotropicLinearElastic:
+    UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
     Density: "2520 kg/m^3"
     PoissonRatio: "0.22"
     YoungsModulus: "72000 MPa"

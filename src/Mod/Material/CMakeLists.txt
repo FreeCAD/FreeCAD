@@ -159,7 +159,6 @@ SET (MaterialLib_Files
     Resources/Materials/StandardMaterial/Thermoplast/PVC-Generic.FCMat
     Resources/Materials/StandardMaterial/Wood/Wood-Generic.FCMat
 )
-# SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})
 
 SET (FluidMaterial_Files
     Resources/Materials/FluidMaterial/None.FCMat
@@ -170,7 +169,31 @@ SET (FluidMaterial_Files
     Resources/Materials/FluidMaterial/Water.FCMat
     Resources/Materials/FluidMaterial/Readme.md
 )
-# SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
+
+SET (AppearanceLib_Files
+    Resources/Materials/Appearance/Aluminum.FCMat
+    Resources/Materials/Appearance/Brass.FCMat
+    Resources/Materials/Appearance/Bronze.FCMat
+    Resources/Materials/Appearance/Chrome.FCMat
+    Resources/Materials/Appearance/Copper.FCMat
+    Resources/Materials/Appearance/DefaultAppearance.FCMat
+    Resources/Materials/Appearance/Emerald.FCMat
+    Resources/Materials/Appearance/Gold.FCMat
+    Resources/Materials/Appearance/Jade.FCMat
+    Resources/Materials/Appearance/Metalized.FCMat
+    Resources/Materials/Appearance/NeonGNC.FCMat
+    Resources/Materials/Appearance/NeonPHC.FCMat
+    Resources/Materials/Appearance/Obsidian.FCMat
+    Resources/Materials/Appearance/Pewter.FCMat
+    Resources/Materials/Appearance/Plaster.FCMat
+    Resources/Materials/Appearance/Plastic.FCMat
+    Resources/Materials/Appearance/Ruby.FCMat
+    Resources/Materials/Appearance/Satin.FCMat
+    Resources/Materials/Appearance/ShinyPlastic.FCMat
+    Resources/Materials/Appearance/Silver.FCMat
+    Resources/Materials/Appearance/Steel.FCMat
+    Resources/Materials/Appearance/Stone.FCMat
+)
 
 SET (MaterialModel_Files
     Resources/Models/Architectural/Architectural.yml
@@ -183,7 +206,9 @@ SET (MaterialModel_Files
     Resources/Models/Mechanical/LinearElastic.yml
     Resources/Models/Mechanical/OgdenYld2004p18.yml
     Resources/Models/Mechanical/OrthotropicLinearElastic.yml
-    Resources/Models/Rendering/Rendering.yml
+    Resources/Models/Rendering/AdvancedRendering.yml
+    Resources/Models/Rendering/BasicRendering.yml
+    Resources/Models/Rendering/TextureRendering.yml
     Resources/Models/Rendering/VectorRendering.yml
     Resources/Models/Thermal/Thermal.yml
 )
@@ -234,6 +259,9 @@ ADD_CUSTOM_TARGET(MaterialLib ALL
 ADD_CUSTOM_TARGET(FluidMaterialLib ALL
     SOURCES ${FluidMaterial_Files}
 )
+ADD_CUSTOM_TARGET(AppearanceLib ALL
+    SOURCES ${AppearanceLib_Files}
+)
 ADD_CUSTOM_TARGET(MaterialModelLib ALL
     SOURCES ${MaterialModel_Files}
 )
@@ -248,6 +276,10 @@ fc_target_copy_resource(FluidMaterialLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
     ${FluidMaterial_Files})
+fc_target_copy_resource(AppearanceLib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
+    ${AppearanceLib_Files})
 fc_target_copy_resource(MaterialModelLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/

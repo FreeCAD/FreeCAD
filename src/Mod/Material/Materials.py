@@ -209,49 +209,54 @@ class Materials:
         self.setOrClear(widget.editTags, data, "Tags")
         self.setOrClear(widget.editDescription, data, "Description")
 
-    def updateTab(self, widget, data, dataGroups):
+    def updateTab(self, widget, data, base):
         model = widget.model()
         root = model.invisibleRootItem()
 
+        mmBase = "Model"
+        if base == "AppearanceModels":
+            mmBase = "AppearanceModel"
+
         # print(data["Models"])
-        for dataModel in data["Models"]:
-            print(dataModel)
-            top = QtGui.QStandardItem(dataModel)
-            model.appendRow([top])
-            uuid = data["Models"][dataModel]["UUID"]
-            mm = MaterialModels.getModel(uuid)
-            mmModel = mm["model"]["Model"]
-            # print(mm)
+        if base in data:
+            for dataModel in data[base]:
+                print(dataModel)
+                top = QtGui.QStandardItem(dataModel)
+                root.appendRow([top])
+                uuid = data[base][dataModel]["UUID"]
+                mm = MaterialModels.getModel(uuid)
+                mmModel = mm["model"][mmBase]
+                # print(mm)
 
-            for propertyName in mmModel:
-                if propertyName in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"]:
-                    continue
+                for propertyName in mmModel:
+                    if propertyName in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"]:
+                        continue
 
-                item = QtGui.QStandardItem(propertyName)
-                print("***")
-                print(propertyName)
-                print(mmModel[propertyName])
-                print("---")
-                # print(mmModel[propertyName]["Description"])
-                item.setToolTip(mmModel[propertyName]["Description"])
-                # self.internalprops.append(propertyName)
+                    item = QtGui.QStandardItem(propertyName)
+                    print("***")
+                    print(propertyName)
+                    print(mmModel[propertyName])
+                    print("---")
+                    # print(mmModel[propertyName]["Description"])
+                    item.setToolTip(mmModel[propertyName]["Description"])
+                    # self.internalprops.append(propertyName)
 
-                value = QtGui.QStandardItem()
-                if propertyName in data["Models"][dataModel]:
-                    value.setText(data["Models"][dataModel][propertyName])
-                # else:
-                #     value = QtGui.QStandardItem(data["Models"][dataModel][propertyName])
-                value.setToolTip(mmModel[propertyName]["Description"])
+                    value = QtGui.QStandardItem()
+                    if propertyName in data[base][dataModel]:
+                        value.setText(data[base][dataModel][propertyName])
+                    # else:
+                    #     value = QtGui.QStandardItem(data["Models"][dataModel][propertyName])
+                    value.setToolTip(mmModel[propertyName]["Description"])
 
-                # print("Units '{0}'".format(group[gg][propertyName]["Units"]))
-                units = QtGui.QStandardItem(mmModel[propertyName]["Units"])
-                units.setToolTip(mmModel[propertyName]["Description"])
+                    # print("Units '{0}'".format(group[gg][propertyName]["Units"]))
+                    units = QtGui.QStandardItem(mmModel[propertyName]["Units"])
+                    units.setToolTip(mmModel[propertyName]["Description"])
 
-                tt = mmModel[propertyName]["Type"]
-                itemType = QtGui.QStandardItem(tt)
+                    tt = mmModel[propertyName]["Type"]
+                    itemType = QtGui.QStandardItem(tt)
 
-                top.appendRow([item, value, units, itemType])
-                widget.setExpanded(top.index(), True)
+                    top.appendRow([item, value, units, itemType])
+                    widget.setExpanded(top.index(), True)
             # for name in data["Models"][dataModel]:
             #     print("\t{0}".format(name))
         # for gg in range(root.rowCount()):
@@ -295,9 +300,18 @@ class Materials:
         widget.treeProperties.setColumnWidth(1, 250)
         widget.treeProperties.setColumnWidth(2, 250)
         widget.treeProperties.setColumnHidden(3, True)
+
+        widget.treeAppearance.model().clear()
+        model = widget.treeAppearance.model()
+        model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
+
+        widget.treeAppearance.setColumnWidth(0, 250)
+        widget.treeAppearance.setColumnWidth(1, 250)
+        widget.treeAppearance.setColumnWidth(2, 250)
+        widget.treeAppearance.setColumnHidden(3, True)
     
-        self.updateTab(widget.treeProperties, data, ["Mechanical", "Fluidic", "Thermal", "Electromagnetic", "Architectural", "Cost"])
-        self.updateTab(widget.treeAppearance, data, ["Rendering", "VectorRendering"])
+        self.updateTab(widget.treeProperties, data, "Models")
+        self.updateTab(widget.treeAppearance, data, "AppearanceModels")
 
     def implementSectionModel(self, template, param, treeView, groups):
 
@@ -354,46 +368,6 @@ class Materials:
         self.implementSectionModel(template_data, p, widget.treeProperties, ["Mechanical", "Fluidic", "Thermal", "Electromagnetic", "Architectural", "Cost"])
         self.implementSectionModel(template_data, p, widget.treeAppearance, ["Rendering", "VectorRendering"])
 
-    def updateMatParamsInTree(self, data):
-
-        """updates the contents of the editor with the given dictionary
-           the material property keys where added to the editor already
-           unknown material property keys will be added to the user defined group"""
-
-        # print(data)
-        model = self.widget.treeView.model()
-        root = model.invisibleRootItem()
-        for gg in range(root.rowCount() - 1):
-            group = root.child(gg, 0)
-            for pp in range(group.rowCount()):
-                item = group.child(pp, 0)
-                it = group.child(pp, 1)
-                kk = self.collapseKey(item.text())
-
-                try:
-                    value = data[kk]
-                    it.setText(value)
-                    del data[kk]
-                except KeyError:
-                    # treat here changes in Material Card Template
-                    # Norm -> StandardCode
-                    if (kk == "Standard Code") and ("Norm" in data) and data["Norm"]:
-                        it.setText(data["Norm"])
-                        del data["Norm"]
-                    it.setText("")
-
-        userGroup = root.child(gg + 1, 0)
-        userGroup.setRowCount(0)
-        self.customprops = []
-
-        for k, i in data.items():
-            k = self.expandKey(k)
-            item = QtGui.QStandardItem(k)
-            it = QtGui.QStandardItem(i)
-            userGroup.appendRow([item, it])
-            self.customprops.append(k)
-        self.edited = False
-
     def verifyMaterial(self):
         if self.edited:
             reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
@@ -408,73 +382,6 @@ class Materials:
                 self.savefile()
 
         return True
-
-    def updateCardsInCombo(self):
-
-        """updates the contents of the materials combo with existing material cards"""
-
-        mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
-        sort_by_resources = mat_prefs.GetBool("SortByResources", False)
-
-        # get all available materials (fill self.materials, self.cards and self.icons)
-        from materialtools.cardutils import import_materials as getmats
-        self.materials, self.cards, self.icons = getmats(category=self.category)
-
-        card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
-
-        if sort_by_resources is True:
-            for a_path in sorted(self.materials.keys()):
-                card_name_list.append([self.cards[a_path], a_path, self.icons[a_path]])
-        else:
-            card_names_tmp = {}
-            for path, name in self.cards.items():
-                card_names_tmp[name] = path
-            for a_name in sorted(card_names_tmp.keys()):
-                a_path = card_names_tmp[a_name]
-                card_name_list.append([a_name, a_path, self.icons[a_path]])
-
-        card_name_list.insert(0, [None, "", ""])
-        for mat in card_name_list:
-            self.widget.ComboMaterial.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
-
-    def openProductURL(self):
-
-        """opens the contents of the ProductURL field in an external browser."""
-
-        model = self.widget.treeView.model()
-        item = model.findItems(translate("Material", "Product URL"),
-                               QtCore.Qt.MatchRecursive, 0)[0]
-        group = item.parent()
-        it = group.child(item.row(), 1)
-        url = it.text()
-        if url:
-            QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
-
-    def modelChange(self, item):
-        """
-            Called when an item in the tree is modfied. This will set edited to True, but this
-            will be reset in the event of mass updates, such as loading a card
-        """
-        self.edited = True
-
-    def verify(self, button):
-        """
-            Verify that the user wants to save any changed data before exiting
-        """
-
-        if self.edited:
-            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
-                                                translate("Material","The document has been modified."),
-                                                translate("Material","Do you want to save your changes?"),
-                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
-                                                QtGui.QMessageBox.Save)
-
-            if reply == QtGui.QMessageBox.Cancel:
-                return
-            if reply == QtGui.QMessageBox.Save:
-                self.savefile()
-        
-        self.accept()
 
     def accept(self):
         ""
@@ -503,18 +410,6 @@ class Materials:
         # for i in range(self.widget.treeMaterials.topLevelItemCount()):
         #     item = self.widget.treeMaterials.topLevelItem(i)
 
-
-    def expandKey(self, key):
-        "adds spaces before caps in a KeyName"
-        nk = ""
-        for ln in key:
-            if ln.isupper():
-                if nk:
-                    # this allows for series of caps, such as ProductURL
-                    if not nk[-1].isupper():
-                        nk += " "
-            nk += ln
-        return nk
 
     def collapseKey(self, key):
         "removes the spaces in a Key Name"
@@ -588,86 +483,6 @@ class Materials:
         select = ModelSelect()
         select.exec_()
 
-    def onClickTree(self, index):
-
-        """Checks if the current item is a custom or an internal property,
-        and enable the delete property or delete value button."""
-
-        widget = self.widget
-        buttonDeleteProperty = widget.ButtonDeleteProperty
-        treeView = widget.treeView
-        model = treeView.model()
-        ind = treeView.selectedIndexes()[0]
-        item = model.itemFromIndex(ind)
-        text = item.text()
-
-        if text in self.customprops:
-            buttonDeleteProperty.setEnabled(True)
-            buttonDeleteProperty.setProperty("text", "Delete property")
-
-        elif text in self.internalprops:
-            indParent = ind.parent()
-            group = model.itemFromIndex(indParent)
-            row = item.row()
-            it = group.child(row, 1)
-            buttonDeleteProperty.setProperty("text", "Delete value")
-            if it.text():
-                buttonDeleteProperty.setEnabled(True)
-            else:
-                buttonDeleteProperty.setEnabled(False)
-
-        else:
-            buttonDeleteProperty.setEnabled(False)
-            buttonDeleteProperty.setProperty("text", "Delete property")
-
-        self.updatePreviews()
-
-    def getDict(self):
-        "returns a dictionary from the contents of the editor."
-
-        model = self.widget.treeView.model()
-        if model is None:
-            return {}
-        root = model.invisibleRootItem()
-
-        d = {}
-        for gg in range(root.rowCount()):
-            group = root.child(gg)
-            for row in range(group.rowCount()):
-                kk = group.child(row, 0).text()
-                ii = group.child(row, 1).text()
-
-                # TODO the following should be translated back to english
-                # since text(0) could be translated
-                matkey = self.collapseKey(str(kk))
-                matvalue = unicode(ii)
-                if matvalue or (matkey == "Name"):
-                    # use only keys which are not empty and the name even if empty
-                    d[matkey] = matvalue
-        # self.outputDict(d)
-        return d
-
-    def outputDict(self, d):
-        print("MaterialEditor dictionary")
-        for param in d:
-            print("  {} : {}".format(param, d[param]))
-
-    """
-    def setTexture(self, pattern):
-        "displays a texture preview if needed"
-        self.widget.PreviewVector.hide()
-        if pattern:
-            try:
-                import DrawingPatterns
-            except:
-                print("DrawingPatterns not found")
-            else:
-                pattern = DrawingPatterns.buildFileSwatch(pattern, size=96, png=True)
-                if pattern:
-                    self.widget.PreviewVector.setPixmap(QtGui.QPixmap(pattern))
-                    self.widget.PreviewVector.show()
-    """
-
     def updatePreviews(self, mat=None):
         "updates the preview images from the content of the editor"
         if not mat:
@@ -714,126 +529,6 @@ class Materials:
         color = QtGui.QColor(int(col[0]*val), int(col[1]*val), int(col[2]*val))
         return color.name()
 
-    def openfile(self):
-        if self.verifyMaterial():
-            """
-                Save any unchanged data
-            """
-            self.edited = False
-        else:
-            return
-
-        "Opens a FCMat file"
-        if self.category == "Solid":
-            directory = self.directory + os.sep + "StandardMaterial"
-        else:
-            directory = self.directory + os.sep + "FluidMaterial"
-        if self.card_path is None or len(self.card_path) == 0:
-            self.card_path = directory
-        filetuple = QtGui.QFileDialog.getOpenFileName(
-            QtGui.QApplication.activeWindow(),
-            "Open FreeCAD Material file",
-            self.card_path,
-            "*.FCMat"
-        )
-        if os.path.isfile(filetuple[0]):
-            card_path_new = filetuple[0]
-        else:
-            FreeCAD.Console.PrintError("Error: Invalid path to the material file\n")
-            return
-        # we cannot simply execute findData(self.card_path) because e.g. on Windows
-        # the return path has "/" as folder separator, but the paths in the ComboMaterial
-        # have also some "\" in them. For example a path can look like this:
-        # D:/FreeCAD-build/data/Mod\Material\FluidMaterial\Air.FCMat
-        # To keep it simple, we take a path from the ComboMaterial and change only the
-        # material card filename
-        #
-        # Using the initialIndex variable won't work before a card os selected for the
-        # first time, so use index 1. Index 0 is a blank entry
-        if self.widget.ComboMaterial.count() > 1:
-            path = self.widget.ComboMaterial.itemData(1)
-            # at first check if we have a uniform usage
-            # (if a character is not present, rsplit delivers the initial string)
-            testBackslash = path.rsplit('\\', 1)[0]
-            testSlash = path.rsplit('/', 1)[0]
-            if testBackslash == path:
-                path = testBackslash.rsplit('/', 1)[0] + '/'
-            elif testSlash == path:
-                path = testSlash.rsplit('\\', 1)[0] + '\\'
-            # since we don't know if we have to deal with slash or backslash, take the
-            # longest result as path
-            else:
-                pathBackslash = path.rsplit('\\', 1)[0]
-                pathSlash = path.rsplit('/', 1)[0]
-                if len(pathBackslash) > len(pathSlash):
-                    path = pathBackslash + '\\'
-                else:
-                    path = pathSlash + '/'
-            # we know that card_path_new has uniformly either / or \ but not yet what
-            testBackslash = card_path_new.rsplit('\\', 1)[0]
-            if testBackslash == card_path_new:
-                self.card_path = path + card_path_new.rsplit('/', 1)[1]
-            else:
-                self.card_path = path + card_path_new.rsplit('\\', 1)[1]
-        index = self.widget.ComboMaterial.findData(self.card_path)
-
-        # check if card_path is in known path, means it is in combo box already
-        # if not print message, and give some feedbach that the card parameter are loaded
-        if index == -1:
-            FreeCAD.Console.PrintMessage(
-                "Card path: {} not found in known cards.\n"
-                "The material parameter only are loaded.\n"
-                .format(self.card_path)
-            )
-            # a material card was chosen that is unknown, thus use its full path
-            self.card_path = card_path_new
-            from importFCMat import read
-            materialDict = read(self.card_path)
-            if materialDict:
-                self.updateMatParamsInTree(materialDict)
-                self.widget.ComboMaterial.setCurrentIndex(0)
-                # set combo box to the none material after tree params
-        else:
-            self.chooseMaterial(index)
-        self.directory = os.path.dirname(self.card_path)
-
-    def savefile(self):
-        "Saves a FCMat file."
-
-        model = self.widget.treeView.model()
-        item = model.findItems(translate("Material", "Name"),
-                               QtCore.Qt.MatchRecursive, 0)[0]
-        group = item.parent()
-        it = group.child(item.row(), 1)
-        name = it.text()
-        if not name:
-            name = "Material"
-        filetuple = QtGui.QFileDialog.getSaveFileName(
-            QtGui.QApplication.activeWindow(),
-            "Save FreeCAD Material file",
-            self.save_directory + "/" + name + ".FCMat",
-            "*.FCMat"
-        )
-        # a tuple of two empty strings returns True, so use the filename directly
-        filename = filetuple[0]
-        if filename:
-            # Update the directories to the current save value
-            self.save_directory = os.path.dirname(filename)
-            self.directory = self.save_directory
-            self.card_path = filename
-
-            d = self.getDict()
-            # self.outputDict(d)
-            if d:
-                # Set the card name to match the filename
-                path = PurePath(filename)
-                d["CardName"] = path.stem
-
-                from importFCMat import write
-                write(filename, d)
-                self.edited = False
-                self.updateCardsInCombo()
-
     def show(self):
         return self.widget.show()
 
@@ -872,7 +567,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
             PP = group.child(row, 0)
             self.matproperty = PP.text().replace(" ", "")  # remove spaces
 
-            TT = group.child(row, 2)
+            TT = group.child(row, 3)
             if TT:
                 Type = TT.text()
             else:
