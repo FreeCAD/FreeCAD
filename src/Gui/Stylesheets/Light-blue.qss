@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-Revised stylesheet based on the orignal from Pablo Gil Fernández made by MisterMaker
+Revised stylesheet based on the original from Pablo Gil Fernández made by MisterMaker
 
 KNOWN BUGS and TO DO
 ============================================================================================================
@@ -2184,7 +2184,7 @@ Resetting everything helps to unify styles across different operating systems
     background-color: #F6F6F6;  /* background of a lot of stuff including spreadsheets.*/
     border: 0px solid #C1C1C1;
     color: black;
-    gridline-color: #f6f6f6;
+    gridline-color: #A3A3A3;
     border-radius: 0px;
   }
   
