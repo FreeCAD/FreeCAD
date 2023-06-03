@@ -1378,7 +1378,7 @@ QComboBox {
   /* Needed to remove indicator - fix #132 */
 }
 QComboBox:editable {
-  background: black;
+  background: #ffffff;
 }
 QComboBox QAbstractItemView {
   border: 0px solid #C1C1C1;
