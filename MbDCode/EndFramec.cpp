@@ -45,12 +45,12 @@ void MbD::EndFramec::calcPostDynCorrectorIteration()
 	aAOe = markerFrame->aAOm;
 }
 
-FColDsptr MbD::EndFramec::aAjOe(int j)
+FColDsptr MbD::EndFramec::aAjOe(size_t j)
 {
 	return aAOe->column(j);
 }
 
-double MbD::EndFramec::riOeO(int i)
+double MbD::EndFramec::riOeO(size_t i)
 {
 	return rOeO->at(i);
 }

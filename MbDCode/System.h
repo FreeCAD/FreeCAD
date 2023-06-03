@@ -48,7 +48,8 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints2();
-
+		double maximumMass();
+		double maximumMomentOfInertia();
 
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;

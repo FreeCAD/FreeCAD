@@ -10,15 +10,18 @@ namespace MbD {
 	{
 	public:
 		RowTypeMatrix() {}
+		RowTypeMatrix(size_t m) : Array<T>(m) {}
 		RowTypeMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void copyFrom(std::shared_ptr<RowTypeMatrix<T>> x);
-		void zeroSelf();
-		size_t nRow() {
+		virtual void zeroSelf() = 0;
+		virtual void atijplusNumber(size_t i, size_t j, double value) = 0;
+		size_t nrow() {
 			return this->size();
 		}
-		size_t nCol() {
+		size_t ncol() {
 			return this->at(0)->size();
 		}
+		size_t numberOfElements() override;
 	};
 
 	template<typename T>
@@ -28,11 +31,10 @@ namespace MbD {
 			this->at(i)->copyFrom(x->at(i));
 		}
 	}
-	template <>
-	inline void RowTypeMatrix< std::shared_ptr<FullRow<double>>>::zeroSelf() {
-		for (size_t i = 0; i < this->size(); i++) {
-			this->at(i)->zeroSelf();
-		}
+	template<typename T>
+	inline size_t RowTypeMatrix<T>::numberOfElements()
+	{
+		return this->nrow() * this->ncol();
 	}
 }
 

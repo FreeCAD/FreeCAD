@@ -1,11 +1,13 @@
 #include "DispCompIeqcJeqcKeqc.h"
 #include "EndFrameqc.h"
 
+using namespace MbD;
+
 MbD::DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc()
 {
 }
 
-MbD::DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJecKeqc(frmi, frmj, frmk, axisk)
+MbD::DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk) : DispCompIeqcJecKeqc(frmi, frmj, frmk, axisk)
 {
 }
 

@@ -40,7 +40,7 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 	auto essentialConstraints = system->essentialConstraints2();
 	auto displacementConstraints = system->displacementConstraints();
 	auto perpendicularConstraints = system->perpendicularConstraints2();
-	auto eqnNo = 0;
+	size_t eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);
 		eqnNo = eqnNo + 3;
@@ -53,24 +53,37 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 	//}
 	//for (auto& uHolder : *uHolders) {
 	//	uHolder->iu(eqnNo);
-	//	eqnNo = eqnNo + 1;
+	//	eqnNo += 1;
 	//}
-	//nqsu = eqnNo - 1;
+	auto nEqns = eqnNo;	//C++ uses index 0.
+	nqsu = nEqns;
 	for (auto& con : *essentialConstraints) {
 		con->iG = eqnNo;
-		eqnNo = eqnNo + 1;
+		eqnNo += 1;
 	}
 	auto lastEssenConEqnNo = eqnNo - 1;
 	for (auto& con : *displacementConstraints) {
 		con->iG = eqnNo;
-		eqnNo = eqnNo + 1;
+		eqnNo += 1;
 	}
 	auto lastDispConEqnNo = eqnNo - 1;
 	for (auto& con : *perpendicularConstraints) {
 		con->iG = eqnNo;
-		eqnNo = eqnNo + 1;
+		eqnNo += 1;
 	}
-	n = eqnNo;
-	auto limits = { lastEssenConEqnNo, lastDispConEqnNo, n };
-	pivotRowLimits = std::make_shared<Array<int>>(limits);
+	auto lastEqnNo = eqnNo - 1;
+	nEqns = eqnNo;	//C++ uses index 0.
+	n = nEqns;
+	auto limits = { lastEssenConEqnNo, lastDispConEqnNo, lastEqnNo };
+	pivotRowLimits = std::make_shared<std::vector<size_t>>(limits);
+}
+
+bool MbD::PosICNewtonRaphson::isConverged()
+{
+	return this->isConvergedToNumericalLimit();
+}
+
+void MbD::PosICNewtonRaphson::handleSingularMatrix()
+{
+	assert(false);
 }

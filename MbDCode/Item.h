@@ -4,6 +4,8 @@
 
 #include "FullColumn.h"
 #include "FullMatrix.h"
+#include "DiagonalMatrix.h"
+#include "SparseMatrix.h"
 
 namespace MbD {
 
@@ -27,13 +29,19 @@ namespace MbD {
 		virtual void prePosIC();
 		virtual void fillPosICError(FColDsptr col);
 		virtual void fillPosICJacob(FMatDsptr mat);
+		virtual void fillPosICJacob(SpMatDsptr mat);
 		virtual void prePostIC();
 		virtual void prePostICIteration();
 		virtual void prePostICRestart();
-		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos);
+		virtual void postPosICIteration();
+		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos);
 		virtual void fillPosKineError(FColDsptr col);
 		virtual void fillPosKineJacob(FMatDsptr mat);
 		virtual void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
+		virtual void fillqsu(FColDsptr col);
+		virtual void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat);
+		virtual void fillqsulam(FColDsptr col);
+		virtual void setqsulam(FColDsptr col);
 
 		void setName(std::string& str);
 		const std::string& getName() const;

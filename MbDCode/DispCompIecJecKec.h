@@ -8,11 +8,11 @@ namespace MbD {
         //efrmK axisK riIeJeKe aAjOKe rIeJeO 
     public:
         DispCompIecJecKec();
-        DispCompIecJecKec(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
+        DispCompIecJecKec(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk);
         
         virtual double value();
         EndFrmcptr efrmK;
-        int axisK;
+        size_t axisK;
         double riIeJeKe;
         FColDsptr aAjOKe;
         FColDsptr rIeJeO;

@@ -38,18 +38,18 @@ void MarkerFrame::initializeLocally()
 			}
 		}
 	}
-	std::for_each(endFrames->begin(), endFrames->end(), [](const auto& endFrame) { endFrame->initializeLocally(); });
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->initializeLocally(); });
 }
 
 void MarkerFrame::initializeGlobally()
 {
-	std::for_each(endFrames->begin(), endFrames->end(), [](const auto& endFrame) { endFrame->initializeGlobally(); });
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->initializeGlobally(); });
 }
 
 void MbD::MarkerFrame::postInput()
 {
 	Item::postInput();
-	std::for_each(endFrames->begin(), endFrames->end(), [](const auto& endFrame) { endFrame->postInput(); });
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postInput(); });
 }
 
 void MbD::MarkerFrame::calcPostDynCorrectorIteration()
@@ -70,17 +70,47 @@ void MbD::MarkerFrame::calcPostDynCorrectorIteration()
 void MbD::MarkerFrame::prePosIC()
 {
 	Item::prePosIC();
-	std::for_each(endFrames->begin(), endFrames->end(), [](const auto& endFrame) { endFrame->prePosIC(); });
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->prePosIC(); });
 }
 
-int MbD::MarkerFrame::iqX()
+size_t MbD::MarkerFrame::iqX()
 {
 	return partFrame->iqX;
 }
 
-int MbD::MarkerFrame::iqE()
+size_t MbD::MarkerFrame::iqE()
 {
 	return partFrame->iqE;
+}
+
+void MbD::MarkerFrame::endFramesDo(const std::function<void(std::shared_ptr<EndFramec>)>& f)
+{
+	std::for_each(endFrames->begin(), endFrames->end(), f);
+}
+
+void MbD::MarkerFrame::fillqsu(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsu(col); });
+}
+
+void MbD::MarkerFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsuWeights(diagMat); });
+}
+
+void MbD::MarkerFrame::fillqsulam(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsulam(col); });
+}
+
+void MbD::MarkerFrame::setqsulam(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsulam(col); });
+}
+
+void MbD::MarkerFrame::postPosICIteration()
+{
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosICIteration(); });
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)

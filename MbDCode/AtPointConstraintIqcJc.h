@@ -7,7 +7,7 @@ namespace MbD {
 	{
 		//pGpEI ppGpEIpEI iqXIminusOnePlusAxis iqEI 
 	public:
-		AtPointConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+		AtPointConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi);
 		void initializeGlobally() override;
 		void initriIeJeO() override;
 		void calcPostDynCorrectorIteration() override;
@@ -15,8 +15,8 @@ namespace MbD {
 
 		FRowDsptr pGpEI;
 		FMatDsptr ppGpEIpEI;
-		int iqXIminusOnePlusAxis = -1;
-		int iqEI = -1;
+		size_t iqXIminusOnePlusAxis = -1;
+		size_t iqEI = -1;
 	};
 }
 

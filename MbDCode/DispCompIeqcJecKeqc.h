@@ -8,7 +8,7 @@ namespace MbD {
         //priIeJeKepXI priIeJeKepEI ppriIeJeKepXIpEK ppriIeJeKepEIpEI ppriIeJeKepEIpEK 
     public:
         DispCompIeqcJecKeqc();
-        DispCompIeqcJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
+        DispCompIeqcJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk);
         void initialize() override;
         void calcPostDynCorrectorIteration() override;
 

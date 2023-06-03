@@ -7,7 +7,7 @@ namespace MbD {
 	{
 		//pGpt ppGpEIpt ppGpEJpt ppGptpt 
 	public:
-		DirectionCosineConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+		DirectionCosineConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj);
 		void initaAijIeJe() override;
 		MbD::ConstraintType type() override;
 

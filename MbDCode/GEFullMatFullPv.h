@@ -7,7 +7,8 @@ namespace MbD {
     {
         //
     public:
-
+        void doPivoting(size_t p) override;
+        void postSolve() override;
     };
 }
 

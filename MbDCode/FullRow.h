@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector.h"
+#include "FullVector.h"
 #include "FullColumn.h"
 
 namespace MbD {
@@ -7,13 +7,13 @@ namespace MbD {
 	class FullMatrix;
 
 	template <typename T>
-	class FullRow : public Vector<T>
+	class FullRow : public FullVector<T>
 	{
 	public:
 		FullRow() {}
-		FullRow(size_t count) : Vector<T>(count) {}
-		FullRow(size_t count, const T& value) : Vector<T>(count, value) {}
-		FullRow(std::initializer_list<T> list) : Vector<T>{ list } {}
+		FullRow(size_t count) : FullVector<T>(count) {}
+		FullRow(size_t count, const T& value) : FullVector<T>(count, value) {}
+		FullRow(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		std::shared_ptr<FullRow<T>> times(double a);
 		std::shared_ptr<FullRow<T>> negated();
 		std::shared_ptr<FullRow<T>> plusFullRow(std::shared_ptr<FullRow<T>> fullRow);
@@ -73,7 +73,7 @@ namespace MbD {
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
 	{
 		//"a*bT = a(1,j)b(k,j)"
-		size_t ncol = fullMat->nRow();
+		size_t ncol = fullMat->nrow();
 		auto answer = std::make_shared<FullRow<T>>(ncol);
 		for (size_t k = 0; k < ncol; k++) {
 			answer->at(k) = this->dot(fullMat->at(k));

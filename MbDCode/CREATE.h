@@ -23,7 +23,7 @@ namespace MbD {
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(int n) {
+		static std::shared_ptr<T> With(size_t n) {
 			auto inst = std::make_shared<T>(n);
 			inst->initialize();
 			return inst;
@@ -33,17 +33,17 @@ namespace MbD {
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, int axis) {
+		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, size_t axis) {
 			auto inst = std::make_shared<T>(frmi, frmj, axis);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) {
+		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk) {
 			auto inst = std::make_shared<T>(frmi, frmj, frmk, axisk);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<Constraint> ConstraintWith(EndFrmcptr frmi, EndFrmcptr frmj, int axis) {
+		static std::shared_ptr<Constraint> ConstraintWith(EndFrmcptr frmi, EndFrmcptr frmj, size_t axis) {
 			std::shared_ptr<Constraint> inst;
 			std::string str = typeid(T(frmi, frmj, axis)).name();
 			if (str == "class MbD::AtPointConstraintIJ") {
@@ -65,12 +65,12 @@ namespace MbD {
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) {
+		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj) {
 			auto inst = std::make_shared<T>(frmi, frmj, axisi, axisj);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<Constraint> ConstraintWith(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) {
+		static std::shared_ptr<Constraint> ConstraintWith(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj) {
 			std::shared_ptr<Constraint> inst;
 			std::string str = typeid(T(frmi, frmj, axisi, axisj)).name();
 			if (str == "class MbD::DirectionCosineConstraintIJ") {

@@ -14,7 +14,6 @@ namespace MbD {
 		EulerParameters(size_t count) : EulerArray<T>(count) {}
 		EulerParameters(size_t count, const T& value) : EulerArray<T>(count, value) {}
 		EulerParameters(std::initializer_list<T> list) : EulerArray<T>{ list } {}
-		double sumOfSquares();
 
 		static std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<T>>>> ppApEpEtimesColumn(FColDsptr col);
 		static std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<T>>>> ppApEpEtimesMatrix(FMatDsptr mat);
@@ -28,12 +27,6 @@ namespace MbD {
 		FMatDsptr aC;
 		FColFMatDsptr pApE;
 	};
-
-	template<typename T>
-	inline double EulerParameters<T>::sumOfSquares()
-	{
-		return 0.0;
-	}
 
 	template<>
 	inline std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters<double>::ppApEpEtimesColumn(FColDsptr col)

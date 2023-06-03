@@ -1,11 +1,13 @@
 #include "DispCompIeqcJeqcO.h"
 #include "EndFrameqc.h"
 
+using namespace MbD;
+
 MbD::DispCompIeqcJeqcO::DispCompIeqcJeqcO()
 {
 }
 
-MbD::DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : DispCompIeqcJecO(frmi, frmj, axis)
+MbD::DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmcptr frmi, EndFrmcptr frmj, size_t axis) : DispCompIeqcJecO(frmi, frmj, axis)
 {
 }
 

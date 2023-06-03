@@ -198,8 +198,10 @@
     <ClCompile Include="MarkerFrame.cpp" />
     <ClCompile Include="MatrixGaussElimination.cpp" />
     <ClCompile Include="MatrixSolver.cpp" />
+    <ClCompile Include="MaximumIterationError.cpp" />
     <ClCompile Include="MbDCode.cpp" />
     <ClCompile Include="NewtonRaphson.cpp" />
+    <ClCompile Include="NewtonRaphsonError.cpp" />
     <ClCompile Include="Part.cpp" />
     <ClCompile Include="PartFrame.cpp" />
     <ClCompile Include="PosICKineNewtonRaphson.cpp" />
@@ -213,6 +215,7 @@
     <ClCompile Include="RevoluteJoint.cpp" />
     <ClCompile Include="RowTypeMatrix.cpp" />
     <ClCompile Include="ScalarNewtonRaphson.cpp" />
+    <ClCompile Include="SimulationStoppingError.cpp" />
     <ClCompile Include="SingularMatrixError.cpp" />
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="SparseColumn.cpp" />
@@ -231,7 +234,7 @@
     <ClCompile Include="TranslationConstraintIqctJqc.cpp" />
     <ClCompile Include="UserFunction.cpp" />
     <ClCompile Include="Variable.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="FullVector.cpp" />
     <ClCompile Include="VectorNewtonRaphson.cpp" />
     <ClCompile Include="ZRotation.cpp" />
   </ItemGroup>
@@ -308,8 +311,10 @@
     <ClInclude Include="MarkerFrame.h" />
     <ClInclude Include="MatrixGaussElimination.h" />
     <ClInclude Include="MatrixSolver.h" />
+    <ClInclude Include="MaximumIterationError.h" />
     <ClInclude Include="MbDCode.h" />
     <ClInclude Include="NewtonRaphson.h" />
+    <ClInclude Include="NewtonRaphsonError.h" />
     <ClInclude Include="Part.h" />
     <ClInclude Include="PartFrame.h" />
     <ClInclude Include="PosICKineNewtonRaphson.h" />
@@ -324,6 +329,7 @@
     <ClInclude Include="RevoluteJoint.h" />
     <ClInclude Include="RowTypeMatrix.h" />
     <ClInclude Include="ScalarNewtonRaphson.h" />
+    <ClInclude Include="SimulationStoppingError.h" />
     <ClInclude Include="SingularMatrixError.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SparseColumn.h" />
@@ -343,7 +349,7 @@
     <ClInclude Include="typedef.h" />
     <ClInclude Include="UserFunction.h" />
     <ClInclude Include="Variable.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="FullVector.h" />
     <ClInclude Include="VectorNewtonRaphson.h" />
     <ClInclude Include="ZRotation.h" />
   </ItemGroup>

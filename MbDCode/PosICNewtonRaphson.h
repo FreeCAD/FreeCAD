@@ -12,8 +12,10 @@ namespace MbD {
         void run() override;
         void preRun() override;
         void assignEquationNumbers() override;
+        bool isConverged() override;
+        void handleSingularMatrix() override;
 
-        std::shared_ptr<std::vector<int>> pivotRowLimits;
+        std::shared_ptr<std::vector<size_t>> pivotRowLimits;
     };
 }
 

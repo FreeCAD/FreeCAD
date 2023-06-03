@@ -45,7 +45,7 @@ void MbD::Item::calcPostDynCorrectorIteration()
 {
 }
 
-void MbD::Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
+void MbD::Item::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redunEqnNos)
 {
 }
 
@@ -58,6 +58,22 @@ void MbD::Item::fillPosKineJacob(FMatDsptr mat)
 }
 
 void MbD::Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+}
+
+void MbD::Item::fillqsu(FColDsptr col)
+{
+}
+
+void MbD::Item::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+}
+
+void MbD::Item::fillqsulam(FColDsptr col)
+{
+}
+
+void MbD::Item::setqsulam(FColDsptr col)
 {
 }
 
@@ -94,10 +110,19 @@ void MbD::Item::prePostICRestart()
 {
 }
 
+void MbD::Item::postPosICIteration()
+{
+	this->calcPostDynCorrectorIteration();
+}
+
 void MbD::Item::fillPosICError(FColDsptr col)
 {
 }
 
 void MbD::Item::fillPosICJacob(FMatDsptr mat)
+{
+}
+
+void MbD::Item::fillPosICJacob(SpMatDsptr mat)
 {
 }

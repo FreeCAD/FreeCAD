@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-AtPointConstraintIJ::AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+AtPointConstraintIJ::AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi) :
 	ConstraintIJ(frmi, frmj), axis(axisi)
 {
 }
@@ -49,4 +49,10 @@ void MbD::AtPointConstraintIJ::prePosIC()
 MbD::ConstraintType MbD::AtPointConstraintIJ::type()
 {
 	return MbD::displacement;
+}
+
+void MbD::AtPointConstraintIJ::postPosICIteration()
+{
+	riIeJeO->postPosICIteration();
+	Item::postPosICIteration();
 }

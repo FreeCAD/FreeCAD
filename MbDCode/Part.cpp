@@ -1,6 +1,8 @@
 #include "Part.h"
 #include "PartFrame.h"
+#include "System.h"
 #include "CREATE.h"
+#include "DiagonalMatrix.h"
 
 using namespace MbD;
 
@@ -89,12 +91,12 @@ void MbD::Part::prePosIC()
 	partFrame->prePosIC();
 }
 
-void MbD::Part::iqX(int eqnNo)
+void MbD::Part::iqX(size_t eqnNo)
 {
 	partFrame->iqX = eqnNo;
 }
 
-void MbD::Part::iqE(int eqnNo)
+void MbD::Part::iqE(size_t eqnNo)
 {
 	partFrame->iqE = eqnNo;
 
@@ -103,4 +105,61 @@ void MbD::Part::iqE(int eqnNo)
 void MbD::Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	partFrame->fillEssenConstraints(essenConstraints);
+}
+
+void MbD::Part::fillqsu(FColDsptr col)
+{
+	partFrame->fillqsu(col);
+}
+
+void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+	//"Map wqX and wqE according to inertias. (0 to maximum inertia) map to (minw to maxw)"
+	//"When the inertias are zero, they are set to a small number for positive definiteness."
+	//"They are not set to zero because inertialess part may be underconstrained."
+	//"Avoid having two kinds of singularities to confuse redundant constraint removal."
+	//"Redundant constraint removal likes equal weights."
+	//"wqE(4) = 0.0d is ok because there is always the euler parameter constraint."
+
+	auto mMax = System::getInstance().maximumMass();
+	auto aJiMax = System::getInstance().maximumMomentOfInertia();
+	auto minw = 1.0e3;
+	auto maxw = 1.0e6;
+	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
+	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
+	if (mMax == 0) { mMax = 1.0; }
+	for (size_t i = 0; i < 3; i++)
+	{
+		wqX->at(i) = (maxw * m / mMax) + minw;
+	}
+	if (aJiMax == 0) { aJiMax = 1.0; }
+	for (size_t i = 0; i < 3; i++)
+	{
+		auto aJi = aJ->at(i);
+		wqE->at(i) = (maxw * aJi / aJiMax) + minw;
+	}		
+	wqE->at(3) = minw;
+	diagMat->atiputDiagonalMatrix(partFrame->iqX, wqX);
+	diagMat->atiputDiagonalMatrix(partFrame->iqE, wqE);
+	partFrame->fillqsuWeights(diagMat);
+}
+
+void MbD::Part::fillqsulam(FColDsptr col)
+{
+	partFrame->fillqsulam(col);
+}
+
+void MbD::Part::useEquationNumbers()
+{
+	partFrame->useEquationNumbers();
+}
+
+void MbD::Part::setqsulam(FColDsptr col)
+{
+	partFrame->setqsulam(col);
+}
+
+void MbD::Part::postPosICIteration()
+{
+	partFrame->postPosICIteration();
 }

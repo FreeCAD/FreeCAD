@@ -14,9 +14,10 @@ namespace MbD {
 		EulerConstraint(const char* str);
 		void initialize();
 		void calcPostDynCorrectorIteration() override;
+		void useEquationNumbers() override;
 
 		FRowDsptr pGpE;		//partial derivative of G wrt pE
-		int iqE = -1;
+		size_t iqE = -1;
 	};
 }
 

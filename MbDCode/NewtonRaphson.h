@@ -21,13 +21,25 @@ namespace MbD {
         void run() override;
         void setSystem(SystemSolver* sys);
         void iterate();
+        virtual void fillY() = 0;
+        virtual void fillPyPx() = 0;
+        virtual void calcyNorm() = 0;
+        virtual void calcdxNorm() = 0;
+        virtual void solveEquations() = 0;
+        virtual void incrementIterNo();
+        virtual void updatexold() = 0;
+        virtual void xEqualxoldPlusdx() = 0;
 
-        SystemSolver* system;
-        std::shared_ptr<FullColumn<double>> xold, x, dx, y;
-        //std::shared_ptr<RowTypeMatrix<double>> pypx;
+        virtual bool isConverged();
+        virtual void askSystemToUpdate();
+        virtual void passRootToSystem() = 0;
+        bool isConvergedToNumericalLimit();
+        void calcDXNormImproveRootCalcYNorm();
+        
+        SystemSolver* system; //Use raw pointer when pointing backwards.
         std::shared_ptr<std::vector<double>> dxNorms, yNorms;
         double dxNorm, yNorm, yNormOld, yNormTol, dxTol, twoAlp, lam;
-        int iterNo, iterMax, nDivergence, nBackTracking;
+        size_t iterNo = -1, iterMax = -1, nDivergence = -1, nBackTracking = -1;
     };
 }
 

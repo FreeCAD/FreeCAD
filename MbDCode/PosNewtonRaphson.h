@@ -8,7 +8,8 @@ namespace MbD {
         //
     public:
         void preRun() override;
-
+        void incrementIterNo() override;
+        void askSystemToUpdate() override;
     };
 }
 

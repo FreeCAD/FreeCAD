@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <functional>
 
 #include "CartesianFrame.h"
 //#include "PartFrame.h"
@@ -29,10 +30,16 @@ namespace MbD {
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
 		void prePosIC() override;
-		int iqX();
-		int iqE();
+		size_t iqX();
+		size_t iqE();
+		void endFramesDo(const std::function <void(std::shared_ptr<EndFramec>)>& f);
+		void fillqsu(FColDsptr col) override;
+		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsulam(FColDsptr col) override;
+		void setqsulam(FColDsptr col) override;
+		void postPosICIteration() override;
 
-		PartFrame* partFrame;
+		PartFrame* partFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aApm = std::make_shared<FullMatrix<double>>(3, 3);
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);

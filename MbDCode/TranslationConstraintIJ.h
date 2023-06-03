@@ -8,7 +8,7 @@ namespace MbD {
     {
         //riIeJeIe
     public:
-        TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi);
         void initialize();
         void initializeLocally() override;
         void initializeGlobally() override;
@@ -17,8 +17,9 @@ namespace MbD {
         void calcPostDynCorrectorIteration() override;
         void prePosIC()override;
         MbD::ConstraintType type() override;
+        void postPosICIteration() override;
 
-        int axisI;
+        size_t axisI;
         std::shared_ptr<DispCompIecJecKec> riIeJeIe;
     };
 }

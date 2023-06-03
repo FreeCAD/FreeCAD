@@ -7,6 +7,9 @@ namespace MbD {
     {
         //
     public:
+        void forwardEliminateWithPivot(size_t p) override;
+        void backSubstituteIntoDU() override;
+        void postSolve() override;
 
     };
 }

@@ -7,6 +7,8 @@ namespace MbD {
     {
         //
     public:
+        void doPivoting(size_t p) override;
+        void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
 
     };
 }

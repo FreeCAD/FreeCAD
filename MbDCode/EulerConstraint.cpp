@@ -27,3 +27,8 @@ void MbD::EulerConstraint::calcPostDynCorrectorIteration()
 		pGpE->at(i) = 2.0 * qE->at(i);
 	}
 }
+
+void MbD::EulerConstraint::useEquationNumbers()
+{
+	iqE = static_cast<PartFrame*>(owner)->iqE;
+}

@@ -2,6 +2,7 @@
 namespace MbD {
 	class Solver
 	{
+		//statistics
 	public:
 		virtual void initialize();
 		virtual void initializeLocally();

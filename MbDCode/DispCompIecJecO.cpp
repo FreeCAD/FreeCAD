@@ -1,10 +1,12 @@
 #include "DispCompIecJecO.h"
 
+using namespace MbD;
+
 MbD::DispCompIecJecO::DispCompIecJecO()
 {
 }
 
-MbD::DispCompIecJecO::DispCompIecJecO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
+MbD::DispCompIecJecO::DispCompIecJecO(EndFrmcptr frmi, EndFrmcptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
 }
 

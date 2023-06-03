@@ -2,9 +2,10 @@
 
 #include "Solver.h"
 
+using namespace MbD;
+
 void MbD::Solver::initialize()
 {
-	assert(false);
 }
 
 void MbD::Solver::initializeLocally()

@@ -3,7 +3,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIJ::TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+TranslationConstraintIJ::TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi) :
     ConstraintIJ(frmi, frmj), axisI(axisi)
 {
 }
@@ -49,4 +49,10 @@ void MbD::TranslationConstraintIJ::prePosIC()
 MbD::ConstraintType MbD::TranslationConstraintIJ::type()
 {
     return MbD::displacement;
+}
+
+void MbD::TranslationConstraintIJ::postPosICIteration()
+{
+    riIeJeIe->postPosICIteration();
+    Item::postPosICIteration();
 }

@@ -34,12 +34,12 @@ void Joint::initializeLocally()
 			frmI = frmIqc->endFrameqct;
 		}
 	}
-	constraintsDo([](const auto& constraint) { constraint->initializeLocally(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeLocally(); });
 }
 
 void Joint::initializeGlobally()
 {
-	constraintsDo([](const auto& constraint) { constraint->initializeGlobally(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeGlobally(); });
 }
 
 void MbD::Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
@@ -49,7 +49,7 @@ void MbD::Joint::constraintsDo(const std::function<void(std::shared_ptr<Constrai
 
 void MbD::Joint::postInput()
 {
-	constraintsDo([](const auto& constraint) { constraint->postInput(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postInput(); });
 
 }
 
@@ -61,20 +61,40 @@ void MbD::Joint::addConstraint(std::shared_ptr<Constraint> con)
 
 void MbD::Joint::prePosIC()
 {
-	constraintsDo([](const auto& constraint) { constraint->prePosIC(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosIC(); });
 }
 
 void MbD::Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
-	constraintsDo([&](const auto& con) { con->fillEssenConstraints(con, essenConstraints); });
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
 }
 
 void MbD::Joint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
 {
-	constraintsDo([&](const auto& con) { con->fillDispConstraints(con, dispConstraints); });
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillDispConstraints(con, dispConstraints); });
 }
 
 void MbD::Joint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
 {
-	constraintsDo([&](const auto& con) { con->fillPerpenConstraints(con, perpenConstraints); });
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPerpenConstraints(con, perpenConstraints); });
+}
+
+void MbD::Joint::fillqsulam(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
+}
+
+void MbD::Joint::useEquationNumbers()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
+}
+
+void MbD::Joint::setqsulam(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
+}
+
+void MbD::Joint::postPosICIteration()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosICIteration(); });
 }

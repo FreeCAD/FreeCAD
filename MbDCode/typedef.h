@@ -21,8 +21,8 @@ namespace MbD {
 	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDsptr;
 	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> FMatFMatDsptr;
 	//typedef std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> FMatFColDsptr;
-	//typedef std::shared_ptr<SparseRow<double>> SpRowDptr;
-	//typedef std::shared_ptr<SparseMatrix<double>> SpMatDptr;
+	//typedef std::shared_ptr<SparseRow<double>> SpRowDsptr;
+	//typedef std::shared_ptr<SparseMatrix<double>> SpMatDsptr;
 	//typedef std::shared_ptr<EndFramec> EndFrmcptr;
 	//typedef std::shared_ptr<EndFrameqct> EndFrmqctptr;
 

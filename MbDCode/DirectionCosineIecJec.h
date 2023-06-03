@@ -12,10 +12,10 @@ namespace MbD {
         //aAijIeJe axisI axisJ aAjOIe aAjOJe 
     public:
         DirectionCosineIecJec();
-        DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj);
         void calcPostDynCorrectorIteration() override;
 
-        int axisI, axisJ;   //0, 1, 2 = x, y, z
+        size_t axisI, axisJ;   //0, 1, 2 = x, y, z
         double aAijIeJe;
         std::shared_ptr<FullColumn<double>> aAjOIe, aAjOJe;
     };

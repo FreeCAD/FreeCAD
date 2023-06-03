@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi) :
 	TranslationConstraintIJ(frmi, frmj, axisi)
 {
 }
@@ -28,5 +28,6 @@ void MbD::TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
 
 void MbD::TranslationConstraintIqcJc::useEquationNumbers()
 {
+	iqXI = std::static_pointer_cast<EndFrameqc>(frmI)->iqX();
 	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
 }

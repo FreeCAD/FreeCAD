@@ -27,16 +27,16 @@ void PartFrame::initialize()
 
 void PartFrame::initializeLocally()
 {
-	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->initializeLocally(); });
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->initializeLocally(); });
 	aGeu->initializeLocally();
-	aGabsDo([](const auto& aGab) { aGab->initializeLocally(); });
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->initializeLocally(); });
 }
 
 void PartFrame::initializeGlobally()
 {
-	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->initializeGlobally(); });
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->initializeGlobally(); });
 	aGeu->initializeGlobally();
-	aGabsDo([](const auto& aGab) { aGab->initializeGlobally(); });
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->initializeGlobally(); });
 }
 void PartFrame::setqX(FColDsptr x) {
 	qX->copyFrom(x);
@@ -95,14 +95,19 @@ void MbD::PartFrame::aGabsDo(const std::function<void(std::shared_ptr<AbsConstra
 	std::for_each(aGabs->begin(), aGabs->end(), f);
 }
 
+void MbD::PartFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFrame>)>& f)
+{
+	std::for_each(markerFrames->begin(), markerFrames->end(), f);
+}
+
 void MbD::PartFrame::prePosIC()
 {
-//iqX = -1;
-//iqE  = -1;
-//super prePosIC.
-//markerFrames do : [:mkr | mkr prePosIC] .
-//aGeu prePosIC.
-//aGabs do : [:con | con prePosIC]
+	iqX = -1;
+	iqE = -1;
+	Item::prePosIC();
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrm) { markerFrm->prePosIC(); });
+	aGeu->prePosIC();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosIC(); });
 }
 
 FColDsptr MbD::PartFrame::rOpO()
@@ -123,7 +128,52 @@ FColFMatDsptr MbD::PartFrame::pAOppE()
 void MbD::PartFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	aGeu->fillEssenConstraints(aGeu, essenConstraints);
-	aGabsDo([&](const auto& con) { con->fillEssenConstraints(con, essenConstraints); });
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
+}
+
+void MbD::PartFrame::fillqsu(FColDsptr col)
+{
+	col->atiputFullColumn(iqX, qX);
+	col->atiputFullColumn(iqE, qE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsu(col); });
+}
+
+void MbD::PartFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsuWeights(diagMat); });
+}
+
+void MbD::PartFrame::fillqsulam(FColDsptr col)
+{
+	col->atiputFullColumn(iqX, qX);
+	col->atiputFullColumn(iqE, qE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsulam(col); });
+	aGeu->fillqsulam(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
+}
+
+void MbD::PartFrame::useEquationNumbers()
+{
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->useEquationNumbers(); });
+	aGeu->useEquationNumbers();
+	aGabsDo([](std::shared_ptr<Constraint> con) { con->useEquationNumbers(); });
+}
+
+void MbD::PartFrame::setqsulam(FColDsptr col)
+{
+	qX->equalFullColumnAt(col, iqX);
+	qE->equalFullColumnAt(col, iqE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsulam(col); });
+	aGeu->setqsulam(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
+}
+
+void MbD::PartFrame::postPosICIteration()
+{
+	Item::postPosICIteration();
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postPosICIteration(); });
+	aGeu->postPosICIteration();
+	aGabsDo([](std::shared_ptr<Constraint> con) { con->postPosICIteration(); });
 }
 
 void PartFrame::asFixed()
@@ -140,9 +190,9 @@ void MbD::PartFrame::postInput()
 	//qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
 	//qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
 	Item::postInput();
-	std::for_each(markerFrames->begin(), markerFrames->end(), [](const auto& markerFrame) { markerFrame->postInput(); });
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postInput(); });
 	aGeu->postInput();
-	aGabsDo([](const auto& aGab) { aGab->postInput(); });
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->postInput(); });
 }
 
 void MbD::PartFrame::calcPostDynCorrectorIteration()

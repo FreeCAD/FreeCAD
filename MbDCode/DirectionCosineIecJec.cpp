@@ -9,7 +9,7 @@ DirectionCosineIecJec::DirectionCosineIecJec()
 {
 }
 
-DirectionCosineIecJec::DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineIecJec::DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj) :
 	KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj)
 {
 

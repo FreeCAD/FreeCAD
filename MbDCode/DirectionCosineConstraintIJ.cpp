@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj) :
 	ConstraintIJ(frmi, frmj), axisI(axisi), axisJ(axisj)
 {
 }
@@ -45,6 +45,12 @@ void MbD::DirectionCosineConstraintIJ::prePosIC()
 {
 	aAijIeJe->prePosIC();
 	Constraint::prePosIC();
+}
+
+void MbD::DirectionCosineConstraintIJ::postPosICIteration()
+{
+	aAijIeJe->postPosICIteration();
+	Item::postPosICIteration();
 }
 
 MbD::ConstraintType MbD::DirectionCosineConstraintIJ::type()

@@ -7,7 +7,7 @@ DirectionCosineIeqcJeqc::DirectionCosineIeqcJeqc()
 {
 }
 
-DirectionCosineIeqcJeqc::DirectionCosineIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineIeqcJeqc::DirectionCosineIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj) :
 	DirectionCosineIeqcJec(frmi, frmj, axisi, axisj)
 {
 }

@@ -2,6 +2,7 @@
 
 #include "NewtonRaphson.h"
 #include "SystemSolver.h"
+#include "MaximumIterationError.h"
 
 using namespace MbD;
 
@@ -27,13 +28,13 @@ void NewtonRaphson::initializeLocally()
 
 void MbD::NewtonRaphson::run()
 {
-		//self preRun.
-		//self initializeLocally.
-		//self initializeGlobally.
-		//self iterate.
-		//self finalize.
-		//self reportStats.
-		//self postRun.
+	//self preRun.
+	//self initializeLocally.
+	//self initializeGlobally.
+	//self iterate.
+	//self finalize.
+	//self reportStats.
+	//self postRun.
 }
 
 void MbD::NewtonRaphson::setSystem(SystemSolver* sys)
@@ -52,14 +53,78 @@ void MbD::NewtonRaphson::iterate()
 	//	zero.
 	//	"
 
-	//	iterNo : = 0.
-	//	self fillY.
-	//	self calcyNorm.
-	//	yNorms add : yNorm.
+	iterNo = 0;
+	this->fillY();
+	this->calcyNorm();
+	yNorms->push_back(yNorm);
 
-	//	[self incrementIterNo.
-	//	self fillPyPx.
-	//	self solveEquations.
-	//	self calcDXNormImproveRootCalcYNorm.
-	//	self isConverged] whileFalse
+	while (true) {
+		this->incrementIterNo();
+		this->fillPyPx();
+		this->solveEquations();
+		this->calcDXNormImproveRootCalcYNorm();
+		if (this->isConverged()) break;
+	}
+}
+
+void MbD::NewtonRaphson::incrementIterNo()
+{
+	iterNo++;
+	if (iterNo > iterMax) {
+		this->reportStats();
+		throw MaximumIterationError("");
+	}
+}
+
+bool MbD::NewtonRaphson::isConverged()
+{
+	return this->isConvergedToNumericalLimit();
+}
+
+void MbD::NewtonRaphson::askSystemToUpdate()
+{
+}
+
+bool MbD::NewtonRaphson::isConvergedToNumericalLimit()
+{
+	//"worthIterating is less stringent with IterNo."
+	//"nDivergenceMax is the number of small divergences allowed."
+
+	auto tooLargeTol = 1.0e-2;
+	constexpr auto smallEnoughTol = std::numeric_limits<double>::epsilon();
+	auto nDecade = log(tooLargeTol / smallEnoughTol);
+	auto nDivergenceMax = 3;
+	auto dxNormIterNo = dxNorms->at(iterNo);
+	if (iterNo > 0) {
+		auto dxNormIterNoOld = dxNorms->at(iterNo);
+		auto farTooLargeError = dxNormIterNo > tooLargeTol;
+		auto worthIterating = dxNormIterNo > (smallEnoughTol * pow(10.0, (iterNo / iterMax) * nDecade));
+		bool stillConverging;
+		if (dxNormIterNo < (0.5 * dxNormIterNoOld)) {
+			stillConverging = true;
+		}
+		else {
+			if (!farTooLargeError) nDivergence++;
+			stillConverging = nDivergence < nDivergenceMax;
+		}
+		return !(farTooLargeError || (worthIterating && stillConverging));
+	}
+	else {
+		auto worthIterating = dxNormIterNo > smallEnoughTol;
+		return !worthIterating;
+	}
+}
+
+void MbD::NewtonRaphson::calcDXNormImproveRootCalcYNorm()
+{
+	this->calcdxNorm();
+	dxNorms->push_back(dxNorm);
+	this->updatexold();
+	this->xEqualxoldPlusdx();
+	this->passRootToSystem();
+	this->askSystemToUpdate();
+	this->fillY();
+	this->calcyNorm();
+	yNorms->push_back(yNorm);
+	yNormOld = yNorm;
 }

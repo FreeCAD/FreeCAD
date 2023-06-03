@@ -26,6 +26,10 @@ namespace MbD {
         void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
         virtual void fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
         virtual void fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
+        void fillqsulam(FColDsptr col) override;
+        void useEquationNumbers() override;
+        void setqsulam(FColDsptr col) override;
+        void postPosICIteration() override;
 
         EndFrmcptr frmI;
         EndFrmcptr frmJ;

@@ -84,7 +84,7 @@
     <ClCompile Include="EndFrameqct.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.cpp">
+    <ClCompile Include="FullVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SparseColumn.cpp">
@@ -336,6 +336,15 @@
     <ClCompile Include="RedundantConstraint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NewtonRaphsonError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaximumIterationError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulationStoppingError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -407,7 +416,7 @@
     <ClInclude Include="MbDCode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
+    <ClInclude Include="FullVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SparseColumn.h">
@@ -666,6 +675,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RedundantConstraint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NewtonRaphsonError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaximumIterationError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationStoppingError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

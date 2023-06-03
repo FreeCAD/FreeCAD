@@ -8,7 +8,7 @@ namespace MbD {
         //
     public:
         DispCompIeqctJeqcKeqct();
-        DispCompIeqctJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
+        DispCompIeqctJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk);
 
     };
 }

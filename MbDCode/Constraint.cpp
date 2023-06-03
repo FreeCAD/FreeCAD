@@ -55,7 +55,7 @@ void MbD::Constraint::fillDispConstraints(std::shared_ptr<Constraint>sptr, std::
 }
 void MbD::Constraint::fillPerpenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
 {
-	if (this->type() == MbD::displacement) {
+	if (this->type() == MbD::perpendicular) {
 		perpenConstraints->push_back(sptr);
 	}
 }
@@ -63,4 +63,14 @@ void MbD::Constraint::fillPerpenConstraints(std::shared_ptr<Constraint>sptr, std
 MbD::ConstraintType MbD::Constraint::type()
 {
 	return MbD::essential;
+}
+
+void MbD::Constraint::fillqsulam(FColDsptr col)
+{
+	col->at(iG) = lam;
+}
+
+void MbD::Constraint::setqsulam(FColDsptr col)
+{
+	lam = col->at(iG);
 }

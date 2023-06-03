@@ -34,12 +34,18 @@ namespace MbD {
 		void calcPostDynCorrectorIteration() override;
 
 		void prePosIC() override;
-		void iqX(int eqnNo);
-		void iqE(int eqnNo);
+		void iqX(size_t eqnNo);
+		void iqE(size_t eqnNo);
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
+		void fillqsu(FColDsptr col) override;
+		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsulam(FColDsptr col) override;
+		void useEquationNumbers() override;
+		void setqsulam(FColDsptr col) override;
+		void postPosICIteration() override;
 
-		int ipX = -1; 
-		int ipE = -1; 
+		size_t ipX = -1; 
+		size_t ipE = -1; 
 		double m = 0.0; 
 		std::shared_ptr<DiagonalMatrix<double>> aJ;
 		std::shared_ptr<PartFrame> partFrame;

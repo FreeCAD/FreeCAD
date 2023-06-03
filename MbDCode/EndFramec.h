@@ -26,10 +26,10 @@ namespace MbD {
         void initializeGlobally() override;
         virtual void initEndFrameqct();
         void calcPostDynCorrectorIteration() override;
-        FColDsptr aAjOe(int j);
-        double riOeO(int i);
+        FColDsptr aAjOe(size_t j);
+        double riOeO(size_t i);
 
-        MarkerFrame* markerFrame;
+        MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
         FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);
         FMatDsptr aAOe = std::make_shared<FullMatrix<double>>(3, 3);
     };

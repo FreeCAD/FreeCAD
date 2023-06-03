@@ -65,13 +65,13 @@ void System::initializeLocally()
 {
 	hasChanged = false;
 	time->value = systemSolver->tstart;
-	partsJointsMotionsDo([](const auto& item) { item->initializeLocally(); });
+	partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->initializeLocally(); });
 	systemSolver->initializeLocally();
 }
 
 void System::initializeGlobally()
 {
-	partsJointsMotionsDo([](const auto& item) { item->initializeGlobally(); });
+	partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->initializeGlobally(); });
 	systemSolver->initializeGlobally();
 }
 
@@ -111,20 +111,42 @@ double MbD::System::mbdTimeValue()
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::essentialConstraints2()
 {
 	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->partsJointsMotionsDo([&](const auto& item) { item->fillEssenConstraints(essenConstraints); });
+	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillEssenConstraints(essenConstraints); });
 	return essenConstraints;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::displacementConstraints()
 {
 	auto dispConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->jointsMotionsDo([&](const auto& joint) { joint->fillDispConstraints(dispConstraints); });
+	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillDispConstraints(dispConstraints); });
 	return dispConstraints;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::perpendicularConstraints2()
 {
 	auto perpenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->jointsMotionsDo([&](const auto& joint) { joint->fillPerpenConstraints(perpenConstraints); });
+	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillPerpenConstraints(perpenConstraints); });
 	return perpenConstraints;
+}
+
+double MbD::System::maximumMass()
+{
+	auto maxPart = std::max_element(parts->begin(), parts->end(), [](auto& a, auto& b) { return a->m < b->m; });
+	return maxPart->get()->m;
+}
+
+double MbD::System::maximumMomentOfInertia()
+{
+	double max = 0.0;
+	for (size_t i = 0; i < parts->size(); i++)
+	{
+		auto part = parts->at(i);
+		for (size_t j = 0; j < 3; j++)
+		{
+			auto aJ = part->aJ;
+			auto aJi = aJ->at(j);
+			if (max < aJi) max = aJi;
+		}
+	}
+	return max;
 }

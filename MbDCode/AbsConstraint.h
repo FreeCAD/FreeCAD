@@ -7,12 +7,14 @@ namespace MbD {
     public:
         AbsConstraint();
         AbsConstraint(const char* str);
-        AbsConstraint(int axis);
+        AbsConstraint(size_t axis);
         void initialize();
         void calcPostDynCorrectorIteration() override;
+        void useEquationNumbers() override;
+        void fillPosICJacob(SpMatDsptr mat) override;
 
-        int axis;
-        int iqXminusOnePlusAxis;
+        size_t axis = -1;
+        size_t iqXminusOnePlusAxis = -1;
     };
 }
 

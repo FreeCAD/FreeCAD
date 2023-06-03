@@ -44,16 +44,23 @@ namespace MbD {
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmcptr endFrame(std::string name);
 		void aGabsDo(const std::function <void(std::shared_ptr<AbsConstraint>)>& f);
+		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f);
 
 		void prePosIC() override;
 		FColDsptr rOpO();
 		FMatDsptr aAOp();
 		FColFMatDsptr pAOppE();
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
+		void fillqsu(FColDsptr col) override;
+		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsulam(FColDsptr col) override;
+		void useEquationNumbers() override;
+		void setqsulam(FColDsptr col) override;
+		void postPosICIteration() override;
 
-		Part* part = nullptr;
-		int iqX = -1;
-		int iqE = -1;	//Position index of frame variables qX and qE in system list of variables
+		Part* part = nullptr; //Use raw pointer when pointing backwards.
+		size_t iqX = -1;
+		size_t iqE = -1;	//Position index of frame variables qX and qE in system list of variables
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
 		std::shared_ptr<EulerParameters<double>> qE = CREATE<EulerParameters<double>>::With(4);
 		//FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);

@@ -20,12 +20,13 @@ namespace MbD {
 		virtual void fillDispConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
 		virtual void fillPerpenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
 		virtual MbD::ConstraintType type();
-
+		void fillqsulam(FColDsptr col) override;
+		void setqsulam(FColDsptr col) override;
 		
-		int iG;
+		size_t iG;
 		double aG;		//Constraint function
 		double lam;		//Lambda is Lagrange Multiplier
-		Item* owner;	//A Joint or PartFrame owns the constraint
+		Item* owner;	//A Joint or PartFrame owns the constraint.  //Use raw pointer when pointing backwards.
 	};
 }
 
