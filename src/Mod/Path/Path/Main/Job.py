@@ -133,14 +133,14 @@ class ObjectJob:
             "App::PropertyString",
             "LastPostProcessDate",
             "Output",
-            QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post-processed"),
+            QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post processed"),
         )
         obj.setEditorMode("LastPostProcessDate", 2)  # Hide
         obj.addProperty(
             "App::PropertyString",
             "LastPostProcessOutput",
             "Output",
-            QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post-processed"),
+            QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post processed"),
         )
         obj.setEditorMode("LastPostProcessOutput", 2)  # Hide
 

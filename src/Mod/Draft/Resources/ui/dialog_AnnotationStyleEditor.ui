@@ -157,9 +157,9 @@
         <height>589</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QGroupBox" name="groupBox_3">
+        <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Text</string>
          </property>
@@ -216,7 +216,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_3">
             <property name="toolTip">
-             <string>The line spacing (relative to the font size)</string>
+             <string>The line spacing for multi-line texts and labels (relative to the font size)</string>
             </property>
             <property name="text">
              <string>Line spacing</string>
@@ -226,12 +226,12 @@
           <item row="2" column="1">
            <widget class="QDoubleSpinBox" name="LineSpacing">
             <property name="toolTip">
-             <string>The line spacing (relative to the font size)</string>
+             <string>The line spacing for multi-line texts and labels (relative to the font size)</string>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_16">
+           <widget class="QLabel" name="label_4">
             <property name="toolTip">
              <string>The color of texts, dimension texts and label texts</string>
             </property>
@@ -251,96 +251,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>Units</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="toolTip">
-             <string>A multiplier factor that affects the size of texts and markers</string>
-            </property>
-            <property name="text">
-             <string>Scale multiplier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="ScaleMultiplier">
-            <property name="toolTip">
-             <string>A multiplier factor that affects the size of texts and markers</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="toolTip">
-             <string>If it is checked it will show the unit next to the dimension value</string>
-            </property>
-            <property name="text">
-             <string>Show unit</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="ShowUnit">
-            <property name="toolTip">
-             <string>If it is checked it will show the unit next to the dimension value</string>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         <item row="2" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="toolTip">
-             <string>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</string>
-            </property>
-            <property name="text">
-             <string>Unit override</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="UnitOverride">
-            <property name="toolTip">
-             <string>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="toolTip">
-             <string>The number of decimals to show for dimension values</string>
-            </property>
-            <property name="text">
-             <string>Decimals</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QSpinBox" name="Decimals">
-            <property name="toolTip">
-             <string>The number of decimals to show for dimension values</string>
-            </property>
-           </widget>
-          </item>
-          </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_4">
+        <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
           <string>Lines and arrows</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
+         <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_13">
+           <widget class="QLabel" name="label_5">
             <property name="toolTip">
              <string>If it is checked it will display the dimension line</string>
             </property>
@@ -366,7 +283,7 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_14">
+           <widget class="QLabel" name="label_6">
             <property name="toolTip">
              <string>The width of the lines</string>
             </property>
@@ -386,7 +303,7 @@
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_9">
+           <widget class="QLabel" name="label_7">
             <property name="toolTip">
              <string>The type of arrows or markers to use for dimensions and labels</string>
             </property>
@@ -460,7 +377,7 @@
            </widget>
           </item>
           <item row="5" column="0">
-           <widget class="QLabel" name="label_15">
+           <widget class="QLabel" name="label_9">
             <property name="toolTip">
              <string>The color of lines and arrows</string>
             </property>
@@ -476,8 +393,100 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Units</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
            <widget class="QLabel" name="label_10">
+            <property name="toolTip">
+             <string>A multiplier factor that affects the size of texts and markers</string>
+            </property>
+            <property name="text">
+             <string>Scale multiplier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="ScaleMultiplier">
+            <property name="toolTip">
+             <string>A multiplier factor that affects the size of texts and markers</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="toolTip">
+             <string>If it is checked it will show the unit next to the dimension value</string>
+            </property>
+            <property name="text">
+             <string>Show unit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="ShowUnit">
+            <property name="toolTip">
+             <string>If it is checked it will show the unit next to the dimension value</string>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         <item row="2" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="toolTip">
+             <string>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</string>
+            </property>
+            <property name="text">
+             <string>Unit override</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="UnitOverride">
+            <property name="toolTip">
+             <string>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="toolTip">
+             <string>The number of decimals to show for dimension values</string>
+            </property>
+            <property name="text">
+             <string>Decimals</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="Decimals">
+            <property name="toolTip">
+             <string>The number of decimals to show for dimension values</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Dimension details</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_14">
             <property name="toolTip">
              <string>The distance the dimension line is additionally extended</string>
             </property>
@@ -486,7 +495,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="0" column="1">
            <widget class="Gui::InputField" name="DimOvershoot">
             <property name="toolTip">
              <string>The distance the dimension line is additionally extended</string>
@@ -496,8 +505,8 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_11">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_15">
             <property name="toolTip">
              <string>The length of the extension lines</string>
             </property>
@@ -506,7 +515,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="1" column="1">
            <widget class="Gui::InputField" name="ExtLines">
             <property name="toolTip">
              <string>The length of the extension lines</string>
@@ -516,8 +525,8 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_12">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_16">
             <property name="toolTip">
              <string>The distance the extension lines are additionally extended beyond the dimension line</string>
             </property>
@@ -526,10 +535,30 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="2" column="1">
            <widget class="Gui::InputField" name="ExtOvershoot">
             <property name="toolTip">
              <string>The distance the extension lines are additionally extended beyond the dimension line</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_17">
+            <property name="toolTip">
+             <string>The distance between the dimension text and the dimension line</string>
+            </property>
+            <property name="text">
+             <string>Text spacing</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::InputField" name="TextSpacing">
+            <property name="toolTip">
+             <string>The distance between the dimension text and the dimension line</string>
             </property>
             <property name="unit" stdset="0">
              <string notr="true"/>

@@ -140,7 +140,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setText(
             translate(
                 "Path_Inspect",
-                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post-processing.",
+                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
             )
         )
         lab.setWordWrap(True)

@@ -358,18 +358,18 @@ using PyMethodDef = struct PyMethodDef;
 #define FC_LOG_LEVEL_INIT(_tag,...) \
     _FC_LOG_LEVEL_INIT(FC_LOG_INSTANCE, _tag, ## __VA_ARGS__)
 
-#define __FC_PRINT(_instance,_l,_func,_msg,_file,_line) do{\
+#define __FC_PRINT(_instance,_l,_func,_notifier,_msg,_file,_line) do{\
     if(_instance.isEnabled(_l)) {\
         std::stringstream _str;\
         _instance.prefix(_str,_file,_line) << _msg;\
         if(_instance.add_eol) \
             _str<<std::endl;\
-        Base::Console()._func("",_str.str().c_str());\
+        Base::Console()._func(_notifier,_str.str().c_str());\
         if(_instance.refresh) Base::Console().Refresh();\
     }\
 }while(0)
 
-#define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,_msg,__FILE__,__LINE__)
+#define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,"",_msg,__FILE__,__LINE__)
 
 #define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,_msg)
 #define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,DeveloperWarning,_msg)
@@ -377,11 +377,11 @@ using PyMethodDef = struct PyMethodDef;
 #define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,_msg)
 #define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,_msg)
 
-#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,_msg,_file,_line)
-#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,DeveloperWarning,_msg,_file,_line)
-#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,DeveloperError,_msg,_file,_line)
-#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,_msg,_file,_line)
-#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,_msg,_file,_line)
+#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,"",_msg,_file,_line)
+#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,DeveloperWarning,"",_msg,_file,_line)
+#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,DeveloperError,"",_msg,_file,_line)
+#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,"",_msg,_file,_line)
+#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,"",_msg,_file,_line)
 
 #define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
 #define FC_xy(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
