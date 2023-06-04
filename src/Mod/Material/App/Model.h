@@ -20,45 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATGUI_PRECOMPILED_H
-#define MATGUI_PRECOMPILED_H
+#ifndef MATERIAL_MODEL_H
+#define MATERIAL_MODEL_H
 
-#include <FCConfig.h>
+#include <boost/filesystem.hpp>
 
-#include <Mod/Material/MaterialGlobal.h>
+namespace fs = boost::filesystem;
 
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-# pragma warning( disable : 4251 )
-# pragma warning( disable : 4503 )
-# pragma warning( disable : 4786 )  // specifier longer then 255 chars
-# pragma warning( disable : 4273 )
-#endif
+namespace Material {
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-#  define NOMINMAX
-# endif
-# include <windows.h>
-#endif
+class MaterialExport Model
+{
+    // Q_OBJECT
 
-#ifdef _PreComp_
+public:
+    explicit Model();
+    virtual ~Model();
 
-// standard
-#include <cfloat>
-#include <cmath>
+private:
 
-// STL
-#include <algorithm>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
+    void loadLibraries(void);
+    std::list<std::string*>* getModelLibraries();
+};
 
-// Boost
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/predicate.hpp>
+} // namespace Material
 
-#endif  //_PreComp_
-
-#endif // MATGUI_PRECOMPILED_H
+#endif // MATERIAL_MODEL_H

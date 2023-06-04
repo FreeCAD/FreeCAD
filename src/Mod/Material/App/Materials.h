@@ -20,45 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATGUI_PRECOMPILED_H
-#define MATGUI_PRECOMPILED_H
+#ifndef MATERIAL_MATERIALS_H
+#define MATERIAL_MATERIALS_H
 
-#include <FCConfig.h>
+#include <boost/filesystem.hpp>
 
-#include <Mod/Material/MaterialGlobal.h>
+namespace fs = boost::filesystem;
 
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-# pragma warning( disable : 4251 )
-# pragma warning( disable : 4503 )
-# pragma warning( disable : 4786 )  // specifier longer then 255 chars
-# pragma warning( disable : 4273 )
-#endif
+namespace Material {
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-#  define NOMINMAX
-# endif
-# include <windows.h>
-#endif
+class MaterialExport LibraryData
+{
+public:
+    explicit LibraryData(const std::string &libraryName, const fs::path &dir, const std::string &icon);
+    virtual ~LibraryData();
 
-#ifdef _PreComp_
+    const std::string &getName() const
+    {
+        return name;
+    }
+    const fs::path &getDirectory() const
+    {
+        return directory;
+    }
+    const std::string &getIconPath() const
+    {
+        return iconPath;
+    }
 
-// standard
-#include <cfloat>
-#include <cmath>
+private:
+    explicit LibraryData();
+    std::string name;
+    fs::path directory;
+    std::string iconPath;
+};
 
-// STL
-#include <algorithm>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
+class MaterialExport Materials
+{
 
-// Boost
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/predicate.hpp>
+public:
+    explicit Materials();
+    virtual ~Materials();
 
-#endif  //_PreComp_
+    static std::list<LibraryData *> *getMaterialLibraries();
+    static bool isCard(const fs::path &p);
+};
 
-#endif // MATGUI_PRECOMPILED_H
+} // namespace Material
+
+#endif // MATERIAL_MATERIALS_H

@@ -70,6 +70,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     # If these macro definitions are embedded within another macro, it causes problems.
     include(cMake/FreeCAD_Helpers/SetupQt.cmake)
     SetupFreetype()
+    SetupYamlCpp()
 
     if(BUILD_GUI)
         SetupCoin3D()

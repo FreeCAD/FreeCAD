@@ -32,6 +32,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Application.h>
 
+#include <Mod/Material/App/Model.h>
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
 
@@ -112,16 +113,6 @@ void MaterialsEditor::reject()
     // }
 }
 
-bool MaterialsEditor::isCard(const fs::path &p) const
-{
-    if (!fs::is_regular_file(p))
-        return false;
-    // check file extension
-    if (p.extension() == ".FCMat")
-        return true;
-    return false;
-}
-
 void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
 {
     for (const auto& mod : fs::directory_iterator(folder)) {
@@ -143,6 +134,9 @@ void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, co
 
 void MaterialsEditor::createMaterialTree()
 {
+    Base::Console().Log("MaterialsEditor::createMaterialTree()\n");
+    Material::Model testModel;
+
     auto param =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material");
     if (!param)
@@ -163,110 +157,24 @@ void MaterialsEditor::createMaterialTree()
     model->appendRow(lib);
     tree->setExpanded(lib->index(), true);
 
-    auto libraries = getMaterialLibraries();
+    auto libraries = Material::Materials::getMaterialLibraries();
     for (const auto &value : *libraries)
     {
         lib = new QStandardItem(QString::fromStdString(value->getName()));
         model->appendRow(lib);
         tree->setExpanded(lib->index(), true);
 
-        auto path = QDir::toNativeSeparators(value->getDirectory().absolutePath()).toStdString();
+        auto path = value->getDirectory().string();
         addCards(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
-        //addCards(top, Path(value[0]), Path(value[0]), QtGui.QIcon(value[1]));
-
 
         Base::Console().Log(value->getName().c_str());
         Base::Console().Log("\n\t");
-        Base::Console().Log(value->getDirectory().absolutePath().toStdString().c_str());
+        Base::Console().Log(value->getDirectory().string().c_str());
         Base::Console().Log("\n\t");
         Base::Console().Log(value->getIconPath().c_str());
         Base::Console().Log("\n");
 
     }
-}
-
-std::list<LibraryData *> *MaterialsEditor::getMaterialLibraries()
-{
-    auto param =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Resources");
-    bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
-    bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
-    bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
-    bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
-
-    std::list<LibraryData *> *libraries = new std::list<LibraryData *>();
-    if (useBuiltInMaterials)
-    {
-        QString resourceDir = QString::fromStdString(App::Application::getResourceDir() + "/Mod/Material/Resources/Materials");
-        QDir *materialDir = new QDir(resourceDir);
-        Base::Console().Log(materialDir->absolutePath().toStdString().c_str());
-        Base::Console().Log("\n");
-        auto libData = new LibraryData("System", materialDir, ":/icons/freecad.svg");
-        libraries->push_back(libData);
-    }
-
-    if (useMatFromModules)
-    {
-        auto moduleParam = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
-        for (auto &group : moduleParam->GetGroups()) {
-            // auto module = moduleParam->GetGroup(group->GetGroupName());
-            auto moduleName = group->GetGroupName();
-            auto materialDir = group->GetASCII("ModuleDir", "");
-            auto materialIcon = group->GetASCII("ModuleIcon", "");
-
-            Base::Console().Log("Module ");
-            Base::Console().Log(moduleName);
-            Base::Console().Log("\n");
-
-            Base::Console().Log("\tModuleDir ");
-            Base::Console().Log(materialDir.c_str());
-            Base::Console().Log("\n");
-
-            Base::Console().Log("\tModuleIcon ");
-            Base::Console().Log(materialIcon.c_str());
-            Base::Console().Log("\n");
-
-            QDir *dir = new QDir(QString::fromStdString(materialDir));
-            auto libData = new LibraryData(moduleName, dir, materialIcon);
-            libraries->push_back(libData);
-        }
-    }
-
-    if (useMatFromConfigDir)
-    {
-        QString resourceDir = QString::fromStdString(App::Application::getUserAppDataDir() + "/Material");
-        QDir *materialDir = new QDir(resourceDir);
-        Base::Console().Log(materialDir->absolutePath().toStdString().c_str());
-        Base::Console().Log("\n");
-        auto libData = new LibraryData("User", materialDir, ":/icons/preferences-general.svg");
-        libraries->push_back(libData);
-    }
-
-    if (useMatFromCustomDir)
-    {
-        QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
-        QDir *materialDir = new QDir(resourceDir);
-        if (materialDir->exists())
-        {
-            auto libData = new LibraryData("Custom", materialDir, ":/icons/user.svg");
-            libraries->push_back(libData);
-        }
-    }
-
-    return libraries;
-}
-
-LibraryData::LibraryData()
-{}
-
-LibraryData::LibraryData(const std::string &libraryName, QDir *dir, const std::string &icon) :
-    name(libraryName), directory(dir), iconPath(icon)
-{}
-
-LibraryData::~LibraryData()
-{
-    delete directory;
 }
 
 
