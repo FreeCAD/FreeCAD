@@ -40,6 +40,7 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Extensions: Centerlines/Threading");
     qApp->translate("Workbench", "Extensions: Dimensions");
     qApp->translate("Workbench", "Annotations");
+    qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
     qApp->translate("Workbench", "Add Vertices");
     qApp->translate("Workbench", "TechDraw");
