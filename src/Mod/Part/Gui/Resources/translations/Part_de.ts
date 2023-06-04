@@ -3090,12 +3090,12 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="268"/>
       <source>Equal distance</source>
-      <translation>Gleiche Distanz</translation>
+      <translation>Gleicher Abstand</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Two distances</source>
-      <translation>Zwei Distanzen</translation>
+      <translation>Zwei Abstände</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
@@ -4389,7 +4389,7 @@ oder Schwarz verwendet werden.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="368"/>
       <source>Default Annotation color</source>
-      <translation>Standardfarbe für Anmerkungen</translation>
+      <translation>Standardfarbe für Beschriftungen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="382"/>
@@ -4399,7 +4399,7 @@ oder Schwarz verwendet werden.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="389"/>
       <source>Text color for document annotations</source>
-      <translation>Textfarbe für Dokumentanmerkungen</translation>
+      <translation>Textfarbe für Dokumentbeschriftungen</translation>
     </message>
   </context>
   <context>

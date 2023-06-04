@@ -400,7 +400,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1675"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Rozszerz linię kosmetyczną lub linię środkową na obu końcach:&lt;br&gt;- Określ długość przyrostu (opcjonalnie)&lt;br&gt;- Wybierz pojedynczą linię&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Przedłuż linię kosmetyczną lub linię środkową na obu końcach:&lt;br&gt;- Określ długość przyrostu (opcjonalnie)&lt;br&gt;- Wybierz pojedynczą linię&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -924,7 +924,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1605"/>
       <location filename="../../CommandExtensionPack.cpp" line="1743"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Rozszerz linię kosmetyczną lub linię środkową na obu końcach:&lt;br&gt;- Określ długość przyrostu (opcjonalnie)&lt;br&gt;- Wybierz pojedynczą linię&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Przedłuż linię kosmetyczną lub linię środkową na obu końcach:&lt;br&gt;- Określ długość przyrostu (opcjonalnie)&lt;br&gt;- Wybierz pojedynczą linię&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -964,7 +964,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="397"/>
       <location filename="../../CommandExtensionDims.cpp" line="530"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Zwiększ liczbę cyfr po przecinku tekstu wymiaru:&lt;br&gt;- Wybierz jeden lub więcej wymiarów&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Zwiększ liczbę cyfr po przecinku tekstu wymiaru:
+- Wybierz jeden lub więcej wymiarów
+- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -982,7 +984,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="463"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Zwiększ liczbę cyfr po przecinku tekstu wymiaru:&lt;br&gt;- Wybierz jeden lub więcej wymiarów&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Zwiększ liczbę cyfr po przecinku tekstu wymiaru:
+- Wybierz jeden lub więcej wymiarów
+- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -1053,12 +1057,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1301"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation>Dodaj kosmetyczną linię równoległą</translation>
+      <translation>Dodaj pomocniczą linię równoległą</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1302"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation>Dodaj kosmetyczną linię równoległą do innej poprzez wierzchołek:&lt;br&gt;- Wybierz linię&lt;br&gt;- Wybierz wierzchołek&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Dodaj pomocniczą linię równoległą do innej poprzez wierzchołek:&lt;br&gt;- Wybierz linię&lt;br&gt;- Wybierz wierzchołek&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -1072,13 +1076,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="1232"/>
       <location filename="../../CommandExtensionPack.cpp" line="1370"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation>Dodaj kosmetyczną linię równoległą</translation>
+      <translation>Dodaj pomocniczą linię równoległą</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1233"/>
       <location filename="../../CommandExtensionPack.cpp" line="1372"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation>Dodaj kosmetyczną linię równoległą do innej poprzez wierzchołek:&lt;br&gt;- Wybierz linię&lt;br&gt;- Wybierz wierzchołek&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Dodaj pomocniczą linię równoległą do innej poprzez wierzchołek:&lt;br&gt;- Wybierz linię&lt;br&gt;- Wybierz wierzchołek&lt;br&gt;- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -1384,7 +1388,9 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="811"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
-      <translation>Dodaj wierzchołki kosmetyczne w miejscu przecięcia wybranych krawędzi:&lt;br&gt;- Wybierz dwie krawędzie (linie, okręgi i / lub łuki)&lt;br&gt;- Kliknij to narzędzie</translation>
+      <translation>Dodaj wierzchołki kosmetyczne w miejscu przecięcia wybranych krawędzi:
+- Wybierz dwie krawędzie (linie, okręgi i / lub łuki)
+- Kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -2352,7 +2358,7 @@
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
       <source>The view direction angle relative to +X in the BaseView.</source>
-      <translation>Kąt kierunku widoku względem +X w Widoku podstawowym.</translation>
+      <translation>Kąt kierunku widoku względem dodatniej osi X w Widoku podstawowym.</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="162"/>
@@ -3479,6 +3485,12 @@
       <translation>Edytuj %1</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="363"/>
+      <source>TechDraw Increase/Decrease Decimal</source>
+      <translation type="unfinished">TechDraw Increase/Decrease Decimal</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="558"/>
       <location filename="../../CommandExtensionDims.cpp" line="567"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>Rysunek Techniczny Wyrównaj ciąg wymiarów poziomych</translation>
@@ -3490,6 +3502,7 @@
       <translation>Nie wybrano wymiarów poziomych</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="619"/>
       <location filename="../../CommandExtensionDims.cpp" line="628"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>Rysunek Techniczny Wyrównaj ciąg wymiarów pionowych</translation>
@@ -3501,6 +3514,7 @@
       <translation>Nie wybrano wymiarów pionowych</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="681"/>
       <location filename="../../CommandExtensionDims.cpp" line="690"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>Rysunek Techniczny Wyrównaj ciąg wymiarów ukośnych</translation>
@@ -3512,19 +3526,72 @@
       <translation>Nie wybrano wymiarów ukośnych</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="867"/>
       <location filename="../../CommandExtensionDims.cpp" line="876"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>Rysunek Techniczny Wymiar poziomy kaskadowo</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="933"/>
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>Rysunek Techniczny Wymiar pionowy kaskadowo</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1000"/>
       <location filename="../../CommandExtensionDims.cpp" line="1009"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>Rysunek Techniczny Wymiar ukośny kaskadowo</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1199"/>
+      <source>TechDraw Create Horizontal Chain Dimension</source>
+      <translation type="unfinished">TechDraw Create Horizontal Chain Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1265"/>
+      <source>TechDraw Create Vertical Chain Dimension</source>
+      <translation type="unfinished">TechDraw Create Vertical Chain Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1331"/>
+      <source>TechDraw Create Oblique Chain Dimension</source>
+      <translation type="unfinished">TechDraw Create Oblique Chain Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1539"/>
+      <source>TechDraw Create Horizontal Coord Dimension</source>
+      <translation type="unfinished">TechDraw Create Horizontal Coord Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1612"/>
+      <source>TechDraw Create Vertical Coord Dimension</source>
+      <translation type="unfinished">TechDraw Create Vertical Coord Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <source>TechDraw Create Oblique Coord Dimension</source>
+      <translation type="unfinished">TechDraw Create Oblique Coord Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1908"/>
+      <source>TechDraw Create Horizontal Chamfer Dimension</source>
+      <translation type="unfinished">TechDraw Create Horizontal Chamfer Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1977"/>
+      <source>TechDraw Create Vertical Chamfer Dimension</source>
+      <translation type="unfinished">TechDraw Create Vertical Chamfer Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2163"/>
+      <source>TechDraw Create Arc Length Dimension</source>
+      <translation type="unfinished">TechDraw Create Arc Length Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2240"/>
+      <source>TechDraw Customize Format</source>
+      <translation type="unfinished">TechDraw Customize Format</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
@@ -4180,6 +4247,11 @@ Zmieniaj tylko wtedy, gdy wiesz co robisz!</translation>
       <translation>Użyj nowego algorytmu wyszukiwania ścian</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
+      <source>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
+      <translation type="unfinished">The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="213"/>
       <source>Max SVG Hatch Tiles</source>
       <translation>Maksymalne kreskowanie kafelków SVG</translation>
@@ -4224,16 +4296,6 @@ przy kreskowanie ściany jest ze wzorem PAT</translation>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="567"/>
       <source>Overlap Edges Scrub Passes</source>
       <translation>Przejścia narzędzia do usuwania nakładających się na siebie krawędzi</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liczba powtórzeń, które FreeCAD powinien wykonać próbując usunąć nakładające się krawędzie zwrócone przez algorytm "Usuwania ukrytych linii". 
-Wartość:
-0 oznacza brak usuwania, 
-1 oznacza pojedyncze przejście, 
-2 oznacza, że należy wykonać drugie przejście. 
-Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa czas potrzebny do wykonania rysunku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="607"/>
@@ -4647,11 +4709,6 @@ Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa
       <translation>Kolor tekstu monochromatycznego</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaznacz, aby używać jasnego tekstu i linii na ciemnych tłach.  Ustaw Kolor strony na ciemny kolor. W przypadku tej opcji zalecane jest stosowanie przezroczystych lub jasnych barw dla ścian.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="183"/>
       <source>Light on dark</source>
       <translation>Jasny na ciemnym</translation>
@@ -4682,6 +4739,15 @@ Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa
       <translation>Kolor wierzchołków w widoku</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
+      <source>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
+
+</source>
+      <translation type="unfinished">If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
+
+</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="161"/>
       <source>Detail Highlight</source>
       <translation>Podświetlenie szczegółu</translation>
@@ -4702,6 +4768,11 @@ Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa
       <translation>Kolor siatki</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
+      <source>Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</source>
+      <translation type="unfinished">Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
       <source>Object faces will be transparent</source>
       <translation>Ściany obiektów będą przezroczyste</translation>
@@ -4717,17 +4788,12 @@ Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa
       <translation>Kolor ściany (jeżeli nie jest przezroczysta)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli opcja jest zaznaczona, program FreeCAD będzie używać jednego koloru dla wszystkich tekstów i linii. Jeśli nie jest zaznaczona, program FreeCAD spróbuje użyć jaśniejszych deseni preferowanych kolorów.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
       <source>Monochrome</source>
       <translation>Monochromatyczny</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="654"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="656"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Pozycje zapisane &lt;span style=&quot; font-style:italic;&quot;&gt;kursywą&lt;/span&gt; są wartościami domyślnymi dla nowych obiektów. Nie mają one wpływu na istniejące obiekty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4781,29 +4847,14 @@ Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa
       <translation>Użyj globalnych ustawień odnośnie liczb miejsc po przecinku</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Określa wielkość odstępu pomiędzy punktem wymiaru a początkiem linii przedłużenia dla wymiarów ISO. Wartość "długość linii" * jest odstępem. Normalnie nie stosuje się odstępu. Jeśli używany jest odstęp, zalecana jest wartość 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="546"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kontroluje wielkość odstępu pomiędzy punktem wymiaru a początkiem linii przedłużenia dla wymiarów ASME. Wartość "długość linii" * jest odstępem. Normalnie nie stosuje się odstępu. Jeśli używany jest odstęp, zalecana jest wartość 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="570"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
       <translation>Określa wielkość odstępu między linią wymiarową a tekstem wymiaru dla wymiarów ISO.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="576"/>
       <source>Line Spacing - ISO</source>
       <translation>Odstęp linii — ISO</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="580"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Określa wielkość odstępu pomiędzy linią wymiarową a tekstem wymiarowym. Wartość "grubość linii" * jest odstępem między wierszami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
@@ -4839,11 +4890,6 @@ Wartości powyżej 2 są generalnie nieproduktywne.  Każde przejście zwiększa
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="489"/>
       <source>Extension Gap Factor - ISO</source>
       <translation>Współczynnik zwiększenia odstępu - ISO</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby umożliwić automatyczne formatowanie wymiarów, pozostaw puste pole.  Użyj parametrów %f, %g lub %w, aby zastąpić.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="180"/>
@@ -4898,6 +4944,11 @@ Mnożnik "Rozmiar czcionki"</translation>
       <translation>Rozmiar grotu</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
+      <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
+      <translation type="unfinished">Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
       <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions.</source>
       <translation>Definiuje rozmiar odstępu pomiędzy punktem wymiarowym a początkiem linii pomocniczej dla wymiarów ASME.</translation>
@@ -4908,7 +4959,30 @@ Mnożnik "Rozmiar czcionki"</translation>
       <translation>Współczynnik zwiększenia odstępu - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="610"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
+      <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
+Value * linewidth is the gap. 
+Normally, no gap is used. If using a gap, the recommended value 8.</source>
+      <translation type="unfinished">Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
+Value * linewidth is the gap. 
+Normally, no gap is used. If using a gap, the recommended value 8.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
+      <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
+Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
+      <translation type="unfinished">Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
+Normally, no gap is used. If a gap is used, the recommended value is 6.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="583"/>
+      <source>Controls the size of spacing between dimension line and dimension text.
+ Value * linewidth is the line spacing.</source>
+      <translation type="unfinished">Controls the size of spacing between dimension line and dimension text.
+ Value * linewidth is the line spacing.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="614"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Pozycje zapisane &lt;span style=&quot; font-style:italic;&quot;&gt;kursywą&lt;/span&gt; są wartościami domyślnymi dla nowych obiektów. Nie mają one wpływu na istniejące obiekty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -7838,33 +7912,48 @@ przy użyciu podanego odstępu X/Y</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usuwanie materiału zabronione, cała część&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal prohibited, whole part</source>
+      <translation type="unfinished">Material removal prohibited, whole part</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="44"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dowolna metoda dozwolona, cała część&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Any method allowed, whole part</source>
+      <translation type="unfinished">Any method allowed, whole part</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="54"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usuwanie materiału wymagane, cała część&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal required, whole part</source>
+      <translation type="unfinished">Material removal required, whole part</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usuwanie materiału wymagane&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal required</source>
+      <translation type="unfinished">Material removal required</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usuwanie materiału zabronione&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal prohibited</source>
+      <translation type="unfinished">Material removal prohibited</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Każda metoda dozwolona&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Any method allowed</source>
+      <translation type="unfinished">Any method allowed</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
+      <source>Rotation angle</source>
+      <translation type="unfinished">Rotation angle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
+      <source>Use ISO standard</source>
+      <translation type="unfinished">Use ISO standard</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
+      <source>Use ASME standard</source>
+      <translation type="unfinished">Use ASME standard</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
@@ -7872,24 +7961,9 @@ przy użyciu podanego odstępu X/Y</translation>
       <translation>Kąt symbolu:</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation angle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kąt obrotu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ISO standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Użyj standardu ISO&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
       <source>ISO</source>
       <translation>ISO</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ASME standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Użyj standardu ASME&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
@@ -8157,7 +8231,7 @@ przy użyciu podanego odstępu X/Y</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>Rozszerzenia: Linie środka / Gwinty</translation>
     </message>
@@ -8173,81 +8247,86 @@ przy użyciu podanego odstępu X/Y</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
+      <source>Stacking</source>
+      <translation type="unfinished">Stacking</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Add Lines</source>
       <translation>Dodaj linie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Add Vertices</source>
       <translation>Dodaj wierzchołki</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw</source>
       <translation>Rysunek Techniczny</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Attributes</source>
       <translation>Rysunek Techniczny — atrybuty</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Centerlines</source>
       <translation>Rysunek Techniczny — linie środkowe</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Extend Dimensions</source>
       <translation>Rysunek Techniczny — rozszerzenie wymiary</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw Pages</source>
       <translation>Rysunek Techniczny — strona</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Stacking</source>
       <translation>Rysunek Techniczny — sortowanie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Views</source>
       <translation>Rysunek Techniczny — widoki</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Clips</source>
       <translation>Rysunek Techniczny — wycinki</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Dimensions</source>
       <translation>Rysunek Techniczny — wymiary</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Tool Attributes</source>
       <translation>Rysunek Techniczny — Atrybuty narzędzi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw File Access</source>
       <translation>Rysunek Techniczny — dostęp do plików</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Decoration</source>
       <translation>Rysunek Techniczny — geometria pomocnicza</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Annotation</source>
       <translation>Rysunek Techniczny — adnotacja</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>Views</source>
       <translation>Widoki</translation>
     </message>
@@ -8611,13 +8690,13 @@ przy użyciu podanego odstępu X/Y</translation>
       <location filename="../../ViewProviderBalloon.cpp" line="181"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation type="unfinished">You cannot delete this balloon now because
-there is an open task dialog.</translation>
+      <translation>Nie możesz teraz usunąć tego dymka, ponieważ
+jest otwarte okno dialogowe zadania.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBalloon.cpp" line="184"/>
       <source>Can Not Delete</source>
-      <translation type="unfinished">Can Not Delete</translation>
+      <translation>Nie można usunąć</translation>
     </message>
   </context>
 </TS>

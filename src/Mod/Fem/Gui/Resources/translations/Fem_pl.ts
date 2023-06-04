@@ -1705,7 +1705,7 @@ Wybierz inny plik.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation>Musisz określić ścieżkę do pliku z88r.exe!</translation>
+      <translation>Musisz określić ścieżkę do pliku solvera z88r.exe!</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
