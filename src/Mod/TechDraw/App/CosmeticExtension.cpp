@@ -188,9 +188,9 @@ template<typename T>
 std::string CosmeticExtension::addCosmetic(T* cosmetic) {
     static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
 
-    T* newCosmetic = new T(cosmetic);
-    Cosmetics.addValue(newCosmetic);
-    return newCosmetic->getTagAsString();
+    // T* newCosmetic = new T(cosmetic);    I believe this was a mistake introduced in the original GeomFormat code, as pointers passed to the function were always new ones GeomFormats made from old ones...
+    Cosmetics.addValue(cosmetic);
+    return cosmetic->getTagAsString();
 }
 template class TechDrawExport std::string CosmeticExtension::addCosmetic<GeomFormat>(GeomFormat* cosmetic);
 template class TechDrawExport std::string CosmeticExtension::addCosmetic<CenterLine>(CenterLine* cosmetic);
