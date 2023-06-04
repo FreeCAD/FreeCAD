@@ -157,6 +157,11 @@
         <property name="prefPath" stdset="0">
          <cstring>NaviCube</cstring>
         </property>
+        <item>
+         <property name="text">
+          <string>Default</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="2" column="0">
