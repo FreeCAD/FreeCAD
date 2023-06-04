@@ -504,7 +504,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -1311,7 +1311,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
       <source>Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</source>
-      <translation type="unfinished">Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</translation>
+      <translation>QtNetwork konnte nicht importiert werden - es scheint nicht auf diesem System installiert zu sein. Dein Anbieter könnte ein Paket für diese Abhängigkeit haben (oft &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="221"/>
@@ -1936,13 +1936,13 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="690"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation type="unfinished">Failed to install Vermin -- check Report View for details.</translation>
+      <translation>Fehler bei der Installation von Vermin -- Überprüfen Sie den Fehlerbericht für Details.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="705"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation type="unfinished">Failed to import vermin after installation -- cannot scan Addon.</translation>
+      <translation>Fehler beim Importieren von Vermin nach der Installation -- Addon kann nicht gescannt werden.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="718"/>
@@ -2087,12 +2087,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.py" line="102"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>VORSICHT: Entwicklerfunktion</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="106"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
+      <translation>VORSICHT: Das Wechseln von Zweigen ist für Entwickler und Beta-Tester gedacht und kann zu Störungen, nicht rückwärtskompatiblen Dokumenten, Instabilität, Abstürze und/oder den vorzeitigen Untergang des Universums erzeugen. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="115"/>
@@ -2102,7 +2102,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.py" line="119"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>WARNUNG: Dieses Repo hat nicht gespeicherte lokale Änderungen. Sind Sie sicher, dass Sie die Zweige ändern möchten (die Änderungen werden mitgenommen)?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="171"/>
@@ -2122,7 +2122,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="262"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">Kind</translation>
+      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="266"/>
@@ -2140,18 +2140,18 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="278"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Lokale Version aktualisiert</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="284"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Remote Version aktualisiert</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="129"/>
       <source>Installation of Python package {} failed</source>
-      <translation type="unfinished">Installation of Python package {} failed</translation>
+      <translation>Installation des Python-Pakets {} fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="157"/>
@@ -2161,12 +2161,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="187"/>
       <source>Installing required dependency {}</source>
-      <translation type="unfinished">Installing required dependency {}</translation>
+      <translation>Installieren der benötigten Abhängigkeit {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="201"/>
       <source>Installation of Addon {} failed</source>
-      <translation type="unfinished">Installation of Addon {} failed</translation>
+      <translation>Installation des Addons {} fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="174"/>
@@ -2216,7 +2216,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="212"/>
       <source>Unable to open macro code URL {}</source>
-      <translation type="unfinished">Unable to open macro code URL {}</translation>
+      <translation>Makro-Code kann nicht geöffnet werden URL {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="371"/>
@@ -2339,7 +2339,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="617"/>
       <source>git status failed for {}</source>
-      <translation type="unfinished">git status failed for {}</translation>
+      <translation>git Status fehlgeschlagen für {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="662"/>
@@ -2379,13 +2379,13 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="857"/>
       <source>Timeout while fetching metadata for macro {}</source>
-      <translation type="unfinished">Timeout while fetching metadata for macro {}</translation>
+      <translation>Timeout beim Abrufen von Metadaten für Makro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="868"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation type="unfinished">Failed to kill process for macro {}!
+      <translation>Fehler beim Beenden des Prozesses für Makro {}!
 </translation>
     </message>
     <message>
@@ -2418,17 +2418,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_git.py" line="99"/>
       <source>Basic git update failed with the following message:</source>
-      <translation type="unfinished">Basic git update failed with the following message:</translation>
+      <translation>Reguläres Git Update fehlgeschlagen mit der folgenden Nachricht:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="107"/>
       <source>Backing up the original directory and re-cloning</source>
-      <translation type="unfinished">Backing up the original directory and re-cloning</translation>
+      <translation>Sichern des ursprünglichen Ordners und erneutes Klonen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="218"/>
       <source>Failed to clone {} into {} using git</source>
-      <translation type="unfinished">Failed to clone {} into {} using git</translation>
+      <translation>Fehler beim Klonen von {} in {} bei der Verwendung von git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
@@ -2479,7 +2479,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="137"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Einige Dateien konnten nicht entfernt werden</translation>
     </message>
   </context>
   <context>

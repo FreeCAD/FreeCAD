@@ -136,7 +136,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1431"/>
       <source>Additive helix</source>
-      <translation>增加螺旋</translation>
+      <translation>添加螺旋</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1432"/>
@@ -154,7 +154,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Additive loft</source>
-      <translation>增加拉伸成形</translation>
+      <translation>添加拉伸成形</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
@@ -172,7 +172,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>Additive pipe</source>
-      <translation>增加管狀體</translation>
+      <translation>添加管狀體</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
@@ -1697,7 +1697,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="269"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation>將所有邊增加到列表框(僅在增加選擇模式下有效).</translation>
+      <translation>將所有邊添加到列表框（僅在添加選擇模式下有效）。</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="277"/>
@@ -3793,7 +3793,7 @@ This may lead to unexpected results.</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3801,33 +3801,33 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 如果您使用舊版文件其零件設計物體沒有實體的話，使用零件設計中之遷移功能將他們搬到一個實體中.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>需要啟用的實體</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>要建立新的零件設計物體，文件中必須有一個啟用的實體物體.
 請雙擊啟用一個實體，或建立一個新的實體.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>特徵不在實體中</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>為了使用此特徵，它需要屬於文件中的實體物體.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>特徵不在零件中</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>為了使用此特徵，它需要屬於文件中的一個零件物體.</translation>
     </message>
@@ -4709,7 +4709,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Refresh</source>
-      <translation>重新整理</translation>
+      <translation>重新運算</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>

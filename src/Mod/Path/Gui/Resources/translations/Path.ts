@@ -1306,11 +1306,6 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpPocketExtEdit.ui" line="65"/>
-        <source>Extend the corner between two edges of a pocket. If selected adjacent edges are combined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../panels/PageOpPocketExtEdit.ui" line="68"/>
         <source>Extend Corners</source>
         <translation type="unfinished"></translation>
@@ -1348,6 +1343,11 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
         <location filename="../panels/PageOpPocketExtEdit.ui" line="129"/>
         <source>Enable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpPocketExtEdit.ui" line="65"/>
+        <source>Extend the corner between two edges of a pocket. Selected adjacent edges are combined.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2370,6 +2370,35 @@ If the radius is bigger than that which the tag shape itself supports, the resul
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../preferences/PathJob.ui" line="188"/>
+        <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../preferences/PathJob.ui" line="230"/>
         <source>File Save Policy</source>
         <translation type="unfinished"></translation>
@@ -2433,35 +2462,6 @@ If left empty the macro directory is used.</source>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferences/PathJob.ui" line="188"/>
-        <source>Enter a path and optionally file name (see below) to be used as the default for the post-processor export.
-The following substitutions are performed before the name is resolved at the time of the post-processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2605,127 +2605,122 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="35"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="57"/>
+        <source>Path highlight color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="70"/>
         <source>Default normal path color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="42"/>
-        <source>The default color for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="68"/>
-        <source>Default pathline width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="75"/>
-        <source>The default line thickness for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="78"/>
-        <source>px</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../DlgSettingsPathColor.ui" line="103"/>
-        <source>Default path marker color</source>
+        <source>Bounding box normal color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgSettingsPathColor.ui" line="110"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="143"/>
+        <source>The default color for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="156"/>
+        <source>Probe path color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="202"/>
+        <source>Bounding box selection color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="248"/>
+        <source>Default pathline width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="29"/>
+        <source>The default line thickness for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="32"/>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="215"/>
+        <source>Default path marker color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="77"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="130"/>
         <location filename="../../DlgSettingsPathColor.ui" line="176"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="226"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="259"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="292"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="222"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="255"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="275"/>
         <source>The default line color for new shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="136"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="169"/>
         <source>Rapid path color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="169"/>
-        <source>Probe Path color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="196"/>
-        <source>Machine extents color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="219"/>
-        <source>Path Highlight Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="252"/>
-        <source>Bounding Box Normal Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="285"/>
-        <source>Bounding Box Selection Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="352"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="304"/>
         <source>UI Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="361"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="313"/>
         <source>Path Selection Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="374"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="326"/>
         <source>Default path shape selection behavior in 3D viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="384"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="336"/>
         <source>Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="389"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="341"/>
         <source>Bounding Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="394"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="346"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="402"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="354"/>
         <source>Task Panel Layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="416"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="368"/>
         <source>Classic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="421"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="373"/>
         <source>Classic - reversed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="426"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="378"/>
         <source>Multi Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="431"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="383"/>
         <source>Multi Panel - reversed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2767,7 +2762,17 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
         <location filename="../preferences/Advanced.ui" line="67"/>
-        <source>Suppress Velocity warning</source>
+        <source>Suppress feed rate warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferences/Advanced.ui" line="111"/>
+        <source>OpenCAMLib</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferences/Advanced.ui" line="117"/>
+        <source>If OpenCAMLib is installed with Python bindings it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2776,32 +2781,17 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferences/Advanced.ui" line="111"/>
-        <source>Open CAMlib</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferences/Advanced.ui" line="135"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:16pt;&quot;&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:16pt;&quot;&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../preferences/Advanced.ui" line="147"/>
+        <location filename="../preferences/Advanced.ui" line="127"/>
         <source>Enable OCL dependent features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferences/Advanced.ui" line="160"/>
+        <location filename="../preferences/Advanced.ui" line="140"/>
         <source>Suppress warning if openCAMlib cannot be found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferences/Advanced.ui" line="163"/>
+        <location filename="../preferences/Advanced.ui" line="143"/>
         <source>Suppress openCAMlib warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3655,35 +3645,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PathEdit.ui" line="141"/>
-        <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post-processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../panels/PathEdit.ui" line="179"/>
         <source>Processor</source>
         <translation type="unfinished"></translation>
@@ -3728,17 +3689,6 @@ Ordering by operation will do each operation in all coordinate systems before mo
         <location filename="../panels/PathEdit.ui" line="254"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../panels/PathEdit.ui" line="400"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
-
-
-For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
-
-
-If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3965,8 +3915,48 @@ Default: &quot;5mm&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/PathEdit.ui" line="141"/>
+        <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../panels/PathEdit.ui" line="397"/>
         <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PathEdit.ui" line="400"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
+
+
+For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+
+
+If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4785,7 +4775,7 @@ For example:
     <message>
         <location filename="../../../Path/Main/Job.py" line="136"/>
         <location filename="../../../Path/Main/Job.py" line="143"/>
-        <source>Last Time the Job was post-processed</source>
+        <source>Last Time the Job was post processed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6419,7 +6409,7 @@ For example:
     <message>
         <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
         <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
- Values will be converted to the desired unit during post-processing.</source>
+ Values will be converted to the desired unit during post processing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

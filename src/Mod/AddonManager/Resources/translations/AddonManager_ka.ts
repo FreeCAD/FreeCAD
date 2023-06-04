@@ -2136,7 +2136,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="272"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation>სიმბოლოებს შორის მანძილი</translation>
+      <translation>ტრეკინგი</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="278"/>

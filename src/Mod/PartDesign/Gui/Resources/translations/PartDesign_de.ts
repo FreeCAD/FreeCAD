@@ -1531,17 +1531,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="57"/>
       <source>Equal distance</source>
-      <translation>Gleiche Distanz</translation>
+      <translation>Gleicher Abstand</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="62"/>
       <source>Two distances</source>
-      <translation>Zwei Distanzen</translation>
+      <translation>Zwei Abstände</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
       <source>Distance and angle</source>
-      <translation>Distanz und Winkel</translation>
+      <translation>Abstand und Winkel</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
@@ -1561,7 +1561,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="147"/>
       <source>Size 2</source>
-      <translation>Größe 2</translation>
+      <translation>Abstand 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="180"/>
@@ -3793,7 +3793,7 @@ This may lead to unexpected results.</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3802,33 +3802,33 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Wenn ein älteres Dokument mit PartDesign-Objekten ohne Körper vorliegt, wird die PartDesign-Funktion Migrieren verwendet, um sie in einen Körper abzulegen.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Um ein neues PartDesign-Objekt zu erstellen, muss ein aktiver Körper in diesem Dokument vorhanden sein.
 Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>Objekt ist nicht Teil eines Körpers</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil eines Körpers im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>Objekt ist nicht Teil einer Baugruppe</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
@@ -4896,7 +4896,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="78"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation>Ein boolescher Schnitt ohne Basis-Formelement ist nicht möglich</translation>
+      <translation>Eine boolesche Differenz (Beschnitt) ohne BaseFeature ist nicht möglich</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
@@ -4995,12 +4995,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
       <source>Size must be greater than zero</source>
-      <translation>Der Rundungsradius muss größer als Null sein</translation>
+      <translation>Abstand muss größer als Null sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
       <source>Size2 must be greater than zero</source>
-      <translation>Auch dieser Rundungsradius muss größer als 0 sein.</translation>
+      <translation>Abstand2 muss größer als Null sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
@@ -5025,12 +5025,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="78"/>
       <source>Angle of groove too large</source>
-      <translation>Winkel des Spalts zu groß</translation>
+      <translation>Winkel der Nut zu groß</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="82"/>
       <source>Angle of groove too small</source>
-      <translation>Winkel des Spalts zu klein</translation>
+      <translation>Winkel der Nut zu klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -5155,7 +5155,7 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="354"/>
       <source>Error: Subtracting the helix failed</source>
-      <translation>Fehler: Abziehen der Helix ist leider fehlgeschlagen</translation>
+      <translation>Fehler: Konnte Wendel nicht abziehen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="376"/>
@@ -5170,7 +5170,7 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1712"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation>Fehler bei Bohrung: Nicht erlaubte Längenangabe</translation>
+      <translation>Bohrungsfehler: Nicht unterstützte Längenangabe</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
@@ -5180,7 +5180,7 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1738"/>
       <source>Hole error: Invalid taper angle</source>
-      <translation>Lochfehler: Ungültiger Fasenwinkel</translation>
+      <translation>Bohrungsfehler: Ungültiger Kegelwinkel</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1759"/>
@@ -5190,12 +5190,12 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1763"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation>Fehler bei Bohrung: Die Schnitttiefe muss kleiner als die Lochtiefe sein</translation>
+      <translation>Bohrungsfehler: Die Senkungstiefe muss kleiner als die Bohrungstiefe sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1767"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
-      <translation>Fehler bei Bohrung: Die Schnitttiefe muss größer oder gleich Null sein</translation>
+      <translation>Bohrungsfehler: Die Senkungstiefe muss größer oder gleich null sein</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
@@ -5220,12 +5220,12 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
       <source>Hole error: Resulting shape is empty</source>
-      <translation>Fehler bei Bohrung: Es ergibt sich eine leere Form</translation>
+      <translation>Bohrungsfehler: Die resultierende Form ist leer</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1880"/>
       <source>Error: Adding the thread failed</source>
-      <translation>Fehler: Konnte Gewinde nicht hinzufügen</translation>
+      <translation>Fehler: Konnte das Gewinde nicht hinzufügen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
@@ -5285,7 +5285,7 @@ Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in de
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="182"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation>Fehler bei Ausformung: Ein Querschnitt enthält weder Linien noch irgend einen Scheitelpunkt</translation>
+      <translation>Ausformung: Ein Querschnitt enthält weder Linien noch einen einzelnen Knotenpunkt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
@@ -5310,27 +5310,27 @@ Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in de
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
       <source>Loft: Result is not a solid</source>
-      <translation>Fehler bei Ausformung: Es ergibt sich kein kompakter Körper</translation>
+      <translation>Ausformung: Das Ergebnis ist kein Festkörper</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="278"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation>Fehler bei Ausformung: Es gibt nichts zum Abziehen</translation>
+      <translation>Ausformung: Es gibt nichts, von dem etwas abgezogen werden kann</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation>Fehler bei Ausformung: Leider gelang es nicht die Schräge hinzuzufügen</translation>
+      <translation>Ausformung: Hinzufügen der Ausformung fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation>Fehler bei Ausformung: Leider gelang es nicht die Schräge von der Form abzuziehen</translation>
+      <translation>Ausformung: Abziehen der Ausformung fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="330"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation>Fehler bei Ausformung: Ein ganz fürchterlicher, schwerwiegender Fehler ist beim Erstellen der Schräge aufgetreten</translation>
+      <translation>Ausformung: Ein schwerwiegender Fehler ist beim Erstellen der Ausformung aufgetreten</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="75"/>

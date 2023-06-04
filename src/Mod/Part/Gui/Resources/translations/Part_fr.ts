@@ -4146,7 +4146,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>L'écart maximal suivant la  boîte englobant le modèle</translation>
+      <translation>Déviation maximale selon la boîte englobante du modèle</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>

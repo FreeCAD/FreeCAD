@@ -3210,7 +3210,7 @@ Por favor seleccione primero una o más aristas.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation>Los sólidos y las fundas se exportarán como superficie recortada</translation>
+      <translation>Los sólidos y cascarones se exportarán como superficie recortada</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3220,7 +3220,7 @@ Por favor seleccione primero una o más aristas.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation>Los sólidos serán exportados como múltiples objetos sólidos B-Rep, fundas como funda</translation>
+      <translation>Los sólidos serán exportados como objetos B-Rep sólidos manifold, cascarones como cascarón</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
