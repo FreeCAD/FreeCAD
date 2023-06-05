@@ -29,19 +29,6 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
-// #include <Gui/Application.h>
-// #include <Gui/Language/Translator.h>
-
-// use a different name to CreateCommand()
-// void CreateMaterialCommands();
-
-void loadMaterialResource()
-{
-    // add resources and reloads the translators
-    // Q_INIT_RESOURCE(Material);
-    // Q_INIT_RESOURCE(Material_translation);
-    // Gui::Translator::instance()->refresh();
-}
 
 namespace Material {
 class Module : public Py::ExtensionModule<Module>
@@ -62,28 +49,13 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace MatGui
+} // namespace Material
 
 PyMOD_INIT_FUNC(Material)
 {
-    // load needed modules
-    // try {
-    //     Base::Interpreter().runString("import Material");
-    // }
-    // catch(const Base::Exception& e) {
-    //     PyErr_SetString(PyExc_ImportError, e.what());
-    //     PyMOD_Return(nullptr);
-    // }
-
     PyObject* module = Material::initModule();
 
     Base::Console().Log("Loading Material module... done\n");
-
-    // instantiating the commands
-    // CreateMaterialCommands();
-
-    // add resources and reloads the translators
-    loadMaterialResource();
 
     PyMOD_Return(module);
 }

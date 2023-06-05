@@ -13,10 +13,10 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${YAML_CPP_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${YAML_CPP_INCLUDE_DIR}
 )
-link_directories(${YAML_CPP_LIBRARIES})
+#link_directories(${YAML_CPP_LIBRARIES})
 
 set(Material_LIBS
     FreeCADApp
