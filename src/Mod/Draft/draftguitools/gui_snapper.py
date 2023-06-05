@@ -423,12 +423,11 @@ class Snapper:
                         # we are snapping to a vertex
                         if shape.ShapeType == "Vertex":
                             snaps.extend(self.snapToEndpoints(shape))
-                    elif comp == "":
-                        # workaround for the new view provider
-                        snaps.append(self.snapToVertex(self.snapInfo, active=True))
                     else:
-                        # all other cases (face, etc...) default to passive snap
-                        snaps = [self.snapToVertex(self.snapInfo)]
+                        # `Catch-all` for other cases. Probably never executes
+                        # as objects with a Shape typically have edges, faces
+                        # or vertices.
+                        snaps.extend(self.snapToNearUnprojected(point))
 
             elif Draft.getType(obj) == "Dimension":
                 # for dimensions we snap to their 2 points:
@@ -440,7 +439,7 @@ class Snapper:
                     snaps.extend(self.snapToIntersection(edge))
 
             elif Draft.getType(obj).startswith("Mesh::"):
-                # for meshes we only snap to vertices
+                snaps.extend(self.snapToNearUnprojected(point))
                 snaps.extend(self.snapToEndpoints(obj.Mesh))
 
             elif Draft.getType(obj).startswith("Points::"):
@@ -781,7 +780,7 @@ class Snapper:
 
 
     def snapToNear(self, shape, point):
-        """Return a list of a near snap location for an edge."""
+        """Return a list with a near snap location for an edge."""
         if self.isEnabled("Near") and point:
             try:
                 np = shape.Curve.projectPoint(point, "NearestPoint")
@@ -800,6 +799,14 @@ class Snapper:
             except Exception:
                 return []
             return [[np, "passive", self.toWP(np)]]
+        else:
+            return []
+
+
+    def snapToNearUnprojected(self, point):
+        """Return a list with a near snap location that is not projected on the object."""
+        if self.isEnabled("Near") and point:
+            return [[point, "passive", self.toWP(point)]]
         else:
             return []
 
