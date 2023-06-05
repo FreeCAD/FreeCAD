@@ -42,7 +42,6 @@ install_manifest.txt
 /src/Tools/offlinedoc/*.txt
 OpenSCAD_rc.py
 tags
-CMakePresets.json
 
 # crowdin file
 src/Tools/freecad.zip
