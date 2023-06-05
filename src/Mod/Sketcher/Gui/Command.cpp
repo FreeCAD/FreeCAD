@@ -1115,12 +1115,12 @@ public:
 
     void languageChange()
     {
-        gridAutoSpacing->setText(tr("Grid Auto Spacing"));
+        gridAutoSpacing->setText(tr("Grid auto spacing"));
         gridAutoSpacing->setToolTip(tr("Resize grid automatically depending on zoom."));
         gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
         sizeLabel->setText(tr("Spacing"));
-        gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines"));
+        gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines."));
     }
 
 protected:
@@ -1217,7 +1217,7 @@ CmdSketcherGrid::CmdSketcherGrid()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Toggle grid");
     sToolTipText =
-        QT_TR_NOOP("Toggle the grid in the sketch. In the menu you can change grid settings");
+        QT_TR_NOOP("Toggle the grid in the sketch. In the menu you can change grid settings.");
     sWhatsThis = "Sketcher_Grid";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -1371,7 +1371,7 @@ public:
         angleLabel->setText(tr("Snap angle"));
         snapAngle->setToolTip(
             tr("Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to "
-               "enable 'Snap at Angle'. The angle start from the East axis (horizontal right)"));
+               "enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch."));
     }
 
 protected:
@@ -1474,7 +1474,7 @@ CmdSketcherSnap::CmdSketcherSnap()
     sMenuText = QT_TR_NOOP("Toggle snap");
     sToolTipText =
         QT_TR_NOOP("Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and "
-                   "'Snap to objects' individually, and change further snap settings");
+                   "'Snap to objects' individually, and change further snap settings.");
     sWhatsThis = "Sketcher_Snap";
     sStatusTip = sToolTipText;
     eType = 0;
