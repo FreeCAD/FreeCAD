@@ -135,7 +135,7 @@ void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, co
 void MaterialsEditor::createMaterialTree()
 {
     Base::Console().Log("MaterialsEditor::createMaterialTree()\n");
-    Material::Model testModel;
+    Material::ModelManager *testModel = Material::ModelManager::getManager();
 
     auto param =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material");
