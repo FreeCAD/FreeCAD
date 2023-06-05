@@ -9,7 +9,7 @@
 
   <content>
     <preferencepack>
-      <name>Classic Colors</name>
+      <name>Classic</name>
       <description>FreeCAD default colors for core app and included Mods.</description>
       <version>1.0.0</version>
       <tag>built-in</tag>

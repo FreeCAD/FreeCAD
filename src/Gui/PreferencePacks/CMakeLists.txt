@@ -4,7 +4,7 @@ SET(PreferencePacks_Files
 )
 
 SET(PreferencePacks_Directories
-"FreeCAD Classic Colors"
+"Classic"
 "Dark"
 "Light"
 )
