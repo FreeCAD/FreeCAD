@@ -25,8 +25,9 @@ set(Material_LIBS
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
 )
-list(APPEND MatGui_LIBS
+list(APPEND Material_LIBS
     ${QtConcurrent_LIBRARIES}
+    ${YAML_CPP_LIBRARIES}
 )
 
 SET(Material_SRCS

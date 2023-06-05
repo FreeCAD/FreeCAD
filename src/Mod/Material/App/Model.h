@@ -25,6 +25,7 @@
 
 #include <QDir>
 #include <boost/filesystem.hpp>
+#include <yaml-cpp/yaml.h>
 
 namespace fs = boost::filesystem;
 
@@ -33,7 +34,8 @@ namespace Material {
 class Model
 {
 public:
-    explicit Model(const std::string baseName, const std::string &modelName, const QDir &dir, const std::string &modelUuid, const std::string &modelData);
+    explicit Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
+        const std::string &modelUuid, const YAML::Node &modelData);
     virtual ~Model();
 
     const std::string &getBase() const
@@ -52,9 +54,13 @@ public:
     {
         return uuid;
     }
-    const std::string &getModel() const
+    const YAML::Node &getModel() const
     {
         return model;
+    }
+    YAML::Node *getModelPtr()
+    {
+        return &model;
     }
     const bool getDereferenced() const
     {
@@ -71,7 +77,7 @@ private:
     std::string name;
     QDir directory;
     std::string uuid;
-    std::string model;
+    YAML::Node model;
     bool dereferenced;
 };
 
@@ -110,12 +116,18 @@ private:
     explicit ModelManager();
     virtual ~ModelManager();
 
+    void showYaml(const YAML::Node& yaml) const;
+    void dereference(Model* parent, const Model* child);
+    void dereference(Model* model);
+    Model *getModelFromPath(const std::string &path) const;
+    void showLibEntry(const std::string& checkpoint, const QDir &dir, const LibraryEntry& entry) const;
     void addModel(LibraryEntry* model);
     void loadLibrary(const LibraryEntry &library);
     void loadLibraries(void);
     std::list<LibraryEntry*> *getModelLibraries();
     static ModelManager *manager;
     static std::list<LibraryEntry*> *libraries;
+    static std::map<std::string, Model*> *modelMap;
 };
 
 } // namespace Material

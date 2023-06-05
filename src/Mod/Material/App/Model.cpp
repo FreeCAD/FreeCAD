@@ -30,14 +30,14 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QString>
-#include <yaml-cpp/yaml.h>
 
 #include "Model.h"
 
 
 using namespace Material;
 
-Model::Model(const std::string baseName, const std::string &modelName, const QDir &dir, const std::string &modelUuid, const std::string &modelData) :
+Model::Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
+        const std::string &modelUuid, const YAML::Node &modelData):
     base(baseName), name(modelName), directory(dir), uuid(modelUuid), model(modelData), dereferenced(false)
 {}
 
@@ -45,7 +45,8 @@ Model::~Model()
 {}
 
 
-LibraryEntry::LibraryEntry(const std::string &libraryName, const QDir &dir, const std::string &icon)
+LibraryEntry::LibraryEntry(const std::string &libraryName, const QDir &dir, const std::string &icon):
+    name(libraryName), directory(dir), iconPath(icon)
 {}
 
 LibraryEntry::~LibraryEntry()
@@ -53,6 +54,7 @@ LibraryEntry::~LibraryEntry()
 
 ModelManager *ModelManager::manager = nullptr;
 std::list<LibraryEntry*> *ModelManager::libraries = nullptr;
+std::map<std::string, Model*>* ModelManager::modelMap = nullptr;
 
 ModelManager::ModelManager()
 {
@@ -86,15 +88,102 @@ void ModelManager::addModel(LibraryEntry *model)
     libraries->push_back(model);
 }
 
+Model *ModelManager::getModelFromPath(const std::string &path) const
+{
+    YAML::Node yamlroot = YAML::LoadFile(path);
+    std::string base = "Model";
+    if (yamlroot["Model"]) {
+        Base::Console().Log("Model type: Model\n");
+    }
+    if (yamlroot["AppearanceModel"]) {
+        base = "AppearanceModel";
+        Base::Console().Log("Model type: AppearanceModel\n");
+    }
+
+    const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
+    const std::string name = yamlroot[base]["Name"].as<std::string>();
+
+    QDir modelDir(QString::fromStdString(path));
+    Model *model = new Model(base, name, modelDir, uuid, yamlroot);
+
+    return model;
+}
+
+void ModelManager::showYaml(const YAML::Node &yaml) const
+{
+    std::stringstream out;
+
+    out << yaml;
+    std::string logData = out.str();
+    Base::Console().Log("%s\n", logData.c_str());
+}
+
+void ModelManager::dereference(Model *parent, const Model *child)
+{
+    auto parentPtr = parent->getModelPtr();
+    auto parentBase = parent->getBase();
+    auto childYaml = child->getModel();
+    auto childBase = child->getBase();
+
+    std::set<std::string> exclude;
+    exclude.insert("Name");
+    exclude.insert("UUID");
+    exclude.insert("URL");
+    exclude.insert("Description");
+    exclude.insert("DOI");
+    exclude.insert("Inherits");
+
+    auto parentProperties = (*parentPtr)[parentBase];
+    auto childProperties = childYaml[childBase];
+    for(auto it = childProperties.begin(); it != childProperties.end(); it++) {
+        std::string name = it->first.as<std::string>();
+        if (exclude.count(name) == 0) {
+            // showYaml(it->second);
+            if (!parentProperties[name])
+                parentProperties[name] = it->second;
+        }
+    }
+    showYaml(*parentPtr);
+}
+
+
+void ModelManager::dereference(Model *model)
+{
+    // Avoid recursion
+    if (model->getDereferenced())
+        return;
+
+    auto yamlModel = model->getModel();
+    auto base = model->getBase();
+    if (yamlModel[base]["Inherits"]) {
+        auto inherits = yamlModel[base]["Inherits"];
+        Base::Console().Log("Model '%s' inherits from:\n", model->getName().c_str());
+        for(auto it = inherits.begin(); it != inherits.end(); it++) {
+            // auto nodeName = it->first.as<std::string>();
+            std::string nodeName = (*it)["UUID"].as<std::string>();
+            Base::Console().Log("\t'%s'\n", nodeName.c_str());
+
+            // This requires that all models have already been loaded undereferenced
+            Base::Console().Log("\tModel map size %d\n", modelMap->size());
+            try {
+                const Model *child = (*modelMap)[nodeName];
+                dereference(model, child);
+            }
+            catch (const std::out_of_range& oor) {
+                Base::Console().Log("Unable to find '%s' in model map\n", nodeName.c_str());
+            }
+        }
+    }
+
+    model->markDereferenced();
+}
+
 void ModelManager::loadLibrary(const LibraryEntry &library)
 {
-    Base::Console().Log("ModelManager::loadLibrary(");
-    Base::Console().Log(library.getName().c_str());
-    Base::Console().Log(",");
-    Base::Console().Log(library.getDirectory().absolutePath().toStdString().c_str());
-    Base::Console().Log(",");
-    Base::Console().Log(library.getIconPath().c_str());
-    Base::Console().Log(")\n");
+    Base::Console().Log("ModelManager::loadLibrary(%s)\n", library.getIconPath().c_str());
+
+    if (modelMap == nullptr)
+        modelMap = new std::map<std::string, Model*>();
 
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
     while (it.hasNext()) {
@@ -102,17 +191,20 @@ void ModelManager::loadLibrary(const LibraryEntry &library)
         QFileInfo file(pathname);
         if (file.isFile()) {
             if (file.suffix().toStdString() == "yml") {
-                Base::Console().Log("\t");
-                Base::Console().Log(file.canonicalFilePath().toStdString().c_str());
-                Base::Console().Log("\n");
+                Base::Console().Log("\t%s\n", file.canonicalFilePath().toStdString().c_str());
 
                 std::string libraryName = file.baseName().toStdString();
 
-                // auto model = new LibraryEntry(
-                //     libraryName, file.canonicalFilePath().toStdString(), ":/icons/freecad.svg");
-                // addModel(model);
+                auto model = getModelFromPath(file.canonicalFilePath().toStdString());
+                (*modelMap)[model->getUUID()] = model;
+                showYaml(model->getModel());
             }
         }
+    }
+
+    Base::Console().Log("ModelManager::loadLibrary() - dereference\n");
+    for (auto it = modelMap->begin(); it != modelMap->end(); it++) {
+        dereference(it->second);
     }
 
     Base::Console().Log("ModelManager::loadLibrary() - finished\n");
@@ -132,6 +224,22 @@ void ModelManager::loadLibraries(void)
     Base::Console().Log("ModelManager::loadLibraries() - finished\n");
 }
 
+void ModelManager::showLibEntry(const std::string &checkpoint, const QDir &dir, const LibraryEntry &entry) const
+{
+    Base::Console().Log("ModelManager::showLibEntry(");
+    Base::Console().Log(checkpoint.c_str());
+    Base::Console().Log(": (");
+    Base::Console().Log(entry.getName().c_str());
+    Base::Console().Log(",");
+    Base::Console().Log(entry.getDirectory().absolutePath().toStdString().c_str());
+    Base::Console().Log(",");
+    Base::Console().Log(entry.getIconPath().c_str());
+    Base::Console().Log("))\n");
+    Base::Console().Log("\t");
+    Base::Console().Log(dir.absolutePath().toStdString().c_str());
+    Base::Console().Log("\n");
+}
+
 std::list<LibraryEntry *> *ModelManager::getModelLibraries()
 {
     auto param =
@@ -149,6 +257,9 @@ std::list<LibraryEntry *> *ModelManager::getModelLibraries()
         Base::Console().Log(materialDir.absolutePath().toStdString().c_str());
         Base::Console().Log("\n");
         auto libData = new LibraryEntry("System", materialDir, ":/icons/freecad.svg");
+        // showLibEntry("System", materialDir, *libData);
+        Base::Console().Log(materialDir.absolutePath().toStdString().c_str());
+        Base::Console().Log("\n");
         libraries->push_back(libData);
     }
 
@@ -177,8 +288,10 @@ std::list<LibraryEntry *> *ModelManager::getModelLibraries()
             if (modelDir.length() > 0) {
                 QDir dir(QString::fromStdString(modelDir));
                 auto libData = new LibraryEntry(moduleName, dir, modelIcon);
-                if (dir.exists())
+                if (dir.exists()) {
+                    // showLibEntry("Module", dir, *libData);
                     libraries->push_back(libData);
+                }
             }
         }
     }
@@ -190,8 +303,10 @@ std::list<LibraryEntry *> *ModelManager::getModelLibraries()
         Base::Console().Log(materialDir.absolutePath().toStdString().c_str());
         Base::Console().Log("\n");
         auto libData = new LibraryEntry("User", materialDir, ":/icons/preferences-general.svg");
-        if (materialDir.exists())
+        if (materialDir.exists()) {
+            // showLibEntry("User", materialDir, *libData);
             libraries->push_back(libData);
+        }
     }
 
     if (useMatFromCustomDir)
@@ -201,8 +316,10 @@ std::list<LibraryEntry *> *ModelManager::getModelLibraries()
         Base::Console().Log(materialDir.absolutePath().toStdString().c_str());
         Base::Console().Log("\n");
         auto libData = new LibraryEntry("Custom", materialDir, ":/icons/user.svg");
-        if (materialDir.exists()) 
+        if (materialDir.exists()) {
+            // showLibEntry("Custom", materialDir, *libData);
             libraries->push_back(libData);
+        }
     }
 
     return libraries;
