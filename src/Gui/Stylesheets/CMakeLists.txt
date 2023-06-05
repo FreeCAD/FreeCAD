@@ -19,6 +19,10 @@ SET(Stylesheets_Files
     "Dark-modern-orange.qss"
     "Dark-modern-pink.qss"
     "Dark-modern-blue.qss"
+    "Light-modern-blue.qss"
+    "Light-modern-pink.qss"
+    "Light-modern-orange.qss"
+    "Light-modern-green.qss"
 )
 
 # Find all the image files
