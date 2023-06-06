@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-Revised stylesheet based on the orignal from Pablo Gil Fernández made by MisterMaker
+Revised stylesheet based on the original from Pablo Gil Fernández made by MisterMaker
 
 KNOWN BUGS and TO DO
 ============================================================================================================
@@ -535,7 +535,7 @@ QMenu::indicator:non-exclusive:unchecked {
 
 QMenu::indicator:non-exclusive:unchecked:hover, QMenu::indicator:non-exclusive:unchecked:focus, QMenu::indicator:non-exclusive:unchecked:pressed {
   border: none;
-  image: url(qss:images_dark-light/checkbox_unchecked_focus.png);
+  background: #8ab6e9;	
 }
 
 QMenu::indicator:non-exclusive:unchecked:disabled {
@@ -549,11 +549,10 @@ QMenu::indicator:non-exclusive:checked {
 QMenu::indicator:non-exclusive:checked:hover, QMenu::indicator:non-exclusive:checked:focus, QMenu::indicator:non-exclusive:checked:pressed {
   border: none;
   background: #8ab6e9;					  
-  image:url(qss:images_dark-light/checkbox_dark.svg);
 }
 
 QMenu::indicator:non-exclusive:checked:disabled {
-  image:url(qss:images_dark-light/checkbox_dark.svg);
+  image:url(qss:images_dark-light/checkbox_checked_disabled.svg);
 }
 
 QMenu::indicator:non-exclusive:indeterminate {
@@ -2219,6 +2218,12 @@ QColumnView {
   gridline-color: #cccccc;
   border-radius: 0px;
 }
+
+QTableView,
+QListView  {
+  background-color: rgba(0, 0, 0, 0.050);  /* background of a lot of stuff including spreadsheets.*/
+}
+
 
 QTreeView:disabled,
 QListView:disabled,

@@ -7,7 +7,7 @@
    id="svg2"
    version="1.1"
    viewBox="0 0 30 29.999999"
-   sodipodi:docname="checkbox_unchecked_disabled.svg"
+   sodipodi:docname="checkbox_checked_disabled.svg"
    inkscape:version="1.2-beta (1b65182ce9, 2022-04-05)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -62,6 +62,14 @@
   <g
      id="layer1"
      transform="translate(-1074.0663,-326.59799)">
+    <path
+       id="path8685"
+       d="m 1081.0663,345.09799 3.9999,4 12.0001,-12"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:0.60093898;stroke:#1b0909;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.11764706" />
+    <path
+       style="opacity:0.5;vector-effect:none;fill:#4d4d4d;fill-opacity:1;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 1081.0663,342.59799 3.9999,4 12.0001,-12"
+       id="path7899" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:2.99083;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:128.504;opacity:0.5"
        id="rect354"

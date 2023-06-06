@@ -535,7 +535,7 @@ QMenu::indicator:non-exclusive:unchecked {
 
 QMenu::indicator:non-exclusive:unchecked:hover, QMenu::indicator:non-exclusive:unchecked:focus, QMenu::indicator:non-exclusive:unchecked:pressed {
   border: none;
-  image: url(qss:images_dark-light/checkbox_unchecked_focus.png);
+  background: #bc1cc8;
 }
 
 QMenu::indicator:non-exclusive:unchecked:disabled {
@@ -549,11 +549,10 @@ QMenu::indicator:non-exclusive:checked {
 QMenu::indicator:non-exclusive:checked:hover, QMenu::indicator:non-exclusive:checked:focus, QMenu::indicator:non-exclusive:checked:pressed {
   border: none;
   background: #bc1cc8;
-  image:url(qss:images_dark-light/checkbox_light.svg);
 }
 
 QMenu::indicator:non-exclusive:checked:disabled {
-  image:url(qss:images_dark-light/checkbox_light.svg);
+  image:url(qss:images_dark-light/checkbox_checked_disabled.svg);
 }
 
 QMenu::indicator:non-exclusive:indeterminate {
@@ -2179,6 +2178,12 @@ QColumnView {
   gridline-color: #696968;
   border-radius: 0px;
 }
+
+QTableView,
+QListView  {
+  background-color: rgba(0, 0, 0, 0.232);  /* background of a lot of stuff including spreadsheets.*/
+}
+
 
 QTreeView:disabled,
 QListView:disabled,
