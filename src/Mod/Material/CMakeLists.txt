@@ -21,6 +21,7 @@ SET(MaterialScripts_Files
     Resources/ui/ValueEditor.ui
     Resources/ui/ModelSelect.ui
     Templatematerial.yml
+    Material_rc.py
 )
 # SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
 
