@@ -47,14 +47,14 @@ public:
     PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
 
-    const std::string& getBase() const;
+    const std::string getBase() const;
     const std::string& getName() const;
+    Model::ModelType getType() const;
     const std::string getDirectory() const;
     const std::string& getUUID() const;
-    // const YAML::Node& getModel() const;
 
-    void setBase(const std::string& base);
     void setName(const std::string& name);
+    void setType(Model::ModelType type);
     void setDirectory(const std::string& directory);
     void setUUID(const std::string& uuid);
 

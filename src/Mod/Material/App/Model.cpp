@@ -50,9 +50,11 @@ ModelProperty::~ModelProperty()
 Model::Model()
 {}
 
-Model::Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData):
-    _base(baseName), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
+Model::Model(ModelType type, const std::string &name, const QDir &directory, 
+        const std::string &uuid, const std::string& description, const std::string& url,
+        const std::string& doi):
+    _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
+    _url(url), _doi(doi)
 {}
 
 Model::~Model()

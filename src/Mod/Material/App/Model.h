@@ -25,7 +25,6 @@
 
 #include <QDir>
 #include <QString>
-#include <yaml-cpp/yaml.h>
 
 namespace Material {
 
@@ -61,25 +60,35 @@ private:
 class Model
 {
 public:
+    enum ModelType {
+        MODEL,
+        APPEARANCE_MODEL
+    };
+
     explicit Model();
-    explicit Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData);
+    explicit Model(ModelType type, const std::string &name, const QDir &directory, 
+        const std::string &uuid, const std::string& description, const std::string& url,
+        const std::string& doi);
     virtual ~Model();
 
-    const std::string &getBase() const { return _base; }
+    const std::string getBase() const { return (_type == MODEL) ? "Model" : "AppearanceModel"; }
     const std::string &getName() const { return _name; }
+    ModelType getType() const { return _type; }
     const QDir &getDirectory() const { return _directory; }
     const std::string &getUUID() const { return _uuid; }
-    const YAML::Node &getModel() const { return _model; }
-    YAML::Node *getModelPtr() { return &_model; }
-    const bool getDereferenced() const { return _dereferenced; }
+    const std::string &getDescription() const { return _description; }
+    const std::string &getURL() const { return _url; }
+    const std::string &getDOI() const { return _doi; }
 
-    void setBase(const std::string& base) { _base = base; }
+    void setType(ModelType type) { _type = type; }
     void setName(const std::string& name) { _name = name; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
     void setUUID(const std::string& uuid) { _uuid = uuid; }
+    void setDescripption(const std::string& description) { _description = description; }
+    void setURL(const std::string& url) { _url = url; }
+    void setDOI(const std::string& doi) { _doi = doi; }
 
-    void markDereferenced() { _dereferenced = true; }
+    void addInheritance(const std::string &uuid) { _inheritedUuids.push_back(uuid); }
 
     bool operator==(const Model& m) const
     {
@@ -103,12 +112,10 @@ public:
     const_iterator cend() const noexcept { return _properties.cend(); }
 
 private:
-    std::string _base;
+    ModelType _type;
     std::string _name;
     QDir _directory;
     std::string _uuid;
-    YAML::Node _model;
-    bool _dereferenced;
     std::string _description;
     std::string _url;
     std::string _doi;

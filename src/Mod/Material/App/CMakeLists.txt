@@ -36,6 +36,8 @@ SET(Material_SRCS
     Materials.h
     Model.cpp
     Model.h
+    ModelLoader.cpp
+    ModelLoader.h
     ModelManager.cpp
     ModelManager.h
     PreCompiled.cpp

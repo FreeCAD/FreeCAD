@@ -73,14 +73,7 @@ const Model& PropertyModel::getValue() const
     return _model;
 }
 
-void PropertyModel::setBase(const std::string& base)
-{
-    aboutToSetValue();
-    _model.setBase(base);
-    hasSetValue();
-}
-
-const std::string& PropertyModel::getBase() const
+const std::string PropertyModel::getBase() const
 {
     return _model.getBase();
 }
@@ -95,6 +88,18 @@ void PropertyModel::setName(const std::string& name)
 const std::string& PropertyModel::getName() const
 {
     return _model.getName();
+}
+
+void PropertyModel::setType(Model::ModelType type)
+{
+    aboutToSetValue();
+    _model.setType(type);
+    hasSetValue();
+}
+
+Model::ModelType PropertyModel::getType() const
+{
+    return _model.getType();
 }
 
 void PropertyModel::setDirectory(const std::string& directory)
