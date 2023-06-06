@@ -65,7 +65,9 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 SET(MatGuiIcon_SVG
+    Resources/icons/Materials_Edit.svg
     Resources/icons/MaterialWorkbench.svg
+    Resources/icons/preferences-material.svg
 )
 
 add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG})

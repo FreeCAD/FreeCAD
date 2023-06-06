@@ -2,5 +2,6 @@
     <qresource>
         <file>icons/MaterialWorkbench.svg</file>
         <file>icons/Materials_Edit.svg</file>
+        <file>icons/preferences-material.svg</file>
     </qresource>
 </RCC>

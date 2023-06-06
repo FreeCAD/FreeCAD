@@ -2,8 +2,6 @@
     <qresource>
         <file>icons/preview-rendered.svg</file>
         <file>icons/preview-vector.svg</file>
-        <file>icons/preferences-material.svg</file>
-        <file>ui/preferences-material.ui</file>
         <file>ui/materials-editor.ui</file>
         <file>ui/materials.ui</file>
         <file>ui/ModelSelect.ui</file>
