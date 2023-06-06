@@ -38,7 +38,7 @@ using namespace Material;
 
 Model::Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
         const std::string &modelUuid, const YAML::Node &modelData):
-    base(baseName), name(modelName), directory(dir), uuid(modelUuid), model(modelData), dereferenced(false)
+    _base(baseName), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
 {}
 
 Model::~Model()

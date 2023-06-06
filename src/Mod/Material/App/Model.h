@@ -24,6 +24,7 @@
 #define MATERIAL_MODEL_H
 
 #include <QDir>
+#include <QString>
 #include <boost/filesystem.hpp>
 #include <yaml-cpp/yaml.h>
 
@@ -34,51 +35,77 @@ namespace Material {
 class Model
 {
 public:
+    explicit Model() {}
     explicit Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
         const std::string &modelUuid, const YAML::Node &modelData);
     virtual ~Model();
 
     const std::string &getBase() const
     {
-        return base;
+        return _base;
     }
     const std::string &getName() const
     {
-        return name;
+        return _name;
     }
     const QDir &getDirectory() const
     {
-        return directory;
+        return _directory;
     }
     const std::string &getUUID() const
     {
-        return uuid;
+        return _uuid;
     }
     const YAML::Node &getModel() const
     {
-        return model;
+        return _model;
     }
     YAML::Node *getModelPtr()
     {
-        return &model;
+        return &_model;
     }
     const bool getDereferenced() const
     {
-        return dereferenced;
+        return _dereferenced;
     }
     void markDereferenced()
     {
-        dereferenced = true;
+        _dereferenced = true;
+    }
+
+    void setBase(const std::string& base)
+    {
+        _base = base;
+    }
+    void setName(const std::string& name)
+    {
+        _name = name;
+    }
+    void setDirectory(const std::string& directory)
+    {
+        _directory = QDir(QString::fromStdString(directory));
+    }
+    void setUUID(const std::string& uuid)
+    {
+        _uuid = uuid;
+    }
+
+    bool operator==(const Model& m) const
+    {
+        return _uuid == m._uuid;
+    }
+    bool operator!=(const Model& m) const
+    {
+        return !operator==(m);
     }
 
 private:
-    explicit Model();
-    std::string base;
-    std::string name;
-    QDir directory;
-    std::string uuid;
-    YAML::Node model;
-    bool dereferenced;
+    std::string _base;
+    std::string _name;
+    QDir _directory;
+    std::string _uuid;
+    YAML::Node _model;
+    bool _dereferenced;
 };
 
 class LibraryEntry

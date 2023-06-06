@@ -38,6 +38,8 @@ SET(Material_SRCS
     Model.h
     PreCompiled.cpp
     PreCompiled.h
+    PropertyModel.cpp
+    PropertyModel.h
 )
 
 if(FREECAD_USE_PCH)
