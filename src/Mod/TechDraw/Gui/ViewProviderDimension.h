@@ -45,6 +45,7 @@ public:
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
+    App::PropertyLength Arrowsize;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
 
@@ -81,6 +82,7 @@ public:
     App::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
+    double prefArrowSize() const;
     double prefWeight() const;
     int prefStandardAndStyle() const;
     bool canDelete(App::DocumentObject* obj) const override;

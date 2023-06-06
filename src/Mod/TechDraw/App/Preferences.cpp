@@ -42,6 +42,7 @@
 using namespace TechDraw;
 
 const double Preferences::DefaultFontSizeInMM = 5.0;
+const double Preferences::DefaultArrowSize = 3.5;
 
 //! Returns the TechDraw preference group
 Base::Reference<ParameterGrp> Preferences::getPreferenceGroup(const char* Name)
@@ -68,6 +69,11 @@ double Preferences::labelFontSizeMM()
 double Preferences::dimFontSizeMM()
 {
     return getPreferenceGroup("Dimensions")->GetFloat("FontSize", DefaultFontSizeInMM);
+}
+
+double Preferences::dimArrowSize()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", DefaultArrowSize);
 }
 
 App::Color Preferences::normalColor()
