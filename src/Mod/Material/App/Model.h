@@ -23,13 +23,16 @@
 #ifndef MATERIAL_MODEL_H
 #define MATERIAL_MODEL_H
 
+#include <Base/BaseClass.h>
 #include <QDir>
 #include <QString>
 
 namespace Material {
 
-class ModelProperty
+class MaterialExport ModelProperty : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
+
 public:
     explicit ModelProperty();
     explicit ModelProperty(const std::string& name, const std::string& type,
@@ -40,13 +43,13 @@ public:
     const std::string &getName() const {  return _name; }
     const std::string &getType() const {  return _type; }
     const std::string &getUnits() const {  return _units; }
-    const std::string &getUrl() const {  return _url; }
+    const std::string &getURL() const {  return _url; }
     const std::string &getDescription() const {  return _description; }
 
     void setName(const std::string& name) { _name = name; }
     void setType(const std::string& type) { _type = type; }
     void setUnits(const std::string& units) { _units = units; }
-    void setUrl(const std::string& url) { _url = url; }
+    void setURL(const std::string& url) { _url = url; }
     void setDescription(const std::string& description) { _description = description; }
 
 private:
@@ -57,7 +60,7 @@ private:
     std::string _description;
 };
 
-class Model
+class MaterialExport Model
 {
 public:
     enum ModelType {

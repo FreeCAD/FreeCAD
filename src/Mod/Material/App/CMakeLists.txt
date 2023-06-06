@@ -30,7 +30,16 @@ list(APPEND Material_LIBS
     ${YAML_CPP_LIBRARIES}
 )
 
+generate_from_xml(ModelPropertyPy)
+
+SET(Python_SRCS
+    ModelPropertyPy.xml
+    ModelPropertyPyImpl.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 SET(Material_SRCS
+    ${Python_SRCS}
     AppMaterial.cpp
     Materials.cpp
     Materials.h

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
+ *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,45 +21,67 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include "ModelPropertyPy.h"
+#include "ModelPropertyPy.cpp"
 #include "Model.h"
 
 
 using namespace Material;
 
-TYPESYSTEM_SOURCE(Material::ModelProperty,Base::BaseClass)
-
-ModelProperty::ModelProperty()
+// returns a string which represents the object e.g. when printed in python
+std::string ModelPropertyPy::representation() const
 {
-
+    return "<ModelProperty object>";
 }
 
-ModelProperty::ModelProperty(const std::string& name, const std::string& type,
-                        const std::string& units, const std::string& url,
-                        const std::string& description):
-    _name(name), _type(type), _units(units), _url(url), _description(description)
+PyObject *ModelPropertyPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-
+    // never create such objects with the constructor
+    return new ModelPropertyPy(new ModelProperty());
 }
 
-ModelProperty::~ModelProperty()
+// constructor method
+int ModelPropertyPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
-
+    return 0;
 }
 
-Model::Model()
-{}
+Py::String ModelPropertyPy::getName() const
+{
+    return Py::String(getModelPropertyPtr()->getName());
+}
 
-Model::Model(ModelType type, const std::string &name, const QDir &directory, 
-        const std::string &uuid, const std::string& description, const std::string& url,
-        const std::string& doi):
-    _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
-    _url(url), _doi(doi)
-{}
+Py::String ModelPropertyPy::getType() const
+{
+    return Py::String(getModelPropertyPtr()->getType());
+}
 
-Model::~Model()
-{}
+Py::String ModelPropertyPy::getUnits() const
+{
+    return Py::String(getModelPropertyPtr()->getUnits());
+}
 
-#include "moc_Model.cpp"
+Py::String ModelPropertyPy::getUrl() const
+{
+    return Py::String(getModelPropertyPtr()->getURL());
+}
+
+Py::String ModelPropertyPy::getDescription() const
+{
+    return Py::String(getModelPropertyPtr()->getDescription());
+}
+
+PyObject *ModelPropertyPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int ModelPropertyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}
