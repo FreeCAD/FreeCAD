@@ -32,7 +32,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Application.h>
 
-#include <Mod/Material/App/Model.h>
+#include <Mod/Material/App/ModelManager.h>
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
 

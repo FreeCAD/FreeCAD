@@ -20,42 +20,69 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+#ifndef MATERIAL_MODELMANAGER_H
+#define MATERIAL_MODELMANAGER_H
+
+#include <QDir>
+#include <QString>
+#include <boost/filesystem.hpp>
+#include <yaml-cpp/yaml.h>
 
 #include "Model.h"
 
+namespace fs = boost::filesystem;
 
-using namespace Material;
+namespace Material {
 
-ModelProperty::ModelProperty()
+class LibraryEntry
 {
+public:
+    explicit LibraryEntry(const std::string &libraryName, const QDir &dir, const std::string &icon);
+    virtual ~LibraryEntry();
 
-}
+    const std::string &getName() const
+    {
+        return name;
+    }
+    const QDir &getDirectory() const
+    {
+        return directory;
+    }
+    const std::string &getIconPath() const
+    {
+        return iconPath;
+    }
 
-ModelProperty::ModelProperty(const std::string& name, const std::string& type,
-                        const std::string& units, const std::string& url,
-                        const std::string& description):
-    _name(name), _type(type), _units(units), _url(url), _description(description)
+private:
+    explicit LibraryEntry();
+    std::string name;
+    QDir directory;
+    std::string iconPath;
+};
+
+class MaterialExport ModelManager
 {
+public:
+    static ModelManager *getManager();
 
-}
+private:
+    explicit ModelManager();
+    virtual ~ModelManager();
 
-ModelProperty::~ModelProperty()
-{
+    void showYaml(const YAML::Node& yaml) const;
+    void dereference(Model* parent, const Model* child);
+    void dereference(Model* model);
+    Model *getModelFromPath(const std::string &path) const;
+    void showLibEntry(const std::string& checkpoint, const QDir &dir, const LibraryEntry& entry) const;
+    void addModel(LibraryEntry* model);
+    void loadLibrary(const LibraryEntry &library);
+    void loadLibraries(void);
+    std::list<LibraryEntry*> *getModelLibraries();
+    static ModelManager *manager;
+    static std::list<LibraryEntry*> *libraries;
+    static std::map<std::string, Model*> *modelMap;
+};
 
-}
+} // namespace Material
 
-Model::Model()
-{}
-
-Model::Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData):
-    _base(baseName), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
-{}
-
-Model::~Model()
-{}
-
-#include "moc_Model.cpp"
+#endif // MATERIAL_MODELMANAGER_H

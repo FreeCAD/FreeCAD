@@ -25,70 +25,61 @@
 
 #include <QDir>
 #include <QString>
-#include <boost/filesystem.hpp>
 #include <yaml-cpp/yaml.h>
 
-namespace fs = boost::filesystem;
-
 namespace Material {
+
+class ModelProperty
+{
+public:
+    explicit ModelProperty();
+    explicit ModelProperty(const std::string& name, const std::string& type,
+                           const std::string& units, const std::string& url,
+                           const std::string& description);
+    virtual ~ModelProperty();
+
+    const std::string &getName() const {  return _name; }
+    const std::string &getType() const {  return _type; }
+    const std::string &getUnits() const {  return _units; }
+    const std::string &getUrl() const {  return _url; }
+    const std::string &getDescription() const {  return _description; }
+
+    void setName(const std::string& name) { _name = name; }
+    void setType(const std::string& type) { _type = type; }
+    void setUnits(const std::string& units) { _units = units; }
+    void setUrl(const std::string& url) { _url = url; }
+    void setDescription(const std::string& description) { _description = description; }
+
+private:
+    std::string _name;
+    std::string _type;
+    std::string _units;
+    std::string _url;
+    std::string _description;
+};
 
 class Model
 {
 public:
-    explicit Model() {}
+    explicit Model();
     explicit Model(const std::string &baseName, const std::string &modelName, const QDir &dir, 
         const std::string &modelUuid, const YAML::Node &modelData);
     virtual ~Model();
 
-    const std::string &getBase() const
-    {
-        return _base;
-    }
-    const std::string &getName() const
-    {
-        return _name;
-    }
-    const QDir &getDirectory() const
-    {
-        return _directory;
-    }
-    const std::string &getUUID() const
-    {
-        return _uuid;
-    }
-    const YAML::Node &getModel() const
-    {
-        return _model;
-    }
-    YAML::Node *getModelPtr()
-    {
-        return &_model;
-    }
-    const bool getDereferenced() const
-    {
-        return _dereferenced;
-    }
-    void markDereferenced()
-    {
-        _dereferenced = true;
-    }
+    const std::string &getBase() const { return _base; }
+    const std::string &getName() const { return _name; }
+    const QDir &getDirectory() const { return _directory; }
+    const std::string &getUUID() const { return _uuid; }
+    const YAML::Node &getModel() const { return _model; }
+    YAML::Node *getModelPtr() { return &_model; }
+    const bool getDereferenced() const { return _dereferenced; }
 
-    void setBase(const std::string& base)
-    {
-        _base = base;
-    }
-    void setName(const std::string& name)
-    {
-        _name = name;
-    }
-    void setDirectory(const std::string& directory)
-    {
-        _directory = QDir(QString::fromStdString(directory));
-    }
-    void setUUID(const std::string& uuid)
-    {
-        _uuid = uuid;
-    }
+    void setBase(const std::string& base) { _base = base; }
+    void setName(const std::string& name) { _name = name; }
+    void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
+    void setUUID(const std::string& uuid) { _uuid = uuid; }
+
+    void markDereferenced() { _dereferenced = true; }
 
     bool operator==(const Model& m) const
     {
@@ -99,6 +90,18 @@ public:
         return !operator==(m);
     }
 
+    ModelProperty& operator[] (const std::string& key) { return _properties.at(key); } // Throw exception if not found
+    void addProperty(ModelProperty &property) { _properties[property.getName()] = property; }
+
+    using iterator=typename std::map<std::string, ModelProperty>::iterator;
+    using const_iterator=typename std::map<std::string, ModelProperty>::const_iterator;
+    iterator begin() { return _properties.begin(); }
+    const_iterator begin() const noexcept { return _properties.begin(); }
+    iterator end() noexcept { return _properties.end(); }
+    const_iterator end() const noexcept { return _properties.end(); }
+    const_iterator cbegin() const noexcept { return _properties.cbegin(); }
+    const_iterator cend() const noexcept { return _properties.cend(); }
+
 private:
     std::string _base;
     std::string _name;
@@ -106,55 +109,11 @@ private:
     std::string _uuid;
     YAML::Node _model;
     bool _dereferenced;
-};
-
-class LibraryEntry
-{
-public:
-    explicit LibraryEntry(const std::string &libraryName, const QDir &dir, const std::string &icon);
-    virtual ~LibraryEntry();
-
-    const std::string &getName() const
-    {
-        return name;
-    }
-    const QDir &getDirectory() const
-    {
-        return directory;
-    }
-    const std::string &getIconPath() const
-    {
-        return iconPath;
-    }
-
-private:
-    explicit LibraryEntry();
-    std::string name;
-    QDir directory;
-    std::string iconPath;
-};
-
-class MaterialExport ModelManager
-{
-public:
-    static ModelManager *getManager();
-
-private:
-    explicit ModelManager();
-    virtual ~ModelManager();
-
-    void showYaml(const YAML::Node& yaml) const;
-    void dereference(Model* parent, const Model* child);
-    void dereference(Model* model);
-    Model *getModelFromPath(const std::string &path) const;
-    void showLibEntry(const std::string& checkpoint, const QDir &dir, const LibraryEntry& entry) const;
-    void addModel(LibraryEntry* model);
-    void loadLibrary(const LibraryEntry &library);
-    void loadLibraries(void);
-    std::list<LibraryEntry*> *getModelLibraries();
-    static ModelManager *manager;
-    static std::list<LibraryEntry*> *libraries;
-    static std::map<std::string, Model*> *modelMap;
+    std::string _description;
+    std::string _url;
+    std::string _doi;
+    std::vector<std::string> _inheritedUuids;
+    std::map<std::string, ModelProperty> _properties;
 };
 
 } // namespace Material
