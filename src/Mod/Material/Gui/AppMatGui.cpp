@@ -30,7 +30,10 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
+#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+
+#include "DlgSettingsMaterial.h"
 
 // use a different name to CreateCommand()
 void CreateMaterialCommands();
@@ -86,6 +89,9 @@ PyMOD_INIT_FUNC(MatGui)
 
     // instantiating the commands
     CreateMaterialCommands();
+
+    // register preferences pages on Material, the order here will be the order of the tabs in pref widget
+    new Gui::PrefPageProducer<MatGui::DlgSettingsMaterial>(QT_TRANSLATE_NOOP("QObject", "Material"));
 
     // add resources and reloads the translators
     loadMaterialResource();
