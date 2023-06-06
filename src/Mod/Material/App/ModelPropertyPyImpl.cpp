@@ -66,7 +66,7 @@ Py::String ModelPropertyPy::getUnits() const
     return Py::String(getModelPropertyPtr()->getUnits());
 }
 
-Py::String ModelPropertyPy::getUrl() const
+Py::String ModelPropertyPy::getURL() const
 {
     return Py::String(getModelPropertyPtr()->getURL());
 }

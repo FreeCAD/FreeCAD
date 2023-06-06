@@ -32,6 +32,7 @@
 
 #include "Model.h"
 #include "ModelPropertyPy.h"
+#include "ModelPy.h"
 
 namespace Material {
 class Module : public Py::ExtensionModule<Module>
@@ -61,6 +62,7 @@ PyMOD_INIT_FUNC(Material)
     Base::Console().Log("Loading Material module... done\n");
 
     Base::Interpreter().addType(&Material::ModelPropertyPy  ::Type, module, "ModelProperty");
+    Base::Interpreter().addType(&Material::ModelPy          ::Type, module, "Model");
 
     PyMOD_Return(module);
 }

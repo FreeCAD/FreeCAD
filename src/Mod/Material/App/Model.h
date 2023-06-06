@@ -60,8 +60,10 @@ private:
     std::string _description;
 };
 
-class MaterialExport Model
+class MaterialExport Model : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
+
 public:
     enum ModelType {
         MODEL,
@@ -87,7 +89,7 @@ public:
     void setName(const std::string& name) { _name = name; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
     void setUUID(const std::string& uuid) { _uuid = uuid; }
-    void setDescripption(const std::string& description) { _description = description; }
+    void setDescription(const std::string& description) { _description = description; }
     void setURL(const std::string& url) { _url = url; }
     void setDOI(const std::string& doi) { _doi = doi; }
 

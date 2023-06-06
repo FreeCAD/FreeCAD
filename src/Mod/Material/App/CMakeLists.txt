@@ -31,10 +31,13 @@ list(APPEND Material_LIBS
 )
 
 generate_from_xml(ModelPropertyPy)
+generate_from_xml(ModelPy)
 
 SET(Python_SRCS
     ModelPropertyPy.xml
     ModelPropertyPyImpl.cpp
+    ModelPy.xml
+    ModelPyImpl.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
