@@ -230,8 +230,7 @@ private:
         assert(actions.size() <= maxSchema);
         for(int i = 0; i < maxSchema ; i++)
         {
-            actions[i]->setText(qApp->translate("Gui::Dialog::DlgGeneralImp",
-                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
         }
     }
 };
@@ -2253,9 +2252,16 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log untranslated messages, or messages intended only to a developer to status bar
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslated ||
+        content == Base::ContentType::Untranslatable )
+        return;
 
     int messageType = -1;
     switch(level){

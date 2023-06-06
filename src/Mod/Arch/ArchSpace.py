@@ -171,17 +171,18 @@ else:
 #  Spaces define an open volume inside or outside a
 #  building, ie. a room.
 
-def makeSpace(objects=None,baseobj=None,name="Space"):
+def makeSpace(objects=None,baseobj=None,name=None):
 
-    """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
-    document object, in which case it becomes the base shape of the space object, or a list of
-    selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
+    """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
+    Objects can be one document object, in which case it becomes the base shape of the space
+    object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
+    (object, subobjectname)"""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Space")
     _Space(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSpace(obj.ViewObject)

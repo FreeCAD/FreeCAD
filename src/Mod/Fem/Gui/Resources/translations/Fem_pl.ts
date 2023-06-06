@@ -1705,7 +1705,7 @@ Wybierz inny plik.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation>Musisz określić ścieżkę do pliku z88r.exe!</translation>
+      <translation>Musisz określić ścieżkę do pliku solvera z88r.exe!</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
@@ -1841,7 +1841,7 @@ Wybierz inny plik.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -1966,7 +1966,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="357"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="368"/>
       <source>Selection error</source>
-      <translation>Błąd zaznaczenia</translation>
+      <translation>Błąd selekcji</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
@@ -2027,7 +2027,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="384"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="303"/>
@@ -2214,7 +2214,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="202"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
       <source>Selection error</source>
-      <translation>Błąd wyboru</translation>
+      <translation>Błąd selekcji</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="131"/>
@@ -2252,7 +2252,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="146"/>
       <source>Selection error</source>
-      <translation>Błąd w zaznaczeniu</translation>
+      <translation>Błąd wyboru</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="135"/>
@@ -2280,7 +2280,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="287"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="297"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd w zaznaczeniu</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="209"/>
@@ -3641,19 +3641,19 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
       <translation>Zdefiniuj siłę</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
+      <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
+      <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>
@@ -3708,7 +3708,7 @@ Uwaga: w 2D tylko ustawienie dla x jest możliwe,
       <translation>Wiązanie sprężyny</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
       <translation>Zdefiniuj temperaturę</translation>
     </message>

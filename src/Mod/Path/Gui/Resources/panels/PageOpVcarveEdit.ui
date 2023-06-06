@@ -60,7 +60,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="toolTip">
-         <string>&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string></string>
         </property>
         <property name="text">
          <string>Discretization Deflection</string>
@@ -102,7 +102,7 @@
       <item row="1" column="1">
        <widget class="QSpinBox" name="colinearFilter">
         <property name="toolTip">
-         <string>Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</string>
+         <string>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</string>
         </property>
         <property name="maximum">
          <number>90</number>

@@ -23,8 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskSketcherElements_H
 #define GUI_TASKVIEW_TaskSketcherElements_H
 
-#include <QStyledItemDelegate>
 #include <QListWidget>
+#include <QStyledItemDelegate>
 
 #include <boost_signals2.hpp>
 
@@ -32,22 +32,24 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class ViewProviderSketch;
 class Ui_TaskSketcherElements;
-
 
 
 class ElementItem;
 class ElementView;
 
 // Struct to identify the selection/preselection of a subelement of the item
-enum class SubElementType {
+enum class SubElementType
+{
     edge,
     start,
     end,
@@ -55,17 +57,17 @@ enum class SubElementType {
     none
 };
 
-class ElementView : public QListWidget
+class ElementView: public QListWidget
 {
     Q_OBJECT
 
 public:
-    explicit ElementView(QWidget *parent = nullptr);
+    explicit ElementView(QWidget* parent = nullptr);
     ~ElementView() override;
     ElementItem* itemFromIndex(const QModelIndex& index);
 
 protected:
-    void contextMenuEvent (QContextMenuEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
 
 protected Q_SLOTS:
     // Constraints
@@ -103,7 +105,7 @@ protected Q_SLOTS:
     void onIndexChecked(QModelIndex, Qt::CheckState state);
 
 Q_SIGNALS:
-    void onItemHovered(QListWidgetItem *);
+    void onItemHovered(QListWidgetItem*);
 
 private:
     void changeLayer(int layer);
@@ -111,12 +113,12 @@ private:
 
 class ElementFilterList;
 
-class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskSketcherElements: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit TaskSketcherElements(ViewProviderSketch *sketchView);
+    explicit TaskSketcherElements(ViewProviderSketch* sketchView);
     ~TaskSketcherElements() override;
 
     /// Observer message from the Selection
@@ -133,16 +135,16 @@ private:
 
 public Q_SLOTS:
     void onListWidgetElementsItemPressed(QListWidgetItem* item);
-    void onListWidgetElementsItemEntered(QListWidgetItem *item);
+    void onListWidgetElementsItemEntered(QListWidgetItem* item);
     void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
     void onSettingsExtendedInformationChanged();
     void onFilterBoxStateChanged(int val);
     void onListMultiFilterItemChanged(QListWidgetItem* item);
 
 protected:
-    void changeEvent(QEvent *e) override;
-    void leaveEvent ( QEvent * event ) override;
-    ViewProviderSketch *sketchView;
+    void changeEvent(QEvent* e) override;
+    void leaveEvent(QEvent* event) override;
+    ViewProviderSketch* sketchView;
     using Connection = boost::signals2::connection;
     Connection connectionElementsChanged;
 
@@ -159,6 +161,6 @@ private:
     bool isNamingBoxChecked;
 };
 
-} //namespace SketcherGui
+}// namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif// GUI_TASKVIEW_TASKAPPERANCE_H

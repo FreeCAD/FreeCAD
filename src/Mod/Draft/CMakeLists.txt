@@ -233,7 +233,6 @@ SET(Modifier_tools
     draftguitools/gui_shape2dview.py
     draftguitools/gui_draft2sketch.py
     draftguitools/gui_arrays.py
-    draftguitools/gui_array_simple.py
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_patharray.py

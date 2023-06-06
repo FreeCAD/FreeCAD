@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Cella hivatkozás álnévvel, például
 Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Számolótábla</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1165,7 +1170,7 @@ Alapértelmezett értéke: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>

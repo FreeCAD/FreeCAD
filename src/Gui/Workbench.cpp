@@ -774,7 +774,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Separator" << "Std_Refresh";
     
     // Clipboard
-    auto clipboard = new ToolBarItem( root , ToolBarItem::HideStyle::HIDDEN );
+    auto clipboard = new ToolBarItem( root , ToolBarItem::DefaultVisibility::Hidden );
     clipboard->setCommand("Clipboard");
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
     

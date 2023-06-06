@@ -732,6 +732,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Spreadsheet.B1 の代わりに
 Spreadsheet.my_alias_name のように、エイリアスでセルを参照してください。</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>スプレッドシート</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1150,7 +1155,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Unnamed</translation>
     </message>

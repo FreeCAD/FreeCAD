@@ -142,7 +142,7 @@ public:
         funcs["ItemBackground"] = &TreeParamsP::updateItemBackground;
         ItemBackgroundPadding = handle->GetInt("ItemBackgroundPadding", 10);
         funcs["ItemBackgroundPadding"] = &TreeParamsP::updateItemBackgroundPadding;
-        HideColumn = handle->GetBool("HideColumn", false);
+        HideColumn = handle->GetBool("HideColumn", true);
         funcs["HideColumn"] = &TreeParamsP::updateHideColumn;
         HideScrollBar = handle->GetBool("HideScrollBar", true);
         funcs["HideScrollBar"] = &TreeParamsP::updateHideScrollBar;
@@ -356,7 +356,7 @@ public:
     }
     // Auto generated code (Tools/params_utils.py:244)
     static void updateHideColumn(TreeParamsP *self) {
-        auto v = self->handle->GetBool("HideColumn", false);
+        auto v = self->handle->GetBool("HideColumn", true);
         if (self->HideColumn != v) {
             self->HideColumn = v;
             TreeParams::onHideColumnChanged();
@@ -1203,7 +1203,7 @@ const bool & TreeParams::getHideColumn() {
 
 // Auto generated code (Tools/params_utils.py:300)
 const bool & TreeParams::defaultHideColumn() {
-    const static bool def = false;
+    const static bool def = true;
     return def;
 }
 

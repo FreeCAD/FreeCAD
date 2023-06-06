@@ -23,25 +23,28 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerBSpline_H
 #define SKETCHERGUI_DrawSketchHandlerBSpline_H
 
-#include <QInputDialog>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <QInputDialog>
+
+#include <Gui/Notifications.h>
 
 #include "GeometryCreationMode.h"
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
-extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
 public:
     explicit DrawSketchHandlerBSpline(int constructionMethod)
-      : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
-      , MousePressMode(MOUSE_NOT_PRESSED)
-      , ConstrMethod(constructionMethod)
-      , SplineDegree(3)
-      , IsClosed(false)
+        : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
+        , MousePressMode(MOUSE_NOT_PRESSED)
+        , ConstrMethod(constructionMethod)
+        , SplineDegree(3)
+        , IsClosed(false)
     {
         addSugConstraint();
         applyCursor();
@@ -50,7 +53,8 @@ public:
     virtual ~DrawSketchHandlerBSpline() = default;
 
     /// modes
-    enum SELECT_MODE {
+    enum SELECT_MODE
+    {
         STATUS_SEEK_FIRST_CONTROLPOINT,
         STATUS_SEEK_ADDITIONAL_CONTROLPOINTS,
         STATUS_CLOSE
@@ -59,7 +63,8 @@ public:
     // TODO: this kind of behavior will be useful in a superclass
     // when LMB is pressed it's a transitional state so some undos can't be done
     // (like delete last pole)
-    enum MOUSE_PRESS_MODE {
+    enum MOUSE_PRESS_MODE
+    {
         MOUSE_PRESSED,
         MOUSE_NOT_PRESSED
     };
@@ -68,21 +73,21 @@ public:
     {
         prevCursorPosition = onSketchPos;
 
-        if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
+        if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
             setPositionText(onSketchPos);
 
-            if (seekAutoConstraint(sugConstr.back(), onSketchPos, Base::Vector2d(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr.back(), onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr.back());
                 return;
             }
         }
-        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
+        else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
 
             drawControlPolygonToPosition(onSketchPos);
 
             drawCursorToPosition(onSketchPos);
 
-            if (seekAutoConstraint(sugConstr.back(), onSketchPos, Base::Vector2d(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr.back(), onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr.back());
                 return;
             }
@@ -104,43 +109,51 @@ public:
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
-                //Add pole
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
-                                      BSplinePoles.back().x, BSplinePoles.back().y);
+                // Add pole
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
+                    BSplinePoles.back().x,
+                    BSplinePoles.back().y);
 
                 poleGeoIds.push_back(getHighestCurveIndex());
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
-                                      poleGeoIds.back(), 1.0 ); // First pole defaults to 1.0 weight
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                      poleGeoIds.back(),
+                                      1.0);// First pole defaults to 1.0 weight
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Error adding B-Spline pole"));
+
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
 
                 return false;
             }
 
-            //Gui::Command::commitCommand();
+            // Gui::Command::commitCommand();
 
-            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            // static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             // add auto constraints on pole
             if (!sugConstr.back().empty()) {
-                createAutoConstraints(sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
+                createAutoConstraints(
+                    sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
             }
 
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
 
             addSugConstraint();
-
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
             BSplinePoles.push_back(onSketchPos);
 
             // check if coincident with first pole
-            for(auto & ac : sugConstr.back()) {
+            for (auto& ac : sugConstr.back()) {
                 if (ac.Type == Sketcher::Coincident) {
                     if (ac.GeoId == poleGeoIds[0] && ac.PosId == Sketcher::PointPos::mid)
                         IsClosed = true;
@@ -148,9 +161,9 @@ public:
                         // The coincidence with first point may be indirect
                         const auto coincidents =
                             static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
-                            ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
-                        if (coincidents.find(poleGeoIds[0]) != coincidents.end() &&
-                            coincidents.at(poleGeoIds[0]) == Sketcher::PointPos::mid)
+                                ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+                        if (coincidents.find(poleGeoIds[0]) != coincidents.end()
+                            && coincidents.at(poleGeoIds[0]) == Sketcher::PointPos::mid)
                             IsClosed = true;
                     }
                 }
@@ -159,7 +172,7 @@ public:
             if (IsClosed) {
                 Mode = STATUS_CLOSE;
 
-                if (ConstrMethod == 1) { // if periodic we do not need the last pole
+                if (ConstrMethod == 1) {// if periodic we do not need the last pole
                     BSplinePoles.pop_back();
                     sugConstr.pop_back();
 
@@ -170,42 +183,49 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
+                // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
-                //Add pole
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
-                                      BSplinePoles.back().x,BSplinePoles.back().y);
+                // Add pole
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
+                    BSplinePoles.back().x,
+                    BSplinePoles.back().y);
 
                 poleGeoIds.push_back(getHighestCurveIndex());
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                                      poleGeoIds[0], poleGeoIds.back());
-
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                                      poleGeoIds[0],
+                                      poleGeoIds.back());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(
+                    sketchgui,
+                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                    QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline pole"));
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
 
                 return false;
             }
 
-            //Gui::Command::commitCommand();
+            // Gui::Command::commitCommand();
 
-            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            // static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             // add auto constraints on pole
             if (!sugConstr.back().empty()) {
-                createAutoConstraints(sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
+                createAutoConstraints(
+                    sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
             }
 
-            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            // static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             if (!IsClosed) {
                 addSugConstraint();
             }
-
         }
         return true;
     }
@@ -221,12 +241,15 @@ public:
     void registerPressedKey(bool pressed, int key) override
     {
         if (SoKeyboardEvent::D == key && pressed) {
-            SplineDegree = QInputDialog::getInt(
-                Gui::getMainWindow(),
-                QObject::tr("B-Spline Degree"),
-                QObject::tr("Define B-Spline Degree, between 1 and %1:")
-                .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
-                SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
+            SplineDegree =
+                QInputDialog::getInt(Gui::getMainWindow(),
+                                     QObject::tr("B-Spline Degree"),
+                                     QObject::tr("Define B-Spline Degree, between 1 and %1:")
+                                         .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+                                     SplineDegree,
+                                     1,
+                                     Geom_BSplineCurve::MaxDegree(),
+                                     1);
             // FIXME: Pressing Esc here also finishes the B-Spline creation.
             // The user may only want to exit the dialog.
         }
@@ -237,8 +260,7 @@ public:
                 return;
 
             // can only delete last pole if it exists
-            if (STATUS_SEEK_FIRST_CONTROLPOINT == Mode ||
-                STATUS_CLOSE == Mode)
+            if (STATUS_SEEK_FIRST_CONTROLPOINT == Mode || STATUS_CLOSE == Mode)
                 return;
 
             // if only first pole exists it's equivalent to canceling current spline
@@ -252,23 +274,25 @@ public:
             try {
                 // already ensured that CurrentConstraint == EditCurve.size() > 1
                 const int delGeoId = poleGeoIds.back();
-                const auto& constraints = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues();
+                const auto& constraints =
+                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
+                        ->Constraints.getValues();
                 for (int i = constraints.size() - 1; i >= 0; --i) {
-                    if (delGeoId == constraints[i]->First ||
-                        delGeoId == constraints[i]->Second ||
-                        delGeoId == constraints[i]->Third)
+                    if (delGeoId == constraints[i]->First || delGeoId == constraints[i]->Second
+                        || delGeoId == constraints[i]->Third)
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "delConstraint(%d)", i);
                 }
 
                 // Remove pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometry(%d)", delGeoId);
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
 
                 poleGeoIds.pop_back();
                 BSplinePoles.pop_back();
 
-                // last entry is kept, as it corresponds to the current pole, but the one corresponding to the erased pole is removed
+                // last entry is kept, as it corresponds to the current pole, but the one
+                // corresponding to the erased pole is removed
                 sugConstr.erase(std::prev(std::prev(sugConstr.end())));
 
 
@@ -277,11 +301,14 @@ public:
                 drawCursorToPosition(prevCursorPosition);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
-                // some commands might have already deleted some constraints/geometries but not others
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Error deleting last pole"));
+                // some commands might have already deleted some constraints/geometries but not
+                // others
                 Gui::Command::abortCommand();
 
-                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
 
                 return;
             }
@@ -297,24 +324,27 @@ public:
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
         if (poleGeoIds.size() > 1) {
             // create B-spline from existing poles
-            Mode=STATUS_CLOSE;
-            finishCommand(Base::Vector2d(0.f,0.f));
+            Mode = STATUS_CLOSE;
+            finishCommand(Base::Vector2d(0.f, 0.f));
         }
-        else if(poleGeoIds.size() == 1) {
-            // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
-            //sketchgui->getDocument()->undo(1);
+        else if (poleGeoIds.size() == 1) {
+            // if we just have one point and we can not close anything, then cancel this creation
+            // but continue according to continuous mode
+            // sketchgui->getDocument()->undo(1);
 
             Gui::Command::abortCommand();
 
-            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
-            if(!continuousMode){
+            if (!continuousMode) {
                 DrawSketchHandler::quit();
             }
             else {
@@ -322,7 +352,8 @@ public:
                 resetHandlerState();
             }
         }
-        else { // we have no data (CurrentConstraint == 0) so user when right-clicking really wants to exit
+        else {// we have no data (CurrentConstraint == 0) so user when right-clicking really wants
+              // to exit
             DrawSketchHandler::quit();
         }
     }
@@ -346,16 +377,19 @@ private:
         IsClosed = false;
     }
 
-    QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override
+    {
         return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
     }
 
-    void addSugConstraint() {
+    void addSugConstraint()
+    {
         std::vector<AutoConstraint> sugConstr1;
         sugConstr.push_back(std::move(sugConstr1));
     }
 
-    void drawControlPolygonToPosition(Base::Vector2d position) {
+    void drawControlPolygonToPosition(Base::Vector2d position)
+    {
 
         std::vector<Base::Vector2d> editcurve(BSplinePoles);
         editcurve.push_back(position);
@@ -363,33 +397,37 @@ private:
         drawEdit(editcurve);
     }
 
-    void drawCursorToPosition(Base::Vector2d position) {
+    void drawCursorToPosition(Base::Vector2d position)
+    {
         if (!BSplinePoles.empty()) {
             float length = (position - BSplinePoles.back()).Length();
-            float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f,0.f));
+            float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f, 0.f));
 
             if (showCursorCoords()) {
                 SbString text;
                 std::string lengthString = lengthToDisplayFormat(length, 1);
-                std::string angleString = angleToDisplayFormat((angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0, 1);
+                std::string angleString =
+                    angleToDisplayFormat((angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0, 1);
                 text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                 setPositionText(position, text);
             }
         }
     }
 
-    void eraseEditCurve() {
+    void eraseEditCurve()
+    {
         drawEdit(std::vector<Base::Vector2d>());
     }
 
-    bool finishCommand(Base::Vector2d position) {
-        if (Mode==STATUS_CLOSE) {
+    bool finishCommand(Base::Vector2d position)
+    {
+        if (Mode == STATUS_CLOSE) {
             unsetCursor();
             resetPositionText();
 
             std::stringstream stream;
 
-            for (auto & pole : BSplinePoles) {
+            for (auto& pole : BSplinePoles) {
                 stream << "App.Vector(" << pole.x << "," << pole.y << "),";
             }
 
@@ -399,15 +437,16 @@ private:
             int index = controlpoints.rfind(',');
             controlpoints.resize(index);
 
-            controlpoints.insert(0,1,'[');
-            controlpoints.append(1,']');
+            controlpoints.insert(0, 1, '[');
+            controlpoints.append(1, ']');
 
             int currentgeoid = getHighestCurveIndex();
 
-            unsigned int maxDegree = ConstrMethod == 0 ? (BSplinePoles.size()-1) : (BSplinePoles.size());
+            unsigned int maxDegree =
+                ConstrMethod == 0 ? (BSplinePoles.size() - 1) : (BSplinePoles.size());
 
             try {
-                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
+                // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
                 /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
                     "(%s,%s),"
@@ -416,28 +455,35 @@ private:
                         ConstrMethod == 0 ?"False":"True",
                         geometryCreationMode==Construction?"True":"False"); */
 
-                // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
+                // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational",
+                // NULL};
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "addGeometry(Part.BSplineCurve"
                                       "(%s,None,None,%s,%d,None,False),%s)",
                                       controlpoints.c_str(),
-                                      ConstrMethod == 0 ?"False":"True",
+                                      ConstrMethod == 0 ? "False" : "True",
                                       std::min(maxDegree, SplineDegree),
-                                      geometryCreationMode==Construction?"True":"False");
+                                      geometryCreationMode == Construction ? "True" : "False");
 
                 currentgeoid++;
 
-                // autoconstraints were added to the circles of the poles, which is ok because they must go to the
-                // right position, or the user will freak-out if they appear out of the autoconstrained position.
-                // However, autoconstraints on the first and last pole, in normal non-periodic b-splines (with appropriate endpoint knot multiplicity)
-                // as the ones created by this tool are intended for the b-spline endpoints, and not for the poles,
-                // so here we retrieve any autoconstraint on those poles' center and mangle it to the endpoint.
+                // autoconstraints were added to the circles of the poles, which is ok because they
+                // must go to the right position, or the user will freak-out if they appear out of
+                // the autoconstrained position. However, autoconstraints on the first and last
+                // pole, in normal non-periodic b-splines (with appropriate endpoint knot
+                // multiplicity) as the ones created by this tool are intended for the b-spline
+                // endpoints, and not for the poles, so here we retrieve any autoconstraint on those
+                // poles' center and mangle it to the endpoint.
                 if (ConstrMethod == 0) {
-                    for(auto & constr : static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues()) {
-                        if(constr->First == poleGeoIds[0] && constr->FirstPos == Sketcher::PointPos::mid) {
+                    for (auto& constr : static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
+                                            ->Constraints.getValues()) {
+                        if (constr->First == poleGeoIds[0]
+                            && constr->FirstPos == Sketcher::PointPos::mid) {
                             constr->First = currentgeoid;
                             constr->FirstPos = Sketcher::PointPos::start;
                         }
-                        else if(constr->First == poleGeoIds.back() && constr->FirstPos == Sketcher::PointPos::mid) {
+                        else if (constr->First == poleGeoIds.back()
+                                 && constr->FirstPos == Sketcher::PointPos::mid) {
                             constr->First = currentgeoid;
                             constr->FirstPos = Sketcher::PointPos::end;
                         }
@@ -450,35 +496,44 @@ private:
                 cstream << "conList = []\n";
 
                 for (size_t i = 0; i < poleGeoIds.size(); i++) {
-                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint'," << poleGeoIds[0] + i
-                        << "," << static_cast<int>(Sketcher::PointPos::mid) << "," << currentgeoid << "," << i << "))\n";
+                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::"
+                               "BSplineControlPoint',"
+                            << poleGeoIds[0] + i << "," << static_cast<int>(Sketcher::PointPos::mid)
+                            << "," << currentgeoid << "," << i << "))\n";
                 }
 
-                cstream << Gui::Command::getObjectCmd(sketchgui->getObject()) << ".addConstraint(conList)\n";
+                cstream << Gui::Command::getObjectCmd(sketchgui->getObject())
+                        << ".addConstraint(conList)\n";
                 cstream << "del conList\n";
 
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
                 // for showing the knots on creation
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
                 Gui::Command::abortCommand();
 
-                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(
+                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
                 return false;
             }
 
             Gui::Command::commitCommand();
 
-            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
-            if(continuousMode){
+            if (continuousMode) {
                 // This code enables the continuous creation mode.
                 resetHandlerState();
 
@@ -489,8 +544,9 @@ private:
                  * handler is destroyed by the quit() method on pressing the
                  * right button of the mouse */
             }
-            else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            else {
+                sketchgui
+                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
             }
         }
         else {
@@ -519,8 +575,7 @@ protected:
 };
 
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_DrawSketchHandlerBSpline_H
-
+#endif// SKETCHERGUI_DrawSketchHandlerBSpline_H

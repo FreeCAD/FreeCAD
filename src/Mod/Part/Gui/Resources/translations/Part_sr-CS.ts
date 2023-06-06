@@ -2951,7 +2951,7 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Nepoznata greška</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -4095,7 +4095,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Nepoznata greška</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -5711,21 +5711,21 @@ in the 3D view for the sweep path.</source>
       <translation>Uredi %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Part i Part Design radno okruženje</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Uvoz/Izvoz</translation>
     </message>
@@ -6027,63 +6027,63 @@ Da li želiš da nastaviš?</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation>Bulove operacije - Provera nepoznata</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation type="unfinished">Boolean operation: Unknown check</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation>Bulova operacija - Loša vrsta</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>Bulova operacija: Loša vrsta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation>Bulova operacija - Samo-ukrštanje</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Bulova operacija: Pronađeno samo-ukrštanje</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation>Bulova operacija - Suviše mala ivica</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Bulova operacija: Suviše mala ivica</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation>Bulova operacija - Nepopravljiva stranica</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>Bulova operacija: Nepopravljiva stranica</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation>Bulova operacija - Nekompatibilnost temena</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>Bulova operacija: Nekompatibilnost temena</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation>Bulova operacija - Nekompatibilnost ivice</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Bulova operacija: Nekompatibilnost ivice</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation>Bulova operacija - Nekompatibilnost stranice</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Bulova operacija: Nekompatibilnost stranice</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation>Bulova operacija - Operacija prekinuta</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Bulova operacija: Prekinuto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation type="unfinished">Boolean Op GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Bulova operacija: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation>Bulova operacija - Neispravna kriva na površini</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>Bulova operacija: Neispravna kriva na površini</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation>Bulova operacija - Nije važeća</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Bulova operacija: Neispravno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>

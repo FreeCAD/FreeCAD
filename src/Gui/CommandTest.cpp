@@ -728,9 +728,12 @@ public:
     TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0), matchCritical(0)
     {
     }
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override{
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override{
 
         (void) notifiername;
+        (void) recipient;
+        (void) content;
 
         QMutexLocker ml(&mutex);
 

@@ -36,19 +36,22 @@
 
 using Connection = boost::signals2::connection;
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 
 /// simulation dialog for the TaskView
-class SketcherGuiExport TaskDlgEditSketch : public Gui::TaskView::TaskDialog
+class SketcherGuiExport TaskDlgEditSketch: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgEditSketch(ViewProviderSketch *sketchView);
+    explicit TaskDlgEditSketch(ViewProviderSketch* sketchView);
     ~TaskDlgEditSketch() override;
     ViewProviderSketch* getSketchView() const
-    { return sketchView; }
+    {
+        return sketchView;
+    }
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -60,26 +63,29 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     bool isAllowedAlterDocument() const override
-    { return false; }
+    {
+        return false;
+    }
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Close;
+    }
 
 protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
 
 protected:
-    ViewProviderSketch      *sketchView;
-    TaskSketcherConstraints *Constraints;
-    TaskSketcherElements    *Elements;
-    TaskSketcherMessages    *Messages;
-    TaskSketcherSolverAdvanced *SolverAdvanced;
+    ViewProviderSketch* sketchView;
+    TaskSketcherConstraints* Constraints;
+    TaskSketcherElements* Elements;
+    TaskSketcherMessages* Messages;
+    TaskSketcherSolverAdvanced* SolverAdvanced;
 };
 
 
+}// namespace SketcherGui
 
-} //namespace SketcherGui
-
-#endif // SKETCHERGUI_TaskDlgEditSketch_H
+#endif// SKETCHERGUI_TaskDlgEditSketch_H

@@ -63,21 +63,15 @@ class ShapeString(DraftObject):
             self.props_changed_clear()
             return
 
-        import Part
-        # import OpenSCAD2Dgeom
         if obj.String and obj.FontFile:
+            import Part
+
             if obj.Placement:
                 plm = obj.Placement
 
-            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
-            if len(CharList) == 0:
-                App.Console.PrintWarning(translate("draft","ShapeString: string has no wires")+"\n")
-                return
-            SSChars = []
-
             # test a simple letter to know if we have a sticky font or not
             sticky = False
-            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+            testWire = Part.makeWireString("L", obj.FontFile, obj.Size, obj.Tracking)[0][0]
             if testWire.isClosed:
                 try:
                     testFace = Part.Face(testWire)
@@ -93,26 +87,23 @@ class ShapeString(DraftObject):
             if hasattr(obj, "MakeFace"):
                 fill = obj.MakeFace
 
+            CharList = Part.makeWireString(obj.String, obj.FontFile, obj.Size, obj.Tracking)
+            SSChars = []
+
             for char in CharList:
                 if sticky or (not fill):
-                    for CWire in char:
-                        SSChars.append(CWire)
-                else:
-                    CharFaces = []
-                    for CWire in char:
-                        f = Part.Face(CWire)
-                        if f:
-                            CharFaces.append(f)
-                    # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
-                    if CharFaces:
-                        # s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
-                        # s = self.makeGlyph(CharFaces)
-                        s = self.makeFaces(char)
-                        SSChars.append(s)
-            shape = Part.Compound(SSChars)
-            obj.Shape = shape
+                    SSChars.extend(char)
+                elif char:
+                    SSChars.extend(self.makeFaces(char))
+            if SSChars:
+                shape = Part.Compound(SSChars)
+                obj.Shape = shape
+            else:
+                App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires")+"\n")
+
             if plm:
                 obj.Placement = plm
+
         obj.positionBySupport()
         self.props_changed_clear()
 
@@ -121,46 +112,68 @@ class ShapeString(DraftObject):
 
     def makeFaces(self, wireChar):
         import Part
-        compFaces=[]
-        allEdges = [] # unused variable?
-        wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
-        fixedwire = []
-        for w in wirelist:
+
+        wrn = translate("draft", "ShapeString: face creation failed for one character") + "\n"
+
+        wirelist = []
+        for w in wireChar:
             compEdges = Part.Compound(w.Edges)
             compEdges = compEdges.connectEdgesToWires()
-            fixedwire.append(compEdges.Wires[0])
-        wirelist = fixedwire
-        sep_wirelist = []
-        while len(wirelist) > 0:
-            wire2Face = [wirelist[0]]
-            face = Part.Face(wirelist[0])
-            for w in wirelist[1:]:
-                p = w.Vertexes[0].Point
-                u,v = face.Surface.parameter(p)
-                if face.isPartOfDomain(u,v):
-                    f = Part.Face(w)
-                    if face.Orientation == f.Orientation:
-                        if f.Surface.Axis * face.Surface.Axis < 0:
-                            w.reverse()
-                    else:
-                        if f.Surface.Axis * face.Surface.Axis > 0:
-                            w.reverse()
-                    wire2Face.append(w)
-                else:
-                    sep_wirelist.append(w)
-            wirelist = sep_wirelist
-            sep_wirelist = []
-            face = Part.Face(wire2Face)
-            face.validate()
+            if compEdges.Wires[0].isClosed():
+                wirelist.append(compEdges.Wires[0])
+
+        if not wirelist:
+            App.Console.PrintWarning(wrn)
+            return []
+
+        # Some test fonts:
+        # https://raw.githubusercontent.com/FreeCAD/FPA/main/images/freecad_logo_official.svg
+        #     https://evolventa.github.io/
+        #     not a problem font, but it is used by FreeCAD
+        # https://forum.freecad.org/viewtopic.php?t=57774
+        #     https://www.dafont.com/mutlu-ornamental.font
+        # https://forum.freecad.org/viewtopic.php?t=65110&p=559810#p559886
+        #     http://www.atelier-des-fougeres.fr/Cambam/Aide/Plugins/stickfonts.html
+
+        # 1CamBam_Stick_0.ttf is actually not a stick font.
+
+        # FaceMakerBullseye:
+        #     1CamBam_Stick_0.ttf face validation problem with A, E, F, H, K, R, Y and y.
+        # FaceMakerCheese:
+        #     1CamBam_Stick_0.ttf face creation problem with: A, E, F, H, Q, R, e and y.
+        #     All fonts: face creation problem in case of double-nested wires f.e. with: ©.
+        # FaceMakerSimple:
+        #     All fonts: overlapping faces in case of nested wires f.e. with: O.
+        try:
+            # print("try Bullseye")
+            faces = Part.makeFace(wirelist, "Part::FaceMakerBullseye").Faces
+            for face in faces:
+                face.validate()
+        except Part.OCCError:
+            try:
+                # print("try Cheese")
+                faces = Part.makeFace(wirelist, "Part::FaceMakerCheese").Faces
+                for face in faces:
+                    face.validate()
+            except Part.OCCError:
+                try:
+                    # print("try Simple")
+                    faces = Part.makeFace(wirelist, "Part::FaceMakerSimple").Faces
+                    for face in faces:
+                        face.validate()
+                except Part.OCCError:
+                    App.Console.PrintWarning(wrn)
+                    return []
+
+        for face in faces:
             try:
                 # some fonts fail here
-                if face.Surface.Axis.z < 0.0:
+                if face.Surface.Axis.z < 0.0: # Does not seem to occur for FaceMakerBullseye.
                     face.reverse()
             except Exception:
                 pass
-            compFaces.append(face)
-        ret = Part.Compound(compFaces)
-        return ret
+
+        return faces
 
     def makeGlyph(self, facelist):
         ''' turn list of simple contour faces into a compound shape representing a glyph '''

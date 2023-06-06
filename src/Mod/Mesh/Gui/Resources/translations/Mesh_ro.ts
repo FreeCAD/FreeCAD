@@ -2088,6 +2088,11 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     <name>QObject</name>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Afișare</translation>
+    </message>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Import/Export</translation>
     </message>

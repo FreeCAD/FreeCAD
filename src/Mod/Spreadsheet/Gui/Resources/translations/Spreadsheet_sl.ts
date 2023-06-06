@@ -737,6 +737,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Na polje se sklicuj z vzdevkom, npr.
 Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1179,7 +1184,7 @@ Privzeto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>

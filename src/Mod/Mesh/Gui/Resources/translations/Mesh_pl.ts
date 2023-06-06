@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>Decimation...</source>
-      <translation>Decymacja ...</translation>
+      <translation>Uprość ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1238"/>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="153"/>
       <source>Mesh Decimating</source>
-      <translation>Dziesiątkowanie siatki</translation>
+      <translation>Upraszczanie siatki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
@@ -819,7 +819,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Dziesiątkowanie</translation>
+      <translation>Upraszczanie</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
@@ -1757,7 +1757,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="79"/>
       <source>&lt; faces than</source>
-      <translation>&lt; niż ściany</translation>
+      <translation>ścian mniejsze niż</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
@@ -1778,7 +1778,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="165"/>
       <source>&gt; faces than</source>
-      <translation>&gt; niż ściany</translation>
+      <translation>ścian większe niż</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="182"/>
@@ -2026,7 +2026,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Workbench.cpp" line="90"/>
       <source>Mesh info box</source>
-      <translation>Informacje o siatce</translation>
+      <translation>Panel informacje o siatce</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
@@ -2089,6 +2089,11 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <name>QObject</name>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Wyświetlanie</translation>
+    </message>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>
@@ -2367,7 +2372,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Siatka — segmentacja</translation>
+      <translation>Segmentacja siatki</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

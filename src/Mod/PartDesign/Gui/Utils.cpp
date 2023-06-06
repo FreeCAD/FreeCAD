@@ -55,6 +55,23 @@ using namespace Attacher;
 
 namespace PartDesignGui {
 
+// TODO: Refactor DocumentObjectItem::getSubName() that has similar logic
+App::DocumentObject* getParent(App::DocumentObject* obj, std::string& subname)
+{
+    auto inlist = obj->getInList();
+    for (auto it : inlist) {
+        if (it->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            std::string parent;
+            parent += obj->getNameInDocument();
+            parent += '.';
+            subname = parent + subname;
+            return getParent(it, subname);
+        }
+    }
+
+    return obj;
+}
+
 bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
     if (!obj || !obj->getNameInDocument()) {
         FC_ERR("invalid object");
@@ -76,9 +93,9 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
     if (activeBody != body) {
         parent = obj;
         subname.clear();
-    } else {
-        subname += obj->getNameInDocument();
-        subname += '.';
+    }
+    else {
+        parent = getParent(obj, subname);
     }
 
     Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("

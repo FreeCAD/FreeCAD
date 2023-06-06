@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
       <translation>Convertir en punts...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
       <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
       <translation>Convertir en punts</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Export points...</source>
       <translation>Exportar punts...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="112"/>
       <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Exports a point cloud</source>
       <translation>Exporta un núvol de punts</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="65"/>
+      <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="66"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Import points...</source>
       <translation>Importar punts...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="67"/>
       <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
       <translation>Importa un núvol de punts</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Merge point clouds</source>
       <translation>Fusiona els núvols de punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
       <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Merge several point clouds into one</source>
       <translation>Fusiona diversos núvols de punts en un de sol</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="263"/>
+      <location filename="../../Command.cpp" line="265"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="264"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Cut point cloud</source>
       <translation>Talla un núvol de punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="265"/>
       <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Talla un núvol de punts amb un polígon seleccionat</translation>
     </message>
@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="352"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Structured point cloud</source>
       <translation>Núvol de punts estructurats</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="353"/>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>Convert points to structured point cloud</source>
       <translation>Converteix els punts en un núvol de punts estructurats</translation>
     </message>
@@ -118,18 +118,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="150"/>
+      <location filename="../../Command.cpp" line="152"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="151"/>
+      <location filename="../../Command.cpp" line="153"/>
       <source>Transform Points</source>
       <translation>Transforma els punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
       <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
       <translation>Prova per a transformar un núvol de punts</translation>
     </message>
@@ -137,17 +137,17 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
       <translation>Importa els punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
       <translation>Transforma els punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Convert to points</source>
       <translation>Convertir en punts</translation>
     </message>
@@ -291,24 +291,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="79"/>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
       <translation>Formats de punt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="79"/>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="209"/>
       <source>Enter maximum distance:</source>
       <translation>Introduïu la distància màxima:</translation>
     </message>

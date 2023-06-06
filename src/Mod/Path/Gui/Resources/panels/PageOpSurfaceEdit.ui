@@ -159,7 +159,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Additional offset to the selected bounding box along the X axis."</string>
+           <string>Additional offset to the selected bounding box along the X axis.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -169,7 +169,7 @@
         <item>
          <widget class="Gui::InputField" name="boundBoxExtraOffsetY">
           <property name="toolTip">
-           <string>Additional offset to the selected bounding box along the Y axis."</string>
+           <string>Additional offset to the selected bounding box along the Y axis.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>

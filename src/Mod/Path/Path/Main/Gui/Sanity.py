@@ -28,12 +28,11 @@ Path projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised
 """
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Log
-import PathScripts
 from collections import Counter
 from datetime import datetime
 import os
@@ -43,7 +42,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -426,7 +425,7 @@ class CommandPathSanity:
         machineLabel = translate("Path_Sanity", "Machine")
         postLabel = translate("Path_Sanity", "Postprocessor")
         flagsLabel = translate("Path_Sanity", "Post Processor Flags")
-        fileSizeLabel = translate("Path_Sanity", "File Size (kbs)")
+        fileSizeLabel = translate("Path_Sanity", "File Size (kB)")
         lineCountLabel = translate("Path_Sanity", "Line Count")
 
         outTable += "|*{}*|{}\n".format(gcodeFileLabel, d["lastgcodefile"])
@@ -846,7 +845,7 @@ class CommandPathSanity:
                 data["linecount"] = str(0)
                 self.squawk("PathSanity", "The Job has not been post-processed")
             else:
-                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput))
+                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput)/1000)
                 data["linecount"] = str(
                     sum(1 for line in open(obj.LastPostProcessOutput))
                 )

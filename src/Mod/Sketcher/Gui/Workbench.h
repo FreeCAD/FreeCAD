@@ -30,12 +30,13 @@
 #include <Mod/Sketcher/SketcherGlobal.h>
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 /**
  * @author Werner Mayer
  */
-class SketcherGuiExport Workbench : public Gui::StdWorkbench
+class SketcherGuiExport Workbench: public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -68,7 +69,8 @@ SketcherGuiExport void addSketcherWorkbenchConstraints(Gui::ToolBarItem& cons);
 SketcherGuiExport void addSketcherWorkbenchTools(Gui::ToolBarItem& consaccel);
 SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline);
 SketcherGuiExport void addSketcherWorkbenchVirtualSpace(Gui::ToolBarItem& virtualspace);
+SketcherGuiExport void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools);
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
-#endif // SKETCHER_WORKBENCH_H
+#endif// SKETCHER_WORKBENCH_H

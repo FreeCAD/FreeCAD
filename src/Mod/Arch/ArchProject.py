@@ -48,7 +48,7 @@ __title__  = "FreeCAD Project"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-def makeProject(sites=None, name="Project"):
+def makeProject(sites=None, name=None):
     """Create an Arch project.
 
     If sites are provided, add them as children of the new project.
@@ -72,7 +72,7 @@ def makeProject(sites=None, name="Project"):
 
     import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Project")
-    obj.Label = translate("Arch", name)
+    obj.Label = name if name else translate("Arch", "Project")
     _Project(obj)
     if FreeCAD.GuiUp:
         _ViewProviderProject(obj.ViewObject)

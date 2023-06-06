@@ -26,6 +26,8 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QInputDialog>
 
+#include <Gui/Notifications.h>
+
 #include "GeometryCreationMode.h"
 
 
@@ -38,11 +40,11 @@ class DrawSketchHandlerBSplineByInterpolation: public DrawSketchHandler
 {
 public:
     explicit DrawSketchHandlerBSplineByInterpolation(int constructionMethod)
-        : Mode(STATUS_SEEK_FIRST_POINT),
-          MousePressMode(MOUSE_NOT_PRESSED),
-          ConstrMethod(constructionMethod),
-          SplineDegree(3),
-          IsClosed(false)
+        : Mode(STATUS_SEEK_FIRST_POINT)
+        , MousePressMode(MOUSE_NOT_PRESSED)
+        , ConstrMethod(constructionMethod)
+        , SplineDegree(3)
+        , IsClosed(false)
     {
         addSugConstraint();
         applyCursor();
@@ -117,7 +119,9 @@ public:
                 knotGeoIds.push_back(getHighestCurveIndex());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Cannot add knot point"));
                 Gui::Command::abortCommand();
 
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
@@ -145,15 +149,15 @@ public:
                         // The coincidence with first point may be indirect
                         const auto coincidents =
                             static_cast<Sketcher::SketchObject*>(sketchgui->getObject())
-                            ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
-                        if (coincidents.find(knotGeoIds[0]) != coincidents.end() &&
-                            coincidents.at(knotGeoIds[0]) == Sketcher::PointPos::start)
+                                ->getAllCoincidentPoints(ac.GeoId, ac.PosId);
+                        if (coincidents.find(knotGeoIds[0]) != coincidents.end()
+                            && coincidents.at(knotGeoIds[0]) == Sketcher::PointPos::start)
                             IsClosed = true;
-                        else if (coincidents.find(knotGeoIds.back()) != coincidents.end() &&
-                                 coincidents.at(knotGeoIds.back()) == Sketcher::PointPos::start) {
+                        else if (coincidents.find(knotGeoIds.back()) != coincidents.end()
+                                 && coincidents.at(knotGeoIds.back())
+                                     == Sketcher::PointPos::start) {
                             return true;// OCCT doesn't allow consecutive points being coincident
                         }
-
                     }
                 }
             }
@@ -185,7 +189,10 @@ public:
                 knotGeoIds.push_back(getHighestCurveIndex());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(
+                    sketchgui,
+                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                    QT_TRANSLATE_NOOP("Notifications", "Cannot add internal alignment points"));
                 Gui::Command::abortCommand();
 
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject())->solve();
@@ -292,7 +299,9 @@ public:
                 drawCursorToPosition(prevCursorPosition);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Error removing knot"));
                 // some commands might have already deleted some constraints/geometries but not
                 // others
                 Gui::Command::abortCommand();
@@ -600,7 +609,9 @@ private:
                     sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(
@@ -622,8 +633,8 @@ private:
                      * right button of the mouse */
                 }
                 else {
-                    sketchgui
-                        ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                    sketchgui->purgeHandler();// no code after this line, Handler get deleted in
+                                              // ViewProvider
                 }
 
                 return false;

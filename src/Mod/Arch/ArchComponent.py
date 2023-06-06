@@ -543,7 +543,7 @@ class Component(ArchIFC.IfcProduct):
 
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
-                if obj.Base.Base:
+                if obj.Base.Base and len(obj.Base.Base.Shape.Wires) == 1:
                     base,placement = self.rebase(obj.Base.Base.Shape)
                     extrusion = FreeCAD.Vector(obj.Base.Dir).normalize()
                     if extrusion.Length == 0:

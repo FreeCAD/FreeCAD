@@ -23,6 +23,7 @@
 #ifndef PATHSIMULATOR_PathSim_H
 #define PATHSIMULATOR_PathSim_H
 
+#include <memory>
 #include <TopoDS_Shape.hxx>
 
 #include <Mod/Path/App/Command.h>
@@ -51,8 +52,8 @@ namespace PathSimulator
 			Base::Placement * ApplyCommand(Base::Placement * pos, Command * cmd);
 
 		public:
-			cStock * m_stock;
-			cSimTool *m_tool;
+			std::unique_ptr<cStock> m_stock;
+			std::unique_ptr<cSimTool> m_tool;
 	};
 
 } //namespace Path

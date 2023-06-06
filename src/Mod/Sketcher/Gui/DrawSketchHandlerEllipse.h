@@ -23,16 +23,19 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerEllipse_H
 #define SKETCHERGUI_DrawSketchHandlerEllipse_H
 
-#include <cmath>
-#include <QDebug>
 #include <GC_MakeEllipse.hxx>
+#include <QDebug>
+#include <cmath>
+
+#include <Gui/Notifications.h>
 
 #include "GeometryCreationMode.h"
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
-extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
 
 /* Ellipse ==============================================================================*/
 /**
@@ -61,9 +64,11 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
  *        a &\equiv& \textrm{ length of the semi-major axis, colloquially 'radius'}\\
  *        b &\equiv& \textrm{ length of the semi-minor axis, colloquially 'radius'}\\
  *        e &\equiv& \textrm{ eccentricity of the ellipse}\\
- *        \theta_b &\equiv& \textrm{ angle to the intersection of the semi-minor axis and the ellipse, relative to the focus}\\
+ *        \theta_b &\equiv& \textrm{ angle to the intersection of the semi-minor axis and the
+ * ellipse, relative to the focus}\\
  *        ae &\equiv& \textrm{ distance from the focus to the centroid}\\
- *        r &=& \frac{a(1-e^2)}{1+e\cos(\theta)} = \frac{r_a(1-e)}{1+e\cos(\theta)} = \frac{r_p(1+e)}{1+e\cos(\theta)}\\
+ *        r &=& \frac{a(1-e^2)}{1+e\cos(\theta)} = \frac{r_a(1-e)}{1+e\cos(\theta)} =
+ * \frac{r_p(1+e)}{1+e\cos(\theta)}\\
  *        r_a &=& a(1-e)\\
  *        r_p &=& a(1+e)\\
  *        a &=& \frac{r_p+r_a}{2}\\
@@ -73,32 +78,42 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
  *   \f}
  *
  */
-class DrawSketchHandlerEllipse : public DrawSketchHandler
+class DrawSketchHandlerEllipse: public DrawSketchHandler
 {
 public:
     explicit DrawSketchHandlerEllipse(int constructionMethod)
-      : mode(STATUS_Close)
-      , method(CENTER_PERIAPSIS_B)
-      , constrMethod(constructionMethod)
-      , a(0), b(0), e(0), ratio(0), ae(0)
-      , num(0), r(0), theta(0), phi(0)
-      , editCurve(33), fixedAxisLength(0)
-    {
-    }
-    virtual ~DrawSketchHandlerEllipse(){}
+        : mode(STATUS_Close)
+        , method(CENTER_PERIAPSIS_B)
+        , constrMethod(constructionMethod)
+        , a(0)
+        , b(0)
+        , e(0)
+        , ratio(0)
+        , ae(0)
+        , num(0)
+        , r(0)
+        , theta(0)
+        , phi(0)
+        , editCurve(33)
+        , fixedAxisLength(0)
+    {}
+    virtual ~DrawSketchHandlerEllipse()
+    {}
     /// Mode table, describes what step of the process we are in
-    enum SelectMode {
-        STATUS_SEEK_PERIAPSIS,  /**< enum value, looking for click to set periapsis. */
-        STATUS_SEEK_APOAPSIS,   /**< enum value, looking for click to set apoapsis. */
-        STATUS_SEEK_CENTROID,   /**< enum value, looking for click to set centroid. */
-        STATUS_SEEK_A,          /**< enum value, looking for click to set a. */
-        STATUS_SEEK_B,          /**< enum value, looking for click to set b. */
-        STATUS_Close            /**< enum value, finalizing and saving ellipse. */
+    enum SelectMode
+    {
+        STATUS_SEEK_PERIAPSIS, /**< enum value, looking for click to set periapsis. */
+        STATUS_SEEK_APOAPSIS,  /**< enum value, looking for click to set apoapsis. */
+        STATUS_SEEK_CENTROID,  /**< enum value, looking for click to set centroid. */
+        STATUS_SEEK_A,         /**< enum value, looking for click to set a. */
+        STATUS_SEEK_B,         /**< enum value, looking for click to set b. */
+        STATUS_Close           /**< enum value, finalizing and saving ellipse. */
     };
     /// Construction methods, describes the method used to construct the ellipse
-    enum ConstructionMethod {
-        CENTER_PERIAPSIS_B,     /**< enum value, click on center, then periapsis, then b point. */
-        PERIAPSIS_APOAPSIS_B    /**< enum value, click on periapsis, then apoapsis, then b point. */
+    enum ConstructionMethod
+    {
+        CENTER_PERIAPSIS_B,  /**< enum value, click on center, then periapsis, then b point. */
+        PERIAPSIS_APOAPSIS_B /**< enum value, click on periapsis, then apoapsis, then b point. */
     };
 
     /**
@@ -110,12 +125,13 @@ public:
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
-                    AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(
+                        sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
-            } else if (mode == STATUS_SEEK_APOAPSIS) {
+            }
+            else if (mode == STATUS_SEEK_APOAPSIS) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
 
@@ -131,12 +147,13 @@ public:
                 drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
                 // need an intermediate point or line.
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
-                    AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(
+                        sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
-            } else if (mode == STATUS_SEEK_B) {
+            }
+            else if (mode == STATUS_SEEK_B) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
 
@@ -150,20 +167,23 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
-                    AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(
+                        sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
             }
-        } else { // method is CENTER_PERIAPSIS_B
+        }
+        else {// method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) { // TODO: ellipse prio 1
+                if (seekAutoConstraint(
+                        sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
-            } else if (mode == STATUS_SEEK_PERIAPSIS) {
+            }
+            else if (mode == STATUS_SEEK_PERIAPSIS) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
 
@@ -177,12 +197,13 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centroid,
-                    AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(
+                        sugConstr2, onSketchPos, onSketchPos - centroid, AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
-            } else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
+            }
+            else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
 
@@ -196,8 +217,8 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, onSketchPos - centroid,
-                    AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(
+                        sugConstr3, onSketchPos, onSketchPos - centroid, AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
@@ -227,7 +248,8 @@ public:
             else {
                 mode = STATUS_Close;
             }
-        } else { // method is CENTER_PERIAPSIS_B
+        }
+        else {// method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 centroid = onSketchPos;
                 setAngleSnapping(true, centroid);
@@ -255,14 +277,16 @@ public:
         Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
             saveEllipse();
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
-            if(continuousMode){
+            if (continuousMode) {
                 if (constrMethod == 0) {
                     method = CENTER_PERIAPSIS_B;
                     mode = STATUS_SEEK_CENTROID;
-                } else {
+                }
+                else {
                     method = PERIAPSIS_APOAPSIS_B;
                     mode = STATUS_SEEK_PERIAPSIS;
                 }
@@ -281,7 +305,8 @@ private:
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
-        } else {
+        }
+        else {
             method = PERIAPSIS_APOAPSIS_B;
             mode = STATUS_SEEK_PERIAPSIS;
         }
@@ -293,6 +318,7 @@ private:
 
 protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+
 private:
     SelectMode mode;
     /// the method of constructing the ellipse
@@ -364,7 +390,7 @@ private:
     void solveEllipse(Base::Vector2d onSketchPos)
     {
         const double GOLDEN_RATIO = 1.6180339887;
-        Base::Vector3d k(0,0,1);
+        Base::Vector3d k(0, 0, 1);
 
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_APOAPSIS) {
@@ -378,16 +404,19 @@ private:
             centroid = periapsis + centroid;
             if (mode == STATUS_SEEK_APOAPSIS) {
                 // for first step, we draw an ellipse inscribed in a golden rectangle
-                ratio = 1 / GOLDEN_RATIO;   // ~= 0.6180339887
-                e = sqrt(ratio);            // ~= 0.7861513777
+                ratio = 1 / GOLDEN_RATIO;// ~= 0.6180339887
+                e = sqrt(ratio);         // ~= 0.7861513777
                 b = a * ratio;
             }
             else if (mode == STATUS_SEEK_B) {
-                // Get the closest distance from onSketchPos to apse line, as a 'requested' value for b
-                Base::Vector2d cursor = Base::Vector2d(onSketchPos - f); // vector from f to cursor pos
+                // Get the closest distance from onSketchPos to apse line, as a 'requested' value
+                // for b
+                Base::Vector2d cursor =
+                    Base::Vector2d(onSketchPos - f);// vector from f to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
-                w_1.ProjectToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
+                w_1.ProjectToLine(
+                    cursor, (periapsis - apoapsis));// projection of cursor line onto apse line
                 Base::Vector2d w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -397,7 +426,7 @@ private:
                 }
 
                 e = sqrt(1 - ((b * b) / (a * a)));
-                ratio = sqrt(1 - (e*e));
+                ratio = sqrt(1 - (e * e));
             }
             ae = a * e;
             f = apseHat;
@@ -409,7 +438,8 @@ private:
             phi = atan2(apseHat.y, apseHat.x);
             num = a * (1 - (e * e));
             // The ellipse is now solved
-        } else { // method == CENTER_PERIAPSIS_B
+        }
+        else {// method == CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 // solve the ellipse inscribed in a golden rectangle
                 periapsis = onSketchPos;
@@ -417,11 +447,11 @@ private:
                 iPrime.x = periapsis.x - centroid.x;
                 iPrime.y = periapsis.y - centroid.y;
                 iPrime.z = 0;
-                jPrime = k % iPrime;   // j = k cross i
+                jPrime = k % iPrime;// j = k cross i
 
                 // these are constant for any ellipse inscribed in a golden rectangle
-                ratio = 1 / GOLDEN_RATIO;   // ~= 0.6180339887
-                e = sqrt(ratio);            // ~= 0.7861513777
+                ratio = 1 / GOLDEN_RATIO;// ~= 0.6180339887
+                e = sqrt(ratio);         // ~= 0.7861513777
 
                 b = a * ratio;
                 ae = a * e;
@@ -440,14 +470,18 @@ private:
                 num = a * (1 - (e * e));
                 fixedAxisLength = a;
                 fixedAxis = periapsis;
-            } else if ((mode == STATUS_SEEK_B) || (mode == STATUS_SEEK_A)) {
+            }
+            else if ((mode == STATUS_SEEK_B) || (mode == STATUS_SEEK_A)) {
                 // while looking for the last click, we may switch back and forth
                 // between looking for a b point and looking for periapsis, so ensure
                 // we are in the right mode
-                Base::Vector2d cursor = Base::Vector2d(onSketchPos - centroid); // vector from centroid to cursor pos
+                Base::Vector2d cursor =
+                    Base::Vector2d(onSketchPos - centroid);// vector from centroid to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
-                w_1.ProjectToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
+                w_1.ProjectToLine(
+                    cursor,
+                    (fixedAxis - centroid));// projection of cursor line onto fixed axis line
                 Base::Vector2d w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a
@@ -455,16 +489,17 @@ private:
                     jPrime.x = (fixedAxis - centroid).x;
                     jPrime.y = (fixedAxis - centroid).y;
                     jPrime.Normalize();
-                    iPrime = jPrime % k;    // cross
+                    iPrime = jPrime % k;// cross
                     b = fixedAxisLength;
                     a = w_2.Length();
-                } else {
+                }
+                else {
                     // a is fixed, we are seeking b
                     mode = STATUS_SEEK_B;
                     iPrime.x = (fixedAxis - centroid).x;
                     iPrime.y = (fixedAxis - centroid).y;
                     iPrime.Normalize();
-                    jPrime = k % iPrime;    // cross
+                    jPrime = k % iPrime;// cross
                     a = fixedAxisLength;
                     b = w_2.Length();
                 }
@@ -472,7 +507,7 @@ private:
                 periapsis.x = centroid.x + (iPrime * a).x;
                 periapsis.y = centroid.y + (iPrime * a).y;
                 e = sqrt(1 - ((b * b) / (a * a)));
-                ratio = sqrt(1 - (e*e));
+                ratio = sqrt(1 - (e * e));
                 ae = a * e;
                 apseHat = (periapsis - centroid);
                 apseHat.Normalize();
@@ -507,49 +542,53 @@ private:
         // the semi-minor axis.
         double partitionAngle = (M_PI - atan2(b, ae)) / n;
         double radianShift = 0;
-        if (e > 0.8) {radianShift = (partitionAngle / 5) * 4;}
-        for (int i=0; i < n; i++) {
+        if (e > 0.8) {
+            radianShift = (partitionAngle / 5) * 4;
+        }
+        for (int i = 0; i < n; i++) {
             theta = i * partitionAngle;
-            if (i > 0) {theta = theta + radianShift;}
+            if (i > 0) {
+                theta = theta + radianShift;
+            }
             r = num / (1 + (e * cos(theta)));
             // r(pi/2) is semi-latus rectum, if we need it
-            pos.x = r*cos(theta+phi);  // phi rotates, sin/cos translate
-            pos.y = r*sin(theta+phi);
+            pos.x = r * cos(theta + phi);// phi rotates, sin/cos translate
+            pos.y = r * sin(theta + phi);
             pos = pos + f;
-            posPrime.x = r*cos(theta+phi+M_PI);
-            posPrime.y = r*sin(theta+phi+M_PI);
+            posPrime.x = r * cos(theta + phi + M_PI);
+            posPrime.y = r * sin(theta + phi + M_PI);
             posPrime = posPrime + fPrime;
             // over the loop, loads Quadrant I points, by using f as origin
             editCurve[i] = pos;
             // over the loop, loads Quadrant III points, by using fPrime as origin
-            editCurve[(2*n) + i] = posPrime;
+            editCurve[(2 * n) + i] = posPrime;
             // load points with negative theta angles (i.e. cw)
-            if (i>0) {
-                pos.x = r*cos(-1*theta+phi);
-                pos.y = r*sin(-1*theta+phi);
+            if (i > 0) {
+                pos.x = r * cos(-1 * theta + phi);
+                pos.y = r * sin(-1 * theta + phi);
                 pos = pos + f;
                 // loads Quadrant IV points
-                editCurve[(4*n) - i] = pos;
-                posPrime.x = r*cos(-1*theta+phi+M_PI);
-                posPrime.y = r*sin(-1*theta+phi+M_PI);
+                editCurve[(4 * n) - i] = pos;
+                posPrime.x = r * cos(-1 * theta + phi + M_PI);
+                posPrime.y = r * sin(-1 * theta + phi + M_PI);
                 posPrime = posPrime + fPrime;
                 // loads Quadrant II points
-                editCurve[(2*n) - i] = posPrime;
+                editCurve[(2 * n) - i] = posPrime;
             }
         }
         // load pos & neg b points
-        theta = M_PI - atan2(b, ae);        // the angle from f to the positive b point
+        theta = M_PI - atan2(b, ae);// the angle from f to the positive b point
         r = num / (1 + (e * cos(theta)));
-        pos.x = r*cos(theta+phi);
-        pos.y = r*sin(theta+phi);
+        pos.x = r * cos(theta + phi);
+        pos.y = r * sin(theta + phi);
         pos = pos + f;
-        editCurve[n] = pos; // positive
-        pos.x = r*cos(-1*theta+phi);
-        pos.y = r*sin(-1*theta+phi);
+        editCurve[n] = pos;// positive
+        pos.x = r * cos(-1 * theta + phi);
+        pos.y = r * sin(-1 * theta + phi);
         pos = pos + f;
-        editCurve[(3*n)] = pos; // negative
+        editCurve[(3 * n)] = pos;// negative
         // force the curve to be a closed shape
-        editCurve[(4*n)] = editCurve[0];
+        editCurve[(4 * n)] = editCurve[0];
     }
 
     /**
@@ -576,17 +615,17 @@ private:
         octave << "fPrime = [" << fPrime.x << ", " << fPrime.y << "];\n";
         octave << "phi = " << phi << ";\n\n";
         octave << "x = [";
-        for (int i=0; i < 4*n + 1; i++) {
+        for (int i = 0; i < 4 * n + 1; i++) {
             octave << editCurve[i].x;
-            if (i < 4*n) {
+            if (i < 4 * n) {
                 octave << ", ";
             }
         }
         octave << "];\n";
         octave << "y = [";
-        for (int i=0; i < 4*n + 1; i++) {
+        for (int i = 0; i < 4 * n + 1; i++) {
             octave << editCurve[i].y;
-            if (i < 4*n) {
+            if (i < 4 * n) {
                 octave << ", ";
             }
         }
@@ -609,10 +648,14 @@ private:
         octave << "set (centroidVec, \"maxheadsize\", 0.01, \"color\", \"black\");\n";
         octave << "bVec = quiver(0,0,positiveB(1),positiveB(2), 0);\n";
         octave << "set (bVec, \"maxheadsize\", 0.01, \"color\", \"black\");\n\n";
-        octave << "% Draw the local x & y basis vectors, scaled to a and b, in red and blue, respectively\n";
-        octave << "xLocalVec = quiver(centroid(1),centroid(2),periapsis(1)-centroid(1),periapsis(2)-centroid(2), 0);\n";
+        octave << "% Draw the local x & y basis vectors, scaled to a and b, in red and blue, "
+                  "respectively\n";
+        octave << "xLocalVec = "
+                  "quiver(centroid(1),centroid(2),periapsis(1)-centroid(1),periapsis(2)-centroid(2)"
+                  ", 0);\n";
         octave << "set (xLocalVec, \"maxheadsize\", 0.01, \"color\", \"red\");\n";
-        octave << "yLocalVec = quiver(centroid(1),centroid(2), positiveB(1)-centroid(1), positiveB(2)-centroid(2), 0);\n";
+        octave << "yLocalVec = quiver(centroid(1),centroid(2), positiveB(1)-centroid(1), "
+                  "positiveB(2)-centroid(2), 0);\n";
         octave << "set (yLocalVec, \"maxheadsize\", 0.01, \"color\", \"blue\");\nhold off;\n";
         qDebug() << QString::fromStdString(octave.str());
     }
@@ -677,12 +720,12 @@ private:
         /* GC_MakeEllipse requires a right-handed coordinate system, with +X
          * from centroid to periapsis, +Z out of the page.
          */
-        Base::Vector3d k(0,0,1);
+        Base::Vector3d k(0, 0, 1);
         Base::Vector3d i(periapsis.x - centroid.x, periapsis.y - centroid.y, 0);
-        Base::Vector3d j = k % i;   // j = k cross i
+        Base::Vector3d j = k % i;// j = k cross i
         double beta = 1e-7;
         int count = 0;
-        int limit = 25;             // no infinite loops!
+        int limit = 25;// no infinite loops!
         bool success = false;
         double tempB = b;
 
@@ -708,9 +751,9 @@ private:
             positiveB.y = atof(bpy);
             negativeB.x = atof(bnx);
             negativeB.y = atof(bny);
-            GC_MakeEllipse me(gp_Pnt(periapsis.x,periapsis.y,0),
-                              gp_Pnt(positiveB.x,positiveB.y,0),
-                              gp_Pnt(centroid.x,centroid.y,0));
+            GC_MakeEllipse me(gp_Pnt(periapsis.x, periapsis.y, 0),
+                              gp_Pnt(positiveB.x, positiveB.y, 0),
+                              gp_Pnt(centroid.x, centroid.y, 0));
             minorLength = (negativeB - positiveB).Length();
             count++;
             success = me.IsDone() && (minorLength + beta < majorLength);
@@ -730,26 +773,35 @@ private:
         fPrime.Scale(-1 * ae);
         fPrime = centroid + fPrime;
 
-        int currentgeoid = getHighestCurveIndex(); // index of the ellipse we just created
+        int currentgeoid = getHighestCurveIndex();// index of the ellipse we just created
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Ellipse"
-                                    "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
-                                    periapsis.x, periapsis.y,
-                                    positiveB.x, positiveB.y,
-                                    centroid.x, centroid.y,
-                                    geometryCreationMode==Construction?"True":"False");
+            Gui::cmdAppObjectArgs(
+                sketchgui->getObject(),
+                "addGeometry(Part.Ellipse"
+                "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
+                periapsis.x,
+                periapsis.y,
+                positiveB.x,
+                positiveB.y,
+                centroid.x,
+                centroid.y,
+                geometryCreationMode == Construction ? "True" : "False");
 
             currentgeoid++;
 
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+            Gui::cmdAppObjectArgs(
+                sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Gui::NotifyError(sketchgui,
+                             QT_TRANSLATE_NOOP("Notifications", "Error"),
+                             QT_TRANSLATE_NOOP("Notifications", "Failed to add an ellipse"));
             Gui::Command::abortCommand();
 
-            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(
+                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
             return;
         }
@@ -787,41 +839,42 @@ private:
             }
         }
 
-        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
 
         // This code enables the continuous creation mode.
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
-        } else {
+        }
+        else {
             method = PERIAPSIS_APOAPSIS_B;
             mode = STATUS_SEEK_PERIAPSIS;
         }
         editCurve.clear();
         drawEdit(editCurve);
 
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
 
-        if(continuousMode){
+        if (continuousMode) {
             // This code enables the continuous creation mode.
             editCurve.resize(33);
             applyCursor();
             /* It is ok not to call to purgeHandler
-            * in continuous creation mode because the
-            * handler is destroyed by the quit() method on pressing the
-            * right button of the mouse */
+             * in continuous creation mode because the
+             * handler is destroyed by the quit() method on pressing the
+             * right button of the mouse */
         }
-        else{
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        else {
+            sketchgui
+                ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
         }
-
     }
 };
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_DrawSketchHandlerEllipse_H
-
+#endif// SKETCHERGUI_DrawSketchHandlerEllipse_H

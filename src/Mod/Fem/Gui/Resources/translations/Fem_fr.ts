@@ -1847,7 +1847,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -3442,9 +3442,9 @@ Remarque : si une face a été sélectionnée, ce sera la valeur
       <source>Real part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Partie réelle de l'éventuel y-component
-Note : pour la 2D seule la configuration pour x est possible,
-          le paramètre pour y sera ignoré</translation>
+      <translation>Partie réelle de la composante en y du potentiel
+Remarque : pour la 2D, seul le réglage en x est possible,
+          le réglage en y sera ignoré</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="216"/>
@@ -3452,7 +3452,7 @@ Note : pour la 2D seule la configuration pour x est possible,
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
       <translation>Partie imaginaire de la composante en y du potentiel
-Remarque : pour la 2D, seule le réglage en x est possible,
+Remarque : pour la 2D, seul le réglage en x est possible,
           le réglage en y sera ignoré</translation>
     </message>
     <message>
@@ -3647,21 +3647,21 @@ Remarque : pour la 2D, seule le réglage en x est possible,
       <translation>Contrainte de force</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
+      <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
+      <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
+      <translation>Importer/Exporter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="466"/>
@@ -3714,7 +3714,7 @@ Remarque : pour la 2D, seule le réglage en x est possible,
       <translation>Contrainte de ressort</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
       <translation>Contrainte de température</translation>
     </message>

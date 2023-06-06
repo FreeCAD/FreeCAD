@@ -24,32 +24,32 @@ které odkazují na stejný konfigurovatelný objekt</translation>
     <message>
       <location filename="../../Origin.cpp" line="140"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Osa X</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="141"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Osa Y</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Osa Z</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Rovina XY</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>Rovina XZ</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="145"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>Rovina YZ</translation>
     </message>
   </context>
   <context>

@@ -362,7 +362,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Jeśli ta opcja jest zaznaczona, i arkusz stylów jest określony w Preferencjach ogólnych, zostanie on użyty i zastąpi poniższe kolory</translation>
+      <translation>Jeśli ta opcja jest zaznaczona i arkusz stylów jest określony w Preferencjach ogólnych, zostanie on użyty i zastąpi poniższe kolory</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>

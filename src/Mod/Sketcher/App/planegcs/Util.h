@@ -30,19 +30,19 @@
 
 namespace GCS
 {
-    using VEC_pD = std::vector<double *>;
-    using VEC_D = std::vector<double>;
-    using VEC_I = std::vector<int>;
-    using MAP_pD_pD = std::map<double *, double *>;
-    using MAP_pD_D = std::map<double *, double>;
-    using MAP_pD_I = std::map<double *, int>;
-    using SET_pD = std::set<double *>;
-    using SET_I = std::set<int>;
+using VEC_pD = std::vector<double*>;
+using VEC_D = std::vector<double>;
+using VEC_I = std::vector<int>;
+using MAP_pD_pD = std::map<double*, double*>;
+using MAP_pD_D = std::map<double*, double>;
+using MAP_pD_I = std::map<double*, int>;
+using SET_pD = std::set<double*>;
+using SET_I = std::set<int>;
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
-} //namespace GCS
+}// namespace GCS
 
-#endif // PLANEGCS_UTIL_H
+#endif// PLANEGCS_UTIL_H

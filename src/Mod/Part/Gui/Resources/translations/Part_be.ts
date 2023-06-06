@@ -2790,7 +2790,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Задаць напрамак, які адпавядае напрамку прамога рабра. Падказка: каб улічыць і даўжыню рабра, задайце абедзве даўжыні роўнымі нулю.</translation>
+      <translation>Задаць напрамак, які адпавядае напрамку прамога рабра. Падказка: каб улічыць і даўжыню рабра, задайце абедзве даўжыні ў нуль.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="48"/>
@@ -2858,7 +2858,7 @@ the size of the resulting STEP file.</source>
       <source>Length to extrude along direction (can be negative).
 If both lengths are zero, magnitude of direction is used.</source>
       <translation>Даўжыня для выдушвання наўздоўж напрамку (можа быць адмоўным).
-Калі абедзве даўжыні роўныя нулю, ужываецца велічыня напрамку.</translation>
+Калі абедзве даўжыні - нулі, ужываецца велічыня напрамку.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
@@ -2873,7 +2873,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation>Размеркаваць даўжыню выдушвання пароўну з абодвух бакоў.</translation>
+      <translation>Размеркаваць даўжыню выдушвання аднолькава з абодвух бакоў.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="265"/>
@@ -2883,22 +2883,22 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation>Вугал звужэння наўздоўж</translation>
+      <translation>Вугал конуса зянкоўкі наўздоўж</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
       <source>Taper (draft) angle along extrusion direction</source>
-      <translation>Вугал звужэння (контуру) наўздоўж напрамку выдушвання</translation>
+      <translation>Вугал конусу зянкоўкі (контуру) наўздоўж напрамку выдушвання</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation>Вугал звужэння супраць</translation>
+      <translation>Вугал конусу зянкоўкі супраць</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
       <source>Taper (draft) angle against extrusion direction</source>
-      <translation>Вугал звужэння (контуру) супраць напрамку выдушвання</translation>
+      <translation>Вугал конусу зянкоўкі (контуру) супраць напрамку выдушвання</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
@@ -2951,7 +2951,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Невядомая памылка</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -2984,7 +2984,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="702"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation>Агульная даўжыня выдушванне роўная нулю (length1 == -length2). Яна павінна быць ненулявы.</translation>
+      <translation>Агульная даўжыня выдушванне роўная нулю (length1 == -length2). Яна павінна быць ненулявой.</translation>
     </message>
   </context>
   <context>
@@ -4096,7 +4096,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Невядомая памылка</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4106,7 +4106,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="309"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Прамежак вугла вярчэння роўны нулю. Ён павінен быць ненулявы.</translation>
+      <translation>Прамежак вугла вярчэння - нуль. Ён павінен быць ненулявым.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="443"/>
@@ -5708,21 +5708,21 @@ in the 3D view for the sweep path.</source>
       <translation>Змяніць %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Варштаты Дэталь і Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Дэталь/Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Імпарт-Экспарт</translation>
     </message>
@@ -6024,63 +6024,63 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation>Лагічная аперацыя - праверка невядомая</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>Лагічная аперацыя: невядомая праверка</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation>Лагічная аперацыя - няправільны тып</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>Лагічная аперацыя: няправільны тып</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation>Лагічная аперацыя - самаперакрыжаванне</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Лагічная аперацыя: знойдзена самаперакрыжаванне</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation>Лагічная аперацыя - занадта малое рабро</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Лагічная аперацыя: рабро занадта малое</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation>Лагічная аперацыя - неадноўленая грань</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>Лагічная аперацыя: неадноўленая грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation>Лагічная аперацыя - несумяшчальная вяршыня</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>Лагічная аперацыя: несумяшчальная вяршыня</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation>Лагічная аперацыя - несумяшчальнае рабро</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Лагічная аперацыя: несумяшчальнае рабро</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation>Лагічная аперацыя - несумяшчальная грань</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Лагічная аперацыя: несумяшчальная грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation>Лагічная аперацыя - перапыненая</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Лагічная аперацыя: перапыненая</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation>Лагічная аперацыя - GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Лагічная аперацыя: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation>Лагічная аперацыя - хібная крывая на паверхні</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>Лагічная аперацыя: хібная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation>Лагічная аперацыя - несапраўдная</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Лагічная аперацыя: недапушчальная</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>

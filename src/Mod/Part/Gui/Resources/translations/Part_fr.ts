@@ -1266,7 +1266,7 @@ cela mesurera entre deux de leurs sommets.</translation>
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation>Rafraîchir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -1956,10 +1956,9 @@ décomposée en ses composantes X, Y et Z.</translation>
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation>Projeter des arêtes, des fils ou des faces d’'un objet
-sur une face d’un autre objet.
-La vue caméra détermine la direction
-de la projection.</translation>
+      <translation>Projeter des arêtes, des polylignes ou des faces d’'un 
+objet sur une face d’un autre objet.
+La vue caméra détermine la direction de la projection.</translation>
     </message>
   </context>
   <context>
@@ -2951,7 +2950,7 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Erreur inconnue</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -3317,7 +3316,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="75"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Réduire le nombre d'objets en utilisant une matrice liée</translation>
+      <translation>Réduire le nombre d'objets en utilisant un réseau lié</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="78"/>
@@ -3396,17 +3395,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="52"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="72"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="92"/>
@@ -4048,7 +4047,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4094,7 +4093,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Erreur inconnue</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4147,7 +4146,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>L'écart maximal suivant la  boîte englobant le modèle</translation>
+      <translation>Déviation maximale selon la boîte englobante du modèle</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
@@ -4342,7 +4341,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="219"/>
       <source>Vertex size</source>
-      <translation>Taille des sommets</translation>
+      <translation>Taille des points</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="226"/>
@@ -4695,7 +4694,7 @@ Fonctionne uniquement si tous les objets ont les mêmes valeurs.</translation>
       <source>Allows to cut objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
-      <translation>Permet de couper des objets s'intersectant au risque
+      <translation>Permet de couper des objets s'intersectant avec la conséquence
 que tous les objets coupés auront la même couleur</translation>
     </message>
     <message>
@@ -5717,23 +5716,23 @@ in the 3D view for the sweep path.</source>
       <translation>Modifier %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Ateliers Part et Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
-      <translation>Importer-Exporter</translation>
+      <translation>Importer/Exporter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
@@ -6033,63 +6032,63 @@ Voulez-vous continuer ?</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation>Opération booléenne  : vérification Inconnue</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>Opération booléenne : vérification inconnue</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation>Opération booléenne  : type erroné</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>Opération booléenne : mauvais type</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation>Opération booléenne  : auto-intersection</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Opération booléenne : Auto-intersection trouvée</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation>Opération booléenne : arête trop petite</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Opération booléenne : arêtes trop petites</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
+      <source>Boolean operation: Non-recoverable face</source>
       <translation>Opération booléenne : face non récupérable</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
+      <source>Boolean operation: Incompatibility of vertex</source>
       <translation>Opération booléenne : incompatibilité de sommets</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation>Opération booléenne : incompatibilité d'arêtes</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Opération booléenne : Incompatibilité de l'arête</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation>Opération booléenne : incompatibilité de faces</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Opération booléenne : Incompatibilité de la face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation>Opération booléenne : opération annulée</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Opération booléenne : Abandonné</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation>Opération booléenne : erreur d'Open Cascade (GeomAbs_C0)</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Opération booléenne : GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
+      <source>Boolean operation: Invalid curve on surface</source>
       <translation>Opération booléenne : courbe non valide sur la surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation>Opération booléenne : invalide</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Opération booléenne : non valide</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -6219,7 +6218,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation>Opération booléenne</translation>
+      <translation>Opérations booléennes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6262,7 +6261,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation>Crée un tube</translation>
+      <translation>Créer un tube</translation>
     </message>
   </context>
   <context>
@@ -6298,7 +6297,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Sélectionnez l'objet de base, puis l'objet à intégrer, puis lancez cet outil.</translation>
+      <translation>Sélectionner l'objet de base, puis l'objet à intégrer, puis lancer cet outil.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>

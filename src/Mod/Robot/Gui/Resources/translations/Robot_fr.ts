@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="250"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>Définir les valeurs par défaut pour la vitesse, l’accélération et la continuité pour les commandes suivantes de la création du point de passage</translation>
+      <translation>Définir les valeurs par défaut pour la vitesse, l’accélération et la continuité pour les commandes suivantes de la création des points de passage</translation>
     </message>
   </context>
   <context>

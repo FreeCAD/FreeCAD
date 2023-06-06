@@ -106,6 +106,9 @@
         <file>icons/general/Sketcher_ViewSketch.svg</file>
         <file>icons/general/Sketcher_GridToggle.svg</file>
         <file>icons/general/Sketcher_GridToggle_Deactivated.svg</file>
+        <file>icons/general/Sketcher_RenderingOrder_Construction.svg</file>
+        <file>icons/general/Sketcher_RenderingOrder_External.svg</file>
+        <file>icons/general/Sketcher_RenderingOrder_Normal.svg</file>
         <file>icons/general/Sketcher_Snap.svg</file>
         <file>icons/general/Sketcher_Snap_Deactivated.svg</file>
     </qresource>
