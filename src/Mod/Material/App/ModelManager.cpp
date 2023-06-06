@@ -34,13 +34,16 @@ using namespace Material;
 ModelManager *ModelManager::manager = nullptr;
 std::map<std::string, Model*> *ModelManager::modelMap = nullptr;
 
+TYPESYSTEM_SOURCE(Material::ModelManager, Base::BaseClass)
+
 ModelManager::ModelManager()
 {
-    if (modelMap == nullptr)
+    if (modelMap == nullptr) {
         modelMap = new std::map<std::string, Model*>();
 
-    // Load the libraries
-    ModelLoader loader(modelMap);
+        // Load the libraries
+        ModelLoader loader(modelMap);
+    }
 }
 
 /*

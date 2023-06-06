@@ -30,7 +30,8 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
-#include "Model.h"
+// #include "Model.h"
+#include "ModelManagerPy.h"
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
 
@@ -61,6 +62,7 @@ PyMOD_INIT_FUNC(Material)
 
     Base::Console().Log("Loading Material module... done\n");
 
+    Base::Interpreter().addType(&Material::ModelManagerPy   ::Type, module, "ModelManager");
     Base::Interpreter().addType(&Material::ModelPropertyPy  ::Type, module, "ModelProperty");
     Base::Interpreter().addType(&Material::ModelPy          ::Type, module, "Model");
 

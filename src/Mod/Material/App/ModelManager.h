@@ -23,18 +23,23 @@
 #ifndef MATERIAL_MODELMANAGER_H
 #define MATERIAL_MODELMANAGER_H
 
+#include <Base/BaseClass.h>
+
 #include "Model.h"
 
 namespace Material {
 
-class MaterialExport ModelManager
+class MaterialExport ModelManager : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
+
 public:
+    explicit ModelManager();
+    virtual ~ModelManager();
+
     static ModelManager *getManager();
 
 private:
-    explicit ModelManager();
-    virtual ~ModelManager();
 
     static ModelManager *manager;
     static std::map<std::string, Model*> *modelMap;
