@@ -157,6 +157,11 @@
         <property name="prefPath" stdset="0">
          <cstring>NaviCube</cstring>
         </property>
+        <item>
+         <property name="text">
+          <string>Default</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="2" column="0">
@@ -204,8 +209,7 @@
       <item row="3" column="1">
        <widget class="Gui::PrefColorButton" name="naviCubeBaseColor">
         <property name="toolTip">
-         <string>color for all elements
-around the cube</string>
+         <string>Base color for all elements</string>
         </property>
         <property name="color">
          <color alpha="128">
