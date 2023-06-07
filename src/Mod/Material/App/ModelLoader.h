@@ -34,10 +34,11 @@ namespace Material {
 class ModelEntry
 {
 public:
-    explicit ModelEntry(const std::string &baseName, const std::string &modelName, const QDir &dir, 
+    explicit ModelEntry(const ModelLibrary &library, const std::string &baseName, const std::string &modelName, const QDir &dir, 
         const std::string &modelUuid, const YAML::Node &modelData);
     virtual ~ModelEntry();
 
+    const ModelLibrary &getLibrary() const { return _library; }
     const std::string &getBase() const { return _base; }
     const std::string &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
@@ -51,6 +52,7 @@ public:
 private:
     explicit ModelEntry();
 
+    ModelLibrary _library;
     std::string _base;
     std::string _name;
     QDir _directory;
@@ -74,8 +76,7 @@ private:
     void showYaml(const YAML::Node& yaml) const;
     void dereference(ModelEntry* parent, const ModelEntry* child);
     void dereference(ModelEntry* model);
-    ModelEntry *getModelFromPath(const std::string &path) const;
-    void showLibEntry(const std::string& checkpoint, const QDir &dir, const ModelLibrary& entry) const;
+    ModelEntry *getModelFromPath(const ModelLibrary &library, const std::string &path) const;
     void addLibrary(ModelLibrary* model);
     void loadLibrary(const ModelLibrary &library);
     void loadLibraries(void);

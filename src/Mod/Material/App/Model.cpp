@@ -29,6 +29,17 @@
 
 using namespace Material;
 
+TYPESYSTEM_SOURCE(Material::ModelLibrary, Base::BaseClass)
+
+ModelLibrary::ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
+    _name(libraryName), _directory(dir), _iconPath(icon)
+{}
+ModelLibrary::ModelLibrary()
+{}
+
+ModelLibrary::~ModelLibrary()
+{}
+
 TYPESYSTEM_SOURCE(Material::ModelProperty, Base::BaseClass)
 
 ModelProperty::ModelProperty()
@@ -54,25 +65,14 @@ TYPESYSTEM_SOURCE(Material::Model, Base::BaseClass)
 Model::Model()
 {}
 
-Model::Model(ModelType type, const std::string &name, const QDir &directory, 
+Model::Model(const ModelLibrary &library, ModelType type, const std::string &name, const QDir &directory, 
         const std::string &uuid, const std::string& description, const std::string& url,
         const std::string& doi):
-    _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
+    _library(library), _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
     _url(url), _doi(doi)
 {}
 
 Model::~Model()
-{}
-
-TYPESYSTEM_SOURCE(Material::ModelLibrary, Base::BaseClass)
-
-ModelLibrary::ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
-    name(libraryName), directory(dir), iconPath(icon)
-{}
-ModelLibrary::ModelLibrary()
-{}
-
-ModelLibrary::~ModelLibrary()
 {}
 
 #include "moc_Model.cpp"

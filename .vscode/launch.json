@@ -10,8 +10,8 @@
     "stopAtEntry": false,
     "cwd": "${workspaceFolder}",
     "environment": [],
-    "console": "externalTerminal"
-  },
+    "externalConsole": false
+    },
     {
       "name": "C/C++: Linux: build and debug FreeCAD",
       "type": "cppdbg",

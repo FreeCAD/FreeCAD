@@ -29,6 +29,26 @@
 
 namespace Material {
 
+class MaterialExport ModelLibrary : public Base::BaseClass
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    explicit ModelLibrary();
+    explicit ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon);
+    virtual ~ModelLibrary();
+
+    const std::string &getName() const { return _name; }
+    const QDir &getDirectory() const { return _directory; }
+    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
+    const std::string &getIconPath() const { return _iconPath; }
+
+private:
+    std::string _name;
+    QDir _directory;
+    std::string _iconPath;
+};
+
 class MaterialExport ModelProperty : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
@@ -71,20 +91,24 @@ public:
     };
 
     explicit Model();
-    explicit Model(ModelType type, const std::string &name, const QDir &directory, 
+    explicit Model(const ModelLibrary &library, ModelType type, const std::string &name, const QDir &directory, 
         const std::string &uuid, const std::string& description, const std::string& url,
         const std::string& doi);
     virtual ~Model();
 
+    const ModelLibrary &getLibrary() const { return _library; }
     const std::string getBase() const { return (_type == MODEL) ? "Model" : "AppearanceModel"; }
     const std::string &getName() const { return _name; }
     ModelType getType() const { return _type; }
     const QDir &getDirectory() const { return _directory; }
+    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
+    const std::string getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()).toStdString(); }
     const std::string &getUUID() const { return _uuid; }
     const std::string &getDescription() const { return _description; }
     const std::string &getURL() const { return _url; }
     const std::string &getDOI() const { return _doi; }
 
+    void setLibrary(const ModelLibrary &library) { _library = library; }
     void setType(ModelType type) { _type = type; }
     void setName(const std::string& name) { _name = name; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
@@ -117,6 +141,7 @@ public:
     const_iterator cend() const noexcept { return _properties.cend(); }
 
 private:
+    ModelLibrary _library;
     ModelType _type;
     std::string _name;
     QDir _directory;
@@ -126,26 +151,6 @@ private:
     std::string _doi;
     std::vector<std::string> _inheritedUuids;
     std::map<std::string, ModelProperty> _properties;
-};
-
-class MaterialExport ModelLibrary : public Base::BaseClass
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    explicit ModelLibrary();
-    explicit ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon);
-    virtual ~ModelLibrary();
-
-    const std::string &getName() const { return name; }
-    const QDir &getDirectory() const { return directory; }
-    const std::string getDirectoryPath() const { return directory.absolutePath().toStdString(); }
-    const std::string &getIconPath() const { return iconPath; }
-
-private:
-    std::string name;
-    QDir directory;
-    std::string iconPath;
 };
 
 } // namespace Material

@@ -32,6 +32,7 @@ import FreeCAD
 import FreeCADGui
 # import Material_rc
 from materialtools.cardutils import get_material_preferred_directory, get_material_preferred_save_directory
+import Material
 
 
 # is this still needed after the move to card utils???
@@ -94,7 +95,14 @@ class ModelSelect:
         # resources["System"] = (builtin_mat_dir, ":/icons/freecad.svg")
 
         root = model.invisibleRootItem()
-        self.addModels(root, folder, p)
+        mgr=Material.ModelManager()
+        libraries = mgr.ModelLibraries
+        for library in libraries:
+            folder = Path(library[1])
+            top = QtGui.QStandardItem(library[0])
+            self.widget.treeView.setExpanded(root.index(), True)
+            root.appendRow(top)
+            self.addModels(top, folder, p)
 
         # top = QtGui.QStandardItem(gg)
         # model.appendRow([top])
@@ -110,6 +118,7 @@ class ModelSelect:
                 print("Add model dir '{0}'".format(str(child.stem)))
                 item = QtGui.QStandardItem(str(child.stem))
                 top.appendRow([item])
+                self.widget.treeView.setExpanded(top.index(), True)
                 self.addModels(item, folder / child.stem, param)
             else:
                 lower = child.suffix.lower()

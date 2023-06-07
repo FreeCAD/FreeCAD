@@ -66,43 +66,13 @@ Py::List ModelManagerPy::getModelLibraries() const
         Py::Tuple libTuple(3);
         libTuple.setItem(0,Py::String(lib->getName()));
         libTuple.setItem(1,Py::String(lib->getDirectoryPath()));
-        libTuple.setItem(1,Py::String(lib->getIconPath()));
+        libTuple.setItem(2,Py::String(lib->getIconPath()));
 
         list.append(libTuple);
     }
 
     return list;
 }
-
-// Py::String ModelManagerPy::getName() const
-// {
-//     return Py::String(getModelPtr()->getName());
-// }
-
-// Py::String ModelManagerPy::getDirectory() const
-// {
-//     return Py::String(getModelPtr()->getDirectory().absolutePath().toStdString());
-// }
-
-// Py::String ModelManagerPy::getUUID() const
-// {
-//     return Py::String(getModelPtr()->getUUID());
-// }
-
-// Py::String ModelManagerPy::getDescription() const
-// {
-//     return Py::String(getModelPtr()->getDescription());
-// }
-
-// Py::String ModelManagerPy::getURL() const
-// {
-//     return Py::String(getModelPtr()->getURL());
-// }
-
-// Py::String ModelManagerPy::getDOI() const
-// {
-//     return Py::String(getModelPtr()->getDOI());
-// }
 
 PyObject *ModelManagerPy::getCustomAttributes(const char* /*attr*/) const
 {

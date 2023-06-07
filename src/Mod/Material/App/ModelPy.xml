@@ -20,6 +20,30 @@
         <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
       </Documentation>
     </Methode> -->
+    <Attribute Name="LibraryName" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model library name.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryName" Type="String"/>
+    </Attribute>
+    <Attribute Name="LibraryRoot" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model library path.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryRoot" Type="String"/>
+    </Attribute>
+    <Attribute Name="RelativePath" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model path relative to the library root.</UserDocu>
+      </Documentation>
+      <Parameter Name="RelativePath" Type="String"/>
+    </Attribute>
+    <Attribute Name="LibraryIcon" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model icon path.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryIcon" Type="String"/>
+    </Attribute>
     <Attribute Name="Name" ReadOnly="true">
       <Documentation>
         <UserDocu>Model name.</UserDocu>

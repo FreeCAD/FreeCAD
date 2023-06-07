@@ -51,6 +51,26 @@ int ModelPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+Py::String ModelPy::getLibraryName() const
+{
+    return Py::String(getModelPtr()->getLibrary().getName());
+}
+
+Py::String ModelPy::getLibraryRoot() const
+{
+    return Py::String(getModelPtr()->getLibrary().getDirectoryPath());
+}
+
+Py::String ModelPy::getRelativePath() const
+{
+    return Py::String(getModelPtr()->getRelativePath());
+}
+
+Py::String ModelPy::getLibraryIcon() const
+{
+    return Py::String(getModelPtr()->getLibrary().getIconPath());
+}
+
 Py::String ModelPy::getName() const
 {
     return Py::String(getModelPtr()->getName());
