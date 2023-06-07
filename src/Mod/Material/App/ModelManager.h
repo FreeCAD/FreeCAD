@@ -40,12 +40,13 @@ public:
     static ModelManager *getManager();
 
     std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
+    std::map<std::string, Model*> *getModels() { return _modelMap; }
 
 private:
 
     static ModelManager *manager;
     static std::list<ModelLibrary*> *_libraryList;
-    static std::map<std::string, Model*> *modelMap;
+    static std::map<std::string, Model*> *_modelMap;
 };
 
 } // namespace Material

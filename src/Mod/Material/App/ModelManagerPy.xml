@@ -15,46 +15,17 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material model descriptions.</UserDocu>
     </Documentation>
-    <!-- <Methode Name="getModelLibraries">
-      <Documentation>
-        <UserDocu>Returns a list of model libraries</UserDocu>
-      </Documentation>
-    </Methode> -->
     <Attribute Name="ModelLibraries" ReadOnly="true">
       <Documentation>
         <UserDocu>List of model libraries.</UserDocu>
       </Documentation>
       <Parameter Name="ModelLibraries" Type="List"/>
     </Attribute>
-    <!-- <Attribute Name="Directory" ReadOnly="true">
+    <Attribute Name="Models" ReadOnly="true">
       <Documentation>
-        <UserDocu>Model directory.</UserDocu>
+        <UserDocu>List of model libraries.</UserDocu>
       </Documentation>
-      <Parameter Name="Directory" Type="String"/>
+      <Parameter Name="Models" Type="Dict"/>
     </Attribute>
-    <Attribute Name="UUID" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Unique model identifier.</UserDocu>
-      </Documentation>
-      <Parameter Name="UUID" Type="String"/>
-    </Attribute>
-    <Attribute Name="Description" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Description of the model.</UserDocu>
-      </Documentation>
-      <Parameter Name="Description" Type="String"/>
-    </Attribute>
-    <Attribute Name="URL" ReadOnly="true">
-      <Documentation>
-        <UserDocu>URL to a detailed description of the model.</UserDocu>
-      </Documentation>
-      <Parameter Name="URL" Type="String"/>
-    </Attribute>
-    <Attribute Name="DOI" ReadOnly="true">
-      <Documentation>
-        <UserDocu>Digital Object Identifier (see https://doi.org/)</UserDocu>
-      </Documentation>
-      <Parameter Name="DOI" Type="String"/>
-    </Attribute> -->
   </PythonExport>
 </GenerateModel>

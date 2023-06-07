@@ -33,19 +33,20 @@ using namespace Material;
 
 ModelManager *ModelManager::manager = nullptr;
 std::list<ModelLibrary*> *ModelManager::_libraryList = nullptr;
-std::map<std::string, Model*> *ModelManager::modelMap = nullptr;
+std::map<std::string, Model*> *ModelManager::_modelMap = nullptr;
 
 TYPESYSTEM_SOURCE(Material::ModelManager, Base::BaseClass)
 
 ModelManager::ModelManager()
 {
-    if (modelMap == nullptr) {
-        modelMap = new std::map<std::string, Model*>();
+    // TODO: Add a mutex or similar
+    if (_modelMap == nullptr) {
+        _modelMap = new std::map<std::string, Model*>();
     if (_libraryList == nullptr)
         _libraryList = new std::list<ModelLibrary*>();
 
         // Load the libraries
-        ModelLoader loader(modelMap, _libraryList);
+        ModelLoader loader(_modelMap, _libraryList);
     }
 }
 

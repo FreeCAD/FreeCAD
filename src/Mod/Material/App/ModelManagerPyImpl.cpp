@@ -74,6 +74,21 @@ Py::List ModelManagerPy::getModelLibraries() const
     return list;
 }
 
+Py::Dict ModelManagerPy::getModels() const
+{
+    std::map<std::string, Model*> *models = getModelManagerPtr()->getModels();
+    Py::Dict dict;
+
+    for (auto it = models->begin(); it != models->end(); it++)
+    {
+        std::string key = it->first;
+        Model *model = it->second;
+        dict.setItem(Py::String(key), Py::String(model->getName()));
+    }
+
+    return dict;
+}
+
 PyObject *ModelManagerPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
