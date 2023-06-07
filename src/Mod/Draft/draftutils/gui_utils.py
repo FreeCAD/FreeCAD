@@ -137,7 +137,16 @@ def autogroup(obj):
 
     else:
 
-        if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+        if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
+            # NativeIFC handling
+            try:
+                import ifc_tools
+                parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+                ifc_tools.aggregate(obj, parent)
+            except:
+                pass
+
+        elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
             active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
             if obj in active_arch_obj.InListRecursive:
