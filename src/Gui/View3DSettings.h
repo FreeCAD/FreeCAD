@@ -60,7 +60,6 @@ public:
     ~NaviCubeSettings();
 
     void applySettings();
-    static QString getDefaultSansserifFont();
 private:
     void parameterChanged(ParameterGrp::MessageType pName);
     ParameterGrp::handle hGrp;
