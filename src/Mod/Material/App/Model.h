@@ -128,6 +128,26 @@ private:
     std::map<std::string, ModelProperty> _properties;
 };
 
+class MaterialExport ModelLibrary : public Base::BaseClass
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    explicit ModelLibrary();
+    explicit ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon);
+    virtual ~ModelLibrary();
+
+    const std::string &getName() const { return name; }
+    const QDir &getDirectory() const { return directory; }
+    const std::string getDirectoryPath() const { return directory.absolutePath().toStdString(); }
+    const std::string &getIconPath() const { return iconPath; }
+
+private:
+    std::string name;
+    QDir directory;
+    std::string iconPath;
+};
+
 } // namespace Material
 
 #endif // MATERIAL_MODEL_H

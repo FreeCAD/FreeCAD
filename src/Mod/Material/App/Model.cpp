@@ -64,4 +64,15 @@ Model::Model(ModelType type, const std::string &name, const QDir &directory,
 Model::~Model()
 {}
 
+TYPESYSTEM_SOURCE(Material::ModelLibrary, Base::BaseClass)
+
+ModelLibrary::ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
+    name(libraryName), directory(dir), iconPath(icon)
+{}
+ModelLibrary::ModelLibrary()
+{}
+
+ModelLibrary::~ModelLibrary()
+{}
+
 #include "moc_Model.cpp"

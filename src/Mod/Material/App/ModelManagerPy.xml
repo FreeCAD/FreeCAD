@@ -15,18 +15,18 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material model descriptions.</UserDocu>
     </Documentation>
-    <!-- <Methode Name="mirror">
+    <!-- <Methode Name="getModelLibraries">
       <Documentation>
-        <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
+        <UserDocu>Returns a list of model libraries</UserDocu>
       </Documentation>
     </Methode> -->
-    <!-- <Attribute Name="Name" ReadOnly="true">
+    <Attribute Name="ModelLibraries" ReadOnly="true">
       <Documentation>
-        <UserDocu>Model name.</UserDocu>
+        <UserDocu>List of model libraries.</UserDocu>
       </Documentation>
-      <Parameter Name="Name" Type="String"/>
+      <Parameter Name="ModelLibraries" Type="List"/>
     </Attribute>
-    <Attribute Name="Directory" ReadOnly="true">
+    <!-- <Attribute Name="Directory" ReadOnly="true">
       <Documentation>
         <UserDocu>Model directory.</UserDocu>
       </Documentation>

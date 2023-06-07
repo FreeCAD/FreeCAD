@@ -39,9 +39,12 @@ public:
 
     static ModelManager *getManager();
 
+    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
+
 private:
 
     static ModelManager *manager;
+    static std::list<ModelLibrary*> *_libraryList;
     static std::map<std::string, Model*> *modelMap;
 };
 

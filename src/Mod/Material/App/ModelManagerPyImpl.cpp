@@ -55,6 +55,25 @@ int ModelManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+Py::List ModelManagerPy::getModelLibraries() const
+{
+    std::list<ModelLibrary*> *libraries = getModelManagerPtr()->getModelLibraries();
+    Py::List list;
+
+    for (auto it = libraries->begin(); it != libraries->end(); it++)
+    {
+        ModelLibrary *lib = *it;
+        Py::Tuple libTuple(3);
+        libTuple.setItem(0,Py::String(lib->getName()));
+        libTuple.setItem(1,Py::String(lib->getDirectoryPath()));
+        libTuple.setItem(1,Py::String(lib->getIconPath()));
+
+        list.append(libTuple);
+    }
+
+    return list;
+}
+
 // Py::String ModelManagerPy::getName() const
 // {
 //     return Py::String(getModelPtr()->getName());

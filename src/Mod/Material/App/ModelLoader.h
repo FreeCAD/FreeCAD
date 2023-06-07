@@ -59,37 +59,13 @@ private:
     bool _dereferenced;
 };
 
-class LibraryEntry
-{
-public:
-    explicit LibraryEntry(const std::string &libraryName, const QDir &dir, const std::string &icon);
-    virtual ~LibraryEntry();
-
-    const std::string &getName() const
-    {
-        return name;
-    }
-    const QDir &getDirectory() const
-    {
-        return directory;
-    }
-    const std::string &getIconPath() const
-    {
-        return iconPath;
-    }
-
-private:
-    explicit LibraryEntry();
-    std::string name;
-    QDir directory;
-    std::string iconPath;
-};
-
 class ModelLoader
 {
 public:
-    explicit ModelLoader(std::map<std::string, Model*> *modelMap);
+    explicit ModelLoader(std::map<std::string, Model*> *modelMap, std::list<ModelLibrary*> *libraryList);
     virtual ~ModelLoader();
+
+    std::list<ModelLibrary*> *getModelLibraries();
 
 private:
     explicit ModelLoader();
@@ -99,14 +75,13 @@ private:
     void dereference(ModelEntry* parent, const ModelEntry* child);
     void dereference(ModelEntry* model);
     ModelEntry *getModelFromPath(const std::string &path) const;
-    void showLibEntry(const std::string& checkpoint, const QDir &dir, const LibraryEntry& entry) const;
-    void addModel(LibraryEntry* model);
-    void loadLibrary(const LibraryEntry &library);
+    void showLibEntry(const std::string& checkpoint, const QDir &dir, const ModelLibrary& entry) const;
+    void addLibrary(ModelLibrary* model);
+    void loadLibrary(const ModelLibrary &library);
     void loadLibraries(void);
-    std::list<LibraryEntry*> *getModelLibraries();
-    static std::list<LibraryEntry*> *libraries;
     static std::map<std::string, ModelEntry*> *_modelEntryMap;
     std::map<std::string, Model*> *_modelMap;
+    std::list<ModelLibrary*> *_libraryList;
 };
 
 } // namespace Material
