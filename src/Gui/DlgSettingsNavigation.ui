@@ -209,8 +209,7 @@
       <item row="3" column="1">
        <widget class="Gui::PrefColorButton" name="naviCubeBaseColor">
         <property name="toolTip">
-         <string>color for all elements
-around the cube</string>
+         <string>Base color for all elements</string>
         </property>
         <property name="color">
          <color alpha="128">
