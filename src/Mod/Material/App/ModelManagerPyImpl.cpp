@@ -29,6 +29,7 @@
 #include "ModelManagerPy.h"
 #include "ModelManagerPy.cpp"
 #include "ModelManager.h"
+#include "ModelPy.h"
 
 
 using namespace Material;
@@ -83,7 +84,9 @@ Py::Dict ModelManagerPy::getModels() const
     {
         std::string key = it->first;
         Model *model = it->second;
-        dict.setItem(Py::String(key), Py::String(model->getName()));
+
+        PyObject *modelPy = new ModelPy(new Model(*model));
+        dict.setItem(Py::String(key), Py::Object(modelPy,true));
     }
 
     return dict;
