@@ -20,34 +20,29 @@
 #*                                                                         *
 #***************************************************************************
 
+"""This module contains placeholders for viewproviders provided by the NativeIFC addon"""
+
 import FreeCAD
 
 class ifc_vp_object:
     """NativeIFC class placeholder"""
     def __init__(self):
         pass
-    def attach(self, vobj):
-        return
-    def getDisplayModes(self, obj):
-        return []
-    def getDefaultDisplayMode(self):
-        return "FlatLines"
-    def setDisplayMode(self,mode):
-        return mode
-    def __getstate__(self):
-        return None
-    def __setstate__(self, state):
-        return None
 
-class ifc_vp_document(ifc_vp_object):
+class ifc_vp_document:
     """NativeIFC class placeholder"""
     def __init__(self):
         pass
     def attach(self, vobj):
-        FreeCAD.Console.PrintWarning("Warning: Object "+vobj.Object.Label+" depends on the NativeIFC addon which is not installed, and will not display correctly in the 3D view\n")
+        FreeCAD.Console.PrintWarning("Warning: Object "+vobj.Object.Label+" depends on the NativeIFC addon which is not installed, and might not display correctly in the 3D view\n")
         return
 
 class ifc_vp_group:
+    """NativeIFC class placeholder"""
+    def __init__(self):
+        pass
+
+class ifc_vp_material:
     """NativeIFC class placeholder"""
     def __init__(self):
         pass
