@@ -39,6 +39,7 @@ qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 set(MatGui_UIC_SRCS
     DlgSettingsMaterial.ui
     MaterialsEditor.ui
+    ModelSelect.ui
 )
 
 SET(MatGui_SRCS
@@ -52,6 +53,9 @@ SET(MatGui_SRCS
     MaterialsEditor.cpp
     MaterialsEditor.h
     MaterialsEditor.ui
+    ModelSelect.cpp
+    ModelSelect.h
+    ModelSelect.ui
     PreCompiled.cpp
     PreCompiled.h
     ValueEditor.ui
