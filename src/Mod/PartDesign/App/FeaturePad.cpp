@@ -71,11 +71,10 @@ App::DocumentObjectExecReturn *Pad::execute()
 {
     // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Length of pad too small"));
     double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Second length of pad too small"));
+    std::string type = Type.getValueAsString();
+    if ((type == "Length" || type == "TwoLengths") && (L < Precision::Confusion ()))
+        return new App::DocumentObjectExecReturn (QT_TRANSLATE_NOOP("Exception", "Length of pad too small"));
 
     // if midplane is true, disable reversed and vice versa
     bool hasMidplane = Midplane.getValue();
