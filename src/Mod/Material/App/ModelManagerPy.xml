@@ -15,6 +15,16 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material model descriptions.</UserDocu>
     </Documentation>
+    <Methode Name="getModel">
+      <Documentation>
+        <UserDocu>Get a model object by specifying its UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getModelByPath">
+      <Documentation>
+        <UserDocu>Get a model object by specifying its path</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="ModelLibraries" ReadOnly="true">
       <Documentation>
         <UserDocu>List of model libraries.</UserDocu>

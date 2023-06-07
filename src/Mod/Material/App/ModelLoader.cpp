@@ -64,6 +64,18 @@ void ModelLoader::addLibrary(ModelLibrary *model)
     _libraryList->push_back(model);
 }
 
+const std::string ModelLoader::getUUIDFromPath(const std::string &path)
+{
+    YAML::Node yamlroot = YAML::LoadFile(path);
+    std::string base = "Model";
+    if (yamlroot["AppearanceModel"]) {
+        base = "AppearanceModel";
+    }
+
+    const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
+    return uuid;
+}
+
 ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std::string &path) const
 {
     YAML::Node yamlroot = YAML::LoadFile(path);

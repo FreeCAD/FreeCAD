@@ -68,6 +68,7 @@ public:
     virtual ~ModelLoader();
 
     std::list<ModelLibrary*> *getModelLibraries();
+    static const std::string getUUIDFromPath(const std::string &path);
 
 private:
     explicit ModelLoader();

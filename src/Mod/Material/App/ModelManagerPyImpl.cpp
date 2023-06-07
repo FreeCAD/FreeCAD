@@ -56,6 +56,34 @@ int ModelManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+PyObject* ModelManagerPy::getModel(PyObject *args)
+{
+    char *uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid))
+        return nullptr;
+
+    const Model &model = getModelManagerPtr()->getModel(uuid);
+    return new ModelPy(new Model(model));
+}
+
+PyObject* ModelManagerPy::getModelByPath(PyObject *args)
+{
+    char *path;
+    char *lib="";
+    if (!PyArg_ParseTuple(args, "s|s", &path, &lib))
+        return nullptr;
+
+    std::string libPath(lib);
+    if (libPath.length() > 0)
+    {
+        const Model &model = getModelManagerPtr()->getModelByPath(path, libPath);
+        return new ModelPy(new Model(model));
+    }
+
+    const Model &model = getModelManagerPtr()->getModelByPath(path);
+    return new ModelPy(new Model(model));
+}
+
 Py::List ModelManagerPy::getModelLibraries() const
 {
     std::list<ModelLibrary*> *libraries = getModelManagerPtr()->getModelLibraries();

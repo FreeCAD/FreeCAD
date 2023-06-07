@@ -118,6 +118,7 @@ public:
     void setDOI(const std::string& doi) { _doi = doi; }
 
     void addInheritance(const std::string &uuid) { _inheritedUuids.push_back(uuid); }
+    const std::vector<std::string> &getInheritance() const { return _inheritedUuids; }
 
     bool operator==(const Model& m) const
     {

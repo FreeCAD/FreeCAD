@@ -28,6 +28,7 @@
 
 #include "ModelPy.h"
 #include "ModelPy.cpp"
+#include "ModelPropertyPy.h"
 #include "Model.h"
 
 
@@ -99,6 +100,38 @@ Py::String ModelPy::getURL() const
 Py::String ModelPy::getDOI() const
 {
     return Py::String(getModelPtr()->getDOI());
+}
+
+Py::List ModelPy::getInherited() const
+{
+    const std::vector<std::string> &inherited = getModelPtr()->getInheritance();
+    Py::List list;
+
+    for (auto it = inherited.begin(); it != inherited.end(); it++)
+    {
+        std::string uuid = *it;
+
+        list.append(Py::String(uuid));
+    }
+
+    return list;
+}
+
+Py::Dict ModelPy::getProperties() const
+{
+    // std::map<std::string, Model*> *models = getModelPtr()->getModels();
+    Py::Dict dict;
+
+    for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++)
+    {
+        std::string key = it->first;
+        ModelProperty &modelProperty = it->second;
+
+        PyObject *modelPropertyPy = new ModelPropertyPy(new ModelProperty(modelProperty));
+        dict.setItem(Py::String(key), Py::Object(modelPropertyPy, true));
+    }
+
+    return dict;
 }
 
 PyObject *ModelPy::getCustomAttributes(const char* /*attr*/) const

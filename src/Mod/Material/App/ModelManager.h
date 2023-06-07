@@ -41,6 +41,9 @@ public:
 
     std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
     std::map<std::string, Model*> *getModels() { return _modelMap; }
+    const Model &getModel(const std::string &uuid) const { return *(_modelMap->at(uuid)); }
+    const Model &getModelByPath(const std::string &path) const;
+    const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
 
 private:
 

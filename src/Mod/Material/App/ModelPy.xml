@@ -15,11 +15,6 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material model descriptions.</UserDocu>
     </Documentation>
-    <!-- <Methode Name="mirror">
-      <Documentation>
-        <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
-      </Documentation>
-    </Methode> -->
     <Attribute Name="LibraryName" ReadOnly="true">
       <Documentation>
         <UserDocu>Model library name.</UserDocu>
@@ -79,6 +74,18 @@
         <UserDocu>Digital Object Identifier (see https://doi.org/)</UserDocu>
       </Documentation>
       <Parameter Name="DOI" Type="String"/>
+    </Attribute>
+    <Attribute Name="Inherited" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of inherited models identified by UUID.</UserDocu>
+      </Documentation>
+      <Parameter Name="Inherited" Type="List"/>
+    </Attribute>
+    <Attribute Name="Properties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Dictionary of model properties.</UserDocu>
+      </Documentation>
+      <Parameter Name="Properties" Type="Dict"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

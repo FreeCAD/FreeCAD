@@ -64,5 +64,18 @@ ModelManager *ModelManager::getManager()
     return manager;
 }
 
+const Model &ModelManager::getModelByPath(const std::string &path) const
+{
+    const std::string &uuid = ModelLoader::getUUIDFromPath(path);
+    return *(_modelMap->at(uuid));
+}
+
+const Model &ModelManager::getModelByPath(const std::string &path, const std::string &libraryPath) const
+{
+    QDir modelDir(QDir::cleanPath(QString::fromStdString(libraryPath + "/" + path)));
+    std::string absPath = modelDir.absolutePath().toStdString();
+    return getModelByPath(absPath);
+}
+
 
 #include "moc_ModelManager.cpp"
