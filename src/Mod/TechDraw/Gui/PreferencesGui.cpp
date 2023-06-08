@@ -145,7 +145,7 @@ int PreferencesGui::dimArrowStyle()
 
 double PreferencesGui::dimArrowSize()
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", Preferences::dimFontSizeMM());
+    return Preferences::getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", Preferences::dimArrowSize());
 }
 
 
