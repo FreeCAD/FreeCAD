@@ -35,9 +35,9 @@
 #include "Model.h"
 
 
-using namespace Material;
+using namespace Materials;
 
-TYPESYSTEM_SOURCE(Material::PropertyModel , App::Property)
+TYPESYSTEM_SOURCE(Materials::PropertyModel , App::Property)
 
 PropertyModel::PropertyModel() = default;
 

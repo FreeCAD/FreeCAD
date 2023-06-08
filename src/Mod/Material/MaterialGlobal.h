@@ -26,11 +26,11 @@
 #define MATERIAL_GLOBAL_H
 
 // Material
-#ifndef MaterialExport
+#ifndef MaterialsExport
 #ifdef Material_EXPORTS
-# define MaterialExport   FREECAD_DECL_EXPORT
+# define MaterialsExport   FREECAD_DECL_EXPORT
 #else
-# define MaterialExport   FREECAD_DECL_IMPORT
+# define MaterialsExport   FREECAD_DECL_IMPORT
 #endif
 #endif
 

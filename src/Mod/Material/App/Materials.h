@@ -23,49 +23,59 @@
 #ifndef MATERIAL_MATERIALS_H
 #define MATERIAL_MATERIALS_H
 
-#include <boost/filesystem.hpp>
+#include <Base/BaseClass.h>
+#include <QDir>
+#include <QString>
 
 namespace fs = boost::filesystem;
 
-namespace Material {
+namespace Materials {
 
-class MaterialExport MaterialLibrary
+class MaterialsExport MaterialLibrary : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
+
 public:
-    explicit MaterialLibrary(const std::string &libraryName, const fs::path &dir, const std::string &icon);
+    explicit MaterialLibrary();
+    explicit MaterialLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon);
     virtual ~MaterialLibrary();
 
-    const std::string &getName() const
-    {
-        return name;
-    }
-    const fs::path &getDirectory() const
-    {
-        return directory;
-    }
-    const std::string &getIconPath() const
-    {
-        return iconPath;
-    }
+    const std::string &getName() const { return _name; }
+    const QDir &getDirectory() const { return _directory; }
+    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
+    const std::string &getIconPath() const { return _iconPath; }
 
 private:
-    explicit MaterialLibrary();
-    std::string name;
-    fs::path directory;
-    std::string iconPath;
+    std::string _name;
+    QDir _directory;
+    std::string _iconPath;
 };
 
-class MaterialExport Materials
+class MaterialsExport Material : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
 
 public:
-    explicit Materials();
-    virtual ~Materials();
+    explicit Material();
+    virtual ~Material();
 
-    static std::list<MaterialLibrary *> *getMaterialLibraries();
-    static bool isCard(const fs::path &p);
+private:
+    MaterialLibrary _library;
+    QDir _directory;
+    std::string _uuid;
+    std::string _name;
+    std::string _authorAndLicense;
+    std::string _parentUuid;
+    std::string _description;
+    std::string _url;
+    std::string _reference;
+    std::list<std::string> _tags;
+    std::vector<std::string> _inheritedUuids;
+    // std::map<std::string, ModelProperty> _properties; - TODO: Data types yet to be defined
+    // std::map<std::string, ModelProperty> _appearanceProperties;
+
 };
 
-} // namespace Material
+} // namespace Materials
 
 #endif // MATERIAL_MATERIALS_H

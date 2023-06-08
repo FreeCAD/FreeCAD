@@ -29,7 +29,7 @@
 
 #include "Model.h"
 
-namespace Material {
+namespace Materials {
 
 class ModelEntry
 {
@@ -86,6 +86,6 @@ private:
     std::list<ModelLibrary*> *_libraryList;
 };
 
-} // namespace Material
+} // namespace Materials
 
 #endif // MATERIAL_MODELLOADER_H

@@ -158,7 +158,8 @@ void MaterialsEditor::addExpanded(QTreeView *tree, QStandardItemModel *parent, Q
 void MaterialsEditor::createMaterialTree()
 {
     Base::Console().Log("MaterialsEditor::createMaterialTree()\n");
-    Material::ModelManager modelManager;
+    Materials::ModelManager modelManager;
+    // Materials::MaterialManager materialManager;
 
     auto param =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material");
@@ -181,14 +182,14 @@ void MaterialsEditor::createMaterialTree()
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
 
-    auto libraries = Material::Materials::getMaterialLibraries();
+    auto libraries = Materials::MaterialManager::getMaterialLibraries();
     for (const auto &value : *libraries)
     {
         lib = new QStandardItem(QString::fromStdString(value->getName()));
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto path = value->getDirectory().string();
+        auto path = value->getDirectoryPath();
         addCards(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
 
         // Base::Console().Log(value->getName().c_str());

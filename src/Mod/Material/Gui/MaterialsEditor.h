@@ -30,6 +30,7 @@
 #include <QStandardItem>
 
 #include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/MaterialManager.h>
 
 namespace fs = boost::filesystem;
 
@@ -58,9 +59,7 @@ private:
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void createMaterialTree();
     void addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
-    bool isCard(const fs::path &p) const {
-        return Material::Materials::isCard(p);
-    }
+    bool isCard(const fs::path &p) const { return Materials::MaterialManager::isCard(p); }
 };
 
 } // namespace MatGui

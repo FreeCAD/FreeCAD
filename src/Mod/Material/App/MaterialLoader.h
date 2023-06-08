@@ -28,19 +28,17 @@
 #include <yaml-cpp/yaml.h>
 
 #include "Materials.h"
-#include "Model.h"
 
-namespace Material {
+namespace Materials {
 
 class MaterialEntry
 {
 public:
-    explicit MaterialEntry(const ModelLibrary &library, const std::string &baseName, const std::string &modelName, const QDir &dir, 
+    explicit MaterialEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
         const std::string &modelUuid, const YAML::Node &modelData);
     virtual ~MaterialEntry();
 
-    const ModelLibrary &getLibrary() const { return _library; }
-    const std::string &getBase() const { return _base; }
+    const MaterialLibrary &getLibrary() const { return _library; }
     const std::string &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
     const std::string &getUUID() const { return _uuid; }
@@ -53,8 +51,7 @@ public:
 private:
     explicit MaterialEntry();
 
-    ModelLibrary _library;
-    std::string _base;
+    MaterialLibrary _library;
     std::string _name;
     QDir _directory;
     std::string _uuid;
@@ -65,11 +62,10 @@ private:
 class MaterialLoader
 {
 public:
-    explicit MaterialLoader(std::map<std::string, Model*> *modelMap, std::list<ModelLibrary*> *libraryList);
+    explicit MaterialLoader(std::map<std::string, Material*> *modelMap, std::list<MaterialLibrary*> *libraryList);
     virtual ~MaterialLoader();
 
-    std::list<MaterialLibrary*>* MaterialLoader::getMaterialLibraries();
-    std::list<ModelLibrary*>* getModelLibraries();
+    std::list<MaterialLibrary*>* getMaterialLibraries();
     static const std::string getUUIDFromPath(const std::string &path);
 
 private:
@@ -79,15 +75,15 @@ private:
     void showYaml(const YAML::Node& yaml) const;
     void dereference(MaterialEntry* parent, const MaterialEntry* child);
     void dereference(MaterialEntry* model);
-    MaterialEntry *getModelFromPath(const ModelLibrary &library, const std::string &path) const;
-    void addLibrary(ModelLibrary* model);
-    void loadLibrary(const ModelLibrary &library);
+    MaterialEntry *getMaterialFromPath(const MaterialLibrary &library, const std::string &path) const;
+    void addLibrary(MaterialLibrary* model);
+    void loadLibrary(const MaterialLibrary &library);
     void loadLibraries(void);
     static std::map<std::string, MaterialEntry*> *_MaterialEntryMap;
-    std::map<std::string, Model*> *_modelMap;
-    std::list<ModelLibrary*> *_libraryList;
+    std::map<std::string, Material*> *_modelMap;
+    std::list<MaterialLibrary*> *_libraryList;
 };
 
-} // namespace Material
+} // namespace Materials
 
 #endif // MATERIAL_MATERIALLOADER_H

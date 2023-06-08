@@ -31,9 +31,9 @@
 
 using namespace App;
 
-namespace Material {
+namespace Materials {
 
-class MaterialExport PropertyModel : public Property
+class MaterialsExport PropertyModel : public Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -79,6 +79,6 @@ private:
     Model _model;
 };
 
-} // namespace Material
+} // namespace Materials
 
 #endif // MATERIAL_PROPERTYMODEL_H

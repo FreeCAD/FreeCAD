@@ -6,7 +6,7 @@
       Twin="Model"
       TwinPointer="Model"
       Include="Mod/Material/App/Model.h"
-      Namespace="Material"
+      Namespace="Materials"
       FatherInclude="Base/BaseClassPy.h" 
       FatherNamespace="Base"
       Constructor="true"

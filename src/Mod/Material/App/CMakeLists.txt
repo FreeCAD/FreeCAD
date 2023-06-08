@@ -49,8 +49,8 @@ SET(Material_SRCS
     AppMaterial.cpp
     MaterialLoader.cpp
     MaterialLoader.h
-    # MaterialManager.cpp
-    # MaterialManager.h
+    MaterialManager.cpp
+    MaterialManager.h
     Materials.cpp
     Materials.h
     Model.cpp

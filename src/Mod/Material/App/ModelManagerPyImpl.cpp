@@ -32,7 +32,7 @@
 #include "ModelPy.h"
 
 
-using namespace Material;
+using namespace Materials;
 
 // returns a string which represents the object e.g. when printed in python
 std::string ModelManagerPy::representation() const

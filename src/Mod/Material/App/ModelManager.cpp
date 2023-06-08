@@ -29,13 +29,13 @@
 #include "ModelLoader.h"
 
 
-using namespace Material;
+using namespace Materials;
 
 ModelManager *ModelManager::manager = nullptr;
 std::list<ModelLibrary*> *ModelManager::_libraryList = nullptr;
 std::map<std::string, Model*> *ModelManager::_modelMap = nullptr;
 
-TYPESYSTEM_SOURCE(Material::ModelManager, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
 ModelManager::ModelManager()
 {

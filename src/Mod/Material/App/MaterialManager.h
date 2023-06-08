@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MATERIALS_H
-#define MATERIAL_MATERIALS_H
+#ifndef MATERIAL_MATERIALMANAGER_H
+#define MATERIAL_MATERIALMANAGER_H
 
 #include <boost/filesystem.hpp>
 
@@ -29,28 +29,29 @@
 
 namespace fs = boost::filesystem;
 
-namespace Material {
+namespace Materials {
 
-class MaterialExport MaterialManager
+class MaterialsExport MaterialManager : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
 
 public:
     explicit MaterialManager();
     virtual ~MaterialManager();
 
-    static std::list<LibraryData *> *getMaterialLibraries();
+    static std::list<MaterialLibrary*>* getMaterialLibraries();
     std::map<std::string, Material *> *getMaterials() { return _materialMap; }
-    const Model &getMaterial(const std::string &uuid) const { return *(_materialMap->at(uuid)); }
-    const Model &getMaterialByPath(const std::string &path) const;
-    const Model &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
+    const Material &getMaterial(const std::string &uuid) const { return *(_materialMap->at(uuid)); }
+    const Material &getMaterialByPath(const std::string &path) const;
+    const Material &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
 
     static bool isCard(const fs::path &p);
 
 private:
-    static std::list<LibraryData *> *_libraryList;
+    static std::list<MaterialLibrary *> *_libraryList;
     static std::map<std::string, Material *> *_materialMap;
 };
 
-} // namespace Material
+} // namespace Materials
 
-#endif // MATERIAL_MATERIALS_H
+#endif // MATERIAL_MATERIALMANAGER_H

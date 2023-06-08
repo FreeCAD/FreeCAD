@@ -35,7 +35,7 @@
 #include "ModelLoader.h"
 
 
-using namespace Material;
+using namespace Materials;
 
 ModelEntry::ModelEntry(const ModelLibrary &library, const std::string &baseName, const std::string &modelName, const QDir &dir, 
         const std::string &modelUuid, const YAML::Node &modelData):

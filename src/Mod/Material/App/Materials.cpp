@@ -29,15 +29,17 @@
 #include "Materials.h"
 
 
-using namespace Material;
+using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
+
+TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 
 MaterialLibrary::MaterialLibrary()
 {}
 
-MaterialLibrary::MaterialLibrary(const std::string &libraryName, const fs::path &dir, const std::string &icon):
-    name(libraryName), directory(dir), iconPath(icon)
+MaterialLibrary::MaterialLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
+    _name(libraryName), _directory(dir), _iconPath(icon)
 {}
 
 MaterialLibrary::~MaterialLibrary()
@@ -45,95 +47,18 @@ MaterialLibrary::~MaterialLibrary()
     // delete directory;
 }
 
-Materials::Materials()
+TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
+
+Material::Material()
 {
 }
 
 /*
  *  Destroys the object and frees any allocated resources
  */
-Materials::~Materials()
+Material::~Material()
 {
     // no need to delete child widgets, Qt does it all for us
 }
-
-bool Materials::isCard(const fs::path &p)
-{
-    if (!fs::is_regular_file(p))
-        return false;
-    // check file extension
-    if (p.extension() == ".FCMat")
-        return true;
-    return false;
-}
-
-std::list<MaterialLibrary *> *Materials::getMaterialLibraries()
-{
-    auto param =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Resources");
-    bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
-    bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
-    bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
-    bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
-
-    std::list<MaterialLibrary *> *libraries = new std::list<MaterialLibrary *>();
-    if (useBuiltInMaterials)
-    {
-        fs::path resourceDir = App::Application::getResourceDir() + "/Mod/Material/Resources/Materials";
-        Base::Console().Log(resourceDir.string().c_str());
-        Base::Console().Log("\n");
-        auto libData = new MaterialLibrary("System", resourceDir, ":/icons/freecad.svg");
-        libraries->push_back(libData);
-    }
-
-    if (useMatFromModules)
-    {
-        auto moduleParam = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
-        for (auto &group : moduleParam->GetGroups()) {
-            // auto module = moduleParam->GetGroup(group->GetGroupName());
-            auto moduleName = group->GetGroupName();
-            auto materialDir = group->GetASCII("ModuleDir", "");
-            auto materialIcon = group->GetASCII("ModuleIcon", "");
-
-            Base::Console().Log("Module ");
-            Base::Console().Log(moduleName);
-            Base::Console().Log("\n");
-
-            Base::Console().Log("\tModuleDir ");
-            Base::Console().Log(materialDir.c_str());
-            Base::Console().Log("\n");
-
-            Base::Console().Log("\tModuleIcon ");
-            Base::Console().Log(materialIcon.c_str());
-            Base::Console().Log("\n");
-
-            auto libData = new MaterialLibrary(moduleName, materialDir, materialIcon);
-            libraries->push_back(libData);
-        }
-    }
-
-    if (useMatFromConfigDir)
-    {
-        fs::path resourceDir = App::Application::getUserAppDataDir() + "/Material";
-        Base::Console().Log(resourceDir.string().c_str());
-        Base::Console().Log("\n");
-        auto libData = new MaterialLibrary("User", resourceDir, ":/icons/preferences-general.svg");
-        libraries->push_back(libData);
-    }
-
-    if (useMatFromCustomDir)
-    {
-        fs::path resourceDir = param->GetASCII("CustomMaterialsDir", "");
-        if (fs::exists(resourceDir))
-        {
-            auto libData = new MaterialLibrary("Custom", resourceDir, ":/icons/user.svg");
-            libraries->push_back(libData);
-        }
-    }
-
-    return libraries;
-}
-
 
 #include "moc_Materials.cpp"

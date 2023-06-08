@@ -35,7 +35,7 @@
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
 
-namespace Material {
+namespace Materials {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
@@ -54,17 +54,17 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace Material
+} // namespace Materials
 
 PyMOD_INIT_FUNC(Material)
 {
-    PyObject* module = Material::initModule();
+    PyObject* module = Materials::initModule();
 
     Base::Console().Log("Loading Material module... done\n");
 
-    Base::Interpreter().addType(&Material::ModelManagerPy   ::Type, module, "ModelManager");
-    Base::Interpreter().addType(&Material::ModelPropertyPy  ::Type, module, "ModelProperty");
-    Base::Interpreter().addType(&Material::ModelPy          ::Type, module, "Model");
+    Base::Interpreter().addType(&Materials::ModelManagerPy   ::Type, module, "ModelManager");
+    Base::Interpreter().addType(&Materials::ModelPropertyPy  ::Type, module, "ModelProperty");
+    Base::Interpreter().addType(&Materials::ModelPy          ::Type, module, "Model");
 
     PyMOD_Return(module);
 }

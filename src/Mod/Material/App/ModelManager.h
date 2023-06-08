@@ -27,9 +27,9 @@
 
 #include "Model.h"
 
-namespace Material {
+namespace Materials {
 
-class MaterialExport ModelManager : public Base::BaseClass
+class MaterialsExport ModelManager : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
@@ -52,6 +52,6 @@ private:
     static std::map<std::string, Model*> *_modelMap;
 };
 
-} // namespace Material
+} // namespace Materials
 
 #endif // MATERIAL_MODELMANAGER_H

@@ -27,9 +27,9 @@
 #include "Model.h"
 
 
-using namespace Material;
+using namespace Materials;
 
-TYPESYSTEM_SOURCE(Material::ModelLibrary, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Base::BaseClass)
 
 ModelLibrary::ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
     _name(libraryName), _directory(dir), _iconPath(icon)
@@ -40,7 +40,7 @@ ModelLibrary::ModelLibrary()
 ModelLibrary::~ModelLibrary()
 {}
 
-TYPESYSTEM_SOURCE(Material::ModelProperty, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::ModelProperty, Base::BaseClass)
 
 ModelProperty::ModelProperty()
 {
@@ -60,7 +60,7 @@ ModelProperty::~ModelProperty()
 
 }
 
-TYPESYSTEM_SOURCE(Material::Model, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 
 Model::Model()
 {}

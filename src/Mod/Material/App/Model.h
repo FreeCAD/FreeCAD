@@ -27,9 +27,9 @@
 #include <QDir>
 #include <QString>
 
-namespace Material {
+namespace Materials {
 
-class MaterialExport ModelLibrary : public Base::BaseClass
+class MaterialsExport ModelLibrary : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
@@ -49,7 +49,7 @@ private:
     std::string _iconPath;
 };
 
-class MaterialExport ModelProperty : public Base::BaseClass
+class MaterialsExport ModelProperty : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
@@ -80,7 +80,7 @@ private:
     std::string _description;
 };
 
-class MaterialExport Model : public Base::BaseClass
+class MaterialsExport Model : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
@@ -154,6 +154,6 @@ private:
     std::map<std::string, ModelProperty> _properties;
 };
 
-} // namespace Material
+} // namespace Materials
 
 #endif // MATERIAL_MODEL_H
