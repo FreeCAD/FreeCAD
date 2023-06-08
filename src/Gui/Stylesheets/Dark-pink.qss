@@ -5,7 +5,7 @@ Revised stylesheet based on the original from Pablo Gil Fernández made by Miste
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-Please, follow the link to get updated information: 
+Please, follow the link to get updated information:
 https://forum.freecad.org/viewtopic.php?t=78431
 
 INSTALLATION WHEN NECESSARY
@@ -15,10 +15,10 @@ INSTALLATION WHEN NECESSARY
     WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
-============================================================================================================ 
+============================================================================================================
 TO MODIFY USE THESE COLORS:
  #bc1cc8
- #920077 
+ #920077
 
 
 See Qt documentation:
@@ -101,8 +101,8 @@ QMdiArea {
 }
 /*navgation src/Mod/Tux/NavigationIndicatorGui.py */
 Gui--NavigationIndicatorGui--BlenderNavigationStyle {
-/*QAction#a4 {*/ 
-  qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg); 
+/*QAction#a4 {*/
+  qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg);
 }
 /*=====
 /* QWidget ----------------------------------------------------------------
@@ -244,7 +244,7 @@ QCheckBox::indicator {
   color: white;
   background-color: #505050;
   width: 12px;
-  height: 12px;						  
+  height: 12px;
   image:url(qss:images_dark-light/checkbox_unchecked_light.svg);
 }
 
@@ -269,7 +269,7 @@ QCheckBox::indicator:checked {
   image:url(qss:images_dark-light/checkbox_light.svg);
 }
 
-QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {												  
+QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
   background-color: #bc1cc8;
 }
 
@@ -484,7 +484,7 @@ QMenu {
 }
 
 QMenu::separator {
-  height: 2px; 
+  height: 2px;
   background-color: #3c3c3c;
   margin-left: 30%;
   margin-right: 30%;
@@ -646,7 +646,7 @@ QAbstractScrollArea:disabled {
 
 /* QScrollArea ------------------------------------------------------------
 
---------------------------------------------------------------------------- 
+---------------------------------------------------------------------------
 text input field disabled!!!!*/
 QScrollArea QWidget:disabled {
   background-color: #7F7F7F;
@@ -1595,7 +1595,7 @@ padding: 2px; /* bigger padding crops text and icons... */
 margin: 0px;
 }
 
-/* Fix for lists inside task panels */ /* sketcher constraints list */ 
+/* Fix for lists inside task panels */ /* sketcher constraints list */
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
@@ -1885,8 +1885,8 @@ QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
   color: white;
   border-top: 4px solid #bc1cc8; /* selection color */
   border-bottom: 1px solid transparent; /* same as tab content background color */
-  border-left: 1px solid #696969; 
-  border-right: 1px solid #696969; 
+  border-left: 1px solid #696969;
+  border-right: 1px solid #696969;
   }
 
 QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
@@ -1914,8 +1914,8 @@ QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
   color: white;
   border-bottom: 4px solid #bc1cc8; /* selection color */
   border-top: 1px solid transparent; /* same as tab content background color */
-  border-left: 1px solid #696969; 
-  border-right: 1px solid #696969; 
+  border-left: 1px solid #696969;
+  border-right: 1px solid #696969;
 
 }
 
@@ -2041,7 +2041,7 @@ QDockWidget::close-button {
   image: url(qss:images_dark-light/close_light.svg);
 }
 
-QDockWidget::close-button:hover {    
+QDockWidget::close-button:hover {
   image: url(qss:images_dark-light/close_red.svg);
 }
 
@@ -2344,7 +2344,7 @@ QToolBox {
 
 QToolBox:selected {
   padding: 0px;
-  border: 0px solid #bc1cc8;					
+  border: 0px solid #bc1cc8;
 }
 
 QToolBox::tab {
