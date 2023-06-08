@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
+  Version: "56516ad3-817d-4257-93e3-0cadaa01e01f"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Brass"
   Description: "Defines the Brass appearance properties"

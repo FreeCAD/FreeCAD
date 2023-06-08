@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "b7308026-9278-4346-b157-2b3da280b61b"
+  Version: "cb6d9d74-02f7-4211-9f19-ee25c0b9f4e6"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S550MC"
 Models:

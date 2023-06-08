@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "b95d3de5-36af-41cd-a6dd-3f647b1d4eee"
+  Version: "803693b4-e0a2-43aa-8a9d-1b389389a9de"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "C25E"
 Models:

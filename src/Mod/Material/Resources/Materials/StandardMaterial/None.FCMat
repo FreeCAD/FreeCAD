@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "5a6e3982-6bcf-444e-be2b-647be13e603b"
+  Version: "52940d07-ea9e-45e2-8b9e-8ddff6fe5600"
   AuthorAndLicense: "(c) 2015 Przemo Firszt (CC-BY 3.0)"
   Name: "None"
   Description: "This is a not defined material"

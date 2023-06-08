@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "56027b3e-876e-4c0e-9f39-242feaa67e13"
+  Version: "c287da12-3b2b-4137-b301-dde1f364df9a"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "C60E"
 Models:

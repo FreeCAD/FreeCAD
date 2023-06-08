@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "92589471-a6cb-4bbc-b748-d425a17dea7d"
+  Version: "f29f5ac4-babb-4307-80f5-59677bb8b77b"
   AuthorAndLicense: "(c) 2013 Juergen Riegel (CC-BY 3.0)"
   Name: "CalculiX-Steel"
   Description: "Standard steel material for CalculiX sample calculations"

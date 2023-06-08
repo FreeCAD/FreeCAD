@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "3e3a3e13-04a4-410e-8e36-bbd83ca66847"
+  Version: "ee141f68-e826-4647-b6bc-e33bf68bafe6"
   AuthorAndLicense: "(c) 2015 Przemo Firszt (CC-BY 3.0)"
   Name: "Glass"
   Description: "Generic soda-lime glass"

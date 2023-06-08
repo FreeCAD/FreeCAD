@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "095140bb-df01-4bb9-8ff3-062aa91ec48c"
+  Version: "3d16a8f6-bd6c-4323-b5d2-c03f232fed58"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "EN-GJMB-550-4"
 Models:

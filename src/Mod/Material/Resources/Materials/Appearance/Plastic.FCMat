@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "a74622cd-0e2d-4a96-b8c4-fefcc82ac694"
+  Version: "84b3ddb2-34b0-4f42-bc1a-ac21bb9d448d"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Plastic"
   Description: "Defines the Plastic appearance properties"

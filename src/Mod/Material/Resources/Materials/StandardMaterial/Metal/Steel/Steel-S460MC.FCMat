@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "c254dac5-3ee3-49b9-b8d4-16d20d21c94f"
+  Version: "b2e97b38-abef-488e-82a3-1c0510015d34"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S460MC"
 Models:

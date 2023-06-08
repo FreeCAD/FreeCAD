@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "cddfa21f-0715-49dd-b35b-951c076fa52c"
+  Version: "0448c4ed-bd4c-4a1a-8e9d-ba063a89b46c"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Jade"
   Description: "Defines the Jade appearance properties"

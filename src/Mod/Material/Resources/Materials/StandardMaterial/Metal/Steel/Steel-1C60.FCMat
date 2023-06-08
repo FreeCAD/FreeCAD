@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "9717f953-1cfc-41a6-8974-3ad45188ad48"
+  Version: "96d597c1-a31e-4980-9749-20a9613cd55a"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "1C60"
   Description: "Non-alloy quality steel"

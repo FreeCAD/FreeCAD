@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "7e5559d5-be15-4571-a72f-20c39edd41cf"
+  Version: "7c8a6b12-9e26-4d41-b7ba-79afe77398e7"
   Name: "Water"
   Description: "Standard distilled water properties at 20 Degrees Celsius and 1 atm"
   ReferenceSource: "''"

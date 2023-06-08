@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "62839fb0-d854-4b44-92df-b7249213de49"
+  Version: "87a571ff-f60b-4029-9461-26d4ce3b63a2"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Silver"
   Description: "Defines the Silver appearance properties"

@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "27745e16-2a10-4c8e-bd22-59971806909c"
+  Version: "e34b4264-6b50-443f-9131-3b3a294d44d8"
   AuthorAndLicense: "Uwe Stöhr"
   Name: "Invar Generic"
 Models:

@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "a61853b9-ec9f-403e-9726-0a938731aecd"
+  Version: "91b67190-fa2b-4cd5-8637-aa86e432ec4c"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Pewter"
   Description: "Defines the Pewter appearance properties"

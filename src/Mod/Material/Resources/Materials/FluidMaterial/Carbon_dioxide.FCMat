@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "ef0e4040-a498-48c3-a87b-e996bfd89195"
+  Version: "a89c9c48-416e-4b7a-a42b-6a9f45f89e01"
   Name: "Carbon dioxide"
   Description: "Carbon dioxide properties at 20 Degrees Celsius and 1 atm"
 Models:

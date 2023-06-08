@@ -27,6 +27,7 @@ __url__ = "https://www.freecad.org"
 
 import os
 import glob
+import uuid
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -124,6 +125,10 @@ def yamGeneral(card):
     yamModels = ""
     yam = "# File greated by ConvertFCMat.py\n"
     yam += "General:\n"
+
+    # Add UUIDs
+    yam += '  UUID: "{0}"\n'.format(uuid.uuid4())
+    yam += '  Version: "{0}"\n'.format(uuid.uuid4())
     for param in card:
         if param in ["Name", "AuthorAndLicense", "Description", "ReferenceSource", "SourceURL"]:
             yam += '  {0}: "{1}"\n'.format(param, card[param])

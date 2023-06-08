@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "90fb6bd4-05db-4d44-ba89-280b5a060921"
+  Version: "4e52b8ce-2d53-4b3b-a03b-2a1342dde580"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "St E 500"
 Models:

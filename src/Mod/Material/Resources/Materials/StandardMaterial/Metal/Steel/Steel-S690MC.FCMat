@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "41360af5-98ed-4125-a89c-ff711e4dd2bf"
+  Version: "ff72a39a-8c39-4bca-9744-e691e3bcc052"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S690MC"
 Models:

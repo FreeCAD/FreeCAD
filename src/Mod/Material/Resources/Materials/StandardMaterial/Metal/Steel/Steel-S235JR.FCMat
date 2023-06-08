@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "4a96627d-6518-458c-8ccf-846f69fd8a50"
+  Version: "4d990e27-87e5-44d4-88d8-f0ed0190ee8e"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S235JR"
 Models:

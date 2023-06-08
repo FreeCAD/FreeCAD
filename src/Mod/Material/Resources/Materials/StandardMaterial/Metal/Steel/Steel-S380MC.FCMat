@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "da2a429b-8763-4586-be3d-620e7dd30271"
+  Version: "5a2ef6e1-16e0-4076-a3ba-049e52df303f"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S380MC"
 Models:

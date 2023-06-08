@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "ad8e2007-ee73-4b71-8830-6d40a8407284"
+  Version: "0843bbae-1b55-4c10-9922-4ea9fbbfe416"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S500MC"
 Models:

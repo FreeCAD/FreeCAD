@@ -1,5 +1,7 @@
 # File greated by ConvertFCMat.py
 General:
+  UUID: "30e4da7d-1fe3-41de-911a-a42e3405bb7b"
+  Version: "e19c62f5-eb42-4b9c-a5e9-feeca8592f72"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S275JR"
 Models:
