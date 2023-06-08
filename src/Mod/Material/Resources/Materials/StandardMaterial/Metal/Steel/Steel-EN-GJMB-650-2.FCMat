@@ -2,14 +2,15 @@
 General:
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "EN-GJMB-650-2"
-  NameDE: "GTS 65-02"
-  DescriptionDE: "Gabelköpfe"
-  Father: "Metal"
-  KindOfMaterial: "Cast iron"
-  KindOfMaterialDE: "Guss"
-  MaterialNumber: "0.8165"
-  Norm: "EN 1562"
 Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Cast iron"
+    MaterialNumber: "0.8165"
+    StandardCode: "EN 1562"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "7200 kg/m^3"

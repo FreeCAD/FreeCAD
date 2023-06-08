@@ -2,13 +2,15 @@
 General:
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "AlMg3F24"
-  NameDE: "AlMg3F24"
-  Father: "Metal"
-  KindOfMaterial: "Aluminium"
-  KindOfMaterialDE: "Aluminium"
-  MaterialNumber: "3.3535.26"
-  Norm: "DIN 1725"
 Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Aluminium"
+    MaterialNumber: "3.3535.26"
+    StandardCode: "DIN 1725"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "2700 kg/m^3"

@@ -201,6 +201,8 @@ SET (MaterialModel_Files
     Resources/Models/Costs/Costs.yml
     Resources/Models/Electromagnetic/Electromagnetic.yml
     Resources/Models/Fluid/Fluid.yml
+    Resources/Models/Legacy/Father.yml
+    Resources/Models/Legacy/MaterialStandard.yml
     Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/HypotheticalExample.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml

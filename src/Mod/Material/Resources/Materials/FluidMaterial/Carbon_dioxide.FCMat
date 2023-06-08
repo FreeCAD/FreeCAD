@@ -2,9 +2,10 @@
 General:
   Name: "Carbon dioxide"
   Description: "Carbon dioxide properties at 20 Degrees Celsius and 1 atm"
-  MolarMass: "44.009"
-  Father: "Gas"
 Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Gas"
   Fluid:
     UUID: '1ae66d8c-1ba1-4211-ad12-b9917573b202'
     Density: "1.8393 kg/m^3"

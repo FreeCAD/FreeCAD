@@ -119,11 +119,32 @@ def read(filename):
     return d
 
 def yamGeneral(card):
+    father = ""
+    materialStandard = ""
+    yamModels = ""
     yam = "# File greated by ConvertFCMat.py\n"
     yam += "General:\n"
     for param in card:
-        yam += '  {0}: "{1}"\n'.format(param, card[param])
-    return yam
+        if param in ["Name", "AuthorAndLicense", "Description", "ReferenceSource", "SourceURL"]:
+            yam += '  {0}: "{1}"\n'.format(param, card[param])
+        elif param  in ["Father"]:
+            father += '    {0}: "{1}"\n'.format(param, card[param])
+        elif param  in ["KindOfMaterial", "MaterialNumber", "Norm", "StandardCode"]:
+            if param == "Norm": # Handle the name change
+                materialStandard += '    {0}: "{1}"\n'.format("StandardCode", card[param])
+            else:
+                materialStandard += '    {0}: "{1}"\n'.format(param, card[param])
+
+    if len(father) > 0:
+        yamModels += "  {0}:\n".format('Father')
+        yamModels += "    UUID: '{0}'\n".format('9cdda8b6-b606-4778-8f13-3934d8668e67')
+        yamModels += father
+    if len(materialStandard) > 0:
+        yamModels += "  {0}:\n".format('MaterialStandard')
+        yamModels += "    UUID: '{0}'\n".format('1e2c0088-904a-4537-925f-64064c07d700')
+        yamModels += materialStandard
+
+    return yam, yamModels
 
 def yamSection(card, header, uuid):
     if len(card) > 0:
@@ -197,14 +218,16 @@ def yamVectorRendering(card):
     return yamSection(card, 'VectorRendering', 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e')
 
 def saveYaml(card, output):
-    yam = yamGeneral(card["General"])
+    yam, yamModels = yamGeneral(card["General"])
     if len(card["Mechanical"]) > 0 or \
         len(card["Fluidic"]) > 0 or \
         len(card["Thermal"]) > 0 or \
         len(card["Electromagnetic"]) > 0 or \
         len(card["Architectural"]) > 0 or \
-        len(card["Cost"]) > 0:
+        len(card["Cost"]) > 0 or \
+        len(yamModels) > 0:
         yam += "Models:\n"
+        yam += yamModels
         if "Mechanical" in card:
             yam += yamMechanical(card["Mechanical"])
         if "Fluidic" in card:
