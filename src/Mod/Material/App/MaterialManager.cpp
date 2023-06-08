@@ -33,14 +33,14 @@ using namespace Material;
 
 /* TRANSLATOR Material::Materials */
 
-MaterialLibrary::MaterialLibrary()
+LibraryData::LibraryData()
 {}
 
-MaterialLibrary::MaterialLibrary(const std::string &libraryName, const fs::path &dir, const std::string &icon):
+LibraryData::LibraryData(const std::string &libraryName, const fs::path &dir, const std::string &icon):
     name(libraryName), directory(dir), iconPath(icon)
 {}
 
-MaterialLibrary::~MaterialLibrary()
+LibraryData::~LibraryData()
 {
     // delete directory;
 }
@@ -67,7 +67,7 @@ bool Materials::isCard(const fs::path &p)
     return false;
 }
 
-std::list<MaterialLibrary *> *Materials::getMaterialLibraries()
+std::list<LibraryData *> *Materials::getMaterialLibraries()
 {
     auto param =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Resources");
@@ -76,13 +76,13 @@ std::list<MaterialLibrary *> *Materials::getMaterialLibraries()
     bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
     bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
-    std::list<MaterialLibrary *> *libraries = new std::list<MaterialLibrary *>();
+    std::list<LibraryData *> *libraries = new std::list<LibraryData *>();
     if (useBuiltInMaterials)
     {
         fs::path resourceDir = App::Application::getResourceDir() + "/Mod/Material/Resources/Materials";
         Base::Console().Log(resourceDir.string().c_str());
         Base::Console().Log("\n");
-        auto libData = new MaterialLibrary("System", resourceDir, ":/icons/freecad.svg");
+        auto libData = new LibraryData("System", resourceDir, ":/icons/freecad.svg");
         libraries->push_back(libData);
     }
 
@@ -108,7 +108,7 @@ std::list<MaterialLibrary *> *Materials::getMaterialLibraries()
             Base::Console().Log(materialIcon.c_str());
             Base::Console().Log("\n");
 
-            auto libData = new MaterialLibrary(moduleName, materialDir, materialIcon);
+            auto libData = new LibraryData(moduleName, materialDir, materialIcon);
             libraries->push_back(libData);
         }
     }
@@ -118,7 +118,7 @@ std::list<MaterialLibrary *> *Materials::getMaterialLibraries()
         fs::path resourceDir = App::Application::getUserAppDataDir() + "/Material";
         Base::Console().Log(resourceDir.string().c_str());
         Base::Console().Log("\n");
-        auto libData = new MaterialLibrary("User", resourceDir, ":/icons/preferences-general.svg");
+        auto libData = new LibraryData("User", resourceDir, ":/icons/preferences-general.svg");
         libraries->push_back(libData);
     }
 
@@ -127,7 +127,7 @@ std::list<MaterialLibrary *> *Materials::getMaterialLibraries()
         fs::path resourceDir = param->GetASCII("CustomMaterialsDir", "");
         if (fs::exists(resourceDir))
         {
-            auto libData = new MaterialLibrary("Custom", resourceDir, ":/icons/user.svg");
+            auto libData = new LibraryData("Custom", resourceDir, ":/icons/user.svg");
             libraries->push_back(libData);
         }
     }
