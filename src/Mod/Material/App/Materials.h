@@ -57,12 +57,46 @@ class MaterialsExport Material : public Base::BaseClass
 
 public:
     explicit Material();
+    explicit Material(const MaterialLibrary &library, const std::string& directory,
+                      const std::string& uuid, const std::string& name);
+    explicit Material(const MaterialLibrary &library, const QDir& directory,
+                      const std::string& uuid, const std::string& name);
     virtual ~Material();
+
+    const MaterialLibrary &getLibrary() const { return _library; }
+    const QDir &getDirectory() const { return _directory; }
+    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
+    const std::string &getUUID() const { return _uuid; }
+    const std::string &getVersion() const { return _version; }
+    const std::string &getName() const { return _name; }
+    const std::string &getAuthorAndLicense() const { return _authorAndLicense; }
+    const std::string &getParentUUID() const { return _parentUuid; }
+    const std::string &getDescription() const { return _description; }
+    const std::string &getURL() const { return _url; }
+    const std::string &getReference() const { return _reference; }
+    const std::list<std::string> &getTags() const { return _tags; }
+    const std::vector<std::string> &getInheritedModels() const { return _modelUuids; }
+
+    void setLibrary(const MaterialLibrary &library) { _library = library; }
+    void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
+    void setDirectory(const QDir &directory) { _directory = directory; }
+    void setUUID(const std::string& uuid) { _uuid = uuid; }
+    void setVersion(const std::string& uuid) { _version = uuid; }
+    void setName(const std::string& name) { _name = name; }
+    void setAuthorAndLicense(const std::string& authorAndLicense) { _authorAndLicense = authorAndLicense; }
+    void setPaarentUUID(const std::string& uuid) { _parentUuid = uuid; }
+    void setDescription(const std::string& description) { _description = description; }
+    void setURL(const std::string& url) { _url = url; }
+    void setReference(const std::string& reference) { _reference = reference; }
+    void addTeg(const std::string& tag) {}
+    void removeTag(const std::string& tag) {}
+    void addInheritedModel(const std::string &uuid) { _modelUuids.push_back(uuid); }
 
 private:
     MaterialLibrary _library;
     QDir _directory;
     std::string _uuid;
+    std::string _version;
     std::string _name;
     std::string _authorAndLicense;
     std::string _parentUuid;
@@ -70,7 +104,7 @@ private:
     std::string _url;
     std::string _reference;
     std::list<std::string> _tags;
-    std::vector<std::string> _inheritedUuids;
+    std::vector<std::string> _modelUuids;
     // std::map<std::string, ModelProperty> _properties; - TODO: Data types yet to be defined
     // std::map<std::string, ModelProperty> _appearanceProperties;
 

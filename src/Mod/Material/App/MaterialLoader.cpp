@@ -158,30 +158,33 @@ void MaterialLoader::dereference(MaterialEntry *model)
     // model->markDereferenced();
 }
 
+std::string MaterialLoader::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
+{
+    if (node[key])
+        return node[key].as<std::string>();
+    return defaultValue;
+}
+
 void MaterialLoader::addToTree(MaterialEntry *model)
 {
-    // std::set<std::string> exclude;
-    // exclude.insert("Name");
-    // exclude.insert("UUID");
-    // exclude.insert("URL");
-    // exclude.insert("Description");
-    // exclude.insert("DOI");
-    // exclude.insert("Inherits");
+    std::set<std::string> exclude;
+    exclude.insert("General");
+    exclude.insert("Inherits");
 
-    // auto yamlModel = model->getModel();
-    // auto library = model->getLibrary();
-    // auto base = model->getBase();
-    // auto name = model->getName();
-    // auto directory = model->getDirectory();
-    // auto uuid = model->getUUID();
+    auto yamlModel = model->getModel();
+    auto library = model->getLibrary();
+    auto name = model->getName();
+    auto directory = model->getDirectory();
+    auto uuid = model->getUUID();
 
-    // std::string description = yamlModel[base]["Description"].as<std::string>();
-    // std::string url = yamlModel[base]["URL"].as<std::string>();
-    // std::string doi = yamlModel[base]["DOI"].as<std::string>();
+    std::string version = yamlValue(yamlModel["General"], "Version", "");
+    std::string authorAndLicense = yamlValue(yamlModel["General"], "AuthorAndLicense", "");
+    std::string description = yamlValue(yamlModel["General"], "Description", "");
 
-    // Model::ModelType type = (base == "Model") ? Model::MODEL : Model::APPEARANCE_MODEL;
-
-    // Model *finalModel = new Model(library, type, name, directory, uuid, description, url, doi);
+    Material *finalModel = new Material(library, directory, uuid, name);
+    finalModel->setVersion(version);
+    finalModel->setAuthorAndLicense(authorAndLicense);
+    finalModel->setDescription(description);
 
     // // Add inheritance list
     // if (yamlModel[base]["Inherits"]) {
@@ -213,7 +216,7 @@ void MaterialLoader::addToTree(MaterialEntry *model)
     //     }
     // }
 
-    // (*_modelMap)[uuid] = finalModel;
+    (*_modelMap)[uuid] = finalModel;
 }
 
 void MaterialLoader::loadLibrary(const MaterialLibrary &library)
@@ -238,13 +241,13 @@ void MaterialLoader::loadLibrary(const MaterialLibrary &library)
         }
     }
 
-    // for (auto it = _MaterialEntryMap->begin(); it != _MaterialEntryMap->end(); it++) {
-    //     dereference(it->second);
-    // }
+    for (auto it = _MaterialEntryMap->begin(); it != _MaterialEntryMap->end(); it++) {
+        dereference(it->second);
+    }
 
-    // for (auto it = _MaterialEntryMap->begin(); it != _MaterialEntryMap->end(); it++) {
-    //     addToTree(it->second);
-    // }
+    for (auto it = _MaterialEntryMap->begin(); it != _MaterialEntryMap->end(); it++) {
+        addToTree(it->second);
+    }
 
 }
 

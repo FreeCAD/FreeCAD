@@ -71,6 +71,8 @@ public:
 private:
     explicit MaterialLoader();
 
+    std::string yamlValue(const YAML::Node& node, const std::string& key,
+                                          const std::string& defaultValue);
     void addToTree(MaterialEntry* model);
     void showYaml(const YAML::Node& yaml) const;
     void dereference(MaterialEntry* parent, const MaterialEntry* child);

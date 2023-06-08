@@ -50,8 +50,19 @@ MaterialLibrary::~MaterialLibrary()
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
 Material::Material()
+{}
+
+Material::Material(const MaterialLibrary &library, const std::string& directory,
+            const std::string& uuid, const std::string& name) :
+    _library(library), _uuid(uuid), _name(name)
 {
+    setDirectory(directory);
 }
+
+Material::Material(const MaterialLibrary &library, const QDir& directory,
+            const std::string& uuid, const std::string& name) :
+    _library(library), _directory(directory), _uuid(uuid), _name(name)
+{}
 
 /*
  *  Destroys the object and frees any allocated resources
