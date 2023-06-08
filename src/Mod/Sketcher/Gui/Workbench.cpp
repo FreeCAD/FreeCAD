@@ -159,7 +159,7 @@ namespace
 {
 inline const QStringList editModeToolbarNames()
 {
-    return QStringList {QString::fromLatin1("Sketcher Edit Mode"),
+    return QStringList {QString::fromLatin1("Sketcher edit mode"),
                         QString::fromLatin1("Sketcher geometries"),
                         QString::fromLatin1("Sketcher constraints"),
                         QString::fromLatin1("Sketcher tools"),
