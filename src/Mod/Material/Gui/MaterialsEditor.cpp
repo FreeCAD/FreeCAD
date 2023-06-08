@@ -32,6 +32,8 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Application.h>
 
+#include <QItemSelectionModel>
+
 #include <Mod/Material/App/ModelManager.h>
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
@@ -45,12 +47,19 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
   : QDialog(parent), ui(new Ui_MaterialsEditor)
 {
     ui->setupUi(this);
+
+    createMaterialTree();
+
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &MaterialsEditor::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
             this, &MaterialsEditor::reject);
 
-    createMaterialTree();
+    QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
+    connect(selectionModel, &QItemSelectionModel::selectionChanged,
+            this, &MaterialsEditor::onSelectMaterial);
+    // connect(selectionModel, &QItemSelectionModel::currentChanged,
+    //         this, &MaterialsEditor::onCurrentMaterial);
 }
 
 /*
@@ -115,27 +124,41 @@ void MaterialsEditor::reject()
 
 void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
 {
+    auto tree = ui->treeMaterials;
     for (const auto& mod : fs::directory_iterator(folder)) {
         if (fs::is_directory(mod)) {
             auto node = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
-            parent.appendRow(node);
-            ui->treeMaterials->setExpanded(parent.index(), true);
+            addExpanded(tree, &parent, node);
+            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
             addCards(*node, top, mod.path().string(), icon);
         }
         else if (isCard(mod)) {
-            auto card = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
-            card->setIcon(icon);
-            parent.appendRow(card);
-            ui->treeMaterials->setExpanded(parent.index(), true);
+            auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                           | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(QString::fromStdString(mod.path().string())), Qt::UserRole);
+            addExpanded(tree, &parent, card);
         }
     }
+}
+
+void MaterialsEditor::addExpanded(QTreeView *tree, QStandardItem *parent, QStandardItem *child)
+{
+    parent->appendRow(child);
+    tree->setExpanded(child->index(), true);
+}
+
+void MaterialsEditor::addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child)
+{
+    parent->appendRow(child);
+    tree->setExpanded(child->index(), true);
 }
 
 void MaterialsEditor::createMaterialTree()
 {
     Base::Console().Log("MaterialsEditor::createMaterialTree()\n");
-    Material::ModelManager *testModel = Material::ModelManager::getManager();
+    Material::ModelManager modelManager;
 
     auto param =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material");
@@ -151,31 +174,50 @@ void MaterialsEditor::createMaterialTree()
     tree->setHeaderHidden(true);
 
     auto lib = new QStandardItem(QString::fromStdString("Favorites"));
-    model->appendRow(lib);
-    tree->setExpanded(lib->index(), true);
+    lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    addExpanded(tree, model, lib);
+
     lib = new QStandardItem(QString::fromStdString("Recent"));
-    model->appendRow(lib);
-    tree->setExpanded(lib->index(), true);
+    lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    addExpanded(tree, model, lib);
 
     auto libraries = Material::Materials::getMaterialLibraries();
     for (const auto &value : *libraries)
     {
         lib = new QStandardItem(QString::fromStdString(value->getName()));
-        model->appendRow(lib);
-        tree->setExpanded(lib->index(), true);
+        lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+        addExpanded(tree, model, lib);
 
         auto path = value->getDirectory().string();
         addCards(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
 
-        Base::Console().Log(value->getName().c_str());
-        Base::Console().Log("\n\t");
-        Base::Console().Log(value->getDirectory().string().c_str());
-        Base::Console().Log("\n\t");
-        Base::Console().Log(value->getIconPath().c_str());
-        Base::Console().Log("\n");
+        // Base::Console().Log(value->getName().c_str());
+        // Base::Console().Log("\n\t");
+        // Base::Console().Log(value->getDirectory().string().c_str());
+        // Base::Console().Log("\n\t");
+        // Base::Console().Log(value->getIconPath().c_str());
+        // Base::Console().Log("\n");
 
     }
 }
 
+void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    Base::Console().Log("MaterialsEditor::onSelectMaterial()\n");
+
+    QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->treeMaterials->model());
+    QModelIndexList indexes = selected.indexes();
+    for (auto it = indexes.begin(); it != indexes.end(); it++)
+    {
+        QStandardItem* item = model->itemFromIndex(*it);
+        Base::Console().Log("%s\n", item->text().toStdString().c_str());
+        Base::Console().Log("\t%s\n", item->data(Qt::UserRole).toString().toStdString().c_str());
+    }
+}
+
+void MaterialsEditor::onCurrentMaterial(const QModelIndex& selected, const QModelIndex& deselected)
+{
+    Base::Console().Log("MaterialsEditor::onCurrentMaterial()\n");
+}
 
 #include "moc_MaterialsEditor.cpp"

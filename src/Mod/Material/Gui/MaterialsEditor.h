@@ -47,10 +47,15 @@ public:
     void accept() override;
     void reject() override;
 
+    void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
+    void onCurrentMaterial(const QModelIndex& selected, const QModelIndex& deselected);
+
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
 
     void tryPython();
+    void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
+    void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void createMaterialTree();
     void addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
     bool isCard(const fs::path &p) const {
