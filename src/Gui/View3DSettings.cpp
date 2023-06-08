@@ -455,6 +455,7 @@ void NaviCubeSettings::applySettings()
     parameterChanged("EmphaseColor");
     parameterChanged("HiliteColor");
     parameterChanged("CornerNaviCube");
+    parameterChanged("OffsetX"); // Updates OffsetY too
     parameterChanged("CubeSize");
     parameterChanged("ChamferSize");
     parameterChanged("NaviRotateToNearest");
