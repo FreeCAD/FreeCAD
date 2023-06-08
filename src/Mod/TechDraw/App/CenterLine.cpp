@@ -40,6 +40,7 @@
 #include "DrawViewPart.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "LineFormat.h"
 #include "CenterLinePy.h"
 
 using namespace TechDraw;

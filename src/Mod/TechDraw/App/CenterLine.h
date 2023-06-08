@@ -30,6 +30,7 @@
 
 #include "Cosmetic.h"
 #include "Geometry.h"
+#include "LineFormat.h"
 
 
 namespace TechDraw {
@@ -143,7 +144,7 @@ public:
     double m_vShift;
     double m_rotate;
     double m_extendBy;
-    LineFormat m_format;
+    TechDraw::LineFormat m_format;
     bool m_flip2Line;
 
     TechDraw::BaseGeomPtr m_geometry;

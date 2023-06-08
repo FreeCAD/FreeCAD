@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,55 +20,62 @@
  *                                                                         *
  ***************************************************************************/
 
-//! LineGroup - Classes related to processing LineGroup definition CSV files
+#include "LineGroup.h"
+#include "LineFormat.h"
+#include "Preferences.h"
+#include <Base/Persistence.h>
 
-#ifndef TechDraw_LINEGROUP_H_
-#define TechDraw_LINEGROUP_H_
+using namespace TechDraw;
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+// TYPESYSTEM_SOURCE(TechDraw::LineFormat, Base::Persistence)
 
-#include <string>
-#include <vector>
-
-namespace TechDraw
+LineFormat::LineFormat()
 {
-
-class TechDrawExport LineGroup
-{
-public:
-    LineGroup();
-    LineGroup(std::string groupName);
-    ~LineGroup();
-    double getWeight(std::string s);
-    void setWeight(std::string s, double weight);
-//    void setWeight(const char* s, double weight);
-    void dump(const char* title);
-    std::string getName(void) { return m_name; }
-    void setName(std::string s) { m_name = s; }
-
-    //static support function: split comma separated string of values into vector of numbers
-    static std::vector<double> split(std::string line);
-
-    //static support function: find group defn in file
-    static std::string getRecordFromFile(std::string parmFile, int groupNumber);
-
-    //static LineGroup maker
-    static LineGroup* lineGroupFactory(int groupNumber);
-
-    static double getDefaultWidth(std::string weightName, int groupNumber = -1);
-
-    static std::string getGroupNamesFromFile(std::string FileName);
-
-
-protected:
-    void init(void);
-
-    std::string m_name;
-    double      m_thin;
-    double      m_graphic;
-    double      m_thick;
-    double      m_extra;
-};
-
+    m_style = getDefEdgeStyle();
+    m_weight = getDefEdgeWidth();
+    m_color = getDefEdgeColor();
+    m_visible = true;
 }
-#endif
+
+LineFormat::LineFormat(int style,
+               double weight,
+               App::Color color,
+               bool visible) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible)
+{
+}
+
+void LineFormat::dump(const char* title)
+{
+    Base::Console().Message("LF::dump - %s \n", title);
+    Base::Console().Message("LF::dump - %s \n", toString().c_str());
+}
+
+std::string LineFormat::toString() const
+{
+    std::stringstream ss;
+    ss << m_style << ", " <<
+          m_weight << ", " <<
+          m_color.asHexString() << ", " <<
+          m_visible;
+    return ss.str();
+}
+
+//static preference getters.
+double LineFormat::getDefEdgeWidth()
+{
+    return TechDraw::LineGroup::getDefaultWidth("Graphic");
+}
+
+App::Color LineFormat::getDefEdgeColor()
+{
+    return Preferences::normalColor();
+}
+
+int LineFormat::getDefEdgeStyle()
+{
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
+}

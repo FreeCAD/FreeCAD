@@ -38,6 +38,7 @@
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
 #include "LineGroup.h"
+#include "LineFormat.h"
 #include "Preferences.h"
 
 
@@ -48,58 +49,6 @@ using namespace std;
 #define COSMETICEDGE 1
 #define CENTERLINE   2
 
-LineFormat::LineFormat()
-{
-    m_style = getDefEdgeStyle();
-    m_weight = getDefEdgeWidth();
-    m_color= getDefEdgeColor();
-    m_visible = true;
-}
-
-LineFormat::LineFormat(int style,
-               double weight,
-               App::Color color,
-               bool visible) :
-    m_style(style),
-    m_weight(weight),
-    m_color(color),
-    m_visible(visible)
-{
-}
-
-void LineFormat::dump(const char* title)
-{
-    Base::Console().Message("LF::dump - %s \n", title);
-    Base::Console().Message("LF::dump - %s \n", toString().c_str());
-}
-
-std::string LineFormat::toString() const
-{
-    std::stringstream ss;
-    ss << m_style << ", " <<
-          m_weight << ", " <<
-          m_color.asHexString() << ", " <<
-          m_visible;
-    return ss.str();
-}
-
-//static preference getters.
-double LineFormat::getDefEdgeWidth()
-{
-    return TechDraw::LineGroup::getDefaultWidth("Graphic");
-}
-
-App::Color LineFormat::getDefEdgeColor()
-{
-    return Preferences::normalColor();
-}
-
-int LineFormat::getDefEdgeStyle()
-{
-    return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
-}
-
-//******************************************
 
 TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 

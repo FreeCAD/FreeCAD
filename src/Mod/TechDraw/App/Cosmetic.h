@@ -28,6 +28,7 @@
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
+#include "LineFormat.h"
 
 
 class TopoDS_Edge;
@@ -35,36 +36,11 @@ class TopoDS_Edge;
 namespace TechDraw {
 class DrawViewPart;
 
-
-//general purpose line format specifier
-class TechDrawExport LineFormat
-{
-public:
-    LineFormat();
-    LineFormat(int style,
-               double weight,
-               App::Color color,
-               bool visible);
-    ~LineFormat() = default;
-
-    int m_style;
-    double m_weight;
-    App::Color m_color;
-    bool m_visible;
-
-    static double getDefEdgeWidth();
-    static App::Color getDefEdgeColor();
-    static int getDefEdgeStyle();
-
-    void dump(const char* title);
-    std::string toString() const;
-};
-
 // to be implemented template<typename T>
 class TechDrawExport Cosmetic : public Base::Persistence
 {
 public:
-    LineFormat m_format;
+    TechDraw::LineFormat m_format;
     boost::uuids::uuid getTag() const;
     std::string getTagAsString() const;
     //T* clone() const; to be implemented
