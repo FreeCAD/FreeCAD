@@ -47,6 +47,8 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Material_SRCS
     ${Python_SRCS}
     AppMaterial.cpp
+    MaterialConfigLoader.cpp
+    MaterialConfigLoader.h
     MaterialLoader.cpp
     MaterialLoader.h
     MaterialManager.cpp

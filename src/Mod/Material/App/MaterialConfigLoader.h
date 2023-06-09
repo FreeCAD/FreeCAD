@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MATERIALLOADER_H
-#define MATERIAL_MATERIALLOADER_H
+#ifndef MATERIAL_MATERIALCONFIGLOADER_H
+#define MATERIAL_MATERIALCONFIGLOADER_H
 
 #include <QDir>
 #include <QString>
@@ -31,78 +31,45 @@
 
 namespace Materials {
 
-class MaterialEntry
+class MaterialConfigEntry
 {
 public:
-    explicit MaterialEntry();
-    explicit MaterialEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid);
-    virtual ~MaterialEntry();
-
-    virtual void addToTree(std::map<std::string, Material*> *modelMap) = 0;
+    explicit MaterialConfigEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
+        const std::string &modelUuid, const YAML::Node &modelData);
+    virtual ~MaterialConfigEntry();
 
     const MaterialLibrary &getLibrary() const { return _library; }
     const std::string &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
     const std::string &getUUID() const { return _uuid; }
+    const YAML::Node &getModel() const { return _model; }
+    YAML::Node *getModelPtr() { return &_model; }
     const bool getDereferenced() const { return _dereferenced; }
 
     void markDereferenced() { _dereferenced = true; }
 
-protected:
+private:
+    explicit MaterialConfigEntry();
+
     MaterialLibrary _library;
     std::string _name;
     QDir _directory;
     std::string _uuid;
+    YAML::Node _model;
     bool _dereferenced;
 };
 
-class MaterialYamlEntry : public MaterialEntry
+class MaterialConfigLoader
 {
 public:
-    explicit MaterialYamlEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData);
-    ~MaterialYamlEntry() override;
+    explicit MaterialConfigLoader();
+    virtual ~MaterialConfigLoader();
 
-    void addToTree(std::map<std::string, Material*> *modelMap) override;
-
-    const YAML::Node &getModel() const { return _model; }
-    YAML::Node *getModelPtr() { return &_model; }
+    static bool isConfigStyle(const std::string& path);
 
 private:
-    explicit MaterialYamlEntry();
-
-    std::string yamlValue(const YAML::Node& node, const std::string& key,
-                                          const std::string& defaultValue);
-
-    YAML::Node _model;
-};
-
-class MaterialLoader
-{
-public:
-    explicit MaterialLoader(std::map<std::string, Material*> *modelMap, std::list<MaterialLibrary*> *libraryList);
-    virtual ~MaterialLoader();
-
-    std::list<MaterialLibrary*>* getMaterialLibraries();
-    static const std::string getUUIDFromPath(const std::string &path);
-
-private:
-    explicit MaterialLoader();
-
-    void addToTree(MaterialEntry* model);
-    void showYaml(const YAML::Node& yaml) const;
-    void dereference(MaterialEntry* parent, const MaterialEntry* child);
-    void dereference(MaterialEntry* model);
-    MaterialEntry *getMaterialFromPath(const MaterialLibrary &library, const std::string &path) const;
-    void addLibrary(MaterialLibrary* model);
-    void loadLibrary(const MaterialLibrary &library);
-    void loadLibraries(void);
-    static std::map<std::string, MaterialEntry*> *_MaterialEntryMap;
-    std::map<std::string, Material*> *_modelMap;
-    std::list<MaterialLibrary*> *_libraryList;
 };
 
 } // namespace Materials
 
-#endif // MATERIAL_MATERIALLOADER_H
+#endif // MATERIAL_MATERIALCONFIGLOADER_H

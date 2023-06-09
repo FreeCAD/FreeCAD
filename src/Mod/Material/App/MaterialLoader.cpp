@@ -33,17 +33,91 @@
 
 #include "Model.h"
 #include "MaterialLoader.h"
+#include "MaterialConfigLoader.h"
 
 
 using namespace Materials;
 
+MaterialEntry::MaterialEntry():
+    _dereferenced(false)
+{}
+
 MaterialEntry::MaterialEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData):
-    _library(library), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
+        const std::string &modelUuid):
+    _library(library), _name(modelName), _directory(dir), _uuid(modelUuid), _dereferenced(false)
 {}
 
 MaterialEntry::~MaterialEntry()
 {}
+
+MaterialYamlEntry::MaterialYamlEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
+        const std::string &modelUuid, const YAML::Node &modelData):
+    MaterialEntry(library, modelName, dir, modelUuid), _model(modelData)
+{}
+
+MaterialYamlEntry::~MaterialYamlEntry()
+{}
+
+std::string MaterialYamlEntry::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
+{
+    if (node[key])
+        return node[key].as<std::string>();
+    return defaultValue;
+}
+
+void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *modelMap)
+{
+    std::set<std::string> exclude;
+    exclude.insert("General");
+    exclude.insert("Inherits");
+
+    auto yamlModel = getModel();
+    auto library = getLibrary();
+    auto name = getName();
+    auto directory = getDirectory();
+    auto uuid = getUUID();
+
+    std::string version = yamlValue(yamlModel["General"], "Version", "");
+    std::string authorAndLicense = yamlValue(yamlModel["General"], "AuthorAndLicense", "");
+    std::string description = yamlValue(yamlModel["General"], "Description", "");
+
+    Material *finalModel = new Material(library, directory, uuid, name);
+    finalModel->setVersion(version);
+    finalModel->setAuthorAndLicense(authorAndLicense);
+    finalModel->setDescription(description);
+
+    // Add inheritance list
+    if (yamlModel["Inherits"]) {
+        auto inherits = yamlModel["Inherits"];
+        for(auto it = inherits.begin(); it != inherits.end(); it++) {
+            std::string nodeName = (*it)["UUID"].as<std::string>();
+
+            finalModel->addInheritance(nodeName);
+        }
+    }
+
+    // // Add property list
+    // auto yamlProperties = yamlModel[base];
+    // for(auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
+    //     std::string propName = it->first.as<std::string>();
+    //     if (exclude.count(propName) == 0) {
+    //         // showYaml(it->second);
+    //         auto yamlProp = yamlProperties[propName];
+    //         auto propType = yamlProp["Type"].as<std::string>();
+    //         auto propUnits = yamlProp["Units"].as<std::string>();
+    //         auto propURL = yamlProp["URL"].as<std::string>();
+    //         auto propDescription = yamlProp["Description"].as<std::string>();
+
+    //         ModelProperty property(propName, propType,
+    //                        propUnits, propURL,
+    //                        propDescription);
+
+    //         finalModel->addProperty(property);
+    //     }
+    // }
+
+    (*modelMap)[uuid] = finalModel;
+}
 
 std::map<std::string, MaterialEntry*> *MaterialLoader::_MaterialEntryMap = nullptr;
 
@@ -76,13 +150,20 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
     QDir modelDir(QString::fromStdString(path));
     MaterialEntry* model = nullptr;
 
+    if (MaterialConfigLoader::isConfigStyle(path))
+    {
+        Base::Console().Log("Old format .FCMat file: '%s'\n", path.c_str());
+        return model;
+    }
+
     try {
         YAML::Node yamlroot = YAML::LoadFile(path);
 
         const std::string uuid = yamlroot["General"]["UUID"].as<std::string>();
         const std::string name = yamlroot["General"]["Name"].as<std::string>();
 
-        model = new MaterialEntry(library, name, modelDir, uuid, yamlroot);
+        model = new MaterialYamlEntry(library, name, modelDir, uuid, yamlroot);
+        showYaml(yamlroot);
     } catch (YAML::Exception ex) {
         Base::Console().Log("YAML parsing error: '%s'\n", path.c_str());
 
@@ -146,7 +227,7 @@ void MaterialLoader::dereference(MaterialEntry *model)
 
     //         // This requires that all models have already been loaded undereferenced
     //         try {
-    //             const MaterialEntry *child = (*_MaterialEntryMap)[nodeName];
+    //             const MaterialYamlEntry *child = (*_MaterialYamlEntryMap)[nodeName];
     //             dereference(model, child);
     //         }
     //         catch (const std::out_of_range& oor) {
@@ -156,67 +237,6 @@ void MaterialLoader::dereference(MaterialEntry *model)
     // }
 
     // model->markDereferenced();
-}
-
-std::string MaterialLoader::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
-{
-    if (node[key])
-        return node[key].as<std::string>();
-    return defaultValue;
-}
-
-void MaterialLoader::addToTree(MaterialEntry *model)
-{
-    std::set<std::string> exclude;
-    exclude.insert("General");
-    exclude.insert("Inherits");
-
-    auto yamlModel = model->getModel();
-    auto library = model->getLibrary();
-    auto name = model->getName();
-    auto directory = model->getDirectory();
-    auto uuid = model->getUUID();
-
-    std::string version = yamlValue(yamlModel["General"], "Version", "");
-    std::string authorAndLicense = yamlValue(yamlModel["General"], "AuthorAndLicense", "");
-    std::string description = yamlValue(yamlModel["General"], "Description", "");
-
-    Material *finalModel = new Material(library, directory, uuid, name);
-    finalModel->setVersion(version);
-    finalModel->setAuthorAndLicense(authorAndLicense);
-    finalModel->setDescription(description);
-
-    // Add inheritance list
-    if (yamlModel["Inherits"]) {
-        auto inherits = yamlModel["Inherits"];
-        for(auto it = inherits.begin(); it != inherits.end(); it++) {
-            std::string nodeName = (*it)["UUID"].as<std::string>();
-
-            finalModel->addInheritance(nodeName);
-        }
-    }
-
-    // // Add property list
-    // auto yamlProperties = yamlModel[base];
-    // for(auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
-    //     std::string propName = it->first.as<std::string>();
-    //     if (exclude.count(propName) == 0) {
-    //         // showYaml(it->second);
-    //         auto yamlProp = yamlProperties[propName];
-    //         auto propType = yamlProp["Type"].as<std::string>();
-    //         auto propUnits = yamlProp["Units"].as<std::string>();
-    //         auto propURL = yamlProp["URL"].as<std::string>();
-    //         auto propDescription = yamlProp["Description"].as<std::string>();
-
-    //         ModelProperty property(propName, propType,
-    //                        propUnits, propURL,
-    //                        propDescription);
-
-    //         finalModel->addProperty(property);
-    //     }
-    // }
-
-    (*_modelMap)[uuid] = finalModel;
 }
 
 void MaterialLoader::loadLibrary(const MaterialLibrary &library)
@@ -235,7 +255,6 @@ void MaterialLoader::loadLibrary(const MaterialLibrary &library)
                 auto model = getMaterialFromPath(library, file.canonicalFilePath().toStdString());
                 if (model) {
                     (*_MaterialEntryMap)[model->getUUID()] = model;
-                    showYaml(model->getModel());
                 }
             }
         }
@@ -246,7 +265,7 @@ void MaterialLoader::loadLibrary(const MaterialLibrary &library)
     }
 
     for (auto it = _MaterialEntryMap->begin(); it != _MaterialEntryMap->end(); it++) {
-        addToTree(it->second);
+        it->second->addToTree(_modelMap);
     }
 
 }
