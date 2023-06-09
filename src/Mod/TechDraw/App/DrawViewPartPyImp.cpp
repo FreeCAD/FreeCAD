@@ -147,17 +147,17 @@ PyObject* DrawViewPartPy::clearCenterLines(PyObject *args)
     Py_Return;
 }
 
-PyObject* DrawViewPartPy::clearGeomFormats(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
+// PyObject* DrawViewPartPy::clearGeomFormats(PyObject *args)
+// {
+//     if (!PyArg_ParseTuple(args, "")) {
+//         return nullptr;
+//     }
 
-    DrawViewPart* item = getDrawViewPartPtr();
-    item->clearGeomFormats();
+//     DrawViewPart* item = getDrawViewPartPtr();
+//     item->clearGeomFormats();
 
-    Py_Return;
-}
+//     Py_Return;
+// }
 
 //********* Cosmetic Vertex Routines *******************************************
 PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
@@ -623,21 +623,24 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 
     color = DrawUtil::pyTupleToColor(pColor);
     DrawViewPart* dvp = getDrawViewPartPtr();
-    TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(idx);
-    if (gf) {
-        gf->m_format.m_style = style;
-        gf->m_format.m_color = color;
-        gf->m_format.m_weight = weight;
-        gf->m_format.m_visible = visible;
-    }
-    else {
-        TechDraw::LineFormat fmt(style, weight, color, visible);
-        TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(idx, fmt);
-//                    int idx =
-        dvp->addCosmetic<GeomFormat>(newGF);  // What happens to newGF??? Memory-leak??????
-    }
-
     Py_Return;
+
+    // Somehow find out the link between index and edgeGeom vector
+//     TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(idx);
+//     if (gf) {
+//         gf->m_format.m_style = style;
+//         gf->m_format.m_color = color;
+//         gf->m_format.m_weight = weight;
+//         gf->m_format.m_visible = visible;
+//     }
+//     else {
+//         TechDraw::LineFormat fmt(style, weight, color, visible);
+//         TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(idx, fmt);
+// //                    int idx =
+//         dvp->addCosmetic<GeomFormat>(newGF);  // What happens to newGF??? Memory-leak??????
+//     }
+
+//     Py_Return;
 }
 
 //------------------------------------------------------------------------------

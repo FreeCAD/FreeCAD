@@ -55,8 +55,8 @@ public:
     virtual void            removeCosmeticVertex(std::string tag);
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
 
-    virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
-    virtual GeomFormat*     getGeomFormatBySelection(int i) const;
+    // virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
+    // virtual GeomFormat*     getGeomFormatBySelection(int i) const;
 
     template<typename T>
     std::string             addCosmetic(BaseGeomPtr bg);

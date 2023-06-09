@@ -607,25 +607,29 @@ bool QGIViewPart::formatGeom(QGIEdge* item, BaseGeomPtr bg, int i) {
     if(!partFeat) {
         return true;
     }
-    
+
+    LineFormat* lineformat;
     if (bg->getCosmetic()) {
         std::string cTag = bg->getCosmeticTag();
         cosmetic = partFeat->Cosmetics.getValue<Cosmetic*>(cTag);
+        lineformat = &(cosmetic->m_format);
     }
     else {
+        lineformat = &(bg->m_format);
         // cosmetic = viewPart->getGeomFormatBySelection(i);
-        cosmetic = partFeat->getGeomFormatBySelection(i);
+        // cosmetic = partFeat->getGeomFormatBySelection(i);
     }
 
     if (!cosmetic) {
         Base::Console().Message("QGIVP::drawVP - edge: %d is confused\n", i);
         return true;  // Why do we always return true if formatting fails????
     }
-    App::Color color = Preferences::getAccessibleColor(cosmetic->m_format.m_color);
+    App::Color color = Preferences::getAccessibleColor(lineformat->m_color);
     item->setNormalColor(color.asValue<QColor>());
-    item->setWidth(cosmetic->m_format.m_weight * lineScaleFactor);
-    item->setStyle(cosmetic->m_format.m_style);
-    return cosmetic->m_format.m_visible;
+    item->setWidth(lineformat->m_weight * lineScaleFactor);
+    item->setStyle(lineformat->m_style);
+    bool visible = lineformat->m_visible;
+    return visible;
 }
 
 QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)

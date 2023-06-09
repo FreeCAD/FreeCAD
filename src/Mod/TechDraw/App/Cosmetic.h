@@ -57,7 +57,7 @@ private:
 
 //********** CosmeticEdge ******************************************************
 
-class TechDrawExport CosmeticEdge : public TechDraw::Cosmetic, public TechDraw::BaseGeom
+class TechDrawExport CosmeticEdge : public TechDraw::Cosmetic
 {
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -76,7 +76,7 @@ public:
     TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
     TechDraw::BaseGeomPtr scaledGeometry(double scale);
 
-    std::string toString() const override;
+    std::string toString() const;
     void dump(const char* title);
 
     // Persistence implementer ---------------------
@@ -105,35 +105,35 @@ protected:
 //********** GeomFormat ********************************************************
 
 // format specifier for geometric edges (Edge5)
-class TechDrawExport GeomFormat: public TechDraw::Cosmetic
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+// class TechDrawExport GeomFormat: public TechDraw::Cosmetic
+// {
+//     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-public:
-    GeomFormat();
-    explicit GeomFormat(TechDraw::GeomFormat* gf);
-    GeomFormat(int idx,
-               LineFormat fmt);
-    ~GeomFormat() override;
+// public:
+//     GeomFormat();
+//     explicit GeomFormat(TechDraw::GeomFormat* gf);
+//     GeomFormat(int idx,
+//                LineFormat fmt);
+//     ~GeomFormat() override;
 
-    // Persistence implementer ---------------------
-    unsigned int getMemSize() const override;
-    void Save(Base::Writer &/*writer*/) const override;
-    void Restore(Base::XMLReader &/*reader*/) override;
+//     // Persistence implementer ---------------------
+//     unsigned int getMemSize() const override;
+//     void Save(Base::Writer &/*writer*/) const override;
+//     void Restore(Base::XMLReader &/*reader*/) override;
 
-    PyObject *getPyObject() override;
-    GeomFormat* copy() const;
-    GeomFormat* clone() const;
+//     PyObject *getPyObject() override;
+//     GeomFormat* copy() const;
+//     GeomFormat* clone() const;
 
-    std::string toString() const;
-    void dump(const char* title) const;
+//     std::string toString() const;
+//     void dump(const char* title) const;
 
-    //std::string linkTag;
-    int m_geomIndex;            //connection to edgeGeom
+//     //std::string linkTag;
+//     int m_geomIndex;            //connection to edgeGeom
 
-protected:
-    void assignTag(const TechDraw::GeomFormat* gf);
-};
+// protected:
+//     void assignTag(const TechDraw::GeomFormat* gf);
+// };
 
 } //end namespace TechDraw
 

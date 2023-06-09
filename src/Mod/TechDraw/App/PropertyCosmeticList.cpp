@@ -157,6 +157,10 @@ void PropertyCosmeticList::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("Cosmetic");
         const char* TypeName = reader.getAttribute("type");
+        if (strcmp(TypeName, "TechDraw::GeomFormat\n")) {
+            reader.readEndElement("Cosmetic");
+            continue;// GeomFormat no longer supported
+        }
         // using CosmeticType = Cosmetic*;
         // if (std::strcmp(TypeName, "CosmeticEdge") == 0) {
         //     CosmeticType = CosmeticEdge;
@@ -237,7 +241,7 @@ void PropertyCosmeticList::clear() {
 }
 template TechDrawExport void PropertyCosmeticList::clear<CenterLine*>();
 template TechDrawExport void PropertyCosmeticList::clear<CosmeticEdge*>();
-template TechDrawExport void PropertyCosmeticList::clear<GeomFormat*>();
+// template TechDrawExport void PropertyCosmeticList::clear<GeomFormat*>();
 
 template<typename T>
 const T PropertyCosmeticList::getValue(std::string tag) const {
@@ -259,7 +263,7 @@ const T PropertyCosmeticList::getValue(std::string tag) const {
 template TechDrawExport CenterLine* const PropertyCosmeticList::getValue(std::string tag) const;
 template TechDrawExport Cosmetic* const PropertyCosmeticList::getValue(std::string tag) const;
 template TechDrawExport CosmeticEdge* const PropertyCosmeticList::getValue(std::string tag) const;
-template TechDrawExport GeomFormat* const PropertyCosmeticList::getValue(std::string tag) const;
+// template TechDrawExport GeomFormat* const PropertyCosmeticList::getValue(std::string tag) const;
 // Qualifier warnings????
 
 template<typename T>
@@ -279,6 +283,6 @@ const std::vector<T> PropertyCosmeticList::getValues() const {
 template TechDrawExport const std::vector<CenterLine*> PropertyCosmeticList::getValues<CenterLine*>() const;
 template TechDrawExport const std::vector<CosmeticEdge*> PropertyCosmeticList::getValues<CosmeticEdge*>() const;
 template TechDrawExport const std::vector<Cosmetic*> PropertyCosmeticList::getValues<Cosmetic*>() const;
-template TechDrawExport const std::vector<GeomFormat*> PropertyCosmeticList::getValues<GeomFormat*>() const;
+// template TechDrawExport const std::vector<GeomFormat*> PropertyCosmeticList::getValues<GeomFormat*>() const;
 
 // If you get linker errors, remember to do explicit template instantiation!!!

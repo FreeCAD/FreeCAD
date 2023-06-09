@@ -1596,14 +1596,14 @@ void DrawViewPart::addCenterLinesToGeom()
 
 // GeomFormats -----------------------------------------------------------------
 
-void DrawViewPart::clearGeomFormats()
-{
-    std::vector<GeomFormat*> fmts = Cosmetics.getValues<GeomFormat*>();
-    Cosmetics.clear<GeomFormat*>();
-    for (auto& f : fmts) {
-        delete f;
-    }
-}
+// void DrawViewPart::clearGeomFormats()
+// {
+//     std::vector<GeomFormat*> fmts = Cosmetics.getValues<GeomFormat*>();
+//     Cosmetics.clear<GeomFormat*>();
+//     for (auto& f : fmts) {
+//         delete f;
+//     }
+// }
 
 //------------------------------------------------------------------------------
 

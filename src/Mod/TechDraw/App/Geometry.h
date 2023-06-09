@@ -36,6 +36,8 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 
+#include "LineFormat.h"
+
 namespace Part {
 class TopoShape;
 }
@@ -146,6 +148,8 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         std::string getCosmeticTag() { return cosmeticTag; }
         void setCosmeticTag(std::string t) { cosmeticTag = t; }
         Part::TopoShape asTopoShape(double scale);
+
+        LineFormat m_format;
 
 protected:
         void createNewTag();

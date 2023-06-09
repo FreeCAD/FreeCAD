@@ -118,11 +118,11 @@
         <UserDocu>clearCenterLines() - remove all CenterLines from the View. Returns None.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="clearGeomFormats">
+    <!-- <Methode Name="clearGeomFormats">
       <Documentation>
         <UserDocu>clearGeomFormats() - remove all GeomFormats from the View. Returns None.</UserDocu>
       </Documentation>
-    </Methode>
+    </Methode> -->
     <Methode Name="formatGeometricEdge">
       <Documentation>
         <UserDocu>formatGeometricEdge(index, style, weight, color, visible). Returns None.</UserDocu>

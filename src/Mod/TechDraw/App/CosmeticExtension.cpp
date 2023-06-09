@@ -144,34 +144,34 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
 //********** Geometry Formats **************************************************
 // find the cosmetic edge corresponding to selection name (Edge5)
 // used when selecting
-TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string name) const
-{
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
-    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (!dvp) {
-        return nullptr;
-    }
-    int idx = DrawUtil::getIndexFromName(name);
-    const std::vector<TechDraw::GeomFormat*> formats = Cosmetics.getValues<GeomFormat*>();
-    for (auto& gf: formats) {
-        if (gf->m_geomIndex == idx) {
-            return gf;
-        }
-    }
+// TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string name) const
+// {
+// //    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
+//     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
+//     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
+//     if (!dvp) {
+//         return nullptr;
+//     }
+//     int idx = DrawUtil::getIndexFromName(name);
+//     const std::vector<TechDraw::GeomFormat*> formats = Cosmetics.getValues<GeomFormat*>();
+//     for (auto& gf: formats) {
+//         if (gf->m_geomIndex == idx) {
+//             return gf;
+//         }
+//     }
 
-    // Nothing found
-    return nullptr;
-}
+//     // Nothing found
+//     return nullptr;
+// }
 
-//overload for index only
-TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
-{
-//    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
-    std::stringstream edgeName;
-    edgeName << "Edge" << i;
-    return getGeomFormatBySelection(edgeName.str());
-}
+// //overload for index only
+// TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
+// {
+// //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
+//     std::stringstream edgeName;
+//     edgeName << "Edge" << i;
+//     return getGeomFormatBySelection(edgeName.str());
+// }
 
 template<typename T>
 std::string CosmeticExtension::addCosmetic(BaseGeomPtr bg) {
@@ -192,7 +192,7 @@ std::string CosmeticExtension::addCosmetic(T* cosmetic) {
     Cosmetics.addValue(cosmetic);
     return cosmetic->getTagAsString();
 }
-template TechDrawExport std::string CosmeticExtension::addCosmetic<GeomFormat>(GeomFormat* cosmetic);
+// template TechDrawExport std::string CosmeticExtension::addCosmetic<GeomFormat>(GeomFormat* cosmetic);
 template TechDrawExport std::string CosmeticExtension::addCosmetic<CenterLine>(CenterLine* cosmetic);
 
 void CosmeticExtension::removeCosmetic(std::string tag) {

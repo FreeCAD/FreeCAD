@@ -103,34 +103,42 @@ void TaskLineDecor::getDefaults()
     m_visible = 1;
 
     //set defaults to format of 1st edge
-    if (!m_edges.empty()) {
-        int num = DrawUtil::getIndexFromName(m_edges.front());
-        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
-        if (bg) {
-            TechDraw::Cosmetic* cosmetic;
-            if (bg->getCosmetic()) {
-                cosmetic = m_partFeat->getCosmeticByName<Cosmetic*>(m_edges.front());
+    if (m_edges.empty()) {
+        return;
+    }
+
+    int num = DrawUtil::getIndexFromName(m_edges.front());
+    BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
+    if (!bg) {
+        return;
+    }
+
+    LineFormat* lineformat;
+    TechDraw::Cosmetic* cosmetic;
+    if (bg->getCosmetic()) {
+        lineformat = &(cosmetic->m_format);
+        cosmetic = m_partFeat->getCosmeticByName<Cosmetic*>(m_edges.front());
+    }
+    else {
+        //cosmetic = m_partFeat->getGeomFormatBySelection(num);
+        lineformat = &(bg->m_format);
+        if (!lineformat) {
+            Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
+            auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+            if (partVP) {
+                m_weight = partVP->LineWidth.getValue();
+                m_style = Qt::SolidLine;                  // = 1
+                m_color = LineFormat::getDefEdgeColor();
+                m_visible = 1;
             }
-            else {
-                cosmetic = m_partFeat->getGeomFormatBySelection(num);
-                if (!cosmetic) {
-                    Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
-                    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-                    if (partVP) {
-                        m_weight = partVP->LineWidth.getValue();
-                        m_style = Qt::SolidLine;                  // = 1
-                        m_color = LineFormat::getDefEdgeColor();
-                        m_visible = 1;
-                    }
-                    return;
-                }
-            }
-            m_style = cosmetic->m_format.m_style;
-            m_color = cosmetic->m_format.m_color;
-            m_weight = cosmetic->m_format.m_weight;
-            m_visible = cosmetic->m_format.m_visible;
+            return;
         }
     }
+    m_style = lineformat->m_style;
+    m_color = lineformat->m_color;
+    m_weight = lineformat->m_weight;
+    m_visible = lineformat->m_visible;
+    delete lineformat;
 }
 
 void TaskLineDecor::onStyleChanged()
@@ -171,28 +179,19 @@ void TaskLineDecor::applyDecorations()
             continue;
         }
 
+        LineFormat* lineformat;
         TechDraw::Cosmetic* cosmetic;
         if (bg->getCosmetic()) {
             cosmetic = m_partFeat->getCosmeticByName<Cosmetic*>(e);
+            lineformat = &(cosmetic->m_format);
         }
         else {
-            cosmetic = m_partFeat->getGeomFormatBySelection(num);
-            if (!cosmetic) {
-                TechDraw::LineFormat fmt(m_style,
-                                            m_weight,
-                                            m_color,
-                                            m_visible);
-                TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(num,
-                                                                        fmt);
-//                    int idx =
-                m_partFeat->addCosmetic<GeomFormat>(newGF);  // What happens to newGF??? Memory-leak???
-                return;
-            }
+            lineformat = &(bg->m_format);
         }
-        cosmetic->m_format.m_style = m_style;
-        cosmetic->m_format.m_color = m_color;
-        cosmetic->m_format.m_weight = m_weight;
-        cosmetic->m_format.m_visible = m_visible;
+        lineformat->m_style = m_style;
+        lineformat->m_color = m_color;
+        lineformat->m_weight = m_weight;
+        lineformat->m_visible = m_visible;
     }
 }
 
@@ -258,7 +257,7 @@ void TaskRestoreLines::initUi()
     ui->l_All->setText(QString::number(countInvisible<Cosmetic>()));
     ui->l_Center->setText(QString::number(countInvisible<CenterLine>()));
     ui->l_Cosmetic->setText(QString::number(countInvisible<CosmeticEdge>()));
-    ui->l_Geometry->setText(QString::number(countInvisible<GeomFormat>()));
+    // ui->l_Geometry->setText(QString::number(countInvisible<GeomFormat>()));
 }
 
 void TaskRestoreLines::onAllPressed()
@@ -272,7 +271,7 @@ void TaskRestoreLines::onAllPressed()
 void TaskRestoreLines::onGeometryPressed()
 {
 //    Base::Console().Message("TRL::onGeometryPressed()\n");
-    restoreInvisible<GeomFormat>();
+    // restoreInvisible<GeomFormat>(); hmmmmm
     ui->l_Geometry->setText(QString::number(0));
     ui->l_All->setText(QString::number(countInvisible<Cosmetic>()));
 }

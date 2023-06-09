@@ -115,7 +115,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTileWeld        ::init();
     TechDraw::DrawWeldSymbol      ::init();
 
-    TechDraw::GeomFormat            ::init();
+    // TechDraw::GeomFormat            ::init();
     TechDraw::CenterLine            ::init();
     TechDraw::PropertyCosmeticList  ::init();
     TechDraw::CosmeticEdge          ::init();

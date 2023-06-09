@@ -62,7 +62,6 @@ generate_from_xml(DrawProjGroupItemPy)
 generate_from_xml(DrawViewAnnotationPy)
 generate_from_xml(DrawLeaderLinePy)
 generate_from_xml(DrawRichAnnoPy)
-generate_from_xml(GeomFormatPy)
 generate_from_xml(CenterLinePy)
 generate_from_xml(CosmeticEdgePy)
 generate_from_xml(CosmeticVertexPy)
@@ -235,8 +234,6 @@ SET(Python_SRCS
     DrawLeaderLinePyImp.cpp
     DrawRichAnnoPy.xml
     DrawRichAnnoPyImp.cpp
-    GeomFormatPy.xml
-    GeomFormatPyImp.cpp
     CenterLinePy.xml
     CenterLinePyImp.cpp
     CosmeticEdgePy.xml

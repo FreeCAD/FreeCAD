@@ -275,131 +275,131 @@ PyObject* CosmeticEdge::getPyObject()
 
 //------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(TechDraw::GeomFormat, Base::Persistence)
+// TYPESYSTEM_SOURCE(TechDraw::GeomFormat, Base::Persistence)
 
-GeomFormat::GeomFormat() :
-    m_geomIndex(-1)
-{
-    m_format.m_style = LineFormat::getDefEdgeStyle();
-    m_format.m_weight = LineFormat::getDefEdgeWidth();
-    m_format.m_color = LineFormat::getDefEdgeColor();
-    m_format.m_visible = true;
+// GeomFormat::GeomFormat() :
+//     m_geomIndex(-1)
+// {
+//     m_format.m_style = LineFormat::getDefEdgeStyle();
+//     m_format.m_weight = LineFormat::getDefEdgeWidth();
+//     m_format.m_color = LineFormat::getDefEdgeColor();
+//     m_format.m_visible = true;
 
-    createNewTag();
-}
+//     createNewTag();
+// }
 
-GeomFormat::GeomFormat(GeomFormat* gf)
-{
-    m_geomIndex  = gf->m_geomIndex;
-    m_format.m_style = gf->m_format.m_style;
-    m_format.m_weight = gf->m_format.m_weight;
-    m_format.m_color = gf->m_format.m_color;
-    m_format.m_visible = gf->m_format.m_visible;
+// GeomFormat::GeomFormat(GeomFormat* gf)
+// {
+//     m_geomIndex  = gf->m_geomIndex;
+//     m_format.m_style = gf->m_format.m_style;
+//     m_format.m_weight = gf->m_format.m_weight;
+//     m_format.m_color = gf->m_format.m_color;
+//     m_format.m_visible = gf->m_format.m_visible;
 
-    createNewTag();
-}
+//     createNewTag();
+// }
 
-GeomFormat::GeomFormat(int idx,
-                       TechDraw::LineFormat fmt) :
-    m_geomIndex(idx)
-{
-    m_format.m_style = fmt.m_style;
-    m_format.m_weight = fmt.m_weight;
-    m_format.m_color = fmt.m_color;
-    m_format.m_visible = fmt.m_visible;
+// GeomFormat::GeomFormat(int idx,
+//                        TechDraw::LineFormat fmt) :
+//     m_geomIndex(idx)
+// {
+//     m_format.m_style = fmt.m_style;
+//     m_format.m_weight = fmt.m_weight;
+//     m_format.m_color = fmt.m_color;
+//     m_format.m_visible = fmt.m_visible;
 
-    createNewTag();
-}
+//     createNewTag();
+// }
 
-GeomFormat::~GeomFormat()
-{
-}
+// GeomFormat::~GeomFormat()
+// {
+// }
 
-void GeomFormat::dump(const char* title) const
-{
-    Base::Console().Message("GF::dump - %s \n", title);
-    Base::Console().Message("GF::dump - %s \n", toString().c_str());
-}
+// void GeomFormat::dump(const char* title) const
+// {
+//     Base::Console().Message("GF::dump - %s \n", title);
+//     Base::Console().Message("GF::dump - %s \n", toString().c_str());
+// }
 
-std::string GeomFormat::toString() const
-{
-    std::stringstream ss;
-    ss << m_geomIndex << ", $$$, " <<
-          m_format.toString();
-    return ss.str();
-}
+// std::string GeomFormat::toString() const
+// {
+//     std::stringstream ss;
+//     ss << m_geomIndex << ", $$$, " <<
+//           m_format.toString();
+//     return ss.str();
+// }
 
-// Persistence implementer
-unsigned int GeomFormat::getMemSize () const
-{
-    return 1;
-}
+// // Persistence implementer
+// unsigned int GeomFormat::getMemSize () const
+// {
+//     return 1;
+// }
 
-void GeomFormat::Save(Base::Writer &writer) const
-{
-    const char v = m_format.m_visible?'1':'0';
-    writer.Stream() << writer.ind() << "<GeomIndex value=\"" <<  m_geomIndex << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
-}
+// void GeomFormat::Save(Base::Writer &writer) const
+// {
+//     const char v = m_format.m_visible?'1':'0';
+//     writer.Stream() << writer.ind() << "<GeomIndex value=\"" <<  m_geomIndex << "\"/>" << endl;
+//     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
+//     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
+//     writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
+//     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+// }
 
-void GeomFormat::Restore(Base::XMLReader &reader)
-{
-    if (!CosmeticVertex::restoreCosmetic()) {
-        return;
-    }
-    // read my Element
-    reader.readElement("GeomIndex");
-    // get the value of my Attribute
-    m_geomIndex = reader.getAttributeAsInteger("value");
+// void GeomFormat::Restore(Base::XMLReader &reader)
+// {
+//     if (!CosmeticVertex::restoreCosmetic()) {
+//         return;
+//     }
+//     // read my Element
+//     reader.readElement("GeomIndex");
+//     // get the value of my Attribute
+//     m_geomIndex = reader.getAttributeAsInteger("value");
 
-    reader.readElement("Style");
-    m_format.m_style = reader.getAttributeAsInteger("value");
-    reader.readElement("Weight");
-    m_format.m_weight = reader.getAttributeAsFloat("value");
-    reader.readElement("Color");
-    std::string temp = reader.getAttribute("value");
-    m_format.m_color.fromHexString(temp);
-    reader.readElement("Visible");
-    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
-}
+//     reader.readElement("Style");
+//     m_format.m_style = reader.getAttributeAsInteger("value");
+//     reader.readElement("Weight");
+//     m_format.m_weight = reader.getAttributeAsFloat("value");
+//     reader.readElement("Color");
+//     std::string temp = reader.getAttribute("value");
+//     m_format.m_color.fromHexString(temp);
+//     reader.readElement("Visible");
+//     m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+// }
 
-void GeomFormat::assignTag(const TechDraw::GeomFormat * ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
-}
+// void GeomFormat::assignTag(const TechDraw::GeomFormat * ce)
+// {
+//     if(ce->getTypeId() == this->getTypeId())
+//         this->tag = ce->tag;
+//     else
+//         throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
+// }
 
-GeomFormat *GeomFormat::clone() const
-{
-    GeomFormat* cpy = this->copy();
-    cpy->tag = this->tag;
-    return cpy;
-}
+// GeomFormat *GeomFormat::clone() const
+// {
+//     GeomFormat* cpy = this->copy();
+//     cpy->tag = this->tag;
+//     return cpy;
+// }
 
-GeomFormat* GeomFormat::copy() const
-{
-    GeomFormat* newFmt = new GeomFormat();
-    newFmt->m_geomIndex = m_geomIndex;
-    newFmt->m_format.m_style = m_format.m_style;
-    newFmt->m_format.m_weight = m_format.m_weight;
-    newFmt->m_format.m_color = m_format.m_color;
-    newFmt->m_format.m_visible = m_format.m_visible;
-    return newFmt;
-}
+// GeomFormat* GeomFormat::copy() const
+// {
+//     GeomFormat* newFmt = new GeomFormat();
+//     newFmt->m_geomIndex = m_geomIndex;
+//     newFmt->m_format.m_style = m_format.m_style;
+//     newFmt->m_format.m_weight = m_format.m_weight;
+//     newFmt->m_format.m_color = m_format.m_color;
+//     newFmt->m_format.m_visible = m_format.m_visible;
+//     return newFmt;
+// }
 
-PyObject* GeomFormat::getPyObject()
-{
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new GeomFormatPy(this), true);
-    }
-    return Py::new_reference_to(PythonObject);
-}
+// PyObject* GeomFormat::getPyObject()
+// {
+//     if (PythonObject.is(Py::_None())) {
+//         // ref counter is set to 1
+//         PythonObject = Py::Object(new GeomFormatPy(this), true);
+//     }
+//     return Py::new_reference_to(PythonObject);
+// }
 
 bool CosmeticVertex::restoreCosmetic()
 {
