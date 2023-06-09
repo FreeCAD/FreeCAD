@@ -90,7 +90,7 @@ public:
     void setReference(const std::string& reference) { _reference = reference; }
     void addTeg(const std::string& tag) {}
     void removeTag(const std::string& tag) {}
-    void addInheritedModel(const std::string &uuid) { _modelUuids.push_back(uuid); }
+    void addInheritance(const std::string &uuid) { _modelUuids.push_back(uuid); }
 
 private:
     MaterialLibrary _library;

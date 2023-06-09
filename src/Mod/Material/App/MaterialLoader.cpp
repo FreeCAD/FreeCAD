@@ -83,7 +83,7 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
         const std::string name = yamlroot["General"]["Name"].as<std::string>();
 
         model = new MaterialEntry(library, name, modelDir, uuid, yamlroot);
-    } catch (YAML::ParserException ex) {
+    } catch (YAML::Exception ex) {
         Base::Console().Log("YAML parsing error: '%s'\n", path.c_str());
 
         // Perhaps try parsing the older format?
@@ -186,15 +186,15 @@ void MaterialLoader::addToTree(MaterialEntry *model)
     finalModel->setAuthorAndLicense(authorAndLicense);
     finalModel->setDescription(description);
 
-    // // Add inheritance list
-    // if (yamlModel[base]["Inherits"]) {
-    //     auto inherits = yamlModel[base]["Inherits"];
-    //     for(auto it = inherits.begin(); it != inherits.end(); it++) {
-    //         std::string nodeName = (*it)["UUID"].as<std::string>();
+    // Add inheritance list
+    if (yamlModel["Inherits"]) {
+        auto inherits = yamlModel["Inherits"];
+        for(auto it = inherits.begin(); it != inherits.end(); it++) {
+            std::string nodeName = (*it)["UUID"].as<std::string>();
 
-    //         finalModel->addInheritance(nodeName);
-    //     }
-    // }
+            finalModel->addInheritance(nodeName);
+        }
+    }
 
     // // Add property list
     // auto yamlProperties = yamlModel[base];
