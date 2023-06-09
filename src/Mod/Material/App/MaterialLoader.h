@@ -86,12 +86,12 @@ public:
 
     std::list<MaterialLibrary*>* getMaterialLibraries();
     static const std::string getUUIDFromPath(const std::string &path);
+    static void showYaml(const YAML::Node& yaml);
 
 private:
     explicit MaterialLoader();
 
     void addToTree(MaterialEntry* model);
-    void showYaml(const YAML::Node& yaml) const;
     void dereference(MaterialEntry* parent, const MaterialEntry* child);
     void dereference(MaterialEntry* model);
     MaterialEntry *getMaterialFromPath(const MaterialLibrary &library, const std::string &path) const;

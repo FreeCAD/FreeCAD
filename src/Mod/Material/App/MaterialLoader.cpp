@@ -34,6 +34,7 @@
 #include "Model.h"
 #include "MaterialLoader.h"
 #include "MaterialConfigLoader.h"
+#include "ModelManager.h"
 
 
 using namespace Materials;
@@ -93,6 +94,23 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *modelMap)
             std::string nodeName = (*it)["UUID"].as<std::string>();
 
             finalModel->addInheritance(nodeName);
+        }
+    }
+
+    ModelManager modelManager;
+    // Add material models
+    if (yamlModel["Models"]) {
+        auto models = yamlModel["Models"];
+        for(auto it = models.begin(); it != models.end(); it++) {
+            std::string modelName = (it->first).as<std::string>();
+            Base::Console().Log("Model: '%s'\n", modelName.c_str());
+            MaterialLoader::showYaml(it->second);
+            auto modelNode = models[modelName];
+            std::string uuid = modelNode["UUID"].as<std::string>();
+            auto materialModel = modelManager.getModel(uuid);
+            Base::Console().Log("\tModel: '%s', UUID '%s'\n", materialModel.getName().c_str(), materialModel.getUUID().c_str());
+
+            // finalModel->addInheritance(nodeName);
         }
     }
 
@@ -174,7 +192,7 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
     return model;
 }
 
-void MaterialLoader::showYaml(const YAML::Node &yaml) const
+void MaterialLoader::showYaml(const YAML::Node &yaml)
 {
     std::stringstream out;
 

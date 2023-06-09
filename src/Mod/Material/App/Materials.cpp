@@ -47,6 +47,26 @@ MaterialLibrary::~MaterialLibrary()
     // delete directory;
 }
 
+TYPESYSTEM_SOURCE(Materials::ModelData, Base::BaseClass)
+
+ModelData::ModelData()
+{
+
+}
+
+ModelData::ModelData(const std::string& name, const std::string& type,
+                        const std::string& units, const std::string& url,
+                        const std::string& description):
+    _name(name), _type(type), _units(units), _url(url), _description(description)
+{
+
+}
+
+ModelData::~ModelData()
+{
+
+}
+
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
 Material::Material()

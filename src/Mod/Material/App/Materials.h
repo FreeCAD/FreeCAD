@@ -51,6 +51,37 @@ private:
     std::string _iconPath;
 };
 
+class MaterialsExport ModelData : public Base::BaseClass
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    explicit ModelData();
+    explicit ModelData(const std::string& name, const std::string& type,
+                           const std::string& units, const std::string& url,
+                           const std::string& description);
+    virtual ~ModelData();
+
+    const std::string &getName() const {  return _name; }
+    const std::string &getType() const {  return _type; }
+    const std::string &getUnits() const {  return _units; }
+    const std::string &getURL() const {  return _url; }
+    const std::string &getDescription() const {  return _description; }
+
+    void setName(const std::string& name) { _name = name; }
+    void setType(const std::string& type) { _type = type; }
+    void setUnits(const std::string& units) { _units = units; }
+    void setURL(const std::string& url) { _url = url; }
+    void setDescription(const std::string& description) { _description = description; }
+
+private:
+    std::string _name;
+    std::string _type;
+    std::string _units;
+    std::string _url;
+    std::string _description;
+};
+
 class MaterialsExport Material : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
