@@ -614,11 +614,22 @@ bool QGIViewPart::formatGeom(QGIEdge* item, BaseGeomPtr bg, int i) {
         cosmetic = partFeat->Cosmetics.getValue<Cosmetic*>(cTag);
         lineformat = &(cosmetic->m_format);
     }
+    else if (bg->useDefaultLineFormat) {
+        // item->setWidth(lineWidth);
+        // item->setNormalColor(edgeColor);
+        // item->setStyle(Qt::SolidLine);
+        return true;
+    }
     else {
         lineformat = &(bg->m_format);
         // cosmetic = viewPart->getGeomFormatBySelection(i);
         // cosmetic = partFeat->getGeomFormatBySelection(i);
     }
+
+    Base::Console().Message("object lineformat: ");
+    Base::Console().Message(lineformat->toString().c_str());
+    Base::Console().Message("Default lineformat: ");
+    Base::Console().Message(LineFormat().toString().c_str());
 
     if (!cosmetic) {
         Base::Console().Message("QGIVP::drawVP - edge: %d is confused\n", i);
@@ -627,9 +638,9 @@ bool QGIViewPart::formatGeom(QGIEdge* item, BaseGeomPtr bg, int i) {
     App::Color color = Preferences::getAccessibleColor(lineformat->m_color);
     item->setNormalColor(color.asValue<QColor>());
     item->setWidth(lineformat->m_weight * lineScaleFactor);
+    //item->setWidth(2 * lineScaleFactor);
     item->setStyle(lineformat->m_style);
-    bool visible = lineformat->m_visible;
-    return visible;
+    return lineformat->m_visible;
 }
 
 QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)

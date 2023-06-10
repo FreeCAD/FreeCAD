@@ -24,6 +24,7 @@
 #include "LineFormat.h"
 #include "Preferences.h"
 #include <Base/Persistence.h>
+#include <Qt>
 
 using namespace TechDraw;
 
@@ -76,7 +77,7 @@ App::Color LineFormat::getDefEdgeColor()
     return Preferences::normalColor();
 }
 
-int LineFormat::getDefEdgeStyle()
+int LineFormat::getDefEdgeStyle()  // Yes, default edge style of the CENTERLINE!!! I used 2 hours debugging the why I got the wrong edge style...
 {
     return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", Qt::DashLine);   //dashed
 }

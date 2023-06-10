@@ -179,6 +179,8 @@ BaseGeom::BaseGeom() :
     occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
     tag = boost::uuids::nil_uuid();
+    m_format = LineFormat();
+    // m_format.m_style = Qt::SolidLine;  // This is option 1. See option 2 in QGIViewPart.cpp
 }
 
 BaseGeomPtr BaseGeom::copy()

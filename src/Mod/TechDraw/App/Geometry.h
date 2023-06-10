@@ -150,6 +150,7 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         Part::TopoShape asTopoShape(double scale);
 
         LineFormat m_format;
+        bool useDefaultLineFormat = true;  // This should probably be moved to a function.
 
 protected:
         void createNewTag();

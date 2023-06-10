@@ -31,7 +31,7 @@
 #include <App/Application.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/CosmeticEdgePy.h>
-#include <Mod/TechDraw/App/GeomFormatPy.h>
+// #include <Mod/TechDraw/App/GeomFormatPy.h>
 
 #include "Cosmetic.h"
 #include "DrawUtil.h"
