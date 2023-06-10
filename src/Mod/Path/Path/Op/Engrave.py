@@ -61,6 +61,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         )
 
     def setupAdditionalProperties(self, obj):
+        """setupAdditionalProperties(self, obj) ... Add required properties to obj as necessary."""
         if not hasattr(obj, "BaseShapes"):
             obj.addProperty(
                 "App::PropertyLinkList",
@@ -111,7 +112,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 basewires = []
                 for feature in subs:
                     sub = base.Shape.getElement(feature)
-                    if type(sub) == Part.Edge:
+                    if isinstance(sub, Part.Edge):
                         edges.append(sub)
                     elif sub.Wires:
                         basewires.extend(sub.Wires)
@@ -123,9 +124,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
                 jobshapes.append(Part.makeCompound(basewires))
 
-        elif len(obj.BaseShapes) > 0:  # user added specific shapes
+        if len(obj.BaseShapes) > 0:  # user added specific shapes
             jobshapes.extend([base.Shape for base in obj.BaseShapes])
-        else:
+        elif len(obj.Base) == 0:
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
@@ -137,21 +138,33 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                     jobshapes.append(base.Shape)
 
         if len(jobshapes) > 0:
-            Path.Log.debug("processing {} jobshapes".format(len(jobshapes)))
+            Path.Log.debug(f"processing {len(jobshapes)} jobshapes")
             wires = []
             for shape in jobshapes:
-                shapeWires = shape.Wires
-                Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
+                Path.Log.debug(
+                    f"This jobshape has {len(shape.Wires)} wires and {len(shape.Edges)} edges"
+                )
                 self.commandlist.append(
                     Path.Command(
                         "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
                     )
                 )
+
+                if len(shape.Wires) == 0:
+                    if len(shape.Edges) == 1:
+                        shapeWires = [Part.Wire(shape.Edges[0].copy())]
+                    else:
+                        shapeWires = shape.Wires
+                elif len(shape.Edges) == 1:
+                    shapeWires = [shape.Wires[0].copy()]
+                else:
+                    shapeWires = shape.Wires
+
                 self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
             Path.Log.debug(
-                "processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires))
+                f"processing {len(jobshapes)} jobshapes -> {len(wires)} wires"
             )
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
