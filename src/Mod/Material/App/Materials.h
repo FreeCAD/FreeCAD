@@ -97,6 +97,7 @@ public:
     const MaterialLibrary &getLibrary() const { return _library; }
     const QDir &getDirectory() const { return _directory; }
     const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
+    const std::string getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()).toStdString(); }
     const std::string &getUUID() const { return _uuid; }
     const std::string &getVersion() const { return _version; }
     const std::string &getName() const { return _name; }
@@ -106,7 +107,7 @@ public:
     const std::string &getURL() const { return _url; }
     const std::string &getReference() const { return _reference; }
     const std::list<std::string> &getTags() const { return _tags; }
-    const std::vector<std::string> &getInheritedModels() const { return _modelUuids; }
+    const std::vector<std::string> &getModels() const { return _modelUuids; }
 
     void setLibrary(const MaterialLibrary &library) { _library = library; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
@@ -115,13 +116,13 @@ public:
     void setVersion(const std::string& uuid) { _version = uuid; }
     void setName(const std::string& name) { _name = name; }
     void setAuthorAndLicense(const std::string& authorAndLicense) { _authorAndLicense = authorAndLicense; }
-    void setPaarentUUID(const std::string& uuid) { _parentUuid = uuid; }
+    void setParentUUID(const std::string& uuid) { _parentUuid = uuid; }
     void setDescription(const std::string& description) { _description = description; }
     void setURL(const std::string& url) { _url = url; }
     void setReference(const std::string& reference) { _reference = reference; }
     void addTag(const std::string& tag) {}
     void removeTag(const std::string& tag) {}
-    void addInheritance(const std::string &uuid) { _modelUuids.push_back(uuid); }
+    void addModel(const std::string &uuid) { _modelUuids.push_back(uuid); }
 
 private:
     MaterialLibrary _library;

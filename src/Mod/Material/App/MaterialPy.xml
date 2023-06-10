@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy" 
+      Name="MaterialPy"
+      Twin="Material"
+      TwinPointer="Material"
+      Include="Mod/Material/App/Materials.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h" 
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material descriptions.</UserDocu>
+    </Documentation>
+    <Attribute Name="LibraryName" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model library name.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryName" Type="String"/>
+    </Attribute>
+    <Attribute Name="LibraryRoot" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model library path.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryRoot" Type="String"/>
+    </Attribute>
+    <Attribute Name="RelativePath" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model path relative to the library root.</UserDocu>
+      </Documentation>
+      <Parameter Name="RelativePath" Type="String"/>
+    </Attribute>
+    <Attribute Name="LibraryIcon" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model icon path.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryIcon" Type="String"/>
+    </Attribute>
+    <Attribute Name="Name" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model name.</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <Attribute Name="Directory" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model directory.</UserDocu>
+      </Documentation>
+      <Parameter Name="Directory" Type="String"/>
+    </Attribute>
+    <Attribute Name="UUID" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Unique model identifier.</UserDocu>
+      </Documentation>
+      <Parameter Name="UUID" Type="String"/>
+    </Attribute>
+    <Attribute Name="Description" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Description of the material.</UserDocu>
+      </Documentation>
+      <Parameter Name="Description" Type="String"/>
+    </Attribute>
+    <Attribute Name="URL" ReadOnly="true">
+      <Documentation>
+        <UserDocu>URL to a material reference.</UserDocu>
+      </Documentation>
+      <Parameter Name="URL" Type="String"/>
+    </Attribute>
+    <Attribute Name="Reference" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Reference for material data.</UserDocu>
+      </Documentation>
+      <Parameter Name="Reference" Type="String"/>
+    </Attribute>
+    <Attribute Name="Parent" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Parent material UUID.</UserDocu>
+      </Documentation>
+      <Parameter Name="Parent" Type="String"/>
+    </Attribute>
+    <Attribute Name="AuthorAndLicense" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Author and license information.</UserDocu>
+      </Documentation>
+      <Parameter Name="AuthorAndLicense" Type="String"/>
+    </Attribute>
+    <Attribute Name="Models" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of implemented models.</UserDocu>
+      </Documentation>
+      <Parameter Name="Models" Type="List"/>
+    </Attribute>
+    <Attribute Name="Tags" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of searchable tags.</UserDocu>
+      </Documentation>
+      <Parameter Name="Tags" Type="List"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

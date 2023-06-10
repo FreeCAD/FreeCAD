@@ -30,11 +30,17 @@ list(APPEND Material_LIBS
     ${YAML_CPP_LIBRARIES}
 )
 
+generate_from_xml(MaterialManagerPy)
+generate_from_xml(MaterialPy)
 generate_from_xml(ModelManagerPy)
 generate_from_xml(ModelPropertyPy)
 generate_from_xml(ModelPy)
 
 SET(Python_SRCS
+    MaterialManagerPy.xml
+    MaterialManagerPyImpl.cpp
+    MaterialPy.xml
+    MaterialPyImpl.cpp
     ModelManagerPy.xml
     ModelManagerPyImpl.cpp
     ModelPropertyPy.xml
@@ -55,6 +61,8 @@ SET(Material_SRCS
     MaterialManager.h
     Materials.cpp
     Materials.h
+    MaterialValue.cpp
+    MaterialValue.h
     Model.cpp
     Model.h
     ModelLoader.cpp

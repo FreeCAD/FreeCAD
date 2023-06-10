@@ -36,7 +36,21 @@ using namespace Materials;
 // returns a string which represents the object e.g. when printed in python
 std::string ModelPropertyPy::representation() const
 {
-    return "<ModelProperty object>";
+    ModelPropertyPy::PointerType ptr = getModelPropertyPtr();
+    std::stringstream str;
+    str << "Property [Name=(";
+    str << ptr->getName();
+    str << "), Type=(";
+    str << ptr->getType();
+    str << "), Units=(";
+    str << ptr->getUnits();
+    str << "), URL=(";
+    str << ptr->getURL();
+    str << "), Description=(";
+    str << ptr->getDescription();
+    str << ")]";
+
+    return str.str();
 }
 
 PyObject *ModelPropertyPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

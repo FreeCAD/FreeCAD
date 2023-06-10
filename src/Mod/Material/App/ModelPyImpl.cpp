@@ -37,7 +37,42 @@ using namespace Materials;
 // returns a string which represents the object e.g. when printed in python
 std::string ModelPy::representation() const
 {
-    return "<Model object>";
+    ModelPy::PointerType ptr = getModelPtr();
+    std::stringstream str;
+    str << "Property [Name=(";
+    str << ptr->getName();
+    str << "), UUID=(";
+    str << ptr->getUUID();
+    str << "), Library Name=(";
+    str << ptr->getLibrary().getName();
+    str << "), Library Root=(";
+    str << ptr->getLibrary().getDirectoryPath();
+     str << "), Library Icon=(";
+    str << ptr->getLibrary().getIconPath();
+    str << "), Relative Path=(";
+    str << ptr->getRelativePath();
+    str << "), Directory=(";
+    str << ptr->getDirectory().absolutePath().toStdString();
+    str << "), URL=(";
+    str << ptr->getURL();
+    str << "), DOI=(";
+    str << ptr->getDOI();
+    str << "), Description=(";
+    str << ptr->getDescription();
+    str << "), Inherits=[";
+    const std::vector<std::string> &inherited = getModelPtr()->getInheritance();
+    for (auto it = inherited.begin(); it != inherited.end(); it++)
+    {
+        std::string uuid = *it;
+        if (it != inherited.begin())
+            str << "), UUID=(";
+        else
+            str << "UUID=(";
+        str << uuid << ")";
+    }
+    str << "]]";
+
+    return str.str();
 }
 
 PyObject *ModelPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

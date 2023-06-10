@@ -34,6 +34,8 @@
 #include "ModelManagerPy.h"
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
+#include "MaterialPy.h"
+#include "MaterialManagerPy.h"
 
 namespace Materials {
 class Module : public Py::ExtensionModule<Module>
@@ -62,9 +64,11 @@ PyMOD_INIT_FUNC(Material)
 
     Base::Console().Log("Loading Material module... done\n");
 
-    Base::Interpreter().addType(&Materials::ModelManagerPy   ::Type, module, "ModelManager");
-    Base::Interpreter().addType(&Materials::ModelPropertyPy  ::Type, module, "ModelProperty");
-    Base::Interpreter().addType(&Materials::ModelPy          ::Type, module, "Model");
+    Base::Interpreter().addType(&Materials::MaterialManagerPy ::Type, module, "MaterialManager");
+    Base::Interpreter().addType(&Materials::MaterialPy        ::Type, module, "Material");
+    Base::Interpreter().addType(&Materials::ModelManagerPy    ::Type, module, "ModelManager");
+    Base::Interpreter().addType(&Materials::ModelPropertyPy   ::Type, module, "ModelProperty");
+    Base::Interpreter().addType(&Materials::ModelPy           ::Type, module, "Model");
 
     PyMOD_Return(module);
 }

@@ -26,50 +26,50 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include "ModelManagerPy.h"
-#include "ModelManagerPy.cpp"
-#include "ModelManager.h"
-#include "ModelPy.h"
-
+#include "MaterialManagerPy.h"
+#include "MaterialManagerPy.cpp"
+#include "MaterialManager.h"
+#include "MaterialPy.h"
+#include "Materials.h"
 
 using namespace Materials;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ModelManagerPy::representation() const
+std::string MaterialManagerPy::representation() const
 {
     std::stringstream str;
-    str << "<ModelManager object at " << getModelManagerPtr() << ">";
+    str << "<MaterialManager object at " << getMaterialManagerPtr() << ">";
 
     return str.str();
 }
 
-PyObject *ModelManagerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *MaterialManagerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new ModelManagerPy(new ModelManager());
+    return new MaterialManagerPy(new MaterialManager());
 
     // PyErr_SetString(PyExc_RuntimeError,
-    //     "Please use ModelManager.getManager() to get an instance of the ModelManager");
+    //     "Please use MaterialManager.getManager() to get an instance of the MaterialManager");
     // return nullptr;
 }
 
 // constructor method
-int ModelManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+int MaterialManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
 }
 
-PyObject* ModelManagerPy::getModel(PyObject *args)
+PyObject* MaterialManagerPy::getMaterial(PyObject *args)
 {
     char *uuid;
     if (!PyArg_ParseTuple(args, "s", &uuid))
         return nullptr;
 
-    const Model &model = getModelManagerPtr()->getModel(uuid);
-    return new ModelPy(new Model(model));
+    const Material &material = getMaterialManagerPtr()->getMaterial(uuid);
+    return new MaterialPy(new Material(material));
 }
 
-PyObject* ModelManagerPy::getModelByPath(PyObject *args)
+PyObject* MaterialManagerPy::getMaterialByPath(PyObject *args)
 {
     char *path;
     char *lib="";
@@ -79,22 +79,22 @@ PyObject* ModelManagerPy::getModelByPath(PyObject *args)
     std::string libPath(lib);
     if (libPath.length() > 0)
     {
-        const Model &model = getModelManagerPtr()->getModelByPath(path, libPath);
-        return new ModelPy(new Model(model));
+        const Material &material = getMaterialManagerPtr()->getMaterialByPath(path, libPath);
+        return new MaterialPy(new Material(material));
     }
 
-    const Model &model = getModelManagerPtr()->getModelByPath(path);
-    return new ModelPy(new Model(model));
+    const Material &material = getMaterialManagerPtr()->getMaterialByPath(path);
+    return new MaterialPy(new Material(material));
 }
 
-Py::List ModelManagerPy::getModelLibraries() const
+Py::List MaterialManagerPy::getMaterialLibraries() const
 {
-    std::list<ModelLibrary*> *libraries = getModelManagerPtr()->getModelLibraries();
+    std::list<MaterialLibrary*> *libraries = getMaterialManagerPtr()->getMaterialLibraries();
     Py::List list;
 
     for (auto it = libraries->begin(); it != libraries->end(); it++)
     {
-        ModelLibrary *lib = *it;
+        MaterialLibrary *lib = *it;
         Py::Tuple libTuple(3);
         libTuple.setItem(0,Py::String(lib->getName()));
         libTuple.setItem(1,Py::String(lib->getDirectoryPath()));
@@ -106,29 +106,29 @@ Py::List ModelManagerPy::getModelLibraries() const
     return list;
 }
 
-Py::Dict ModelManagerPy::getModels() const
+Py::Dict MaterialManagerPy::getMaterials() const
 {
-    std::map<std::string, Model*> *models = getModelManagerPtr()->getModels();
+    std::map<std::string, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
     Py::Dict dict;
 
-    for (auto it = models->begin(); it != models->end(); it++)
+    for (auto it = Materials->begin(); it != Materials->end(); it++)
     {
         std::string key = it->first;
-        Model *model = it->second;
+        Material *material = it->second;
 
-        PyObject *modelPy = new ModelPy(new Model(*model));
-        dict.setItem(Py::String(key), Py::Object(modelPy,true));
+        PyObject *materialPy = new MaterialPy(new Material(*material));
+        dict.setItem(Py::String(key), Py::Object(materialPy,true));
     }
 
     return dict;
 }
 
-PyObject *ModelManagerPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *MaterialManagerPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ModelManagerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int MaterialManagerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

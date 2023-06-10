@@ -93,7 +93,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *modelMap)
         for(auto it = inherits.begin(); it != inherits.end(); it++) {
             std::string nodeName = (*it)["UUID"].as<std::string>();
 
-            finalModel->addInheritance(nodeName);
+            finalModel->setParentUUID(nodeName); // Should only be one. Need to check
         }
     }
 
@@ -110,7 +110,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *modelMap)
             auto materialModel = modelManager.getModel(uuid);
             Base::Console().Log("\tModel: '%s', UUID '%s'\n", materialModel.getName().c_str(), materialModel.getUUID().c_str());
 
-            // finalModel->addInheritance(nodeName);
+            finalModel->addModel(uuid);
         }
     }
 
