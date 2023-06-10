@@ -233,7 +233,7 @@ CmdSketcherCompCreateRectangles::CmdSketcherCompCreateRectangles()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create rectangles");
+    sMenuText = QT_TR_NOOP("Create rectangle");
     sToolTipText = QT_TR_NOOP("Creates a rectangle in the sketch");
     sWhatsThis = "Sketcher_CompCreateRectangles";
     sStatusTip = sToolTipText;
@@ -649,7 +649,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create an arc of ellipse");
+    sMenuText = QT_TR_NOOP("Create arc of ellipse");
     sToolTipText = QT_TR_NOOP("Create an arc of ellipse in the sketch");
     sWhatsThis = "Sketcher_CreateArcOfEllipse";
     sStatusTip = sToolTipText;
@@ -678,7 +678,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create an arc of hyperbola");
+    sMenuText = QT_TR_NOOP("Create arc of hyperbola");
     sToolTipText = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
     sWhatsThis = "Sketcher_CreateArcOfHyperbola";
     sStatusTip = sToolTipText;
@@ -706,7 +706,7 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create an arc of parabola");
+    sMenuText = QT_TR_NOOP("Create arc of parabola");
     sToolTipText = QT_TR_NOOP("Create an arc of parabola in the sketch");
     sWhatsThis = "Sketcher_CreateArcOfParabola";
     sStatusTip = sToolTipText;
@@ -739,7 +739,7 @@ CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create a conic");
+    sMenuText = QT_TR_NOOP("Create conic");
     sToolTipText = QT_TR_NOOP("Create a conic in the sketch");
     sWhatsThis = "Sketcher_CompCreateConic";
     sStatusTip = sToolTipText;
@@ -976,8 +976,8 @@ CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Interpolate B-spline");
-    sToolTipText = QT_TR_NOOP("Create a B-spline by interpolation, i.e. via knots in the sketch.");
+    sMenuText = QT_TR_NOOP("Create B-spline by knots");
+    sToolTipText = QT_TR_NOOP("Create a B-spline via knots, i.e. by interpolation, in the sketch.");
     sWhatsThis = "Sketcher_CreateBSplineByInterpolation";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateBSplineByInterpolation";
@@ -1008,9 +1008,9 @@ CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplin
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Interpolate periodic B-spline");
+    sMenuText = QT_TR_NOOP("Create periodic B-spline by knots");
     sToolTipText =
-        QT_TR_NOOP("Create a periodic B-spline by interpolation, i.e. via knots in the sketch.");
+        QT_TR_NOOP("Create a periodic B-spline via knots, i.e. by interpolation, in the sketch.");
     sWhatsThis = "Sketcher_Create_Periodic_BSplineByInterpolation";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Create_Periodic_BSplineByInterpolation";
@@ -1044,7 +1044,7 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create a B-spline");
+    sMenuText = QT_TR_NOOP("Create B-spline");
     sToolTipText = QT_TR_NOOP("Create a B-spline in the sketch");
     sWhatsThis = "Sketcher_CompCreateBSpline";
     sStatusTip = sToolTipText;
@@ -1428,7 +1428,7 @@ CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Fillets");
+    sMenuText = QT_TR_NOOP("Create fillet");
     sToolTipText = QT_TR_NOOP("Create a fillet between two lines");
     sWhatsThis = "Sketcher_CompCreateFillets";
     sStatusTip = sToolTipText;
@@ -1626,7 +1626,7 @@ CmdSketcherExternal::CmdSketcherExternal()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create an external geometry");
+    sMenuText = QT_TR_NOOP("Create external geometry");
     sToolTipText = QT_TR_NOOP("Create an edge linked to an external geometry");
     sWhatsThis = "Sketcher_External";
     sStatusTip = sToolTipText;
@@ -1655,7 +1655,7 @@ CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create a carbon copy");
+    sMenuText = QT_TR_NOOP("Create carbon copy");
     sToolTipText = QT_TR_NOOP("Copy the geometry of another sketch");
     sWhatsThis = "Sketcher_CarbonCopy";
     sStatusTip = sToolTipText;
