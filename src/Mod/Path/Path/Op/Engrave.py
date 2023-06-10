@@ -106,7 +106,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
         if len(obj.Base) >= 1:  # user has selected specific subelements
             Path.Log.track(len(obj.Base))
-            wires = []
             for base, subs in obj.Base:
                 edges = []
                 basewires = []
@@ -122,8 +121,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 for edgelist in Part.sortEdges(edges):
                     basewires.append(Part.Wire(edgelist))
 
-                wires.extend(basewires)
-                jobshapes.append(Part.makeCompound(wires))
+                jobshapes.append(Part.makeCompound(basewires))
 
         elif len(obj.BaseShapes) > 0:  # user added specific shapes
             jobshapes.extend([base.Shape for base in obj.BaseShapes])
