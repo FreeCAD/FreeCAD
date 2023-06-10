@@ -913,7 +913,7 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create B-spline");
-    sToolTipText = QT_TR_NOOP("Create a B-spline via control points in the sketch.");
+    sToolTipText = QT_TR_NOOP("Create a B-spline by control points in the sketch.");
     sWhatsThis = "Sketcher_CreateBSpline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateBSpline";
@@ -946,7 +946,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create periodic B-spline");
-    sToolTipText = QT_TR_NOOP("Create a periodic B-spline via control points in the sketch.");
+    sToolTipText = QT_TR_NOOP("Create a periodic B-spline by control points in the sketch.");
     sWhatsThis = "Sketcher_CreatePeriodicBSpline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Create_Periodic_BSpline";
@@ -977,7 +977,7 @@ CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create B-spline by knots");
-    sToolTipText = QT_TR_NOOP("Create a B-spline via knots, i.e. by interpolation, in the sketch.");
+    sToolTipText = QT_TR_NOOP("Create a B-spline by knots, i.e. by interpolation, in the sketch.");
     sWhatsThis = "Sketcher_CreateBSplineByInterpolation";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateBSplineByInterpolation";
@@ -1010,7 +1010,7 @@ CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplin
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create periodic B-spline by knots");
     sToolTipText =
-        QT_TR_NOOP("Create a periodic B-spline via knots, i.e. by interpolation, in the sketch.");
+        QT_TR_NOOP("Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.");
     sWhatsThis = "Sketcher_Create_Periodic_BSplineByInterpolation";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Create_Periodic_BSplineByInterpolation";
