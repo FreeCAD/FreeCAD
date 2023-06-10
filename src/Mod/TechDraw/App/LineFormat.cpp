@@ -57,10 +57,11 @@ void LineFormat::dump(const char* title)
 std::string LineFormat::toString() const
 {
     std::stringstream ss;
-    ss << m_style << ", " <<
-          m_weight << ", " <<
-          m_color.asHexString() << ", " <<
-          m_visible;
+    ss << "style: " << m_style << ", " <<
+          "weight: " << m_weight << ", " <<
+          "color: " << m_color.asHexString() << ", " <<
+          "visibility: " << m_visible <<
+          "\n";
     return ss.str();
 }
 
@@ -77,5 +78,5 @@ App::Color LineFormat::getDefEdgeColor()
 
 int LineFormat::getDefEdgeStyle()
 {
-    return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", Qt::DashLine);   //dashed
 }
