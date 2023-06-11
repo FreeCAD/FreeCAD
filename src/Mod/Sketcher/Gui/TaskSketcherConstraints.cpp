@@ -1146,7 +1146,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             Gui::cmdAppObjectArgs(
                 sketch, "setVirtualSpace(%s, %s)", constrIdList, show ? "False" : "True");
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             Gui::Command::abortCommand();
 
             Gui::TranslatedUserError(
@@ -1539,7 +1539,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
                                       constrIdList,
                                       isvirtualspace ? "True" : "False");
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::Command::abortCommand();
 
                 Gui::TranslatedUserError(
