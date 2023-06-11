@@ -453,6 +453,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                               const std::string& method,
                               const gp_Dir& dir)
 {
+
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
         if (support.IsNull())
@@ -522,6 +523,8 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
     // Check that the upToFace is either not parallel to the extrusion direction
     // and that upToFace is not too near
+    if (upToFace.IsNull())
+        throw Base::ValueError("SketchBased: The UpTo-Face is null!");
     BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
     if (upToFaceSurface.GetType() == GeomAbs_Plane) {
