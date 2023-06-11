@@ -31,6 +31,44 @@
 
 namespace Materials {
 
+// trim from start (in place)
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+// trim from both ends (in place)
+static inline void trim(std::string &s) {
+    rtrim(s);
+    ltrim(s);
+}
+
+// trim from start (copying)
+static inline std::string ltrim_copy(std::string s) {
+    ltrim(s);
+    return s;
+}
+
+// trim from end (copying)
+static inline std::string rtrim_copy(std::string s) {
+    rtrim(s);
+    return s;
+}
+
+// trim from both ends (copying)
+static inline std::string trim_copy(std::string s) {
+    trim(s);
+    return s;
+}
+
 class MaterialEntry
 {
 public:
@@ -39,7 +77,7 @@ public:
         const std::string &modelUuid);
     virtual ~MaterialEntry();
 
-    virtual void addToTree(std::map<std::string, Material*> *modelMap) = 0;
+    virtual void addToTree(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *_materialPathMap) = 0;
 
     const MaterialLibrary &getLibrary() const { return _library; }
     const std::string &getName() const { return _name; }
@@ -64,7 +102,7 @@ public:
         const std::string &modelUuid, const YAML::Node &modelData);
     ~MaterialYamlEntry() override;
 
-    void addToTree(std::map<std::string, Material*> *modelMap) override;
+    void addToTree(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *_materialPathMap) override;
 
     const YAML::Node &getModel() const { return _model; }
     YAML::Node *getModelPtr() { return &_model; }
@@ -81,11 +119,10 @@ private:
 class MaterialLoader
 {
 public:
-    explicit MaterialLoader(std::map<std::string, Material*> *modelMap, std::list<MaterialLibrary*> *libraryList);
+    explicit MaterialLoader(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *materialPathMap, std::list<MaterialLibrary*> *libraryList);
     virtual ~MaterialLoader();
 
     std::list<MaterialLibrary*>* getMaterialLibraries();
-    static const std::string getUUIDFromPath(const std::string &path);
     static void showYaml(const YAML::Node& yaml);
 
 private:
@@ -98,8 +135,9 @@ private:
     void addLibrary(MaterialLibrary* model);
     void loadLibrary(const MaterialLibrary &library);
     void loadLibraries(void);
-    static std::map<std::string, MaterialEntry*> *_MaterialEntryMap;
-    std::map<std::string, Material*> *_modelMap;
+    static std::map<std::string, MaterialEntry*> *_materialEntryMap;
+    std::map<std::string, Material*> *_materialMap;
+    std::map<std::string, Material*> *_materialPathMap;
     std::list<MaterialLibrary*> *_libraryList;
 };
 

@@ -120,9 +120,9 @@ void MaterialsEditor::reject()
     // }
 }
 
-QIcon MaterialsEditor::errorIcon(const QIcon &icon) const {
-    auto pixmap = icon.pixmap();
-}
+// QIcon MaterialsEditor::errorIcon(const QIcon &icon) const {
+//     auto pixmap = icon.pixmap();
+// }
 
 void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
 {
@@ -140,8 +140,8 @@ void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, co
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
             try {
-                auto model = getMaterialManager().getMaterialByPath(mod.path().string());
-                card->setData(QVariant(QString::fromStdString(model.getUUID())), Qt::UserRole);
+                auto material = getMaterialManager().getMaterialByPath(mod.path().string());
+                card->setData(QVariant(QString::fromStdString(material.getUUID())), Qt::UserRole);
             } catch (...) {
                 Base::Console().Log("YAML error\n");
             }
