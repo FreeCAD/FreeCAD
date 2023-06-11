@@ -102,11 +102,15 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
 
     std::string version = QUuid::createUuid().toString().toStdString();
     std::string description = value(fcmat, "Description", "");
+    std::string sourceReference = value(fcmat, "ReferenceSource", "");
+    std::string sourceURL = value(fcmat, "SourceURL", "");
 
     Material *finalModel = new Material(library, modelDir, uuid, name);
     finalModel->setVersion(version);
     finalModel->setAuthorAndLicense(authorAndLicense);
     finalModel->setDescription(description);
+    finalModel->setReference(description);
+    finalModel->setURL(description);
    
     return finalModel;
 }
