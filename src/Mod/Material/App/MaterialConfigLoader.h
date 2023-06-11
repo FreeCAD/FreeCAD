@@ -25,39 +25,11 @@
 
 #include <QDir>
 #include <QString>
-#include <yaml-cpp/yaml.h>
+#include <QSettings>
 
 #include "Materials.h"
 
 namespace Materials {
-
-class MaterialConfigEntry
-{
-public:
-    explicit MaterialConfigEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData);
-    virtual ~MaterialConfigEntry();
-
-    const MaterialLibrary &getLibrary() const { return _library; }
-    const std::string &getName() const { return _name; }
-    const QDir &getDirectory() const { return _directory; }
-    const std::string &getUUID() const { return _uuid; }
-    const YAML::Node &getModel() const { return _model; }
-    YAML::Node *getModelPtr() { return &_model; }
-    const bool getDereferenced() const { return _dereferenced; }
-
-    void markDereferenced() { _dereferenced = true; }
-
-private:
-    explicit MaterialConfigEntry();
-
-    MaterialLibrary _library;
-    std::string _name;
-    QDir _directory;
-    std::string _uuid;
-    YAML::Node _model;
-    bool _dereferenced;
-};
 
 class MaterialConfigLoader
 {
@@ -65,7 +37,15 @@ public:
     explicit MaterialConfigLoader();
     virtual ~MaterialConfigLoader();
 
+
+    static std::string value(QSettings &fcmat, const std::string &name, const std::string &default)
+    {
+        return fcmat.value(QString::fromStdString(name), QString::fromStdString(default)).toString().toStdString();
+    }
+
     static bool isConfigStyle(const std::string& path);
+    static std::string getAuthorAndLicense(const std::string& path);
+    static Material *getMaterialFromPath(const MaterialLibrary &library, const std::string &path);
 
 private:
 };

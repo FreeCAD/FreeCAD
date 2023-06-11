@@ -19,6 +19,7 @@ include_directories(
 #link_directories(${YAML_CPP_LIBRARIES})
 
 set(Material_LIBS
+    ${Boost_LIBRARIES}
     FreeCADApp
 )
 
