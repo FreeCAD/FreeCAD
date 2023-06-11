@@ -55,6 +55,9 @@
 #include <string>
 #include <vector>
 
+// Qt
+#include <QtGlobal>
+
 // Boost
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/predicate.hpp>

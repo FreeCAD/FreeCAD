@@ -171,6 +171,12 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
     if (MaterialConfigLoader::isConfigStyle(path))
     {
         Base::Console().Log("Old format .FCMat file: '%s'\n", path.c_str());
+        Material *material = MaterialConfigLoader::getMaterialFromPath(library, path);
+        if (material)
+            (*_modelMap)[material->getUUID()] = material;
+
+        // Return the nullptr as there are no intermediate staps to take, such
+        // as checking inheritence
         return model;
     }
 

@@ -30,21 +30,18 @@
 
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QUuid>
 #include <QString>
+
+// #include <boost/uuid/uuid.hpp>            // uuid class
+// #include <boost/uuid/uuid_generators.hpp> // generators
+// #include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 
 #include "Model.h"
 #include "MaterialConfigLoader.h"
 
 
 using namespace Materials;
-
-MaterialConfigEntry::MaterialConfigEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData):
-    _library(library), _name(modelName), _directory(dir), _uuid(modelUuid), _model(modelData), _dereferenced(false)
-{}
-
-MaterialConfigEntry::~MaterialConfigEntry()
-{}
 
 MaterialConfigLoader::MaterialConfigLoader()
 {
@@ -72,6 +69,47 @@ bool MaterialConfigLoader::isConfigStyle(const std::string& path)
     return true;
 }
 
+std::string MaterialConfigLoader::getAuthorAndLicense(const std::string& path)
+{
+    std::ifstream infile(path);
+    std::string noAuthor = "";
+
+    // Skip the first line
+    std::string line;
+    if (!std::getline(infile, line))
+        return noAuthor;
+
+    // The second line has it in a comment
+    if (!std::getline(infile, line))
+        return noAuthor;
+    std::size_t found = line.find(";");
+    if (found!=std::string::npos)
+        return line.substr(found);
+
+    return noAuthor;
+}
+
+Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &library, const std::string &path)
+{
+    QDir modelDir(QString::fromStdString(path));
+    std::string authorAndLicense = getAuthorAndLicense(path);
+
+    QSettings fcmat(QString::fromStdString(path), QSettings::IniFormat);
+
+    // General section
+    std::string name = value(fcmat, "Name", "");
+    std::string uuid = QUuid::createUuid().toString().toStdString();
+
+    std::string version = QUuid::createUuid().toString().toStdString();
+    std::string description = value(fcmat, "Description", "");
+
+    Material *finalModel = new Material(library, modelDir, uuid, name);
+    finalModel->setVersion(version);
+    finalModel->setAuthorAndLicense(authorAndLicense);
+    finalModel->setDescription(description);
+   
+    return finalModel;
+}
 
 
 #include "moc_MaterialConfigLoader.cpp"
