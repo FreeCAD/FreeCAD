@@ -23,11 +23,10 @@ namespace MbD {
         void setMarkerFrame(MarkerFrame* markerFrm);
         MarkerFrame* getMarkerFrame();
         void initializeLocally() override;
-        void initializeGlobally() override;
         virtual void initEndFrameqct();
         void calcPostDynCorrectorIteration() override;
-        FColDsptr aAjOe(size_t j);
-        double riOeO(size_t i);
+        FColDsptr aAjOe(int j);
+        double riOeO(int i);
 
         MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
         FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);

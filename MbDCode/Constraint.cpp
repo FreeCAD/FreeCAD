@@ -1,4 +1,8 @@
+#include <functional>
+#include <chrono>
+
 #include "Constraint.h"
+#include "FullColumn.h"
 #include "enum.h"
 
 using namespace MbD;
@@ -13,9 +17,9 @@ Constraint::Constraint(const char* str) : Item(str)
 
 void Constraint::initialize()
 {
-	iG = -1;
-	aG = 0.0;
-	lam = 0.0;
+	auto now = std::chrono::high_resolution_clock::now();
+	auto nanoseconds = now.time_since_epoch().count();
+	name = std::to_string(nanoseconds);
 }
 
 void MbD::Constraint::postInput()
@@ -41,22 +45,29 @@ void MbD::Constraint::prePosIC()
 	Item::prePosIC();
 }
 
-void MbD::Constraint::fillEssenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void MbD::Constraint::fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	if (this->type() == MbD::essential) {
 		essenConstraints->push_back(sptr);
 	}
 }
-void MbD::Constraint::fillDispConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
+void MbD::Constraint::fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
 {
 	if (this->type() == MbD::displacement) {
 		dispConstraints->push_back(sptr);
 	}
 }
-void MbD::Constraint::fillPerpenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
+void MbD::Constraint::fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
 {
 	if (this->type() == MbD::perpendicular) {
 		perpenConstraints->push_back(sptr);
+	}
+}
+
+void MbD::Constraint::fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+{
+	if (this->type() == MbD::redundant) {
+		redunConstraints->push_back(sptr);
 	}
 }
 
@@ -73,4 +84,42 @@ void MbD::Constraint::fillqsulam(FColDsptr col)
 void MbD::Constraint::setqsulam(FColDsptr col)
 {
 	lam = col->at(iG);
+}
+
+void MbD::Constraint::fillPosICError(FColDsptr col)
+{
+	col->at(iG) += aG;
+}
+
+void MbD::Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+{
+	//My owner should handle this.
+	assert(false);
+}
+
+void MbD::Constraint::reactivateRedundantConstraints()
+{
+	//My owner should handle this.
+	assert(false);
+}
+
+bool MbD::Constraint::isRedundant()
+{
+	return false;
+}
+
+void MbD::Constraint::outputStates()
+{
+	Item::outputStates();
+	std::stringstream ss;
+	ss << "iG = " << iG << std::endl;
+	ss << "aG = " << aG << std::endl;
+	ss << "lam = " << lam << std::endl;
+	auto str = ss.str();
+	this->logString(str);
+}
+
+void MbD::Constraint::preDyn()
+{
+	mu = 0.0;
 }

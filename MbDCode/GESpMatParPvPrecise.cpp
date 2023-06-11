@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPvPrecise::doPivoting(size_t p)
+void MbD::GESpMatParPvPrecise::doPivoting(int p)
 {
 	assert(false);
 }

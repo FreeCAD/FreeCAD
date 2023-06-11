@@ -18,9 +18,9 @@ void NewtonRaphson::initialize()
 
 void NewtonRaphson::initializeLocally()
 {
-	iterNo = 0;
-	nDivergence = 0;
-	nBackTracking = 0;
+	iterNo = -1;
+	nDivergence = -1;
+	nBackTracking = -1;
 	dxNorms->clear();
 	yNorms->clear();
 	yNormOld = std::numeric_limits<double>::max();
@@ -28,6 +28,7 @@ void NewtonRaphson::initializeLocally()
 
 void MbD::NewtonRaphson::run()
 {
+	assert(false);
 	//self preRun.
 	//self initializeLocally.
 	//self initializeGlobally.
@@ -53,7 +54,7 @@ void MbD::NewtonRaphson::iterate()
 	//	zero.
 	//	"
 
-	iterNo = 0;
+	iterNo = -1;
 	this->fillY();
 	this->calcyNorm();
 	yNorms->push_back(yNorm);
@@ -70,7 +71,7 @@ void MbD::NewtonRaphson::iterate()
 void MbD::NewtonRaphson::incrementIterNo()
 {
 	iterNo++;
-	if (iterNo > iterMax) {
+	if (iterNo >= iterMax) {
 		this->reportStats();
 		throw MaximumIterationError("");
 	}
@@ -92,7 +93,7 @@ bool MbD::NewtonRaphson::isConvergedToNumericalLimit()
 
 	auto tooLargeTol = 1.0e-2;
 	constexpr auto smallEnoughTol = std::numeric_limits<double>::epsilon();
-	auto nDecade = log(tooLargeTol / smallEnoughTol);
+	auto nDecade = log10(tooLargeTol / smallEnoughTol);
 	auto nDivergenceMax = 3;
 	auto dxNormIterNo = dxNorms->at(iterNo);
 	if (iterNo > 0) {
@@ -127,4 +128,9 @@ void MbD::NewtonRaphson::calcDXNormImproveRootCalcYNorm()
 	this->calcyNorm();
 	yNorms->push_back(yNorm);
 	yNormOld = yNorm;
+}
+
+void MbD::NewtonRaphson::postRun()
+{
+	system->postNewtonRaphson();
 }

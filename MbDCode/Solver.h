@@ -1,4 +1,7 @@
 #pragma once
+
+#include <string>
+
 namespace MbD {
 	class Solver
 	{
@@ -12,6 +15,7 @@ namespace MbD {
 		virtual void finalize();
 		virtual void reportStats();
 		virtual void postRun();
+		virtual void logString(std::string& str);
 	};
 }
 

@@ -15,13 +15,13 @@ namespace MbD {
         void initialize();
         void initializeGlobally() override;
         void initEndFrameqct() override;
-        FMatFColDsptr ppAjOepEpE(size_t j);
+        FMatFColDsptr ppAjOepEpE(int j);
         void calcPostDynCorrectorIteration() override;
-        FMatDsptr pAjOepET(size_t j);
-        FMatDsptr ppriOeOpEpE(size_t i);
-        size_t iqX();
-        size_t iqE();
-        FRowDsptr priOeOpE(size_t i);
+        FMatDsptr pAjOepET(int j);
+        FMatDsptr ppriOeOpEpE(int i);
+        int iqX();
+        int iqE();
+        FRowDsptr priOeOpE(int i);
 
         FMatDsptr prOeOpE;
         std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;

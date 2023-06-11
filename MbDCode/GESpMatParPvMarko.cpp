@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPvMarko::doPivoting(size_t p)
+void MbD::GESpMatParPvMarko::doPivoting(int p)
 {
 	assert(false);
 }

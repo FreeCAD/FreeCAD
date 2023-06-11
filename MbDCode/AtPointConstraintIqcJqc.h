@@ -7,15 +7,17 @@ namespace MbD {
     {
         //pGpEJ ppGpEJpEJ iqXJminusOnePlusAxis iqEJ 
     public:
-        AtPointConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi);
+        AtPointConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initializeGlobally() override;
         void initriIeJeO() override;
         void calcPostDynCorrectorIteration() override;
         void useEquationNumbers() override;
+        void fillPosICError(FColDsptr col) override;
+        void fillPosICJacob(SpMatDsptr mat) override;
 
         FRowDsptr pGpEJ;
         FMatDsptr ppGpEJpEJ;
-        size_t iqXJminusOnePlusAxis = -1, iqEJ = -1;
+        int iqXJminusOnePlusAxis = -1, iqEJ = -1;
     };
 }
 

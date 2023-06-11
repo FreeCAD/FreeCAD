@@ -1,9 +1,14 @@
 #include<algorithm>
+#include <memory>
+#include <typeinfo>
 
 #include "Joint.h"
 #include "Constraint.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
+#include "CREATE.h"
+#include "RedundantConstraint.h"
+#include "MarkerFrame.h"
 
 using namespace MbD;
 
@@ -79,6 +84,11 @@ void MbD::Joint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_p
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPerpenConstraints(con, perpenConstraints); });
 }
 
+void MbD::Joint::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillRedundantConstraints(con, redunConstraints); });
+}
+
 void MbD::Joint::fillqsulam(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
@@ -97,4 +107,78 @@ void MbD::Joint::setqsulam(FColDsptr col)
 void MbD::Joint::postPosICIteration()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosICIteration(); });
+}
+
+void MbD::Joint::fillPosICError(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICError(col); });
+}
+
+void MbD::Joint::fillPosICJacob(SpMatDsptr mat)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICJacob(mat); });
+}
+
+void MbD::Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+{
+	for (size_t i = 0; i < constraints->size(); i++)
+	{
+		auto& constraint = constraints->at(i);
+		if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), constraint->iG) != redundantEqnNos->end()) {
+			auto redunCon = CREATE<RedundantConstraint>::With();
+			redunCon->constraint = constraint;
+			constraints->at(i) = redunCon;
+		}
+	}
+}
+
+void MbD::Joint::reactivateRedundantConstraints()
+{
+	for (size_t i = 0; i < constraints->size(); i++)
+	{
+		auto& con = constraints->at(i);
+		if (con->isRedundant()) {
+			constraints->at(i) = std::static_pointer_cast<RedundantConstraint>(con)->constraint;
+		}
+	}
+}
+
+void MbD::Joint::constraintsReport()
+{
+	auto redunCons = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	constraintsDo([&](std::shared_ptr<Constraint> con) {
+		if (con->isRedundant()) {
+			redunCons->push_back(con);
+		}
+		});
+	if (redunCons->size() > 0) {
+		std::string str = "MbD: " + this->classname() + std::string(" ") + this->getName() + " has the following constraint(s) removed: ";
+		this->logString(str);
+		std::for_each(redunCons->begin(), redunCons->end(), [&](auto& con) {
+			str = "MbD: " + std::string("    ") + con->classname();
+			this->logString(str);
+			});
+	}
+}
+
+void MbD::Joint::postPosIC()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosIC(); });
+}
+
+void MbD::Joint::outputStates()
+{
+	Item::outputStates();
+	std::stringstream ss;
+	ss << "frmI = " << frmI->markerFrame->getName() << std::endl;
+	ss << "frmJ = " << frmJ->markerFrame->getName() << std::endl;
+	auto str = ss.str();
+	this->logString(str);
+
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->outputStates(); });
+}
+
+void MbD::Joint::preDyn()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preDyn(); });
 }

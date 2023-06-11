@@ -12,8 +12,8 @@ namespace MbD {
     {
         //qE aAdot aBdot aCdot pAdotpE
     public:
-        EulerParametersDot(size_t count) : EulerArray<T>(count) {}
-        EulerParametersDot(size_t count, const T& value) : EulerArray<T>(count, value) {}
+        EulerParametersDot(int count) : EulerArray<T>(count) {}
+        EulerParametersDot(int count, const T& value) : EulerArray<T>(count, value) {}
         EulerParametersDot(std::initializer_list<T> list) : EulerArray<T>{ list } {}
         static std::shared_ptr<EulerParametersDot<T>> FromqEOpAndOmegaOpO(std::shared_ptr<EulerParameters<T>> qe, FColDsptr omeOpO);
         std::shared_ptr<EulerParameters<T>> qE;

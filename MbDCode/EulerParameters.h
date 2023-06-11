@@ -11,8 +11,8 @@ namespace MbD {
 		//aA aB aC pApE
 	public:
 		EulerParameters() : EulerArray<T>(4) {}
-		EulerParameters(size_t count) : EulerArray<T>(count) {}
-		EulerParameters(size_t count, const T& value) : EulerArray<T>(count, value) {}
+		EulerParameters(int count) : EulerArray<T>(count) {}
+		EulerParameters(int count, const T& value) : EulerArray<T>(count, value) {}
 		EulerParameters(std::initializer_list<T> list) : EulerArray<T>{ list } {}
 
 		static std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<T>>>> ppApEpEtimesColumn(FColDsptr col);
@@ -122,7 +122,7 @@ namespace MbD {
 		aB = std::make_shared<FullMatrix<double>>(3, 4);
 		aC = std::make_shared<FullMatrix<double>>(3, 4);
 		pApE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
-		for (size_t i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			pApE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
 		}

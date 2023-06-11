@@ -9,7 +9,7 @@ namespace MbD {
     {
         //axisI axisJ aAijIeJe 
     public:
-        DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj);
+        DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
         void initialize();
         void initializeLocally() override;
         void initializeGlobally() override;
@@ -20,7 +20,7 @@ namespace MbD {
         void postPosICIteration() override;
         MbD::ConstraintType type() override;
 
-        size_t axisI, axisJ;
+        int axisI, axisJ;
         std::shared_ptr<DirectionCosineIecJec> aAijIeJe;
     };
 }

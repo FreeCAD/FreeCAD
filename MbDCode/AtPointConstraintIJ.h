@@ -9,7 +9,7 @@ namespace MbD {
     {
         //axis riIeJeO 
     public:
-        AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi);
+        AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initialize();
         void initializeLocally() override;
         void initializeGlobally() override;
@@ -20,7 +20,7 @@ namespace MbD {
         MbD::ConstraintType type() override;
         void postPosICIteration() override;
 
-        size_t axis;
+        int axis;
         std::shared_ptr<DispCompIecJecO> riIeJeO;
     };
 }

@@ -16,16 +16,24 @@ namespace MbD {
 		void setOwner(Item* x);
 		Item* getOwner();
 		void prePosIC() override;
-		virtual void fillEssenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
-		virtual void fillDispConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
-		virtual void fillPerpenConstraints(std::shared_ptr<Constraint>sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
+		virtual void fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
+		virtual void fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
+		virtual void fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
+		virtual void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
 		virtual MbD::ConstraintType type();
 		void fillqsulam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
-		
-		size_t iG;
-		double aG;		//Constraint function
-		double lam;		//Lambda is Lagrange Multiplier
+		void fillPosICError(FColDsptr col) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void reactivateRedundantConstraints() override;
+		virtual bool isRedundant();
+		void outputStates() override;
+		void preDyn() override;
+
+		int iG = -1;
+		double aG = 0.0;		//Constraint function
+		double lam = 0.0;		//Lambda is Lagrange Multiplier
+		double mu = 0, lamDeriv = 0;
 		Item* owner;	//A Joint or PartFrame owns the constraint.  //Use raw pointer when pointing backwards.
 	};
 }

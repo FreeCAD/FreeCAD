@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-void MbD::GEFullMat::forwardEliminateWithPivot(size_t p)
+void MbD::GEFullMat::forwardEliminateWithPivot(int p)
 {
 	assert(false);
 }

@@ -91,12 +91,12 @@ void MbD::Part::prePosIC()
 	partFrame->prePosIC();
 }
 
-void MbD::Part::iqX(size_t eqnNo)
+void MbD::Part::iqX(int eqnNo)
 {
 	partFrame->iqX = eqnNo;
 }
 
-void MbD::Part::iqE(size_t eqnNo)
+void MbD::Part::iqE(int eqnNo)
 {
 	partFrame->iqE = eqnNo;
 
@@ -105,6 +105,10 @@ void MbD::Part::iqE(size_t eqnNo)
 void MbD::Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	partFrame->fillEssenConstraints(essenConstraints);
+}
+
+void MbD::Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+{
 }
 
 void MbD::Part::fillqsu(FColDsptr col)
@@ -128,12 +132,12 @@ void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
 	if (mMax == 0) { mMax = 1.0; }
-	for (size_t i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		wqX->at(i) = (maxw * m / mMax) + minw;
 	}
 	if (aJiMax == 0) { aJiMax = 1.0; }
-	for (size_t i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		auto aJi = aJ->at(i);
 		wqE->at(i) = (maxw * aJi / aJiMax) + minw;
@@ -154,6 +158,11 @@ void MbD::Part::useEquationNumbers()
 	partFrame->useEquationNumbers();
 }
 
+void MbD::Part::setqsu(FColDsptr col)
+{
+	partFrame->setqsu(col);
+}
+
 void MbD::Part::setqsulam(FColDsptr col)
 {
 	partFrame->setqsulam(col);
@@ -162,4 +171,46 @@ void MbD::Part::setqsulam(FColDsptr col)
 void MbD::Part::postPosICIteration()
 {
 	partFrame->postPosICIteration();
+}
+
+void MbD::Part::fillPosICError(FColDsptr col)
+{
+	partFrame->fillPosICError(col);
+}
+
+void MbD::Part::fillPosICJacob(SpMatDsptr mat)
+{
+	partFrame->fillPosICJacob(mat);
+}
+
+void MbD::Part::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+{
+	partFrame->removeRedundantConstraints(redundantEqnNos);
+}
+
+void MbD::Part::reactivateRedundantConstraints()
+{
+	partFrame->reactivateRedundantConstraints();
+}
+
+void MbD::Part::constraintsReport()
+{
+	partFrame->constraintsReport();
+}
+
+void MbD::Part::postPosIC()
+{
+	partFrame->postPosIC();
+	//this->calcmE();
+}
+
+void MbD::Part::outputStates()
+{
+	Item::outputStates();
+	partFrame->outputStates();
+}
+
+void MbD::Part::preDyn()
+{
+	partFrame->preDyn();
 }

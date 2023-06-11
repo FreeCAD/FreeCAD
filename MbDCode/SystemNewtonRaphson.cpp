@@ -4,14 +4,14 @@
 #include "MatrixSolver.h"
 #include "GESpMatParPvMarkoFast.h"
 #include "CREATE.h"
+#include "GESpMatParPvPrecise.h"
 
 using namespace MbD;
 
 void MbD::SystemNewtonRaphson::initializeGlobally()
 {
 	this->assignEquationNumbers();
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
-
+	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
 	this->createVectorsAndMatrices();
 	matrixSolver = this->matrixSolverClassNew();
 }
@@ -39,4 +39,24 @@ void MbD::SystemNewtonRaphson::calcdxNorm()
 void MbD::SystemNewtonRaphson::basicSolveEquations()
 {
 	dx = matrixSolver->solvewithsaveOriginal(pypx, y->negated(), false);
+}
+
+void MbD::SystemNewtonRaphson::handleSingularMatrix()
+{
+	std::string str = typeid(*matrixSolver).name();
+	if (str == "class MbD::GESpMatParPvMarkoFast") {
+		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
+		this->solveEquations();
+	}
+	else {
+		str = typeid(*matrixSolver).name();
+		if (str == "class MbD::GESpMatParPvPrecise") {
+			str = "MbD: Singular Matrix Error. ";
+			system->logString(str);
+			matrixSolver = this->matrixSolverClassNew();
+		}
+		else {
+			assert(false);
+		}
+	}
 }

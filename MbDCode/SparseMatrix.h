@@ -1,4 +1,6 @@
 #pragma once
+#include <sstream> 
+
 #include "RowTypeMatrix.h"
 #include "SparseRow.h"
 #include "DiagonalMatrix.h"
@@ -8,11 +10,11 @@ namespace MbD {
 	class SparseMatrix : public RowTypeMatrix<std::shared_ptr<SparseRow<T>>>
 	{
 	public:
-		SparseMatrix(size_t m) : RowTypeMatrix<std::shared_ptr<SparseRow<T>>>(m)
+		SparseMatrix(int m) : RowTypeMatrix<std::shared_ptr<SparseRow<T>>>(m)
 		{
 		}
-		SparseMatrix(size_t m, size_t n) {
-			for (size_t i = 0; i < m; i++)
+		SparseMatrix(int m, int n) {
+			for (int i = 0; i < m; i++)
 			{
 				auto row = std::make_shared<SparseRow<T>>(n);
 				this->push_back(row);
@@ -25,42 +27,95 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
-		void atijminusDiagonalMatrix(size_t i, size_t j, std::shared_ptr<DiagonalMatrix<double>> diagMat);
+		void atijminusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat);
 		double sumOfSquares() override;
-		void atijplusNumber(size_t i, size_t j, double value);
 		void zeroSelf() override;
+		void atijplusFullRow(int i, int j, std::shared_ptr<FullRow<T>> fullRow);
+		void atijplusFullColumn(int i, int j, std::shared_ptr<FullColumn<T>> fullCol);
+		void atijplusFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
+		void atijplusTransposeFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
+		void atijplusFullMatrixtimes(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat, T factor);
+
+		virtual std::ostream& printOn(std::ostream& s) const;
+		friend std::ostream& operator<<(std::ostream& s, const SparseMatrix& spMat)
+		{
+			return spMat.printOn(s);
+		}
 	};
 	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
 
 	template<>
-	inline void SparseMatrix<double>::atijminusDiagonalMatrix(size_t i1, size_t j1, std::shared_ptr<DiagonalMatrix<double>> diagMat)
+	inline void SparseMatrix<double>::atijminusDiagonalMatrix(int i1, int j1, std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	{
 		auto n = diagMat->nrow();
-		for (size_t ii = 0; ii < n; ii++)
+		for (int ii = 0; ii < n; ii++)
 		{
-			this->at(i1 + ii)->atiminusNumber(j1 + ii, diagMat->at(ii));
+			(*(this->at(i1 + ii)))[j1 + ii] -= diagMat->at(ii);
 		}
 	}
 	template<typename T>
 	inline double SparseMatrix<T>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (size_t i = 0; i < this->size(); i++)
+		for (int i = 0; i < this->size(); i++)
 		{
 			sum += this->at(i)->sumOfSquares();
 		}
 		return sum;
 	}
 	template<>
-	inline void SparseMatrix<double>::atijplusNumber(size_t i, size_t j, double value)
-	{
-		this->at(i)->atiplusNumber(j, value);
-	}
-	template<>
 	inline void SparseMatrix<double>::zeroSelf()
 	{
-		for (size_t i = 0; i < this->size(); i++) {
+		for (int i = 0; i < this->size(); i++) {
 			this->at(i)->zeroSelf();
 		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusFullRow(int i, int j, std::shared_ptr<FullRow<T>> fullRow)
+	{
+		this->at(i)->atiplusFullRow(j, fullRow);
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusFullColumn(int i, int j, std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		for (int ii = 0; ii < fullCol->size(); ii++)
+		{
+			(*(this->at(i + ii)))[j] += fullCol->at(ii);
+		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		for (int ii = 0; ii < fullMat->nrow(); ii++)
+		{
+			this->at(i + ii)->atiplusFullRow(j, fullMat->at(ii));
+		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		for (int ii = 0; ii < fullMat->nrow(); ii++)
+		{
+			this->atijplusFullColumn(i, j + ii, fullMat->at(ii)->transpose());
+		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat, T factor)
+	{
+		for (int ii = 0; ii < fullMat->nrow(); ii++)
+		{
+			this->at(i + ii)->atiplusFullRowtimes(j, fullMat->at(ii), factor);
+		}
+	}
+	template<typename T>
+	inline std::ostream& SparseMatrix<T>::printOn(std::ostream& s) const
+	{
+		s << "SpMat[" << std::endl;
+		for (int i = 0; i < this->size(); i++)
+		{
+			s << *(this->at(i)) << std::endl;
+		}
+		s << "]" << std::endl;
+		return s;
 	}
 }

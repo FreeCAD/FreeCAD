@@ -7,6 +7,7 @@ namespace MbD {
     {
         //
     public:
+        void initializeGlobally() override;
         void calcyNorm() override;
         void solveEquations() override;
         void updatexold() override;

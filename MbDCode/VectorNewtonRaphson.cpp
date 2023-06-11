@@ -10,6 +10,12 @@
 
 using namespace MbD;
 
+void MbD::VectorNewtonRaphson::initializeGlobally()
+{
+	assert(false);
+	//system->fillVarVector(x);
+}
+
 void MbD::VectorNewtonRaphson::run()
 {
 	this->preRun();
@@ -26,6 +32,7 @@ std::shared_ptr<MatrixSolver> MbD::VectorNewtonRaphson::matrixSolverClassNew()
 
 void MbD::VectorNewtonRaphson::fillY()
 {
+	assert(false);
 }
 
 void MbD::VectorNewtonRaphson::calcyNorm()

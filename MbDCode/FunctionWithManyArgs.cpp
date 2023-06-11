@@ -25,7 +25,7 @@ FunctionWithManyArgs::FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr 
 
 FunctionWithManyArgs::FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms) {
 	terms = std::make_shared<std::vector<Symsptr>>();
-	for (size_t i = 0; i < _terms->size(); i++)
+	for (int i = 0; i < _terms->size(); i++)
 		terms->push_back(_terms->at(i));
 }
 

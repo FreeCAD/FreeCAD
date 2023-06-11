@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GESpMat3.h"
+#include "GESpMat.h"
 
 namespace MbD {
     class GESpMatParPv : public GESpMat
     {
         //
     public:
-        void forwardEliminateWithPivot(size_t p) override;
+        void forwardEliminateWithPivot(int p) override;
         void backSubstituteIntoDU() override;
         void postSolve() override;
 

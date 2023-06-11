@@ -1,6 +1,7 @@
 #include <assert.h>
 
 #include "Solver.h"
+#include <string>
 
 using namespace MbD;
 
@@ -10,7 +11,6 @@ void MbD::Solver::initialize()
 
 void MbD::Solver::initializeLocally()
 {
-	assert(false);
 }
 
 void MbD::Solver::initializeGlobally()
@@ -39,6 +39,11 @@ void MbD::Solver::reportStats()
 }
 
 void MbD::Solver::postRun()
+{
+	assert(false);
+}
+
+void MbD::Solver::logString(std::string& str)
 {
 	assert(false);
 }

@@ -38,3 +38,8 @@ void MbD::PosNewtonRaphson::askSystemToUpdate()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosICIteration(); });
 }
+
+void MbD::PosNewtonRaphson::postRun()
+{
+	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosIC(); });
+}

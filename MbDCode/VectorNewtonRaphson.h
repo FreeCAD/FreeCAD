@@ -8,6 +8,7 @@ namespace MbD {
     {
         //matrixSolver n
     public:
+        void initializeGlobally() override;
         void run() override;
         virtual std::shared_ptr<MatrixSolver> matrixSolverClassNew();
         void fillY() override;
@@ -21,7 +22,7 @@ namespace MbD {
         virtual void handleSingularMatrix();
 
         std::shared_ptr<MatrixSolver> matrixSolver;
-        size_t n;
+        int n;
         std::shared_ptr<FullColumn<double>> xold, x, dx, y;
         //std::shared_ptr<RowTypeMatrix<double>> pypx;
     };

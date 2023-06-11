@@ -5,16 +5,17 @@ namespace MbD {
     {
         //axis iqXminusOnePlusAxis 
     public:
-        AbsConstraint();
-        AbsConstraint(const char* str);
-        AbsConstraint(size_t axis);
+        //AbsConstraint();
+        //AbsConstraint(const char* str);
+        AbsConstraint(int axis);
         void initialize();
         void calcPostDynCorrectorIteration() override;
         void useEquationNumbers() override;
         void fillPosICJacob(SpMatDsptr mat) override;
+        void fillPosICError(FColDsptr col) override;
 
-        size_t axis = -1;
-        size_t iqXminusOnePlusAxis = -1;
+        int axis = -1;
+        int iqXminusOnePlusAxis = -1;
     };
 }
 

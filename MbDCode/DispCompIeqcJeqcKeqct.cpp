@@ -7,7 +7,7 @@ MbD::DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct()
 {
 }
 
-MbD::DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
+MbD::DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
 {
 }
 

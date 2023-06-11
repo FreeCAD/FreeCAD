@@ -8,7 +8,7 @@ namespace MbD {
         //priIeJeOpXI priIeJeOpEI ppriIeJeOpEIpEI 
     public:
         DispCompIeqcJecO();
-        DispCompIeqcJecO(EndFrmcptr frmi, EndFrmcptr frmj, size_t axis);
+        DispCompIeqcJecO(EndFrmcptr frmi, EndFrmcptr frmj, int axis);
         void initializeGlobally() override;
         void calcPostDynCorrectorIteration() override;
 

@@ -8,10 +8,15 @@ namespace MbD {
 		//axis riIeJeO 
 	public:
 		DispCompIecJecO();
-		DispCompIecJecO(EndFrmcptr frmi, EndFrmcptr frmj, size_t axis);
+		DispCompIecJecO(EndFrmcptr frmi, EndFrmcptr frmj, int axis);
 		void calcPostDynCorrectorIteration() override;
+		FRowDsptr pvaluepXJ() override;
+		FRowDsptr pvaluepEJ() override;
+		FMatDsptr ppvaluepXJpEK() override;
+		FMatDsptr ppvaluepEJpEK() override;
+		FMatDsptr ppvaluepEJpEJ() override;
 
-		size_t axis = -1;
+		int axis = -1;
 		double riIeJeO;
 	};
 }

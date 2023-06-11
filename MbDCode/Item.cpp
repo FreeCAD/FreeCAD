@@ -1,6 +1,8 @@
 #include <windows.h>
 #include <assert.h>
 #include <debugapi.h>
+#include <sstream> 
+
 #include "Item.h"
 #include "System.h"
 
@@ -45,7 +47,11 @@ void MbD::Item::calcPostDynCorrectorIteration()
 {
 }
 
-void MbD::Item::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redunEqnNos)
+void MbD::Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
+{
+}
+
+void MbD::Item::reactivateRedundantConstraints()
 {
 }
 
@@ -58,6 +64,10 @@ void MbD::Item::fillPosKineJacob(FMatDsptr mat)
 }
 
 void MbD::Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+}
+
+void MbD::Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 }
 
@@ -77,16 +87,57 @@ void MbD::Item::setqsulam(FColDsptr col)
 {
 }
 
+void MbD::Item::outputStates()
+{
+	std::stringstream ss;
+	ss << classname() << " " << name;
+	auto str = ss.str();
+	this->logString(str);
+}
+
+void MbD::Item::preDyn()
+{
+}
+
+std::string MbD::Item::classname()
+{
+	std::string str = typeid(*this).name();
+	auto answer = str.substr(11, str.size() - 11);
+	return answer;
+}
+
+void MbD::Item::preDynFirstStep()
+{
+	//"Called before the start of the first step in the dynamic solution."
+	this->preDynStep();
+}
+
+void MbD::Item::preDynStep()
+{
+}
+
+double MbD::Item::suggestSmallerOrAcceptDynFirstStepSize(double hnew)
+{
+	//"Default is return hnew."
+	//"Best to do nothing so as not to disrupt the starting algorithm."
+	return hnew;
+}
+
 void MbD::Item::constraintsReport()
 {
 }
 
-void MbD::Item::setqsu(std::shared_ptr<FullColumn<double>> qsuOld)
+void MbD::Item::setqsu(FColDsptr qsuOld)
 {
 }
 
 void MbD::Item::useEquationNumbers()
 {
+}
+
+void MbD::Item::logString(std::string& str)
+{
+	System::getInstance().logString(str);
 }
 
 void MbD::Item::prePosIC()
@@ -107,6 +158,10 @@ void MbD::Item::prePostICIteration()
 }
 
 void MbD::Item::prePostICRestart()
+{
+}
+
+void MbD::Item::postPosIC()
 {
 }
 

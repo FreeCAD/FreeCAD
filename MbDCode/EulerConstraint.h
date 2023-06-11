@@ -15,9 +15,11 @@ namespace MbD {
 		void initialize();
 		void calcPostDynCorrectorIteration() override;
 		void useEquationNumbers() override;
+		void fillPosICError(FColDsptr col) override;
+		void fillPosICJacob(SpMatDsptr mat) override;
 
 		FRowDsptr pGpE;		//partial derivative of G wrt pE
-		size_t iqE = -1;
+		int iqE = -1;
 	};
 }
 

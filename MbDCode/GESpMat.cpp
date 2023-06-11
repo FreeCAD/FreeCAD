@@ -1,4 +1,4 @@
-#include "GESpMat3.h"
+#include "GESpMat.h"
 #include "FullColumn.h"
 #include "SparseMatrix.h"
 

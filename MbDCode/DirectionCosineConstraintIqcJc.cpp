@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj) :
+DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
 	DirectionCosineConstraintIJ(frmi, frmj, axisi, axisj)
 {
 }
@@ -26,4 +26,17 @@ void MbD::DirectionCosineConstraintIqcJc::calcPostDynCorrectorIteration()
 void MbD::DirectionCosineConstraintIqcJc::useEquationNumbers()
 {
 	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
+}
+
+void MbD::DirectionCosineConstraintIqcJc::fillPosICError(FColDsptr col)
+{
+	Constraint::fillPosICError(col);
+	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+}
+
+void MbD::DirectionCosineConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
+{
+	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }

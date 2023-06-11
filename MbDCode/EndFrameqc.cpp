@@ -38,13 +38,13 @@ void EndFrameqc::initEndFrameqct()
 	endFrameqct->setMarkerFrame(markerFrame);
 }
 
-FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(size_t jj)
+FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)
 {
 	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
-	for (size_t i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& ppAOepEipE = ppAOepEpE->at(i);
-		for (size_t j = i; j < 4; j++) {
+		for (int j = i; j < 4; j++) {
 			answeri->at(j) = ppAOepEipE->at(j)->column(jj);
 		}
 	}
@@ -59,13 +59,13 @@ void MbD::EndFrameqc::calcPostDynCorrectorIteration()
 	pAOepE = markerFrame->pAOmpE;
 }
 
-FMatDsptr MbD::EndFrameqc::pAjOepET(size_t axis)
+FMatDsptr MbD::EndFrameqc::pAjOepET(int axis)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
-	for (size_t i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pAOepEi = pAOepE->at(i);
-		for (size_t j = 0; j < 3; j++) {
+		for (int j = 0; j < 3; j++) {
 			auto& answerij = pAOepEi->at(j)->at(axis);
 			answeri->at(j) = answerij;
 		}
@@ -73,13 +73,13 @@ FMatDsptr MbD::EndFrameqc::pAjOepET(size_t axis)
 	return answer;
 }
 
-FMatDsptr MbD::EndFrameqc::ppriOeOpEpE(size_t ii)
+FMatDsptr MbD::EndFrameqc::ppriOeOpEpE(int ii)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 4);
-	for (size_t i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pprOeOpEipE = pprOeOpEpE->at(i);
-		for (size_t j = 0; j < 4; j++) {
+		for (int j = 0; j < 4; j++) {
 			auto& answerij = pprOeOpEipE->at(j)->at(ii);
 			answeri->at(j) = answerij;
 		}
@@ -87,17 +87,17 @@ FMatDsptr MbD::EndFrameqc::ppriOeOpEpE(size_t ii)
 	return answer;
 }
 
-size_t MbD::EndFrameqc::iqX()
+int MbD::EndFrameqc::iqX()
 {
 	return markerFrame->iqX();
 }
 
-size_t MbD::EndFrameqc::iqE()
+int MbD::EndFrameqc::iqE()
 {
 	return markerFrame->iqE();
 }
 
-FRowDsptr MbD::EndFrameqc::priOeOpE(size_t i)
+FRowDsptr MbD::EndFrameqc::priOeOpE(int i)
 {
 	return prOeOpE->at(i);
 }

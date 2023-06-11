@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi) :
+TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
 	TranslationConstraintIJ(frmi, frmj, axisi)
 {
 }
@@ -30,4 +30,23 @@ void MbD::TranslationConstraintIqcJc::useEquationNumbers()
 {
 	iqXI = std::static_pointer_cast<EndFrameqc>(frmI)->iqX();
 	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
+}
+
+void MbD::TranslationConstraintIqcJc::fillPosICError(FColDsptr col)
+{
+	Constraint::fillPosICError(col);
+	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+}
+
+void MbD::TranslationConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
+{
+	mat->atijplusFullRow(iG, iqXI, pGpXI);
+	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
+	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }

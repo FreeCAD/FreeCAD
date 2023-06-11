@@ -7,14 +7,16 @@ namespace MbD {
     {
         //pGpEI ppGpEIpEI iqEI 
     public:
-        DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi, size_t axisj);
+        DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
         void initaAijIeJe() override;
         void calcPostDynCorrectorIteration() override;
         void useEquationNumbers() override;
+        void fillPosICError(FColDsptr col) override;
+        void fillPosICJacob(SpMatDsptr mat) override;
 
         FRowDsptr pGpEI;
         FMatDsptr ppGpEIpEI;
-        size_t iqEI = -1;
+        int iqEI = -1;
     };
 }
 

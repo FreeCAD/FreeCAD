@@ -4,17 +4,66 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPv::forwardEliminateWithPivot(size_t p)
+void MbD::GESpMatParPv::forwardEliminateWithPivot(int p)
 {
-	assert(false);
+	//"rightHandSideB may be multidimensional."
+
+	auto& rowp = matrixA->at(p);
+	auto app = rowp->at(p);
+	auto elementsInPivotRow = std::make_shared<std::vector<const std::pair<const int, double>*>>(rowp->size() - 1);
+	int index = 0;
+	for (auto const& keyValue : *rowp) {
+		if (keyValue.first != p) {
+			elementsInPivotRow->at(index) = (&keyValue);
+			index++;
+		}
+	}
+	auto bp = rightHandSideB->at(p);
+	for (int ii = 0; ii < markowitzPivotColCount; ii++)
+	{
+		auto i = rowPositionsOfNonZerosInPivotColumn->at(ii);
+		auto& rowi = matrixA->at(i);
+		auto aip = rowi->at(p);
+		rowi->erase(p);
+		auto factor = aip / app;
+		for (auto keyValue : *elementsInPivotRow)
+		{
+			auto j = keyValue->first;
+			auto apj = keyValue->second;
+			(*rowi)[j] -= factor * apj;
+		}
+		rightHandSideB->at(i) -= bp * factor;
+	}
 }
 
 void MbD::GESpMatParPv::backSubstituteIntoDU()
 {
-	assert(false);
+	//"DU is upper triangular with nonzero diagonals."
+
+	double sum, duij, duii;
+	//answerX = rightHandSideB->copyEmpty();
+	assert(m == n);
+	answerX = std::make_shared<FullColumn<double>>(m);
+	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
+	//auto rhsZeroElement = this->rhsZeroElement();
+	for (int i = n - 2; i >= 0; i--)
+	{
+		auto rowi = matrixA->at(i);
+		sum = 0.0; // rhsZeroElement copy.
+		for (auto const& keyValue : *rowi) {
+			auto j = keyValue.first;
+			if (j > i) {
+				duij = keyValue.second;
+				sum += answerX->at(j) * duij;
+			}
+			else {
+				duii = keyValue.second;
+			}
+		}
+		answerX->at(i) = rightHandSideB->at(i) - (sum / duii);
+	}
 }
 
 void MbD::GESpMatParPv::postSolve()
 {
-	assert(false);
 }

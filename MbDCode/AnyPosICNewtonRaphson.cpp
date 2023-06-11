@@ -1,6 +1,7 @@
 #include "AnyPosICNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "Item.h"
+#include <iostream>
 
 using namespace MbD;
 
@@ -33,17 +34,25 @@ void MbD::AnyPosICNewtonRaphson::fillY()
 	newMinusOld->equalSelfPlusFullColumnAt(x, 0);
 	y->zeroSelf();
 	y->atiminusFullColumn(0, (qsuWeights->timesFullColumn(newMinusOld)));
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillPosICError(y); });
+	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
+		item->fillPosICError(y);
+		//std::cout << *y << std::endl;
+		});
+	//std::cout << *y << std::endl;
 }
 
 void MbD::AnyPosICNewtonRaphson::fillPyPx()
 {
 	pypx->zeroSelf();
 	pypx->atijminusDiagonalMatrix(0, 0, qsuWeights);
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {item->fillPosICJacob(pypx); });
+	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
+		item->fillPosICJacob(pypx);
+		//std::cout << *(pypx->at(3)) << std::endl;
+		});
+	//std::cout << *pypx << std::endl;
 }
 
 void MbD::AnyPosICNewtonRaphson::passRootToSystem()
 {
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {item->setqsulam(x); });
+	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsulam(x); });
 }

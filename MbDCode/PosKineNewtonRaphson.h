@@ -7,7 +7,7 @@ namespace MbD {
     {
         //
     public:
-
+        void initializeGlobally() override;
     };
 }
 

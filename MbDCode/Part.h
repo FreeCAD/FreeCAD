@@ -34,18 +34,28 @@ namespace MbD {
 		void calcPostDynCorrectorIteration() override;
 
 		void prePosIC() override;
-		void iqX(size_t eqnNo);
-		void iqE(size_t eqnNo);
+		void iqX(int eqnNo);
+		void iqE(int eqnNo);
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
+		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void fillqsulam(FColDsptr col) override;
 		void useEquationNumbers() override;
+		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
 		void postPosICIteration() override;
+		void fillPosICError(FColDsptr col) override;
+		void fillPosICJacob(SpMatDsptr mat) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void reactivateRedundantConstraints() override;
+		void constraintsReport() override;
+		void postPosIC() override;
+		void outputStates() override;
+		void preDyn() override;
 
-		size_t ipX = -1; 
-		size_t ipE = -1; 
+		int ipX = -1; 
+		int ipE = -1; 
 		double m = 0.0; 
 		std::shared_ptr<DiagonalMatrix<double>> aJ;
 		std::shared_ptr<PartFrame> partFrame;

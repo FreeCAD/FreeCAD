@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-AtPointConstraintIqcJc::AtPointConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi) :
+AtPointConstraintIqcJc::AtPointConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
 	AtPointConstraintIJ(frmi, frmj, axisi)
 {
 }
@@ -29,6 +29,22 @@ void MbD::AtPointConstraintIqcJc::calcPostDynCorrectorIteration()
 
 void MbD::AtPointConstraintIqcJc::useEquationNumbers()
 {
-	iqXIminusOnePlusAxis = std::static_pointer_cast<EndFrameqc>(frmI)->iqX() - 1 + axis;
+	iqXIminusOnePlusAxis = std::static_pointer_cast<EndFrameqc>(frmI)->iqX() + axis;
 	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
+}
+
+void MbD::AtPointConstraintIqcJc::fillPosICError(FColDsptr col)
+{
+	Constraint::fillPosICError(col);
+	col->at(iqXIminusOnePlusAxis) -= lam;
+	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+}
+
+void MbD::AtPointConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
+{
+	(*(mat->at(iG)))[iqXIminusOnePlusAxis] += -1.0;
+	(*(mat->at(iqXIminusOnePlusAxis)))[iG] += -1.0;
+	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }

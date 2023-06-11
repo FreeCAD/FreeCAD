@@ -43,32 +43,42 @@ namespace MbD {
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmcptr endFrame(std::string name);
-		void aGabsDo(const std::function <void(std::shared_ptr<AbsConstraint>)>& f);
+		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f);
+		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void reactivateRedundantConstraints() override;
+		void constraintsReport() override;
 
 		void prePosIC() override;
 		FColDsptr rOpO();
 		FMatDsptr aAOp();
 		FColFMatDsptr pAOppE();
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
+		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void fillqsulam(FColDsptr col) override;
 		void useEquationNumbers() override;
+		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
 		void postPosICIteration() override;
+		void fillPosICError(FColDsptr col) override;
+		void fillPosICJacob(SpMatDsptr mat) override;
+		void postPosIC() override;
+		void outputStates() override;
+		void preDyn() override;
 
 		Part* part = nullptr; //Use raw pointer when pointing backwards.
-		size_t iqX = -1;
-		size_t iqE = -1;	//Position index of frame variables qX and qE in system list of variables
+		int iqX = -1;
+		int iqE = -1;	//Position index of frame variables qX and qE in system list of variables
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
 		std::shared_ptr<EulerParameters<double>> qE = CREATE<EulerParameters<double>>::With(4);
 		//FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
 		//std::shared_ptr<EulerParametersDot<double>> qEdot = std::make_shared<EulerParametersDot<double>>(4);
 		//FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
 		//FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
-		std::shared_ptr<EulerConstraint> aGeu;
-		std::shared_ptr<std::vector<std::shared_ptr<AbsConstraint>>> aGabs;
+		std::shared_ptr<Constraint> aGeu;
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> aGabs;
 		std::shared_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
 	};
 }

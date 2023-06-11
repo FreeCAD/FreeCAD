@@ -8,8 +8,8 @@ namespace MbD {
     {
         //
     public:
-        EulerArray(size_t count) : FullColumn<T>(count) {}
-        EulerArray(size_t count, const T& value) : FullColumn<T>(count, value) {}
+        EulerArray(int count) : FullColumn<T>(count) {}
+        EulerArray(int count, const T& value) : FullColumn<T>(count, value) {}
         EulerArray(std::initializer_list<T> list) : FullColumn<T>{ list } {}
         virtual void initialize();
     };

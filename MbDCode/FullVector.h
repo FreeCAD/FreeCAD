@@ -7,28 +7,32 @@ namespace MbD {
     {
     public:
         FullVector() {}
-        FullVector(size_t count) : Array<T>(count) {}
-        FullVector(size_t count, const T& value) : Array<T>(count, value) {}
+        FullVector(std::vector<T> vec) : Array<T>(vec) {}
+        FullVector(int count) : Array<T>(count) {}
+        FullVector(int count, const T& value) : Array<T>(count, value) {}
+        FullVector(std::vector<T>::iterator begin, std::vector<T>::iterator end) : Array<T>(begin, end) {}
         FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
         double dot(std::shared_ptr<FullVector<T>> vec);
-        void atiplusNumber(size_t i, T value);
+        void atiplusNumber(int i, T value);
         double sumOfSquares() override;
-        size_t numberOfElements() override;
+        int numberOfElements() override;
         void zeroSelf() override;
-        void atitimes(size_t i, double factor);
+        void atitimes(int i, double factor);
+        void atiplusFullVectortimes(int i, std::shared_ptr<FullVector> fullVec, double factor);
+
     };
     template<typename T>
     inline double FullVector<T>::dot(std::shared_ptr<FullVector<T>> vec)
     {
-        size_t n = this->size();
+        int n = (int) this->size();
         double answer = 0.0;
-        for (size_t i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             answer += this->at(i) * vec->at(i);
         }
         return answer;
     }
     template<typename T>
-    inline void FullVector<T>::atiplusNumber(size_t i, T value)
+    inline void FullVector<T>::atiplusNumber(int i, T value)
     {
         this->at(i) += value;
     }
@@ -36,7 +40,7 @@ namespace MbD {
     inline double FullVector<double>::sumOfSquares()
     {
         double sum = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             double element = this->at(i);
             sum += element * element;
@@ -50,14 +54,14 @@ namespace MbD {
         return 0.0;
     }
     template<typename T>
-    inline size_t FullVector<T>::numberOfElements()
+    inline int FullVector<T>::numberOfElements()
     {
-        return this->size();
+        return (int) this->size();
     }
     template<>
     inline void FullVector<double>::zeroSelf()
     {
-        for (size_t i = 0; i < this->size(); i++) {
+        for (int i = 0; i < this->size(); i++) {
             this->at(i) = 0.0;;
         }
     }
@@ -67,8 +71,17 @@ namespace MbD {
         assert(false);
     }
     template<typename T>
-    inline void FullVector<T>::atitimes(size_t i, double factor)
+    inline void FullVector<T>::atitimes(int i, double factor)
     {
         this->at(i) *= factor;
+    }
+    template<typename T>
+    inline void FullVector<T>::atiplusFullVectortimes(int i1, std::shared_ptr<FullVector> fullVec, double factor)
+    {
+        for (int ii = 0; ii < fullVec->size(); ii++)
+        {
+            auto i = i1 + ii;
+            this->at(i) += fullVec->at(ii) * factor;
+        }
     }
 }

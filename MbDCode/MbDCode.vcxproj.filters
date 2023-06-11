@@ -264,7 +264,7 @@
     <ClCompile Include="MatrixGaussElimination.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GESpMat3.cpp">
+    <ClCompile Include="GESpMat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GESpMatFullPv.cpp">
@@ -343,6 +343,42 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimulationStoppingError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DifferenceOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NotKinematicError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ICKineIntegrator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscontinuityError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinearMultiStepMethod.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StableBackwardDifference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TooSmallStepSizeError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TooManyTriesError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixDecomposition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixLDU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDUFullMat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDUFullMatParPv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -599,7 +635,7 @@
     <ClInclude Include="MatrixGaussElimination.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GESpMat3.h">
+    <ClInclude Include="GESpMat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GESpMatFullPv.h">
@@ -684,6 +720,42 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SimulationStoppingError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DifferenceOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NotKinematicError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ICKineIntegrator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscontinuityError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearMultiStepMethod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StableBackwardDifference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TooSmallStepSizeError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TooManyTriesError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixDecomposition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixLDU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUFullMat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUFullMatParPv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

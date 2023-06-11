@@ -7,17 +7,19 @@ namespace MbD {
     {
         //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
     public:
-        TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi);
+        TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initriIeJeIe() override;
         void calcPostDynCorrectorIteration() override;
         void useEquationNumbers() override;
+        void fillPosICError(FColDsptr col) override;
+        void fillPosICJacob(SpMatDsptr mat) override;
 
         FRowDsptr pGpXJ;
         FRowDsptr pGpEJ;
         FMatDsptr ppGpEIpXJ;
         FMatDsptr ppGpEIpEJ;
         FMatDsptr ppGpEJpEJ;
-        size_t iqXJ = -1, iqEJ = -1;
+        int iqXJ = -1, iqEJ = -1;
     };
 }
 

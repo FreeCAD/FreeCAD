@@ -1,51 +1,50 @@
 #pragma once
 #include <map>
 #include <cmath>
+#include <sstream> 
 
 namespace MbD {
 	template <typename T>
-	class SparseVector : public std::map<size_t, T>
+	class SparseVector : public std::map<int, T>
 	{
 	public:
-		size_t n;
+		int n;
 		SparseVector() {}
-		SparseVector(size_t n) : std::map<size_t, T>(), n(n) {}
-		SparseVector(std::initializer_list<std::pair<const size_t, T>> list) : std::map<size_t, T>{ list } {}
+		SparseVector(int n) : std::map<int, T>(), n(n) {}
+		SparseVector(std::initializer_list<std::pair<const int, T>> list) : std::map<int, T>{ list } {}
 		SparseVector(std::initializer_list<std::initializer_list<T>> list) {
 			for (auto& pair : list) {
-				size_t i = 0;
-				size_t index;
+				int i = 0;
+				int index;
 				T value;
 				for (auto& element : pair) {
-					if (i == 0) index = (size_t)std::round(element); ;
+					if (i == 0) index = (int)std::round(element); ;
 					if (i == 1) value = element;
 					i++;
 				}
-				this->insert(std::pair<const size_t, double>(index, value));
+				this->insert(std::pair<const int, double>(index, value));
 			}
 		}
-		void atiminusNumber(size_t i, double value);
 		double rootMeanSquare();
-		size_t numberOfElements();
+		int numberOfElements();
 		double sumOfSquares();
-		void atiplusNumber(size_t i, double value);
+		void atiplusNumber(int i, double value);
 		void zeroSelf();
 		double maxElement();
+
+		virtual std::ostream& printOn(std::ostream& s) const;
+		friend std::ostream& operator<<(std::ostream& s, const SparseVector& spVec)
+		{
+			return spVec.printOn(s);
+		}
 	};
-	template<>
-	inline void SparseVector<double>::atiminusNumber(size_t i, double value)
-	{
-		//auto val = this->at(i);
-		auto val = (*this)[i];
-		this->at(i) = val - value;
-	}
 	template<typename T>
 	inline double SparseVector<T>::rootMeanSquare()
 	{
 		return std::sqrt(this->sumOfSquares() / this->numberOfElements());
 	}
 	template<typename T>
-	inline size_t SparseVector<T>::numberOfElements()
+	inline int SparseVector<T>::numberOfElements()
 	{
 		return n;
 	}
@@ -60,7 +59,7 @@ namespace MbD {
 		return sum;
 	}
 	template<>
-	inline void SparseVector<double>::atiplusNumber(size_t i, double value)
+	inline void SparseVector<double>::atiplusNumber(int i, double value)
 	{
 		this->at(i) += value;
 	}
@@ -79,6 +78,21 @@ namespace MbD {
 			if (max < val) max = val;
 		}
 		return max;
+	}
+	template<typename T>
+	inline std::ostream& SparseVector<T>::printOn(std::ostream& s) const
+	{
+		s << "{";
+		auto index = 0;
+		for (const auto& keyValue : *this) {
+			if (index > 0) s << ", ";
+			s << keyValue.first;
+			s << "->";
+			s << keyValue.second;
+			index++;
+		}
+		s << "}";
+		return s;
 	}
 }
 

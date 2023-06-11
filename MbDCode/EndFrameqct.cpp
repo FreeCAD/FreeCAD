@@ -60,7 +60,7 @@ void EndFrameqct::initprmemptBlks()
 {
 	auto& mbdTime = System::getInstance().time;
 	prmemptBlks = std::make_shared< FullColumn<Symsptr>>(3);
-	for (size_t i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		auto& disp = rmemBlks->at(i);
 		auto var = disp->differentiateWRT(disp, mbdTime);
 		auto vel = var->simplified(var);
@@ -76,12 +76,12 @@ void EndFrameqct::initpPhiThePsiptBlks()
 {
 	auto& mbdTime = System::getInstance().time;
 	pPhiThePsiptBlks = std::make_shared< FullColumn<Symsptr>>(3);
-	for (size_t i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		auto& angle = phiThePsiBlks->at(i);
 		auto var = angle->differentiateWRT(angle, mbdTime);
-		std::cout << "var " << *var << std::endl;
+		//std::cout << "var " << *var << std::endl;
 		auto vel = var->simplified(var);
-		std::cout << "vel " << *vel << std::endl;
+		//std::cout << "vel " << *vel << std::endl;
 		pPhiThePsiptBlks->at(i) = vel;
 	}
 }
@@ -104,11 +104,11 @@ void MbD::EndFrameqct::calcPostDynCorrectorIteration()
 	rOeO = rOmO->plusFullColumn(aAOm->timesFullColumn(rmem));
 	auto& prOmOpE = markerFrame->prOmOpE;
 	auto& pAOmpE = markerFrame->pAOmpE;
-	for (size_t i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		auto& prOmOpEi = prOmOpE->at(i);
 		auto& prOeOpEi = prOeOpE->at(i);
-		for (size_t j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			auto prOeOpEij = prOmOpEi->at(j) + pAOmpE->at(j)->at(i)->timesFullColumn(rmem);
 			prOeOpEi->at(j) = prOeOpEij;
@@ -117,7 +117,7 @@ void MbD::EndFrameqct::calcPostDynCorrectorIteration()
 	auto rpep = markerFrame->rpmp->plusFullColumn(markerFrame->aApm->timesFullColumn(rmem));
 	pprOeOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpep);
 	aAOe = aAOm->timesFullMatrix(aAme);
-	for (size_t i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		pAOepE->at(i) = pAOmpE->at(i)->timesFullMatrix(aAme);
 	}
@@ -136,7 +136,7 @@ void MbD::EndFrameqct::prePosIC()
 void MbD::EndFrameqct::evalrmem()
 {
 	if (rmemBlks) {
-		for (size_t i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			auto& expression = rmemBlks->at(i);
 			double value = expression->getValue();
@@ -149,7 +149,7 @@ void MbD::EndFrameqct::evalAme()
 {
 	if (phiThePsiBlks) {
 		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
-		for (size_t i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			auto& expression = phiThePsiBlks->at(i);
 			auto value = expression->getValue();

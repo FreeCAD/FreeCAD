@@ -55,6 +55,9 @@ void MbD::System::outputInput()
 
 void MbD::System::outputInitialConditions()
 {
+	auto str = std::to_string(time->value);
+	this->logString(str);
+	partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->outputStates(); });
 }
 
 void MbD::System::outputTimeSeries()
@@ -65,13 +68,13 @@ void System::initializeLocally()
 {
 	hasChanged = false;
 	time->value = systemSolver->tstart;
-	partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->initializeLocally(); });
+	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->initializeLocally(); });
 	systemSolver->initializeLocally();
 }
 
 void System::initializeGlobally()
 {
-	partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->initializeGlobally(); });
+	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->initializeGlobally(); });
 	systemSolver->initializeGlobally();
 }
 
@@ -129,6 +132,13 @@ std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::perpendic
 	return perpenConstraints;
 }
 
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::allRedundantConstraints()
+{
+	auto redunConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillRedundantConstraints(redunConstraints); });
+	return redunConstraints;
+}
+
 double MbD::System::maximumMass()
 {
 	auto maxPart = std::max_element(parts->begin(), parts->end(), [](auto& a, auto& b) { return a->m < b->m; });
@@ -138,12 +148,12 @@ double MbD::System::maximumMass()
 double MbD::System::maximumMomentOfInertia()
 {
 	double max = 0.0;
-	for (size_t i = 0; i < parts->size(); i++)
+	for (int i = 0; i < parts->size(); i++)
 	{
-		auto part = parts->at(i);
-		for (size_t j = 0; j < 3; j++)
+		auto& part = parts->at(i);
+		for (int j = 0; j < 3; j++)
 		{
-			auto aJ = part->aJ;
+			auto& aJ = part->aJ;
 			auto aJi = aJ->at(j);
 			if (max < aJi) max = aJi;
 		}

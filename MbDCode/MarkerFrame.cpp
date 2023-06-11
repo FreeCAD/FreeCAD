@@ -29,7 +29,7 @@ void MarkerFrame::initializeLocally()
 {
 	pprOmOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpmp);
 	ppAOmpEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApm);
-	for (size_t i = 0; i < endFrames->size(); i++)
+	for (int i = 0; i < endFrames->size(); i++)
 	{
 		auto eFrmqc = std::dynamic_pointer_cast<EndFrameqc>(endFrames->at(i));
 		if (eFrmqc) {
@@ -56,10 +56,10 @@ void MbD::MarkerFrame::calcPostDynCorrectorIteration()
 {
 	auto rOpO = partFrame->rOpO();
 	auto aAOp = partFrame->aAOp();
-	auto rOmO = rOpO->plusFullColumn(aAOp->timesFullColumn(rpmp));
-	auto aAOm = aAOp->timesFullMatrix(aApm);
+	rOmO = rOpO->plusFullColumn(aAOp->timesFullColumn(rpmp));
+	aAOm = aAOp->timesFullMatrix(aApm);
 	auto pAOppE = partFrame->pAOppE();
-	for (size_t i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		auto& pAOppEi = pAOppE->at(i);
 		prOmOpE->atijputFullColumn(1, i, pAOppEi->timesFullColumn(rpmp));
@@ -73,12 +73,12 @@ void MbD::MarkerFrame::prePosIC()
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->prePosIC(); });
 }
 
-size_t MbD::MarkerFrame::iqX()
+int MbD::MarkerFrame::iqX()
 {
 	return partFrame->iqX;
 }
 
-size_t MbD::MarkerFrame::iqE()
+int MbD::MarkerFrame::iqE()
 {
 	return partFrame->iqE;
 }
@@ -103,6 +103,11 @@ void MbD::MarkerFrame::fillqsulam(FColDsptr col)
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsulam(col); });
 }
 
+void MbD::MarkerFrame::setqsu(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsu(col); });
+}
+
 void MbD::MarkerFrame::setqsulam(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsulam(col); });
@@ -111,6 +116,16 @@ void MbD::MarkerFrame::setqsulam(FColDsptr col)
 void MbD::MarkerFrame::postPosICIteration()
 {
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosICIteration(); });
+}
+
+void MbD::MarkerFrame::postPosIC()
+{
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosIC(); });
+}
+
+void MbD::MarkerFrame::preDyn()
+{
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preDyn(); });
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)

@@ -7,7 +7,7 @@ MbD::DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc()
 {
 }
 
-MbD::DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, size_t axisk) : DispCompIeqcJecKeqc(frmi, frmj, frmk, axisk)
+MbD::DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJecKeqc(frmi, frmj, frmk, axisk)
 {
 }
 
@@ -27,41 +27,66 @@ void MbD::DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 	auto frmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto prIeJeOpEJT = frmJqc->prOeOpE->transpose();
 	auto pprIeJeOpEJpEJ = frmJqc->pprOeOpEpE;
-	for (size_t i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		priIeJeKepXJ->at(i) = (aAjOKe->at(i));
 	}
-	for (size_t i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		priIeJeKepEJ->at(i) = (aAjOKe->dot(prIeJeOpEJT->at(i)));
 	}
-	for (size_t i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		auto& ppriIeJeKepXJipEK = ppriIeJeKepXJpEK->at(i);
-		for (size_t j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			ppriIeJeKepXJipEK->at(j) = (pAjOKepEKT->at(j)->at(i));
 		}
 	}
-	for (size_t i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		auto& pprIeJeOpEJipEJ = pprIeJeOpEJpEJ->at(i);
 		auto& ppriIeJeKepEJipEJ = ppriIeJeKepEJpEJ->at(i);
 		ppriIeJeKepEJipEJ->at(i) = (aAjOKe->dot(pprIeJeOpEJipEJ->at(i)));
-		for (size_t j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			auto ppriIeJeKepEJipEJj = (aAjOKe->dot(pprIeJeOpEJipEJ->at(j)));
 			ppriIeJeKepEJipEJ->at(j) = ppriIeJeKepEJipEJj;
 			ppriIeJeKepEJpEJ->at(j)->at(i) = ppriIeJeKepEJipEJj;
 		}
 	}
-	for (size_t i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		auto& prIeJeOpEJTi = prIeJeOpEJT->at(i);
 		auto& ppriIeJeKepEJipEK = ppriIeJeKepEJpEK->at(i);
-		for (size_t j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			ppriIeJeKepEJipEK->at(j) = (pAjOKepEKT->at(j)->dot(prIeJeOpEJTi));
 		}
 	}
+}
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqc::pvaluepXJ()
+{
+	return priIeJeKepXJ;
+}
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqc::pvaluepEJ()
+{
+	return priIeJeKepEJ;
+}
+
+FMatDsptr MbD::DispCompIeqcJeqcKeqc::ppvaluepXJpEK()
+{
+	return ppriIeJeKepXJpEK;
+}
+
+FMatDsptr MbD::DispCompIeqcJeqcKeqc::ppvaluepEJpEK()
+{
+	return ppriIeJeKepEJpEK;
+}
+
+FMatDsptr MbD::DispCompIeqcJeqcKeqc::ppvaluepEJpEJ()
+{
+	return ppriIeJeKepEJpEJ;
 }

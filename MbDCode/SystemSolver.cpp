@@ -1,9 +1,16 @@
 #include <vector>
+#include <set>
+#include <algorithm>
 
 #include "SystemSolver.h"
 #include "NewtonRaphson.h"
 #include "PosICNewtonRaphson.h"
 #include "CREATE.h"
+#include "RedundantConstraint.h"
+#include "NotKinematicError.h"
+#include "ICKineIntegrator.h"
+#include "KineIntegrator.h"
+#include "DiscontinuityError.h"
 
 using namespace MbD;
 
@@ -16,7 +23,7 @@ void MbD::SystemSolver::initialize()
 
 void SystemSolver::initializeLocally()
 {
-	setsOfRedundantConstraints = std::make_shared<std::vector<std::vector<std::shared_ptr<Constraint>>>>();
+	setsOfRedundantConstraints = std::make_shared<std::vector<std::shared_ptr<std::set<std::string>>>>();
 	direction = (tstart < tend) ? 1.0 : -1.0;
 	toutFirst = tstart + (direction * hout);
 }
@@ -36,16 +43,17 @@ void SystemSolver::runAllIC()
 		{
 			runPosIC();
 		}
-		runVelIC();
-		runAccIC();
-		auto discontinuities = system->discontinuitiesAtIC();
-		if (discontinuities->size() == 0) break;
-		if (std::find(discontinuities->begin(), discontinuities->end(), "REBOUND") != discontinuities->end())
-		{
-			preCollision();
-			runCollisionDerivativeIC();
-			runBasicCollision();
-		}
+		break;
+		//runVelIC();
+		//runAccIC();
+		//auto discontinuities = system->discontinuitiesAtIC();
+		//if (discontinuities->size() == 0) break;
+		//if (std::find(discontinuities->begin(), discontinuities->end(), "REBOUND") != discontinuities->end())
+		//{
+		//	preCollision();
+		//	runCollisionDerivativeIC();
+		//	runBasicCollision();
+		//}
 	}
 }
 
@@ -66,7 +74,41 @@ void MbD::SystemSolver::runAccIC()
 
 bool MbD::SystemSolver::needToRedoPosIC()
 {
-	return false;
+	auto allRedunCons = this->allRedundantConstraints();
+	auto newSet = std::make_shared<std::set<std::string>>();
+	for (auto& con : *allRedunCons) {
+		auto aaa = std::static_pointer_cast<RedundantConstraint>(con);
+		auto& bbb = aaa->constraint->getName();
+		newSet->insert(bbb);
+	}
+	//std::transform(allRedunCons->begin(), allRedunCons->end(), newSet->begin(), [](auto con) {
+	//	return std::static_pointer_cast<RedundantConstraint>(con)->constraint->getName();
+	//	});
+	if (newSet->empty()) return false;
+	auto itr = std::find_if(setsOfRedundantConstraints->begin(), setsOfRedundantConstraints->end(), [&](auto& set) {
+		for (auto& name : *set) {
+			if (newSet->find(name) == newSet->end()) return false;
+		}
+		return true;
+		});
+	if (itr != setsOfRedundantConstraints->end()) {
+		//"Same set of redundant constraints found."
+		setsOfRedundantConstraints->push_back(newSet);
+		return false;
+	}
+	if (setsOfRedundantConstraints->size() >= 2) {
+		auto it = std::find_if(setsOfRedundantConstraints->begin(), setsOfRedundantConstraints->end(), [&](auto set) {
+			return set->size() == newSet->size();
+			});
+		if (it != setsOfRedundantConstraints->end()) {
+			//"Equal number of redundant constraints found."
+			setsOfRedundantConstraints->push_back(newSet);
+			return false;
+		}
+	}
+	setsOfRedundantConstraints->push_back(newSet);
+	this->partsJointsMotionsDo([](auto item) { item->reactivateRedundantConstraints(); });
+	return true;
 }
 
 void MbD::SystemSolver::preCollision()
@@ -83,6 +125,26 @@ void MbD::SystemSolver::runBasicCollision()
 
 void SystemSolver::runBasicKinematic()
 {
+	try {
+		basicIntegrator = CREATE<KineIntegrator>::With();
+		basicIntegrator->setSystem(this);
+		basicIntegrator->run();
+	}
+	catch (NotKinematicError ex) {
+		this->runQuasiKinematic();
+	}
+}
+
+void MbD::SystemSolver::runQuasiKinematic()
+{
+	try {
+		basicIntegrator = CREATE<ICKineIntegrator>::With();
+		basicIntegrator->setSystem(this);
+		basicIntegrator->run();
+	}
+	catch (DiscontinuityError ex) {
+		this->discontinuityBlock();
+	}
 }
 
 void MbD::SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
@@ -113,4 +175,54 @@ std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::dis
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::perpendicularConstraints2()
 {
 	return system->perpendicularConstraints2();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::allRedundantConstraints()
+{
+	return system->allRedundantConstraints();
+}
+
+void MbD::SystemSolver::postNewtonRaphson()
+{
+	assert(false);
+}
+
+void MbD::SystemSolver::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	system->partsJointsMotionsForcesTorquesDo(f);
+}
+
+void MbD::SystemSolver::discontinuityBlock()
+{
+	assert(false);
+}
+
+double MbD::SystemSolver::startTime()
+{
+	return tstart;
+}
+
+double MbD::SystemSolver::outputStepSize()
+{
+	return hout;
+}
+
+double MbD::SystemSolver::maxStepSize()
+{
+	return hmax;
+}
+
+double MbD::SystemSolver::minStepSize()
+{
+	return hmin;
+}
+
+double MbD::SystemSolver::firstOutputTime()
+{
+	return toutFirst;
+}
+
+double MbD::SystemSolver::endTime()
+{
+	return tend;
 }

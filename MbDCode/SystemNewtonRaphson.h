@@ -16,6 +16,7 @@ namespace MbD {
         std::shared_ptr<MatrixSolver> matrixSolverClassNew() override;
         void calcdxNorm() override;
         void basicSolveEquations() override;
+        void handleSingularMatrix() override;
 
         std::shared_ptr<SparseMatrix<double>> pypx;
     };

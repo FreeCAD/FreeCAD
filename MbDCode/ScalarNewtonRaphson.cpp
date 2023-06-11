@@ -1,6 +1,13 @@
 #include "ScalarNewtonRaphson.h"
+#include "SystemSolver.h"
 
 using namespace MbD;
+
+void MbD::ScalarNewtonRaphson::initializeGlobally()
+{
+	assert(false);
+	//x = system->x;
+}
 
 void MbD::ScalarNewtonRaphson::calcyNorm()
 {

@@ -2,20 +2,19 @@
 #include "PartFrame.h"
 
 using namespace MbD;
+//
+//AbsConstraint::AbsConstraint() {}
+//
+//AbsConstraint::AbsConstraint(const char* str) : Constraint(str) {}
 
-AbsConstraint::AbsConstraint() {}
-
-AbsConstraint::AbsConstraint(const char* str) : Constraint(str) {}
-
-AbsConstraint::AbsConstraint(size_t i)
+AbsConstraint::AbsConstraint(int i)
 {
     axis = i;
 }
 
 void AbsConstraint::initialize()
 {
-    axis = 0;
-    iqXminusOnePlusAxis = 0;
+    Constraint::initialize();
 }
 
 void MbD::AbsConstraint::calcPostDynCorrectorIteration()
@@ -30,11 +29,17 @@ void MbD::AbsConstraint::calcPostDynCorrectorIteration()
 
 void MbD::AbsConstraint::useEquationNumbers()
 {
-    iqXminusOnePlusAxis = static_cast<PartFrame*>(owner)->iqX - 1 + axis;
+    iqXminusOnePlusAxis = static_cast<PartFrame*>(owner)->iqX + axis;
 }
 
 void MbD::AbsConstraint::fillPosICJacob(SpMatDsptr mat)
 {
-    mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
-    mat->atijplusNumber(iqXminusOnePlusAxis, iG, 1.0);
+    (*(mat->at(iG)))[iqXminusOnePlusAxis] += 1.0;
+    (*(mat->at(iqXminusOnePlusAxis)))[iG] += 1.0;
+}
+
+void MbD::AbsConstraint::fillPosICError(FColDsptr col)
+{
+    Constraint::fillPosICError(col);
+    col->at(iqXminusOnePlusAxis) += lam;
 }

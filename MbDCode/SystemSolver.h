@@ -1,17 +1,20 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include<functional> 
+#include <functional> 
+#include <set> 
 
 #include "Solver.h"
 #include "System.h"
-#include "Constraint.h"
+//#include "Constraint.h"
 //#include "NewtonRaphson.h"
-#include "KineIntegrator.h"
+//#include "QuasiIntegrator.h"
 
 namespace MbD {
 	class System;
+	class Constraint;
 	class NewtonRaphson;
+	class QuasiIntegrator;
 
 	class SystemSolver : public Solver
 	{
@@ -34,6 +37,7 @@ namespace MbD {
 		void runCollisionDerivativeIC();
 		void runBasicCollision();
 		void runBasicKinematic();
+		void runQuasiKinematic();
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void logString(std::string& str);
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
@@ -42,16 +46,27 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();
+		virtual void postNewtonRaphson();
+		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void discontinuityBlock();
+		double startTime();
+		double outputStepSize();
+		double maxStepSize();
+		double minStepSize();
+		double firstOutputTime();
+		double endTime();
+
 
 		System* system; //Use raw pointer when pointing backwards.
 		std::shared_ptr<NewtonRaphson> icTypeSolver;
-		std::shared_ptr<std::vector<std::vector<std::shared_ptr<Constraint>>>> setsOfRedundantConstraints;
-
+		std::shared_ptr<std::vector<std::shared_ptr<std::set<std::string>>>> setsOfRedundantConstraints;
+		
 		double errorTolPosKine = 1.0e-6;
 		double errorTolAccKine = 1.0e-6;
-		size_t iterMaxPosKine = 25;
-		size_t iterMaxAccKine = 25;
-		std::shared_ptr <KineIntegrator> basicIntegrator;
+		int iterMaxPosKine = 25;
+		int iterMaxAccKine = 25;
+		std::shared_ptr <QuasiIntegrator> basicIntegrator;
 		std::shared_ptr<std::vector<double>> tstartPasts;
 		double tstart = 0;
 		double tend = 25;
@@ -64,8 +79,8 @@ namespace MbD {
 		double corRelTol = 0;
 		double intAbsTol = 0;
 		double intRelTol = 0;
-		size_t iterMaxDyn = 0;
-		size_t orderMax = 0;
+		int iterMaxDyn = 0;
+		int orderMax = 0;
 		double translationLimit = 0;
 		double rotationLimit = 0;
 	};

@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-void MbD::GEFullMatFullPv::doPivoting(size_t p)
+void MbD::GEFullMatFullPv::doPivoting(int p)
 {
 	assert(false);
 }

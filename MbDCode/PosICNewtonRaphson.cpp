@@ -6,6 +6,9 @@
 #include "SystemSolver.h"
 #include "Part.h"
 #include "Constraint.h"
+#include "CREATE.h"
+#include "GESpMatParPvPrecise.h"
+#include "GESpMatFullPvPosIC.h"
 
 using namespace MbD;
 
@@ -40,7 +43,7 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 	auto essentialConstraints = system->essentialConstraints2();
 	auto displacementConstraints = system->displacementConstraints();
 	auto perpendicularConstraints = system->perpendicularConstraints2();
-	size_t eqnNo = 0;
+	int eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);
 		eqnNo = eqnNo + 3;
@@ -74,8 +77,8 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 	auto lastEqnNo = eqnNo - 1;
 	nEqns = eqnNo;	//C++ uses index 0.
 	n = nEqns;
-	auto limits = { lastEssenConEqnNo, lastDispConEqnNo, lastEqnNo };
-	pivotRowLimits = std::make_shared<std::vector<size_t>>(limits);
+	auto rangelimits = { lastEssenConEqnNo + 1, lastDispConEqnNo + 1, lastEqnNo + 1 };
+	pivotRowLimits = std::make_shared<std::vector<int>>(rangelimits);
 }
 
 bool MbD::PosICNewtonRaphson::isConverged()
@@ -85,5 +88,35 @@ bool MbD::PosICNewtonRaphson::isConverged()
 
 void MbD::PosICNewtonRaphson::handleSingularMatrix()
 {
-	assert(false);
+	nSingularMatrixError++;
+	if (nSingularMatrixError = 1){
+		this->lookForRedundantConstraints();
+		matrixSolver = this->matrixSolverClassNew();
+	}
+	else {
+		std::string str = typeid(*matrixSolver).name();
+		if (str == "class MbD::GESpMatParPvMarkoFast") {
+		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
+		this->solveEquations();
+		}
+		else {
+			str = typeid(*matrixSolver).name();
+			if (str == "class MbD::GESpMatParPvPrecise") {
+				this->lookForRedundantConstraints();
+				matrixSolver = this->matrixSolverClassNew();
+			}
+			else {
+				assert(false);
+			}
+		}
+	}
+}
+
+void MbD::PosICNewtonRaphson::lookForRedundantConstraints()
+{
+	std::string str("MbD: Checking for redundant constraints.");
+	system->logString(str);
+	auto posICsolver = CREATE<GESpMatFullPvPosIC>::With();
+	posICsolver->system = this;
+	dx = posICsolver->solvewithsaveOriginal(pypx, y->negated(), false);
 }

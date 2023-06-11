@@ -35,11 +35,12 @@ namespace MbD {
         virtual void passRootToSystem() = 0;
         bool isConvergedToNumericalLimit();
         void calcDXNormImproveRootCalcYNorm();
+        virtual void postRun();
         
         SystemSolver* system; //Use raw pointer when pointing backwards.
         std::shared_ptr<std::vector<double>> dxNorms, yNorms;
-        double dxNorm, yNorm, yNormOld, yNormTol, dxTol, twoAlp, lam;
-        size_t iterNo = -1, iterMax = -1, nDivergence = -1, nBackTracking = -1;
+        double dxNorm = 0.0, yNorm = 0.0, yNormOld = 0.0, yNormTol = 0.0, dxTol = 0.0, twoAlp = 0.0, lam = 0.0;
+        int iterNo = -1, iterMax = -1, nDivergence = -1, nBackTracking = -1;
     };
 }
 

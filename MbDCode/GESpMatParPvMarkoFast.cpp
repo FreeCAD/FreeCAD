@@ -14,8 +14,8 @@ void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FCol
 		m = spMat->nrow();
 		n = spMat->ncol();
 		matrixA = std::make_shared<SparseMatrix<double>>(m);
-		privateIndicesOfNonZerosInPivotRow = std::make_shared<std::vector<size_t>>();
-		rowPositionsOfNonZerosInPivotColumn = std::make_shared<std::vector<size_t>>();
+		privateIndicesOfNonZerosInPivotRow = std::make_shared<std::vector<int>>();
+		rowPositionsOfNonZerosInPivotColumn = std::make_shared<std::vector<int>>();
 	}
 	if (saveOriginal) {
 		rightHandSideB = fullCol->copy();
@@ -23,7 +23,7 @@ void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FCol
 	else {
 		rightHandSideB = fullCol;
 	}
-	for (size_t i = 0; i < m; i++)
+	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
 		auto maxRowElement = spRowi->maxElement();
@@ -36,7 +36,64 @@ void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FCol
 	}
 }
 
-void MbD::GESpMatParPvMarkoFast::doPivoting(size_t p)
+void MbD::GESpMatParPvMarkoFast::doPivoting(int p)
 {
-	assert(false);
+	//"Search from bottom to top."
+	//"Optimized for speed. No check for singular pivot."
+	//"Do partial pivoting."
+	//"criterion := mag / (2.0d raisedTo: rowiCount)."
+	//"Rows are explicitly scaled in preSolve:."
+	//"Pivot size are nieither checked nor stored."
+
+	//| lookForFirstNonZeroInPivotCol i rowi aip criterionMax rowPivoti criterion max |
+	int i, rowPivoti;
+	double aip, max, criterion, criterionMax;
+	SpRowDsptr spRowi;
+	rowPositionsOfNonZerosInPivotColumn->clear();
+	auto lookForFirstNonZeroInPivotCol = true;
+	i = m - 1;
+	while (lookForFirstNonZeroInPivotCol) {
+		spRowi = matrixA->at(i);
+		if (spRowi->find(p) == spRowi->end()) {
+			if (i <= p) throw SingularMatrixError("");
+		}
+		else {
+			aip = spRowi->at(p);
+			markowitzPivotColCount = 0;
+			if (aip < 0) aip = -aip;
+			max = aip;
+			criterionMax = aip / std::pow(2.0, spRowi->size());
+			rowPivoti = i;
+			lookForFirstNonZeroInPivotCol = false;
+		}
+		i--;
+	}
+	while (i >= p) {
+		spRowi = matrixA->at(i);
+		if (spRowi->find(p) == spRowi->end()) {
+			aip = std::numeric_limits<double>::min();
+		}
+		else {
+			aip = spRowi->at(p);
+			markowitzPivotColCount++;
+			if (aip < 0) aip = -aip;
+			criterion = aip / std::pow(2.0, spRowi->size());
+			if (criterion > criterionMax) {
+				max = aip;
+				criterionMax = criterion;
+				rowPositionsOfNonZerosInPivotColumn->push_back(rowPivoti);
+				rowPivoti = i;
+			}
+			else {
+				rowPositionsOfNonZerosInPivotColumn->push_back(i);
+			}
+		}
+		i--;
+	}
+	if (p != rowPivoti) {
+		matrixA->swapRows(p, rowPivoti);
+		rightHandSideB->swapRows(p, rowPivoti);
+		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
+	}
+	if (max < singularPivotTolerance) throw SingularMatrixError("");
 }

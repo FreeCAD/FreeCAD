@@ -14,8 +14,9 @@ namespace MbD {
         void assignEquationNumbers() override;
         bool isConverged() override;
         void handleSingularMatrix() override;
+        void lookForRedundantConstraints();
 
-        std::shared_ptr<std::vector<size_t>> pivotRowLimits;
+        std::shared_ptr<std::vector<int>> pivotRowLimits;
     };
 }
 

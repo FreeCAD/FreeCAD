@@ -25,13 +25,13 @@ Symsptr Symbolic::differentiateWRT(Symsptr sptr, Symsptr var)
 
 Symsptr Symbolic::simplified(Symsptr sptr)
 {
-	std::cout << "sptr " << *sptr << std::endl;
+	//std::cout << "sptr " << *sptr << std::endl;
 	auto set = std::make_shared<std::unordered_set<Symsptr>>();
 	auto expanded = sptr->expandUntil(sptr, set);
-	std::cout << "expanded " << *expanded << std::endl;
+	//std::cout << "expanded " << *expanded << std::endl;
 	auto set1 = std::make_shared<std::unordered_set<Symsptr>>();
 	auto simplified = expanded->simplifyUntil(expanded, set1);
-	std::cout << "simplified " << *simplified << std::endl;
+	//std::cout << "simplified " << *simplified << std::endl;
 	return simplified;
 }
 

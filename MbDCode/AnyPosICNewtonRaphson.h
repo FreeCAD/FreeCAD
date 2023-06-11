@@ -16,10 +16,10 @@ namespace MbD {
         void fillPyPx() override;
         void passRootToSystem() override;
 
-        size_t nqsu = -1;
+        int nqsu = -1;
         std::shared_ptr<FullColumn<double>> qsuOld;
         std::shared_ptr<DiagonalMatrix<double>> qsuWeights;
-        size_t nSingularMatrixError = -1;
+        int nSingularMatrixError = -1;
     };
 }
 

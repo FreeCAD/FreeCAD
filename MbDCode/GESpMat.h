@@ -11,8 +11,8 @@ namespace MbD {
         FColDsptr solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal);
 
         std::shared_ptr<SparseMatrix<double>> matrixA;
-        size_t markowitzPivotRowCount, markowitzPivotColCount;
-        std::shared_ptr<std::vector<size_t>> privateIndicesOfNonZerosInPivotRow, rowPositionsOfNonZerosInPivotColumn;
+        int markowitzPivotRowCount, markowitzPivotColCount;
+        std::shared_ptr<std::vector<int>> privateIndicesOfNonZerosInPivotRow, rowPositionsOfNonZerosInPivotColumn;
     };
 }
 

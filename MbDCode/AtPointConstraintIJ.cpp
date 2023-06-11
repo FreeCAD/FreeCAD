@@ -4,13 +4,14 @@
 
 using namespace MbD;
 
-AtPointConstraintIJ::AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, size_t axisi) :
+AtPointConstraintIJ::AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
 	ConstraintIJ(frmi, frmj), axis(axisi)
 {
 }
 
 void AtPointConstraintIJ::initialize()
 {
+	ConstraintIJ::initialize();
 	initriIeJeO();
 }
 

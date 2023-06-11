@@ -72,22 +72,11 @@ int main()
 	//omeOpO = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0, 1 });
 	//assembly1->setqXdot(qXdot);
 	//assembly1->setomeOpO(omeOpO);
-	std::cout << "assembly1->getqX() " << assembly1->getqX()->toString() << std::endl;
-	std::cout << "assembly1->getqE() " << assembly1->getqE()->toString() << std::endl;
+	std::cout << "assembly1->getqX() " << *assembly1->getqX() << std::endl;
+	std::cout << "assembly1->getqE() " << *assembly1->getqE() << std::endl;
 	TheSystem.addPart(assembly1);
 	{
 		auto& partFrame = assembly1->partFrame;
-		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Marker1");
-		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 2.8817526385684, 0.0 });
-		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
-			{ 1, 0, 0 },
-			{ 0, 0, 1 },
-			{ 0, -1, 0 }
-			});
-		marker1->setaApm(aApm);
-		partFrame->addMarkerFrame(marker1);
-		//
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
 		marker2->setrpmp(rpmp);
@@ -98,6 +87,17 @@ int main()
 			});
 		marker2->setaApm(aApm);
 		partFrame->addMarkerFrame(marker2);
+		//
+		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Marker1");
+		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 2.8817526385684, 0.0 });
+		marker1->setrpmp(rpmp);
+		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+			{ 1, 0, 0 },
+			{ 0, 0, 1 },
+			{ 0, -1, 0 }
+			});
+		marker1->setaApm(aApm);
+		partFrame->addMarkerFrame(marker1);
 	}
 	assembly1->asFixed();
 	//
@@ -105,8 +105,8 @@ int main()
 	std::cout << "crankPart1->getName() " << crankPart1->getName() << std::endl;
 	crankPart1->m = 0.045210530089461;
 	crankPart1->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 1.7381980042084e-4, 0.003511159968501, 0.0036154518487535 });
-	qX = std::make_shared<FullColumn<double>>(ListD{ 0.38423366582893, 6.8384291794733e-9, -0.048029210642807 });
-	qE = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 1.4248456266393e-10, 1.0 });
+	qX = std::make_shared<FullColumn<double>>(ListD{ 0.38423368514246, 2.6661567755108e-17, -0.048029210642807 });
+	qE = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0, 1.0 });
 	crankPart1->setqX(qX);
 	crankPart1->setqE(qE);
 	TheSystem.parts->push_back(crankPart1);
@@ -139,8 +139,8 @@ int main()
 	std::cout << "conrodPart2->getName() " << conrodPart2->getName() << std::endl;
 	conrodPart2->m = 0.067815795134192;
 	conrodPart2->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 2.6072970063126e-4, 0.011784982468533, 0.011941420288912 });
-	qX = std::make_shared<FullColumn<double>>(ListD{ 0.38423366582893,  0.49215308269277,  0.048029210642807 });
-	qE = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.89871701272344, 0.4385290538168 });
+	qX = std::make_shared<FullColumn<double>>(ListD{ 0.38423368514246, 0.49215295678475, 0.048029210642807 });
+	qE = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.89871703427292, 0.43852900965351 });
 	conrodPart2->setqX(qX);
 	conrodPart2->setqE(qE);
 	TheSystem.parts->push_back(conrodPart2);
@@ -173,7 +173,7 @@ int main()
 	std::cout << "pistonPart3->getName() " << pistonPart3->getName() << std::endl;
 	pistonPart3->m = 1.730132083368;
 	pistonPart3->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0.19449049546716, 0.23028116340971, 0.23028116340971 });
-	qX = std::make_shared<FullColumn<double>>(ListD{ -1.284772285311e-18, 1.4645982581368, -4.788228906425e-17 });
+	qX = std::make_shared<FullColumn<double>>(ListD{ -1.283972762056e-18, 1.4645980199976, -4.7652385308244e-17 });
 	qE = std::make_shared<FullColumn<double>>(ListD{ 0.70710678118655, 0.70710678118655, 0.0, 0.0 });
 	pistonPart3->setqX(qX);
 	pistonPart3->setqE(qE);

@@ -1,13 +1,14 @@
 #include<algorithm>
 
-#include "Part.h"
 #include "PartFrame.h"
+#include "Part.h"
 #include "EulerConstraint.h"
 #include "AbsConstraint.h"
 #include "MarkerFrame.h"
 #include "EulerParameters.h"
 #include "EulerParametersDot.h"
 #include "CREATE.h"
+#include "RedundantConstraint.h"
 
 using namespace MbD;
 
@@ -21,7 +22,7 @@ void PartFrame::initialize()
 {
 	aGeu = CREATE<EulerConstraint>::With();
 	aGeu->setOwner(this);
-	aGabs = std::make_shared<std::vector<std::shared_ptr<AbsConstraint>>>();
+	aGabs = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	markerFrames = std::make_shared<std::vector<std::shared_ptr<MarkerFrame>>>();
 }
 
@@ -90,7 +91,7 @@ EndFrmcptr PartFrame::endFrame(std::string name)
 	return (*match)->endFrames->at(0);
 }
 
-void MbD::PartFrame::aGabsDo(const std::function<void(std::shared_ptr<AbsConstraint>)>& f)
+void MbD::PartFrame::aGabsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
 {
 	std::for_each(aGabs->begin(), aGabs->end(), f);
 }
@@ -98,6 +99,55 @@ void MbD::PartFrame::aGabsDo(const std::function<void(std::shared_ptr<AbsConstra
 void MbD::PartFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFrame>)>& f)
 {
 	std::for_each(markerFrames->begin(), markerFrames->end(), f);
+}
+
+void MbD::PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+{
+	if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), aGeu->iG) != redundantEqnNos->end()) {
+		auto redunCon = CREATE<RedundantConstraint>::With();
+		redunCon->constraint = aGeu;
+		aGeu = redunCon;
+	}
+	for (size_t i = 0; i < aGabs->size(); i++)
+	{
+		auto& constraint = aGabs->at(i);
+		if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), constraint->iG) != redundantEqnNos->end()) {
+			auto redunCon = CREATE<RedundantConstraint>::With();
+			redunCon->constraint = constraint;
+			aGabs->at(i) = redunCon;
+		}
+	}
+}
+
+void MbD::PartFrame::reactivateRedundantConstraints()
+{
+	if (aGeu->isRedundant()) aGeu = std::dynamic_pointer_cast<RedundantConstraint>(aGeu)->constraint;
+	for (size_t i = 0; i < aGabs->size(); i++)
+	{
+		auto& con = aGabs->at(i);
+		if (con->isRedundant()) {
+			aGabs->at(i) = std::static_pointer_cast<RedundantConstraint>(con)->constraint;
+		}
+	}
+}
+
+void MbD::PartFrame::constraintsReport()
+{
+	auto redunCons = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	aGabsDo([&](std::shared_ptr<Constraint> con) {
+		if (con->isRedundant()) {
+			redunCons->push_back(con);
+		}
+		});
+	if (aGeu->isRedundant()) redunCons->push_back(aGeu);
+	if (redunCons->size() > 0) {
+		std::string str = "MbD: " + part->classname() + std::string(" ") + part->getName() + " has the following constraint(s) removed: ";
+		this->logString(str);
+		std::for_each(redunCons->begin(), redunCons->end(), [&](auto& con) {
+			str = "MbD: " + std::string("    ") + std::string(typeid(*con).name());
+			this->logString(str);
+			});
+	}
 }
 
 void MbD::PartFrame::prePosIC()
@@ -131,6 +181,10 @@ void MbD::PartFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::share
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
 }
 
+void MbD::PartFrame::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+{
+}
+
 void MbD::PartFrame::fillqsu(FColDsptr col)
 {
 	col->atiputFullColumn(iqX, qX);
@@ -159,6 +213,15 @@ void MbD::PartFrame::useEquationNumbers()
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->useEquationNumbers(); });
 }
 
+void MbD::PartFrame::setqsu(FColDsptr col)
+{
+	qX->equalFullColumnAt(col, iqX);
+	qE->equalFullColumnAt(col, iqE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsu(col); });
+	aGeu->setqsu(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsu(col); });
+}
+
 void MbD::PartFrame::setqsulam(FColDsptr col)
 {
 	qX->equalFullColumnAt(col, iqX);
@@ -176,10 +239,52 @@ void MbD::PartFrame::postPosICIteration()
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->postPosICIteration(); });
 }
 
+void MbD::PartFrame::fillPosICError(FColDsptr col)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosICError(col); });
+	aGeu->fillPosICError(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICError(col); });
+}
+
+void MbD::PartFrame::fillPosICJacob(SpMatDsptr mat)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosICJacob(mat); });
+	aGeu->fillPosICJacob(mat);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICJacob(mat); });
+}
+
+void MbD::PartFrame::postPosIC()
+{
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postPosIC(); });
+	aGeu->postPosIC();
+	aGabsDo([](std::shared_ptr<Constraint> con) { con->postPosIC(); });
+}
+
+void MbD::PartFrame::outputStates()
+{
+	std::stringstream ss;
+	ss << "qX = ";
+	qX->printOn(ss);
+	ss << std::endl;
+	ss << "qE = ";
+	qE->printOn(ss);
+	auto str = ss.str();
+	this->logString(str);
+	aGeu->outputStates();
+	aGabsDo([](std::shared_ptr<Constraint> con) { con->outputStates(); });
+}
+
+void MbD::PartFrame::preDyn()
+{
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->preDyn(); });
+	aGeu->preDyn();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preDyn(); });
+}
+
 void PartFrame::asFixed()
 {
-	for (size_t i = 0; i < 6; i++) {
-		auto con = std::make_shared<AbsConstraint>(i);
+	for (int i = 0; i < 6; i++) {		
+		auto con = CREATE<AbsConstraint>::With(i);
 		con->setOwner(this);
 		aGabs->push_back(con);
 	}
