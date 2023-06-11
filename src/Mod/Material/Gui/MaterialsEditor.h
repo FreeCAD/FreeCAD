@@ -49,11 +49,17 @@ public:
     void accept() override;
     void reject() override;
 
+    Materials::MaterialManager &getMaterialManager() { return _materialManager; }
+    // Materials::ModelManager &getModelManager() { return _modelManager; }
+
+    void clearCard(void);
+    void updateCard(const std::string& uuid);
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
-    void onCurrentMaterial(const QModelIndex& selected, const QModelIndex& deselected);
 
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
+    Materials::MaterialManager _materialManager;
+    // Materials::ModelManager _modelManager;
 
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);

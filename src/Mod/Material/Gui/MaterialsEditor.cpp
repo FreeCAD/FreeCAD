@@ -58,8 +58,6 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
     QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
             this, &MaterialsEditor::onSelectMaterial);
-    // connect(selectionModel, &QItemSelectionModel::currentChanged,
-    //         this, &MaterialsEditor::onCurrentMaterial);
 }
 
 /*
@@ -122,6 +120,10 @@ void MaterialsEditor::reject()
     // }
 }
 
+QIcon MaterialsEditor::errorIcon(const QIcon &icon) const {
+    auto pixmap = icon.pixmap();
+}
+
 void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
 {
     auto tree = ui->treeMaterials;
@@ -136,8 +138,13 @@ void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, co
         else if (isCard(mod)) {
             auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                           | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(mod.path().string())), Qt::UserRole);
+                        | Qt::ItemIsDropEnabled);
+            try {
+                auto model = getMaterialManager().getMaterialByPath(mod.path().string());
+                card->setData(QVariant(QString::fromStdString(model.getUUID())), Qt::UserRole);
+            } catch (...) {
+                Base::Console().Log("YAML error\n");
+            }
             addExpanded(tree, &parent, card);
         }
     }
@@ -157,7 +164,6 @@ void MaterialsEditor::addExpanded(QTreeView *tree, QStandardItemModel *parent, Q
 
 void MaterialsEditor::createMaterialTree()
 {
-    Base::Console().Log("MaterialsEditor::createMaterialTree()\n");
     Materials::ModelManager modelManager;
     // Materials::MaterialManager materialManager;
 
@@ -191,34 +197,92 @@ void MaterialsEditor::createMaterialTree()
 
         auto path = value->getDirectoryPath();
         addCards(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
-
-        // Base::Console().Log(value->getName().c_str());
-        // Base::Console().Log("\n\t");
-        // Base::Console().Log(value->getDirectory().string().c_str());
-        // Base::Console().Log("\n\t");
-        // Base::Console().Log(value->getIconPath().c_str());
-        // Base::Console().Log("\n");
-
     }
 }
 
+void MaterialsEditor::clearCard(void)
+{
+    // Update the general information
+    ui->editName->setText(QString::fromStdString(""));
+    ui->editAuthorLicense->setText(QString::fromStdString(""));
+    // ui->editParent->setText(QString::fromStdString(card.getName()));
+    ui->editSourceURL->setText(QString::fromStdString(""));
+    ui->editSourceReference->setText(QString::fromStdString(""));
+    // ui->editTags->setText(QString::fromStdString(card.getName()));
+    ui->editDescription->setText(QString::fromStdString(""));
+}
+
+void MaterialsEditor::updateCard(const std::string &uuid)
+{
+    auto card = getMaterialManager().getMaterial(uuid);
+
+    // Update the general information
+    ui->editName->setText(QString::fromStdString(card.getName()));
+    ui->editAuthorLicense->setText(QString::fromStdString(card.getAuthorAndLicense()));
+    // ui->editParent->setText(QString::fromStdString(card.getName()));
+    ui->editSourceURL->setText(QString::fromStdString(card.getURL()));
+    ui->editSourceReference->setText(QString::fromStdString(card.getReference()));
+    // ui->editTags->setText(QString::fromStdString(card.getName()));
+    ui->editDescription->setText(QString::fromStdString(card.getDescription()));
+}
+
+    // def updateCard(self, data):
+
+    //     """updates the contents of the editor with the given dictionary
+    //        the material property keys where added to the editor already
+    //        unknown material property keys will be added to the user defined group"""
+
+    //     print(data)
+    //     if "General" in data:
+    //         self.updateGeneral(data['General'])
+    //     else:
+    //         self.updateGeneral(None)
+
+    //     widget = self.widget
+    //     widget.treeProperties.model().clear()
+    //     model = widget.treeProperties.model()
+    //     model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
+
+    //     widget.treeProperties.setColumnWidth(0, 250)
+    //     widget.treeProperties.setColumnWidth(1, 250)
+    //     widget.treeProperties.setColumnWidth(2, 250)
+    //     widget.treeProperties.setColumnHidden(3, True)
+
+    //     widget.treeAppearance.model().clear()
+    //     model = widget.treeAppearance.model()
+    //     model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
+
+    //     widget.treeAppearance.setColumnWidth(0, 250)
+    //     widget.treeAppearance.setColumnWidth(1, 250)
+    //     widget.treeAppearance.setColumnWidth(2, 250)
+    //     widget.treeAppearance.setColumnHidden(3, True)
+    
+    //     self.updateTab(widget.treeProperties, data, "Models")
+    //     self.updateTab(widget.treeAppearance, data, "AppearanceModels")
+
 void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected)
 {
-    Base::Console().Log("MaterialsEditor::onSelectMaterial()\n");
-
     QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++)
     {
         QStandardItem* item = model->itemFromIndex(*it);
         Base::Console().Log("%s\n", item->text().toStdString().c_str());
-        Base::Console().Log("\t%s\n", item->data(Qt::UserRole).toString().toStdString().c_str());
-    }
-}
+        if (item) {
+            try
+            {
+                std::string uuid = item->data(Qt::UserRole).toString().toStdString();
+                Base::Console().Log("\t%s\n", item->data(Qt::UserRole).toString().toStdString().c_str());
+                updateCard(uuid);
+            }
+            catch(const std::exception& e)
+            {
+                clearCard();
+                // std::cerr << e.what() << '\n';
+            }
 
-void MaterialsEditor::onCurrentMaterial(const QModelIndex& selected, const QModelIndex& deselected)
-{
-    Base::Console().Log("MaterialsEditor::onCurrentMaterial()\n");
+        }
+    }
 }
 
 #include "moc_MaterialsEditor.cpp"
