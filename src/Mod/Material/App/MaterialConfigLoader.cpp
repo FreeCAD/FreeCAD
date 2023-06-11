@@ -38,6 +38,7 @@
 // #include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 
 #include "Model.h"
+#include "MaterialLoader.h"
 #include "MaterialConfigLoader.h"
 
 
@@ -84,7 +85,7 @@ std::string MaterialConfigLoader::getAuthorAndLicense(const std::string& path)
         return noAuthor;
     std::size_t found = line.find(";");
     if (found!=std::string::npos)
-        return line.substr(found);
+        return trim_copy(line.substr(found + 1));
 
     return noAuthor;
 }

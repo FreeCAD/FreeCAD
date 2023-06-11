@@ -36,6 +36,7 @@ using namespace Materials;
 
 std::list<MaterialLibrary*> *MaterialManager::_libraryList = nullptr;
 std::map<std::string, Material*> *MaterialManager::_materialMap = nullptr;
+std::map<std::string, Material*> *MaterialManager::_materialPathMap = nullptr;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
@@ -44,11 +45,14 @@ MaterialManager::MaterialManager()
     // TODO: Add a mutex or similar
     if (_materialMap == nullptr) {
         _materialMap = new std::map<std::string, Material*>();
-    if (_libraryList == nullptr)
-        _libraryList = new std::list<MaterialLibrary*>();
+
+        if (_materialPathMap == nullptr)
+            _materialPathMap = new std::map<std::string, Material*>();
+        if (_libraryList == nullptr)
+            _libraryList = new std::list<MaterialLibrary*>();
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _libraryList);
+        MaterialLoader loader(_materialMap, _materialPathMap, _libraryList);
     }
 }
 
@@ -75,18 +79,33 @@ std::list<MaterialLibrary *> *MaterialManager::getMaterialLibraries()
     {
         if (_materialMap == nullptr)
             _materialMap = new std::map<std::string, Material*>();
+        if (_materialPathMap == nullptr)
+            _materialPathMap = new std::map<std::string, Material*>();
         _libraryList = new std::list<MaterialLibrary*>();
 
         // Load the libraries
-        MaterialLoader loader(_materialMap, _libraryList);
+        MaterialLoader loader(_materialMap, _materialPathMap, _libraryList);
     }
     return _libraryList;
 }
 
 const Material &MaterialManager::getMaterialByPath(const std::string &path) const
 {
-    const std::string &uuid = MaterialLoader::getUUIDFromPath(path);
+    const std::string &uuid = getUUIDFromPath(path);
     return *(_materialMap->at(uuid));
+}
+
+const std::string MaterialManager::getUUIDFromPath(const std::string &path) const
+{
+    QDir dirPath(QString::fromStdString(path));
+    std::string normalized = dirPath.absolutePath().toStdString();
+    Material* material = nullptr;
+    try {
+        material = _materialPathMap->at(normalized);
+    } catch (std::out_of_range e) {
+        Base::Console().Log("MaterialManager::getUUIDFromPath error: '%s'\n", normalized.c_str());
+    }
+    return material->getUUID();
 }
 
 const Material &MaterialManager::getMaterialByPath(const std::string &path, const std::string &libraryPath) const

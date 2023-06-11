@@ -48,8 +48,11 @@ public:
     static bool isCard(const fs::path &p);
 
 private:
+    const std::string getUUIDFromPath(const std::string& path) const;
+
     static std::list<MaterialLibrary *> *_libraryList;
     static std::map<std::string, Material *> *_materialMap;
+    static std::map<std::string, Material *> *_materialPathMap;
 };
 
 } // namespace Materials
