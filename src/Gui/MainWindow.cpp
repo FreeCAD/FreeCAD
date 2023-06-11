@@ -1169,6 +1169,10 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
         return;
     auto view = dynamic_cast<MDIView*>(w->widget());
 
+    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
+    d->activeView = view;
+    Application::Instance->viewActivated(view);
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1194,9 +1198,6 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     if ( !view /*|| !mdi->isActiveWindow()*/ )
         return; // either no MDIView or no valid object or no top-level window
 
-    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
     updateActions(true);
 }
 
