@@ -118,7 +118,7 @@ public:
 
                 knotGeoIds.push_back(getHighestCurveIndex());
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Cannot add knot point"));
@@ -188,7 +188,7 @@ public:
 
                 knotGeoIds.push_back(getHighestCurveIndex());
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
@@ -298,7 +298,7 @@ public:
                 drawControlPolygonToPosition(prevCursorPosition);
                 drawCursorToPosition(prevCursorPosition);
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Error removing knot"));
@@ -608,7 +608,7 @@ private:
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
