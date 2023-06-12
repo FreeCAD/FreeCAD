@@ -56,7 +56,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation type="unfinished">Actual</translation>
+      <translation>Atual</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Distância de busca</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>

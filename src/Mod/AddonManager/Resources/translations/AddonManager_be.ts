@@ -1272,18 +1272,18 @@ installed addons will be checked for available updates
       <translation>Не атрымалася выканаць макрас. Падрабязныя звесткі аб збоі глядзіце ў кансолі.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Суправаджальнік</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
       <translation>Аўтар</translation>
     </message>
@@ -1499,8 +1499,8 @@ installed addons will be checked for available updates
       <translation>Прывязкі Python да QtWebEngine не ўсталяваныя - ужытае замяняе адлюстраванне README.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Паспяхова завершана</translation>
@@ -1632,9 +1632,9 @@ installed addons will be checked for available updates
       <translation>Абраць файл гузіку для гэтага элемента зместу</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} не з'яўляецца ўкладзеным каталогам {}</translation>
     </message>
@@ -1771,7 +1771,9 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
-      <translation>Не атрымалася выканаць каманду pip, якая можа адсутнічаць у вашай устаноўцы Python. Калі ласка, пераканайцеся, што ў вашай сістэме ўсталяваны pip, і паўтарыце спробу. Няўдалая каманда была: </translation>
+      <translation>Не атрымалася выканаць каманду pip, якая можа адсутнічаць у вашым усталяваным Python.
+Калі ласка, пераканайцеся, што ў вашай сістэме ўсталяваны pip, і паўтарыце спробу.
+Няўдалая каманда была: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
