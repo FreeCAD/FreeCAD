@@ -32,6 +32,7 @@
 
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/ModelManager.h>
 
 namespace fs = boost::filesystem;
 
@@ -50,20 +51,23 @@ public:
     void reject() override;
 
     Materials::MaterialManager &getMaterialManager() { return _materialManager; }
-    // Materials::ModelManager &getModelManager() { return _modelManager; }
+    Materials::ModelManager &getModelManager() { return _modelManager; }
 
+    void clearCardProperties(void);
     void clearCard(void);
+    void updateCardProperties(const Materials::Material &card);
     void updateCard(const std::string& uuid);
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
 
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
     Materials::MaterialManager _materialManager;
-    // Materials::ModelManager _modelManager;
+    Materials::ModelManager _modelManager;
 
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    void createPropertyTree();
     void createMaterialTree();
     void addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
     bool isCard(const fs::path &p) const { return Materials::MaterialManager::isCard(p); }

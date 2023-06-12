@@ -49,6 +49,7 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
     ui->setupUi(this);
 
     createMaterialTree();
+    createPropertyTree();
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &MaterialsEditor::accept);
@@ -162,6 +163,17 @@ void MaterialsEditor::addExpanded(QTreeView *tree, QStandardItemModel *parent, Q
     tree->setExpanded(child->index(), true);
 }
 
+void MaterialsEditor::createPropertyTree()
+{
+    auto tree = ui->treePhysicalProperties;
+    auto model = new QStandardItemModel();
+    tree->setModel(model);
+
+    tree->setHeaderHidden(true);
+    tree->setUniformRowHeights(true);
+    // tree->setItemDelegate(MaterialsDelegate())
+}
+
 void MaterialsEditor::createMaterialTree()
 {
     Materials::ModelManager modelManager;
@@ -200,6 +212,13 @@ void MaterialsEditor::createMaterialTree()
     }
 }
 
+void MaterialsEditor::clearCardProperties(void)
+{
+    auto tree = ui->treePhysicalProperties;
+    QStandardItemModel *model = static_cast<QStandardItemModel *>(tree->model());
+    model->clear();
+}
+
 void MaterialsEditor::clearCard(void)
 {
     // Update the general information
@@ -210,11 +229,40 @@ void MaterialsEditor::clearCard(void)
     ui->editSourceReference->setText(QString::fromStdString(""));
     // ui->editTags->setText(QString::fromStdString(card.getName()));
     ui->editDescription->setText(QString::fromStdString(""));
+
+    clearCardProperties();
+}
+
+void MaterialsEditor::updateCardProperties(const Materials::Material &card)
+{
+    QTreeView *tree = ui->treePhysicalProperties;
+    QStandardItemModel *treeModel = static_cast<QStandardItemModel *>(tree->model());
+    treeModel->clear();
+
+    const std::vector<std::string> &models = card.getModels();
+    if (&models) {
+        for (auto it = models.begin(); it != models.end(); it++)
+        {
+            std::string uuid = *it;
+            const Materials::Model &model = getModelManager().getModel(uuid);
+            std::string name = model.getName();
+
+            auto modelRoot = new QStandardItem(QString::fromStdString(name));
+            modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+            addExpanded(tree, treeModel, modelRoot);
+            for (auto itp = model.begin(); itp != model.end(); itp++)
+            {
+                std::string key = itp->first;
+                auto propertyItem = new QStandardItem(QString::fromStdString(key));
+                addExpanded(tree, modelRoot, propertyItem);
+            }
+        }
+    }
 }
 
 void MaterialsEditor::updateCard(const std::string &uuid)
 {
-    auto card = getMaterialManager().getMaterial(uuid);
+    Materials::Material card = getMaterialManager().getMaterial(uuid);
 
     // Update the general information
     ui->editName->setText(QString::fromStdString(card.getName()));
@@ -224,6 +272,8 @@ void MaterialsEditor::updateCard(const std::string &uuid)
     ui->editSourceReference->setText(QString::fromStdString(card.getReference()));
     // ui->editTags->setText(QString::fromStdString(card.getName()));
     ui->editDescription->setText(QString::fromStdString(card.getDescription()));
+
+    updateCardProperties(card);
 }
 
     // def updateCard(self, data):

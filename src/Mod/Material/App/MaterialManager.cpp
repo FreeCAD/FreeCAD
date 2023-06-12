@@ -104,6 +104,7 @@ const std::string MaterialManager::getUUIDFromPath(const std::string &path) cons
         material = _materialPathMap->at(normalized);
     } catch (std::out_of_range e) {
         Base::Console().Log("MaterialManager::getUUIDFromPath error: '%s'\n", normalized.c_str());
+        return "";
     }
     return material->getUUID();
 }
