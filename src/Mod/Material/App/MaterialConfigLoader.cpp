@@ -100,7 +100,9 @@ void MaterialConfigLoader::addVectorRendering(const QSettings &fcmat, Material *
     std::string viewFillPattern = value(fcmat, "ViewFillPattern", "");
     std::string viewLinewidth = value(fcmat, "ViewLinewidth", "");
 
-    finalModel->addModel(ModelUUID_Rendering_Vector);
+    if (sectionFillPattern.length() + sectionLinewidth.length() + sectionColor.length() +
+            viewColor.length() + viewFillPattern.length() + viewLinewidth.length() > 0)
+        finalModel->addModel(ModelUUID_Rendering_Vector);
 
     // Now add the data
 
@@ -122,10 +124,14 @@ void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalM
     // Check which model we need
     bool useTexture = false;
     bool useAdvanced = false;
+    bool useBasic = false;
     if (texturePath.length() + textureScaling.length() > 0)
         useTexture = true;
     if (fragmentShader.length() + vertexShader.length() > 0)
         useAdvanced = true;
+    if (ambientColor.length() + diffuseColor.length() + emissiveColor.length() +
+            shininess.length() + specularColor.length() + transparency.length() > 0)
+        useBasic = true;
 
     if (useAdvanced)
     {
@@ -139,7 +145,7 @@ void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalM
 
         // Now add the data
     }
-    else
+    else if (useBasic)
     {
         finalModel->addModel(ModelUUID_Rendering_Basic);
 
@@ -153,7 +159,8 @@ void MaterialConfigLoader::addCosts(const QSettings &fcmat, Material *finalModel
     std::string specificPrice = value(fcmat, "SpecificPrice", "");
     std::string vendor = value(fcmat, "Vendor", "");
 
-    finalModel->addModel(ModelUUID_Costs_Default);
+    if (productURL.length() + specificPrice.length() + vendor.length() > 0)
+        finalModel->addModel(ModelUUID_Costs_Default);
 
     // Now add the data
 
@@ -170,7 +177,10 @@ void MaterialConfigLoader::addArchitectural(const QSettings &fcmat, Material *fi
     std::string soundTransmissionClass = value(fcmat, "SoundTransmissionClass", "");
     std::string unitsPerQuantity = value(fcmat, "UnitsPerQuantity", "");
 
-    finalModel->addModel(ModelUUID_Architectural_Default);
+    if (color.length() + environmentalEfficiencyClass.length() + executionInstructions.length() +
+            finish.length() + fireResistanceClass.length() + model.length() +
+            soundTransmissionClass.length() + unitsPerQuantity.length() > 0)
+        finalModel->addModel(ModelUUID_Architectural_Default);
 
     // Now add the data
 
@@ -182,7 +192,8 @@ void MaterialConfigLoader::addElectromagnetic(const QSettings &fcmat, Material *
     std::string electricalConductivity = value(fcmat, "ElectricalConductivity", "");
     std::string relativePermeability = value(fcmat, "RelativePermeability", "");
 
-    finalModel->addModel(ModelUUID_Electromagnetic_Default);
+    if (relativePermittivity.length() + electricalConductivity.length() + relativePermeability.length() > 0)
+        finalModel->addModel(ModelUUID_Electromagnetic_Default);
 
     // Now add the data
 
@@ -194,7 +205,8 @@ void MaterialConfigLoader::addThermal(const QSettings &fcmat, Material *finalMod
     std::string thermalConductivity = value(fcmat, "ThermalConductivity", "");
     std::string thermalExpansionCoefficient = value(fcmat, "ThermalExpansionCoefficient", "");
 
-    finalModel->addModel(ModelUUID_Thermal_Default);
+    if (specificHeat.length() + thermalConductivity.length() + thermalExpansionCoefficient.length() > 0)
+        finalModel->addModel(ModelUUID_Thermal_Default);
 
     // Now add the data
 }
