@@ -38,16 +38,24 @@ public:
     virtual ~MaterialConfigLoader();
 
 
-    static std::string value(QSettings &fcmat, const std::string &name, const std::string &default)
+    static bool isConfigStyle(const std::string& path);
+    static Material *getMaterialFromPath(const MaterialLibrary &library, const std::string &path);
+
+private:
+    static std::string value(const QSettings &fcmat, const std::string &name, const std::string &default)
     {
         return fcmat.value(QString::fromStdString(name), QString::fromStdString(default)).toString().toStdString();
     }
 
-    static bool isConfigStyle(const std::string& path);
     static std::string getAuthorAndLicense(const std::string& path);
-    static Material *getMaterialFromPath(const MaterialLibrary &library, const std::string &path);
-
-private:
+    static void addMechanical(const QSettings &fcmat, Material *finalModel);
+    static void addFluid(const QSettings &fcmat, Material *finalModel);
+    static void addThermal(const QSettings &fcmat, Material *finalModel);
+    static void addElectromagnetic(const QSettings &fcmat, Material *finalModel);
+    static void addArchitectural(const QSettings &fcmat, Material *finalModel);
+    static void addCosts(const QSettings &fcmat, Material *finalModel);
+    static void addRendering(const QSettings &fcmat, Material *finalModel);
+    static void addVectorRendering(const QSettings &fcmat, Material *finalModel);
 };
 
 } // namespace Materials

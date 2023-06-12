@@ -40,7 +40,6 @@ SET (Material_Icon_Files
 
 SET (MaterialLib_Files
     Resources/Materials/StandardMaterial/None.FCMat
-    Resources/Materials/StandardMaterial/Readme.txt
     Resources/Materials/StandardMaterial/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Concrete-Generic.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Reinforcement-FIB-B500.FCMat
@@ -168,7 +167,6 @@ SET (FluidMaterial_Files
     Resources/Materials/FluidMaterial/Carbon_dioxide.FCMat
     Resources/Materials/FluidMaterial/Nitrogen.FCMat
     Resources/Materials/FluidMaterial/Water.FCMat
-    Resources/Materials/FluidMaterial/Readme.md
 )
 
 SET (AppearanceLib_Files

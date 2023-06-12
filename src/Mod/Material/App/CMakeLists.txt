@@ -70,6 +70,7 @@ SET(Material_SRCS
     ModelLoader.h
     ModelManager.cpp
     ModelManager.h
+    ModelUuids.h
     PreCompiled.cpp
     PreCompiled.h
     PropertyModel.cpp

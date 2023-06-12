@@ -25,11 +25,9 @@ Model:
   URL: ''
   Description: "default fluid model"
   DOI: ""
-  Density:
-    Type: 'Quantity'
-    Units: 'Density'
-    URL: 'https://en.wikipedia.org/wiki/Density'
-    Description: "Density in [FreeCAD Density unit]"
+  Inherits:
+    - Density:
+      UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
   DynamicViscosity:
     Type: 'Quantity'
     Units: ''

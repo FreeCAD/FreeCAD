@@ -187,7 +187,12 @@ def yamMechanical(card):
     return ""
 
 def yamFluid(card):
-    return yamSection(card, 'Fluid', '1ae66d8c-1ba1-4211-ad12-b9917573b202')
+    # Split out density
+    for param in card:
+        if param not in ["Density"]:
+            return yamSection(card, 'Fluid', '1ae66d8c-1ba1-4211-ad12-b9917573b202')
+        
+    return yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
 
 def yamThermal(card):
     return yamSection(card, 'Thermal', '9959d007-a970-4ea7-bae4-3eb1b8b883c7')
